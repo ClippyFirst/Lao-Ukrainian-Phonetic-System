@@ -1,0 +1,13 @@
+claim_id,claim,status,evidence_ids
+CLM-LAO-UNICODE,Lao Unicode must be analyzed structurally rather than as a flat character list,established,SRC-UNICODE
+CLM-LAO-NO-INHERENT-VOWEL,Lao consonant letters do not behave as Thai-style inherent-vowel carriers,established,SRC-UNICODE
+CLM-LAO-CLASS,Modern Lao uses middle/high/low consonant classes in tone determination,established,SRC-SEASITE;SRC-UEDA;SRC-ENFIELD
+CLM-LAO-TONE-VARIATION,Vientiane tone descriptions vary in exact contour labels and some analyses,established,SRC-UEDA;SRC-ENFIELD
+CLM-LAO-RUSSIAN,Russian practical transcription is a position-sensitive Cyrillic tradition associated with Morev/Moskalev/Plam and geographical-name practice,established,SRC-MOREV;SRC-BOIKO;SRC-RU-WEB
+CLM-LAO-RUSSIAN-ASPIRATION,Russian practical transcription writes aspirated stops with х sequences such as кх/пх/тх,established,SRC-RU-WEB
+CLM-LAO-RUSSIAN-H,Russian practical transcription renders Lao h as х,established,SRC-RU-WEB
+CLM-LAO-RUSSIAN-Y,Russian practical transcription renders Lao /ɯ/ as ы,established,SRC-RU-WEB
+CLM-LAO-UA-TARGET,Ukrainian rendering should be generated from Lao IPA and the canonical Ukrainian inventory rather than inherited from Russian orthography,methodology,SRC-UA-INVENTORY
+CLM-LAO-SERBIAN-CONTROL,Serbian official sources render Vientiane as Вијентијан,established,SRC-SERBIA-RGZ;SRC-SERBIA-MFA
+CLM-LAO-BULGARIAN-CONTROL,Bulgarian official sources render Vientiane as Виентян,established,SRC-BULGARIA-MFA
+CLM-LAO-BULGARIAN-PRINCIPLE,Bulgarian geographical transcription emphasizes target-language phonetics and orthography,established,SRC-BULGARIA-UNGEGN
