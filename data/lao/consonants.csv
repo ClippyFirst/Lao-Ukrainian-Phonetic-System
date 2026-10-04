@@ -1,0 +1,44 @@
+grapheme,codepoint,class,ipa_initial,ipa_final,status,notes
+ກ,U+0E81,middle,k,k,core,
+ຂ,U+0E82,high,kʰ,,core,
+ຄ,U+0E84,low,kʰ,k,core,
+ງ,U+0E87,low,ŋ,ŋ,core,
+ຈ,U+0E88,middle,tɕ,t,core,
+ຊ,U+0E8A,low,s,s,core,
+ຍ,U+0E8D,low,ɲ,j,core,
+ດ,U+0E94,middle,d,t,core,
+ຕ,U+0E95,middle,t,t,core,
+ຖ,U+0E96,high,tʰ,t,core,
+ທ,U+0E97,low,tʰ,t,core,
+ນ,U+0E99,low,n,n,core,
+ບ,U+0E9A,middle,b,p,core,
+ປ,U+0E9B,middle,p,p,core,
+ຜ,U+0E9C,high,pʰ,,core,
+ຝ,U+0E9D,high,f,,core,
+ພ,U+0E9E,low,pʰ,p,core,
+ຟ,U+0E9F,low,f,p,core,
+ມ,U+0EA1,low,m,m,core,
+ຢ,U+0EA2,middle,j,,core,
+ຣ,U+0EA3,low,r,n,analysis-dependent,historical/loan status requires source-specific handling
+ລ,U+0EA5,low,l,l,core,
+ວ,U+0EA7,low,w,w,core,
+ສ,U+0EAA,high,s,s,core,
+ຫ,U+0EAB,high,h,,core,
+ອ,U+0EAD,middle,ʔ,,core,vowel carrier/glottal onset
+ຮ,U+0EAE,low,h,,core,
+ໜ,U+0EDC,high,hn,,core,structural /h+n/; tonal behavior source-specific
+ໝ,U+0EDD,high,hm,,core,structural /h+m/; tonal behavior source-specific
+ຆ,U+0E86,pali,ɣ,,pali-sanskrit,not modern Lao core
+ຉ,U+0E89,pali,tɕʰ,,pali-sanskrit,not modern Lao core
+ຌ,U+0E8C,pali,dʑ,,pali-sanskrit,not modern Lao core
+ຎ,U+0E8E,pali,ɲ,,pali-sanskrit,not modern Lao core
+ຏ,U+0E8F,pali,ʈ,,pali-sanskrit,not modern Lao core
+ຐ,U+0E90,pali,ʈʰ,,pali-sanskrit,not modern Lao core
+ຑ,U+0E91,pali,ɖ,,pali-sanskrit,not modern Lao core
+ຒ,U+0E92,pali,ɖʱ,,pali-sanskrit,not modern Lao core
+ຓ,U+0E93,pali,ɳ,,pali-sanskrit,not modern Lao core
+ຘ,U+0E98,pali,dʱ,,pali-sanskrit,not modern Lao core
+ຠ,U+0EA0,pali,bʱ,,pali-sanskrit,not modern Lao core
+ຨ,U+0EA8,sanskrit,ʃ,,pali-sanskrit,not modern Lao core
+ຩ,U+0EA9,sanskrit,ʂ,,pali-sanskrit,not modern Lao core
+ຬ,U+0EAC,pali,ɭ,,pali-sanskrit,not modern Lao core
