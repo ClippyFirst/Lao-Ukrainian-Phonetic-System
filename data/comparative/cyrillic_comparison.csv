@@ -1,0 +1,19 @@
+feature,ipa,role,russian_practical,ukrainian_proposed,serbian_control,bulgarian_control,decision,evidence_status
+aspirated_velar,kʰ,onset,кх,к,not separately encoded in a Lao-specific rule,not separately encoded,do not inherit кх; keep aspiration in IPA,core
+aspirated_bilabial,pʰ,onset,пх,п,no Lao-specific control,no Lao-specific control,do not inherit пх,core
+aspirated_alveolar,tʰ,onset,тх,т,target-language dependent,target-language dependent,do not inherit тх,core
+velar_nasal,ŋ,onset/coda,нг,нг,Вијентијан illustrates target-specific adaptation,Виентян illustrates target-specific adaptation,retain explicit velar nasal,core
+palatal_affricate,tɕ,onset,ть,ч,ч is native Serbian target,ч is native Bulgarian target,ч is stronger Ukrainian practical target,core
+palatal_nasal,ɲ,onset,нь,нь,Serbian has native palatal-nasal resources,Bulgarian lacks a direct one-letter equivalent,retain palatality,analysis-dependent
+laryngeal_h,h,onset,х,г,х would be a different native target,х would be a different native target,do not inherit Russian х,project-policy
+high_central_vowel,ɯ,vowel,ы,и,Serbian lacks ы,Bulgarian ъ is not Lao /ɯ/,avoid Russian ы,project-policy
+mid_back_unrounded,ɤ,vowel,е,е,approximate,approximate,retain non-identity status,project-policy
+open_mid_front,ɛ,vowel,э,е,е is available in both controls,е is available,avoid mechanically inheriting э,project-policy
+open_mid_back,ɔ,vowel,о,о,о,о,shared practical approximation,project-policy
+length,aː,vowel,аа,а,no systematic doubling,no systematic doubling,keep quantity analytical,project-policy
+vowel_plus_glide,ai,rime,ай,ай,ј is available,й is available,transparent Ukrainian sequence,project-policy
+vowel_plus_glide,ao,rime,ау,ау,transparent adaptation,transparent adaptation,transparent Ukrainian sequence,project-policy
+glottal_stop,ʔ,onset/carrier,∅,∅,usually not independently marked,usually not independently marked,do not invent apostrophe,project-policy
+final_stop,p/t/k,coda,п/т/к,п/т/к,native final stops,native final stops,retain Lao final phonological value,core
+final_nasal,ŋ,coda,нг,нг,language-specific,language-specific,retain velar nasal,project-policy
+carrier_o,ອ,structural,∅ or vowel-dependent,∅ or vowel-dependent,not applicable,not applicable,resolve structurally before rendering,core

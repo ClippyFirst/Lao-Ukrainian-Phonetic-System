@@ -1,0 +1,12 @@
+phoneme,ipa,class,status
+p,p,stop,core
+t,t,stop,core
+k,k,stop,core
+ʔ,ʔ,glottal,core
+m,m,nasal,core
+n,n,nasal,core
+ŋ,ŋ,nasal,core
+w,w,glide,core
+j,j,glide,core
+l,l,sonorant,analysis-dependent
+r,r,sonorant,analysis-dependent

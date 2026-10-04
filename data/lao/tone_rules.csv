@@ -1,0 +1,16 @@
+rule_id,class,syllable_type,length,tone_mark,tone,contour,status
+VNT-H-L-LONG-NONE,high,live,long,none,low-rising,˩˥,core
+VNT-M-L-LONG-NONE,middle,live,long,none,low-rising,˩˥,core
+VNT-L-L-LONG-NONE,low,live,long,none,high-rising,˧˥,core
+VNT-H-D-LONG-NONE,high,dead,long,none,low-falling,˥˩,core
+VNT-M-D-LONG-NONE,middle,dead,long,none,low-falling,˥˩,core
+VNT-L-D-LONG-NONE,low,dead,long,none,high-falling,˥˩,core
+VNT-H-D-SHORT-NONE,high,dead,short,none,high-rising,˧˥,core
+VNT-M-D-SHORT-NONE,middle,dead,short,none,high-rising,˧˥,core
+VNT-L-D-SHORT-NONE,low,dead,short,none,high-mid,˥,core
+VNT-H-ANY-ANY-EK,high,*,*,mai_ek,high-mid,˥,core
+VNT-M-ANY-ANY-EK,middle,*,*,mai_ek,high-mid,˥,core
+VNT-L-ANY-ANY-EK,low,*,*,mai_ek,high-mid,˥,core
+VNT-H-ANY-ANY-THO,high,*,*,mai_tho,low-falling,˥˩,core
+VNT-M-ANY-ANY-THO,middle,*,*,mai_tho,high-falling,˥˩,core
+VNT-L-ANY-ANY-THO,low,*,*,mai_tho,high-falling,˥˩,core

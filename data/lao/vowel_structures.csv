@@ -1,0 +1,17 @@
+structure_id,orthographic_pattern,phonological_pattern,ipa,unicode_order,phonological_order,status
+VS-A,ະ,a,a,logical,phonological,core
+VS-AA,າ,aː,aː,logical,phonological,core
+VS-I,ິ,i,i,logical,phonological,core
+VS-II,ີ,iː,iː,logical,phonological,core
+VS-Y,ຶ,ɯ,ɯ,logical,phonological,core
+VS-YY,ື,ɯː,ɯː,logical,phonological,core
+VS-E,ເ+ONSET,e,e,preposed,phonological,core
+VS-AE,ແ+ONSET,ɛ,ɛ,preposed,phonological,core
+VS-O,ໂ+ONSET,o,o,preposed,phonological,core
+VS-IA,ເ+ONSET+ຍ,iə,iə,preposed,phonological,core
+VS-UA,ເ+ONSET+ື+ອ,ɯə,ɯə,preposed,phonological,core
+VS-UO,ONSET+ົ+ວ,uə,uə,postposed,phonological,core
+VS-AI,ໄ+ONSET,ai,ai,preposed,phonological,core
+VS-AI2,ໃ+ONSET,ai,ai,preposed,phonological,core
+VS-AO,ເ+ONSET+ົ+າ,ao,ao,preposed,phonological,core
+VS-AM,ONSET+ຳ,am,am,logical,phonological,core

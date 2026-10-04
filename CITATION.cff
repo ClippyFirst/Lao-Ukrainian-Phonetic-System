@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+title: "Lao → Ukrainian Phonetic-Graphemic Correspondence System"
+type: software
+version: 0.1.0
+abstract: "Research-oriented machine-readable Lao phonology to Ukrainian practical correspondence system with comparative Cyrillic analysis."
+license: MIT

@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["feature","ipa","russian_practical","ukrainian_proposed","decision","evidence_status"],"properties":{"feature":{"type":"string"},"ipa":{"type":"string"},"russian_practical":{"type":"string"},"ukrainian_proposed":{"type":"string"},"decision":{"type":"string"},"evidence_status":{"type":"string"}}}

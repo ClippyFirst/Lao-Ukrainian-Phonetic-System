@@ -1,0 +1,27 @@
+id,pattern,ipa,length,position,coda_class,status,notes
+A,ະ,a,short,postposed,none,core,explicit /a/
+A2,ັ,a,short,postposed,none,core,short a with Mai Kan
+AA,າ,aː,long,postposed,none,core,
+I,ິ,i,short,above,none,core,
+II,ີ,iː,long,above,none,core,
+Y,ຶ,ɯ,short,above,none,core,
+YY,ື,ɯː,long,above,none,core,
+U,ຸ,u,short,below,none,core,
+UU,ູ,uː,long,below,none,core,
+E,ເ, e,short,preposed,none,core,preposed e
+EE,ເ, eː,long,preposed,none,core,long e
+AE,ແ,ɛ,short,preposed,none,core,preposed ae
+AEE,ແ,ɛː,long,preposed,none,core,long ae
+O,ໂ,o,short,preposed,none,core,preposed o
+OO,ໂ,oː,long,preposed,none,core,long o
+AW,ເາະ,ɔ,short,around,none,core,
+AWW,ອ,ɔː,long,around,none,core,
+OE,ເິ,ɤ,short,preposed,none,core,
+OEE,ເີ,ɤː,long,preposed,none,core,
+IA,ເັຍ,iə,short,around,none,core,
+UA,ເຶອ,ɯə,short,around,none,core,
+UO,ົວ,uə,short,around,none,core,
+AI,ໄ,ai,short,preposed,none,core,preposed ai
+AI2,ໃ,ai,short,preposed,none,core,preposed ai variant
+AO,ເົາ,ao,short,preposed,none,core,
+AM,ຳ,am,short,postposed,nasal,core,Sara Am structural vowel unit
