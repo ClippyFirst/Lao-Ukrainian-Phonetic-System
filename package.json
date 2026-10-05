@@ -10,7 +10,8 @@
     "generate:web-data": "python scripts/generate_web_data.py",
     "test": "node --test web/engine.test.js",
     "build": "npm run generate:web-data && vite build",
-    "prepare": ""
+    "prepare": "",
+    "check:release": "npm test && npm run build"
   },
   "devDependencies": {
     "vite": "^7.0.0"
