@@ -1,29 +1,36 @@
 # Final scientific audit
 
-Implemented:
+## Reconstructed state
 
-- Lao Unicode normalization/validation;
-- consonant inventory, classes and positional values;
-- vowel registry with quantity and structural position;
-- coda registry;
-- live/dead classifier;
-- Vientiane-oriented tone rules with explicit status;
-- IPA intermediate representation;
-- Ukrainian target policy separated from Lao data;
-- Russian practical comparison;
-- Serbian/Bulgarian control evidence;
-- evidence and claims registries;
-- regression and structural tests.
+The repository is now one coherent Lao → Ukrainian research project. The active architecture contains implementation, canonical Lao registries, a canonical Ukrainian correspondence registry, comparative evidence, provenance data, tests, and explicit research documentation.
 
-Not claimed:
+No obsolete/foreign/temporary files were identified in the inspected tree. The repository did not contain a separate historical research corpus that required destructive deletion; therefore no research evidence was archived or deleted during this pass.
+
+## Corrective work
+
+- Replaced the initial substring-based vowel detection with explicit structural Lao vowel patterns.
+- Corrected the distinction between short and long preposed vowels such as ເກະ vs ເກ.
+- Corrected long /ɔː/ representation through ກໍ / the Niggahita-based pattern.
+- Added a Vientiane live-syllable tone fallback independent of short/long vowel length when a sonorant coda is present.
+- Treated ອ as a tone-class vowel carrier rather than automatically inserting an IPA /ʔ/ before every overt vowel.
+- Added deterministic repository auditing and derived-data generation scripts.
+- Expanded public documentation and explicit limitations.
+- Strengthened source provenance with Unicode, W3C Lao layout guidance and Ueda's DOI.
+
+## Not claimed
 
 - an official Ukrainian national standard;
-- a complete lexical Lao corpus;
-- calibrated probabilities;
-- a universally correct contour analysis for every Lao dialect;
-- a Bulgarian or Serbian Lao-specific normative table where none was established;
-- automatic lexical word segmentation from spaces.
+- complete automatic segmentation of unspaced Lao text;
+- complete initial-cluster analysis;
+- complete independent tonal rules for every use of ໜ/ໝ;
+- a full Pali/Sanskrit transcription system;
+- calibrated probabilities or empirical accuracy percentages;
+- a complete lexical corpus or expert-adjudicated gold standard.
 
-The Russian system is a comparator, not an intermediate representation. Ukrainian output is not obtained by translating Russian Cyrillic into Ukrainian Cyrillic.
+The Russian system remains a comparator, not an intermediate representation. Serbian and Bulgarian remain target-script controls rather than invented Lao-specific standards.
 
-Empirical accuracy percentages are intentionally absent until a versioned gold corpus with an explicit denominator exists.
+## Current quality judgement
+
+**🟡 Usable but needs finalization.**
+
+The repository is substantially more defensible and reproducible than the initial research foundation, but publication-grade status requires a representative corpus, fuller syllable/cluster grammar, independent verification of edge cases, and expert adjudication of the Ukrainian target correspondences.
