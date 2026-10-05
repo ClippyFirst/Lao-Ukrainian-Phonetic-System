@@ -1,51 +1,85 @@
 # Lao → Ukrainian Phonetic-Graphemic Correspondence System
 
-Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through phonology and IPA.
+Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
-## Central principle
+## What this project is
 
-**Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/length → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
+This repository develops a **project-specific Ukrainian practical transcription / phonetic-graphemic correspondence system** for contemporary Standard Lao, using a Vientiane-oriented reference model where the evidence supports it.
 
-This is not Lao-character → Ukrainian-character substitution and not Lao → romanization → Ukrainian.
+It is deliberately **not**:
 
-## Comparative Cyrillic layer
+- Lao-character → Ukrainian-character substitution;
+- Lao → romanization → Ukrainian;
+- a claim to be an official Ukrainian national standard;
+- a universal transcription system for every Lao dialect;
+- a lexical word-segmentation engine.
 
-The repository explicitly compares the Lao Russian practical tradition with Ukrainian and uses Serbian/Bulgarian materials as target-script controls.
+## Research pipeline
 
-Main project-level divergences:
+**Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/quantity → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
+
+The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation.
+
+## Comparative methodology
+
+Russian Lao practical transcription is retained as a genuine historical/practical comparator. It is **not** the source of the Ukrainian output.
+
+Serbian and Bulgarian material is used only as a target-script control where it demonstrates a relevant adaptation principle; the repository does not invent Serbian- or Bulgarian-specific Lao transcription standards where none were established.
+
+Important current project decisions include:
 
 - /kʰ pʰ tʰ/ → Ukrainian к п т rather than Russian кх пх тх;
-- /h/ → Ukrainian г rather than Russian х;
+- /h/ → Ukrainian г rather than Russian х, explicitly as an approximation;
 - /ŋ/ → нг;
-- /tɕ/ → ч rather than Russian ть;
-- /ɯ/ → и rather than Russian ы;
-- vowel quantity remains analytical rather than automatically doubling vowels.
+- /tɕ/ → ч;
+- /ɯ/ → и;
+- source vowel quantity remains explicit in analysis but is normally neutralized in practical Ukrainian output.
 
-These are project policies, not an official Ukrainian national standard.
+These are **project decisions**, not official Ukrainian orthographic rules.
 
-## Repository
+## Repository structure
 
-- src/lao_ukrainian/ — parser, phonology, tone and target pipeline;
-- data/lao/ — Lao registries;
-- data/comparative/ — Russian/Serbian/Bulgarian/Ukrainian comparison;
-- data/evidence/ — sources and claims;
-- docs/ — methodology and audit;
-- tests/ — regression tests.
+- src/lao_ukrainian/ — implementation;
+- data/lao/ — authoritative Lao registries;
+- data/comparative/ — Cyrillic comparison;
+- data/evidence/ — claims and source provenance;
+- docs/ — methodology, specification, implementation, limitations and decisions;
+- schemas/ — machine-readable output schemas;
+- tests/ — regression and structural tests.
 
-## Scope
+## Scope and limitations
 
-Primary reference: contemporary Standard Lao with a Vientiane-oriented analysis where supported. Regional and historical varieties remain source-specific.
+The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer.
 
-## Canonical Ukrainian target
+Known limitations remain explicit: automatic segmentation of unspaced multi-syllable text, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
 
-ClippyFirst/Ukrainian-Phonetic-Inventory is the canonical Ukrainian inventory. This repository does not duplicate it.
+## Reproducibility
 
-## Status discipline
+Run the test suite with:
 
-The system distinguishes ESTABLISHED, PROJECT-POLICY, ANALYSIS DEPENDENT, EVIDENCE LIMITED and TRADITIONAL. It does not invent calibrated probabilities or empirical accuracy percentages without a versioned gold corpus.
+    PYTHONPATH=src python -m unittest discover -s tests -v
 
-## Usage
+For an installed package:
 
     pip install -e .
     lao-ua "ຂາ"
     lao-ua "ໄກ່" --json
+
+## Documentation
+
+- docs/methodology.md
+- docs/system-specification.md
+- docs/comparative-cyrillic.md
+- docs/decision-log.md
+- docs/implementation.md
+- docs/limitations.md
+- docs/validation.md
+- docs/sources-and-evidence.md
+- docs/ukrainian-target.md
+- docs/unicode.md
+
+## Status
+
+**🟡 Usable but needs finalization.**
+
+The repository is a research foundation with explicit provenance and deterministic tests. It is not yet publication-ready: a larger syllable corpus, fuller cluster/ligature analysis, independent gold examples and expert adjudication are still required.
