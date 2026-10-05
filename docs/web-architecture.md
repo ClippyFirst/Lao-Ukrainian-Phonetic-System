@@ -31,7 +31,7 @@ The current static MVP still treats whitespace as the reliable segmentation boun
 1. Validate canonical data and Python tests.
 2. Regenerate `web/data.js`.
 3. Run `npm test`.
-4. Run `npm run build`.
+4. Run `npm run build` (or `npm run check:release`).
 5. Perform browser/manual checks for input, example, clear, copy, navigation, keyboard focus, responsive layout and uncertainty states.
 6. Inspect the generated diff and ensure no duplicate hand-maintained linguistic registry was introduced.
 
