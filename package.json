@@ -1,1 +1,17 @@
-{"name":"lao-ukrainian-phonetic-web","private":true,"version":"0.1.0","type":"module","engines":{"node":">=22.12"},"scripts":{"dev":"vite","build":"vite build","test":"node --test web/engine.test.js"},"devDependencies":{"vite":"^7.0.0"}}
+{
+  "name": "lao-ukrainian-phonetic-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "generate:web-data": "python scripts/generate_web_data.py",
+    "test": "node --test web/engine.test.js",
+    "build": "npm run generate:web-data && vite build"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}
