@@ -1,5 +1,6 @@
 import{CONSONANTS,VOWELS,CODAS,CORRESPONDENCES,TONE_MARKS,TONE_RULES}from"./data.js";
-const keys=()=>Object.keys(CORRESPONDENCES).sort((a,b)=>b.length-a.length);\nconst STRUCTURAL={"ໜ":["h","n"],"ໝ":["h","m"]};
+const keys=()=>Object.keys(CORRESPONDENCES).sort((a,b)=>b.length-a.length);
+const STRUCTURAL={"ໜ":["h","n"],"ໝ":["h","m"]};
 function findVowel(s){let best=null;for(const v of VOWELS)if(s.includes(v[0])&&(!best||v[0].length>best[0].length))best=v;return best}
 function classify(coda,vowel){if(coda){const x=CODAS[coda];if(["p","t","k","ʔ"].includes(x))return"dead";if(["m","n","ŋ","w","j","l"].includes(x))return"live"}return vowel?.[3]==="long"?"live":"dead"}
 function toneFor(cls,type,len,mark){const m=mark?(TONE_MARKS[mark]||"unknown"):"none";const row=TONE_RULES.find(r=>r[0]===cls&&(r[1]==="*"||r[1]===type)&&(r[2]==="*"||r[2]===len)&&r[3]===m);return row?{name:row[4],contour:row[5],status:"ESTABLISHED"}:{name:null,contour:null,status:"ANALYSIS DEPENDENT"}}
