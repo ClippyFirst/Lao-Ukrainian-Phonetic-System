@@ -19,7 +19,7 @@ jobs:
           node-version: "22.14.0"
           cache: npm
       - name: Node dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
       - name: Browser engine tests
         run: npm test
       - name: Production build
