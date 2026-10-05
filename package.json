@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "engines": {
-    "node": ">=22.12"
+    "node": ">=20.19"
   },
   "scripts": {
     "generate:web-data": "python scripts/generate_web_data.py",
