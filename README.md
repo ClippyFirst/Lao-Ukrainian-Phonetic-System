@@ -49,3 +49,17 @@ The system distinguishes ESTABLISHED, PROJECT-POLICY, ANALYSIS DEPENDENT, EVIDEN
     pip install -e .
     lao-ua "ຂາ"
     lao-ua "ໄກ່" --json
+## Web service
+
+The repository includes a local-first two-page web instrument:
+
+- `/` — Lao input, Ukrainian practical output, IPA and per-syllable explanation;
+- `/system.html` — the author's methodology, design decisions, comparison with Russian practice and limitations.
+
+The static browser artifact is generated from the canonical Lao CSV registries:
+
+    data/lao/*.csv → scripts/generate_web_data.py → web/data.js → web/engine.js
+
+No runtime network request is required for text analysis. The browser runtime is intentionally conservative and does not claim complete coverage of unspaced text, lexical exceptions, all cluster patterns or historical/literary material.
+
+Before release, run the Python test suite, `npm test`, `npm run build`, and browser/accessibility QA. See `docs/web-architecture.md`.
