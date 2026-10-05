@@ -2,9 +2,45 @@ ipa,ukrainian_practical,alternatives,rationale,status
 k,к,к,shared stop place and manner,established
 kʰ,к,к,aspiration remains analytical rather than an added х in practical Ukrainian,project-policy
 ŋ,нг,нг,explicit velar nasal sequence,project-policy
+ɲ,нь,нь|н,Ukrainian palatalized n is closer,project-policy
 tɕ,ч,ч,closest Ukrainian affricate target,established
-h,г,г,Ukrainian /ɦ/ is a practical approximation,project-policy
-ɯ,и,и,Ukrainian lacks ы; и is an explicit approximation,project-policy
+t,т,т,shared alveolar stop,established
+tʰ,т,т,aspiration remains in IPA only,project-policy
+p,п,п,shared stop,established
+pʰ,п,п,aspiration remains in IPA only,project-policy
+b,б,б,shared voiced stop,established
+m,м,м,shared nasal,established
+n,н,н,shared nasal,established
+s,с,с,shared fricative,established
+f,ф,ф,shared fricative,established
+h,г,г,Ukrainian /ɦ/ is a practical approximation to Lao /h/,project-policy
+j,й,й,glide target,project-policy
+w,в,в|у,context-dependent Ukrainian approximation,project-policy
+r,р,р,consonantal rhotic approximation,project-policy
+l,л,л,shared lateral,project-policy
+ʔ,∅,∅,glottal stop is not independently represented,project-policy
 a,а,а,shared vowel quality,established
+aː,а,а,quantity is analytical rather than doubled,project-policy
 i,і,і,shared high front vowel,established
+iː,і,і,quantity neutralization,project-policy
+ɯ,и,и,Ukrainian и is an explicit approximation,project-policy
+ɯː,и,и,quantity neutralization,project-policy
 u,у,у,shared high back rounded vowel,established
+uː,у,у,quantity neutralization,project-policy
+e,е,е,shared mid front vowel,established
+eː,е,е,quantity neutralization,project-policy
+ɛ,е,е,explicit approximation,project-policy
+ɛː,е,е,explicit approximation,project-policy
+o,о,о,shared mid back rounded vowel,established
+oː,о,о,quantity neutralization,project-policy
+ɔ,о,о,explicit approximation,project-policy
+ɔː,о,о,explicit approximation,project-policy
+ɤ,е,е,no exact Ukrainian target,project-policy
+ɤː,е,е,no exact Ukrainian target,project-policy
+iə,іа,іа,transparent diphthong sequence,project-policy
+ɯə,иа,иа,analysis-dependent approximation,analysis-dependent
+uə,уа,уа,transparent vowel sequence,project-policy
+ai,ай,ай,transparent glide sequence,project-policy
+aːi,ай,ай,quantity neutralization,project-policy
+aw,ау,ау,transparent /aw/ sequence,project-policy
+am,ам,ам,Sara Am remains a structural vowel unit,project-policy
