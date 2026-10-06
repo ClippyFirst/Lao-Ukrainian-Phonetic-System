@@ -13,6 +13,7 @@ def analyze(text: str) -> Analysis:
     if warnings:
         return Analysis(text, normalized, [], "INVALID", warnings)
 
+    registry = load_registry()
     syllables = []
     analysis_warnings = []
     for surface in segment_syllables(normalized):
@@ -25,15 +26,20 @@ def analyze(text: str) -> Analysis:
 
         practical = practical_from_ipa(ipa) if ipa else None
         syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"))
-        consonant_class = None
-        if parsed.get("onset"):
-            consonant_class = load_registry()["consonants"].get(parsed["onset"], {}).get("class")
+        consonant_class = parsed.get("onset_class")
+        if consonant_class is None and parsed.get("onset"):
+            consonant_class = registry["consonants"].get(parsed["onset"], {}).get("class")
 
+        onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
         status = (
             "ESTABLISHED"
-            if ipa and practical and tone_status in ESTABLISHED_TONE_STATUSES
+            if ipa and practical and tone_status in ESTABLISHED_TONE_STATUSES and onset_status in {"core", "analysis-dependent"}
             else tone_status
         )
+        if onset_status == "analysis-dependent" and ipa and practical and tone_status in ESTABLISHED_TONE_STATUSES:
+            status = "ANALYSIS DEPENDENT"
+            analysis_warnings.append(f"ONSET-ANALYSIS-DEPENDENT:{parsed.get('onset')}")
+
         if practical is None and ipa:
             status = "EVIDENCE LIMITED"
 
