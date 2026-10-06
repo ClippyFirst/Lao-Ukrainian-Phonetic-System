@@ -9,6 +9,11 @@ test("basic long syllable", () => {
   assert.equal(r.output, "ка");
 });
 
+test("middle and low class inherent tones differ", () => {
+  assert.equal(analyze("ກາ").syllables[0].tone, "low-rising");
+  assert.equal(analyze("ຄາ").syllables[0].tone, "high-rising");
+});
+
 test("preposed long and short e are distinguished", () => {
   assert.equal(analyze("ເກ").syllables[0].ipa, "keː");
   assert.equal(analyze("ເກະ").syllables[0].ipa, "ke");
@@ -27,10 +32,10 @@ test("voiced onset has Ukrainian target", () => {
   assert.equal(r.syllables[0].ukrainian, "да");
 });
 
-test("vowel carrier does not inject glottal stop into IPA", () => {
-  const r = analyze("ອາ");
-  assert.equal(r.syllables[0].ipa, "aː");
-  assert.equal(r.output, "а");
+test("Lao h maps to Ukrainian х in the project policy", () => {
+  const r = analyze("ຫາ");
+  assert.equal(r.syllables[0].ipa, "haː");
+  assert.equal(r.syllables[0].ukrainian, "ха");
 });
 
 test("checked coda is dead", () => {
@@ -40,17 +45,48 @@ test("checked coda is dead", () => {
   assert.equal(r.output, "кап");
 });
 
+test("closed uo spelling is recognised", () => {
+  const r = analyze("ດວງ");
+  assert.equal(r.syllables[0].ipa, "duːəŋ");
+  assert.equal(r.output, "дуанг");
+});
+
+test("open uo spelling is recognised", () => {
+  const r = analyze("ກວາງ");
+  assert.equal(r.syllables[0].ipa, "kuːəŋ");
+  assert.equal(r.output, "куанг");
+});
+
+test("silent high-class digraph is phonologically n", () => {
+  const r = analyze("ຫນອງ");
+  assert.equal(r.syllables[0].ipa, "nɔːŋ");
+  assert.equal(r.syllables[0].class, "high");
+  assert.equal(r.syllables[0].tone, "low-rising");
+});
+
+test("atomic high-class ໜ is phonologically n", () => {
+  const r = analyze("ໜາ");
+  assert.equal(r.syllables[0].ipa, "naː");
+  assert.equal(r.syllables[0].class, "high");
+  assert.equal(r.syllables[0].tone, "low-rising");
+});
+
+test("modern Lao ຣ defaults to l but remains analysis-dependent", () => {
+  const r = analyze("ຣະ");
+  assert.equal(r.syllables[0].ipa, "la");
+  assert.equal(r.syllables[0].status, "ANALYSIS DEPENDENT");
+});
+
+test("carrier does not inject glottal stop", () => {
+  const r = analyze("ອາ");
+  assert.equal(r.syllables[0].ipa, "aː");
+  assert.equal(r.output, "а");
+});
+
 test("long open o carrier is recognised", () => {
   const r = analyze("ອໍ");
   assert.equal(r.syllables[0].ipa, "ɔː");
   assert.equal(r.output, "о");
-});
-
-test("structural ໜ remains explicitly uncertain", () => {
-  const r = analyze("ໜາ");
-  assert.equal(r.syllables[0].onset, "ໜ");
-  assert.equal(r.syllables[0].ipa, "hnaː");
-  assert.equal(r.syllables[0].status, "ANALYSIS DEPENDENT");
 });
 
 test("invalid mixed script is rejected", () => {
