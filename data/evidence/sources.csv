@@ -1,10 +1,11 @@
 source_id,author,year,title,type,url,scope
 SRC-UNICODE,Unicode Consortium,2025,The Unicode Standard Chapter 16: Southeast Asia,standard,https://www.unicode.org/versions/latest/ch16.pdf,Lao Unicode and orthographic structure
+SRC-W3C-LAO-LREQ,W3C Internationalization Working Group,2026,Lao Layout Requirements,technical guidance,https://www.w3.org/TR/laoo-lreq/,syllable structure clusters codas spacing and tone architecture
 SRC-MOREV,Morev L.N.; Moskalev A.A.; Plam Yu.Ya.,1972,Lao Language,grammar/reference,,phonology and Russian practical tradition
 SRC-MOREV-DICT,Morev L.N.; Vasilieva V.Kh.; Plam Yu.Ya.,1982,Lao-Russian Dictionary,reference,,Russian lexical practice
 SRC-BOIKO,Boiko K.T.,1988,Dictionary of Geographical Names of Laos,reference,,geographical-name practice
 SRC-SEASITE,SEAsite / Northern Illinois University,2000s,Vientiane Lao pronunciation materials,educational reference,https://seasite.niu.edu/lao/,tone classes and live/dead
-SRC-UEDA,Ueda Reiko,1994,A Phonological Description of Vientiane Lao,article,https://www.jstage.jst.go.jp/,phonological inventory and tones
+SRC-UEDA,Ueda Reiko,1994,The Phonology of the Vientiane Dialect of Lao,article,https://doi.org/10.11435/gengo1939.1994.106_95,phonological inventory vowel length finals and five-tone Vientiane model
 SRC-ENFIELD,Enfield N.J.,2007,A Grammar of Lao,grammar,,Vientiane-oriented phonology and regional variation
 SRC-RU-WEB,Russian practical transcription compilation,2020s,Lao-Russian practical transcription,secondary,https://ru.wikipedia.org/wiki/Лаосско-русская_практическая_транскрипция,legacy Cyrillic table and source pointers
 SRC-ASEANIE,Aséanie editorial team,2008,Système de transcription du lao,editorial transcription,https://www.persee.fr/doc/asean_0859-9009_2008_num_22_1_2394,independent transcription comparison

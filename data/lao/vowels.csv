@@ -8,20 +8,23 @@ Y,ຶ,ɯ,short,above,none,core,
 YY,ື,ɯː,long,above,none,core,
 U,ຸ,u,short,below,none,core,
 UU,ູ,uː,long,below,none,core,
-E,ເ,e,short,preposed,none,core,preposed e
-EE,ເ,eː,long,preposed,none,core,long e
-AE,ແ,ɛ,short,preposed,none,core,preposed ae
-AEE,ແ,ɛː,long,preposed,none,core,long ae
-O,ໂ,o,short,preposed,none,core,preposed o
-OO,ໂ,oː,long,preposed,none,core,long o
-AW,ເາະ,ɔ,short,around,none,core,
-AWW,ອ,ɔː,long,around,none,core,
+E,ເ,e,short,preposed,none,core,short e with ເ◌ະ/ເ◌ັ◌
+EE,ເ,eː,long,preposed,none,core,long e with ເ◌
+AE,ແ,ɛ,short,preposed,none,core,short ɛ with ແ◌ະ/ແ◌ັ◌
+AEE,ແ,ɛː,long,preposed,none,core,long ɛ with ແ◌
+O,ໂ,o,short,preposed,none,core,short o with ໂ◌ະ/◌ົ
+OO,ໂ,oː,long,preposed,none,core,long o with ໂ◌
+AW,ເາະ,ɔ,short,around,none,core,short ɔ in ເ◌າະ
+AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ
 OE,ເິ,ɤ,short,preposed,none,core,
 OEE,ເີ,ɤː,long,preposed,none,core,
-IA,ເັຍ,iə,short,around,none,core,
-UA,ເຶອ,ɯə,short,around,none,core,
-UO,ົວ,uə,short,around,none,core,
+IA,ເັຽ,iə,short,around,none,core,short ia (also ເ◌ັຍ◌)
+IA_LONG,ເຍ,iə,long,around,none,core,long ia (also ເ◌ຽ◌)
+UA,ເຶອ,ɯə,short,around,none,core,short ɯa/ɯə
+UA_LONG,ເືອ,ɯə,long,around,none,core,long ɯa/ɯə
+UO,ົວະ,uə,short,around,none,core,short ua
+UO_LONG,ົວ,uə,long,around,none,core,long ua
 AI,ໄ,ai,short,preposed,none,core,preposed ai
 AI2,ໃ,ai,short,preposed,none,core,preposed ai variant
-AO,ເົາ,ao,short,preposed,none,core,
+AW_LONG,ເົາ,aw,short,around,none,core,orthographic special vowel /aw/
 AM,ຳ,am,short,postposed,nasal,core,Sara Am structural vowel unit
