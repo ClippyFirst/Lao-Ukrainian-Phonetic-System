@@ -172,7 +172,7 @@ function analyzeToken(surface) {
   if (onsetKey === "ຣ") warnings.push("ຣ має analysis-dependent статус і потребує контекстної верифікації.");
   if (tone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
-  const status = ukrainian && tone.status === "ESTABLISHED" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
+  const status = SPECIAL_ONSETS.has(onsetKey) ? "ANALYSIS DEPENDENT" : (ukrainian && tone.status === "ESTABLISHED" ? "ESTABLISHED" : "ANALYSIS DEPENDENT");
   return {
     surface,
     onset: onsetKey,
