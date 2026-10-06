@@ -102,3 +102,5 @@ The regression suite now explicitly checks:
 The orthographic/phonological audit was checked against Richard Ishida's Lao orthography notes and character database, Northern Illinois University's SEAsite Lao teaching materials and Vientiane tone charts, and Lao phonology summaries documenting dialectal variation.
 
 The implementation intentionally separates source evidence, IPA analysis, and Ukrainian practical-transcription policy so that a policy choice cannot masquerade as a Lao phonological fact.
+
+<!-- CI validation branch: no product semantics changed. -->
