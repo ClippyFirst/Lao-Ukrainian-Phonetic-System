@@ -11,7 +11,7 @@ def rows(name):
 cons={r["grapheme"]:[r["class"],r["ipa_initial"],None] for r in rows("consonants.csv") if r["status"] in {"core","analysis-dependent"}}
 corr={r["ipa"]:r["candidates"].split("|")[0] for r in rows("ukrainian_correspondences.csv")}
 for g,v in cons.items():v[2]=corr.get(v[1])
-vowels=[[r["pattern"],r["ipa"],corr.get(r["ipa"]),r["length"]] for r in rows("vowels.csv") if r["status"]=="core"]
+vowels=[[r["pattern"],r["ipa"],corr.get(r["ipa"]),r["length"]] for r in rows("vowels.csv") if r["status"] in {"core","well-supported"}]
 codas={r["phoneme"]:r["ipa"] for r in rows("codas.csv") if r["status"]=="core"}
 marks={"່":"mai_ek","້":"mai_tho","໊":"mai_ti","໋":"mai_catawa"}
 rules=[[r["class"],r["syllable_type"],r["length"],r["tone_mark"],r["tone"],r["contour"]] for r in rows("tone_rules.csv") if r["status"]=="core"]
