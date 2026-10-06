@@ -125,7 +125,7 @@ function analyzeToken(surface) {
   const mark = chars.find((ch) => TONE_MARK_SET.has(ch)) || null;
   const clean = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
   let onsetKey = null;
-  if (clean.startsWith("ໜ") || clean.startsWith("ໝ")) onsetKey = clean.slice(0, 2);
+  if (clean.startsWith("ໜ") || clean.startsWith("ໝ")) onsetKey = clean[0];
   else onsetKey = chars.find((ch) => Object.hasOwn(CONSONANTS, ch)) || null;
 
   if (!onsetKey) {
