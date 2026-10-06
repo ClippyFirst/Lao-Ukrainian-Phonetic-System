@@ -1,6 +1,6 @@
 id,pattern,ipa,length,position,coda_class,status,notes
-A,ະ,a,short,postposed,none,core,explicit /a/
-A2,ັ,a,short,postposed,none,core,short a with Mai Kan
+A,ະ,a,short,postposed,none,core,explicit /a/ in open syllables
+A2,ັ,a,short,postposed,none,core,short a in closed syllables and composite vowels
 AA,າ,aː,long,postposed,none,core,
 I,ິ,i,short,above,none,core,
 II,ີ,iː,long,above,none,core,
@@ -15,16 +15,19 @@ AEE,ແ,ɛː,long,preposed,none,core,long ɛ with ແ◌
 O,ໂ,o,short,preposed,none,core,short o with ໂ◌ະ/◌ົ
 OO,ໂ,oː,long,preposed,none,core,long o with ໂ◌
 AW,ເາະ,ɔ,short,around,none,core,short ɔ in ເ◌າະ
-AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ
+AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ and ◌ອ◌
 OE,ເິ,ɤ,short,preposed,none,core,
 OEE,ເີ,ɤː,long,preposed,none,core,
-IA,ເັຽ,iə,short,around,none,core,short ia (also ເ◌ັຍ◌)
-IA_LONG,ເຍ,iə,long,around,none,core,long ia (also ເ◌ຽ◌)
-UA,ເຶອ,ɯə,short,around,none,core,short ɯa/ɯə
-UA_LONG,ເືອ,ɯə,long,around,none,core,long ɯa/ɯə
-UO,ົວະ,uə,short,around,none,core,short ua
-UO_LONG,ົວ,uə,long,around,none,core,long ua
+IA,ເັຽ,iə,short,around,none,core,short/closed ia
+IA_LONG,ເຍ,iːə,long,around,none,core,long/open ia
+UA,ເຶອ,ɯə,short,around,none,core,short ɯə
+UA_LONG,ເືອ,ɯːə,long,around,none,core,long ɯːə
+UO,ົວະ,uə,short,around,none,core,short uə
+UO_LONG,ົວ,uːə,long,around,none,core,uːə
+UO_SHORT_ALT,ັວ,uə,short,around,none,core,dated/alternative short uə spelling
+UO_LONG_ALT,ວ,uːə,long,around,none,core,closed-syllable vowel ວ; e.g. ດວງ
+UO_LONG_OPEN,ວາ,uːə,long,around,none,core,open uːə spelling before a following glide/coda
 AI,ໄ,ai,short,preposed,none,core,preposed ai
 AI2,ໃ,ai,short,preposed,none,core,preposed ai variant
-AW_LONG,ເົາ,aw,short,around,none,core,orthographic special vowel /aw/
+AW_LONG,ເົາ,aw,short,around,none,core,orthographic /aw/
 AM,ຳ,am,short,postposed,nasal,core,Sara Am structural vowel unit
