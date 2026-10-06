@@ -78,6 +78,25 @@ For an installed package:
 - docs/ukrainian-target.md
 - docs/unicode.md
 
+## Web service
+
+The repository also contains a two-page local-first web instrument:
+
+- `/` — Lao input, Ukrainian practical output, IPA and per-syllable explanation;
+- `/system.html` — the author's methodology, decisions, comparisons and limitations.
+
+The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API.
+
+Release verification:
+
+    python scripts/audit.py
+    PYTHONPATH=src python -m unittest discover -s tests -v
+    npm install --no-audit --no-fund
+    npm test
+    npm run build
+
+The web layer is intentionally conservative and does not claim to replace the research core or provide empirical accuracy without a versioned gold corpus.
+
 ## Status
 
 **🟡 Usable but needs finalization.**
