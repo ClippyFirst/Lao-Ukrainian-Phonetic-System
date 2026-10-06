@@ -57,6 +57,17 @@ test("open uo spelling is recognised", () => {
   assert.equal(r.output, "куанг");
 });
 
+test("medial ອ is long ɔ", () => {
+  const r = analyze("ຈອກ");
+  assert.equal(r.syllables[0].ipa, "tɕɔːk");
+  assert.equal(r.output, "чок");
+});
+
+test("mai ti and mai catawa are not dropped", () => {
+  assert.equal(analyze("ກ໊າ").syllables[0].tone, "high-falling");
+  assert.equal(analyze("ກ໋າ").syllables[0].tone, "low-rising");
+});
+
 test("silent high-class digraph is phonologically n", () => {
   const r = analyze("ຫນອງ");
   assert.equal(r.syllables[0].ipa, "nɔːŋ");
