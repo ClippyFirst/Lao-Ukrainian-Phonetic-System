@@ -1,7 +1,7 @@
 grapheme,codepoint,class,ipa_initial,ipa_final,status,notes
 ກ,U+0E81,middle,k,k,core,
 ຂ,U+0E82,high,kʰ,,core,
-ຄ,U+0E84,low,kʰ,k,core,
+ຄ,U+0E84,low,kʰ,,core,
 ງ,U+0E87,low,ŋ,ŋ,core,
 ຈ,U+0E88,middle,tɕ,t,core,
 ຊ,U+0E8A,low,s,s,core,
@@ -19,15 +19,15 @@ grapheme,codepoint,class,ipa_initial,ipa_final,status,notes
 ຟ,U+0E9F,low,f,p,core,
 ມ,U+0EA1,low,m,m,core,
 ຢ,U+0EA2,middle,j,,core,
-ຣ,U+0EA3,low,r,n,analysis-dependent,historical/loan status requires source-specific handling
+ຣ,U+0EA3,low,l,n,analysis-dependent,Modern Lao generally realizes this letter as /l/; /r/ is restricted to loans/foreign or historical spellings.
 ລ,U+0EA5,low,l,l,core,
-ວ,U+0EA7,low,w,w,core,
+ວ,U+0EA7,low,ʋ,w,core,Modern Lao initial is a labiodental approximant; final is /w/.
 ສ,U+0EAA,high,s,s,core,
 ຫ,U+0EAB,high,h,,core,
 ອ,U+0EAD,middle,ʔ,,core,vowel carrier/glottal onset
 ຮ,U+0EAE,low,h,,core,
-ໜ,U+0EDC,high,hn,,core,structural /h+n/; tonal behavior source-specific
-ໝ,U+0EDD,high,hm,,core,structural /h+m/; tonal behavior source-specific
+ໜ,U+0EDC,high,n,n,core,Atomic high-class HO-NO digraph; h is silent and only supplies high tone class.
+ໝ,U+0EDD,high,m,m,core,Atomic high-class HO-MO digraph; h is silent and only supplies high tone class.
 ຆ,U+0E86,pali,ɣ,,pali-sanskrit,not modern Lao core
 ຉ,U+0E89,pali,tɕʰ,,pali-sanskrit,not modern Lao core
 ຌ,U+0E8C,pali,dʑ,,pali-sanskrit,not modern Lao core
