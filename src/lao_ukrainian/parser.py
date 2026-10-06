@@ -52,6 +52,7 @@ STRUCTURES = (
     ("post_u", "", "ຸ", "U"),
     ("post_uu", "", "ູ", "UU"),
     ("post_o_short_closed", "", "ັອ", "AWW_SHORT_ALT"),
+    ("post_o_long_medial", "", "ອ", "AWW_MEDIAL"),
     ("post_o_long_open", "", "ໍ", "AWW"),
     ("post_am", "", "ຳ", "AM"),
     ("post_ua_short_alt", "", "ັວ", "UO_SHORT_ALT"),
