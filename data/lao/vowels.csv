@@ -16,7 +16,8 @@ O,ໂ,o,short,preposed,none,core,short o with ໂ◌ະ/◌ົ
 OO,ໂ,oː,long,preposed,none,core,long o with ໂ◌
 AW,ເາະ,ɔ,short,around,none,core,short ɔ in ເ◌າະ
 AWW_SHORT_ALT,ັອ,ɔ,short,postposed,none,core,short ɔ in closed syllables
-AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ and ◌ອ◌
+AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ
+AWW_MEDIAL,ອ,ɔː,long,postposed,none,core,long ɔ in medial ◌ອ
 OE,ເິ,ɤ,short,preposed,none,core,
 OEE,ເີ,ɤː,long,preposed,none,core,
 IA,ເັຽ,iə,short,around,none,core,short/closed ia
