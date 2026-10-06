@@ -4,9 +4,22 @@ The parser is intentionally syllable-oriented rather than word-oriented:
 Lao spaces separate phrases, not lexical words. A caller may therefore pass
 one syllable, a phrase with explicit spaces, or a ZWSP-delimited sequence.
 """
+
 from .data import load_registry
 
 TONE_MARKS = {"່": "mai_ek", "້": "mai_tho", "໊": "mai_ti", "໋": "mai_catawa"}
+
+# The initial ຫ is silent in these combinations. It changes the tone class
+# of the following low-class sonorant to high class.
+HIGH_DIGRAPHS = {
+    "ຫງ": "ງ",
+    "ຫຍ": "ຍ",
+    "ຫນ": "ນ",
+    "ຫມ": "ມ",
+    "ຫລ": "ລ",
+    "ຫຼ": "ລ",
+    "ຫວ": "ວ",
+}
 
 STRUCTURES = (
     ("pre_e_short", "ເ", "ະ", "E"),
@@ -28,7 +41,7 @@ STRUCTURES = (
     ("pre_ua_long", "ເ", "ືອ", "UA_LONG"),
     ("pre_aw", "ເ", "ົາ", "AW_LONG"),
     ("pre_ai", "ໄ", "", "AI"),
-    ("pre_ay", "ໃ", "", "AI"),
+    ("pre_ay", "ໃ", "", "AI2"),
     ("post_a_short", "", "ະ", "A"),
     ("post_a_short_kan", "", "ັ", "A2"),
     ("post_aa", "", "າ", "AA"),
@@ -40,9 +53,11 @@ STRUCTURES = (
     ("post_uu", "", "ູ", "UU"),
     ("post_o_long_open", "", "ໍ", "AWW"),
     ("post_am", "", "ຳ", "AM"),
+    ("post_ua_short_alt", "", "ັວ", "UO_SHORT_ALT"),
     ("post_ua_short", "", "ົວະ", "UO"),
     ("post_ua_long", "", "ົວ", "UO_LONG"),
-    ("post_ua_long_alt", "", "ວາ", "UO_LONG"),
+    ("post_ua_long_closed_alt", "", "ວ", "UO_LONG_ALT"),
+    ("post_ua_long_open_alt", "", "ວາ", "UO_LONG_OPEN"),
     ("short_o_around", "ເ", "າະ", "AW"),
 )
 
@@ -54,20 +69,21 @@ def _strip_tone_marks(surface: str) -> str:
 
 def _find_onset(s: str):
     r = load_registry()["consonants"]
+    for form, target in sorted(HIGH_DIGRAPHS.items(), key=lambda x: len(x[0]), reverse=True):
+        if s.startswith(form):
+            return target, 0, len(form), "high", form
     for i, ch in enumerate(s):
         if ch in r and r[ch]["status"] in {"core", "analysis-dependent"}:
-            return ch, i
-    return None, None
+            return ch, i, 1, r[ch]["class"], ch
+    return None, None, None, None, None
 
-def _match_vowel(surface: str, onset_i: int, registry: dict):
+def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
     s = _strip_tone_marks(surface)
     before = s[:onset_i]
-    after = s[onset_i + 1:]
+    after = s[onset_i + onset_len:]
     for _, pre, suffix, vowel_id in STRUCTURES:
         if before.endswith(pre) and after.startswith(suffix):
             return next((v for v in registry["vowels"] if v["id"] == vowel_id), None)
-    if before.endswith("ເ") and after.startswith("າະ"):
-        return next((v for v in registry["vowels"] if v["id"] == "AW"), None)
     return None
 
 def _find_coda(after_vowel: str, registry: dict):
@@ -80,31 +96,31 @@ def _find_coda(after_vowel: str, registry: dict):
 def parse_syllable(surface: str):
     registry = load_registry()
     s = _strip_tone_marks(surface)
-    onset, onset_i = _find_onset(s)
+    onset, onset_i, onset_len, onset_class, onset_form = _find_onset(s)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
 
     if onset is None:
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
                 "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET"]}
 
-    vowel = _match_vowel(s, onset_i, registry)
+    vowel = _match_vowel(s, onset_i, onset_len, registry)
     if vowel is None:
-        return {"surface": surface, "onset": onset, "vowel": None, "coda": None,
+        return {"surface": surface, "onset": onset, "onset_class": onset_class,
+                "onset_form": onset_form, "vowel": None, "coda": None,
                 "tone_mark": tone_mark, "warnings": ["VOWEL-STRUCTURE-NOT-ESTABLISHED"]}
 
-    after = s[onset_i + 1:]
+    after = s[onset_i + onset_len:]
     suffix = ""
     for _, pre, candidate_suffix, vowel_id in STRUCTURES:
         if vowel_id == vowel["id"] and s[:onset_i].endswith(pre) and after.startswith(candidate_suffix):
             suffix = candidate_suffix
             break
-    if vowel["id"] == "AW" and after.startswith("າະ"):
-        suffix = "າະ"
     remainder = after[len(suffix):]
     coda = _find_coda(remainder, registry)
     warnings = []
     if coda is None and remainder:
         warnings.append(f"UNCONSUMED_AFTER_VOWEL:{remainder}")
 
-    return {"surface": surface, "onset": onset, "vowel": vowel, "coda": coda,
+    return {"surface": surface, "onset": onset, "onset_class": onset_class,
+            "onset_form": onset_form, "vowel": vowel, "coda": coda,
             "tone_mark": tone_mark, "warnings": warnings}
