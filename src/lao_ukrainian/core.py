@@ -3,6 +3,7 @@ from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
 from .target import rank_ukrainian_candidates, practical_from_ipa
 from .model import Analysis, SyllableAnalysis, Candidate
+from .data import load_registry
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 
@@ -26,7 +27,6 @@ def analyze(text: str) -> Analysis:
         syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"))
         consonant_class = None
         if parsed.get("onset"):
-            from .data import load_registry
             consonant_class = load_registry()["consonants"].get(parsed["onset"], {}).get("class")
 
         status = (
