@@ -49,6 +49,15 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.phonemic_ipa, "kuːəŋ")
         self.assertEqual(s.practical_ukrainian, "куанг")
 
+    def test_medial_o_vowel(self):
+        s = analyze("ຈອກ").syllables[0]
+        self.assertEqual(s.phonemic_ipa, "tɕɔːk")
+        self.assertEqual(s.practical_ukrainian, "чок")
+
+    def test_ti_and_catawa_marks(self):
+        self.assertEqual(analyze("ກ໊າ").syllables[0].tone, "high-falling")
+        self.assertEqual(analyze("ກ໋າ").syllables[0].tone, "low-rising")
+
     def test_silent_high_digraph(self):
         s = analyze("ຫນອງ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "nɔːŋ")
