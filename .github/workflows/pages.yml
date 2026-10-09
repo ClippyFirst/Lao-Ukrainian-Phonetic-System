@@ -1,0 +1,66 @@
+name: Deploy Lao web to GitHub Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "system.html"
+      - "web/**"
+      - "scripts/generate_web_data.py"
+      - "data/lao/**"
+      - "vite.config.js"
+      - "package.json"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install build dependency
+        run: npm install --no-audit --no-fund
+      - name: Run browser regression tests
+        run: npm test
+      - name: Build both public pages and generated data
+        run: npm run build
+      - name: Check deployment artifact
+        run: |
+          test -s dist/index.html
+          test -s dist/system.html
+          test -s dist/web/app.js
+          test -s dist/web/styles.css
+          grep -q 'href="./web/styles.css"' dist/index.html
+          grep -q 'src="./web/app.js"' dist/index.html
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
