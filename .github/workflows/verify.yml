@@ -1,9 +1,12 @@
 name: verify
 on:
   push:
-    branches: ["main", "feat/**"]
+    branches: ["main", "feat/**", "fix/**"]
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,5 +24,18 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Browser engine tests
         run: npm test
-      - name: Production build
+      - name: Build and regenerate canonical browser data
         run: npm run build
+      - name: Verify generated data is committed and reproducible
+        run: git diff --exit-code -- web/data.js
+      - name: Verify built pages and relative assets
+        run: |
+          test -s dist/index.html
+          test -s dist/system.html
+          test -s dist/web/app.js
+          test -s dist/web/styles.css
+          grep -q 'href="./web/styles.css"' dist/index.html
+          grep -q 'src="./web/app.js"' dist/index.html
+          grep -q 'href="./system.html"' dist/index.html
+          grep -q 'role="status"' dist/index.html
+          grep -q 'focus-visible' web/styles.css
