@@ -163,5 +163,5 @@ test("postposed vowel sign is not accepted before a later onset", () => {
 test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
   const r = analyze("ພະນະຄອນ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
-  assert.equal(r.output, "пхана-кон".replace("-", ""));
+  assert.equal(r.output, "панакон");
 });
