@@ -24,7 +24,7 @@ grapheme,codepoint,class,ipa_initial,ipa_final,status,notes
 ວ,U+0EA7,low,ʋ,w,core,"Modern Lao initial is a labiodental approximant; final is /w/."
 ສ,U+0EAA,high,s,,core,
 ຫ,U+0EAB,high,h,,core,
-ອ,U+0EAD,middle,ʔ,,,core,"Vowel carrier; glottal onset is not represented in practical output."
+ອ,U+0EAD,middle,ʔ,,core,"Vowel carrier; glottal onset is not represented in practical output."
 ຮ,U+0EAE,low,h,,core,
 ໜ,U+0EDC,high,n,,core,"Atomic high-class HO-NO grapheme; /h/ is silent and supplies the high tone class."
 ໝ,U+0EDD,high,m,,core,"Atomic high-class HO-MO grapheme; /h/ is silent and supplies the high tone class."
