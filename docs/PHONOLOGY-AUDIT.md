@@ -12,6 +12,7 @@ This audit targets failure modes that can produce a plausible-looking but wrong 
 6. the restricted inventory of final consonants;
 7. modern ຣ;
 8. Ukrainian practical mapping of Lao /h/.
+9. standalone ຽ and syllable-boundary preservation.
 
 The project remains Vientiane-oriented. Lao tone values vary by dialect, and sources disagree on whether Vientiane should be analysed as five or six phonological tones. The system therefore exposes the tone rule used rather than pretending that one contour is universal.
 
@@ -78,7 +79,7 @@ The system therefore uses /l/ as the default phonological value but marks ຣ as
 
 ### 7. Ukrainian practical output for /h/
 
-The project policy now maps Lao /h/ to Ukrainian х, rather than г. This is a phonetic/practical-transcription decision, not a claim that Ukrainian has a perfect one-to-one phoneme equivalent.
+The project policy maps Lao /h/ to Ukrainian г, rather than х. This is a phonetic/practical-transcription decision, not a claim that Ukrainian has a perfect one-to-one phoneme equivalent.
 
 ## Adversarial regression set
 
@@ -94,7 +95,7 @@ The regression suite now explicitly checks:
 - ຫນອງ — silent high-class digraph;
 - ໜາ — atomic high-class ligature;
 - ຣະ — analysis-dependent modern ຣ;
-- ຫາ — /h/ → Ukrainian х;
+- ຫາ — /h/ → Ukrainian г;
 - carrier and invalid mixed-script cases.
 
 ## Source basis
@@ -102,3 +103,8 @@ The regression suite now explicitly checks:
 The orthographic/phonological audit was checked against Richard Ishida's Lao orthography notes and character database, Northern Illinois University's SEAsite Lao teaching materials and Vientiane tone charts, and Lao phonology summaries documenting dialectal variation.
 
 The implementation intentionally separates source evidence, IPA analysis, and Ukrainian practical-transcription policy so that a policy choice cannot masquerade as a Lao phonological fact.
+
+
+### 8. Standalone ຽ and syllable boundaries
+
+The vowel sign ຽ can occur without the preposed ເ in forms such as ວຽງ. The browser parser recognizes this structure as /iːə/ and parses ວຽງ as one syllable. Segmentation also rejects a postposed vowel sign as if it were a valid prefix before a later onset, and penalizes a false coda boundary when the following character is a vowel sign attached to the next onset. These are orthographic heuristics, not a substitute for lexical analysis.
