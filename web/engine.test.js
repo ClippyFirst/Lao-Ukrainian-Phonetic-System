@@ -134,7 +134,7 @@ test("multi-syllable place-name phrase is not truncated", () => {
 });
 
 test("unparsed characters remain visible instead of being silently dropped", () => {
-  const r = analyze("ຄົນ🙂");
-  assert.match(r.output, /⟦🙂⟧/);
+  const r = analyze("ຄົນຆ");
+  assert.match(r.output, /⟦ຆ⟧/);
   assert.equal(r.status, "PARTIAL");
 });
