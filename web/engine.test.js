@@ -111,7 +111,7 @@ test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
 test("multisyllabic Lao text is segmented without dropping syllables", () => {
   const r = analyze("ພາສາລາວ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພາ|ສາ|ລາວ");
-  assert.equal(r.output, "паса лав");
+  assert.equal(r.output, "пасалав");
   assert.equal(r.syllables.every((s) => s.ipa), true);
 });
 
@@ -124,13 +124,13 @@ test("short o in a closed syllable is recognised", () => {
 test("compound greeting is segmented into all syllables", () => {
   const r = analyze("ສະບາຍດີ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ສະ|ບາຍ|ດີ");
-  assert.equal(r.output, "са бай ді");
+  assert.equal(r.output, "сабайді");
 });
 
 test("multi-syllable place-name phrase is not truncated", () => {
   const r = analyze("ຂອບໃຈ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ຂອບ|ໃຈ");
-  assert.equal(r.output, "коп чай");
+  assert.equal(r.output, "копчай");
 });
 
 test("unparsed characters remain visible instead of being silently dropped", () => {
