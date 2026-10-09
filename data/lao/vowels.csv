@@ -21,7 +21,7 @@ AWW_MEDIAL,ອ,ɔː,long,postposed,none,core,long ɔ in medial ◌ອ
 OE,ເິ,ɤ,short,preposed,none,core,
 OEE,ເີ,ɤː,long,preposed,none,core,
 IA,ເັຽ,iə,short,around,none,core,short/closed ia
-IA_LONG,ເຍ/ຽ,iːə,long,around,none,core,long/open ia including standalone ຽ in forms such as ວຽງ
+IA_LONG,ເຍ,iːə,long,around,none,core,long/open ia; engine also accepts standalone ຽ in forms such as ວຽງ
 UA,ເຶອ,ɯə,short,around,none,core,short ɯə
 UA_LONG,ເືອ,ɯːə,long,around,none,core,long ɯːə
 UO,ົວະ,uə,short,around,none,core,short uə
