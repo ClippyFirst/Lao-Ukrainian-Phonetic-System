@@ -29,7 +29,7 @@ Serbian and Bulgarian material is used only as a target-script control where it 
 Important current project decisions include:
 
 - /kʰ pʰ tʰ/ → Ukrainian к п т rather than Russian кх пх тх;
-- /h/ → Ukrainian х as a project-specific practical approximation;
+- /h/ → Ukrainian г as a project-specific practical approximation (not a claim of phonetic identity);
 - /ŋ/ → нг;
 - /tɕ/ → ч;
 - /ɯ/ → и;
