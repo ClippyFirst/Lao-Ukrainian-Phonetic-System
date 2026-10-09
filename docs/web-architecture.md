@@ -26,6 +26,10 @@ The browser engine is deliberately conservative. It exposes IPA, structural feat
 
 The current static MVP still treats whitespace as the reliable segmentation boundary. Full lexical/unspaced segmentation belongs to the research core and future corpus-backed releases.
 
+## Deployment
+
+The deploy workflow builds only the two public HTML pages and the local `web/` runtime into `dist/`, then uploads that directory to GitHub Pages. Asset and navigation URLs are relative so project-site paths work. Before the first deployment, a repository administrator must enable Pages in **Settings → Pages → Build and deployment → Source: GitHub Actions**. The workflow's `GITHUB_TOKEN` cannot create the Pages site for this repository; once enabled, rerun the deploy workflow or push a relevant change.
+
 ## Release checks
 
 1. Validate canonical data and Python tests.
