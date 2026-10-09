@@ -8,7 +8,6 @@ on:
       - "web/**"
       - "scripts/generate_web_data.py"
       - "data/lao/**"
-      - "vite.config.js"
       - "package.json"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
