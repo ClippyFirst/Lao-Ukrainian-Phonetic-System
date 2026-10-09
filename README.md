@@ -29,7 +29,7 @@ Serbian and Bulgarian material is used only as a target-script control where it 
 Important current project decisions include:
 
 - /kʰ pʰ tʰ/ → Ukrainian к п т rather than Russian кх пх тх;
-- /h/ → Ukrainian г rather than Russian х, explicitly as an approximation;
+- /h/ → Ukrainian х as a project-specific practical approximation;
 - /ŋ/ → нг;
 - /tɕ/ → ч;
 - /ɯ/ → и;
@@ -82,10 +82,10 @@ For an installed package:
 
 The repository also contains a two-page local-first web instrument:
 
-- `/` — Lao input, Ukrainian practical output, IPA and per-syllable explanation;
-- `/system.html` — the author's methodology, decisions, comparisons and limitations.
+- `index.html` — Lao input, Ukrainian practical output, IPA and per-syllable explanation;
+- `system.html` — the author's methodology, decisions, comparisons and limitations.
 
-The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API.
+The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL.
 
 Release verification:
 
@@ -99,6 +99,6 @@ The web layer is intentionally conservative and does not claim to replace the re
 
 ## Status
 
-**🟡 Usable but needs finalization.**
+**🟡 Research MVP; deployment and test automation are being hardened.**
 
 The repository is a research foundation with explicit provenance and deterministic tests. It is not yet publication-ready: a larger syllable corpus, fuller cluster/ligature analysis, independent gold examples and expert adjudication are still required.
