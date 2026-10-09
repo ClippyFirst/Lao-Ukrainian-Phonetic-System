@@ -48,7 +48,8 @@ function matchVowel(before, after) {
   if (after.startsWith("ວ")) return push("UO_LONG_ALT", "ວ");
   if (after.startsWith("ຳ")) return push("AM", "ຳ");
   if (after.startsWith("ໍ")) return push("AWW", "ໍ");
-  if (after.startsWith("ັອ")) return push("AWW_SHORT", "ັອ");
+  if (after.startsWith("ັອ")) return push("AWW_SHORT_ALT", "ັອ");
+  if (after.startsWith("ອ")) return push("AWW_MEDIAL", "ອ");
   if (after.startsWith("ະ")) return push("A", "ະ");
   if (after.startsWith("ັ")) return push("A2", "ັ");
   if (after.startsWith("າ")) return push("AA", "າ");

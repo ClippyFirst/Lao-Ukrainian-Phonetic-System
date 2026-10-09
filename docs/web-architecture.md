@@ -1,6 +1,6 @@
 # Web architecture
 
-The static service has exactly two public pages: `/` and `/system.html`.
+The static service has exactly two public pages: `index.html` and `system.html`. Vite builds both pages into `dist/` with relative asset URLs so the site works at the GitHub Pages project path as well as at a custom domain.
 
 ## Data flow
 
