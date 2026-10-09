@@ -13,7 +13,7 @@ not:
 Main project-level refinements:
 
 - /kʰ pʰ tʰ/ → к п т rather than Russian кх пх тх;
-- /h/ → г rather than Russian х;
+- /h/ → г as a project-specific practical approximation;
 - /ŋ/ → нг;
 - /tɕ/ → ч rather than Russian ть;
 - /ɯ/ → и rather than Russian ы;

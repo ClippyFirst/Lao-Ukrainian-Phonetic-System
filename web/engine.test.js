@@ -138,3 +138,30 @@ test("unparsed characters remain visible instead of being silently dropped", () 
   assert.match(r.output, /⟦ຆ⟧/);
   assert.equal(r.status, "PARTIAL");
 });
+
+test("standalone ຽ vowel sign is parsed in ວຽງ", () => {
+  const r = analyze("ວຽງ");
+  assert.equal(r.status, "OK");
+  assert.equal(r.syllables.length, 1);
+  assert.equal(r.syllables[0].ipa, "ʋiːəŋ");
+  assert.equal(r.output, "віанг");
+});
+
+test("Vientiane place name does not leave ວ ຽ ງ unresolved", () => {
+  const r = analyze("ວຽງຈັນ");
+  assert.equal(r.syllables.map((s) => s.surface).join("|"), "ວຽງ|ຈັນ");
+  assert.equal(r.output, "віангчан");
+  assert.equal(r.status, "OK");
+});
+
+test("postposed vowel sign is not accepted before a later onset", () => {
+  const r = analyze("ະຄອນ");
+  assert.equal(r.status, "PARTIAL");
+  assert.match(r.output, /⟦ະ⟧/);
+});
+
+test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
+  const r = analyze("ພະນະຄອນ");
+  assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
+  assert.equal(r.output, "панакон");
+});
