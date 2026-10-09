@@ -85,7 +85,7 @@ The repository also contains a two-page local-first web instrument:
 - `index.html` — Lao input, Ukrainian practical output, IPA and per-syllable explanation;
 - `system.html` — the author's methodology, decisions, comparisons and limitations.
 
-The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL.
+The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. One-time prerequisite: enable GitHub Pages in **Settings → Pages → Build and deployment → Source: GitHub Actions**. The workflow token cannot create the Pages site for this private repository automatically; after enabling it, run the `Deploy Lao web to GitHub Pages` workflow manually once or push a site change.
 
 Release verification:
 
