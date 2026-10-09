@@ -1,44 +1,44 @@
 grapheme,codepoint,class,ipa_initial,ipa_final,status,notes
-ກ,U+0E81,middle,k,k,k,
-ຂ,U+0E82,high,kʰ,,,
-ຄ,U+0E84,low,kʰ,,,
-ງ,U+0E87,low,ŋ,ŋ,ŋ,
-ຈ,U+0E88,middle,tɕ,t,,
-ຊ,U+0E8A,low,s,s,,
-ຍ,U+0E8D,low,ɲ,j,j,
-ດ,U+0E94,middle,d,t,t,
-ຕ,U+0E95,middle,t,t,,
-ຖ,U+0E96,high,tʰ,t,,
-ທ,U+0E97,low,tʰ,t,,
-ນ,U+0E99,low,n,n,n,
-ບ,U+0E9A,middle,b,p,p,
-ປ,U+0E9B,middle,p,p,,
-ຜ,U+0E9C,high,pʰ,,,
-ຝ,U+0E9D,high,f,,,
-ພ,U+0E9E,low,pʰ,p,,
-ຟ,U+0E9F,low,f,p,,
-ມ,U+0EA1,low,m,m,m,
-ຢ,U+0EA2,middle,j,,,
-ຣ,U+0EA3,low,l,n,n,Modern Lao generally realizes this letter as /l/; /r/ is restricted to loans/foreign or historical spellings.
-ລ,U+0EA5,low,l,l,,
-ວ,U+0EA7,low,ʋ,w,w,Modern Lao initial is a labiodental approximant; final is /w/.
-ສ,U+0EAA,high,s,s,,
-ຫ,U+0EAB,high,h,,,
-ອ,U+0EAD,middle,ʔ,,,vowel carrier/glottal onset
-ຮ,U+0EAE,low,h,,,
-ໜ,U+0EDC,high,n,n,,Atomic high-class HO-NO digraph; h is silent and only supplies high tone class.
-ໝ,U+0EDD,high,m,m,,Atomic high-class HO-MO digraph; h is silent and only supplies high tone class.
-ຆ,U+0E86,pali,ɣ,,,not modern Lao core
-ຉ,U+0E89,pali,tɕʰ,,,not modern Lao core
-ຌ,U+0E8C,pali,dʑ,,,not modern Lao core
-ຎ,U+0E8E,pali,ɲ,,,not modern Lao core
-ຏ,U+0E8F,pali,ʈ,,,not modern Lao core
-ຐ,U+0E90,pali,ʈʰ,,,not modern Lao core
-ຑ,U+0E91,pali,ɖ,,,not modern Lao core
-ຒ,U+0E92,pali,ɖʱ,,,not modern Lao core
-ຓ,U+0E93,pali,ɳ,,,not modern Lao core
-ຘ,U+0E98,pali,dʱ,,,not modern Lao core
-ຠ,U+0EA0,pali,bʱ,,,not modern Lao core
-ຨ,U+0EA8,sanskrit,ʃ,,,not modern Lao core
-ຩ,U+0EA9,sanskrit,ʂ,,,not modern Lao core
-ຬ,U+0EAC,pali,ɭ,,,not modern Lao core
+ກ,U+0E81,middle,k,k,core,
+ຂ,U+0E82,high,kʰ,,core,
+ຄ,U+0E84,low,kʰ,,core,
+ງ,U+0E87,low,ŋ,ŋ,core,
+ຈ,U+0E88,middle,tɕ,,core,
+ຊ,U+0E8A,low,s,,core,
+ຍ,U+0E8D,low,ɲ,j,core,
+ດ,U+0E94,middle,d,t,core,
+ຕ,U+0E95,middle,t,,core,
+ຖ,U+0E96,high,tʰ,,core,
+ທ,U+0E97,low,tʰ,,core,
+ນ,U+0E99,low,n,n,core,
+ບ,U+0E9A,middle,b,p,core,
+ປ,U+0E9B,middle,p,,core,
+ຜ,U+0E9C,high,pʰ,,core,
+ຝ,U+0E9D,high,f,,core,
+ພ,U+0E9E,low,pʰ,,core,
+ຟ,U+0E9F,low,f,,core,
+ມ,U+0EA1,low,m,m,core,
+ຢ,U+0EA2,middle,j,,core,
+ຣ,U+0EA3,low,l,n,analysis-dependent,"Modern Lao generally realizes this letter as /l/; /r/ is restricted to loans, foreign or historical spellings."
+ລ,U+0EA5,low,l,,core,
+ວ,U+0EA7,low,ʋ,w,core,"Modern Lao initial is a labiodental approximant; final is /w/."
+ສ,U+0EAA,high,s,,core,
+ຫ,U+0EAB,high,h,,core,
+ອ,U+0EAD,middle,ʔ,,,core,"Vowel carrier; glottal onset is not represented in practical output."
+ຮ,U+0EAE,low,h,,core,
+ໜ,U+0EDC,high,n,,core,"Atomic high-class HO-NO grapheme; /h/ is silent and supplies the high tone class."
+ໝ,U+0EDD,high,m,,core,"Atomic high-class HO-MO grapheme; /h/ is silent and supplies the high tone class."
+ຆ,U+0E86,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຉ,U+0E89,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຌ,U+0E8C,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຎ,U+0E8E,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຏ,U+0E8F,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຐ,U+0E90,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຑ,U+0E91,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຒ,U+0E92,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຓ,U+0E93,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຘ,U+0E98,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຠ,U+0EA0,pali,,,"non-core","Not part of the modern Lao consonant core."
+ຨ,U+0EA8,sanskrit,,,"non-core","Not part of the modern Lao consonant core."
+ຩ,U+0EA9,sanskrit,,,"non-core","Not part of the modern Lao consonant core."
+ຬ,U+0EAC,pali,,,"non-core","Not part of the modern Lao consonant core."
