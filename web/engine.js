@@ -50,6 +50,7 @@ function matchVowel(before, after) {
   if (after.startsWith("ໍ")) return push("AWW", "ໍ");
   if (after.startsWith("ັອ")) return push("AWW_SHORT_ALT", "ັອ");
   if (after.startsWith("ອ")) return push("AWW_MEDIAL", "ອ");
+  if (after.startsWith("ົ")) return push("O", "ົ");
   if (after.startsWith("ະ")) return push("A", "ະ");
   if (after.startsWith("ັ")) return push("A2", "ັ");
   if (after.startsWith("າ")) return push("AA", "າ");
@@ -130,7 +131,7 @@ function analyzeToken(surface) {
 
   const remainder = after.slice(matched.consumed.length);
   let coda = null;
-  for (const ch of [...remainder].reverse()) if (Object.hasOwn(CODAS, ch)) { coda = ch; break; }
+  for (const ch of [...remainder].reverse()) if (remainder.endsWith(ch) && Object.hasOwn(CODAS, ch)) { coda = ch; break; }
 
   const unconsumed = coda ? remainder.replace(coda, "") : remainder;
   const warnings = [];
@@ -154,16 +155,50 @@ function analyzeToken(surface) {
     warnings };
 }
 
+function isStructurallyComplete(s) {
+  return Boolean(s.ipa && s.ukrainian) &&
+    !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено"));
+}
+
+function analyzeWord(word) {
+  const chars = [...word];
+  const n = chars.length;
+  const best = Array(n + 1);
+  best[n] = { score: 0, parts: [] };
+
+  // Lao orthography does not reliably mark word boundaries. Segment a token into
+  // the longest fully parsed syllables, but retain every unparsed code point.
+  for (let i = n - 1; i >= 0; i--) {
+    const ch = chars[i];
+    const passthrough = /^[,!?;:()[\]{}"“”]+$/u.test(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
+    const fallback = passthrough
+      ? { surface: ch, status: "PASSTHROUGH", ukrainian: ch, ipa: "", warnings: [], passthrough: true }
+      : { surface: ch, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно проаналізувати фрагмент: " + ch], ukrainian: null, ipa: null };
+    best[i] = { score: best[i + 1].score - 100, parts: [fallback, ...best[i + 1].parts] };
+
+    for (let j = i + 1; j <= Math.min(n, i + 12); j++) {
+      const candidate = analyzeToken(chars.slice(i, j).join(""));
+      if (!isStructurallyComplete(candidate)) continue;
+      const length = j - i;
+      const score = best[j].score + length * length;
+      if (score > best[i].score) best[i] = { score, parts: [candidate, ...best[j].parts] };
+    }
+  }
+  return best[0].parts;
+}
+
 export function analyze(text) {
   const input = String(text ?? "");
   const normalized = input.normalize("NFC").trim();
   if (!normalized) return { input, normalized, status: "EMPTY", output: "", syllables: [], warnings: [] };
   const inputWarnings = validateInput(normalized);
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
-  const tokens = normalized.split(/\s+/).filter(Boolean);
-  const syllables = tokens.map(analyzeToken);
+
+  const words = normalized.split(/\s+/).filter(Boolean).map(analyzeWord);
+  const syllables = words.flat();
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
-  if (tokens.length > 1) warnings.push("Пробіли трактуються як межі аналізу; Lao зазвичай не розділяє слова пробілами.");
-  return { input, normalized, status: syllables.every((s) => s.ukrainian && s.status === "ESTABLISHED") ? "OK" : "PARTIAL",
-    output: syllables.map((s) => s.ukrainian || "").filter(Boolean).join(" "), syllables, warnings: [...new Set(warnings)] };
+  if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
+  const complete = syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
+  const output = words.map((word) => word.map((s) => s.ukrainian || ("⟦" + s.surface + "⟧")).join("")).join(" ");
+  return { input, normalized, status: complete ? "OK" : "PARTIAL", output, syllables, warnings: [...new Set(warnings)] };
 }
