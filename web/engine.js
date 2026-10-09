@@ -130,8 +130,8 @@ function analyzeToken(surface) {
   if (!matched) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."] };
 
   const remainder = after.slice(matched.consumed.length);
-  let coda = null;
-  for (const ch of [...remainder].reverse()) if (remainder.endsWith(ch) && Object.hasOwn(CODAS, ch)) { coda = ch; break; }
+  const finalChar = [...remainder].at(-1);
+  const coda = finalChar && Object.hasOwn(CODAS, finalChar) ? finalChar : null;
 
   const unconsumed = coda ? remainder.replace(coda, "") : remainder;
   const warnings = [];
