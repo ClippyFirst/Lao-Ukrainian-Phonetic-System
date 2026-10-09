@@ -32,10 +32,10 @@ test("voiced onset has Ukrainian target", () => {
   assert.equal(r.syllables[0].ukrainian, "да");
 });
 
-test("Lao h maps to Ukrainian х in the project policy", () => {
+test("Lao h maps to Ukrainian г in the project policy", () => {
   const r = analyze("ຫາ");
   assert.equal(r.syllables[0].ipa, "haː");
-  assert.equal(r.syllables[0].ukrainian, "ха");
+  assert.equal(r.syllables[0].ukrainian, "га");
 });
 
 test("checked coda is dead", () => {
@@ -107,3 +107,34 @@ test("invalid mixed script is rejected", () => {
 });
 
 test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
+
+test("multisyllabic Lao text is segmented without dropping syllables", () => {
+  const r = analyze("ພາສາລາວ");
+  assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພາ|ສາ|ລາວ");
+  assert.equal(r.output, "паса лав");
+  assert.equal(r.syllables.every((s) => s.ipa), true);
+});
+
+test("short o in a closed syllable is recognised", () => {
+  const r = analyze("ຄົນ");
+  assert.equal(r.syllables[0].ipa, "kʰon");
+  assert.equal(r.output, "кон");
+});
+
+test("compound greeting is segmented into all syllables", () => {
+  const r = analyze("ສະບາຍດີ");
+  assert.equal(r.syllables.map((s) => s.surface).join("|"), "ສະ|ບາຍ|ດີ");
+  assert.equal(r.output, "са бай ді");
+});
+
+test("multi-syllable place-name phrase is not truncated", () => {
+  const r = analyze("ຂອບໃຈ");
+  assert.equal(r.syllables.map((s) => s.surface).join("|"), "ຂອບ|ໃຈ");
+  assert.equal(r.output, "коп чай");
+});
+
+test("unparsed characters remain visible instead of being silently dropped", () => {
+  const r = analyze("ຄົນ🙂");
+  assert.match(r.output, /⟦🙂⟧/);
+  assert.equal(r.status, "PARTIAL");
+});
