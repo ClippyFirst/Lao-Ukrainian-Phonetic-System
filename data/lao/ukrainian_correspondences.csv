@@ -14,7 +14,7 @@ m,м,1.0,shared nasal,established
 n,н,1.0,shared nasal,established
 s,с,1.0,shared fricative,established
 f,ф,1.0,shared fricative,established
-h,х,0.96,closest ordinary Ukrainian fricative target for Lao /h/,project-policy
+h,г,0.90,Ukrainian г is the selected practical approximation for Lao /h/; this is a project policy, not phonetic identity,project-policy
 j,й,0.96,glide target,project-policy
 ʋ,в,0.94,closest Ukrainian labiodental approximant target,project-policy
 w,в,0.90,final /w/ approximation,project-policy
