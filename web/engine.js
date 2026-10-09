@@ -14,6 +14,7 @@ function matchVowel(before, after) {
     const v = vowelById(id);
     return v ? { v, consumed } : null;
   };
+  if (before === "" && after.startsWith("ຽ")) return push("IA_LONG", "ຽ");
   if (before.endsWith("ເ")) {
     if (after.startsWith("ັຽ")) return push("IA", "ັຽ");
     if (after.startsWith("ັຍ")) return push("IA", "ັຍ");
@@ -125,6 +126,8 @@ function analyzeToken(surface) {
   const { onsetKey, onsetIndex, onsetLength, onsetClass, onsetForm } = found;
   const onset = CONSONANTS[onsetKey];
   const before = clean.slice(0, onsetIndex);
+  const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
+  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before] };
   const after = clean.slice(onsetIndex + onsetLength);
   const matched = matchVowel(before, after);
   if (!matched) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."] };
@@ -180,7 +183,11 @@ function analyzeWord(word) {
       const candidate = analyzeToken(chars.slice(i, j).join(""));
       if (!isStructurallyComplete(candidate)) continue;
       const length = j - i;
-      const score = best[j].score + length * length;
+      const nextChar = chars[j] || "";
+      const codaStartsNextSyllable = Boolean(candidate.coda && ["ະ", "ັ", "ິ", "ີ", "ຶ", "ື", "ຸ", "ູ"].includes(nextChar));
+      // Prefer a boundary before a consonant followed by its own vowel sign;
+      // otherwise greedy longest-match merges ພະນະ into the false syllable ພະນ.
+      const score = best[j].score + length - (codaStartsNextSyllable ? 3 : 0);
       if (score > best[i].score) best[i] = { score, parts: [candidate, ...best[j].parts] };
     }
   }
