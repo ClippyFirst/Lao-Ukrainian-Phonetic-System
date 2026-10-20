@@ -47,11 +47,6 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fixture", type=Path, default=DEFAULT_FIXTURE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument(
-        "--ignore-tones",
-        action="store_true",
-        help="Ask lao2ipa to omit tones; still records the project's normal IPA, so exact matches are only diagnostic.",
-    )
     args = parser.parse_args()
 
     try:
@@ -78,9 +73,7 @@ def main() -> int:
         }
         try:
             local_raw = project_ipa(surface)
-            external_raw = transliterate(
-                surface, output="ipa", ignore_tones=args.ignore_tones
-            )
+            external_raw = transliterate(surface, output="ipa")
             if not isinstance(external_raw, str):
                 raise TypeError(
                     f"lao2ipa returned {type(external_raw).__name__}, expected str"
@@ -134,7 +127,7 @@ def main() -> int:
             "source": "https://github.com/byu-matrix-lab/lao2ipa",
             "license": "Apache-2.0",
             "output": "ipa",
-            "ignore_tones": args.ignore_tones,
+            "tone_handling": "external package default",
         },
         "summary": {
             "cases": len(results),
