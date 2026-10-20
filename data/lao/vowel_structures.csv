@@ -15,3 +15,5 @@ VS-AI,ໄ+ONSET,ai,ai,preposed,phonological,core
 VS-AI2,ໃ+ONSET,ai,ai,preposed,phonological,core
 VS-AO,ເ+ONSET+ົ+າ,ao,ao,preposed,phonological,core
 VS-AM,ONSET+ຳ,am,am,logical,phonological,core
+VS-O-SHORT-CLOSED,ONSET+ົ,o,o,postposed,phonological,core
+VS-IA-STANDALONE,ONSET+ຽ,iːə,iːə,postposed,phonological,core
