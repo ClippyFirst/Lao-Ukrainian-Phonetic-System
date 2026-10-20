@@ -139,6 +139,9 @@ function analyzeToken(surface) {
   const unconsumed = coda ? remainder.replace(coda, "") : remainder;
   const warnings = [];
   if (unconsumed) warnings.push("Невикористана частина структури складу: " + unconsumed);
+  if (!coda && ["A2", "AWW_SHORT_ALT"].includes(matched.v[0])) {
+    warnings.push("SHORT_VOWEL_REQUIRES_CODA:" + matched.v[0]);
+  }
 
   const syllableType = classify(coda, matched.v);
   const tone = toneFor(onsetClass, syllableType, matched.v[3], mark);
@@ -151,7 +154,9 @@ function analyzeToken(surface) {
   if (onsetKey === "ຣ") warnings.push("ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
   if (tone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
-  const status = ukrainian && tone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
+  const structuralWarning = warnings.some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("Невикористана частина"));
+  const status = structuralWarning ? "EVIDENCE LIMITED"
+    : ukrainian && tone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
     coda: coda || "—", syllableType, tone: tone.name, toneContour: tone.contour, ipa, ukrainian, status,
     rules: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, tone.ruleId ? "TONE-RULE:" + tone.ruleId : "TONE:UNRESOLVED"],
@@ -160,7 +165,7 @@ function analyzeToken(surface) {
 
 function isStructurallyComplete(s) {
   return Boolean(s.ipa && s.ukrainian) &&
-    !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено"));
+    !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA"));
 }
 
 function analyzeWord(word) {
