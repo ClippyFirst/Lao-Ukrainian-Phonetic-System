@@ -1,5 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { analyze } from "./engine.js";
 
 test("basic long syllable", () => {
@@ -180,4 +183,15 @@ test("preposed long ia is not shadowed by generic long e", () => {
   const r = analyze("ເກຽ");
   assert.equal(r.syllables[0].vowel, "iːə");
   assert.equal(r.syllables[0].ipa, "kiːə");
+});
+
+
+test("shared vowel precedence fixtures match browser phonemic IPA", () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const fixture = JSON.parse(readFileSync(resolve(here, "../tests/fixtures/vowel_precedence_cases.json"), "utf8"));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
+  }
 });
