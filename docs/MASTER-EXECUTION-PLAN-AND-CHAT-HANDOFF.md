@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest parser/coda regression test commit: `49d87fdba216acb20ae1508c1c3d02a0d6ab547a`; CI run [39484575636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484575636) is the current verification target. Evidence registry latest commit: `a19eb1e2d97ec89a67a7542ce89e9dca1ba145d6`.
+Work branch latest parser/coda regression test commit: `43d1d4ec4c11e368e0b9202a37e9b141545bb7c1`; full CI passed in [run 39484690202](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484690202). Evidence registry latest commit: `a19eb1e2d97ec89a67a7542ce89e9dca1ba145d6`.
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
@@ -85,7 +85,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - Repository and current branch were inspected through the GitHub connector; tests were run by the repository's GitHub Actions workflow, not locally.
 - CI for the 36-case shared fixture commit [39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983) passed all steps: Python tests, browser engine tests, build/data regeneration, reproducibility and built-page checks.
 - Two earlier fixture-expansion CI runs failed because the browser segmentation algorithm preferred a split parse on a tie. The issue was reproduced from logs, fixed in `web/engine.js`, and the expanded fixture suite then passed. Keep this failure/fix in the audit trail; do not report those earlier runs as green.
-- CI run [39484575636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484575636) passed Python tests, browser tests, data regeneration, reproducibility and built-page checks for the coda-position regression commit. This does not exhaustively validate all coda combinations.
+- CI run [39484690202](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484690202) passed Python tests, browser tests, data regeneration, reproducibility and built-page checks for the coda-position regression using malformed trailing material `ກາງເ`. An earlier test using `ກາງະ` failed because the browser could validly segment it as separate syllables; the fixture was changed to avoid that ambiguity. This does not exhaustively validate all coda combinations.
 
 ### Open scientific questions
 - Complete coverage of the Lao vowel inventory and orthographic combinations.
