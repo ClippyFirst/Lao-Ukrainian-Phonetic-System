@@ -132,3 +132,24 @@ class TestVowelPrecedenceNegativeControls(unittest.TestCase):
                 parsed = parse_syllable(surface)
                 self.assertTrue(parsed["warnings"], surface)
                 self.assertNotEqual(analyze(surface).status, "OK")
+
+
+class TestEveryVowelStructureHasPositiveAndNegativeControls(unittest.TestCase):
+    def test_each_declared_template_matches_and_rejects_a_near_miss(self):
+        # Exercise every declarative parser template, including variants not
+        # represented by the smaller hand-adjudicated-by-source fixture set.
+        for name, prefix, suffix, vowel_id in STRUCTURES:
+            positive = prefix + "ກ" + suffix
+            negative_suffix = suffix[:-1] if suffix else ""
+            negative = prefix + "ກ" + negative_suffix
+            if not prefix and not suffix:
+                negative = "ກ"
+            with self.subTest(template=name, role="positive", surface=positive):
+                parsed = parse_syllable(positive)
+                self.assertIsNotNone(parsed.get("vowel"), name)
+                self.assertEqual(parsed["vowel"]["id"], vowel_id, name)
+            with self.subTest(template=name, role="negative", surface=negative):
+                parsed = parse_syllable(negative)
+                actual = parsed.get("vowel")
+                self.assertTrue(actual is None or actual["id"] != vowel_id,
+                                f"{name} accepted its one-grapheme near-miss {negative!r}")
