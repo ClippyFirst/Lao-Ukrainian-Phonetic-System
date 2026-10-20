@@ -83,7 +83,12 @@ def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
     s = _strip_tone_marks(surface)
     before = s[:onset_i]
     after = s[onset_i + onset_len:]
-    for _, pre, suffix, vowel_id in STRUCTURES:
+    # Match specific orthographic vowel complexes before generic patterns
+    # with an empty suffix (e.g. ເ◌, ແ◌, ໂ◌). Otherwise the generic
+    # preposed-vowel rule can shadow ເ◌ິ, ເ◌ີ, and ເ◌ຽ.
+    for _, pre, suffix, vowel_id in sorted(
+        STRUCTURES, key=lambda item: (len(item[2]), len(item[1])), reverse=True
+    ):
         if before.endswith(pre) and after.startswith(suffix):
             return next((v for v in registry["vowels"] if v["id"] == vowel_id), None)
     return None
