@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest code/test commit at this update: `74b8edb924abe74372e5531a625387b864c01364`; full CI passed in [run 39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983). The latest docs commit below must receive its own CI check.
+Work branch latest verified code/test commit at this update: `74b8edb924abe74372e5531a625387b864c01364`; full CI passed in [run 39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983). Evidence-registry commit `d5ebb4d89044b9ccadfa8228a73fc84baf9a0275` and this handoff update require CI confirmation.
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
@@ -79,7 +79,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - `tests/fixtures/vowel_precedence_cases.json`: 36 shared expected-IPA regression cases; explicitly labelled as engineering fixtures, not a gold corpus.
 - `tests/test_structural_vowels.py` and `web/engine.test.js`: consume the shared fixture and assert one-syllable boundaries and expected IPA.
 - `data/lao/vowel_structures.csv`: corrected short/long IA, UA and UO labels and /aw/ IPA; added explicit long-form rows.
-- `data/evidence/sources.csv` and `data/evidence/claims.csv`: added Ishida's Lao Orthography Notes and limited orthographic claims. Exact source-passage review for every vowel row remains open.
+- `data/evidence/sources.csv` and `data/evidence/claims.csv`: added Ishida's Lao Orthography Notes and source-linked claims for OE, short O, IA, UA, UO, /aw/, /am/ and long /ɔː/ spellings. Exact source-passage review for every vowel row remains open.
 
 ### Commands and results
 - Repository and current branch were inspected through the GitHub connector; tests were run by the repository's GitHub Actions workflow, not locally.
@@ -100,4 +100,4 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - Scientific completion is blocked on rule-by-rule source verification and an independent corpus, not on documentation volume.
 
 ### One next step
-Trigger/check CI for the current branch head containing commit `ca0e8d39493bad65918e39e13ba79776438ac0b1`. If it passes, mark the warning-status fix verified; then continue the full vowel/coda/tone coverage audit (LAO-VOWEL-001 / LAO-CODA-001 / LAO-TONE-001). Do not treat CI success as scientific validation.
+Check CI for the current documentation/evidence commits `d5ebb4d89044b9ccadfa8228a73fc84baf9a0275` and the latest handoff update. Then continue LAO-VOWEL-001 by adding negative/invalid spelling fixtures and auditing the source passage for each spelling. After that, move to the exhaustive coda cross-product and tone-mark matrix. Do not treat CI success as scientific validation.
