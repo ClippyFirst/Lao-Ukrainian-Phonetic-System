@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest verified code/test commit at this update: `74b8edb924abe74372e5531a625387b864c01364`; full CI passed in [run 39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983). Evidence-registry commit `d5ebb4d89044b9ccadfa8228a73fc84baf9a0275` and this handoff update require CI confirmation.
+Work branch latest short-vowel regression test commit: `97381da5678704d92ed7ffcd5f9e2f2069036abf`; CI run [39484461905](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484461905) is the current verification target. Evidence registry latest commit: `a19eb1e2d97ec89a67a7542ce89e9dca1ba145d6`.
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
@@ -15,7 +15,7 @@ Do not mark code changes `DONE_VERIFIED` until the current commit's relevant che
 
 The project has separate Python and browser engines, canonical Lao consonant/vowel/coda/tone registries, Ukrainian correspondences, source/claim CSVs, tests, and methodology/limitations/audit documentation. The last visible `main` verification run was successful for commit `763b67892838929ef7ca46d6f540cf21d66fc4e5` (2026-10-09). This is historical evidence only; it does not verify any later branch changes.
 
-Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings incorrectly coexisting with an `ESTABLISHED` status; (3) missing Python structures for short /o/ in closed syllables and standalone ຽ; (4) a browser segmentation tie where `ກົວະ` was split as `ກົ|ວະ` instead of kept as one complex-vowel syllable. Shared fixtures are consumed by both engines. Full Python, browser, build, data regeneration, reproducibility and built-page checks passed in [run 39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983). The shared fixtures are engineering regression cases, not an independently adjudicated gold corpus.
+Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings incorrectly coexisting with an `ESTABLISHED` status; (3) missing Python structures for short /o/ in closed syllables and standalone ຽ; (4) a browser segmentation tie where `ກົວະ` was split as `ກົ|ວະ`; (5) missing closed-coda constraints for the short A2 and AWW_SHORT_ALT spelling forms. Shared fixtures are consumed by both engines. Full Python, browser, build, data regeneration, reproducibility and built-page checks passed for the 36-case vowel fixture suite in [run 39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983); the newest short-vowel constraint tests are pending current-head CI. The shared fixtures are engineering regression cases, not an independently adjudicated gold corpus.
 
 ## Execution register
 
@@ -73,13 +73,13 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - `.github/workflows/verify.yml`
 
 ### Changes made on work branch
-- `src/lao_ukrainian/parser.py`: sorts structural vowel patterns by specificity; added missing standalone short-/o/ pattern (`ົ`) and standalone long IA sign (`ຽ`).
+- `src/lao_ukrainian/parser.py`: sorts structural vowel patterns by specificity; added missing standalone short-/o/ pattern (`ົ`) and standalone long IA sign (`ຽ`); marks A2 and AWW_SHORT_ALT without a coda as evidence-limited.
 - `src/lao_ukrainian/core.py` and `tests/test_core.py`: analyses with parser warnings are downgraded from `ESTABLISHED`.
-- `web/engine.js`: equal-score segmentation now prefers fewer fragments, fixing a demonstrated complex-vowel split.
+- `web/engine.js`: equal-score segmentation now prefers fewer fragments, fixing a demonstrated complex-vowel split; A2 and AWW_SHORT_ALT spellings without a coda are flagged and not treated as complete.
 - `tests/fixtures/vowel_precedence_cases.json`: 36 shared expected-IPA regression cases; explicitly labelled as engineering fixtures, not a gold corpus.
 - `tests/test_structural_vowels.py` and `web/engine.test.js`: consume the shared fixture and assert one-syllable boundaries and expected IPA.
 - `data/lao/vowel_structures.csv`: corrected short/long IA, UA and UO labels and /aw/ IPA; added explicit long-form rows.
-- `data/evidence/sources.csv` and `data/evidence/claims.csv`: added Ishida's Lao Orthography Notes and source-linked claims for OE, short O, IA, UA, UO, /aw/, /am/ and long /ɔː/ spellings. Exact source-passage review for every vowel row remains open.
+- `data/evidence/sources.csv` and `data/evidence/claims.csv`: added Ishida's Lao Orthography Notes and source-linked claims for OE, short O, IA, UA, UO, /aw/, /am/, long /ɔː/, and short-vowel closed-syllable constraints. Exact source-passage review for every vowel row remains open.
 
 ### Commands and results
 - Repository and current branch were inspected through the GitHub connector; tests were run by the repository's GitHub Actions workflow, not locally.
@@ -100,4 +100,4 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - Scientific completion is blocked on rule-by-rule source verification and an independent corpus, not on documentation volume.
 
 ### One next step
-Check CI for the current documentation/evidence commits `d5ebb4d89044b9ccadfa8228a73fc84baf9a0275` and the latest handoff update. Then continue LAO-VOWEL-001 by adding negative/invalid spelling fixtures and auditing the source passage for each spelling. After that, move to the exhaustive coda cross-product and tone-mark matrix. Do not treat CI success as scientific validation.
+Check CI for the latest short-vowel test commit `97381da5678704d92ed7ffcd5f9e2f2069036abf`, then verify CI for the latest evidence/handoff commits. Next continue LAO-VOWEL-001 with additional negative/invalid spelling fixtures and a rule-by-rule source passage audit. After that, move to the exhaustive coda cross-product and tone-mark matrix. Do not treat CI success as scientific validation.
