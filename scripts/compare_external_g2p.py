@@ -69,7 +69,6 @@ def main() -> int:
         parser.error(f"Fixture contains no cases: {args.fixture}")
 
     results: list[dict[str, Any]] = []
-    errors = 0
     for case in cases:
         surface = case["surface"]
         row: dict[str, Any] = {
@@ -98,8 +97,6 @@ def main() -> int:
                     "mismatch_category": None if local == external else "UNCLASSIFIED_REQUIRES_REVIEW",
                 }
             )
-            if local != external:
-                errors += 1
         except Exception as exc:  # keep per-case failures visible in the artifact
             row.update(
                 {
@@ -110,7 +107,6 @@ def main() -> int:
                     "error": f"{type(exc).__name__}: {exc}",
                 }
             )
-            errors += 1
         results.append(row)
 
     try:
@@ -119,6 +115,7 @@ def main() -> int:
         external_version = "unknown"
 
     matches = sum(row.get("exact_match") is True for row in results)
+    runtime_errors = sum(row.get("mismatch_category") == "RUNTIME_ERROR" for row in results)
     report = {
         "schema_version": 1,
         "purpose": "Comparative diagnostic only; neither implementation is treated as a gold standard.",
@@ -144,7 +141,7 @@ def main() -> int:
             "exact_matches": matches,
             "mismatches_or_errors": len(results) - matches,
             "exact_match_rate": matches / len(results),
-            "runtime_errors": sum(row.get("mismatch_category") == "RUNTIME_ERROR" for row in results),
+            "runtime_errors": runtime_errors,
         },
         "results": results,
     }
@@ -157,7 +154,9 @@ def main() -> int:
     print(json.dumps(report["summary"], indent=2))
     print(f"Report written to: {args.output}")
     print("Review every mismatch before interpreting the match rate.")
-    return 1 if errors else 0
+    # A phonological disagreement is data to inspect, not a program failure.
+    # Runtime errors still signal that the comparison could not be completed.
+    return 2 if runtime_errors else 0
 
 
 if __name__ == "__main__":
