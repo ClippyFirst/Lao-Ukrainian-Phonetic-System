@@ -56,6 +56,131 @@
       "id": "VOWEL-UO-LONG",
       "surface": "ກົວ",
       "phonemic_ipa": "kuːə"
+    },
+    {
+      "id": "VOWEL-A-SHORT",
+      "surface": "ກະ",
+      "phonemic_ipa": "ka"
+    },
+    {
+      "id": "VOWEL-A-SHORT-CLOSED",
+      "surface": "ກັບ",
+      "phonemic_ipa": "kap"
+    },
+    {
+      "id": "VOWEL-AA-LONG",
+      "surface": "ກາ",
+      "phonemic_ipa": "kaː"
+    },
+    {
+      "id": "VOWEL-I-SHORT",
+      "surface": "ກິ",
+      "phonemic_ipa": "ki"
+    },
+    {
+      "id": "VOWEL-II-LONG",
+      "surface": "ກີ",
+      "phonemic_ipa": "kiː"
+    },
+    {
+      "id": "VOWEL-Y-SHORT",
+      "surface": "ກຶ",
+      "phonemic_ipa": "kɯ"
+    },
+    {
+      "id": "VOWEL-YY-LONG",
+      "surface": "ກື",
+      "phonemic_ipa": "kɯː"
+    },
+    {
+      "id": "VOWEL-U-SHORT",
+      "surface": "ກຸ",
+      "phonemic_ipa": "ku"
+    },
+    {
+      "id": "VOWEL-UU-LONG",
+      "surface": "ກູ",
+      "phonemic_ipa": "kuː"
+    },
+    {
+      "id": "VOWEL-E-SHORT",
+      "surface": "ເກະ",
+      "phonemic_ipa": "ke"
+    },
+    {
+      "id": "VOWEL-EE-LONG",
+      "surface": "ເກ",
+      "phonemic_ipa": "keː"
+    },
+    {
+      "id": "VOWEL-AE-SHORT",
+      "surface": "ແກະ",
+      "phonemic_ipa": "kɛ"
+    },
+    {
+      "id": "VOWEL-AEE-LONG",
+      "surface": "ແກ",
+      "phonemic_ipa": "kɛː"
+    },
+    {
+      "id": "VOWEL-O-SHORT-PREPOSED",
+      "surface": "ໂກະ",
+      "phonemic_ipa": "ko"
+    },
+    {
+      "id": "VOWEL-OO-LONG",
+      "surface": "ໂກ",
+      "phonemic_ipa": "koː"
+    },
+    {
+      "id": "VOWEL-AW-SHORT",
+      "surface": "ເກາະ",
+      "phonemic_ipa": "kɔ"
+    },
+    {
+      "id": "VOWEL-AWW-SHORT-ALT",
+      "surface": "ກັອບ",
+      "phonemic_ipa": "kɔp"
+    },
+    {
+      "id": "VOWEL-AWW-LONG",
+      "surface": "ກໍ",
+      "phonemic_ipa": "kɔː"
+    },
+    {
+      "id": "VOWEL-AWW-MEDIAL",
+      "surface": "ກອກ",
+      "phonemic_ipa": "kɔːk"
+    },
+    {
+      "id": "VOWEL-UO-SHORT-ALT",
+      "surface": "ກັວບ",
+      "phonemic_ipa": "kuəp"
+    },
+    {
+      "id": "VOWEL-UO-LONG-CLOSED-ALT",
+      "surface": "ກວງ",
+      "phonemic_ipa": "kuːəŋ"
+    },
+    {
+      "id": "VOWEL-UO-LONG-OPEN-ALT",
+      "surface": "ກວາງ",
+      "phonemic_ipa": "kuːəŋ"
+    },
+    {
+      "id": "VOWEL-AI",
+      "surface": "ໄກ",
+      "phonemic_ipa": "kai"
+    },
+    {
+      "id": "VOWEL-AI2",
+      "surface": "ໃກ",
+      "phonemic_ipa": "kai"
+    },
+    {
+      "id": "VOWEL-AM",
+      "surface": "ກຳ",
+      "phonemic_ipa": "kam"
     }
   ]
 }
