@@ -52,7 +52,7 @@ STRUCTURES = (
     ("post_yy", "", "ື", "YY"),
     ("post_u", "", "ຸ", "U"),
     ("post_uu", "", "ູ", "UU"),
-    ("post_o_short_closed", "", "ັອ", "AWW_SHORT_ALT"),
+    ("post_o_short_alt", "", "ັອ", "AWW_SHORT_ALT"),
     ("post_o_long_medial", "", "ອ", "AWW_MEDIAL"),
     ("post_o_long_open", "", "ໍ", "AWW"),
     ("post_am", "", "ຳ", "AM"),
@@ -129,6 +129,8 @@ def parse_syllable(surface: str):
     warnings = []
     if coda is None and remainder:
         warnings.append(f"UNCONSUMED_AFTER_VOWEL:{remainder}")
+    if coda is None and vowel["id"] in {"A2", "AWW_SHORT_ALT"}:
+        warnings.append(f"SHORT_VOWEL_REQUIRES_CODA:{vowel['id']}")
 
     return {"surface": surface, "onset": onset, "onset_class": onset_class,
             "onset_form": onset_form, "vowel": vowel, "coda": coda,
