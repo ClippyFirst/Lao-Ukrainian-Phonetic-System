@@ -23,7 +23,7 @@ python -m pip install lao2ipa==1.0.0
 python scripts/compare_external_g2p.py
 ```
 
-The script reads `tests/fixtures/vowel_precedence_cases.json`, runs each surface form through both systems, normalizes both outputs to Unicode NFC, and writes `artifacts/external-g2p-comparison.json`.
+The script reads `tests/fixtures/vowel_precedence_cases.json`, runs each surface form through both systems, normalizes outputs to Unicode NFC, and writes `artifacts/external-g2p-comparison.json`. The report separately records (1) project-versus-external exact matches, (2) project-versus-fixture expected IPA, and (3) external-versus-fixture expected IPA. Fixture agreement is only a regression diagnostic because these cases are not an independently adjudicated gold corpus.
 
 The harness compares each implementation's default IPA output. It deliberately does not expose the external package's `ignore_tones` option: using it while leaving the project's tonal output unchanged would make exact-match rates systematically misleading. Tone/convention disagreements remain visible in raw outputs and must be reviewed manually. The script does not silently remove tone marks, length marks, separators, or other IPA characters. Mismatches are left unclassified for manual review instead of assigning speculative phonological causes.
 
