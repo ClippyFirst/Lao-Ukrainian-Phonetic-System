@@ -97,9 +97,11 @@ def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
 
 def _find_coda(after_vowel: str, registry: dict):
     finals = {g: r for g, r in registry["consonants"].items() if r.get("ipa_final")}
-    for ch in reversed(after_vowel):
-        if ch in finals:
-            return ch
+    # A coda must be the final grapheme of the remaining syllable material.
+    # Searching backward for any legal final can incorrectly accept e.g.
+    # ກາງະ as /kaːŋ/ while silently ignoring the trailing vowel sign.
+    if after_vowel and after_vowel[-1] in finals:
+        return after_vowel[-1]
     return None
 
 def parse_syllable(surface: str):
