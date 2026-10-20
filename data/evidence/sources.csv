@@ -14,3 +14,4 @@ SRC-SERBIA-MFA,Ministry of Foreign Affairs of Serbia,2026,Laos bilateral page,of
 SRC-BULGARIA-MFA,Ministry of Foreign Affairs of Bulgaria,2025,Laos country information,official government source,https://www.mfa.bg/bg/embassyinfo/laos,capital as Виентян
 SRC-BULGARIA-UNGEGN,Bulgaria at UNGEGN,2015,Orthography and transcription of geographical names in Bulgaria,standards paper,https://digitallibrary.un.org/record/3924195/,target-language phonetics and orthography principle
 SRC-UA-INVENTORY,ClippyFirst,2026,Ukrainian Phonetic Inventory,canonical target repository,https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory,Ukrainian feature space and orthography
+SRC-ISHIDA-ORTHO-2026,Richard Ishida,2026,Lao Orthography Notes,technical orthography reference,https://r12a.github.io/scripts/laoo/lo,Composite vowel inventory and spelling variants; vowel length; syllable structure; tone variation tables (accessed 2026-10-20)
