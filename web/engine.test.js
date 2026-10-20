@@ -205,3 +205,10 @@ test("short Lao vowel signs require a coda when specified by the spelling", () =
   assert.equal(closedO.syllables[0].ipa, "kɔp");
   assert.equal(closedO.status, "OK");
 });
+
+
+test("coda must be the final grapheme of syllable material", () => {
+  const result = analyze("ກາງະ");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.some((s) => s.surface === "ກາງະ" && s.coda === "ງ"), false);
+});
