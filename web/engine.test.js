@@ -165,3 +165,19 @@ test("syllable boundary avoids consuming next onset as coda before vowel sign", 
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
   assert.equal(r.output, "панакон");
 });
+
+
+test("preposed oe short and long vowel complexes are distinguished", () => {
+  const short = analyze("ເກິ");
+  const long = analyze("ເກີ");
+  assert.equal(short.syllables[0].vowel, "ɤ");
+  assert.equal(short.syllables[0].ipa, "kɤ");
+  assert.equal(long.syllables[0].vowel, "ɤː");
+  assert.equal(long.syllables[0].ipa, "kɤː");
+});
+
+test("preposed long ia is not shadowed by generic long e", () => {
+  const r = analyze("ເກຽ");
+  assert.equal(r.syllables[0].vowel, "iːə");
+  assert.equal(r.syllables[0].ipa, "kiːə");
+});
