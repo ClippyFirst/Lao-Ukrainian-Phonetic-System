@@ -15,7 +15,7 @@ Do not mark code changes `DONE_VERIFIED` until the current commit's relevant che
 
 The project has separate Python and browser engines, canonical Lao consonant/vowel/coda/tone registries, Ukrainian correspondences, source/claim CSVs, tests, and methodology/limitations/audit documentation. The last visible `main` verification run was successful for commit `763b67892838929ef7ca46d6f540cf21d66fc4e5` (2026-10-09). This is historical evidence only; it does not verify any later branch changes.
 
-Static source inspection identified and fixed a Python vowel-matching precedence risk: generic preposed vowel patterns with empty suffixes could shadow more specific patterns. Regression tests for OE, OEE and IA_LONG pass in run 39482443085. A second issue was found and patched: Python status propagation now downgrades analyses that contain parser warnings, with a regression for an unconsumed final grapheme. The full workflow steps for code commit `7d6e5f85fb324c83e110cf3220d08ba28b2650f3` have all reported success in run 39482622038; final job completion should be rechecked.
+Static source inspection identified and fixed a Python vowel-matching precedence risk: generic preposed vowel patterns with empty suffixes could shadow more specific patterns. Regression tests for OE, OEE and IA_LONG pass in run 39482443085. A second issue was found and patched: Python status propagation now downgrades analyses that contain parser warnings. The workflow for code commit `7d6e5f85fb324c83e110cf3220d08ba28b2650f3` passed all listed test/build steps, but the regression test added in subsequent commit `ca0e8d39493bad65918e39e13ba79776438ac0b1` was not part of that run. CI must run against the current branch head before this second fix is verified.
 
 ## Execution register
 
@@ -76,14 +76,14 @@ Static source inspection identified and fixed a Python vowel-matching precedence
 - `src/lao_ukrainian/parser.py`: prioritizes specific vowel patterns with longer suffixes before generic empty-suffix patterns.
 - `tests/test_structural_vowels.py`: added regressions for preposed OE, OEE and IA_LONG patterns.
 - `src/lao_ukrainian/core.py`: parser warnings now downgrade otherwise `ESTABLISHED` results to `EVIDENCE LIMITED`.
-- `tests/test_core.py`: added a regression for a syllable with an unconsumed grapheme.
+- `tests/test_core.py`: added a regression for a syllable with an unconsumed grapheme; this test has not yet been confirmed by CI on the commit containing it.
 
 ### Commands and results
 - GitHub tree/file/API inspection performed.
 - Baseline `main` verification run for `763b67892838929ef7ca46d6f540cf21d66fc4e5`: success, run 125. This is not a test result for the work branch.
 - No local test command was executed in this session.
 - Work-branch CI result: success for code/test commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`, [run 39482443085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482443085). All workflow steps passed: Python tests, browser engine tests, build/data regeneration, reproducibility and built-page checks.
-- Second run [39482622038](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482622038) for `7d6e5f85fb324c83e110cf3220d08ba28b2650f3`: Python tests, browser engine tests, build/data regeneration, reproducibility and built-page checks all reported success; job cleanup/final completion was still in progress at last check.
+- Second run [39482622038](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482622038) for `7d6e5f85fb324c83e110cf3220d08ba28b2650f3`: Python tests, browser engine tests, build/data regeneration, reproducibility and built-page checks all reported success. Important: this run predates test commit `ca0e8d39493bad65918e39e13ba79776438ac0b1`; it does not verify the newly added warning-status regression.
 
 ### Open scientific questions
 - Complete coverage of the Lao vowel inventory and orthographic combinations.
@@ -98,4 +98,4 @@ Static source inspection identified and fixed a Python vowel-matching precedence
 - Scientific completion is blocked on rule-by-rule source verification and an independent corpus, not on documentation volume.
 
 ### One next step
-Recheck completion of run 39482622038 and confirm current branch head; then continue the full vowel/coda/tone coverage audit (LAO-VOWEL-001 / LAO-CODA-001 / LAO-TONE-001). Do not treat CI success as scientific validation.
+Trigger/check CI for the current branch head containing commit `ca0e8d39493bad65918e39e13ba79776438ac0b1`. If it passes, mark the warning-status fix verified; then continue the full vowel/coda/tone coverage audit (LAO-VOWEL-001 / LAO-CODA-001 / LAO-TONE-001). Do not treat CI success as scientific validation.
