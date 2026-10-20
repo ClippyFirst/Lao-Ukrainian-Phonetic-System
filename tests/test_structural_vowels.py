@@ -140,10 +140,13 @@ class TestEveryVowelStructureHasPositiveAndNegativeControls(unittest.TestCase):
         # represented by the smaller hand-adjudicated-by-source fixture set.
         for name, prefix, suffix, vowel_id in STRUCTURES:
             positive = prefix + "ກ" + suffix
-            negative_suffix = suffix[:-1] if suffix else ""
-            negative = prefix + "ກ" + negative_suffix
-            if not prefix and not suffix:
-                negative = "ກ"
+            if suffix:
+                negative = prefix + "ກ" + suffix[:-1]
+            else:
+                # Empty-suffix templates are valid by definition, so a
+                # negative control must substitute a different preposed sign.
+                alternate_prefix = "ແ" if prefix == "ເ" else "ເ"
+                negative = alternate_prefix + "ກ"
             with self.subTest(template=name, role="positive", surface=positive):
                 parsed = parse_syllable(positive)
                 self.assertIsNotNone(parsed.get("vowel"), name)
