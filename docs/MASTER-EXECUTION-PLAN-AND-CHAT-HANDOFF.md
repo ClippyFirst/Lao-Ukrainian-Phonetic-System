@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest verified code/test commit at handoff: `ca0e8d39493bad65918e39e13ba79776438ac0b1`; current shared-fixture test commit: `1f8b5239f070d7eca6b3d119fd512fba9afd598d` (CI pending at last update)
+Work branch latest verified code/test commit at handoff: `ca0e8d39493bad65918e39e13ba79776438ac0b1`; current verified shared-fixture test commit: `1f8b5239f070d7eca6b3d119fd512fba9afd598d` (CI success); source-registry documentation commits `c0ea7cfdb9d0a28eef42d9f4e2e629b42999ceae` and `63e30adaf37d3005ae600ca65aa0af6c2ab2ee57` added afterward
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
