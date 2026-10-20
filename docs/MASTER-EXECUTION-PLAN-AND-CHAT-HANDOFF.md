@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest short-vowel regression test commit: `97381da5678704d92ed7ffcd5f9e2f2069036abf`; CI run [39484461905](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484461905) is the current verification target. Evidence registry latest commit: `a19eb1e2d97ec89a67a7542ce89e9dca1ba145d6`.
+Work branch latest parser/coda regression test commit: `49d87fdba216acb20ae1508c1c3d02a0d6ab547a`; CI run [39484575636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484575636) is the current verification target. Evidence registry latest commit: `a19eb1e2d97ec89a67a7542ce89e9dca1ba145d6`.
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
@@ -25,10 +25,10 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | LAO-PY-001 | P0 | DONE_VERIFIED | `src/lao_ukrainian/parser.py`; generic empty-suffix patterns could precede specific vowel patterns | Python tests and new regression tests passed at code commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`; run [39482443085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482443085) |
 | LAO-PY-002 | P0 | DONE_VERIFIED | `tests/test_structural_vowels.py`; added OE, OEE and IA_LONG precedence regressions | New tests and full Python + JS + build/reproducibility workflow passed at code commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`; run [39482443085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482443085) |
 | LAO-STATUS-001 | P0 | DONE_VERIFIED | `src/lao_ukrainian/core.py` downgrades `ESTABLISHED` when parser warnings exist; regression test in `tests/test_core.py` | CI run [39482633937](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482633937) passed for test commit `ca0e8d39493bad65918e39e13ba79776438ac0b1` |
-| LAO-PARSER-001 | P0 | TODO | Python parser and browser parser are separate implementations | Differential corpus demonstrates agreement where the engines claim the same supported scope |
+| LAO-PARSER-001 | P0 | IN_PROGRESS | Python coda finder previously accepted any legal final anywhere in the remaining material; now only accepts the last grapheme. Shared tests check that malformed trailing material is not silently consumed | Current CI run [39484575636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484575636); differential corpus still required |
 | LAO-TONE-001 | P0 | TODO | `data/lao/tone_rules.csv`, `src/lao_ukrainian/phonology.py`, `web/engine.js` | Every implemented tone rule has source, defined conditions, examples and tests; phonological categories distinguished from measured contours |
 | LAO-VOWEL-001 | P0 | IN_PROGRESS | Inventory has 34 vowel IDs in `vowels.csv`, 21 generalized rows in `vowel_structures.csv`, and separate Python/JS pattern logic; the CSVs do not encode all parser spellings (e.g. several alternative UO spellings and explicit onset placeholders) | Reconcile registry, structures and both parsers; source each pattern; add full positive/negative fixture coverage; do not infer evidence from implementation output |
-| LAO-CODA-001 | P0 | TODO | `data/lao/codas.csv`, `data/lao/consonants.csv` | Legal codas and invalid-final handling exhaustively tested; no arbitrary final accepted silently |
+| LAO-CODA-001 | P0 | IN_PROGRESS | `data/lao/codas.csv`, `data/lao/consonants.csv`; Python coda detection now requires a legal coda to be the last grapheme in the remainder | One malformed trailing-grapheme regression added; exhaustive legal/illegal final cross-product remains open |
 | LAO-CLUSTER-001 | P0 | TODO | `docs/limitations.md` explicitly says initial-cluster model is incomplete | Dedicated grammar/tests for valid clusters, high-class silent digraphs and boundary ambiguities |
 | LAO-UNICODE-001 | P1 | TODO | `src/lao_ukrainian/normalize.py`, `web/engine.js` | NFC, mixed script, malformed marks, controls, ZWSP and whitespace behavior aligned and tested |
 | LAO-UKR-001 | P1 | TODO | `data/lao/ukrainian_correspondences.csv`, `src/lao_ukrainian/target.py` | Target adaptation independently reviewed; policy decisions distinguished from Lao facts |
@@ -46,7 +46,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | Initial consonant classes | Consonant registry + basic class tests | Partial | Check all modern consonants and class exceptions against independent sources |
 | Vowels and length | 34 vowel IDs; 21 generalized structure rows; shared cross-engine fixtures cover the core vowel set and known precedence/segmentation edge cases | Partial; registry-to-Python coverage test and regression fixtures pass CI, but not all spellings have independent source adjudication | Expand negative/alternative spellings and attach exact source passages to each rule |
 | Syllable structure | Syllable parser and browser segmentation tests | Partial; no complete lexical segmentation claim | Expand legal/illegal structure corpus and clusters |
-| Codas | Coda/consonant registries + checked-coda test | Partial | Exhaustive allowed/forbidden final tests |
+| Codas | Coda/consonant registries, checked-coda tests, and a new regression preventing a legal coda from being accepted before trailing unconsumed graphemes | Partial; targeted CI passed, exhaustive inventory still pending | Add all legal codas and representative illegal/trailing combinations to shared Python/browser fixtures |
 | Tone marks | Four marks and CSV rule table | Partial | Cross-product coverage by class, live/dead, length and mark; validate restricted mark conditions |
 | Tone categories | Vientiane-oriented matrix | Partial | Source-level review and independent expected examples |
 | Surface tone contours | Contours in data | Not fully empirically verified | Treat contours as descriptive conventions unless supported by phonetic measurements |
@@ -73,9 +73,9 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - `.github/workflows/verify.yml`
 
 ### Changes made on work branch
-- `src/lao_ukrainian/parser.py`: sorts structural vowel patterns by specificity; added missing standalone short-/o/ pattern (`ົ`) and standalone long IA sign (`ຽ`); marks A2 and AWW_SHORT_ALT without a coda as evidence-limited.
+- `src/lao_ukrainian/parser.py`: sorts structural vowel patterns by specificity; added missing standalone short-/o/ pattern (`ົ`) and standalone long IA sign (`ຽ`); marks A2 and AWW_SHORT_ALT without a coda as evidence-limited; only accepts a coda if it is the last remaining grapheme.
 - `src/lao_ukrainian/core.py` and `tests/test_core.py`: analyses with parser warnings are downgraded from `ESTABLISHED`.
-- `web/engine.js`: equal-score segmentation now prefers fewer fragments, fixing a demonstrated complex-vowel split; A2 and AWW_SHORT_ALT spellings without a coda are flagged and not treated as complete.
+- `web/engine.js`: equal-score segmentation now prefers fewer fragments, fixing a demonstrated complex-vowel split; A2 and AWW_SHORT_ALT spellings without a coda are flagged and not treated as complete. Browser test rejects a parsed coda when trailing material remains.
 - `tests/fixtures/vowel_precedence_cases.json`: 36 shared expected-IPA regression cases; explicitly labelled as engineering fixtures, not a gold corpus.
 - `tests/test_structural_vowels.py` and `web/engine.test.js`: consume the shared fixture and assert one-syllable boundaries and expected IPA.
 - `data/lao/vowel_structures.csv`: corrected short/long IA, UA and UO labels and /aw/ IPA; added explicit long-form rows.
@@ -85,7 +85,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - Repository and current branch were inspected through the GitHub connector; tests were run by the repository's GitHub Actions workflow, not locally.
 - CI for the 36-case shared fixture commit [39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983) passed all steps: Python tests, browser engine tests, build/data regeneration, reproducibility and built-page checks.
 - Two earlier fixture-expansion CI runs failed because the browser segmentation algorithm preferred a split parse on a tie. The issue was reproduced from logs, fixed in `web/engine.js`, and the expanded fixture suite then passed. Keep this failure/fix in the audit trail; do not report those earlier runs as green.
-- Latest documentation changes must receive CI before claiming the latest branch head is green.
+- CI run [39484575636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484575636) passed Python tests, browser tests, data regeneration, reproducibility and built-page checks for the coda-position regression commit. This does not exhaustively validate all coda combinations.
 
 ### Open scientific questions
 - Complete coverage of the Lao vowel inventory and orthographic combinations.
@@ -100,4 +100,4 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 - Scientific completion is blocked on rule-by-rule source verification and an independent corpus, not on documentation volume.
 
 ### One next step
-Check CI for the latest short-vowel test commit `97381da5678704d92ed7ffcd5f9e2f2069036abf`, then verify CI for the latest evidence/handoff commits. Next continue LAO-VOWEL-001 with additional negative/invalid spelling fixtures and a rule-by-rule source passage audit. After that, move to the exhaustive coda cross-product and tone-mark matrix. Do not treat CI success as scientific validation.
+Check CI for the current handoff commit. Continue LAO-CODA-001 by adding shared fixtures for every legal coda and malformed trailing material, then return to LAO-VOWEL-001 for negative/invalid spelling fixtures and a rule-by-rule source-passage audit. After those, move to the tone-mark cross-product. Do not treat CI success as scientific validation.
