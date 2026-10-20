@@ -25,13 +25,7 @@ python scripts/compare_external_g2p.py
 
 The script reads `tests/fixtures/vowel_precedence_cases.json`, runs each surface form through both systems, normalizes both outputs to Unicode NFC, and writes `artifacts/external-g2p-comparison.json`.
 
-To ask the external package to omit tone output for a separate diagnostic:
-
-```bash
-python scripts/compare_external_g2p.py --ignore-tones --output artifacts/external-g2p-comparison-no-tones.json
-```
-
-The no-tone mode is not directly comparable to the project's default tonal IPA; interpret its result only as a separate diagnostic. The script does not silently remove tone marks, length marks, separators, or other IPA characters. Mismatches are deliberately left unclassified for manual review instead of assigning speculative phonological causes.
+The harness compares each implementation's default IPA output. It deliberately does not expose the external package's `ignore_tones` option: using it while leaving the project's tonal output unchanged would make exact-match rates systematically misleading. Tone/convention disagreements remain visible in raw outputs and must be reviewed manually. The script does not silently remove tone marks, length marks, separators, or other IPA characters. Mismatches are left unclassified for manual review instead of assigning speculative phonological causes.
 
 ## What to record in a reviewed report
 
