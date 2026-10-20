@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest commit at handoff: `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3` (recheck branch head before continuing)
+Work branch latest commit at handoff: `9e891f43732edee54800bd405ba0d0fc042dcea4` (plan/handoff commit; code tested at `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`)
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
@@ -80,7 +80,7 @@ Static source inspection identified a Python vowel-matching precedence risk: gen
 - GitHub tree/file/API inspection performed.
 - Baseline `main` verification run for `763b67892838929ef7ca46d6f540cf21d66fc4e5`: success, run 125. This is not a test result for the work branch.
 - No local test command was executed in this session.
-- Work-branch CI result: pending recheck; do not claim verified until fetched.
+- Work-branch CI result: success for code/test commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`, run 39482443085. The later plan-only commit must still be distinguished from the tested code commit.
 
 ### Open scientific questions
 - Complete coverage of the Lao vowel inventory and orthographic combinations.
@@ -95,4 +95,4 @@ Static source inspection identified a Python vowel-matching precedence risk: gen
 - Scientific completion is blocked on rule-by-rule source verification and an independent corpus, not on documentation volume.
 
 ### One next step
-Fetch the latest workflow run for `fix/python-vowel-pattern-priority-20261020`. If it passes, mark LAO-PY-001 and LAO-PY-002 `DONE_VERIFIED` with the exact head SHA and run URL; if it fails, inspect job logs and fix the failure before moving to the status-propagation defect (LAO-STATUS-001).
+Confirm the latest branch head and the successful run for code/test commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`. Then inspect `core.py` warning/status propagation (LAO-STATUS-001); do not infer that warning-bearing parses are fully established.
