@@ -44,6 +44,10 @@ def analyze(text: str) -> Analysis:
             status = "EVIDENCE LIMITED"
 
         local_warnings = list(parsed.get("warnings", []))
+        # A computable IPA string is not enough to establish an analysis:
+        # malformed/unconsumed graphemes must lower the confidence status.
+        if local_warnings and status == "ESTABLISHED":
+            status = "EVIDENCE LIMITED"
         analysis_warnings.extend(local_warnings)
         syllables.append(
             SyllableAnalysis(
