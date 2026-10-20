@@ -94,3 +94,41 @@ class TestSharedCodaFixtures(unittest.TestCase):
         parsed = parse_syllable("ກາສ")
         self.assertIsNone(parsed["coda"])
         self.assertIn("UNCONSUMED_AFTER_VOWEL:ສ", parsed["warnings"])
+
+
+class TestVowelPrecedenceNegativeControls(unittest.TestCase):
+    """Near-neighbour controls for the highest-risk overlapping spellings.
+
+    These are engineering controls for parser discrimination, not a Lao gold
+    corpus; the fixture metadata carries the same limitation.
+    """
+    def test_near_neighbour_spellings_keep_distinct_vowel_categories(self):
+        cases = [
+            ("PRE-E-SHORT-VS-LONG", "ເກະ", "E", "ເກ", "EE"),
+            ("PRE-AE-SHORT-VS-LONG", "ແກະ", "AE", "ແກ", "AEE"),
+            ("PRE-O-SHORT-VS-LONG", "ໂກະ", "O", "ໂກ", "OO"),
+            ("PRE-OE-SHORT-VS-LONG-E", "ເກິ", "OE", "ເກ", "EE"),
+            ("PRE-OE-LONG-VS-LONG-E", "ເກີ", "OEE", "ເກ", "EE"),
+            ("PRE-IA-SHORT-VS-LONG", "ເກັຽ", "IA", "ເກຽ", "IA_LONG"),
+            ("PRE-UA-SHORT-VS-LONG", "ເກຶອ", "UA", "ເກືອ", "UA_LONG"),
+            ("PRE-AW-VS-AW-LONG", "ເກາະ", "AW", "ເກົາ", "AW_LONG"),
+            ("POST-UO-SHORT-VS-LONG", "ກົວະ", "UO", "ກົວ", "UO_LONG"),
+            ("POST-O-SHORT-VS-LONG", "ກັອບ", "AWW_SHORT_ALT", "ກໍ", "AWW"),
+            ("POST-UO-SHORT-ALT-VS-LONG", "ກັວບ", "UO_SHORT_ALT", "ກວງ", "UO_LONG_ALT"),
+        ]
+        for case_id, positive, positive_id, contrast, contrast_id in cases:
+            with self.subTest(case=case_id, role="positive"):
+                result = analyze(positive)
+                self.assertEqual(len(result.syllables), 1)
+                self.assertEqual(result.syllables[0].vowel, positive_id)
+            with self.subTest(case=case_id, role="contrast"):
+                result = analyze(contrast)
+                self.assertEqual(len(result.syllables), 1)
+                self.assertEqual(result.syllables[0].vowel, contrast_id)
+
+    def test_invalid_extra_vowel_material_is_not_silently_consumed(self):
+        for surface in ("ກາງເ", "ເກິະ", "ເກີະ"):
+            with self.subTest(surface=surface):
+                parsed = parse_syllable(surface)
+                self.assertTrue(parsed["warnings"], surface)
+                self.assertNotEqual(analyze(surface).status, "OK")
