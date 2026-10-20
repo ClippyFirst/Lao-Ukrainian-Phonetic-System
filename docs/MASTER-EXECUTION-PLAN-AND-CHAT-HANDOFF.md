@@ -121,3 +121,14 @@ Check CI for the current handoff commit. Continue LAO-CODA-001 with additional i
 - Relevant sibling branches were compared too: `fix/lao-vowel-ia-segmentation-20261009`, `fix/lao-multisyllable-h-to-h-20261009`, and `audit/finalize-research-grade` are diverged from current `main`; none was merged. Their diffs include older web/target/docs changes and are not a safer direct integration base than the branch being reviewed against live `main`.
 - External comparator candidate: [`lao2ipa` 1.0.0](https://github.com/byu-matrix-lab/lao2ipa), also listed on [PyPI](https://pypi.org/project/lao2ipa/1.0.0/). Its published metadata states Apache-2.0 and an IPA output mode; its README specifically flags tone assignment and vowel clusters as heuristic areas. This is suitable as an independent *candidate implementation*, not a gold standard. The runtime could not be fetched/executed in the current environment (network resolution/download unavailable), so no output-to-output comparison is claimed. Next valid step is to run it in a network-enabled reproducible environment against a frozen corpus and report disagreements, not majority-vote them away.
 - Do not merge until the PR check is green and a reviewer has considered the independent comparator/corpus limitation. Existing green CI establishes deterministic engineering consistency, not phonological truth.
+
+
+## Handoff update — external G2P harness added (2026-10-20)
+
+- PR: [#8](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/8), still open and unmerged.
+- Independent-comparison tracking: [issue #9](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/9).
+- Added `scripts/compare_external_g2p.py` and `docs/independent-g2p-comparison.md`. The harness calls the documented `lao2ipa.transliterate(..., output="ipa")` API, captures per-case output, normalizes to NFC only, and writes JSON. Phonological mismatches remain review data; runtime failures are surfaced separately.
+- Updated `docs/validation.md` to record the current green run and the status of the independent comparator.
+- Latest completed full CI before the validation-doc-only commit: [run 39489040363](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39489040363), head `afa168c19a60d5d8efce24f0ebeae47246897eb0`; passed Python, browser, regeneration, reproducibility, and build/asset checks.
+- The comparison harness has **not** been run against the external package in this environment. No comparison rate or independent accuracy claim exists. Run the documented command in a network-enabled clean environment, preserve the JSON artifact, and manually review every mismatch.
+- Latest commits after the cited run are documentation-only. Verify CI on the current branch head before claiming current-head green or merging.
