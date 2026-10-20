@@ -212,3 +212,21 @@ test("coda must be the final grapheme of syllable material", () => {
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.syllables.some((s) => s.surface === "ກາງເ" && s.coda === "ງ"), false);
 });
+
+
+test("shared legal coda inventory matches browser phonemic IPA", () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const fixture = JSON.parse(readFileSync(resolve(here, "../tests/fixtures/coda_cases.json"), "utf8"));
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
+    assert.equal(result.syllables[0].coda, item.coda, item.id);
+  }
+});
+
+test("unregistered final consonant is not accepted as a coda", () => {
+  const result = analyze("ກາສ");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.some((s) => s.surface === "ກາສ" && s.coda === "ສ"), false);
+});
