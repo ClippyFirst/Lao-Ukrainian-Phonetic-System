@@ -69,3 +69,11 @@ class TestShortVowelCodaConstraints(unittest.TestCase):
     def test_short_o_variant_with_coda_remains_supported(self):
         result = analyze("ກັອບ")
         self.assertEqual(result.syllables[0].phonemic_ipa, "kɔp")
+
+
+class TestCodaPositionValidation(unittest.TestCase):
+    def test_legal_coda_must_be_the_last_grapheme(self):
+        parsed = parse_syllable("ກາງະ")
+        self.assertIsNone(parsed["coda"])
+        self.assertIn("UNCONSUMED_AFTER_VOWEL:ງະ", parsed["warnings"])
+        self.assertEqual(analyze("ກາງະ").status, "PARTIAL")
