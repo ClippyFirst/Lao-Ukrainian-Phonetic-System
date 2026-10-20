@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "purpose": "Engineering regression fixtures for parser precedence only; not an expert-adjudicated Lao gold corpus.",
+  "cases": [
+    {
+      "id": "VOWEL-OE-SHORT",
+      "surface": "ເກິ",
+      "phonemic_ipa": "kɤ"
+    },
+    {
+      "id": "VOWEL-OE-LONG",
+      "surface": "ເກີ",
+      "phonemic_ipa": "kɤː"
+    },
+    {
+      "id": "VOWEL-IA-LONG",
+      "surface": "ເກຽ",
+      "phonemic_ipa": "kiːə"
+    }
+  ]
+}
