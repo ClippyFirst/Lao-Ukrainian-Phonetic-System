@@ -188,7 +188,14 @@ function analyzeWord(word) {
       // Prefer a boundary before a consonant followed by its own vowel sign;
       // otherwise greedy longest-match merges ພະນະ into the false syllable ພະນ.
       const score = best[j].score + length - (codaStartsNextSyllable ? 3 : 0);
-      if (score > best[i].score) best[i] = { score, parts: [candidate, ...best[j].parts] };
+      const candidateParts = [candidate, ...best[j].parts];
+      // If two parses consume the same number of code points, prefer the
+      // parse with fewer syllable fragments. Without this tie-break, a valid
+      // complex vowel such as ກົວະ can lose to the equally-scored split ກົ|ວະ.
+      if (score > best[i].score ||
+          (score === best[i].score && candidateParts.length < best[i].parts.length)) {
+        best[i] = { score, parts: candidateParts };
+      }
     }
   }
   return best[0].parts;
