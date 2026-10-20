@@ -1,4 +1,6 @@
+import json
 import unittest
+from pathlib import Path
 from lao_ukrainian import analyze
 
 class TestStructuralVowels(unittest.TestCase):
@@ -29,3 +31,14 @@ class TestStructuralVowels(unittest.TestCase):
     def test_preposed_ia_long_is_not_shadowed_by_long_e(self):
         self.assertEqual(analyze("ເກຽ").syllables[0].vowel, "IA_LONG")
         self.assertEqual(analyze("ເກຽ").syllables[0].phonemic_ipa, "kiːə")
+
+
+class TestSharedVowelPrecedenceFixtures(unittest.TestCase):
+    def test_shared_fixture_ipa(self):
+        fixture_path = Path(__file__).parent / "fixtures" / "vowel_precedence_cases.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        self.assertEqual(fixture["schema_version"], 1)
+        for case in fixture["cases"]:
+            with self.subTest(case=case["id"]):
+                self.assertEqual(analyze(case["surface"]).syllables[0].phonemic_ipa,
+                                 case["phonemic_ipa"])
