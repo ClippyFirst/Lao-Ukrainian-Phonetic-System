@@ -77,3 +77,20 @@ class TestCodaPositionValidation(unittest.TestCase):
         self.assertIsNone(parsed["coda"])
         self.assertIn("UNCONSUMED_AFTER_VOWEL:ງເ", parsed["warnings"])
         self.assertEqual(analyze("ກາງເ").status, "PARTIAL")
+
+
+class TestSharedCodaFixtures(unittest.TestCase):
+    def test_shared_legal_coda_inventory(self):
+        fixture_path = Path(__file__).parent / "fixtures" / "coda_cases.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        for case in fixture["cases"]:
+            with self.subTest(case=case["id"]):
+                result = analyze(case["surface"])
+                self.assertEqual(len(result.syllables), 1)
+                self.assertEqual(result.syllables[0].phonemic_ipa, case["phonemic_ipa"])
+                self.assertEqual(result.syllables[0].coda, case["coda"])
+
+    def test_unregistered_final_is_not_a_coda(self):
+        parsed = parse_syllable("ກາສ")
+        self.assertIsNone(parsed["coda"])
+        self.assertIn("UNCONSUMED_AFTER_VOWEL:ສ", parsed["warnings"])
