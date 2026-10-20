@@ -79,3 +79,9 @@ class TestCore(unittest.TestCase):
         s = analyze("ອາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "aː")
         self.assertEqual(s.practical_ukrainian, "а")
+
+
+    def test_unconsumed_grapheme_cannot_be_marked_established(self):
+        s = analyze("ກາລ").syllables[0]
+        self.assertNotEqual(s.status, "ESTABLISHED")
+        self.assertTrue(any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings))
