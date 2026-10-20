@@ -73,7 +73,7 @@ class TestShortVowelCodaConstraints(unittest.TestCase):
 
 class TestCodaPositionValidation(unittest.TestCase):
     def test_legal_coda_must_be_the_last_grapheme(self):
-        parsed = parse_syllable("ກາງະ")
+        parsed = parse_syllable("ກາງເ")
         self.assertIsNone(parsed["coda"])
-        self.assertIn("UNCONSUMED_AFTER_VOWEL:ງະ", parsed["warnings"])
-        self.assertEqual(analyze("ກາງະ").status, "PARTIAL")
+        self.assertIn("UNCONSUMED_AFTER_VOWEL:ງເ", parsed["warnings"])
+        self.assertEqual(analyze("ກາງເ").status, "PARTIAL")
