@@ -11,3 +11,7 @@ CLM-LAO-UA-TARGET,Ukrainian rendering should be generated from Lao IPA and the c
 CLM-LAO-SERBIAN-CONTROL,Serbian official sources render Vientiane as Вијентијан,established,SRC-SERBIA-RGZ;SRC-SERBIA-MFA
 CLM-LAO-BULGARIAN-CONTROL,Bulgarian official sources render Vientiane as Виентян,established,SRC-BULGARIA-MFA
 CLM-LAO-BULGARIAN-PRINCIPLE,Bulgarian geographical transcription emphasizes target-language phonetics and orthography,established,SRC-BULGARIA-UNGEGN
+CLM-LAO-COMPOSITE-VOWELS,Lao orthography contains multipart vowel spellings and some vowel spellings vary between open and closed syllables,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-INVENTORY-ORTHO,The orthographic inventory includes 28 composite vowel spellings in the descriptive reference; this is not equivalent to 28 phonemic vowel categories,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-IPA-EXAMPLE,The spelling ເກິ is documented with pronunciation kɤ,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VIENTIANE-INVENTORY,Ueda's description of central Vientiane Lao reports short-long contrasts for the vowel inventory and three diphthongs,established,SRC-UEDA
