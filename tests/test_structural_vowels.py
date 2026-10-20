@@ -42,8 +42,10 @@ class TestSharedVowelPrecedenceFixtures(unittest.TestCase):
         self.assertEqual(fixture["schema_version"], 1)
         for case in fixture["cases"]:
             with self.subTest(case=case["id"]):
-                self.assertEqual(analyze(case["surface"]).syllables[0].phonemic_ipa,
-                                 case["phonemic_ipa"])
+                result = analyze(case["surface"])
+                self.assertEqual(len(result.syllables), 1, "fixture must remain one syllable")
+                self.assertEqual(result.syllables[0].surface, case["surface"])
+                self.assertEqual(result.syllables[0].phonemic_ipa, case["phonemic_ipa"])
 
 
 class TestVowelRegistryCoverage(unittest.TestCase):
