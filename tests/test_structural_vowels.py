@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from lao_ukrainian import analyze
 from lao_ukrainian.data import load_registry
-from lao_ukrainian.parser import STRUCTURES
+from lao_ukrainian.parser import STRUCTURES, parse_syllable
 
 class TestStructuralVowels(unittest.TestCase):
     def test_preposed_e_long(self):
@@ -54,3 +54,18 @@ class TestVowelRegistryCoverage(unittest.TestCase):
         parser_ids = {vowel_id for _, _, _, vowel_id in STRUCTURES}
         self.assertEqual(registry_ids - parser_ids, set(),
                          "Vowel registry IDs without parser structures")
+
+
+class TestShortVowelCodaConstraints(unittest.TestCase):
+    def test_short_a_without_coda_is_evidence_limited(self):
+        parsed = parse_syllable("ກັ")
+        self.assertIn("SHORT_VOWEL_REQUIRES_CODA:A2", parsed["warnings"])
+        self.assertEqual(analyze("ກັ").status, "PARTIAL")
+
+    def test_short_open_o_variant_without_coda_is_evidence_limited(self):
+        parsed = parse_syllable("ກັອ")
+        self.assertIn("SHORT_VOWEL_REQUIRES_CODA:AWW_SHORT_ALT", parsed["warnings"])
+
+    def test_short_o_variant_with_coda_remains_supported(self):
+        result = analyze("ກັອບ")
+        self.assertEqual(result.syllables[0].phonemic_ipa, "kɔp")
