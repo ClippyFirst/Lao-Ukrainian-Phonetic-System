@@ -4,11 +4,11 @@ This is an executable regression coverage matrix for the current Python parser's
 
 ## Per-template positive and negative controls
 
-`tests/test_structural_vowels.py::TestEveryVowelStructureHasPositiveAndNegativeControls` iterates every row in `STRUCTURES`, asserts the synthetic positive parses to the declared vowel ID, then removes one grapheme from the suffix (or uses onset-only when the suffix is empty) and asserts the near-miss does not parse as the same vowel ID.
+`tests/test_structural_vowels.py::TestEveryVowelStructureHasPositiveAndNegativeControls` iterates every row in `STRUCTURES`, asserts the synthetic positive parses to the declared vowel ID, then removes one grapheme from the suffix (or substitutes a different preposed sign for empty-suffix templates) and asserts the near-miss does not parse as the same vowel ID.
 
 | Template | Preposed grapheme | Postposed sequence | Vowel ID | Synthetic positive | Negative control |
 |---|---|---|---|---|---|
-| `pre_e_short` | ເ | ະ | `E` | `ເກະ` | Remove the last suffix grapheme (or prefix for empty suffix); must not resolve to `E` |
+| `pre_e_short` | ເ | ະ | `E` | `ເກະ` | Remove the last suffix grapheme; for empty-suffix templates substitute another preposed sign; must not resolve to `E` |
 | `pre_e_short_kan` | ເ | ັ | `E` | `ເກັ` | Remove the last suffix grapheme (or prefix for empty suffix); must not resolve to `E` |
 | `pre_e_long` | ເ | ∅ | `EE` | `ເກ` | Remove the last suffix grapheme (or prefix for empty suffix); must not resolve to `EE` |
 | `pre_ae_short` | ແ | ະ | `AE` | `ແກະ` | Remove the last suffix grapheme (or prefix for empty suffix); must not resolve to `AE` |
