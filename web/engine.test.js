@@ -192,6 +192,8 @@ test("shared vowel precedence fixtures match browser phonemic IPA", () => {
   assert.equal(fixture.schema_version, 1);
   for (const item of fixture.cases) {
     const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, `${item.id}: fixture must remain one syllable`);
+    assert.equal(result.syllables[0].surface, item.surface, item.id);
     assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
   }
 });
