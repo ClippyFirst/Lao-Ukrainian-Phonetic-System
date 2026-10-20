@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "purpose": "Engineering coverage of graphemes currently declared as legal codas; values mirror the current registry and require independent linguistic review.",
+  "cases": [
+    {
+      "id": "CODA-K",
+      "surface": "ກາກ",
+      "phonemic_ipa": "kaːk",
+      "coda": "ກ"
+    },
+    {
+      "id": "CODA-NG",
+      "surface": "ກາງ",
+      "phonemic_ipa": "kaːŋ",
+      "coda": "ງ"
+    },
+    {
+      "id": "CODA-Y",
+      "surface": "ກາຍ",
+      "phonemic_ipa": "kaːj",
+      "coda": "ຍ"
+    },
+    {
+      "id": "CODA-T",
+      "surface": "ກາດ",
+      "phonemic_ipa": "kaːt",
+      "coda": "ດ"
+    },
+    {
+      "id": "CODA-N",
+      "surface": "ການ",
+      "phonemic_ipa": "kaːn",
+      "coda": "ນ"
+    },
+    {
+      "id": "CODA-P",
+      "surface": "ກາບ",
+      "phonemic_ipa": "kaːp",
+      "coda": "ບ"
+    },
+    {
+      "id": "CODA-M",
+      "surface": "ກາມ",
+      "phonemic_ipa": "kaːm",
+      "coda": "ມ"
+    },
+    {
+      "id": "CODA-R-EXTENDED",
+      "surface": "ກາຣ",
+      "phonemic_ipa": "kaːn",
+      "coda": "ຣ"
+    },
+    {
+      "id": "CODA-W",
+      "surface": "ກາວ",
+      "phonemic_ipa": "kaːw",
+      "coda": "ວ"
+    }
+  ]
+}
