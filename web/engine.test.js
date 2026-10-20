@@ -197,3 +197,11 @@ test("shared vowel precedence fixtures match browser phonemic IPA", () => {
     assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
   }
 });
+
+
+test("short Lao vowel signs require a coda when specified by the spelling", () => {
+  assert.equal(analyze("ກັ").status, "PARTIAL");
+  const closedO = analyze("ກັອບ");
+  assert.equal(closedO.syllables[0].ipa, "kɔp");
+  assert.equal(closedO.status, "OK");
+});
