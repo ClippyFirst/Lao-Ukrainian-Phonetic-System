@@ -26,6 +26,36 @@
       "id": "VOWEL-IA-LONG-STANDALONE",
       "surface": "ວຽງ",
       "phonemic_ipa": "ʋiːəŋ"
+    },
+    {
+      "id": "VOWEL-IA-SHORT",
+      "surface": "ເກັຽ",
+      "phonemic_ipa": "kiə"
+    },
+    {
+      "id": "VOWEL-UA-SHORT",
+      "surface": "ເກຶອ",
+      "phonemic_ipa": "kɯə"
+    },
+    {
+      "id": "VOWEL-UA-LONG",
+      "surface": "ເກືອ",
+      "phonemic_ipa": "kɯːə"
+    },
+    {
+      "id": "VOWEL-AW",
+      "surface": "ເກົາ",
+      "phonemic_ipa": "kaw"
+    },
+    {
+      "id": "VOWEL-UO-SHORT",
+      "surface": "ກົວະ",
+      "phonemic_ipa": "kuə"
+    },
+    {
+      "id": "VOWEL-UO-LONG",
+      "surface": "ກົວ",
+      "phonemic_ipa": "kuːə"
     }
   ]
 }
