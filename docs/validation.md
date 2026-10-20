@@ -25,10 +25,16 @@ Derived correspondence data can be regenerated from the canonical mapping:
 
 ## Test status
 
-The latest source changes were reviewed structurally through the GitHub repository. A full local execution of the updated branch was **not available through the connected GitHub interface**, so this audit deliberately does not claim a fresh numeric pass count for the modified branch.
+Fresh GitHub Actions verification for the current work-branch head `0d0d443e4fbc3a367a149479727894cfbedbb2ac` passed in [run 39487769488](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39487769488) on 2026-10-20.
 
-The pre-audit implementation had previously passed its local regression suite, but that result is not reused as proof that the newly modified branch passes unchanged.
+- Python unit tests: **45 passed**.
+- Browser engine tests: **34 passed**.
+- Canonical browser data regeneration: passed.
+- Generated-data reproducibility check: passed.
+- Built-page and relative-asset check: passed.
+
+This is evidence for the work branch only. It does not imply that these changes are already present on `main`, and it is not an expert linguistic adjudication.
 
 ## Empirical validation
 
-No empirical accuracy percentage is claimed until a versioned Lao gold corpus with an explicit denominator and expert adjudication exists.
+No empirical accuracy percentage is claimed until a versioned Lao gold corpus with an explicit denominator and expert adjudication exists. Shared regression fixtures are not an independent gold corpus.
