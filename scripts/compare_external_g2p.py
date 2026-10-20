@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare this project's Lao→IPA output with the optional lao2ipa package.
+"""Compare this project's Lao→IPA output with lao2ipa and fixture expectations.
 
 Run from the repository root after installing the project and lao2ipa==1.0.0:
     python -m pip install -e .
@@ -66,10 +66,11 @@ def main() -> int:
     results: list[dict[str, Any]] = []
     for case in cases:
         surface = case["surface"]
+        expected = nfc(case.get("phonemic_ipa"))
         row: dict[str, Any] = {
             "id": case.get("id"),
             "surface": surface,
-            "fixture_expected_ipa": case.get("phonemic_ipa"),
+            "fixture_expected_ipa": expected,
         }
         try:
             local_raw = project_ipa(surface)
@@ -86,6 +87,8 @@ def main() -> int:
                     "external_ipa_raw": external_raw,
                     "project_ipa_nfc": local,
                     "external_ipa_nfc": external,
+                    "project_matches_fixture": expected is not None and local == expected,
+                    "external_matches_fixture": expected is not None and external == expected,
                     "exact_match": local == external,
                     "mismatch_category": None if local == external else "UNCLASSIFIED_REQUIRES_REVIEW",
                 }
@@ -95,6 +98,10 @@ def main() -> int:
                 {
                     "project_ipa_raw": None,
                     "external_ipa_raw": None,
+                    "project_ipa_nfc": None,
+                    "external_ipa_nfc": None,
+                    "project_matches_fixture": False,
+                    "external_matches_fixture": False,
                     "exact_match": False,
                     "mismatch_category": "RUNTIME_ERROR",
                     "error": f"{type(exc).__name__}: {exc}",
@@ -108,10 +115,13 @@ def main() -> int:
         external_version = "unknown"
 
     matches = sum(row.get("exact_match") is True for row in results)
+    project_fixture_matches = sum(row.get("project_matches_fixture") is True for row in results)
+    external_fixture_matches = sum(row.get("external_matches_fixture") is True for row in results)
     runtime_errors = sum(row.get("mismatch_category") == "RUNTIME_ERROR" for row in results)
+    expected_count = sum(row.get("fixture_expected_ipa") is not None for row in results)
     report = {
-        "schema_version": 1,
-        "purpose": "Comparative diagnostic only; neither implementation is treated as a gold standard.",
+        "schema_version": 2,
+        "purpose": "Comparative diagnostic only; neither implementation nor the engineering fixture is treated as an independent gold standard.",
         "fixture_path": str(args.fixture.relative_to(ROOT)) if args.fixture.is_relative_to(ROOT) else str(args.fixture),
         "fixture_schema_version": fixture.get("schema_version"),
         "fixture_purpose": fixture.get("purpose"),
@@ -131,10 +141,14 @@ def main() -> int:
         },
         "summary": {
             "cases": len(results),
-            "exact_matches": matches,
+            "expected_ipa_cases": expected_count,
+            "project_fixture_matches": project_fixture_matches,
+            "external_fixture_matches": external_fixture_matches,
+            "exact_matches_between_implementations": matches,
             "mismatches_or_errors": len(results) - matches,
             "exact_match_rate": matches / len(results),
             "runtime_errors": runtime_errors,
+            "note": "Fixture match counts measure agreement with engineering regression expectations only, not linguistic accuracy.",
         },
         "results": results,
     }
@@ -146,7 +160,7 @@ def main() -> int:
     )
     print(json.dumps(report["summary"], indent=2))
     print(f"Report written to: {args.output}")
-    print("Review every mismatch before interpreting the match rate.")
+    print("Review fixture disagreements and every cross-implementation mismatch.")
     # A phonological disagreement is data to inspect, not a program failure.
     # Runtime errors still signal that the comparison could not be completed.
     return 2 if runtime_errors else 0
