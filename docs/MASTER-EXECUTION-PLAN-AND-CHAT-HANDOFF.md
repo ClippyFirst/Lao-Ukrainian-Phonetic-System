@@ -22,8 +22,8 @@ Static source inspection identified a Python vowel-matching precedence risk: gen
 | ID | Priority | Status | Scope / evidence | Acceptance criteria / dependencies |
 |---|---|---|---|---|
 | LAO-AUD-001 | P0 | DONE_VERIFIED | Repository tree and key Python/browser engines, registries, tests, workflows, audit/methodology/limitations docs inspected on 2026-10-20 | Current tracked files and key modules identified; no claim that every row of every registry has been scientifically adjudicated |
-| LAO-PY-001 | P0 | IN_PROGRESS | `src/lao_ukrainian/parser.py`; generic empty-suffix patterns could precede specific vowel patterns | Python tests and new regression tests pass on the work-branch head |
-| LAO-PY-002 | P0 | IN_PROGRESS | `tests/test_structural_vowels.py`; added OE, OEE and IA_LONG precedence regressions | New tests pass and full Python + JS + build/reproducibility workflow passes |
+| LAO-PY-001 | P0 | DONE_VERIFIED | `src/lao_ukrainian/parser.py`; generic empty-suffix patterns could precede specific vowel patterns | Python tests and new regression tests passed at code commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`; run [39482443085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482443085) |
+| LAO-PY-002 | P0 | DONE_VERIFIED | `tests/test_structural_vowels.py`; added OE, OEE and IA_LONG precedence regressions | New tests and full Python + JS + build/reproducibility workflow passed at code commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`; run [39482443085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482443085) |
 | LAO-STATUS-001 | P0 | TODO | `src/lao_ukrainian/core.py` computes status; parser warnings may coexist with generated IPA/practical output | Unknown/unconsumed structure cannot be presented as fully established; tests cover it |
 | LAO-PARSER-001 | P0 | TODO | Python parser and browser parser are separate implementations | Differential corpus demonstrates agreement where the engines claim the same supported scope |
 | LAO-TONE-001 | P0 | TODO | `data/lao/tone_rules.csv`, `src/lao_ukrainian/phonology.py`, `web/engine.js` | Every implemented tone rule has source, defined conditions, examples and tests; phonological categories distinguished from measured contours |
@@ -80,7 +80,7 @@ Static source inspection identified a Python vowel-matching precedence risk: gen
 - GitHub tree/file/API inspection performed.
 - Baseline `main` verification run for `763b67892838929ef7ca46d6f540cf21d66fc4e5`: success, run 125. This is not a test result for the work branch.
 - No local test command was executed in this session.
-- Work-branch CI result: success for code/test commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`, run 39482443085. The later plan-only commit must still be distinguished from the tested code commit.
+- Work-branch CI result: success for code/test commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`, [run 39482443085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39482443085). All workflow steps passed: Python tests, browser engine tests, build/data regeneration, reproducibility and built-page checks. Later commits changed only the handoff document.
 
 ### Open scientific questions
 - Complete coverage of the Lao vowel inventory and orthographic combinations.
@@ -95,4 +95,4 @@ Static source inspection identified a Python vowel-matching precedence risk: gen
 - Scientific completion is blocked on rule-by-rule source verification and an independent corpus, not on documentation volume.
 
 ### One next step
-Confirm the latest branch head and the successful run for code/test commit `3695815dfbc3f48d8bd6a4e4395aa46f44e8e5e3`. Then inspect `core.py` warning/status propagation (LAO-STATUS-001); do not infer that warning-bearing parses are fully established.
+Inspect `core.py` warning/status propagation (LAO-STATUS-001); do not infer that warning-bearing parses are fully established.
