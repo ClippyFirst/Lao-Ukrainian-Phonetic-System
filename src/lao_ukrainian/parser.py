@@ -47,6 +47,7 @@ STRUCTURES = (
     ("post_aa", "", "າ", "AA"),
     ("post_i", "", "ິ", "I"),
     ("post_ii", "", "ີ", "II"),
+    ("post_o_short_closed", "", "ົ", "O"),
     ("post_y", "", "ຶ", "Y"),
     ("post_yy", "", "ື", "YY"),
     ("post_u", "", "ຸ", "U"),
@@ -60,6 +61,7 @@ STRUCTURES = (
     ("post_ua_long", "", "ົວ", "UO_LONG"),
     ("post_ua_long_closed_alt", "", "ວ", "UO_LONG_ALT"),
     ("post_ua_long_open_alt", "", "ວາ", "UO_LONG_OPEN"),
+    ("post_ia_long_standalone", "", "ຽ", "IA_LONG"),
     ("short_o_around", "ເ", "າະ", "AW"),
 )
 
