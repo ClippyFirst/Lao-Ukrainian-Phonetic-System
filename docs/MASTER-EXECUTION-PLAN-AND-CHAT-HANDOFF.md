@@ -5,7 +5,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `763b67892838929ef7ca46d6f540cf21d66fc4e5`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
-Work branch latest verified code/test commit at handoff: `ca0e8d39493bad65918e39e13ba79776438ac0b1`; current branch head after follow-up browser regressions: pending CI for `476a334102d2fc04c91868c39ab9fdbd2e648705`
+Work branch latest verified code/test commit at handoff: `ca0e8d39493bad65918e39e13ba79776438ac0b1`; current shared-fixture test commit: `1f8b5239f070d7eca6b3d119fd512fba9afd598d` (CI pending at last update)
 
 ## Status vocabulary
 Use only: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`.
@@ -53,7 +53,7 @@ Static source inspection identified and fixed a Python vowel-matching precedence
 | IPA | Generated from graphemic/phonological tables | Partial | Independent expected IPA corpus, segment-by-segment review |
 | Ukrainian adaptation | Canonical correspondence table | Partial; project policy, not national standard | Independent review and target-specific examples |
 | Exceptions/names | Limitations documented | Incomplete | Add named/loan/ambiguous examples and preserve unresolved statuses |
-| Browser/Python parity | Separate implementations and test suites; Python OE/OEE/IA_LONG regressions exist; browser regressions now added in commit `476a334102d2fc04c91868c39ab9fdbd2e648705` | Partial; pending current-head CI | Add shared input/expected-output fixtures and compare per-syllable fields across both engines |
+| Browser/Python parity | Shared fixture `tests/fixtures/vowel_precedence_cases.json` is now consumed by both `tests/test_structural_vowels.py` and `web/engine.test.js` (commits `9556062`, `57e07f2`, `1f8b523`) | Partial; shared IPA fixture CI pending | Expand fixtures beyond the three precedence regressions and compare status, coda, tone and Ukrainian output where semantics align |
 | CI/build/deployment | Workflow exists; baseline main run succeeded 2026-10-09 | Historical baseline only | Check current work-branch run and live deployment |
 | Sources and reproducibility | Sources/claims registries and generation scripts | Partial | Audit each claim, citation metadata and generated artifacts |
 
