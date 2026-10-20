@@ -2,6 +2,8 @@ import json
 import unittest
 from pathlib import Path
 from lao_ukrainian import analyze
+from lao_ukrainian.data import load_registry
+from lao_ukrainian.parser import STRUCTURES
 
 class TestStructuralVowels(unittest.TestCase):
     def test_preposed_e_long(self):
@@ -42,3 +44,11 @@ class TestSharedVowelPrecedenceFixtures(unittest.TestCase):
             with self.subTest(case=case["id"]):
                 self.assertEqual(analyze(case["surface"]).syllables[0].phonemic_ipa,
                                  case["phonemic_ipa"])
+
+
+class TestVowelRegistryCoverage(unittest.TestCase):
+    def test_every_registry_vowel_has_a_python_structure(self):
+        registry_ids = {item["id"] for item in load_registry()["vowels"]}
+        parser_ids = {vowel_id for _, _, _, vowel_id in STRUCTURES}
+        self.assertEqual(registry_ids - parser_ids, set(),
+                         "Vowel registry IDs without parser structures")
