@@ -16,6 +16,16 @@
       "id": "VOWEL-IA-LONG",
       "surface": "ເກຽ",
       "phonemic_ipa": "kiːə"
+    },
+    {
+      "id": "VOWEL-O-SHORT-CLOSED",
+      "surface": "ຄົນ",
+      "phonemic_ipa": "kʰon"
+    },
+    {
+      "id": "VOWEL-IA-LONG-STANDALONE",
+      "surface": "ວຽງ",
+      "phonemic_ipa": "ʋiːəŋ"
     }
   ]
 }
