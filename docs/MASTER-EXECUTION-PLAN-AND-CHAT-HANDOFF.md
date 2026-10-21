@@ -157,7 +157,7 @@ Check CI for the current handoff commit. Continue LAO-CODA-001 with additional i
 | LAO-CODA-001 | PARTIAL | Shared fixtures cover nine registered coda graphemes and reject an unregistered final. Independently verify the inventory and resolve the documented glottal-stop/orthographic representation question. |
 | LAO-TONE-001 | IN_PROGRESS | Added `tests/test_tone_rule_registry.py`: unique selector keys, declared field values, reachability of all 17 rules, and conservative fallback for an unlisted class/mark combination. CI passes. Still requires the full onset-class × live/dead × quantity × tone-mark cross-product, source-by-source audit, restricted-mark review, and contour-convention review. |
 | LAO-CLUSTER-001 | TODO | Add evidence-backed rules and adversarial cases for legal initial clusters, silent/high-class sequences, and boundary ambiguities. |
-| LAO-UNICODE-001 | PARTIAL | NFC and mixed-script checks exist; malformed mark ordering, controls, ZWSP and cross-engine parity still need broader coverage. |
+| LAO-UNICODE-001 | IN_PROGRESS | Python now accepts CR as line whitespace like the browser; regression tests cover CRLF, non-whitespace C0 controls and U+200B rejection in both test suites. CI passes at code head `04f60bfa4fe015307899b889fbafcc77963876f9`. Full malformed-mark ordering, format-control inventory, and broader analysis parity remain open. |
 | LAO-UKR-001 | PARTIAL | Python `target.py` consumes phonemic IPA through the canonical correspondence registry; browser engine also maps from IPA. Independent target-policy review remains open. |
 | LAO-EVIDENCE-001 | PARTIAL | Claims and sources were expanded for vowel families; exact passage/page/section locators and conflict/dialect scope must be checked rule by rule. |
 | LAO-CORPUS-001 | BLOCKED | No versioned independently adjudicated Lao gold corpus. Acceptance requires a licensed/source-attributed corpus, explicit dialect and IPA conventions, denominator, expert adjudication and reproducible layer-level expected outputs. |
@@ -188,3 +188,12 @@ Status remains **research MVP / partial prototype**, not research-complete or re
 - Validation documentation was updated in commit `5ece54d0967afc05cd6415c5ec0f0811857e9a10` to record the verified 50/34 results. This handoff update itself is a later documentation commit and needs its own CI result before the final branch head can be called verified.
 - These tests validate rule-table integrity and selector behavior only. They do not establish that the recorded tone categories or contours are linguistically correct.
 - The tone audit remains `IN_PROGRESS`: next acceptance work is rule-by-rule primary-source verification, scrutiny of restricted marks and contour conventions, and independent expected examples. The code cross-product is now covered; it is not a scientific cross-product adjudication. Do not infer source correctness from a self-consistent registry.
+
+
+## Execution checkpoint — 2026-10-21 (Unicode validation)
+
+- Fixed a Python/browser input-validation mismatch: Python previously rejected carriage return while the browser explicitly accepted it as line whitespace. `src/lao_ukrainian/normalize.py` now permits CR alongside LF and tab.
+- Added Python tests for CRLF acceptance, rejection of another C0 control, and rejection of U+200B. Added browser regressions confirming CRLF input is accepted as whitespace and U+200B is rejected rather than silently removed.
+- CI run [39570439908](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570439908) passed at code commit `04f60bfa4fe015307899b889fbafcc77963876f9`: Python **53 passed**, browser **36 passed**, optional comparator harness syntax/CLI check passed, generated-data reproducibility passed, and built-page/relative-asset checks passed.
+- Updated `docs/unicode.md` and `docs/validation.md` to describe the behavior and evidence. The handoff itself is being updated after the code-head run; its new documentation commit still needs its own CI result.
+- Scope limitation: this is a targeted parity repair, not full Unicode conformance. Malformed combining-mark order, format-control policy, and complete cross-engine behavior remain open.
