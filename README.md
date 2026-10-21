@@ -83,9 +83,12 @@ For an installed package:
 The repository also contains a two-page local-first web instrument:
 
 - `index.html` — Lao input, Ukrainian practical output, IPA and per-syllable explanation;
-- `system.html` — the author's methodology, decisions, comparisons and limitations.
+- `system.html` — the methodology, decisions, comparisons and limitations.
 
-The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. One-time prerequisite: enable GitHub Pages in **Settings → Pages → Build and deployment → Source: GitHub Actions**. The workflow token cannot create the Pages site for this private repository automatically; after enabling it, run the `Deploy Lao web to GitHub Pages` workflow manually once or push a site change.
+**Live site:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/  
+**Methodology:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/system.html
+
+The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. The latest deployment of commit `007c6a7e0bce0ca72cda3ddda3054c69492ca3b8` succeeded in [workflow run 39597989697](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39597989697).
 
 Release verification:
 
@@ -99,6 +102,6 @@ The web layer is intentionally conservative and does not claim to replace the re
 
 ## Status
 
-**🟡 Research MVP; deployment and test automation are being hardened.**
+**🟡 Research MVP; the static web instrument is deployed.** Phonological source adjudication, an independently reviewed gold corpus, external G2P comparison, and full dialect/cluster coverage remain incomplete; deployment does not imply linguistic validation.
 
 The repository is a research foundation with explicit provenance and deterministic tests. It is not yet publication-ready: a larger syllable corpus, fuller cluster/ligature analysis, independent gold examples and expert adjudication are still required.
