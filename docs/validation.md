@@ -25,9 +25,9 @@ Derived correspondence data can be regenerated from the canonical mapping:
 
 ## Test status
 
-The work-branch head `a9e616563d306155751390e6ac13cbd273038633` passed GitHub Actions verification on 2026-10-21 in [run 39570058551](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570058551).
+The work-branch head `4b06606fb7db474a68734396752bcb0e32352398` passed GitHub Actions verification on 2026-10-21 in [run 39570205114](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570205114).
 
-- Python unit tests: **49 passed**, including four new tone-rule registry checks.
+- Python unit tests: **50 passed**, including tone-rule registry integrity and a 60-case onset-class × live/dead × quantity × tone-mark selector cross-product.
 - Browser engine tests: **34 passed**.
 - Optional external-G2P harness syntax and `--help` check: passed; the external package comparison itself was not run.
 - Canonical browser data regeneration: passed.
