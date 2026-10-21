@@ -25,16 +25,16 @@ Derived correspondence data can be regenerated from the canonical mapping:
 
 ## Test status
 
-The work-branch code head `04f60bfa4fe015307899b889fbafcc77963876f9` passed GitHub Actions verification on 2026-10-21 in [run 39570439908](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570439908).
+The work-branch code head `cff8f949ae4d26455895c2e9824f43c22bf9981d` passed GitHub Actions verification on 2026-10-21 in [run 39570654272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570654272).
 
-- Python unit tests: **53 passed**, including tone-rule registry integrity, a 60-case onset-class × live/dead × quantity × tone-mark selector cross-product, and CRLF/control/zero-width-space validation cases.
-- Browser engine tests: **36 passed**, including CRLF whitespace and explicit rejection of U+200B ZERO WIDTH SPACE.
+- Python unit tests: **54 passed**, including tone-rule registry integrity, a 60-case onset-class × live/dead × quantity × tone-mark selector cross-product, Unicode control handling, and shared IPA-to-Ukrainian target fixtures.
+- Browser engine tests: **37 passed**, including CRLF whitespace, U+200B rejection, and the same nine IPA-to-Ukrainian target fixtures.
 - Optional external-G2P harness syntax and `--help` check: passed; the external package comparison itself was not run.
 - Canonical browser data regeneration: passed.
 - Generated-data reproducibility check: passed.
 - Built-page and relative-asset check: passed.
 
-These runs verify the work branch, not `main`. CI success demonstrates deterministic engineering consistency; it is not an expert linguistic adjudication or evidence of corpus-level phonological accuracy. The tone-rule tests check table integrity, selector reachability and conservative fallback only; they do not independently validate the Vientiane tone model.
+These runs verify the work branch, not `main`. CI success demonstrates deterministic engineering consistency; it is not an expert linguistic adjudication or evidence of corpus-level phonological accuracy. The tone-rule tests check table integrity, selector reachability and conservative fallback only; they do not independently validate the Vientiane tone model. Target fixtures test the project-defined IPA-to-Ukrainian policy, not independent Lao pronunciation truth.
 
 ## Empirical validation
 
