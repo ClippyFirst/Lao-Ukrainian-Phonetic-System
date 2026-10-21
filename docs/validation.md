@@ -25,15 +25,16 @@ Derived correspondence data can be regenerated from the canonical mapping:
 
 ## Test status
 
-The current work-branch head `04c54bb7d27c3bccc268a7dbca2b037b84e9a9f7` passed GitHub Actions verification on 2026-10-20 in both the push run [39489145759](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39489145759) and the pull-request run [39489155729](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39489155729).
+The work-branch head `a9e616563d306155751390e6ac13cbd273038633` passed GitHub Actions verification on 2026-10-21 in [run 39570058551](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570058551).
 
-- Python unit tests: **45 passed**.
+- Python unit tests: **49 passed**, including four new tone-rule registry checks.
 - Browser engine tests: **34 passed**.
+- Optional external-G2P harness syntax and `--help` check: passed; the external package comparison itself was not run.
 - Canonical browser data regeneration: passed.
 - Generated-data reproducibility check: passed.
 - Built-page and relative-asset check: passed.
 
-These runs verify the work branch, not `main`. CI success demonstrates deterministic engineering consistency; it is not an expert linguistic adjudication or evidence of corpus-level phonological accuracy. Documentation-only changes after this verified head require their own CI result before being described as current-head verified.
+These runs verify the work branch, not `main`. CI success demonstrates deterministic engineering consistency; it is not an expert linguistic adjudication or evidence of corpus-level phonological accuracy. The tone-rule tests check table integrity, selector reachability and conservative fallback only; they do not independently validate the Vientiane tone model.
 
 ## Empirical validation
 
