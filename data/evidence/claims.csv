@@ -11,3 +11,20 @@ CLM-LAO-UA-TARGET,Ukrainian rendering should be generated from Lao IPA and the c
 CLM-LAO-SERBIAN-CONTROL,Serbian official sources render Vientiane as Вијентијан,established,SRC-SERBIA-RGZ;SRC-SERBIA-MFA
 CLM-LAO-BULGARIAN-CONTROL,Bulgarian official sources render Vientiane as Виентян,established,SRC-BULGARIA-MFA
 CLM-LAO-BULGARIAN-PRINCIPLE,Bulgarian geographical transcription emphasizes target-language phonetics and orthography,established,SRC-BULGARIA-UNGEGN
+CLM-LAO-COMPOSITE-VOWELS,Lao orthography contains multipart vowel spellings and some vowel spellings vary between open and closed syllables,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-INVENTORY-ORTHO,The orthographic inventory includes 28 composite vowel spellings in the descriptive reference; this is not equivalent to 28 phonemic vowel categories,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-IPA-EXAMPLE,The spelling ເກິ is documented with pronunciation kɤ,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VIENTIANE-INVENTORY,Ueda's description of central Vientiane Lao reports short-long contrasts for the vowel inventory and three diphthongs,established,SRC-UEDA
+CLM-LAO-VOWEL-OE-SHORT,The preposed spelling ເ◌ິ represents short /ɤ/ in the descriptive Vientiane-oriented orthography reference,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-OE-LONG,The preposed spelling ເ◌ີ represents long /ɤː/ in the descriptive Vientiane-oriented orthography reference,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-O-SHORT-CLOSED,The spelling ◌ົ represents short /o/ in closed-syllable contexts,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-IA-SHORT,The short IA diphthong has spelling variants including ເ◌ັຽ and ເ◌ັຍ,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-IA-LONG,The long IA diphthong has spelling variants including ◌ຽ and ເ◌ຍ,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-UA-SHORT,The spelling ເ◌ຶອ represents short /ɯə/,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-UA-LONG,The spelling ເ◌ືອ represents long /ɯːə/,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-UO-SHORT,The spelling ◌ົວະ represents short /uə/,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-UO-LONG,The spelling ◌ົວ represents long /uːə/,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-AW,The preposed spelling ເ◌ົາ represents the /aw/ sequence,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-AM,The spelling ◌ຳ represents the /am/ sequence,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-AWW-LONG,The spellings ◌ໍ and medial ◌ອ represent long /ɔː/ in the contexts described by the reference,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-SHORT-VOWEL-CLOSED-CONTEXT,The vowel signs ◌ັ and ◌ັອ are used for short vowels in closed-syllable contexts in the descriptive orthography reference,established,SRC-ISHIDA-ORTHO-2026

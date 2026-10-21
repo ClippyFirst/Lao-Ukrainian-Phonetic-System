@@ -47,11 +47,12 @@ STRUCTURES = (
     ("post_aa", "", "າ", "AA"),
     ("post_i", "", "ິ", "I"),
     ("post_ii", "", "ີ", "II"),
+    ("post_o_short_closed", "", "ົ", "O"),
     ("post_y", "", "ຶ", "Y"),
     ("post_yy", "", "ື", "YY"),
     ("post_u", "", "ຸ", "U"),
     ("post_uu", "", "ູ", "UU"),
-    ("post_o_short_closed", "", "ັອ", "AWW_SHORT_ALT"),
+    ("post_o_short_alt", "", "ັອ", "AWW_SHORT_ALT"),
     ("post_o_long_medial", "", "ອ", "AWW_MEDIAL"),
     ("post_o_long_open", "", "ໍ", "AWW"),
     ("post_am", "", "ຳ", "AM"),
@@ -60,6 +61,7 @@ STRUCTURES = (
     ("post_ua_long", "", "ົວ", "UO_LONG"),
     ("post_ua_long_closed_alt", "", "ວ", "UO_LONG_ALT"),
     ("post_ua_long_open_alt", "", "ວາ", "UO_LONG_OPEN"),
+    ("post_ia_long_standalone", "", "ຽ", "IA_LONG"),
     ("short_o_around", "ເ", "າະ", "AW"),
 )
 
@@ -83,16 +85,23 @@ def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
     s = _strip_tone_marks(surface)
     before = s[:onset_i]
     after = s[onset_i + onset_len:]
-    for _, pre, suffix, vowel_id in STRUCTURES:
+    # Match specific orthographic vowel complexes before generic patterns
+    # with an empty suffix (e.g. ເ◌, ແ◌, ໂ◌). Otherwise the generic
+    # preposed-vowel rule can shadow ເ◌ິ, ເ◌ີ, and ເ◌ຽ.
+    for _, pre, suffix, vowel_id in sorted(
+        STRUCTURES, key=lambda item: (len(item[2]), len(item[1])), reverse=True
+    ):
         if before.endswith(pre) and after.startswith(suffix):
             return next((v for v in registry["vowels"] if v["id"] == vowel_id), None)
     return None
 
 def _find_coda(after_vowel: str, registry: dict):
     finals = {g: r for g, r in registry["consonants"].items() if r.get("ipa_final")}
-    for ch in reversed(after_vowel):
-        if ch in finals:
-            return ch
+    # A coda must be the final grapheme of the remaining syllable material.
+    # Searching backward for any legal final can incorrectly accept e.g.
+    # ກາງະ as /kaːŋ/ while silently ignoring the trailing vowel sign.
+    if after_vowel and after_vowel[-1] in finals:
+        return after_vowel[-1]
     return None
 
 def parse_syllable(surface: str):
@@ -122,6 +131,8 @@ def parse_syllable(surface: str):
     warnings = []
     if coda is None and remainder:
         warnings.append(f"UNCONSUMED_AFTER_VOWEL:{remainder}")
+    if coda is None and vowel["id"] in {"A2", "AWW_SHORT_ALT"}:
+        warnings.append(f"SHORT_VOWEL_REQUIRES_CODA:{vowel['id']}")
 
     return {"surface": surface, "onset": onset, "onset_class": onset_class,
             "onset_form": onset_form, "vowel": vowel, "coda": coda,

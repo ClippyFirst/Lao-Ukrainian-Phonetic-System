@@ -1,5 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { analyze } from "./engine.js";
 
 test("basic long syllable", () => {
@@ -106,6 +109,18 @@ test("invalid mixed script is rejected", () => {
   assert.equal(r.output, "");
 });
 
+test("CRLF is accepted as line whitespace", () => {
+  const r = analyze("ກາ\r\nຂາ");
+  assert.notEqual(r.status, "INVALID");
+  assert.equal(r.output, "ка ка");
+});
+
+test("zero-width space is rejected rather than silently removed", () => {
+  const r = analyze("ກ\u200bຂ");
+  assert.equal(r.status, "INVALID");
+  assert.equal(r.output, "");
+});
+
 test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
 
 test("multisyllabic Lao text is segmented without dropping syllables", () => {
@@ -164,4 +179,79 @@ test("syllable boundary avoids consuming next onset as coda before vowel sign", 
   const r = analyze("ພະນະຄອນ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
   assert.equal(r.output, "панакон");
+});
+
+
+test("preposed oe short and long vowel complexes are distinguished", () => {
+  const short = analyze("ເກິ");
+  const long = analyze("ເກີ");
+  assert.equal(short.syllables[0].vowel, "ɤ");
+  assert.equal(short.syllables[0].ipa, "kɤ");
+  assert.equal(long.syllables[0].vowel, "ɤː");
+  assert.equal(long.syllables[0].ipa, "kɤː");
+});
+
+test("preposed long ia is not shadowed by generic long e", () => {
+  const r = analyze("ເກຽ");
+  assert.equal(r.syllables[0].vowel, "iːə");
+  assert.equal(r.syllables[0].ipa, "kiːə");
+});
+
+
+test("shared vowel precedence fixtures match browser phonemic IPA", () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const fixture = JSON.parse(readFileSync(resolve(here, "../tests/fixtures/vowel_precedence_cases.json"), "utf8"));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, `${item.id}: fixture must remain one syllable`);
+    assert.equal(result.syllables[0].surface, item.surface, item.id);
+    assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
+  }
+});
+
+
+test("short Lao vowel signs require a coda when specified by the spelling", () => {
+  assert.equal(analyze("ກັ").status, "PARTIAL");
+  const closedO = analyze("ກັອບ");
+  assert.equal(closedO.syllables[0].ipa, "kɔp");
+  assert.equal(closedO.status, "OK");
+});
+
+
+test("coda must be the final grapheme of syllable material", () => {
+  const result = analyze("ກາງເ");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.some((s) => s.surface === "ກາງເ" && s.coda === "ງ"), false);
+});
+
+
+test("shared legal coda inventory matches browser phonemic IPA", () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const fixture = JSON.parse(readFileSync(resolve(here, "../tests/fixtures/coda_cases.json"), "utf8"));
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
+    assert.equal(result.syllables[0].coda, item.coda, item.id);
+  }
+});
+
+test("unregistered final consonant is not accepted as a coda", () => {
+  const result = analyze("ກາສ");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.some((s) => s.surface === "ກາສ" && s.coda === "ສ"), false);
+});
+
+
+test("shared IPA-to-Ukrainian target fixtures match browser adapter", () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const fixture = JSON.parse(readFileSync(resolve(here, "../tests/fixtures/target_output_cases.json"), "utf8"));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
+    assert.equal(result.syllables[0].ukrainian, item.ukrainian, item.id);
+  }
 });

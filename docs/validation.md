@@ -25,10 +25,21 @@ Derived correspondence data can be regenerated from the canonical mapping:
 
 ## Test status
 
-The latest source changes were reviewed structurally through the GitHub repository. A full local execution of the updated branch was **not available through the connected GitHub interface**, so this audit deliberately does not claim a fresh numeric pass count for the modified branch.
+The work-branch code head `cff8f949ae4d26455895c2e9824f43c22bf9981d` passed GitHub Actions verification on 2026-10-21 in [run 39570654272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570654272).
 
-The pre-audit implementation had previously passed its local regression suite, but that result is not reused as proof that the newly modified branch passes unchanged.
+- Python unit tests: **54 passed**, including tone-rule registry integrity, a 60-case onset-class × live/dead × quantity × tone-mark selector cross-product, Unicode control handling, and shared IPA-to-Ukrainian target fixtures.
+- Browser engine tests: **37 passed**, including CRLF whitespace, U+200B rejection, and the same nine IPA-to-Ukrainian target fixtures.
+- Optional external-G2P harness syntax and `--help` check: passed; the external package comparison itself was not run.
+- Canonical browser data regeneration: passed.
+- Generated-data reproducibility check: passed.
+- Built-page and relative-asset check: passed.
+
+These runs verify the work branch, not `main`. CI success demonstrates deterministic engineering consistency; it is not an expert linguistic adjudication or evidence of corpus-level phonological accuracy. The tone-rule tests check table integrity, selector reachability and conservative fallback only; they do not independently validate the Vientiane tone model. Target fixtures test the project-defined IPA-to-Ukrainian policy, not independent Lao pronunciation truth.
 
 ## Empirical validation
 
-No empirical accuracy percentage is claimed until a versioned Lao gold corpus with an explicit denominator and expert adjudication exists.
+No empirical accuracy percentage is claimed until a versioned Lao gold corpus with an explicit denominator and expert adjudication exists. Shared regression fixtures are engineering regression cases, not an independent gold corpus.
+
+## Independent G2P comparison harness
+
+The optional comparison procedure is documented in [independent-g2p-comparison.md](independent-g2p-comparison.md). It uses `scripts/compare_external_g2p.py` with `lao2ipa==1.0.0`, compares IPA outputs after NFC normalization only, and emits a per-case JSON report. Mismatches are intentionally not treated as a correctness verdict. The external comparison has not yet been executed, so no match rate or independent accuracy claim is made.
