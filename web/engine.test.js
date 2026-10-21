@@ -109,6 +109,18 @@ test("invalid mixed script is rejected", () => {
   assert.equal(r.output, "");
 });
 
+test("CRLF is accepted as line whitespace", () => {
+  const r = analyze("ກາ\r\nຂາ");
+  assert.notEqual(r.status, "INVALID");
+  assert.equal(r.output, "ка ка");
+});
+
+test("zero-width space is rejected rather than silently removed", () => {
+  const r = analyze("ກ\u200bຂ");
+  assert.equal(r.status, "INVALID");
+  assert.equal(r.output, "");
+});
+
 test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
 
 test("multisyllabic Lao text is segmented without dropping syllables", () => {
