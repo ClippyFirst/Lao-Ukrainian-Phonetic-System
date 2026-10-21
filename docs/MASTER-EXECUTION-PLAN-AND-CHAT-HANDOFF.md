@@ -132,3 +132,47 @@ Check CI for the current handoff commit. Continue LAO-CODA-001 with additional i
 - Latest completed full CI before the validation-doc-only commit: [run 39489040363](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39489040363), head `afa168c19a60d5d8efce24f0ebeae47246897eb0`; passed Python, browser, regeneration, reproducibility, and build/asset checks.
 - The comparison harness has **not** been run against the external package in this environment. No comparison rate or independent accuracy claim exists. Run the documented command in a network-enabled clean environment, preserve the JSON artifact, and manually review every mismatch.
 - Latest commits after the cited run are documentation-only. Verify CI on the current branch head before claiming current-head green or merging.
+
+
+## Execution checkpoint — 2026-10-21
+
+### Reconciled branch and PR state
+
+- `main` baseline remains `763b67892838929ef7ca46d6f540cf21d66fc4e5`.
+- PR [#8](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/8) remains open and unmerged. Its current head at audit time is `04c54bb7d27c3bccc268a7dbca2b037b84e9a9f7`; comparison with `main` reports 63 commits ahead, 0 behind, and 17 changed files. Do not merge blindly; review the complete PR diff.
+- The named branch `fix/python-vowel-pattern-priority-20261020` exists. The PR is the reviewable workstream for its relevant changes; preserve sibling branches unless a fresh diff proves their unique work is needed.
+- Current-head PR workflow run [39489155729](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39489155729) completed successfully. The repository's documented workflow verifies Python tests (45), browser tests (34), canonical browser-data generation, generated-data reproducibility, and static built-page/relative-asset checks. These results are CI evidence for the recorded head, not a local rerun or linguistic accuracy evidence.
+- Local clone/test execution was attempted but blocked before checkout because this environment could not resolve `github.com`. No local command results are claimed.
+
+### Task ledger reconciliation
+
+| ID | Status | Current evidence / remaining acceptance criterion |
+|---|---|---|
+| LAO-AUD-001 | DONE_VERIFIED | Current PR file list, baseline comparison, existing matrices, validation/limitations/implementation docs, evidence registries, parser, target adapter, phonology, audit/generator scripts and Pages workflow inspected. This is not an exhaustive expert review of every registry row. |
+| LAO-PY-001 | DONE_VERIFIED | Specific vowel-pattern matching precedes generic empty-suffix patterns; current-head CI is green. |
+| LAO-PY-002 | DONE_VERIFIED | 41 Python structures have positive/negative synthetic controls; 36 shared vowel cases are consumed by Python and browser tests. Fixtures remain regression controls, not gold data. |
+| LAO-STATUS-001 | DONE_VERIFIED | Parser warnings downgrade result status; covered by regression tests and current-head CI. |
+| LAO-PARSER-001 | PARTIAL | Coda must be the final remaining grapheme; malformed trailing material is tested. Broader lexical segmentation and source-backed syllable boundaries remain unverified. |
+| LAO-VOWEL-001 | PARTIAL | Structure registry and parser tests expanded; source claims added. Exact source-passage verification for every spelling, carrier context, ຳ/Niggahita variants, and alternative forms remains open. |
+| LAO-CODA-001 | PARTIAL | Shared fixtures cover nine registered coda graphemes and reject an unregistered final. Independently verify the inventory and resolve the documented glottal-stop/orthographic representation question. |
+| LAO-TONE-001 | TODO | Cross-product tests and source-by-source audit for onset class × live/dead × quantity × tone mark, restricted marks, and contour conventions are still required. |
+| LAO-CLUSTER-001 | TODO | Add evidence-backed rules and adversarial cases for legal initial clusters, silent/high-class sequences, and boundary ambiguities. |
+| LAO-UNICODE-001 | PARTIAL | NFC and mixed-script checks exist; malformed mark ordering, controls, ZWSP and cross-engine parity still need broader coverage. |
+| LAO-UKR-001 | PARTIAL | Python `target.py` consumes phonemic IPA through the canonical correspondence registry; browser engine also maps from IPA. Independent target-policy review remains open. |
+| LAO-EVIDENCE-001 | PARTIAL | Claims and sources were expanded for vowel families; exact passage/page/section locators and conflict/dialect scope must be checked rule by rule. |
+| LAO-CORPUS-001 | BLOCKED | No versioned independently adjudicated Lao gold corpus. Acceptance requires a licensed/source-attributed corpus, explicit dialect and IPA conventions, denominator, expert adjudication and reproducible layer-level expected outputs. |
+| LAO-DEPLOY-001 | BLOCKED | Pages workflow configuration and build checks are present, but deployment existence/current live deployment was not independently established in this audit. Verify repository Pages settings and a successful deployment run/live artifact before marking complete. |
+| LAO-DOCS-001 | PARTIAL | Validation, limitations, vowel coverage, comparison protocol and this handoff describe known status. Complete source audit and tone/cluster/corpus work before publication claims. |
+| LAO-RELEASE-001 | DEFERRED | Do not tag/publish while P0 evidence and corpus gates remain open. Existing MIT metadata/license are not a substitute for phonological validation. |
+
+### Commands and results actually available
+
+- `git clone https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System.git`: BLOCKED — DNS resolution failure for `github.com` before checkout.
+- Repository-defined `python scripts/audit.py`, `PYTHONPATH=src python -m unittest discover -s tests -v`, `npm test`, `npm run build`, and generated-file drift check: NOT RUN locally in this session.
+- CI run [39489155729](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39489155729): PASS at recorded head; 45 Python tests, 34 browser tests, data regeneration, reproducibility and built-page checks as documented in `docs/validation.md`.
+- External comparison `lao2ipa==1.0.0`: NOT RUN; dependency/network access unavailable. Do not report a match rate.
+- GitHub Pages deployment: NOT VERIFIED; workflow presence alone is not deployment evidence.
+
+### Release-readiness conclusion
+
+Status remains **research MVP / partial prototype**, not research-complete or release-ready. Deterministic engineering CI is green at the recorded PR head. The main blockers are independent source adjudication of vowel/tone/cluster rules, broader lexical and syllable controls, external comparison, a versioned expert-adjudicated gold corpus, and explicit Pages deployment evidence. No empirical accuracy percentage is justified.
