@@ -25,10 +25,10 @@ Derived correspondence data can be regenerated from the canonical mapping:
 
 ## Test status
 
-The work-branch head `4b06606fb7db474a68734396752bcb0e32352398` passed GitHub Actions verification on 2026-10-21 in [run 39570205114](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570205114).
+The work-branch code head `04f60bfa4fe015307899b889fbafcc77963876f9` passed GitHub Actions verification on 2026-10-21 in [run 39570439908](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570439908).
 
-- Python unit tests: **50 passed**, including tone-rule registry integrity and a 60-case onset-class × live/dead × quantity × tone-mark selector cross-product.
-- Browser engine tests: **34 passed**.
+- Python unit tests: **53 passed**, including tone-rule registry integrity, a 60-case onset-class × live/dead × quantity × tone-mark selector cross-product, and CRLF/control/zero-width-space validation cases.
+- Browser engine tests: **36 passed**, including CRLF whitespace and explicit rejection of U+200B ZERO WIDTH SPACE.
 - Optional external-G2P harness syntax and `--help` check: passed; the external package comparison itself was not run.
 - Canonical browser data regeneration: passed.
 - Generated-data reproducibility check: passed.
