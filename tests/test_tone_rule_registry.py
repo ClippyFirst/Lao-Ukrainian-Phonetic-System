@@ -66,6 +66,57 @@ class TestToneRuleRegistry(unittest.TestCase):
                 self.assertEqual(status, row["status"])
                 self.assertEqual(matched_rules, [row["rule_id"]])
 
+    def test_complete_class_type_length_mark_cross_product(self):
+        """All 60 selector combinations resolve only when a registry rule matches."""
+        mark_graphemes = {
+            "none": None,
+            "mai_ek": "່",
+            "mai_tho": "້",
+            "mai_ti": "໊",
+            "mai_catawa": "໋",
+        }
+        rule_index = {
+            (row["class"], row["syllable_type"], row["length"], row["tone_mark"]): row
+            for row in self.rules
+        }
+        for onset_class in ("high", "middle", "low"):
+            for syllable_type in ("live", "dead"):
+                for length in ("short", "long"):
+                    # Use a sonorant coda for live short syllables, a stop for
+                    # dead long syllables, and no coda for the other cases.
+                    coda = None
+                    if syllable_type == "live" and length == "short":
+                        coda = "ງ"
+                    elif syllable_type == "dead" and length == "long":
+                        coda = "ກ"
+                    vowel = {"length": length, "ipa": "aː" if length == "long" else "a"}
+                    for mark_name, mark_grapheme in mark_graphemes.items():
+                        candidates = (
+                            (onset_class, syllable_type, length, mark_name),
+                            (onset_class, syllable_type, "*", mark_name),
+                            (onset_class, "*", "*", mark_name),
+                        )
+                        expected = next(
+                            (rule_index[key] for key in candidates if key in rule_index),
+                            None,
+                        )
+                        tone, status, matched_rules = determine_tone(
+                            "ກ", vowel, coda, mark_grapheme, onset_class=onset_class
+                        )
+                        case = (onset_class, syllable_type, length, mark_name)
+                        with self.subTest(case=case):
+                            if expected is None:
+                                self.assertIsNone(tone)
+                                self.assertEqual(status, "ANALYSIS DEPENDENT")
+                                self.assertEqual(
+                                    matched_rules,
+                                    ["TONE-NOT-ESTABLISHED-FOR-COMBINATION"],
+                                )
+                            else:
+                                self.assertEqual(tone, expected["tone"])
+                                self.assertEqual(status, expected["status"])
+                                self.assertEqual(matched_rules, [expected["rule_id"]])
+
     def test_unlisted_class_and_tone_mark_combination_stays_unresolved(self):
         vowel = {"length": "long", "ipa": "aː"}
         tone, status, rules = determine_tone(
