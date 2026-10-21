@@ -155,7 +155,7 @@ Check CI for the current handoff commit. Continue LAO-CODA-001 with additional i
 | LAO-PARSER-001 | PARTIAL | Coda must be the final remaining grapheme; malformed trailing material is tested. Broader lexical segmentation and source-backed syllable boundaries remain unverified. |
 | LAO-VOWEL-001 | PARTIAL | Structure registry and parser tests expanded; source claims added. Exact source-passage verification for every spelling, carrier context, ຳ/Niggahita variants, and alternative forms remains open. |
 | LAO-CODA-001 | PARTIAL | Shared fixtures cover nine registered coda graphemes and reject an unregistered final. Independently verify the inventory and resolve the documented glottal-stop/orthographic representation question. |
-| LAO-TONE-001 | TODO | Cross-product tests and source-by-source audit for onset class × live/dead × quantity × tone mark, restricted marks, and contour conventions are still required. |
+| LAO-TONE-001 | IN_PROGRESS | Added `tests/test_tone_rule_registry.py`: unique selector keys, declared field values, reachability of all 17 rules, and conservative fallback for an unlisted class/mark combination. CI passes. Still requires the full onset-class × live/dead × quantity × tone-mark cross-product, source-by-source audit, restricted-mark review, and contour-convention review. |
 | LAO-CLUSTER-001 | TODO | Add evidence-backed rules and adversarial cases for legal initial clusters, silent/high-class sequences, and boundary ambiguities. |
 | LAO-UNICODE-001 | PARTIAL | NFC and mixed-script checks exist; malformed mark ordering, controls, ZWSP and cross-engine parity still need broader coverage. |
 | LAO-UKR-001 | PARTIAL | Python `target.py` consumes phonemic IPA through the canonical correspondence registry; browser engine also maps from IPA. Independent target-policy review remains open. |
@@ -176,3 +176,15 @@ Check CI for the current handoff commit. Continue LAO-CODA-001 with additional i
 ### Release-readiness conclusion
 
 Status remains **research MVP / partial prototype**, not research-complete or release-ready. Deterministic engineering CI is green at the recorded PR head. The main blockers are independent source adjudication of vowel/tone/cluster rules, broader lexical and syllable controls, external comparison, a versioned expert-adjudicated gold corpus, and explicit Pages deployment evidence. No empirical accuracy percentage is justified.
+
+
+## Execution checkpoint — 2026-10-21 (continued)
+
+### Tone-rule engineering coverage
+
+- Added `tests/test_tone_rule_registry.py` on the existing work branch; no parallel phonology implementation was introduced.
+- The tests assert unique rule IDs and exact selector keys, valid registry field values, reachability of all 17 declared tone rules through `determine_tone`, and conservative `ANALYSIS DEPENDENT` behavior for an unlisted low-class + mai-ti combination.
+- CI run [39570058551](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39570058551) passed at commit `a9e616563d306155751390e6ac13cbd273038633`: Python **49 passed**, browser **34 passed**, optional comparator harness syntax/CLI check passed, browser-data regeneration/reproducibility passed, and built-page/relative-asset checks passed.
+- Validation documentation was updated in commit `c497e874801191025db158580258190014edb59a`. That docs update still requires a current-head CI result before its commit itself is marked verified.
+- These tests validate rule-table integrity and code-path reachability only. They do not establish that the recorded tone categories or contours are linguistically correct.
+- The tone audit remains `IN_PROGRESS`: next acceptance work is a full cross-product over onset class × live/dead × vowel quantity × tone mark, explicit expected outcomes for unsupported combinations, and rule-by-rule primary-source verification. Do not infer source correctness from a self-consistent registry.
