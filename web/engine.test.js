@@ -242,3 +242,16 @@ test("unregistered final consonant is not accepted as a coda", () => {
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.syllables.some((s) => s.surface === "ກາສ" && s.coda === "ສ"), false);
 });
+
+
+test("shared IPA-to-Ukrainian target fixtures match browser adapter", () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const fixture = JSON.parse(readFileSync(resolve(here, "../tests/fixtures/target_output_cases.json"), "utf8"));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
+    assert.equal(result.syllables[0].ukrainian, item.ukrainian, item.id);
+  }
+});
