@@ -72,6 +72,9 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertIsNone(summary["accuracy"])
         self.assertNotIn("exact_match_rate", summary)
         self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
+        source = (ROOT / "scripts" / "compare_external_g2p.py").read_text(encoding="utf-8")
+        self.assertIn('return 2 if summary["runtime_errors"] else 0', source)
+        self.assertNotIn("return 2 if runtime_errors else 0", source)
 
 
 if __name__ == "__main__":
