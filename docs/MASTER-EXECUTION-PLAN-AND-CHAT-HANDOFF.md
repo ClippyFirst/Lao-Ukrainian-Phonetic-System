@@ -255,8 +255,15 @@ The first schema-v3 optional workflow [40093135298](https://github.com/ClippyFir
 
 ## Final checkpoint — Lao diagnostic schema v3 verified (2026-10-24)
 
-- Branch head tested: `8656f6a45f3d8fd16e647fc4a600645213caaaf5`; current PR #14 is still awaiting merge.
+- Branch head tested: `8656f6a45f3d8fd16e647fc4a600645213caaaf5`; PR #14 merged as 5f003928c495e82a97f3077729ea4ec50af044ba.
 - Verification suite [40093370613](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370613) passed. Optional comparison [40093370619](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370619) passed and artifact was inspected.
 - Artifact SHA-256: `91e77bc29bddc76a1a598eeb3f8eeb775fb0677a3ac86a507400edb675111d02`. Schema version 3, 36 cases, 0 runtime errors, implementation agreement 0.0, independent gold count 0, accuracy null, score status NOT_SCORED_NO_INDEPENDENT_GOLD, and no `exact_match_rate` key.
 - First schema-v3 attempt [40093135298](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093135298) exposed a stale `runtime_errors` reference in the exit-status path; fixed and regression-tested. The corrected run and full verification now pass.
 - Smoke task DONE_VERIFIED; linguistic accuracy remains unmeasured because engineering fixtures are not independent gold. Keep lao2ipa disabled in production.
+
+
+## Final merge checkpoint — Lao metric-schema hardening (2026-10-24)
+
+- PR [#14](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/14) merged to main at `5f003928c495e82a97f3077729ea4ec50af044ba`.
+- Final branch verification [40093508377](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093508377) and optional schema-v3 comparison [40093508384](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093508384) passed. The artifact was inspected: schema v3, 36 cases, zero runtime errors, implementation agreement 0.0, independent gold count 0, accuracy null, and no ambiguous `exact_match_rate` key.
+- Earlier exit-status bug from run 40093135298 is fixed and covered by a regression test. The run is reproducible; phonological accuracy remains unmeasured until an independent gold corpus exists.
