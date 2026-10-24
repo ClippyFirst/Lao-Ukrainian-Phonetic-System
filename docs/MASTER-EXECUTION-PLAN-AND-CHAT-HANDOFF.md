@@ -343,3 +343,8 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Branch `research/benchmark-gold-provenance-gate-rebased2-20261024` adds fail-closed validation: every row labelled `ADJUDICATED` must contain non-empty `gold_ipa`, `source_id`, and `profile`, or scoring stops with a clear error.
 - Regression tests cover each missing field. This validates metadata completeness, not the truth of a label; source locator, source registry, dialect/profile, adjudication and uncertainty must still be reviewed.
 - Acceptance: final-head unit tests and optional comparison workflow. No language-specific gold labels are added by this change.
+
+
+### Latest Lao external-G2P diagnostic — 2026-10-24
+
+- Latest run [40122001269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122001269): 36 probes, 0 runtime errors, strict exact agreement 0/36, tone-letter-stripped diagnostic 29/36 (80.6%), 7 non-tone/format mismatches requiring review. This is not accuracy; independent gold remains 0. Artifact ZIP SHA-256: `63833a43fd2c9309505dcf8a96bb7dc46052993f3834307e77524b586e020816`.
