@@ -129,12 +129,11 @@
       "url": "https://github.com/byu-matrix-lab/lao2ipa",
       "kind": "Lao orthography-to-IPA comparator",
       "status": "candidate",
-      "output": "Pinned 1.0.0 smoke: 36 structural probes, 0 runtime errors, 0/36 implementation agreement; no independent gold.",
+      "output": "Pinned 1.0.0 smoke captured 36 structural probes, 0 runtime errors, 0/36 exact implementation agreement. Independent gold count is 0; see observed_experiments and durable report.",
       "license": "Apache-2.0 reported upstream; preserve notices",
       "verified_in_repo": false,
       "enabled_by_default": false,
       "version": "1.0.0",
-      "latest_run_id": 40119608545,
       "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY"
     }
   ],
@@ -181,6 +180,27 @@
       "implementation_agreement_rate": 0,
       "source_status": "SMOKE_VERIFIED_NOT_ACCURACY",
       "notes": "Raw external output captured. 0/36 implementation agreement; differences include tone suffixes and a major `ເກຽ` output divergence. Engineering fixture is not gold; no correctness winner."
+    },
+    {
+      "engine": "lao2ipa",
+      "version": "1.0.0",
+      "run_id": 40121272427,
+      "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427/artifacts/12571197945",
+      "artifact_zip_sha256": "a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8",
+      "input_count": 36,
+      "runtime_errors": 0,
+      "independent_gold_count": 0,
+      "accuracy": null,
+      "implementation_agreement_count": 0,
+      "implementation_agreement_rate": 0,
+      "mismatch_category_counts": {
+        "TONE_SUFFIX_ONLY": 29,
+        "DIPHTHONG_OFFGLIDE_CONVENTION": 2,
+        "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE": 4,
+        "TONE_AND_LENGTH_DIFFERENCE": 1
+      },
+      "source_status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "notes": "Schema 4 diagnostic classifier run. Categories are heuristic review hints only; raw outputs and strict exact matches are preserved. The engineering fixture is not independent gold."
     }
   ],
   "upstream_evidence": [
