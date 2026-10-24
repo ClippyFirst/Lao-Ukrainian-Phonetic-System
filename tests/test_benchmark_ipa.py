@@ -16,7 +16,7 @@ def write_tsv(path, fields, rows):
         writer.writerows(rows)
 
 class BenchmarkIpaTests(unittest.TestCase):
-    def run_benchmark(self, gold_rows, pred_rows):
+    def run_benchmark(self, gold_rows, pred_rows, expected_returncode=0):
         with tempfile.TemporaryDirectory() as td:
             td = Path(td)
             gold, pred, output = td / "gold.tsv", td / "pred.tsv", td / "report.json"
@@ -26,8 +26,24 @@ class BenchmarkIpaTests(unittest.TestCase):
                 [sys.executable, str(SCRIPT), "--gold", str(gold), "--predictions", str(pred), "--output", str(output)],
                 cwd=ROOT, text=True, capture_output=True, check=False,
             )
-            self.assertEqual(run.returncode, 0, msg=run.stderr)
+            self.assertEqual(run.returncode, expected_returncode, msg=run.stderr)
+            if expected_returncode != 0:
+                return run.stderr
             return json.loads(output.read_text(encoding="utf-8"))
+
+    def test_adjudicated_gold_requires_ipa_source_and_profile(self):
+        base = {"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"source#section"}
+        cases = [
+            ({"gold_ipa":""}, "requires non-empty gold_ipa"),
+            ({"source_id":""}, "requires source_id"),
+            ({"profile":""}, "requires profile"),
+        ]
+        for changes, expected_message in cases:
+            with self.subTest(changes=changes):
+                row = dict(base)
+                row.update(changes)
+                stderr = self.run_benchmark([row], [], expected_returncode=1)
+                self.assertIn(expected_message, stderr)
 
     def test_empty_gold_does_not_report_accuracy(self):
         report = self.run_benchmark([], [
