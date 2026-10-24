@@ -60,3 +60,8 @@ These resources are relevant to the UI's display of the source writing system; t
 - [Padauk](https://software.sil.org/padauk/) — Useful for Myanmar-script text shaping and coverage; not an IPA transcription engine. License: SIL Open Font License; verify current release metadata.
 - [Busra](https://software.sil.org/busra/) — Khmer-script display font only; not an IPA transcription engine. License: SIL Open Font License; verify current release metadata.
 - [Mondulkiri](https://software.sil.org/mondulkiri/) — Khmer-script display font only; not an IPA transcription engine. License: SIL Open Font License; verify current release metadata.
+
+
+## IPA display fallback implementation (2026-10-24)
+
+Where this repository has a browser UI, IPA output is styled with a local-font fallback stack prioritizing Charis SIL, Doulos SIL, and DejaVu Sans, with OpenType combining-mark features enabled. This is a display-layer preference only: no font files are bundled or fetched remotely, font availability depends on the host, and it does not enable any external G2P candidate or change IPA values. Browser screenshot/glyph-coverage verification remains outstanding. The Sinhala repository currently has no browser UI; see `docs/ipa-display-rendering.md` for its documented future UI contract.
