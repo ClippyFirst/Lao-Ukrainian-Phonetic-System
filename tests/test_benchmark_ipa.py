@@ -34,8 +34,9 @@ class BenchmarkIpaTests(unittest.TestCase):
             {"id":"x", "engine":"candidate", "raw_output":"raw", "ipa":"a", "status":"ok", "version":"1"}
         ])
         self.assertEqual(report["gold"]["accuracy_status"], "NOT_MEASURED")
+        self.assertEqual(report["engines"]["candidate"]["n_adjudicated_gold_rows"], 0)
         self.assertIsNone(report["engines"]["candidate"]["exact_match_rate"])
-        self.assertEqual(report["engines"]["candidate"]["status"], "NOT_MEASURED_NO_ADJUDICATED_OVERLAP")
+        self.assertEqual(report["engines"]["candidate"]["status"], "NOT_MEASURED_NO_ADJUDICATED_GOLD")
 
     def test_scores_only_adjudicated_rows_and_preserves_diacritics(self):
         gold = [
@@ -49,11 +50,24 @@ class BenchmarkIpaTests(unittest.TestCase):
         report = self.run_benchmark(gold, pred)
         metrics = report["engines"]["candidate"]
         self.assertEqual(report["gold"]["rows_adjudicated"], 1)
-        self.assertEqual(metrics["n_adjudicated_predictions"], 1)
+        self.assertEqual(metrics["n_adjudicated_gold_rows"], 1)
         self.assertEqual(metrics["exact_matches"], 1)
         self.assertEqual(metrics["exact_match_rate"], 1.0)
 
-    def test_mismatch_reports_edit_distance(self):
+    def test_missing_prediction_row_remains_in_denominator(self):
+        gold = [
+            {"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1"},
+            {"id":"b", "text":"y", "gold_ipa":"p", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#2"},
+        ]
+        pred = [{"id":"a", "engine":"candidate", "raw_output":"k", "ipa":"k", "status":"ok", "version":"1"}]
+        metrics = self.run_benchmark(gold, pred)["engines"]["candidate"]
+        self.assertEqual(metrics["n_adjudicated_gold_rows"], 2)
+        self.assertEqual(metrics["exact_matches"], 1)
+        self.assertEqual(metrics["missing_predictions"], 1)
+        self.assertEqual(metrics["missing_prediction_rate"], 0.5)
+        self.assertEqual(metrics["rows"][1]["status"], "MISSING_ROW")
+
+    def test_mismatch_reports_codepoint_cer(self):
         report = self.run_benchmark(
             [{"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1"}],
             [{"id":"a", "engine":"candidate", "raw_output":"g", "ipa":"g", "status":"ok", "version":"1"}],
