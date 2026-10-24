@@ -30,7 +30,6 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertTrue(fixture["cases"])
         purpose = fixture.get("purpose", "").lower()
         self.assertTrue("engineering" in purpose or "regression" in purpose)
-        # This fixture cannot be misrepresented as independently adjudicated gold.
         self.assertIn("not", purpose)
 
     def test_harness_keeps_nfc_as_its_only_normalization(self):
@@ -40,11 +39,6 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertIn('unicodedata.normalize("NFC", value)', source)
         self.assertNotIn("ignore_tones=True", source)
         self.assertNotIn('replace("ː", "")', source)
-
-
-if __name__ == "__main__":
-    unittest.main()
-
 
     def test_implementation_agreement_is_never_reported_as_accuracy(self):
         summary = build_summary(
@@ -78,3 +72,7 @@ if __name__ == "__main__":
         self.assertIsNone(summary["accuracy"])
         self.assertNotIn("exact_match_rate", summary)
         self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
+
+
+if __name__ == "__main__":
+    unittest.main()
