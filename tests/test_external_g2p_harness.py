@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS = runpy.run_path(str(ROOT / "scripts" / "compare_external_g2p.py"))
 nfc = HARNESS["nfc"]
+build_summary = HARNESS["build_summary"]
 
 
 class ExternalG2PHarnessTests(unittest.TestCase):
@@ -43,3 +44,37 @@ class ExternalG2PHarnessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+    def test_implementation_agreement_is_never_reported_as_accuracy(self):
+        summary = build_summary(
+            [
+                {
+                    "exact_match": True,
+                    "project_matches_fixture": True,
+                    "external_matches_fixture": True,
+                    "mismatch_category": None,
+                },
+                {
+                    "exact_match": False,
+                    "project_matches_fixture": True,
+                    "external_matches_fixture": False,
+                    "mismatch_category": "UNCLASSIFIED_REQUIRES_REVIEW",
+                },
+                {
+                    "exact_match": False,
+                    "project_matches_fixture": False,
+                    "external_matches_fixture": False,
+                    "mismatch_category": "RUNTIME_ERROR",
+                },
+            ],
+            expected_count=3,
+        )
+        self.assertEqual(summary["implementation_agreement_rate"], 1 / 3)
+        self.assertEqual(summary["exact_matches_between_implementations"], 1)
+        self.assertEqual(summary["implementation_mismatches"], 1)
+        self.assertEqual(summary["runtime_errors"], 1)
+        self.assertEqual(summary["independent_gold_count"], 0)
+        self.assertIsNone(summary["accuracy"])
+        self.assertNotIn("exact_match_rate", summary)
+        self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
