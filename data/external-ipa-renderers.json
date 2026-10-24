@@ -201,6 +201,31 @@
       },
       "source_status": "SMOKE_VERIFIED_NOT_ACCURACY",
       "notes": "Schema 4 diagnostic classifier run. Categories are heuristic review hints only; raw outputs and strict exact matches are preserved. The engineering fixture is not independent gold."
+    },
+    {
+      "engine": "lao2ipa",
+      "version": "1.0.0",
+      "run_id": 40122329060,
+      "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060/artifacts/12572570192",
+      "artifact_zip_sha256": "2b7f3c5e3c02814413e42b9f2031849c21630fba9958a7e6a38de92f7a63ff55",
+      "input_count": 36,
+      "runtime_errors": 0,
+      "independent_gold_count": 0,
+      "accuracy": null,
+      "implementation_agreement_count": 0,
+      "implementation_agreement_rate": 0,
+      "tone_stripped_exact_matches_diagnostic_only": 29,
+      "tone_stripped_agreement_rate_diagnostic_only": 0.8055555555555556,
+      "tone_only_mismatches_diagnostic_only": 29,
+      "non_tone_or_format_mismatches_requiring_review": 7,
+      "mismatch_category_counts": {
+        "TONE_SUFFIX_ONLY": 29,
+        "DIPHTHONG_OFFGLIDE_CONVENTION": 2,
+        "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE": 4,
+        "TONE_AND_LENGTH_DIFFERENCE": 1
+      },
+      "source_status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "notes": "Diagnostic schema 5. Tone stripping is applied only to derived comparison copies; raw IPA and strict exact match remain unchanged. Engineering fixture is not independent gold."
     }
   ],
   "upstream_evidence": [
