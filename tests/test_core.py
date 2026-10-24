@@ -86,6 +86,6 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
         self.assertIsNone(s.practical_ukrainian)
-        self.assertEqual(s.candidates, [])
-        self.assertIn("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY", s.rules_applied)
+        self.assertEqual(s.ukrainian_candidates, [])
+        self.assertIn("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY", s.rules)
         self.assertTrue(any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings))
