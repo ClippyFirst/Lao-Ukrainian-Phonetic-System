@@ -46,3 +46,9 @@ These are research leads, not verified availability claims. Before executing a c
 - Adjudicated language-specific gold rows: not yet established by this document.
 - Candidate engine availability, version, licenses, and language-specific output quality: unverified until recorded as run evidence.
 - Release status: research prototype; no accuracy claim is authorized by this registry.
+
+## Existing external run evidence (reconciled 2026-10-24)
+
+- Latest repeated run: [workflow 40119608545](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119608545), `lao2ipa==1.0.0`, 36 structural engineering probes, 0 runtime errors, 0/36 exact agreement with current implementation/fixture. Independent gold count is 0; accuracy is null. Artifact ZIP SHA-256 `82012a0b6d22a9f0eb0f65792da10e8df162bee520c84b54a863b107cb0b6250`. Example `ເກຽ`: project `kiːə`, lao2ipa `keː˩˧iːə`; other differences include tone suffixes. These are mismatch-review leads, not proof either output is correct.
+- [Goruut](https://github.com/neurlang/goruut) upstream lists Lao among supported languages and describes IPA output, but has not been executed against this repository's inputs. Candidate only.
+- Do not infer `lao2ipa` is wrong from 0/36; known structural probes may differ in tone conventions, synthetic syllable validity, or vowel interpretation. The next task is source-adjudicated lexical cases plus layer-by-layer disagreement review.

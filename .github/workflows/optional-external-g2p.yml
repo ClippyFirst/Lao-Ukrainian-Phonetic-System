@@ -6,6 +6,8 @@ on:
     paths:
       - "scripts/compare_external_g2p.py"
       - "tests/fixtures/vowel_precedence_cases.json"
+      - "data/external-ipa-renderers.json"
+      - "docs/benchmarking-and-external-ipa.md"
       - ".github/workflows/optional-external-g2p.yml"
   pull_request:
     paths:

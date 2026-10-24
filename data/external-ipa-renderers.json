@@ -29,10 +29,11 @@
       "url": "https://github.com/neurlang/goruut",
       "kind": "multilingual IPA phonemizer",
       "status": "candidate",
-      "output": "Lao support is claimed; verify tone, vowel quantity, dialect scope and independent accuracy",
+      "output": "Upstream README lists Lao and says the phone set is IPA; pinned project-local run and independent accuracy are pending.",
       "license": "Verify current upstream license and model/data terms",
       "verified_in_repo": false,
-      "enabled_by_default": false
+      "enabled_by_default": false,
+      "execution_status": "UPSTREAM_SUPPORT_CLAIM_EXECUTION_NOT_RUN"
     },
     {
       "id": "neurlang-dataset",
@@ -121,6 +122,20 @@
       "license": "SIL Open Font License; verify current release metadata",
       "verified_in_repo": false,
       "enabled_by_default": false
+    },
+    {
+      "id": "lao2ipa",
+      "name": "lao2ipa",
+      "url": "https://github.com/byu-matrix-lab/lao2ipa",
+      "kind": "Lao orthography-to-IPA comparator",
+      "status": "candidate",
+      "output": "Pinned 1.0.0 smoke: 36 structural probes, 0 runtime errors, 0/36 implementation agreement; no independent gold.",
+      "license": "Apache-2.0 reported upstream; preserve notices",
+      "verified_in_repo": false,
+      "enabled_by_default": false,
+      "version": "1.0.0",
+      "latest_run_id": 40119608545,
+      "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY"
     }
   ],
   "benchmark_protocol": {
@@ -138,5 +153,43 @@
     "external_engines_enabled_by_default": false,
     "notes": "Registry membership does not establish language support, IPA output semantics, reproducibility, accuracy, or license compatibility. Preserve raw output and record exact versions and model/data licenses."
   },
-  "last_reviewed": "2026-10-24"
+  "last_reviewed": "2026-10-24",
+  "observed_experiments": [
+    {
+      "engine": "lao2ipa",
+      "version": "1.0.0",
+      "run_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175",
+      "corpus": "36 engineering vowel-structure probes",
+      "runtime_errors": 0,
+      "independent_gold_count": 0,
+      "accuracy": null,
+      "implementation_agreement_rate": 0,
+      "status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "interpretation": "0/36 agreement with project/fixture is not evidence that either side is correct; the fixture is not independent gold.",
+      "artifact_sha256": "ff669bf3c772cd250cf4524b740cbf8f52682e6ac0f3627c038a86047c7713a9"
+    },
+    {
+      "engine": "lao2ipa",
+      "version": "1.0.0",
+      "run_id": 40119608545,
+      "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119608545/artifacts/12570418791",
+      "artifact_zip_sha256": "82012a0b6d22a9f0eb0f65792da10e8df162bee520c84b54a863b107cb0b6250",
+      "input_count": 36,
+      "runtime_errors": 0,
+      "independent_gold_count": 0,
+      "accuracy": null,
+      "implementation_agreement_rate": 0,
+      "source_status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "notes": "Raw external output captured. 0/36 implementation agreement; differences include tone suffixes and a major `ເກຽ` output divergence. Engineering fixture is not gold; no correctness winner."
+    }
+  ],
+  "upstream_evidence": [
+    {
+      "engine": "Goruut",
+      "url": "https://github.com/neurlang/goruut",
+      "fact": "README lists Lao among supported languages, says phone set is IPA and claims MIT repository license.",
+      "status": "UPSTREAM_CLAIM_ONLY_NOT_EXECUTED",
+      "caveat": "No version-pinned Lao output, model/data license review, or independent evaluation in this repository."
+    }
+  ]
 }
