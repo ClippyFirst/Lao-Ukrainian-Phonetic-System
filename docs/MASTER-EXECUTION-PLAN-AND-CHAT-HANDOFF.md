@@ -330,3 +330,10 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Keep IPA adaptation boundary: source spelling → structural parse → source phonology → typed IPA → Ukrainian adapter. Third-party candidates remain optional and disabled in production.
 - Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
 
+
+## Tone-only decomposition follow-up — 2026-10-24
+
+- Branch `research/lao-tone-decomposition-rebased-20261024` ports the tone-only diagnostic onto the current main while preserving the detailed mismatch classifier from PR #26.
+- The comparator reports strict exact match and detailed mismatch categories unchanged, plus separate `tone_stripped_*_diagnostic_only` counts computed after removing only IPA tone letters from derived copies. Raw IPA, length marks, separators and production output are untouched.
+- Unit tests cover tone-only vs non-tone mismatches and the `accuracy: null` gate. The earlier categorized artifact gave 29/36 tone-suffix-only cases and 7 non-tone/format cases, but this is a diagnostic decomposition—not accuracy or proof tone is dispensable.
+- Acceptance: current-head unit tests and optional `lao2ipa` workflow. Independent gold remains absent.
