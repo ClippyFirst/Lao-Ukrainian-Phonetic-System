@@ -1,0 +1,43 @@
+name: Optional external Lao G2P comparison
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/compare_external_g2p.py"
+      - "tests/fixtures/vowel_precedence_cases.json"
+      - ".github/workflows/optional-external-g2p.yml"
+  pull_request:
+    paths:
+      - "scripts/compare_external_g2p.py"
+      - "tests/fixtures/vowel_precedence_cases.json"
+      - ".github/workflows/optional-external-g2p.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install project and pinned comparator
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install lao2ipa==1.0.0
+      - name: Run comparative diagnostic
+        run: python scripts/compare_external_g2p.py --output artifacts/external-g2p-comparison.json
+      - name: Upload raw comparison artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lao-external-g2p-comparison
+          path: artifacts/external-g2p-comparison.json
+          if-no-files-found: warn
+          retention-days: 30
