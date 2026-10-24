@@ -323,3 +323,11 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Keep IPA adaptation boundary: source spelling → structural parse → source phonology → typed IPA → Ukrainian adapter. Third-party candidates remain optional and disabled in production.
 - Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
 
+
+## Lao external G2P disagreement classification follow-up — 2026-10-24
+
+- Branch `research/lao-g2p-diagnostic-categories-20261024` improves the existing comparator instead of adding a parallel runner.
+- The previous pinned `lao2ipa==1.0.0` run covered 36 engineering cases, had 0 runtime errors, and showed 0/36 exact implementation agreement. The fixture is not independent gold; `accuracy` remains `null`.
+- The comparator now classifies common string-level mismatch patterns (tone suffix, tone+length, length, diphthong offglide convention, segmental/vowel-sequence difference) while preserving all raw IPA and strict NFC exact-match results. Categories are review hints, not linguistic judgments.
+- Added unit tests for categories and the no-gold scoring gate. Required verification: full Python tests and the optional `lao2ipa` workflow on the final PR head; then update the durable smoke summary with category counts and exact artifact hash.
+- Next genuine blocker remains independently source-located/adjudicated Lao lexical IPA with a declared dialect and tone convention.
