@@ -30,6 +30,36 @@ def nfc(value: str | None) -> str | None:
     return unicodedata.normalize("NFC", value)
 
 
+
+def build_summary(results: list[dict[str, Any]], expected_count: int) -> dict[str, Any]:
+    """Summarize diagnostic agreement without presenting it as accuracy."""
+    matches = sum(row.get("exact_match") is True for row in results)
+    project_fixture_matches = sum(row.get("project_matches_fixture") is True for row in results)
+    external_fixture_matches = sum(row.get("external_matches_fixture") is True for row in results)
+    runtime_errors = sum(row.get("mismatch_category") == "RUNTIME_ERROR" for row in results)
+    cases = len(results)
+    return {
+        "cases": cases,
+        "expected_ipa_cases": expected_count,
+        "project_fixture_matches": project_fixture_matches,
+        "external_fixture_matches": external_fixture_matches,
+        "exact_matches_between_implementations": matches,
+        "implementation_mismatches": sum(
+            row.get("exact_match") is False and row.get("mismatch_category") != "RUNTIME_ERROR"
+            for row in results
+        ),
+        "runtime_errors": runtime_errors,
+        "implementation_agreement_rate": matches / cases if cases else None,
+        "independent_gold_count": 0,
+        "accuracy": None,
+        "score_status": "NOT_SCORED_NO_INDEPENDENT_GOLD",
+        "note": (
+            "Implementation agreement and fixture matches are diagnostic only. "
+            "The engineering fixture is not independent gold; accuracy is null."
+        ),
+    }
+
+
 def project_ipa(surface: str) -> str | None:
     # Import locally so --help can run without the project installed.
     from lao_ukrainian.core import analyze
@@ -114,14 +144,14 @@ def main() -> int:
     except importlib.metadata.PackageNotFoundError:
         external_version = "unknown"
 
-    matches = sum(row.get("exact_match") is True for row in results)
-    project_fixture_matches = sum(row.get("project_matches_fixture") is True for row in results)
-    external_fixture_matches = sum(row.get("external_matches_fixture") is True for row in results)
-    runtime_errors = sum(row.get("mismatch_category") == "RUNTIME_ERROR" for row in results)
     expected_count = sum(row.get("fixture_expected_ipa") is not None for row in results)
+    summary = build_summary(results, expected_count)
     report = {
-        "schema_version": 2,
+        "schema_version": 3,
         "purpose": "Comparative diagnostic only; neither implementation nor the engineering fixture is treated as an independent gold standard.",
+        "independent_gold_count": 0,
+        "accuracy": None,
+        "score_status": "NOT_SCORED_NO_INDEPENDENT_GOLD",
         "fixture_path": str(args.fixture.relative_to(ROOT)) if args.fixture.is_relative_to(ROOT) else str(args.fixture),
         "fixture_schema_version": fixture.get("schema_version"),
         "fixture_purpose": fixture.get("purpose"),
@@ -139,17 +169,7 @@ def main() -> int:
             "output": "ipa",
             "tone_handling": "external package default",
         },
-        "summary": {
-            "cases": len(results),
-            "expected_ipa_cases": expected_count,
-            "project_fixture_matches": project_fixture_matches,
-            "external_fixture_matches": external_fixture_matches,
-            "exact_matches_between_implementations": matches,
-            "mismatches_or_errors": len(results) - matches,
-            "exact_match_rate": matches / len(results),
-            "runtime_errors": runtime_errors,
-            "note": "Fixture match counts measure agreement with engineering regression expectations only, not linguistic accuracy.",
-        },
+        "summary": summary,
         "results": results,
     }
 
