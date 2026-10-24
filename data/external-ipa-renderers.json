@@ -4,7 +4,7 @@
     "name": "Lao",
     "iso_639_3_or_639_1": "lo"
   },
-  "purpose": "Research registry of external IPA/G2P candidates. Entries are not active runtime dependencies and are not accepted pronunciation gold data.",
+  "purpose": "Research registry of external G2P/IPA comparator systems and IPA/source-script display fonts. Entries are not active runtime dependencies; system smoke results are not pronunciation gold data.",
   "integration_contract": {
     "pipeline": "source orthography -> language-specific structural/phonological analysis -> typed IPA result -> ClippyFirst IPA-to-Ukrainian adapter -> practical Ukrainian orthography",
     "preserve": [
