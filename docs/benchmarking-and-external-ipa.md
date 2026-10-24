@@ -77,3 +77,8 @@ Categorized run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phone
 The comparator now reports both (a) the detailed heuristic mismatch category and (b) whether the two raw IPA strings become equal after removing only the five IPA tone letters `˥˦˧˨˩` in a separate diagnostic field. This is **never used for scoring** and does not modify raw output, strict exact-match results, length marks, syllable boundaries, or the production pipeline.
 
 This decomposition helps distinguish tone-mark disagreement from remaining segmental/format disagreement, but tone can be contrastive in Lao. A tone-stripped match is not phonological equivalence and is not accuracy. Interpret it only as a triage signal alongside the more detailed category classifier.
+
+
+## Latest Lao comparison run — 2026-10-24
+
+Latest Lao comparison run [40122001269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122001269) passed with 36 probes and 0 runtime errors. Strict exact agreement is 0/36; tone-letter-stripped diagnostic agreement is 29/36 (80.6%), leaving 7 mismatches beyond tone symbols. This is not accuracy: the independent gold count is 0, and tone is contrastive. Artifact ZIP SHA-256: `63833a43fd2c9309505dcf8a96bb7dc46052993f3834307e77524b586e020816`.
