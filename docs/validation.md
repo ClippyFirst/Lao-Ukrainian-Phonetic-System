@@ -43,3 +43,8 @@ No empirical accuracy percentage is claimed until a versioned Lao gold corpus wi
 ## Independent G2P comparison harness
 
 The optional comparison procedure is documented in [independent-g2p-comparison.md](independent-g2p-comparison.md). It uses `scripts/compare_external_g2p.py` with `lao2ipa==1.0.0`, compares IPA outputs after NFC normalization only, and emits a per-case JSON report. Mismatches are intentionally not treated as a correctness verdict. The external comparison has not yet been executed, so no match rate or independent accuracy claim is made.
+
+
+## External G2P workflow verification status (2026-10-24)
+
+The reproducible workflow and unittest contract checks are proposed in PR branch feat/external-g2p-benchmark-harness-2026-10-24. They pin lao2ipa==1.0.0, preserve raw outputs, normalize to NFC only, and upload a JSON artifact. Until the workflow completes and its artifact is inspected, this remains IN_PROGRESS; no comparison result or linguistic accuracy is claimed.
