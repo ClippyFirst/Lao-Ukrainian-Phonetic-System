@@ -33,6 +33,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | LAO-UNICODE-001 | P1 | TODO | `src/lao_ukrainian/normalize.py`, `web/engine.js` | NFC, mixed script, malformed marks, controls, ZWSP and whitespace behavior aligned and tested |
 | LAO-UKR-001 | P1 | TODO | `data/lao/ukrainian_correspondences.csv`, `src/lao_ukrainian/target.py` | Target adaptation independently reviewed; policy decisions distinguished from Lao facts |
 | LAO-CORPUS-001 | P0 | TODO | No expert-adjudicated gold corpus or accuracy denominator is claimed in current docs | Versioned independent corpus includes all major classes and edge cases, with sources and expected layer-by-layer outputs |
+| LAO-G2P-001 | P1 | IN_PROGRESS | scripts/compare_external_g2p.py exists and is diagnostic-only; pinned lao2ipa==1.0.0 workflow and unittest contract checks are being added on feat/external-g2p-benchmark-harness-2026-10-24 | CI runs comparator, uploads raw JSON artifact, records errors and raw outputs, preserves tone/length/boundaries, and makes no independent-accuracy claim; inspect workflow evidence before marking verified |
 | LAO-EVIDENCE-001 | P1 | TODO | `data/evidence/sources.csv`, `data/evidence/claims.csv` | Every material rule linked to a precise source and relevant passage/page/section; conflicts and dialect scope recorded |
 | LAO-DOCS-001 | P1 | TODO | Existing methodology, validation, limitations, final audit | Docs match actual code and do not overclaim; final audit updated after CI and corpus results |
 | LAO-RELEASE-001 | P2 | TODO | `CITATION.cff` and `LICENSE` already exist | Verify metadata/license consistency; create tagged release and Zenodo archive only after P0 acceptance gates |
@@ -223,3 +224,11 @@ Status remains **research MVP / partial prototype**, not research-complete or re
 - Latest merged code CI evidence: Python **54 passed**, browser **37 passed**, external-G2P harness syntax/CLI passed, canonical browser-data generation and reproducibility passed, built-page/relative-asset checks passed.
 - README was updated to link the live pages and to state clearly that the site is a deployed research MVP, not a validated official standard.
 - Final status: deployment gate `DONE_VERIFIED`; repository remains **research MVP / partial prototype**, not research-complete or release-ready. Remaining genuine blockers: rule-by-rule primary-source adjudication (especially tones and composite vowels), independent expert-adjudicated gold corpus, actual external `lao2ipa` comparison, broader clusters/segmentation/Unicode edge cases, and independent review of the Ukrainian target policy. No empirical accuracy percentage is claimed.
+
+
+## Handoff update — reproducible external G2P execution workflow (2026-10-24)
+
+- Added .github/workflows/optional-external-g2p.yml on branch feat/external-g2p-benchmark-harness-2026-10-24. It installs the project and exact comparator version lao2ipa==1.0.0, runs the existing diagnostic harness, and uploads artifacts/external-g2p-comparison.json for 30 days. The workflow is manually dispatchable and also runs when its harness/fixture/workflow changes.
+- Added tests/test_external_g2p_harness.py, using the repository's unittest discovery convention. It guards NFC-only normalization and rejects stripping tone/length or treating the engineering fixture as independent gold.
+- These changes do not enable the external engine in production and do not change the IPA→Ukrainian adapter. The comparator's outputs and exact-match rates remain diagnostic only.
+- Status at handoff edit time: IN_PROGRESS pending PR CI and inspection of the workflow artifact. Do not claim an external comparison was run until a successful workflow artifact is available. The expert-adjudicated gold-corpus task remains TODO.
