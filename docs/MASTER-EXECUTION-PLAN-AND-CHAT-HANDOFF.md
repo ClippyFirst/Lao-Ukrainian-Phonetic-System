@@ -267,3 +267,14 @@ The first schema-v3 optional workflow [40093135298](https://github.com/ClippyFir
 - PR [#14](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/14) merged to main at `5f003928c495e82a97f3077729ea4ec50af044ba`.
 - Final branch verification [40093508377](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093508377) and optional schema-v3 comparison [40093508384](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093508384) passed. The artifact was inspected: schema v3, 36 cases, zero runtime errors, implementation agreement 0.0, independent gold count 0, accuracy null, and no ambiguous `exact_match_rate` key.
 - Earlier exit-status bug from run 40093135298 is fixed and covered by a regression test. The run is reproducible; phonological accuracy remains unmeasured until an independent gold corpus exists.
+
+
+Authoritative readiness checkpoint — 2026-10-24 12:38 UTC
+
+This section supersedes historical workflow-status statements above where they conflict with current evidence.
+
+- Current main HEAD: 4b2e6e881951f633a32b3d21e761666f642201b6.
+- Current-main verification: DONE_VERIFIED. Run 40093704069 succeeded after schema-v3 changes. Pages deploy 40091223724 succeeded on code-equivalent site sources before optional benchmark/docs changes; no later site-source change was made.
+- External G2P diagnostic: DONE_VERIFIED as execution only. Schema-v3 artifact SHA-256 91e77bc29bddc76a1a598eeb3f8eeb775fb0677a3ac86a507400edb675111d02; 36 cases, zero runtime errors, implementation agreement 0.0, independent gold count 0, accuracy null, status NOT_SCORED_NO_INDEPENDENT_GOLD.
+- Remaining TODO/BLOCKED: source-adjudicated lexical IPA gold corpus; source-backed tone contours and rule environments; complete vowel/coda/context coverage; differential review of the 36 engineering fixtures. Do not infer external output is wrong merely because it differs from engineering fixtures.
+- Readiness: current engineering verification is green; linguistic completeness and accuracy remain unproven. This is a research prototype, not release-ready general-purpose transcription software.
