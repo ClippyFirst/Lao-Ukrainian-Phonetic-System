@@ -63,3 +63,11 @@ These are research leads, not verified availability claims. Before executing a c
 | [Goruut](https://github.com/neurlang/goruut) | Upstream README advertises an IPA phone set and lists Lao support. | Support claim only; no successful local run recorded here. Code license does not establish licenses for every model/data asset. |
 
 The package license and output evidence are different things: an Apache-2.0 code license does not make a benchmark label gold, establish pronunciation correctness, or automatically license third-party source material embedded in derived data. Preserve exact package version, artifact digest, raw output, profile, and error rows.
+
+## Lao disagreement taxonomy update — 2026-10-24
+
+`scripts/compare_external_g2p.py` now assigns heuristic diagnostic labels to raw string mismatches: `TONE_SUFFIX_ONLY`, `TONE_AND_LENGTH_DIFFERENCE`, `VOWEL_LENGTH_ONLY`, `DIPHTHONG_OFFGLIDE_CONVENTION`, and `SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE`. These labels are deliberately **not** phonological judgments. Raw IPA, NFC output, exact-match result, and tone/length marks remain unchanged; no mark is removed from the reported strings.
+
+Categorized run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427) shows 36/36 strict implementation mismatches, 0 runtime errors and 0 independent gold rows. Heuristic categories: 29 tone-suffix-only, 2 diphthong offglide-convention, 4 segmental/vowel-sequence differences, 1 tone-plus-length difference. These are triage signals, not accuracy.
+
+**Interpretation priority:** 29/36 tone-suffix-only classifications are not harmless by definition: Lao tone can be contrastive. Do not strip tone or accept a mismatch without source-located lexical evidence and an explicit phonemic/phonetic convention. Review the four segmental/vowel-sequence cases (`ເກຽ`, `ກັວບ`, `ກວງ`, `ກວາງ`) next, then the `ai`/`aj` offglide convention and tone+length case.
