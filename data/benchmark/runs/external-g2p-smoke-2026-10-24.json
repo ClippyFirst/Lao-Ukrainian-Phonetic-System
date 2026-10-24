@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "language": "Lao",
+  "run_id": 40119990663,
+  "engine": "lao2ipa",
+  "engine_version": "1.0.0",
+  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119990663/artifacts/12569454564",
+  "artifact_zip_sha256": "357f6c5d6d1fefd78a8adaf382994aa985a21ea3654b98a099215dac3121d022",
+  "input_count": 36,
+  "runtime_errors": 0,
+  "independent_gold_count": 0,
+  "accuracy": null,
+  "implementation_agreement_count": 0,
+  "implementation_agreement_rate": 0,
+  "score_status": "NOT_SCORED_NO_INDEPENDENT_GOLD",
+  "normalization": "NFC only; no tone/length marks removed",
+  "representative_cases": [
+    {
+      "id": "VOWEL-OE-SHORT",
+      "input": "ເກິ",
+      "project_ipa": "kɤ",
+      "external_ipa": "kɤ˧˥",
+      "exact_match": false,
+      "review": "Tone convention likely contributes; requires source-attested lexical comparison."
+    },
+    {
+      "id": "VOWEL-OE-LONG",
+      "input": "ເກີ",
+      "project_ipa": "kɤː",
+      "external_ipa": "kɤː˩˧",
+      "exact_match": false,
+      "review": "Length agrees in string prefix; external tone suffix differs."
+    },
+    {
+      "id": "VOWEL-IA-LONG",
+      "input": "ເກຽ",
+      "project_ipa": "kiːə",
+      "external_ipa": "keː˩˧iːə",
+      "exact_match": false,
+      "review": "Vowel sequence differs materially; high-priority adjudication."
+    },
+    {
+      "id": "VOWEL-O-SHORT-CLOSED",
+      "input": "ຄົນ",
+      "project_ipa": "kʰon",
+      "external_ipa": "kʰon˧˥",
+      "exact_match": false,
+      "review": "Segmental sequence agrees; external tone suffix differs."
+    },
+    {
+      "id": "VOWEL-IA-LONG-STANDALONE",
+      "input": "ວຽງ",
+      "project_ipa": "ʋiːəŋ",
+      "external_ipa": "ʋiːəŋ˧˥",
+      "exact_match": false,
+      "review": "Segmental sequence agrees; external tone suffix differs."
+    },
+    {
+      "id": "VOWEL-IA-SHORT",
+      "input": "ເກັຽ",
+      "project_ipa": "kiə",
+      "external_ipa": "kiːə˧˥",
+      "exact_match": false,
+      "review": "Length differs and tone is present only in external output."
+    },
+    {
+      "id": "VOWEL-UA-SHORT",
+      "input": "ເກຶອ",
+      "project_ipa": "kɯə",
+      "external_ipa": "kɯə˧˥",
+      "exact_match": false,
+      "review": "Segmental sequence agrees; external tone suffix differs."
+    },
+    {
+      "id": "VOWEL-UA-LONG",
+      "input": "ເກືອ",
+      "project_ipa": "kɯːə",
+      "external_ipa": "kɯːə˩˧",
+      "exact_match": false,
+      "review": "Segmental sequence agrees; external tone suffix differs."
+    }
+  ],
+  "interpretation": "This is a diagnostic comparison against an engineering fixture, not accuracy. Neither output is gold. Differences must be reviewed by lexical status, dialect, tone convention and IPA analysis."
+}
