@@ -12,6 +12,7 @@ HARNESS = runpy.run_path(str(ROOT / "scripts" / "compare_external_g2p.py"))
 nfc = HARNESS["nfc"]
 build_summary = HARNESS["build_summary"]
 classify_mismatch = HARNESS["classify_mismatch"]
+strip_tone_symbols_diagnostic = HARNESS["strip_tone_symbols_diagnostic"]
 
 
 class ExternalG2PHarnessTests(unittest.TestCase):
@@ -98,6 +99,24 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertEqual(summary["independent_gold_count"], 0)
         self.assertIsNone(summary["accuracy"])
         self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
+
+    def test_tone_stripping_is_separate_and_preserves_length_and_boundaries(self):
+        self.assertEqual(strip_tone_symbols_diagnostic("kʰaː˥˩.ŋ"), "kʰaː.ŋ")
+        self.assertEqual(strip_tone_symbols_diagnostic("kʰaː.ŋ"), "kʰaː.ŋ")
+        self.assertIsNone(strip_tone_symbols_diagnostic(None))
+
+    def test_summary_decomposes_tone_only_differences_without_accuracy(self):
+        summary = build_summary([
+            {"exact_match": True, "tone_stripped_match": True, "project_matches_fixture": True, "external_matches_fixture": True, "mismatch_category": None},
+            {"exact_match": False, "tone_stripped_match": True, "project_matches_fixture": True, "external_matches_fixture": False, "mismatch_category": "TONE_SUFFIX_ONLY"},
+            {"exact_match": False, "tone_stripped_match": False, "project_matches_fixture": True, "external_matches_fixture": False, "mismatch_category": "DIPHTHONG_OFFGLIDE_CONVENTION"},
+            {"exact_match": False, "tone_stripped_match": False, "project_matches_fixture": False, "external_matches_fixture": False, "mismatch_category": "RUNTIME_ERROR"},
+        ], expected_count=4)
+        self.assertEqual(summary["tone_stripped_exact_matches_diagnostic_only"], 2)
+        self.assertEqual(summary["tone_only_mismatches_diagnostic_only"], 1)
+        self.assertEqual(summary["non_tone_or_format_mismatches_requiring_review"], 1)
+        self.assertEqual(summary["independent_gold_count"], 0)
+        self.assertIsNone(summary["accuracy"])
 
 if __name__ == "__main__":
     unittest.main()
