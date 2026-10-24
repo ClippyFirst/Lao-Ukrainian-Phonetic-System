@@ -71,3 +71,9 @@ The package license and output evidence are different things: an Apache-2.0 code
 Categorized run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427) shows 36/36 strict implementation mismatches, 0 runtime errors and 0 independent gold rows. Heuristic categories: 29 tone-suffix-only, 2 diphthong offglide-convention, 4 segmental/vowel-sequence differences, 1 tone-plus-length difference. These are triage signals, not accuracy.
 
 **Interpretation priority:** 29/36 tone-suffix-only classifications are not harmless by definition: Lao tone can be contrastive. Do not strip tone or accept a mismatch without source-located lexical evidence and an explicit phonemic/phonetic convention. Review the four segmental/vowel-sequence cases (`ເກຽ`, `ກັວບ`, `ກວງ`, `ກວາງ`) next, then the `ai`/`aj` offglide convention and tone+length case.
+
+## Tone-stripped diagnostic decomposition — 2026-10-24
+
+The comparator now reports both (a) the detailed heuristic mismatch category and (b) whether the two raw IPA strings become equal after removing only the five IPA tone letters `˥˦˧˨˩` in a separate diagnostic field. This is **never used for scoring** and does not modify raw output, strict exact-match results, length marks, syllable boundaries, or the production pipeline.
+
+This decomposition helps distinguish tone-mark disagreement from remaining segmental/format disagreement, but tone can be contrastive in Lao. A tone-stripped match is not phonological equivalence and is not accuracy. Interpret it only as a triage signal alongside the more detailed category classifier.
