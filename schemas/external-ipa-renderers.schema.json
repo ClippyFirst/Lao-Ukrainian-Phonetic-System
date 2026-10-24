@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clippyfirst.github.io/schemas/external-ipa-renderers.schema.json",
+  "title": "ClippyFirst external IPA/G2P candidate registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "language",
+    "purpose",
+    "integration_contract",
+    "candidates"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "language": {
+      "type": "object",
+      "required": [
+        "name",
+        "iso_639_3_or_639_1"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iso_639_3_or_639_1": {
+          "type": "string",
+          "minLength": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "integration_contract": {
+      "type": "object",
+      "required": [
+        "pipeline",
+        "preserve",
+        "prohibited"
+      ],
+      "properties": {
+        "pipeline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "preserve": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "prohibited": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "url",
+          "kind",
+          "status",
+          "output",
+          "license",
+          "verified_in_repo",
+          "enabled_by_default"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "candidate",
+              "benchmark-resource",
+              "supporting-tool",
+              "display-only"
+            ]
+          },
+          "output": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verified_in_repo": {
+            "const": false
+          },
+          "enabled_by_default": {
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

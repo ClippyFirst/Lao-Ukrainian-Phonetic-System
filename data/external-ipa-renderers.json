@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "language": {
+    "name": "Lao",
+    "iso_639_3_or_639_1": "lo"
+  },
+  "purpose": "Research registry of external IPA/G2P candidates. Entries are not active runtime dependencies and are not accepted pronunciation gold data.",
+  "integration_contract": {
+    "pipeline": "source orthography -> language-specific structural/phonological analysis -> typed IPA result -> ClippyFirst IPA-to-Ukrainian adapter -> practical Ukrainian orthography",
+    "preserve": [
+      "IPA segments",
+      "tone",
+      "vowel length",
+      "syllable boundaries",
+      "pronunciation profile/dialect",
+      "source provenance",
+      "uncertainty and competing analyses"
+    ],
+    "prohibited": [
+      "direct source-grapheme-to-Ukrainian fallback",
+      "silently rewriting external output into IPA without a documented conversion",
+      "using unverified output as gold data"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "goruut",
+      "name": "Goruut",
+      "url": "https://github.com/neurlang/goruut",
+      "kind": "multilingual IPA phonemizer",
+      "status": "candidate",
+      "output": "Lao support is claimed; verify tone, vowel quantity, dialect scope and independent accuracy",
+      "license": "Verify current upstream license and model/data terms",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "neurlang-dataset",
+      "name": "Neurlang IPA Phonetic Dataset",
+      "url": "https://github.com/neurlang/dataset",
+      "kind": "multilingual pronunciation lexicon",
+      "status": "benchmark-resource",
+      "output": "Potential word-level reference; audit provenance, tone marking and IPA consistency",
+      "license": "Verify data-specific license and source attribution",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "charis-sil",
+      "name": "Charis SIL",
+      "url": "https://software.sil.org/charis/",
+      "kind": "Unicode IPA-capable font",
+      "status": "display-only",
+      "output": "Recommended font candidate for readable IPA and combining diacritics",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "doulos-sil",
+      "name": "Doulos SIL",
+      "url": "https://software.sil.org/doulos/",
+      "kind": "Unicode IPA-capable font",
+      "status": "display-only",
+      "output": "IPA-focused font candidate; verify combining-diacritic rendering in target browsers",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "dejavu-sans",
+      "name": "DejaVu Sans",
+      "url": "https://dejavu-fonts.github.io/",
+      "kind": "Unicode font",
+      "status": "display-only",
+      "output": "Broad Unicode/IPA fallback candidate; test exact glyph coverage on target devices",
+      "license": "DejaVu license; retain upstream notices",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "inter-font-extensions",
+      "name": "Inter Font Extensions",
+      "url": "https://github.com/grab/inter-font-extensions",
+      "kind": "script-font extensions (Thai/Khmer/Myanmar; not an IPA font)",
+      "status": "display-only",
+      "output": "May improve display of the source scripts in interfaces; does not generate IPA and is not a replacement for an IPA-capable Latin font",
+      "license": "Verify current upstream font and repository license",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "padauk",
+      "name": "Padauk",
+      "url": "https://software.sil.org/padauk/",
+      "kind": "Myanmar-script font (not an IPA font)",
+      "status": "display-only",
+      "output": "Useful for Myanmar-script text shaping and coverage; not an IPA transcription engine",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "busra",
+      "name": "Busra",
+      "url": "https://software.sil.org/busra/",
+      "kind": "Khmer-script font (not an IPA font)",
+      "status": "display-only",
+      "output": "Khmer-script display font only; not an IPA transcription engine",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "mondulkiri",
+      "name": "Mondulkiri",
+      "url": "https://software.sil.org/mondulkiri/",
+      "kind": "Khmer-script font (not an IPA font)",
+      "status": "display-only",
+      "output": "Khmer-script display font only; not an IPA transcription engine",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    }
+  ]
+}
