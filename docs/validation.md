@@ -53,3 +53,6 @@ The reproducible workflow and unittest contract checks ran successfully in [work
 ## Diagnostic metric schema v3 — pending verification (2026-10-24)
 
 PR [#14](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/14) changes the report's ambiguous `exact_match_rate` to `implementation_agreement_rate` and makes `accuracy: null` / `independent_gold_count: 0` machine-readable. The current branch's full verification and optional `lao2ipa==1.0.0` run are pending. Until the schema-v3 artifact is inspected, this refinement is IN_PROGRESS. The prior schema-v2 artifact remains a historical diagnostic record, not an accuracy benchmark.
+
+
+The first schema-v3 workflow attempt [40093135298](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093135298) generated a schema-v3 report but failed at exit-status evaluation with a stale variable reference. The branch fixes the reference and adds a regression test. Status remains IN_PROGRESS until a new workflow run and main verification suite pass; no accuracy claim is made.
