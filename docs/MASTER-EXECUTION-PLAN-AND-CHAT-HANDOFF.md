@@ -331,18 +331,15 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
 
 
-## Tone-only decomposition follow-up — 2026-10-24
+## Tone-only decomposition follow-up — merged 2026-10-24
 
-- Branch `research/lao-tone-decomposition-rebased-20261024` ports the tone-only diagnostic onto the current main while preserving the detailed mismatch classifier from PR #26.
-- The comparator reports strict exact match and detailed mismatch categories unchanged, plus separate `tone_stripped_*_diagnostic_only` counts computed after removing only IPA tone letters from derived copies. Raw IPA, length marks, separators and production output are untouched.
-- Unit tests cover tone-only vs non-tone mismatches and the `accuracy: null` gate. The earlier categorized artifact gave 29/36 tone-suffix-only cases and 7 non-tone/format cases, but this is a diagnostic decomposition—not accuracy or proof tone is dispensable.
-- Acceptance: current-head unit tests and optional `lao2ipa` workflow. Independent gold remains absent.
+- PR #28 merged the diagnostic classifier and tone-stripped comparison. Raw IPA and strict exact-match results remain unchanged; tone stripping is diagnostic-only and never used for production output.
+- Latest successful categorized run is [40122329060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060): 36 inputs, 0 runtime errors, 0/36 strict exact matches; 29/36 tone-only string matches after diagnostic stripping (80.6%), with 7 other mismatches requiring review. Independent gold remains 0, so accuracy is null.
 
-## IPA gold provenance gate — 2026-10-24
+## IPA gold provenance gate — merged 2026-10-24
 
-- Branch `research/benchmark-gold-provenance-gate-rebased2-20261024` adds fail-closed validation: every row labelled `ADJUDICATED` must contain non-empty `gold_ipa`, `source_id`, and `profile`, or scoring stops with a clear error.
-- Regression tests cover each missing field. This validates metadata completeness, not the truth of a label; source locator, source registry, dialect/profile, adjudication and uncertainty must still be reviewed.
-- Acceptance: final-head unit tests and optional comparison workflow. No language-specific gold labels are added by this change.
+- PR #31 merged the fail-closed benchmark validation. Every row marked `ADJUDICATED` must have non-empty `gold_ipa`, `source_id`, and `profile`; otherwise scoring stops with an error rather than silently changing the denominator.
+- Regression tests passed on the merged head. This validates metadata completeness, not the truth of a pronunciation label. Independent Lao gold remains absent.
 
 ## Lao tone-stripped diagnostic results — 2026-10-24
 
