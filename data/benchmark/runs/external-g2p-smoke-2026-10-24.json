@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
   "language": "Lao",
-  "run_id": 40121272427,
+  "run_id": 40122001269,
   "engine": "lao2ipa",
   "engine_version": "1.0.0",
-  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427/artifacts/12571197945",
-  "artifact_zip_sha256": "a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8",
+  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122001269/artifacts/12571935571",
+  "artifact_zip_sha256": "63833a43fd2c9309505dcf8a96bb7dc46052993f3834307e77524b586e020816",
   "input_count": 36,
   "runtime_errors": 0,
   "independent_gold_count": 0,
@@ -80,7 +80,7 @@
       "review": "Segmental sequence agrees; external tone suffix differs."
     }
   ],
-  "interpretation": "This is a diagnostic comparison against an engineering fixture, not accuracy. Neither output is gold. Differences must be reviewed by lexical status, dialect, tone convention and IPA analysis.",
+  "interpretation": "Raw comparison of 36 engineering probes. Strict exact agreement is 0/36; a separate tone-letter-stripped diagnostic matches 29/36 (80.6%) but is not accuracy. Seven remaining mismatches require review. Independent gold count remains zero; accuracy is null.",
   "mismatch_category_counts": {
     "TONE_SUFFIX_ONLY": 29,
     "DIPHTHONG_OFFGLIDE_CONVENTION": 2,
@@ -94,5 +94,22 @@
     "Review the four segmental/vowel-sequence cases, especially ເກຽ, ກັວບ, ກວງ and ກວາງ, against source-located lexical pronunciations.",
     "Decide whether ai vs aj is a documented offglide transcription convention or a phonetic distinction in the selected profile; preserve both raw outputs.",
     "Adjudicate the single tone-plus-length case ເກັຽ with lexical evidence."
-  ]
+  ],
+  "latest_run_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122001269",
+  "tone_stripped_diagnostic": {
+    "method": "Remove only Unicode IPA tone letters ˥ ˦ ˧ ˨ ˩ from additional diagnostic strings; raw outputs and strict exact-match comparison remain unchanged.",
+    "strict_exact_implementation_matches": 0,
+    "strict_exact_implementation_agreement_rate": 0,
+    "tone_stripped_matches_diagnostic_only": 29,
+    "tone_stripped_agreement_rate_diagnostic_only": 0.8055555555555556,
+    "tone_only_mismatches_diagnostic_only": 29,
+    "non_tone_or_format_mismatches_requiring_review": 7,
+    "caveat": "Diagnostic string comparison only. Tone is contrastive in Lao and must not be removed from production IPA or treated as optional; no accuracy claim is made."
+  },
+  "latest_mismatch_category_counts": {
+    "TONE_SUFFIX_ONLY": 29,
+    "DIPHTHONG_OFFGLIDE_CONVENTION": 2,
+    "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE": 4,
+    "TONE_AND_LENGTH_DIFFERENCE": 1
+  }
 }
