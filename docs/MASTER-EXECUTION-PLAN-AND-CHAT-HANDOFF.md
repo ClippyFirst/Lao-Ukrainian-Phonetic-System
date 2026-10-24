@@ -1,3 +1,10 @@
+
+## Lao external G2P mismatch taxonomy — 2026-10-24
+
+- Branch `research/lao-g2p-diagnostic-categories-rebased-20261024` updates the existing comparator instead of adding a parallel runner.
+- Categorized pinned run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427): 36 engineering cases, 0 runtime errors, 0/36 exact implementation agreement, independent gold=0, accuracy=null. Categories: 29 tone-suffix-only, 2 offglide-convention, 4 segmental/vowel-sequence, 1 tone+length. Durable report: `data/benchmark/runs/external-g2p-smoke-2026-10-24.json`; artifact ZIP SHA-256 `a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8`.
+- The category labels are heuristic review hints only. Lao tone may be contrastive, so tone-suffix differences are not automatically harmless. Prioritize source-located adjudication of tone convention and the four segmental/vowel-sequence cases.
+- Unit tests for the classifier passed on the previous branch head; full current-branch CI and optional comparison are required before merge. No accuracy or engine winner is claimed.
 # Master execution plan and chat handoff
 
 Last reviewed: 2026-10-20
