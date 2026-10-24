@@ -77,3 +77,10 @@ Categorized run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phone
 The comparator now reports both (a) the detailed heuristic mismatch category and (b) whether the two raw IPA strings become equal after removing only the five IPA tone letters `˥˦˧˨˩` in a separate diagnostic field. This is **never used for scoring** and does not modify raw output, strict exact-match results, length marks, syllable boundaries, or the production pipeline.
 
 This decomposition helps distinguish tone-mark disagreement from remaining segmental/format disagreement, but tone can be contrastive in Lao. A tone-stripped match is not phonological equivalence and is not accuracy. Interpret it only as a triage signal alongside the more detailed category classifier.
+
+
+## Benchmark metric semantics — 2026-10-24
+
+- `exact_match_rate` is strict string equality after the declared Unicode normalization and is comparable only when the same IPA profile/conventions are used. Tone, length, stress, syllable boundaries, tie bars and other IPA distinctions are not silently removed.
+- `character_error_rate` is Levenshtein distance over Unicode code points, not a phoneme/segment error rate. IPA affricates, combining diacritics, length marks and tone symbols can occupy multiple code points; interpret this field as a string-distance diagnostic only.
+- A valid score still requires a non-empty independently adjudicated gold set with source locator and profile. Smoke output, engineering fixtures, source-attested but unadjudicated entries, and inter-engine agreement are not accuracy.
