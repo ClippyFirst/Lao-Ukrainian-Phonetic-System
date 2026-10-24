@@ -87,5 +87,12 @@
     "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE": 4,
     "TONE_AND_LENGTH_DIFFERENCE": 1
   },
-  "mismatch_category_interpretation": "Heuristic string-difference labels only; not phonological error adjudication. Exact implementation agreement remains 0/36; independent gold count is 0 and accuracy is null."
+  "mismatch_category_interpretation": "Heuristic string-difference labels only; not phonological error adjudication. Exact implementation agreement remains 0/36; independent gold count is 0 and accuracy is null.",
+  "classifier_caveat": "Tone-suffix-only is a string-shape category, not a claim that tone is optional or harmless. Lao tone can be contrastive; never strip tone from production IPA or declare a mismatch acceptable without source-based phonological adjudication.",
+  "priority_followups": [
+    "Adjudicate whether the project phonemic IPA contract must represent lexical tone and how its tone convention aligns with lao2ipa; the 29 suffix-only cases dominate string mismatches.",
+    "Review the four segmental/vowel-sequence cases, especially ເກຽ, ກັວບ, ກວງ and ກວາງ, against source-located lexical pronunciations.",
+    "Decide whether ai vs aj is a documented offglide transcription convention or a phonetic distinction in the selected profile; preserve both raw outputs.",
+    "Adjudicate the single tone-plus-length case ເກັຽ with lexical evidence."
+  ]
 }
