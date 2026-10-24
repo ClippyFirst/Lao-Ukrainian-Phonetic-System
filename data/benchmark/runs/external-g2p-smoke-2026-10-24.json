@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
   "language": "Lao",
-  "run_id": 40121272427,
+  "run_id": 40122329060,
   "engine": "lao2ipa",
   "engine_version": "1.0.0",
-  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427/artifacts/12571197945",
-  "artifact_zip_sha256": "a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8",
+  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060/artifacts/12572570192",
+  "artifact_zip_sha256": "2b7f3c5e3c02814413e42b9f2031849c21630fba9958a7e6a38de92f7a63ff55",
   "input_count": 36,
   "runtime_errors": 0,
   "independent_gold_count": 0,
@@ -80,7 +80,7 @@
       "review": "Segmental sequence agrees; external tone suffix differs."
     }
   ],
-  "interpretation": "This is a diagnostic comparison against an engineering fixture, not accuracy. Neither output is gold. Differences must be reviewed by lexical status, dialect, tone convention and IPA analysis.",
+  "interpretation": "Strict implementation agreement is 0/36. Removing tone letters only in a separate diagnostic copy makes 29/36 pairs equal; 7/36 still differ in segmental/format/length ways. This is not accuracy: independent gold count is 0, and Lao tone can be contrastive. The engineering fixture is not gold.",
   "mismatch_category_counts": {
     "TONE_SUFFIX_ONLY": 29,
     "DIPHTHONG_OFFGLIDE_CONVENTION": 2,
@@ -94,5 +94,12 @@
     "Review the four segmental/vowel-sequence cases, especially ເກຽ, ກັວບ, ກວງ and ກວາງ, against source-located lexical pronunciations.",
     "Decide whether ai vs aj is a documented offglide transcription convention or a phonetic distinction in the selected profile; preserve both raw outputs.",
     "Adjudicate the single tone-plus-length case ເກັຽ with lexical evidence."
-  ]
+  ],
+  "diagnostic_schema_version": 5,
+  "project_fixture_matches": 36,
+  "external_fixture_matches": 0,
+  "tone_stripped_exact_matches_diagnostic_only": 29,
+  "tone_stripped_agreement_rate_diagnostic_only": 0.8055555555555556,
+  "tone_only_mismatches_diagnostic_only": 29,
+  "non_tone_or_format_mismatches_requiring_review": 7
 }

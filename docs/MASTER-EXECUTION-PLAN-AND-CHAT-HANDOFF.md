@@ -343,3 +343,9 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Branch `research/benchmark-gold-provenance-gate-rebased2-20261024` adds fail-closed validation: every row labelled `ADJUDICATED` must contain non-empty `gold_ipa`, `source_id`, and `profile`, or scoring stops with a clear error.
 - Regression tests cover each missing field. This validates metadata completeness, not the truth of a label; source locator, source registry, dialect/profile, adjudication and uncertainty must still be reviewed.
 - Acceptance: final-head unit tests and optional comparison workflow. No language-specific gold labels are added by this change.
+
+## Lao tone-stripped diagnostic results — 2026-10-24
+
+- Latest categorized artifact [workflow 40122329060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060): 36 inputs, 0 runtime errors, strict implementation agreement 0/36, tone-stripped agreement 29/36 (80.6%) diagnostic-only, 7/36 remaining non-tone/format/length mismatches, independent gold=0, accuracy=null.
+- Detailed categories remain: 29 tone-suffix-only, 2 offglide convention, 4 segmental/vowel-sequence, 1 tone+length. The tone-stripped diagnostic does not change raw outputs or strict scoring; tone can be contrastive and must not be removed from production IPA.
+- Durable summary: `data/benchmark/runs/external-g2p-smoke-2026-10-24.json`; artifact SHA-256 `2b7f3c5e3c02814413e42b9f2031849c21630fba9958a7e6a38de92f7a63ff55`.
