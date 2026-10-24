@@ -337,3 +337,9 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - The comparator reports strict exact match and detailed mismatch categories unchanged, plus separate `tone_stripped_*_diagnostic_only` counts computed after removing only IPA tone letters from derived copies. Raw IPA, length marks, separators and production output are untouched.
 - Unit tests cover tone-only vs non-tone mismatches and the `accuracy: null` gate. The earlier categorized artifact gave 29/36 tone-suffix-only cases and 7 non-tone/format cases, but this is a diagnostic decomposition—not accuracy or proof tone is dispensable.
 - Acceptance: current-head unit tests and optional `lao2ipa` workflow. Independent gold remains absent.
+
+## IPA gold provenance gate — 2026-10-24
+
+- Branch `research/benchmark-gold-provenance-gate-rebased2-20261024` adds fail-closed validation: every row labelled `ADJUDICATED` must contain non-empty `gold_ipa`, `source_id`, and `profile`, or scoring stops with a clear error.
+- Regression tests cover each missing field. This validates metadata completeness, not the truth of a label; source locator, source registry, dialect/profile, adjudication and uncertainty must still be reviewed.
+- Acceptance: final-head unit tests and optional comparison workflow. No language-specific gold labels are added by this change.
