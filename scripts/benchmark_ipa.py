@@ -48,6 +48,16 @@ def main() -> int:
         if not row["id"] or row["id"] in gold:
             raise ValueError(f"gold IDs must be non-empty and unique: {row['id']!r}")
         gold[row["id"]] = row
+    # An ADJUDICATED label must be auditable. Fail closed instead of silently
+    # excluding malformed gold rows and accidentally changing the denominator.
+    for row in gold_rows:
+        if row["gold_status"] == "ADJUDICATED":
+            if not norm(row["gold_ipa"]):
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires non-empty gold_ipa")
+            if not row["source_id"].strip():
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires source_id")
+            if not row["profile"].strip():
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires profile")
     eligible = {k: v for k, v in gold.items()
                 if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
     predictions = defaultdict(dict)
