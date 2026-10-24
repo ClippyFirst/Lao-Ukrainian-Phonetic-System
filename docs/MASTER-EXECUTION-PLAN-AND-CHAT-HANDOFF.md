@@ -330,3 +330,9 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Keep IPA adaptation boundary: source spelling → structural parse → source phonology → typed IPA → Ukrainian adapter. Third-party candidates remain optional and disabled in production.
 - Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
 
+
+
+### Benchmark gold provenance guard — 2026-10-24
+
+- Benchmark scoring now fails closed if an ADJUDICATED row lacks non-empty IPA, a source locator, or a profile. The regression tests are included in PR #29; do not merge until the current-head CI and optional comparison check pass.
+- The independent gold corpus is still empty. The Lao-vs-lao2ipa report classifies 29 suffix-only tone differences, 4 segmental/vowel-sequence differences, 1 tone-plus-length difference and 1 offglide-convention difference among 36 cases; these are heuristic string categories, not adjudicated phonological errors. Exact agreement remains 0/36; accuracy remains null.
