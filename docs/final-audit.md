@@ -34,3 +34,11 @@ The Russian system remains a comparator, not an intermediate representation. Ser
 **🟡 Usable but needs finalization.**
 
 The repository is substantially more defensible and reproducible than the initial research foundation, but publication-grade status requires a representative corpus, fuller syllable/cluster grammar, independent verification of edge cases, and expert adjudication of the Ukrainian target correspondences.
+
+
+## External IPA and benchmark audit — 2026-10-24
+
+- The external comparator `lao2ipa 1.0.0` has a reproducible 36-probe smoke run with 0 runtime errors. Latest categorized artifact: [run 40122329060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060), SHA-256 `2b7f3c5e3c02814413e42b9f2031849c21630fba9958a7e6a38de92f7a63ff55`.
+- Strict raw IPA agreement is 0/36. A separate tone-letter-stripped diagnostic matches 29/36 (80.6%), leaving 7 tone/length/segmental/offglide cases for review. This is a string-difference diagnostic, not accuracy; Lao tone can be contrastive and must not be stripped from production IPA.
+- The benchmark gold-provenance guard is merged: every ADJUDICATED row requires non-empty IPA, source_id and profile. The independent gold corpus remains empty, so accuracy is null.
+- External systems remain optional. Epitran (`lao-Laoo`) and Goruut are upstream support candidates only, not yet executed in this repository. Remaining acceptance criteria: expert-adjudicated lexical IPA, documented tone convention, and source-based review of the seven non-tone/format cases.
