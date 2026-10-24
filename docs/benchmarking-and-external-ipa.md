@@ -42,7 +42,7 @@ These are research leads, not verified availability claims. Before executing a c
 
 ## Current evidence status
 
-- Harness: added; CI/local execution still required on this branch.
+- Harness baseline: executed successfully in prior main CI. The current PR adds fail-closed validation requiring every ADJUDICATED row to have non-empty IPA, source_id and profile; its regression tests must pass on the final head.
 - Adjudicated language-specific gold rows: not yet established by this document.
 - Candidate engine availability, version, licenses, and language-specific output quality: unverified until recorded as run evidence.
 - Release status: research prototype; no accuracy claim is authorized by this registry.
