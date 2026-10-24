@@ -331,3 +331,9 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - The comparator now classifies common string-level mismatch patterns (tone suffix, tone+length, length, diphthong offglide convention, segmental/vowel-sequence difference) while preserving all raw IPA and strict NFC exact-match results. Categories are review hints, not linguistic judgments.
 - Added unit tests for categories and the no-gold scoring gate. Required verification: full Python tests and the optional `lao2ipa` workflow on the final PR head; then update the durable smoke summary with category counts and exact artifact hash.
 - Next genuine blocker remains independently source-located/adjudicated Lao lexical IPA with a declared dialect and tone convention.
+
+### Lao G2P triage priorities
+
+- The 29/36 `TONE_SUFFIX_ONLY` classifications are not harmless by definition: Lao tone may be contrastive. Do not strip tones or declare equivalence without source-located lexical evidence and an explicit phonemic/phonetic convention.
+- Review the four segmental/vowel-sequence mismatches first (`ເກຽ`, `ກັວບ`, `ກວງ`, `ກວາງ`), then the two `ai`/`aj` offglide convention cases and the single tone+length case.
+- The classifier only triages string differences. Independent gold remains 0; no accuracy score or winner is claimed.
