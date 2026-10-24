@@ -246,3 +246,8 @@ Status remains **research MVP / partial prototype**, not research-complete or re
 - The first artifact (workflow [40092430175](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175)) used schema v2 and called 0/36 exact cross-engine matches an `exact_match_rate`. This was implementation agreement over engineering fixtures, not accuracy, but the field name was too ambiguous.
 - New branch `fix/label-lao-g2p-diagnostic-metrics-2026-10-24` changes the report to schema v3: `implementation_agreement_rate`, `independent_gold_count: 0`, `accuracy: null`, `score_status: NOT_SCORED_NO_INDEPENDENT_GOLD`; implementation mismatches and runtime errors are separated. A unittest locks this contract.
 - Pending current-head CI and optional workflow. Do not merge until green. Preserve previous artifact as historical schema-v2 evidence; new workflow artifact will establish the schema-v3 result. Gold corpus remains TODO.
+
+
+### Schema-v3 follow-up fix — 2026-10-24
+
+The first schema-v3 optional workflow [40093135298](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093135298) produced the report but exited with `NameError: runtime_errors` because the return statement still referenced the removed local summary variable. Fixed to use `summary["runtime_errors"]` and added a regression assertion. The artifact from this failed run confirms the schema-v3 metrics themselves were emitted correctly (0 independent gold, accuracy null, implementation agreement 0.0); the workflow remains IN_PROGRESS until a fresh run and verification suite both pass.
