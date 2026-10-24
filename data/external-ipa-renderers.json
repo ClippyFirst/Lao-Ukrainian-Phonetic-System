@@ -122,5 +122,21 @@
       "verified_in_repo": false,
       "enabled_by_default": false
     }
-  ]
+  ],
+  "benchmark_protocol": {
+    "harness": "scripts/benchmark_ipa.py",
+    "gold_template": "data/benchmark/gold.tsv",
+    "predictions_template": "data/benchmark/predictions.tsv",
+    "report_command": "python scripts/benchmark_ipa.py --gold data/benchmark/gold.tsv --predictions data/benchmark/predictions.tsv --output reports/ipa-benchmark.json",
+    "scoring_gate": "Only independently adjudicated, non-empty gold_ipa rows are scored.",
+    "metrics": [
+      "strict Unicode NFC exact match",
+      "missing-prediction count",
+      "code-point Levenshtein CER (diagnostic only)"
+    ],
+    "current_accuracy_status": "NOT_MEASURED_UNTIL_ADJUDICATED_GOLD_ROWS_EXIST",
+    "external_engines_enabled_by_default": false,
+    "notes": "Registry membership does not establish language support, IPA output semantics, reproducibility, accuracy, or license compatibility. Preserve raw output and record exact versions and model/data licenses."
+  },
+  "last_reviewed": "2026-10-24"
 }
