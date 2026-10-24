@@ -314,3 +314,12 @@ The parser already emitted `UNCONSUMED_AFTER_VOWEL:<suffix>` when a source suffi
 - New research branch: `research/third-party-ipa-systems-20261024`. PR and workflow outcomes must be checked before this work is considered integrated.
 - Keep IPA adaptation boundary: source spelling → structural parse → source phonology → typed IPA → Ukrainian adapter. Third-party candidates remain optional and disabled in production.
 - Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
+
+
+### Verified status as of 2026-10-24
+
+PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verification and external comparison passed; 66 Python tests passed. `lao2ipa 1.0.0` smoke: 36 inputs, 0 runtime errors, 0/36 implementation agreement, independent gold=0, accuracy=null. Durable examples: `data/benchmark/runs/external-g2p-smoke-2026-10-24.json`; full artifact: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119990663/artifacts/12569454564.
+
+- Keep IPA adaptation boundary: source spelling → structural parse → source phonology → typed IPA → Ukrainian adapter. Third-party candidates remain optional and disabled in production.
+- Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
+
