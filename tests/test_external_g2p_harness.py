@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HARNESS = runpy.run_path(str(ROOT / "scripts" / "compare_external_g2p.py"))
 nfc = HARNESS["nfc"]
 build_summary = HARNESS["build_summary"]
+classify_mismatch = HARNESS["classify_mismatch"]
 
 
 class ExternalG2PHarnessTests(unittest.TestCase):
@@ -36,7 +37,7 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         source = (ROOT / "scripts" / "compare_external_g2p.py").read_text(
             encoding="utf-8"
         )
-        self.assertIn('unicodedata.normalize("NFC", value)', source)
+        self.assertTrue('unicodedata.normalize("NFC", value)' in source or "unicodedata.normalize('NFC', value)" in source)
         self.assertNotIn("ignore_tones=True", source)
         self.assertNotIn('replace("ː", "")', source)
 
@@ -73,9 +74,30 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertNotIn("exact_match_rate", summary)
         self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
         source = (ROOT / "scripts" / "compare_external_g2p.py").read_text(encoding="utf-8")
-        self.assertIn('return 2 if summary["runtime_errors"] else 0', source)
+        self.assertTrue('return 2 if summary["runtime_errors"] else 0' in source or "return 2 if summary['runtime_errors'] else 0" in source)
         self.assertNotIn("return 2 if runtime_errors else 0", source)
 
+
+    def test_mismatch_categories_are_diagnostic_and_do_not_rewrite_raw_values(self):
+        self.assertIsNone(classify_mismatch("kɤ", "kɤ"))
+        self.assertEqual(classify_mismatch("kɤ", "kɤ˧˥"), "TONE_SUFFIX_ONLY")
+        self.assertEqual(classify_mismatch("kiə", "kiːə˧˥"), "TONE_AND_LENGTH_DIFFERENCE")
+        self.assertEqual(classify_mismatch("kai", "kaj˩˧"), "DIPHTHONG_OFFGLIDE_CONVENTION")
+        self.assertEqual(classify_mismatch("kiːə", "keː˩˧iːə"), "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE")
+        self.assertEqual(classify_mismatch(None, "kɤ"), "MISSING_OUTPUT")
+
+    def test_summary_reports_review_categories_without_accuracy(self):
+        summary = build_summary([
+            {"exact_match": False, "project_matches_fixture": True, "external_matches_fixture": False, "mismatch_category": "TONE_SUFFIX_ONLY"},
+            {"exact_match": False, "project_matches_fixture": True, "external_matches_fixture": False, "mismatch_category": "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE"},
+        ], expected_count=2)
+        self.assertEqual(summary["mismatch_category_counts"], {
+            "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE": 1,
+            "TONE_SUFFIX_ONLY": 1,
+        })
+        self.assertEqual(summary["independent_gold_count"], 0)
+        self.assertIsNone(summary["accuracy"])
+        self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
 
 if __name__ == "__main__":
     unittest.main()
