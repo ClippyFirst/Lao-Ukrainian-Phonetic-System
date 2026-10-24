@@ -152,6 +152,20 @@
       "status": "SMOKE_VERIFIED_NOT_ACCURACY",
       "interpretation": "0/36 agreement with project/fixture is not evidence that either side is correct; the fixture is not independent gold.",
       "artifact_sha256": "ff669bf3c772cd250cf4524b740cbf8f52682e6ac0f3627c038a86047c7713a9"
+    },
+    {
+      "engine": "lao2ipa",
+      "version": "1.0.0",
+      "run_id": 40119608545,
+      "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119608545/artifacts/12570418791",
+      "artifact_zip_sha256": "82012a0b6d22a9f0eb0f65792da10e8df162bee520c84b54a863b107cb0b6250",
+      "input_count": 36,
+      "runtime_errors": 0,
+      "independent_gold_count": 0,
+      "accuracy": null,
+      "implementation_agreement_rate": 0,
+      "source_status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "notes": "Raw external output captured. 0/36 implementation agreement; differences include tone suffixes and a major `ເກຽ` output divergence. Engineering fixture is not gold; no correctness winner."
     }
   ],
   "upstream_evidence": [
