@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
   "language": "Lao",
-  "run_id": 40119990663,
+  "run_id": 40121272427,
   "engine": "lao2ipa",
   "engine_version": "1.0.0",
-  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119990663/artifacts/12569454564",
-  "artifact_zip_sha256": "357f6c5d6d1fefd78a8adaf382994aa985a21ea3654b98a099215dac3121d022",
+  "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427/artifacts/12571197945",
+  "artifact_zip_sha256": "a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8",
   "input_count": 36,
   "runtime_errors": 0,
   "independent_gold_count": 0,
@@ -80,5 +80,19 @@
       "review": "Segmental sequence agrees; external tone suffix differs."
     }
   ],
-  "interpretation": "This is a diagnostic comparison against an engineering fixture, not accuracy. Neither output is gold. Differences must be reviewed by lexical status, dialect, tone convention and IPA analysis."
+  "interpretation": "This is a diagnostic comparison against an engineering fixture, not accuracy. Neither output is gold. Differences must be reviewed by lexical status, dialect, tone convention and IPA analysis.",
+  "mismatch_category_counts": {
+    "TONE_SUFFIX_ONLY": 29,
+    "DIPHTHONG_OFFGLIDE_CONVENTION": 2,
+    "SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE": 4,
+    "TONE_AND_LENGTH_DIFFERENCE": 1
+  },
+  "mismatch_category_interpretation": "Heuristic string-difference labels only; not phonological error adjudication. Exact implementation agreement remains 0/36; independent gold count is 0 and accuracy is null.",
+  "classifier_caveat": "Tone-suffix-only is a string-shape category, not a claim that tone is optional or harmless. Lao tone can be contrastive; never strip tone from production IPA or declare a mismatch acceptable without source-based phonological adjudication.",
+  "priority_followups": [
+    "Adjudicate whether the project phonemic IPA contract must represent lexical tone and how its tone convention aligns with lao2ipa; the 29 suffix-only cases dominate string mismatches.",
+    "Review the four segmental/vowel-sequence cases, especially ເກຽ, ກັວບ, ກວງ and ກວາງ, against source-located lexical pronunciations.",
+    "Decide whether ai vs aj is a documented offglide transcription convention or a phonetic distinction in the selected profile; preserve both raw outputs.",
+    "Adjudicate the single tone-plus-length case ເກັຽ with lexical evidence."
+  ]
 }
