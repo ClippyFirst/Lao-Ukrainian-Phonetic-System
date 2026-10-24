@@ -37,7 +37,7 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         source = (ROOT / "scripts" / "compare_external_g2p.py").read_text(
             encoding="utf-8"
         )
-        self.assertIn('unicodedata.normalize("NFC", value)', source)
+        self.assertTrue('unicodedata.normalize("NFC", value)' in source or "unicodedata.normalize('NFC', value)" in source)
         self.assertNotIn("ignore_tones=True", source)
         self.assertNotIn('replace("ː", "")', source)
 
@@ -74,7 +74,7 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertNotIn("exact_match_rate", summary)
         self.assertEqual(summary["score_status"], "NOT_SCORED_NO_INDEPENDENT_GOLD")
         source = (ROOT / "scripts" / "compare_external_g2p.py").read_text(encoding="utf-8")
-        self.assertIn('return 2 if summary["runtime_errors"] else 0', source)
+        self.assertTrue('return 2 if summary["runtime_errors"] else 0' in source or "return 2 if summary['runtime_errors'] else 0" in source)
         self.assertNotIn("return 2 if runtime_errors else 0", source)
 
 
