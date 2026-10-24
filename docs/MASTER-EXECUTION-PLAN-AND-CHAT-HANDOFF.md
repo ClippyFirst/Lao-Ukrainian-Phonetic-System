@@ -278,3 +278,19 @@ This section supersedes historical workflow-status statements above where they c
 - External G2P diagnostic: DONE_VERIFIED as execution only. Schema-v3 artifact SHA-256 91e77bc29bddc76a1a598eeb3f8eeb775fb0677a3ac86a507400edb675111d02; 36 cases, zero runtime errors, implementation agreement 0.0, independent gold count 0, accuracy null, status NOT_SCORED_NO_INDEPENDENT_GOLD.
 - Remaining TODO/BLOCKED: source-adjudicated lexical IPA gold corpus; source-backed tone contours and rule environments; complete vowel/coda/context coverage; differential review of the 36 engineering fixtures. Do not infer external output is wrong merely because it differs from engineering fixtures.
 - Readiness: current engineering verification is green; linguistic completeness and accuracy remain unproven. This is a research prototype, not release-ready general-purpose transcription software.
+
+
+## Fail-closed handling of unconsumed Lao orthography — 2026-10-24
+
+### Finding
+The parser already emitted `UNCONSUMED_AFTER_VOWEL:<suffix>` when a source suffix was not recognized. The core pipeline downgraded confidence but still retained the IPA and Ukrainian target derived from the recognized prefix. For a malformed or unsupported whole syllable, this could expose a partial prefix transcription as though it represented the entire source unit.
+
+### Change prepared
+- When this exact parser warning is present, clear the whole-unit IPA before candidate generation, so both candidate and practical Ukrainian outputs remain empty.
+- Add rule trace `PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY` and set status to `EVIDENCE LIMITED`.
+- Strengthen the existing regression case for `ກາລ` to assert IPA, practical output, and candidates are withheld while the parser warning remains visible.
+
+### Verification boundary
+- PR is [#17](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/17), based on main `e209fb73579032ea07bc08ca03b96db6bffe0c40`.
+- First PR-head CI run [40112919607](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40112919607) executed the full Python suite: 61 tests passed and one new regression test errored because it used non-existent model attribute names (`candidates` and `rules_applied`). The test was corrected to use the actual dataclass fields (`ukrainian_candidates` and `rules`); this was a test-harness error, not a failed linguistic assertion. Corrected-head run [40112992134](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40112992134) passed on `b785011f39e3a5b6d37901cc3ea0fabc0899fa5d`. The code/test head's complete `verify` job passed; this documentation-only update triggers a fresh run before merge.
+- This is a fail-closed integrity fix, not a phonological expansion. Existing tone rules and IPA correspondences are unchanged; empirical accuracy remains unmeasured until an independent gold corpus is adjudicated.

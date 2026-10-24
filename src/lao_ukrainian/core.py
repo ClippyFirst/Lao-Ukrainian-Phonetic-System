@@ -7,6 +7,7 @@ from .data import load_registry
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 
+
 def analyze(text: str) -> Analysis:
     normalized = normalize_lao(text)
     warnings = validate_unicode(normalized)
@@ -18,7 +19,20 @@ def analyze(text: str) -> Analysis:
     analysis_warnings = []
     for surface in segment_syllables(normalized):
         parsed = parse_syllable(surface)
+        local_warnings = list(parsed.get("warnings", []))
         ipa, rules, tone_status, tone = phonologize(parsed)
+
+        # An unconsumed source suffix means the parser did not establish the
+        # whole orthographic unit. Never let a valid onset/vowel prefix become
+        # a complete-looking IPA or Ukrainian form for the full input.
+        unconsumed = any(
+            warning.startswith("UNCONSUMED_AFTER_VOWEL:")
+            for warning in local_warnings
+        )
+        if unconsumed:
+            ipa = None
+            rules = [*rules, "PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY"]
+
         candidates = []
         if ipa:
             for value, score, why in rank_ukrainian_candidates(ipa):
@@ -42,10 +56,11 @@ def analyze(text: str) -> Analysis:
 
         if practical is None and ipa:
             status = "EVIDENCE LIMITED"
+        if unconsumed:
+            status = "EVIDENCE LIMITED"
 
-        local_warnings = list(parsed.get("warnings", []))
-        # A computable IPA string is not enough to establish an analysis:
-        # malformed/unconsumed graphemes must lower the confidence status.
+        # Even if an IPA string is computable, malformed/unconsumed source
+        # material must prevent an ESTABLISHED status.
         if local_warnings and status == "ESTABLISHED":
             status = "EVIDENCE LIMITED"
         analysis_warnings.extend(local_warnings)
