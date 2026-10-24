@@ -52,3 +52,9 @@ These are research leads, not verified availability claims. Before executing a c
 - Latest repeated run: [workflow 40119608545](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119608545), `lao2ipa==1.0.0`, 36 structural engineering probes, 0 runtime errors, 0/36 exact agreement with current implementation/fixture. Independent gold count is 0; accuracy is null. Artifact ZIP SHA-256 `82012a0b6d22a9f0eb0f65792da10e8df162bee520c84b54a863b107cb0b6250`. Example `ເກຽ`: project `kiːə`, lao2ipa `keː˩˧iːə`; other differences include tone suffixes. These are mismatch-review leads, not proof either output is correct.
 - [Goruut](https://github.com/neurlang/goruut) upstream lists Lao among supported languages and describes IPA output, but has not been executed against this repository's inputs. Candidate only.
 - Do not infer `lao2ipa` is wrong from 0/36; known structural probes may differ in tone conventions, synthetic syllable validity, or vowel interpretation. The next task is source-adjudicated lexical cases plus layer-by-layer disagreement review.
+
+## Lao disagreement taxonomy update — 2026-10-24
+
+`scripts/compare_external_g2p.py` now assigns heuristic diagnostic labels to raw string mismatches: `TONE_SUFFIX_ONLY`, `TONE_AND_LENGTH_DIFFERENCE`, `VOWEL_LENGTH_ONLY`, `DIPHTHONG_OFFGLIDE_CONVENTION`, and `SEGMENTAL_OR_VOWEL_SEQUENCE_DIFFERENCE`. These labels are deliberately **not** phonological judgments. Raw IPA, NFC output, exact-match result, and tone/length marks remain unchanged; no mark is removed from the reported strings. The classifier only helps prioritize review.
+
+The previous 36-case run had 36/36 implementation mismatches, but 0 independent gold rows. The new category counts must not be interpreted as accuracy; each category is a hypothesis for review against source-located Lao lexical readings and a declared tone convention.
