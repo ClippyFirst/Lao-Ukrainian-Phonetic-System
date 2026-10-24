@@ -135,7 +135,20 @@
       "enabled_by_default": false,
       "version": "1.0.0",
       "latest_run_id": 40119608545,
-      "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY"
+      "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "smoke_evidence": {
+        "id": "lao2ipa",
+        "latest_run_id": 40119990663,
+        "latest_run_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119990663",
+        "artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119990663/artifacts/12569454564",
+        "artifact_zip_sha256": "357f6c5d6d1fefd78a8adaf382994aa985a21ea3654b98a099215dac3121d022",
+        "engine_version": "1.0.0",
+        "input_count": 36,
+        "runtime_errors": 0,
+        "independent_gold_count": 0,
+        "accuracy": null,
+        "score_status": "NOT_SCORED_NO_INDEPENDENT_GOLD"
+      }
     }
   ],
   "benchmark_protocol": {
@@ -191,5 +204,10 @@
       "status": "UPSTREAM_CLAIM_ONLY_NOT_EXECUTED",
       "caveat": "No version-pinned Lao output, model/data license review, or independent evaluation in this repository."
     }
-  ]
+  ],
+  "scope_note": "Historical filename: this registry catalogs both external G2P/IPA comparison systems and display fonts. Fonts are rendering assets, not pronunciation engines.",
+  "status_semantics": {
+    "verified_in_repo": "true means the candidate's pronunciation behavior has been validated against project-approved independent gold. A successful smoke or upstream language-support claim does not set this flag.",
+    "execution_status": "Records whether a candidate was run, blocked, or only reported upstream; it is independent of verified_in_repo."
+  }
 }
