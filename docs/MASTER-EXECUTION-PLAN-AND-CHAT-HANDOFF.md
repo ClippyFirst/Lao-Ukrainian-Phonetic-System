@@ -330,3 +330,9 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Keep IPA adaptation boundary: source spelling → structural parse → source phonology → typed IPA → Ukrainian adapter. Third-party candidates remain optional and disabled in production.
 - Current true blocker: a source-located, independently adjudicated language-specific gold corpus with a documented dialect and IPA convention. Do not report accuracy until it exists.
 
+
+## IPA gold provenance gate — 2026-10-24
+
+- Branch `research/benchmark-gold-provenance-gate-rebased-20261024` ports the benchmark scorer guard onto current main: any row labelled `ADJUDICATED` must have non-empty `gold_ipa`, `source_id`, and `profile`, or the run exits with a clear error rather than silently altering the scoring denominator.
+- Regression tests cover each missing field. This does not certify the source ID itself; reviewers must still verify the source registry/locator and adjudication evidence before labelling a row gold.
+- Acceptance: current-head unit tests and optional comparison workflow must pass. No language-specific gold labels are added by this change.
