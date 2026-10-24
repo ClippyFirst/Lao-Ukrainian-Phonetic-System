@@ -34,7 +34,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | LAO-UKR-001 | P1 | TODO | `data/lao/ukrainian_correspondences.csv`, `src/lao_ukrainian/target.py` | Target adaptation independently reviewed; policy decisions distinguished from Lao facts |
 | LAO-CORPUS-001 | P0 | TODO | No expert-adjudicated gold corpus or accuracy denominator is claimed in current docs | Versioned independent corpus includes all major classes and edge cases, with sources and expected layer-by-layer outputs |
 | LAO-G2P-001 | P1 | DONE_VERIFIED | Pinned lao2ipa==1.0.0 workflow [40092430175](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175) completed; artifact inspected: 36 cases, 0 runtime errors, 0 external fixture matches and 0 exact cross-engine matches; verification suite [40092430173](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430173) passed | Preserve the diagnostic artifact and manually classify output conventions; do not interpret engineering-fixture disagreement as accuracy. Accuracy remains blocked by LAO-CORPUS-001 |
-| LAO-EVIDENCE-001 | P1 | TODO | `data/evidence/sources.csv`, `data/evidence/claims.csv` | Every material rule linked to a precise source and relevant passage/page/section; conflicts and dialect scope recorded |
+| LAO-G2P-002 | P1 | DONE_VERIFIED | Schema-v3 metric hardening verified in [workflow 40093370619](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370619); artifact inspected and no ambiguous exact_match_rate key remains | Report includes implementation_agreement_rate, independent_gold_count=0, accuracy=null, score_status=NOT_SCORED_NO_INDEPENDENT_GOLD; verification suite [40093370613](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370613) passed || LAO-EVIDENCE-001 | P1 | TODO | `data/evidence/sources.csv`, `data/evidence/claims.csv` | Every material rule linked to a precise source and relevant passage/page/section; conflicts and dialect scope recorded |
 | LAO-DOCS-001 | P1 | TODO | Existing methodology, validation, limitations, final audit | Docs match actual code and do not overclaim; final audit updated after CI and corpus results |
 | LAO-RELEASE-001 | P2 | TODO | `CITATION.cff` and `LICENSE` already exist | Verify metadata/license consistency; create tagged release and Zenodo archive only after P0 acceptance gates |
 | LAO-DEPLOY-001 | P1 | TODO | GitHub Pages workflow exists | Verify live site and generated artifacts against current commit; deployment success is not phonetic validation |
@@ -239,3 +239,24 @@ Status remains **research MVP / partial prototype**, not research-complete or re
 - **DONE_VERIFIED — reproducible run:** [optional comparator workflow 40092430175](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175) succeeded with pinned `lao2ipa==1.0.0`; main verification suite [40092430173](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430173) passed. Artifact `lao-external-g2p-comparison` SHA-256: `ff669bf3c772cd250cf4524b740cbf8f52682e6ac0f3627c038a86047c7713a9`.
 - 36 engineering fixtures were run, 0 runtime errors. Project IPA matched the fixture's expected IPA 36/36; external output matched it 0/36; project/external exact match 0/36. Example `ເກິ`: project `kɤ`, external `kɤ˧˥`; `ເກຽ`: project `kiːə`, external `keː˩˧iːə`. The candidate adds tone contours in many cases and has material differences in some synthetic structures. These are diagnostic only; no correctness winner can be inferred from non-gold engineering fixtures.
 - The task for reproducible smoke execution is DONE_VERIFIED. The external candidate is not integrated. Empirical accuracy and source-adjudicated phonology remain blocked by the missing independent gold corpus; no percentage should be reported.
+
+
+## Handoff update — Lao G2P metric-schema hardening (2026-10-24)
+
+- The first artifact (workflow [40092430175](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175)) used schema v2 and called 0/36 exact cross-engine matches an `exact_match_rate`. This was implementation agreement over engineering fixtures, not accuracy, but the field name was too ambiguous.
+- New branch `fix/label-lao-g2p-diagnostic-metrics-2026-10-24` changes the report to schema v3: `implementation_agreement_rate`, `independent_gold_count: 0`, `accuracy: null`, `score_status: NOT_SCORED_NO_INDEPENDENT_GOLD`; implementation mismatches and runtime errors are separated. A unittest locks this contract.
+- Pending current-head CI and optional workflow. Do not merge until green. Preserve previous artifact as historical schema-v2 evidence; new workflow artifact will establish the schema-v3 result. Gold corpus remains TODO.
+
+
+### Schema-v3 follow-up fix — 2026-10-24
+
+The first schema-v3 optional workflow [40093135298](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093135298) produced the report but exited with `NameError: runtime_errors` because the return statement still referenced the removed local summary variable. Fixed to use `summary["runtime_errors"]` and added a regression assertion. The artifact from this failed run confirms the schema-v3 metrics themselves were emitted correctly (0 independent gold, accuracy null, implementation agreement 0.0); the workflow remains IN_PROGRESS until a fresh run and verification suite both pass.
+
+
+## Final checkpoint — Lao diagnostic schema v3 verified (2026-10-24)
+
+- Branch head tested: `8656f6a45f3d8fd16e647fc4a600645213caaaf5`; current PR #14 is still awaiting merge.
+- Verification suite [40093370613](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370613) passed. Optional comparison [40093370619](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370619) passed and artifact was inspected.
+- Artifact SHA-256: `91e77bc29bddc76a1a598eeb3f8eeb775fb0677a3ac86a507400edb675111d02`. Schema version 3, 36 cases, 0 runtime errors, implementation agreement 0.0, independent gold count 0, accuracy null, score status NOT_SCORED_NO_INDEPENDENT_GOLD, and no `exact_match_rate` key.
+- First schema-v3 attempt [40093135298](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093135298) exposed a stale `runtime_errors` reference in the exit-status path; fixed and regression-tested. The corrected run and full verification now pass.
+- Smoke task DONE_VERIFIED; linguistic accuracy remains unmeasured because engineering fixtures are not independent gold. Keep lao2ipa disabled in production.

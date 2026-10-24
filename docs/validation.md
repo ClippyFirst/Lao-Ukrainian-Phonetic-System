@@ -48,3 +48,16 @@ The optional comparison procedure is documented in [independent-g2p-comparison.m
 ## External G2P workflow verification status (2026-10-24)
 
 The reproducible workflow and unittest contract checks ran successfully in [workflow 40092430175](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175), with the main verification suite passing in [run 40092430173](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430173). The uploaded artifact was inspected: lao2ipa 1.0.0 processed 36/36 engineering fixtures with 0 runtime errors; project outputs matched the fixture in 36/36, external outputs matched it in 0/36, and exact project/external matches were 0/36. The external output consistently adds tone contours in examples such as `kɤ˧˥` vs project `kɤ`; at least one synthetic vowel pattern (`ເກຽ`) also differs materially (`keː˩˧iːə` vs `kiːə`). These are **diagnostic mismatches only**, not proof that either system is correct or incorrect, because the fixture is not independent gold and the engine conventions/dialect assumptions need review. The harness smoke task is DONE_VERIFIED; empirical accuracy remains unmeasured and blocked by absence of an independently adjudicated gold corpus.
+
+
+## Diagnostic metric schema v3 — pending verification (2026-10-24)
+
+PR [#14](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/14) changes the report's ambiguous `exact_match_rate` to `implementation_agreement_rate` and makes `accuracy: null` / `independent_gold_count: 0` machine-readable. The current branch's full verification and optional `lao2ipa==1.0.0` run are pending. Until the schema-v3 artifact is inspected, this refinement is IN_PROGRESS. The prior schema-v2 artifact remains a historical diagnostic record, not an accuracy benchmark.
+
+
+The first schema-v3 workflow attempt [40093135298](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093135298) generated a schema-v3 report but failed at exit-status evaluation with a stale variable reference. The branch fixes the reference and adds a regression test. Status remains IN_PROGRESS until a new workflow run and main verification suite pass; no accuracy claim is made.
+
+
+## Diagnostic metric schema v3 final status (2026-10-24)
+
+PR #14 branch verification [40093370613](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370613) passed; optional comparator [40093370619](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093370619) passed. The inspected schema-v3 artifact has 36 cases, 0 runtime errors, `implementation_agreement_rate: 0.0`, `independent_gold_count: 0`, `accuracy: null`, and `score_status: NOT_SCORED_NO_INDEPENDENT_GOLD`. This closes the metric-labeling task, not the missing gold-corpus task.
