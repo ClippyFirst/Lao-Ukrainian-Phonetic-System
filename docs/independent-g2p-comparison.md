@@ -46,3 +46,8 @@ The current fixture contains synthetic forms designed to isolate spelling struct
 - Comparator: lao2ipa 1.0.0; 36 fixtures; 0 runtime errors; project-vs-fixture matches 36; external-vs-fixture matches 0; project-vs-external exact matches 0. These counts are diagnostic only, not accuracy.
 - Artifact: `lao-external-g2p-comparison`, SHA-256 `ff669bf3c772cd250cf4524b740cbf8f52682e6ac0f3627c038a86047c7713a9`.
 - Representative differences: the comparator emits tone contours (e.g. `kɤ˧˥` vs `kɤ`) and disagrees on synthetic `ເກຽ` (`keː˩˧iːə` vs `kiːə`). Preserve raw output and classify convention/structural differences only after source review. Neither engine is gold.
+
+
+## Metric-schema hardening — 2026-10-24
+
+The prior schema-v2 artifact's `exact_match_rate: 0.0` was implementation agreement over an engineering fixture, not accuracy. Schema v3 now exposes that statistic as `implementation_agreement_rate`, explicitly sets `independent_gold_count: 0` and `accuracy: null`, and labels the report `NOT_SCORED_NO_INDEPENDENT_GOLD`. It separates implementation mismatches from runtime errors and removes the ambiguous `exact_match_rate` summary key. Per-row raw outputs and exact-equality booleans remain available for diagnostics. A unit test verifies the metric contract. Pending CI on branch `fix/label-lao-g2p-diagnostic-metrics-2026-10-24`; no pronunciation accuracy is claimed.
