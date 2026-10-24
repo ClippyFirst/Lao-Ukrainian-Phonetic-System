@@ -38,3 +38,11 @@ The harness compares each implementation's default IPA output. It deliberately d
 ## Interpretation limits
 
 The current fixture contains synthetic forms designed to isolate spelling structures. It is useful for regression diagnostics but cannot support a representative corpus-level accuracy estimate. An exact match means only that two outputs agree after NFC normalization. Disagreement does not by itself show which system is wrong. A defensible accuracy claim requires a versioned, redistributable, dialect-labelled corpus and independent expert adjudication.
+
+
+## Run record — 2026-10-24
+
+- Workflow: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40092430175
+- Comparator: lao2ipa 1.0.0; 36 fixtures; 0 runtime errors; project-vs-fixture matches 36; external-vs-fixture matches 0; project-vs-external exact matches 0. These counts are diagnostic only, not accuracy.
+- Artifact: `lao-external-g2p-comparison`, SHA-256 `ff669bf3c772cd250cf4524b740cbf8f52682e6ac0f3627c038a86047c7713a9`.
+- Representative differences: the comparator emits tone contours (e.g. `kɤ˧˥` vs `kɤ`) and disagrees on synthetic `ເກຽ` (`keː˩˧iːə` vs `kiːə`). Preserve raw output and classify convention/structural differences only after source review. Neither engine is gold.
