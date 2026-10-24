@@ -63,3 +63,8 @@ These are research leads, not verified availability claims. Before executing a c
 | [Goruut](https://github.com/neurlang/goruut) | Upstream README advertises an IPA phone set and lists Lao support. | Support claim only; no successful local run recorded here. Code license does not establish licenses for every model/data asset. |
 
 The package license and output evidence are different things: an Apache-2.0 code license does not make a benchmark label gold, establish pronunciation correctness, or automatically license third-party source material embedded in derived data. Preserve exact package version, artifact digest, raw output, profile, and error rows.
+
+
+## Diagnostic decomposition of external disagreement (2026-10-24)
+
+The optional comparison report now preserves the strict NFC-only implementation agreement and adds a separate tone-letter-stripped diagnostic. It removes only the IPA tone symbols `˥ ˦ ˧ ˨ ˩` in additional diagnostic fields; raw IPA, vowel length, syllable separators and the strict agreement metric remain unchanged. The extra counts separate tone-only differences from segmental/format differences requiring review. **This is not an accuracy score** and does not establish that either engine is correct. The engineering fixture remains non-gold; independent gold count is still zero.
