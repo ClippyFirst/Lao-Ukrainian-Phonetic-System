@@ -77,6 +77,50 @@
       "license": "DejaVu license; retain upstream notices",
       "verified_in_repo": false,
       "enabled_by_default": false
+    },
+    {
+      "id": "inter-font-extensions",
+      "name": "Inter Font Extensions",
+      "url": "https://github.com/grab/inter-font-extensions",
+      "kind": "script-font extensions (Thai/Khmer/Myanmar; not an IPA font)",
+      "status": "display-only",
+      "output": "May improve display of the source scripts in interfaces; does not generate IPA and is not a replacement for an IPA-capable Latin font",
+      "license": "Verify current upstream font and repository license",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "padauk",
+      "name": "Padauk",
+      "url": "https://software.sil.org/padauk/",
+      "kind": "Myanmar-script font (not an IPA font)",
+      "status": "display-only",
+      "output": "Useful for Myanmar-script text shaping and coverage; not an IPA transcription engine",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "busra",
+      "name": "Busra",
+      "url": "https://software.sil.org/busra/",
+      "kind": "Khmer-script font (not an IPA font)",
+      "status": "display-only",
+      "output": "Khmer-script display font only; not an IPA transcription engine",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
+    },
+    {
+      "id": "mondulkiri",
+      "name": "Mondulkiri",
+      "url": "https://software.sil.org/mondulkiri/",
+      "kind": "Khmer-script font (not an IPA font)",
+      "status": "display-only",
+      "output": "Khmer-script display font only; not an IPA transcription engine",
+      "license": "SIL Open Font License; verify current release metadata",
+      "verified_in_repo": false,
+      "enabled_by_default": false
     }
   ]
 }
