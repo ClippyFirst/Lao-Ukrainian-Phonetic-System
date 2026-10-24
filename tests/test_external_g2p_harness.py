@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS = runpy.run_path(str(ROOT / "scripts" / "compare_external_g2p.py"))
 nfc = HARNESS["nfc"]
+strip_tone_symbols_diagnostic = HARNESS["strip_tone_symbols_diagnostic"]
 build_summary = HARNESS["build_summary"]
 
 
@@ -20,6 +21,11 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertEqual(nfc("  kʰaː˥.ŋ  "), "  kʰaː˥.ŋ  ")
         self.assertEqual(nfc("a\u0304"), "ā")
         self.assertIsNone(nfc(None))
+
+    def test_tone_stripping_is_separate_and_preserves_length_and_boundaries(self):
+        self.assertEqual(strip_tone_symbols_diagnostic("kʰaː˥˩.ŋ"), "kʰaː.ŋ")
+        self.assertEqual(strip_tone_symbols_diagnostic("kʰaː.ŋ"), "kʰaː.ŋ")
+        self.assertIsNone(strip_tone_symbols_diagnostic(None))
 
     def test_comparison_fixture_is_explicitly_engineering_only(self):
         fixture = json.loads(
