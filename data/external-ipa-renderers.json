@@ -28,11 +28,12 @@
       "name": "Goruut",
       "url": "https://github.com/neurlang/goruut",
       "kind": "multilingual IPA phonemizer",
-      "status": "UPSTREAM_SUPPORT_CLAIM_CONFIRMED; EXECUTION_NOT_RUN",
+      "status": "candidate",
       "output": "Upstream README lists Lao and says the phone set is IPA; pinned project-local run and independent accuracy are pending.",
       "license": "Verify current upstream license and model/data terms",
       "verified_in_repo": false,
-      "enabled_by_default": false
+      "enabled_by_default": false,
+      "execution_status": "UPSTREAM_SUPPORT_CLAIM_EXECUTION_NOT_RUN"
     },
     {
       "id": "neurlang-dataset",
@@ -127,13 +128,14 @@
       "name": "lao2ipa",
       "url": "https://github.com/byu-matrix-lab/lao2ipa",
       "kind": "Lao orthography-to-IPA comparator",
-      "status": "RAW_OUTPUT_SMOKE_VERIFIED; GOLD_ACCURACY_UNMEASURED",
+      "status": "candidate",
       "output": "Pinned 1.0.0 smoke: 36 structural probes, 0 runtime errors, 0/36 implementation agreement; no independent gold.",
       "license": "Apache-2.0 reported upstream; preserve notices",
-      "verified_in_repo": true,
+      "verified_in_repo": false,
       "enabled_by_default": false,
       "version": "1.0.0",
-      "latest_run_id": 40119608545
+      "latest_run_id": 40119608545,
+      "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY"
     }
   ],
   "benchmark_protocol": {
