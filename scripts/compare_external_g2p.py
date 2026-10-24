@@ -28,6 +28,14 @@ def nfc(value: str | None) -> str | None:
         return None
     return unicodedata.normalize('NFC', value)
 
+
+def strip_tone_symbols_diagnostic(value: str | None) -> str | None:
+    """Remove only IPA tone letters for diagnostic decomposition; never for scoring."""
+    if value is None:
+        return None
+    return value.translate(str.maketrans("", "", "˥˦˧˨˩"))
+
+
 def classify_mismatch(local: str | None, external: str | None) -> str | None:
     """Classify string-level differences without altering stored raw outputs.
 
@@ -65,6 +73,15 @@ def build_summary(results: list[dict[str, Any]], expected_count: int) -> dict[st
         row.get('mismatch_category') for row in results
         if row.get('exact_match') is False and row.get('mismatch_category') not in {'RUNTIME_ERROR', None}
     )
+    tone_stripped_matches = sum(row.get('tone_stripped_match') is True for row in results)
+    tone_only_mismatches = sum(
+        row.get('exact_match') is False and row.get('tone_stripped_match') is True
+        and row.get('mismatch_category') != 'RUNTIME_ERROR' for row in results
+    )
+    non_tone_mismatches = sum(
+        row.get('exact_match') is False and row.get('tone_stripped_match') is False
+        and row.get('mismatch_category') != 'RUNTIME_ERROR' for row in results
+    )
     cases = len(results)
     return {
         'cases': cases,
@@ -74,6 +91,11 @@ def build_summary(results: list[dict[str, Any]], expected_count: int) -> dict[st
         'exact_matches_between_implementations': matches,
         'implementation_mismatches': sum(row.get('exact_match') is False and row.get('mismatch_category') != 'RUNTIME_ERROR' for row in results),
         'mismatch_category_counts': dict(sorted(category_counts.items())),
+        'tone_stripped_exact_matches_diagnostic_only': tone_stripped_matches,
+        'tone_stripped_agreement_rate_diagnostic_only': tone_stripped_matches / cases if cases else None,
+        'tone_only_mismatches_diagnostic_only': tone_only_mismatches,
+        'non_tone_or_format_mismatches_requiring_review': non_tone_mismatches,
+        'tone_diagnostic': 'Removes only IPA tone letters ˥˦˧˨˩ for decomposition; this is not an accuracy metric and does not alter raw outputs.',
         'runtime_errors': runtime_errors,
         'implementation_agreement_rate': matches / cases if cases else None,
         'independent_gold_count': 0,
@@ -118,12 +140,18 @@ def main() -> int:
                 raise TypeError(f'lao2ipa returned {type(external_raw).__name__}, expected str')
             local = nfc(local_raw)
             external = nfc(external_raw)
+            local_tone_stripped = strip_tone_symbols_diagnostic(local)
+            external_tone_stripped = strip_tone_symbols_diagnostic(external)
+            tone_stripped_match = local_tone_stripped == external_tone_stripped
             exact_match = local == external
             row.update({
                 'project_ipa_raw': local_raw,
                 'external_ipa_raw': external_raw,
                 'project_ipa_nfc': local,
                 'external_ipa_nfc': external,
+                'project_ipa_tone_stripped_diagnostic': local_tone_stripped,
+                'external_ipa_tone_stripped_diagnostic': external_tone_stripped,
+                'tone_stripped_match': tone_stripped_match,
                 'project_matches_fixture': expected is not None and local == expected,
                 'external_matches_fixture': expected is not None and external == expected,
                 'exact_match': exact_match,
@@ -133,6 +161,8 @@ def main() -> int:
             row.update({
                 'project_ipa_raw': None, 'external_ipa_raw': None,
                 'project_ipa_nfc': None, 'external_ipa_nfc': None,
+                'project_ipa_tone_stripped_diagnostic': None, 'external_ipa_tone_stripped_diagnostic': None,
+                'tone_stripped_match': False,
                 'project_matches_fixture': False, 'external_matches_fixture': False,
                 'exact_match': False, 'mismatch_category': 'RUNTIME_ERROR',
                 'error': f'{type(exc).__name__}: {exc}',
@@ -145,7 +175,7 @@ def main() -> int:
     expected_count = sum(row.get('fixture_expected_ipa') is not None for row in results)
     summary = build_summary(results, expected_count)
     report = {
-        'schema_version': 4,
+        'schema_version': 5,
         'purpose': 'Comparative diagnostic only; neither implementation nor the engineering fixture is an independent gold standard.',
         'independent_gold_count': 0, 'accuracy': None, 'score_status': 'NOT_SCORED_NO_INDEPENDENT_GOLD',
         'fixture_path': str(args.fixture.relative_to(ROOT)) if args.fixture.is_relative_to(ROOT) else str(args.fixture),
