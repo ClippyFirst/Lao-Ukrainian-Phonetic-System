@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Evidence-gated IPA benchmark for ClippyFirst language adapters.
+"""Evidence-gated IPA benchmark; standard library only.
 
-Gold TSV columns: id, text, gold_ipa, gold_status, profile, source_id
-Prediction TSV columns: id, engine, raw_output, ipa, status, version
-Only rows with gold_status=ADJUDICATED and a non-empty gold_ipa count as gold.
-This reports strict Unicode NFC exact match and code-point CER; it does not claim
-phonetic feature equivalence. No adjudicated rows means accuracy is NOT_MEASURED.
+Gold TSV: id, text, gold_ipa, gold_status, profile, source_id
+Prediction TSV: id, engine, raw_output, ipa, status, version
+Only ADJUDICATED, non-empty gold IPA rows enter the denominator.
 """
 from __future__ import annotations
 import argparse, csv, json, unicodedata
@@ -50,32 +48,19 @@ def main() -> int:
         if not row["id"] or row["id"] in gold:
             raise ValueError(f"gold IDs must be non-empty and unique: {row['id']!r}")
         gold[row["id"]] = row
-    pred_keys = set()
-    by_engine = defaultdict(list)
+    eligible = {k: v for k, v in gold.items()
+                if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
+    predictions = defaultdict(dict)
     unknown_ids = []
     for row in pred_rows:
-        key = (row["engine"], row["id"])
-        if not row["engine"] or not row["id"] or key in pred_keys:
-            raise ValueError(f"prediction (engine,id) must be non-empty and unique: {key!r}")
-        pred_keys.add(key)
+        if not row["engine"] or not row["id"]:
+            raise ValueError("prediction engine and id must be non-empty")
+        engine = row["engine"]
+        if row["id"] in predictions[engine]:
+            raise ValueError(f"prediction (engine,id) must be unique: {(engine, row['id'])!r}")
+        predictions[engine][row["id"]] = row
         if row["id"] not in gold:
-            unknown_ids.append({"engine": row["engine"], "id": row["id"]})
-            continue
-        g = gold[row["id"]]
-        if g["gold_status"] != "ADJUDICATED" or not norm(g["gold_ipa"]):
-            continue
-        p = norm(row["ipa"])
-        ref = norm(g["gold_ipa"])
-        by_engine[row["engine"]].append({
-            "id": row["id"], "profile": g["profile"],
-            "exact_match": bool(p) and p == ref,
-            "missing_prediction": not bool(p),
-            "edit_distance": distance(ref, p) if p else len(ref),
-            "reference_codepoints": len(ref),
-            "raw_output_present": bool(row["raw_output"]),
-            "status": row["status"], "version": row["version"],
-        })
-    eligible = sum(1 for g in gold.values() if g["gold_status"] == "ADJUDICATED" and norm(g["gold_ipa"]))
+            unknown_ids.append({"engine": engine, "id": row["id"]})
     report = {
         "schema_version": "1.0",
         "method": {
@@ -83,34 +68,51 @@ def main() -> int:
             "normalization": "Unicode NFC plus outer whitespace trim only",
             "exact_match": "strict full-string IPA match; tone, length and syllable separators remain significant",
             "cer": "Levenshtein over Unicode code points; not articulatory/feature-weighted",
-            "accuracy_claim": "none; scores are descriptive for the supplied adjudicated rows only",
+            "missing_predictions": "every eligible gold row is in each engine's denominator; absent/empty IPA counts as a missing prediction and incurs reference-length edit cost",
+            "accuracy_claim": "descriptive only for the supplied adjudicated rows; no generalization claim",
         },
-        "gold": {"rows_total": len(gold), "rows_adjudicated": eligible,
+        "gold": {"rows_total": len(gold), "rows_adjudicated": len(eligible),
                  "accuracy_status": "MEASURED_ON_ADJUDICATED_SUBSET" if eligible else "NOT_MEASURED"},
         "unknown_prediction_ids": unknown_ids,
         "engines": {},
     }
-    engines = sorted({r["engine"] for r in pred_rows})
-    for engine in engines:
-        rows = by_engine.get(engine, [])
+    for engine in sorted(predictions):
+        rows = []
+        for ident, g in eligible.items():
+            pred = predictions[engine].get(ident)
+            ref = norm(g["gold_ipa"])
+            p = norm(pred["ipa"]) if pred else ""
+            rows.append({
+                "id": ident, "profile": g["profile"],
+                "exact_match": bool(p) and p == ref,
+                "missing_prediction": not bool(p),
+                "prediction_row_present": pred is not None,
+                "edit_distance": distance(ref, p) if p else len(ref),
+                "reference_codepoints": len(ref),
+                "raw_output_present": bool(pred and pred["raw_output"]),
+                "status": pred["status"] if pred else "MISSING_ROW",
+                "version": pred["version"] if pred else "",
+            })
         n = len(rows)
         edits = sum(r["edit_distance"] for r in rows)
         chars = sum(r["reference_codepoints"] for r in rows)
         report["engines"][engine] = {
-            "n_adjudicated_predictions": n,
+            "n_adjudicated_gold_rows": n,
             "exact_matches": sum(r["exact_match"] for r in rows),
             "exact_match_rate": sum(r["exact_match"] for r in rows) / n if n else None,
             "missing_predictions": sum(r["missing_prediction"] for r in rows),
+            "missing_prediction_rate": sum(r["missing_prediction"] for r in rows) / n if n else None,
             "codepoint_cer": edits / chars if chars else None,
             "profiles": sorted({r["profile"] for r in rows if r["profile"]}),
-            "versions": sorted({r["version"] for r in pred_rows if r["engine"] == engine and r["version"]}),
+            "versions": sorted({r["version"] for r in predictions[engine].values() if r["version"]}),
             "rows": rows,
-            "status": "SCORED" if n else "NOT_MEASURED_NO_ADJUDICATED_OVERLAP",
+            "status": "SCORED" if n else "NOT_MEASURED_NO_ADJUDICATED_GOLD",
         }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"output": str(args.output), "gold_adjudicated": eligible,
-                      "engines": {k: {"n": v["n_adjudicated_predictions"], "status": v["status"]}
+    print(json.dumps({"output": str(args.output), "gold_adjudicated": len(eligible),
+                      "engines": {k: {"n": v["n_adjudicated_gold_rows"], "status": v["status"],
+                                      "missing": v["missing_predictions"]}
                                   for k, v in report["engines"].items()}}, ensure_ascii=False))
     return 0
 
