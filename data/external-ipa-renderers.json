@@ -4,7 +4,7 @@
     "name": "Lao",
     "iso_639_3_or_639_1": "lo"
   },
-  "purpose": "Research registry of external IPA/G2P candidates. Entries are not active runtime dependencies and are not accepted pronunciation gold data.",
+  "purpose": "Research registry of external G2P/IPA comparator systems and IPA/source-script display fonts. Entries are not active runtime dependencies; system smoke results are not pronunciation gold data.",
   "integration_contract": {
     "pipeline": "source orthography -> language-specific structural/phonological analysis -> typed IPA result -> ClippyFirst IPA-to-Ukrainian adapter -> practical Ukrainian orthography",
     "preserve": [
@@ -134,7 +134,20 @@
       "verified_in_repo": false,
       "enabled_by_default": false,
       "version": "1.0.0",
-      "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY"
+      "execution_status": "SMOKE_VERIFIED_NOT_ACCURACY",
+      "latest_run_id": 40122329060,
+      "latest_run_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060",
+      "latest_artifact_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060/artifacts/12572570192",
+      "latest_artifact_zip_sha256": "2b7f3c5e3c02814413e42b9f2031849c21630fba9958a7e6a38de92f7a63ff55",
+      "latest_smoke_summary": {
+        "input_count": 36,
+        "runtime_errors": 0,
+        "strict_exact_matches": 0,
+        "tone_stripped_matches_diagnostic_only": 29,
+        "other_mismatches_requiring_review": 7,
+        "independent_gold_count": 0,
+        "accuracy": null
+      }
     }
   ],
   "benchmark_protocol": {
@@ -236,5 +249,10 @@
       "status": "UPSTREAM_CLAIM_ONLY_NOT_EXECUTED",
       "caveat": "No version-pinned Lao output, model/data license review, or independent evaluation in this repository."
     }
-  ]
+  ],
+  "scope_note": "Historical filename: this registry catalogs both external G2P/IPA comparison systems and display fonts. Fonts are rendering assets, not pronunciation engines.",
+  "status_semantics": {
+    "verified_in_repo": "true means the candidate's pronunciation behavior has been validated against project-approved independent gold. A successful smoke or upstream language-support claim does not set this flag.",
+    "execution_status": "Records whether a candidate was run, blocked, or only reported upstream; it is independent of verified_in_repo."
+  }
 }
