@@ -52,3 +52,14 @@ These are research leads, not verified availability claims. Before executing a c
 - Latest repeated run: [workflow 40119608545](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40119608545), `lao2ipa==1.0.0`, 36 structural engineering probes, 0 runtime errors, 0/36 exact agreement with current implementation/fixture. Independent gold count is 0; accuracy is null. Artifact ZIP SHA-256 `82012a0b6d22a9f0eb0f65792da10e8df162bee520c84b54a863b107cb0b6250`. Example `ເກຽ`: project `kiːə`, lao2ipa `keː˩˧iːə`; other differences include tone suffixes. These are mismatch-review leads, not proof either output is correct.
 - [Goruut](https://github.com/neurlang/goruut) upstream lists Lao among supported languages and describes IPA output, but has not been executed against this repository's inputs. Candidate only.
 - Do not infer `lao2ipa` is wrong from 0/36; known structural probes may differ in tone conventions, synthetic syllable validity, or vowel interpretation. The next task is source-adjudicated lexical cases plus layer-by-layer disagreement review.
+
+
+## Upstream provenance and comparator triage (checked 2026-10-24)
+
+| Candidate | Verified upstream fact | Evidence boundary / next step |
+|---|---|---|
+| [lao2ipa 1.0.0](https://pypi.org/project/lao2ipa/1.0.0/) | PyPI publishes the package as Apache-2.0; release artifact SHA-256 is recorded in the run evidence. Its own description says it uses orthographic-unit/syllable parsing and tone-placement heuristics. | This project successfully ran 36 probes with zero runtime errors, but zero independently adjudicated gold labels means accuracy is NOT MEASURED. Disagreements with our engine are diagnostic only. |
+| [Epitran](https://github.com/dmort27/epitran) | Upstream lists lao-Laoo as Lao. | Not run in this repository's current smoke evidence. Run as a separately pinned comparator before drawing conclusions; check mapping/data provenance as well as code license. |
+| [Goruut](https://github.com/neurlang/goruut) | Upstream README advertises an IPA phone set and lists Lao support. | Support claim only; no successful local run recorded here. Code license does not establish licenses for every model/data asset. |
+
+The package license and output evidence are different things: an Apache-2.0 code license does not make a benchmark label gold, establish pronunciation correctness, or automatically license third-party source material embedded in derived data. Preserve exact package version, artifact digest, raw output, profile, and error rows.
