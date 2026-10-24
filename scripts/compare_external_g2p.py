@@ -183,7 +183,7 @@ def main() -> int:
     print("Review fixture disagreements and every cross-implementation mismatch.")
     # A phonological disagreement is data to inspect, not a program failure.
     # Runtime errors still signal that the comparison could not be completed.
-    return 2 if runtime_errors else 0
+    return 2 if summary["runtime_errors"] else 0
 
 
 if __name__ == "__main__":
