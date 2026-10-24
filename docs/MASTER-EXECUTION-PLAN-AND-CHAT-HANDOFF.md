@@ -337,3 +337,14 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - The comparator reports strict exact match and detailed mismatch categories unchanged, plus separate `tone_stripped_*_diagnostic_only` counts computed after removing only IPA tone letters from derived copies. Raw IPA, length marks, separators and production output are untouched.
 - Unit tests cover tone-only vs non-tone mismatches and the `accuracy: null` gate. The earlier categorized artifact gave 29/36 tone-suffix-only cases and 7 non-tone/format cases, but this is a diagnostic decomposition—not accuracy or proof tone is dispensable.
 - Acceptance: current-head unit tests and optional `lao2ipa` workflow. Independent gold remains absent.
+
+
+### Latest Lao external-G2P diagnostic — 2026-10-24
+
+- Latest comparator run [40122001269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122001269) passed: 36 probes, 0 runtime errors, strict exact agreement 0/36. A separate tone-letter-stripped diagnostic matched 29/36 (80.6%) and left 7 tone-plus-length/segmental/offglide cases for review. This is not accuracy: independent gold count is 0 and tone remains contrastive. Artifact ZIP SHA-256: `63833a43fd2c9309505dcf8a96bb7dc46052993f3834307e77524b586e020816`.
+
+
+### Benchmark gold provenance guard — 2026-10-24
+
+- Benchmark scoring now fails closed if an ADJUDICATED row lacks non-empty IPA, a source locator, or a profile. The regression tests are included in PR #31; do not merge until current-head CI passes.
+- The independent gold corpus is empty. Strict agreement remains 0/36; tone-stripped diagnostic agreement is 29/36 (80.6%) and is not accuracy. Seven other mismatches require review; tone remains contrastive.
