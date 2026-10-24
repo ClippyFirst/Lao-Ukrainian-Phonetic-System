@@ -346,3 +346,12 @@ PR #20 merged as `210f673867bfe107e5d6ad8f85b284699defca9b`. Latest main verific
 - Latest categorized artifact [workflow 40122329060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060): 36 inputs, 0 runtime errors, strict implementation agreement 0/36, tone-stripped agreement 29/36 (80.6%) diagnostic-only, 7/36 remaining non-tone/format/length mismatches, independent gold=0, accuracy=null.
 - Detailed categories remain: 29 tone-suffix-only, 2 offglide convention, 4 segmental/vowel-sequence, 1 tone+length. The tone-stripped diagnostic does not change raw outputs or strict scoring; tone can be contrastive and must not be removed from production IPA.
 - Durable summary: `data/benchmark/runs/external-g2p-smoke-2026-10-24.json`; artifact SHA-256 `2b7f3c5e3c02814413e42b9f2031849c21630fba9958a7e6a38de92f7a63ff55`.
+
+## Authoritative current-head checkpoint — 2026-10-25
+
+This checkpoint supersedes earlier notes that referred to an older main SHA or described the schema-v3 smoke as still pending.
+
+- Current `main`: `649c4bb51b51dbc99bfe83a7fce19d0eff2b18fa`.
+- Current-main verification [40124496409](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40124496409): `success`.
+- Latest categorized comparator evidence [40122329060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060): 36 inputs, 0 runtime errors, strict string agreement 0/36, tone-stripped agreement 29/36 (diagnostic only), 7 remaining non-tone/format/length mismatches. Independent gold remains 0; accuracy null. Tone stripping is never a production normalization.
+- Engineering smoke/CI is DONE_VERIFIED. Source-by-source tone and composite-vowel adjudication, malformed/unsupported input coverage, coda representation review, target-policy review and independent Lao IPA gold remain PARTIAL/BLOCKED. The external engine is not promoted to production and no accuracy percentage is justified.
