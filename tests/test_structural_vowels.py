@@ -46,7 +46,7 @@ class TestStructuralVowels(unittest.TestCase):
         result = analyze("ເກຽ")
         self.assertIsNone(result.syllables[0].phonemic_ipa)
         self.assertIsNone(result.syllables[0].practical_ukrainian)
-        self.assertTrue(result.syllables[0].warnings)
+        self.assertIn("UNCONSUMED_AFTER_VOWEL:ຽ", result.syllables[0].warnings)
         self.assertEqual(result.status, "PARTIAL")
 
 
