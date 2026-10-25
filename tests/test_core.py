@@ -89,3 +89,13 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.ukrainian_candidates, [])
         self.assertIn("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY", s.rules)
         self.assertTrue(any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings))
+
+    def test_unconsumed_material_before_legal_final_withholds_full_output(self):
+        s = analyze("ກາກງ").syllables[0]
+        self.assertEqual(s.status, "EVIDENCE LIMITED")
+        self.assertIsNone(s.phonemic_ipa)
+        self.assertIsNone(s.practical_ukrainian)
+        self.assertEqual(s.ukrainian_candidates, [])
+        self.assertTrue(
+            any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings)
+        )
