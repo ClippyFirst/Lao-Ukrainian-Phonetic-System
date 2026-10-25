@@ -35,20 +35,25 @@ def analyze(text: str) -> Analysis:
         )
         multiple_tone_marks = "MULTIPLE_TONE_MARKS" in local_warnings
         structural_uncertainty = unconsumed or short_vowel_missing_coda
+        if structural_uncertainty or multiple_tone_marks:
+            # Once the written unit is structurally uncertain, a previously
+            # matched tone rule is not evidence for this malformed surface.
+            tone_rule_ids = {row["rule_id"] for row in registry["tone_rules"]}
+            rules = [rule for rule in rules
+                     if rule not in tone_rule_ids and not rule.startswith("TONE:")]
+            rules = [*rules, "TONE-NOT-ESTABLISHED-FOR-COMBINATION"]
+            ipa = None
+            tone = None
+            tone_status = "analysis-dependent"
         if structural_uncertainty:
             # A parsed prefix is not enough to establish either the full IPA
             # or tone: the missing coda changes the realization of short
             # vowels and can change the live/dead tone classification.
-            ipa = None
-            tone = None
-            tone_status = "analysis-dependent"
             rules = [*rules, "PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY",
                      "PHON-TONE-WITHHELD-STRUCTURAL-UNCERTAINTY"]
         if multiple_tone_marks:
-            ipa = None
-            tone = None
-            tone_status = "analysis-dependent"
-            rules = [*rules, "PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS"]
+            rules = [*rules, "PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS",
+                     "PHON-TONE-WITHHELD-MULTIPLE-TONE-MARKS"]
 
         candidates = []
         if ipa:
@@ -73,7 +78,7 @@ def analyze(text: str) -> Analysis:
 
         if practical is None and ipa:
             status = "EVIDENCE LIMITED"
-        if unconsumed or multiple_tone_marks:
+        if structural_uncertainty or multiple_tone_marks:
             status = "EVIDENCE LIMITED"
 
         # Even if an IPA string is computable, malformed/unconsumed source
