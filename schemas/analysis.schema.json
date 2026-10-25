@@ -1,1 +1,77 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["input","normalized","syllables","status"],"properties":{"input":{"type":"string"},"normalized":{"type":"string"},"status":{"type":"string"},"syllables":{"type":"array"}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "input",
+    "normalized",
+    "syllables",
+    "status"
+  ],
+  "properties": {
+    "input": {
+      "type": "string"
+    },
+    "normalized": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "syllables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "surface": {
+            "type": "string"
+          },
+          "tone": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tone_contour": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "phonemic_ipa": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "practical_ukrainian": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
