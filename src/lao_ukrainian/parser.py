@@ -100,8 +100,10 @@ def _find_coda(after_vowel: str, registry: dict):
     # A coda must be the final grapheme of the remaining syllable material.
     # Searching backward for any legal final can incorrectly accept e.g.
     # ກາງະ as /kaːŋ/ while silently ignoring the trailing vowel sign.
-    if after_vowel and after_vowel[-1] in finals:
-        return after_vowel[-1]
+    # A legal final is a coda only when it is the sole remaining grapheme.
+    # Merely ending in a legal final must not hide preceding unconsumed material.
+    if len(after_vowel) == 1 and after_vowel in finals:
+        return after_vowel
     return None
 
 def parse_syllable(surface: str):
