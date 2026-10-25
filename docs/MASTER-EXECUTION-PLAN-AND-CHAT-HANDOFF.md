@@ -393,3 +393,6 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - Python now applies the same allowed-prefix contract as the browser. Parser/core and browser tests assert that malformed input has no IPA or Ukrainian target output and records `UNCONSUMED_BEFORE_ONSET`.
 - Exact-head `verify.yml` must pass Python tests, browser tests, generated-data reproducibility and build checks.
 - This is parser integrity, not a phonological mapping. Lao cluster coverage and independent gold remain open.
+
+
+- Test-first note: the first browser regression expected `null`, but the browser's existing unresolved-result contract represents missing IPA/target as an empty string. The implementation already withheld both outputs; the test now checks absence rather than requiring a specific null representation. Python still asserts `None` through its typed model.
