@@ -28,4 +28,4 @@ CLM-LAO-VOWEL-AW,The preposed spelling ເ◌ົາ represents the /aw/ sequence
 CLM-LAO-VOWEL-AM,The spelling ◌ຳ represents the /am/ sequence,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VOWEL-AWW-LONG,The spellings ◌ໍ and medial ◌ອ represent long /ɔː/ in the contexts described by the reference,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-SHORT-VOWEL-CLOSED-CONTEXT,The vowel signs ◌ັ and ◌ັອ are used for short vowels in closed-syllable contexts in the descriptive orthography reference,established,SRC-ISHIDA-ORTHO-2026
-CLM-LAO-VIENTIANE-TONE-MATRIX,The implemented tone selector is scoped to a Vientiane-oriented five-tone reference matrix; its class/syllable-type/length/mark conditions are not a universal Lao dialect model,established,SRC-SEASITE-TONECHART;SRC-UEDA
+CLM-LAO-VIENTIANE-TONE-MATRIX,The implemented tone selector is scoped to a Vientiane-oriented five-tone reference matrix; its class/syllable-type/length/mark conditions are not a universal Lao dialect model,methodology,SRC-SEASITE-TONECHART;SRC-UEDA
