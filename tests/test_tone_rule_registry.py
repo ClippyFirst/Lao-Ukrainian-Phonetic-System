@@ -4,6 +4,8 @@ These tests verify table integrity and conservative fallback behavior. They do
 not independently validate the linguistic correctness of the Vientiane model.
 """
 import unittest
+import csv
+from pathlib import Path
 
 from lao_ukrainian.data import load_registry
 from lao_ukrainian.phonology import determine_tone
@@ -22,6 +24,23 @@ class TestToneRuleRegistry(unittest.TestCase):
         ]
         self.assertEqual(len(ids), len(set(ids)), "duplicate tone rule ID")
         self.assertEqual(len(keys), len(set(keys)), "overlapping exact tone selectors")
+
+    def test_every_rule_has_source_backed_profile_provenance(self):
+        root = Path(__file__).resolve().parents[1]
+        with (root / "data" / "evidence" / "sources.csv").open(encoding="utf-8", newline="") as f:
+            sources = {row["source_id"] for row in csv.DictReader(f)}
+        with (root / "data" / "evidence" / "claims.csv").open(encoding="utf-8", newline="") as f:
+            claims = {row["claim_id"]: row for row in csv.DictReader(f)}
+
+        for row in self.rules:
+            with self.subTest(rule=row["rule_id"]):
+                self.assertEqual(row.get("profile"), "Vientiane")
+                claim_id = row.get("evidence_id")
+                self.assertIn(claim_id, claims)
+                claim = claims[claim_id]
+                self.assertEqual(claim["status"], "established")
+                for source_id in claim["evidence_ids"].split(";"):
+                    self.assertIn(source_id, sources)
 
     def test_rule_fields_use_declared_values(self):
         classes = {"high", "middle", "low"}
