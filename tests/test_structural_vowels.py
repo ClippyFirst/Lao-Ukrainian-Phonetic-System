@@ -30,9 +30,24 @@ class TestStructuralVowels(unittest.TestCase):
         self.assertEqual(analyze("ເກີ").syllables[0].vowel, "OEE")
         self.assertEqual(analyze("ເກີ").syllables[0].phonemic_ipa, "kɤː")
 
-    def test_preposed_ia_long_is_not_shadowed_by_long_e(self):
-        self.assertEqual(analyze("ເກຽ").syllables[0].vowel, "IA_LONG")
-        self.assertEqual(analyze("ເກຽ").syllables[0].phonemic_ipa, "kiːə")
+    def test_preposed_ia_long_spellings_match_source_reference(self):
+        for surface in ("ເກັຽ", "ເກຍ"):
+            with self.subTest(surface=surface):
+                result = analyze(surface)
+                self.assertEqual(result.syllables[0].vowel, "IA_LONG")
+                self.assertEqual(result.syllables[0].phonemic_ipa, "kiːə")
+
+    def test_preposed_ia_short_spelling_is_not_treated_as_long(self):
+        result = analyze("ເກັຍ")
+        self.assertEqual(result.syllables[0].vowel, "IA")
+        self.assertEqual(result.syllables[0].phonemic_ipa, "kiə")
+
+    def test_unattested_preposed_e_plus_ya_withholds_phonetic_output(self):
+        result = analyze("ເກຽ")
+        self.assertIsNone(result.syllables[0].phonemic_ipa)
+        self.assertIsNone(result.syllables[0].practical_ukrainian)
+        self.assertTrue(result.syllables[0].warnings)
+        self.assertEqual(result.status, "PARTIAL")
 
 
 class TestSharedVowelPrecedenceFixtures(unittest.TestCase):
@@ -120,7 +135,7 @@ class TestVowelPrecedenceNegativeControls(unittest.TestCase):
             ("PRE-O-SHORT-VS-LONG", "ໂກະ", "O", "ໂກ", "OO"),
             ("PRE-OE-SHORT-VS-LONG-E", "ເກິ", "OE", "ເກ", "EE"),
             ("PRE-OE-LONG-VS-LONG-E", "ເກີ", "OEE", "ເກ", "EE"),
-            ("PRE-IA-SHORT-VS-LONG", "ເກັຽ", "IA", "ເກຽ", "IA_LONG"),
+            ("PRE-IA-SHORT-VS-LONG", "ເກັຍ", "IA", "ເກັຽ", "IA_LONG"),
             ("PRE-UA-SHORT-VS-LONG", "ເກຶອ", "UA", "ເກືອ", "UA_LONG"),
             ("PRE-AW-VS-AW-LONG", "ເກາະ", "AW", "ເກົາ", "AW_LONG"),
             ("POST-UO-SHORT-VS-LONG", "ກົວະ", "UO", "ກົວ", "UO_LONG"),
