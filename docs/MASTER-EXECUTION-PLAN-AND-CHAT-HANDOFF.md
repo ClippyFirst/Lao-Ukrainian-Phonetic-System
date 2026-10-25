@@ -376,3 +376,12 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 
 - End-to-end guard added in `tests/test_core.py::test_unconsumed_material_before_legal_final_withholds_full_output`: the malformed example now must have `EVIDENCE LIMITED`, no phonemic IPA, no practical Ukrainian output, no candidates, and a retained unconsumed-material warning.
 - Latest exact-head verification after the end-to-end test: [run 40195680085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40195680085) **passed**, `Ran 75 tests ... OK`, browser engine tests, build/regeneration, generated-data reproducibility, and built-page asset checks. Independent gold remains 0.
+
+
+## Tone-rule provenance hardening — 2026-10-25
+
+- Added the exact SEAsite / Northern Illinois University Vientiane tone-chart URL as `SRC-SEASITE-TONECHART` and registered a scoped claim with Ueda's peer-reviewed Vientiane phonology paper.
+- Each canonical `data/lao/tone_rules.csv` row now declares `profile=Vientiane` and `evidence_id=CLM-LAO-VIENTIANE-TONE-MATRIX`. A new test resolves every row's claim and source IDs against the existing evidence registries.
+- The citation supports the five-tone Vientiane-oriented class/live-dead/length/tone-mark matrix. It does **not** validate the repository's exact IPA contour symbols acoustically, nor does it justify generalizing to every Lao variety. The 2020 Nam Pua study and the W3C/R12A notes demonstrate why dialect and contour convention must remain explicit.
+- Acceptance: exact branch-head CI must pass Python, browser, generated-data/reproducibility and build checks. The generator intentionally exports only runtime columns, so this evidence metadata must not change browser output.
+- Still open: source passage/page-level audit for each tone rule, adjudicated acoustic contours, full cluster/coda coverage, and independent lexical gold. No accuracy claim is made.
