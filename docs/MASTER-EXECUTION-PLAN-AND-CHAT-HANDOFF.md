@@ -449,3 +449,10 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - Python now emits `MULTIPLE_TONE_MARKS`; the core withholds IPA, tone, candidates, and practical Ukrainian output and records `PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS`. Browser analysis rejects a token with multiple tone marks and prevents dynamic segmentation from rescuing adjacent duplicate marks.
 - Added Python and browser regression tests for `ກ່້າ`. This is an input-integrity correction, not a phonological expansion or accuracy claim.
 - Acceptance: exact-head `verify.yml` must pass Python unittest discovery, browser tests, generated-data drift, build, and built-page/asset checks. Independent adjudicated Lao IPA gold remains 0; accuracy remains unmeasured.
+
+
+## Post-merge current-head checkpoint — 2026-10-25
+
+- Multiple-tone-mark fail-closed fix merged as `316dab931ca4cc842b4e3dcb5869546761b50b9d` via [PR #51](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/51).
+- Exact PR-head verification [40216312547](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40216312547) passed; post-merge `main` verification [40216376688](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40216376688) and Pages deployment [40216376751](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40216376751) also passed.
+- Python/browser regressions require multiple tone marks to withhold IPA, tone, candidates and practical Ukrainian output. This remains input-integrity evidence, not linguistic accuracy evidence. Independent adjudicated gold remains 0; tone/cluster/lexical source adjudication remains open.
