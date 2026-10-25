@@ -441,3 +441,11 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 
 
 - Follow-up adversarial review caught a browser-only segmentation hazard: after correctly rejecting `ເ◌ຽ` as a vowel pattern, dynamic word segmentation could still salvage `ເ+onset` as /eː/ and leave `ຽ` as an unresolved suffix. The whole-token guard and browser regression were merged in PR #43 as `0336419ad612072b61e12b9e92b6bb6b67ff9284`; exact-head workflow [40208462464](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40208462464) passed Python, browser, harness syntax/CLI, build, generated-data reproducibility and built-page/asset checks. This item is verified; do not retain the old instruction that CI is pending.
+
+
+## Multiple Lao tone-mark fail-closed guard — 2026-10-25
+
+- Found a parser integrity gap in both Python and browser engines: a syllable containing more than one tone mark selected the first mark, stripped all marks before structural parsing, and could still emit IPA/Ukrainian output as if the orthography were valid.
+- Python now emits `MULTIPLE_TONE_MARKS`; the core withholds IPA, tone, candidates, and practical Ukrainian output and records `PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS`. Browser analysis rejects a token with multiple tone marks and prevents dynamic segmentation from rescuing adjacent duplicate marks.
+- Added Python and browser regression tests for `ກ່້າ`. This is an input-integrity correction, not a phonological expansion or accuracy claim.
+- Acceptance: exact-head `verify.yml` must pass Python unittest discovery, browser tests, generated-data drift, build, and built-page/asset checks. Independent adjudicated Lao IPA gold remains 0; accuracy remains unmeasured.
