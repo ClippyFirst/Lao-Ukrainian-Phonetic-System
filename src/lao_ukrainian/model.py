@@ -22,6 +22,7 @@ class SyllableAnalysis:
     status: str
     rules: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    tone_contour: str | None = None
 
 @dataclass
 class Analysis:
