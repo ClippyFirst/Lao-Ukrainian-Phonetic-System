@@ -385,3 +385,11 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - The citation supports the five-tone Vientiane-oriented class/live-dead/length/tone-mark matrix. It does **not** validate the repository's exact IPA contour symbols acoustically, nor does it justify generalizing to every Lao variety. The 2020 Nam Pua study and the W3C/R12A notes demonstrate why dialect and contour convention must remain explicit.
 - Acceptance: exact branch-head CI must pass Python, browser, generated-data/reproducibility and build checks. The generator intentionally exports only runtime columns, so this evidence metadata must not change browser output.
 - Still open: source passage/page-level audit for each tone rule, adjudicated acoustic contours, full cluster/coda coverage, and independent lexical gold. No accuracy claim is made.
+
+
+## Pre-onset source-material guard — 2026-10-25
+
+- Found a Python/browser contract gap: the browser already required all material before the onset to be empty or exactly one recognized preposed vowel, but Python only checked `before.endswith(pre)`. Malformed `xເເກ` could match the long-`ເ` template and silently discard the extra prefix.
+- Python now applies the same allowed-prefix contract as the browser. Parser/core and browser tests assert that malformed input has no IPA or Ukrainian target output and records `UNCONSUMED_BEFORE_ONSET`.
+- Exact-head `verify.yml` must pass Python tests, browser tests, generated-data reproducibility and build checks.
+- This is parser integrity, not a phonological mapping. Lao cluster coverage and independent gold remain open.
