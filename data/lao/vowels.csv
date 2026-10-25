@@ -20,8 +20,8 @@ AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ
 AWW_MEDIAL,ອ,ɔː,long,postposed,none,core,long ɔ in medial ◌ອ
 OE,ເິ,ɤ,short,preposed,none,core,
 OEE,ເີ,ɤː,long,preposed,none,core,
-IA,ເັຽ,iə,short,around,none,core,short/closed ia
-IA_LONG,ເຍ,iːə,long,around,none,core,long/open ia; engine also accepts standalone ຽ in forms such as ວຽງ
+IA,ເັຍ,iə,short,around,none,core,short IA: ເ◌ັຍ; medial ◌ັຽ
+IA_LONG,ເຍ,iːə,long,around,none,core,long IA: ເ◌ຍ and ເ◌ັຽ; standalone ◌ຽ in forms such as ວຽງ
 UA,ເຶອ,ɯə,short,around,none,core,short ɯə
 UA_LONG,ເືອ,ɯːə,long,around,none,core,long ɯːə
 UO,ົວະ,uə,short,around,none,core,short uə
