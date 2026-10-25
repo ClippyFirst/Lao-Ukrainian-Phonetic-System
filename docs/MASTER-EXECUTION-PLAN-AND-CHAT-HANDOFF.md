@@ -396,3 +396,10 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 
 
 - Test-first note: the first browser regression expected `null`, but the browser's existing unresolved-result contract represents missing IPA/target as an empty string. The implementation already withheld both outputs; the test now checks absence rather than requiring a specific null representation. Python still asserts `None` through its typed model.
+
+
+## Lao malformed-prefix segmentation follow-up — 2026-10-25
+
+- The first PR #43 CI run exposed a real browser defect: the per-syllable parser rejected `xເເກ`, but the word segmenter could split the malformed token and retain a plausible substring. This is an implementation bug, not merely an assertion mismatch.
+- `analyzeWord` now checks material before the first Lao onset before dynamic segmentation. If it is not empty or exactly one recognized preposed vowel, the entire token is retained as one unresolved unit with no IPA or Ukrainian output.
+- The browser regression asserts whole-token preservation, withheld outputs, and a diagnostic. Exact-head CI must pass before PR #43 is eligible for merge.
