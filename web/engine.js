@@ -222,6 +222,14 @@ function analyzeWord(word) {
     }];
   }
 
+  // A short-vowel spelling that requires a coda is a single incomplete
+  // orthographic unit. Do not let the fallback segmenter split off the vowel
+  // sign and make the malformed token look like multiple independent syllables.
+  const wholeCandidate = analyzeToken(word);
+  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA"))) {
+    return [wholeCandidate];
+  }
+
   const n = chars.length;
   const best = Array(n + 1);
   best[n] = { score: 0, parts: [] };
