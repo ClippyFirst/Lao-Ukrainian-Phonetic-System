@@ -41,7 +41,8 @@ def analyze(text: str) -> Analysis:
             tone_rule_ids = {row["rule_id"] for row in registry["tone_rules"]}
             rules = [rule for rule in rules
                      if rule not in tone_rule_ids and not rule.startswith("TONE:")]
-            rules = [*rules, "TONE-NOT-ESTABLISHED-FOR-COMBINATION"]
+            if "TONE-NOT-ESTABLISHED-FOR-COMBINATION" not in rules:
+                rules = [*rules, "TONE-NOT-ESTABLISHED-FOR-COMBINATION"]
             ipa = None
             tone = None
             tone_status = "analysis-dependent"
