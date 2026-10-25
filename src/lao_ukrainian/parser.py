@@ -94,7 +94,7 @@ def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
     for _, pre, suffix, vowel_id in sorted(
         STRUCTURES, key=lambda item: (len(item[2]), len(item[1])), reverse=True
     ):
-        if before.endswith(pre) and after.startswith(suffix):
+        if before == pre and after.startswith(suffix):
             return next((v for v in registry["vowels"] if v["id"] == vowel_id), None)
     return None
 
@@ -136,7 +136,7 @@ def parse_syllable(surface: str):
     after = s[onset_i + onset_len:]
     suffix = ""
     for _, pre, candidate_suffix, vowel_id in STRUCTURES:
-        if vowel_id == vowel["id"] and s[:onset_i].endswith(pre) and after.startswith(candidate_suffix):
+        if vowel_id == vowel["id"] and s[:onset_i] == pre and after.startswith(candidate_suffix):
             suffix = candidate_suffix
             break
     remainder = after[len(suffix):]
