@@ -210,12 +210,16 @@ test("preposed short IA is distinct from long IA", () => {
   assert.equal(r.syllables[0].ipa, "kiə");
 });
 
-test("unattested preposed ເ◌ຽ does not emit a guessed IPA", () => {
-  const r = analyze("ເກຽ");
+test("unattested preposed ເ◌ຽ remains one unresolved token", () => {
+  const surface = "ເກຽ";
+  const r = analyze(surface);
   assert.equal(r.status, "PARTIAL");
+  assert.equal(r.syllables.length, 1);
+  assert.equal(r.syllables[0].surface, surface);
   assert.equal(r.syllables[0].ipa, null);
   assert.equal(r.syllables[0].ukrainian, null);
   assert.ok(r.syllables[0].warnings.length > 0);
+  assert.equal(r.output, "⟦" + surface + "⟧");
 });
 
 
