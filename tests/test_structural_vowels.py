@@ -72,6 +72,26 @@ class TestVowelRegistryCoverage(unittest.TestCase):
 
 
 class TestShortVowelCodaConstraints(unittest.TestCase):
+    def test_unclosed_short_vowels_withhold_ipa_target_and_tone(self):
+        for surface in ("ກັ", "ກັອ"):
+            with self.subTest(surface=surface):
+                result = analyze(surface)
+                syllable = result.syllables[0]
+                self.assertEqual(syllable.status, "EVIDENCE LIMITED")
+                self.assertIsNone(syllable.phonemic_ipa)
+                self.assertIsNone(syllable.practical_ukrainian)
+                self.assertEqual(syllable.ukrainian_candidates, [])
+                self.assertIsNone(syllable.tone)
+                self.assertIsNone(syllable.tone_contour)
+                self.assertIn("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY", syllable.rules)
+
+    def test_short_vowel_with_legal_coda_still_produces_output(self):
+        syllable = analyze("ກັບ").syllables[0]
+        self.assertEqual(syllable.phonemic_ipa, "kap")
+        self.assertEqual(syllable.practical_ukrainian, "кап")
+        self.assertIsNotNone(syllable.tone)
+        self.assertIsNotNone(syllable.tone_contour)
+
     def test_short_a_without_coda_is_evidence_limited(self):
         parsed = parse_syllable("ກັ")
         self.assertIn("SHORT_VOWEL_REQUIRES_CODA:A2", parsed["warnings"])
@@ -182,3 +202,20 @@ class TestEveryVowelStructureHasPositiveAndNegativeControls(unittest.TestCase):
                 actual = parsed.get("vowel")
                 self.assertTrue(actual is None or actual["id"] != vowel_id,
                                 f"{name} accepted its one-grapheme near-miss {negative!r}")
+
+
+class TestSharedToneContourContract(unittest.TestCase):
+    def test_shared_tone_contour_and_withholding_fixture(self):
+        fixture_path = Path(__file__).parent / "fixtures" / "tone_contour_cases.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        self.assertEqual(fixture["schema_version"], 1)
+        for case in fixture["cases"]:
+            with self.subTest(case=case["id"]):
+                result = analyze(case["surface"])
+                self.assertEqual(len(result.syllables), 1)
+                syllable = result.syllables[0]
+                self.assertEqual(syllable.tone, case["tone"])
+                self.assertEqual(syllable.tone_contour, case["tone_contour"])
+                self.assertEqual(syllable.phonemic_ipa, case["ipa"])
+                self.assertEqual(syllable.practical_ukrainian, case["ukrainian"])
+                self.assertEqual(syllable.status, case["status"])

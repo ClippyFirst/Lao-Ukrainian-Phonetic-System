@@ -10,6 +10,14 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.practical_ukrainian, "ка")
         self.assertEqual(s.tone, "low-rising")
 
+    def test_tone_contour_is_preserved_from_the_matched_rule(self):
+        rising = analyze("ຂາ").syllables[0]
+        mid = analyze("ກ່າ").syllables[0]
+        self.assertEqual(rising.tone, "low-rising")
+        self.assertEqual(rising.tone_contour, "˩˥")
+        self.assertEqual(mid.tone, "high-mid")
+        self.assertEqual(mid.tone_contour, "˧")
+
     def test_middle_class_inherent_tone(self):
         self.assertEqual(analyze("ກາ").syllables[0].tone, "low-rising")
 

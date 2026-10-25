@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "purpose": "Shared Python/browser contract fixture for tone metadata and conservative withholding; not independent IPA gold.",
+  "cases": [
+    {
+      "id": "LIVE-HIGH-CLASS-LOW-RISING",
+      "surface": "ຂາ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kʰaː",
+      "ukrainian": "ка",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-MAI-EK",
+      "surface": "ກ່າ",
+      "tone": "high-mid",
+      "tone_contour": "˧",
+      "ipa": "kaː",
+      "ukrainian": "ка",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "SHORT-A-WITHOUT-CODA",
+      "surface": "ກັ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": null,
+      "ukrainian": null,
+      "status": "EVIDENCE LIMITED"
+    },
+    {
+      "id": "SHORT-O-WITHOUT-CODA",
+      "surface": "ກັອ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": null,
+      "ukrainian": null,
+      "status": "EVIDENCE LIMITED"
+    }
+  ]
+}
