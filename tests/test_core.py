@@ -81,6 +81,13 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.practical_ukrainian, "а")
 
 
+    def test_unconsumed_material_before_preposed_vowel_withholds_output(self):
+        s = analyze("xເເກ").syllables[0]
+        self.assertEqual(s.status, "ANALYSIS DEPENDENT")
+        self.assertIsNone(s.phonemic_ipa)
+        self.assertIsNone(s.practical_ukrainian)
+        self.assertTrue(any(w.startswith("UNCONSUMED_BEFORE_ONSET:") for w in s.warnings))
+
     def test_unconsumed_grapheme_withholds_whole_unit_ipa_and_target(self):
         s = analyze("ກາລ").syllables[0]
         self.assertEqual(s.status, "EVIDENCE LIMITED")
