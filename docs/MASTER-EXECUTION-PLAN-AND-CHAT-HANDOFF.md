@@ -403,3 +403,10 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - The first PR #43 CI run exposed a real browser defect: the per-syllable parser rejected `xເເກ`, but the word segmenter could split the malformed token and retain a plausible substring. This is an implementation bug, not merely an assertion mismatch.
 - `analyzeWord` now checks material before the first Lao onset before dynamic segmentation. If it is not empty or exactly one recognized preposed vowel, the entire token is retained as one unresolved unit with no IPA or Ukrainian output.
 - The browser regression asserts whole-token preservation, withheld outputs, and a diagnostic. Exact-head CI must pass before PR #43 is eligible for merge.
+
+
+## Unicode control-character parity — 2026-10-25
+
+- Found a validation gap in both runtimes: C0 controls were rejected (except line whitespace), but DEL U+007F and C1 controls U+0080–U+009F were not classified as controls consistently with Unicode control semantics.
+- Python `validate_unicode` and browser `validateInput` now reject DEL/C1 controls; tests cover U+007F, U+0085 and U+009F while preserving accepted CRLF behavior.
+- This is an input-integrity fix, not a phonological rule. Full branch-head CI must pass before merge.

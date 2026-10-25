@@ -100,7 +100,10 @@ function validateInput(text) {
   const warnings = [];
   for (const ch of text) {
     const cp = ch.codePointAt(0);
-    if (cp < 0x20 && !["\n", "\t", "\r"].includes(ch)) warnings.push("Вхід містить керівний символ.");
+    if ((cp < 0x20 && !["\n", "\t", "\r"].includes(ch)) || (cp >= 0x7F && cp <= 0x9F)) {
+      warnings.push("Вхід містить керівний символ.");
+      continue;
+    }
     if (cp >= 0x0E80 && cp <= 0x0EFF) continue;
     if (/\s/.test(ch) || (cp < 0x80 && /[-'.]/.test(ch))) continue;
     if (cp > 0x7F) warnings.push("Непідтримуваний символ поза лаоським Unicode-діапазоном.");
