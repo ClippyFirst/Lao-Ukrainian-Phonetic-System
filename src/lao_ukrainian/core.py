@@ -29,9 +29,15 @@ def analyze(text: str) -> Analysis:
             warning.startswith("UNCONSUMED_AFTER_VOWEL:")
             for warning in local_warnings
         )
+        multiple_tone_marks = "MULTIPLE_TONE_MARKS" in local_warnings
         if unconsumed:
             ipa = None
             rules = [*rules, "PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY"]
+        if multiple_tone_marks:
+            ipa = None
+            tone = None
+            tone_status = "analysis-dependent"
+            rules = [*rules, "PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS"]
 
         candidates = []
         if ipa:
@@ -56,7 +62,7 @@ def analyze(text: str) -> Analysis:
 
         if practical is None and ipa:
             status = "EVIDENCE LIMITED"
-        if unconsumed:
+        if unconsumed or multiple_tone_marks:
             status = "EVIDENCE LIMITED"
 
         # Even if an IPA string is computable, malformed/unconsumed source
