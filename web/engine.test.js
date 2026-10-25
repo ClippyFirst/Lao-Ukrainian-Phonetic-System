@@ -149,7 +149,7 @@ test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
     assert.equal(syllable.ukrainian, null);
     assert.equal(syllable.tone, null);
     assert.equal(syllable.toneContour, null);
-    assert.ok(syllable.rules.includes("TONE:UNRESOLVED"));
+    assert.ok(syllable.rules.includes("TONE-RULE:TONE-NOT-ESTABLISHED-FOR-COMBINATION"));
   }
 });
 
