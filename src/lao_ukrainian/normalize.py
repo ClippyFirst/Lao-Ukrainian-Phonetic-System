@@ -7,7 +7,7 @@ def validate_unicode(text: str) -> list[str]:
     problems=[]
     for ch in text:
         cp=ord(ch)
-        if cp < 0x20 and ch not in "\n\t\r":
+        if (cp < 0x20 and ch not in "\n\t\r") or 0x7F <= cp <= 0x9F:
             problems.append(f"control character U+{cp:04X}")
         if 0x0E80 <= cp <= 0x0EFF:
             continue
