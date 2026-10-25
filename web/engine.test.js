@@ -158,6 +158,22 @@ test("matched tone rule exposes its contour", () => {
   assert.equal(analyze("ຂາ").syllables[0].toneContour, "˩˥");
 });
 
+test("shared tone contour and structural withholding fixture", () => {
+  const fixturePath = resolve(dirname(fileURLToPath(import.meta.url)), "../tests/fixtures/tone_contour_cases.json");
+  const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    const syllable = result.syllables[0];
+    assert.equal(syllable.tone, item.tone, item.id);
+    assert.equal(syllable.toneContour, item.tone_contour, item.id);
+    assert.equal(syllable.ipa, item.ipa, item.id);
+    assert.equal(syllable.ukrainian, item.ukrainian, item.id);
+    assert.equal(syllable.status, item.status, item.id);
+  }
+});
+
 test("short o in a closed syllable is recognised", () => {
   const r = analyze("ຄົນ");
   assert.equal(r.syllables[0].ipa, "kʰon");
