@@ -202,3 +202,20 @@ class TestEveryVowelStructureHasPositiveAndNegativeControls(unittest.TestCase):
                 actual = parsed.get("vowel")
                 self.assertTrue(actual is None or actual["id"] != vowel_id,
                                 f"{name} accepted its one-grapheme near-miss {negative!r}")
+
+
+class TestSharedToneContourContract(unittest.TestCase):
+    def test_shared_tone_contour_and_withholding_fixture(self):
+        fixture_path = Path(__file__).parent / "fixtures" / "tone_contour_cases.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        self.assertEqual(fixture["schema_version"], 1)
+        for case in fixture["cases"]:
+            with self.subTest(case=case["id"]):
+                result = analyze(case["surface"])
+                self.assertEqual(len(result.syllables), 1)
+                syllable = result.syllables[0]
+                self.assertEqual(syllable.tone, case["tone"])
+                self.assertEqual(syllable.tone_contour, case["tone_contour"])
+                self.assertEqual(syllable.phonemic_ipa, case["ipa"])
+                self.assertEqual(syllable.practical_ukrainian, case["ukrainian"])
+                self.assertEqual(syllable.status, case["status"])
