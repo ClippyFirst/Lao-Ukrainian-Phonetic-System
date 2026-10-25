@@ -114,10 +114,11 @@ def parse_syllable(surface: str):
     s = _strip_tone_marks(surface)
     onset, onset_i, onset_len, onset_class, onset_form = _find_onset(s)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
+    tone_warnings = ["MULTIPLE_TONE_MARKS"] if sum(ch in TONE_MARKS for ch in surface) > 1 else []
 
     if onset is None:
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
-                "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET"]}
+                "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET", *tone_warnings]}
 
     before = s[:onset_i]
     allowed_preposed = {"", "ເ", "ແ", "ໂ", "ໃ", "ໄ"}
@@ -125,13 +126,13 @@ def parse_syllable(surface: str):
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
                 "onset_form": onset_form, "vowel": None, "coda": None,
                 "tone_mark": tone_mark,
-                "warnings": [f"UNCONSUMED_BEFORE_ONSET:{before}"]}
+                "warnings": [f"UNCONSUMED_BEFORE_ONSET:{before}", *tone_warnings]}
 
     vowel = _match_vowel(s, onset_i, onset_len, registry)
     if vowel is None:
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
                 "onset_form": onset_form, "vowel": None, "coda": None,
-                "tone_mark": tone_mark, "warnings": ["VOWEL-STRUCTURE-NOT-ESTABLISHED"]}
+                "tone_mark": tone_mark, "warnings": ["VOWEL-STRUCTURE-NOT-ESTABLISHED", *tone_warnings]}
 
     after = s[onset_i + onset_len:]
     suffix = ""
@@ -141,7 +142,7 @@ def parse_syllable(surface: str):
             break
     remainder = after[len(suffix):]
     coda = _find_coda(remainder, registry)
-    warnings = []
+    warnings = list(tone_warnings)
     if coda is None and remainder:
         warnings.append(f"UNCONSUMED_AFTER_VOWEL:{remainder}")
     if coda is None and vowel["id"] in {"A2", "AWW_SHORT_ALT"}:

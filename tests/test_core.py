@@ -58,6 +58,17 @@ class TestCore(unittest.TestCase):
         self.assertEqual(analyze("ກ໊າ").syllables[0].tone, "high-falling")
         self.assertEqual(analyze("ກ໋າ").syllables[0].tone, "low-rising")
 
+    def test_multiple_tone_marks_withhold_ipa_and_ukrainian_output(self):
+        result = analyze("ກ່້າ")
+        s = result.syllables[0]
+        self.assertEqual(s.status, "EVIDENCE LIMITED")
+        self.assertIsNone(s.phonemic_ipa)
+        self.assertIsNone(s.practical_ukrainian)
+        self.assertEqual(s.ukrainian_candidates, [])
+        self.assertIsNone(s.tone)
+        self.assertIn("PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS", s.rules)
+        self.assertIn("MULTIPLE_TONE_MARKS", s.warnings)
+
     def test_silent_high_digraph(self):
         s = analyze("ຫນອງ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "nɔːŋ")

@@ -122,6 +122,10 @@ function findOnset(clean) {
 
 function analyzeToken(surface) {
   const chars = [...surface];
+  const toneMarkCount = chars.filter((ch) => TONE_MARK_SET.has(ch)).length;
+  if (toneMarkCount > 1) {
+    return { surface, status: "EVIDENCE LIMITED", warnings: ["MULTIPLE_TONE_MARKS: phonetic output withheld."], ipa: null, ukrainian: null, tone: null };
+  }
   const mark = chars.find((ch) => TONE_MARK_SET.has(ch)) || null;
   const clean = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
   const found = findOnset(clean);
@@ -174,6 +178,11 @@ function isStructurallyComplete(s) {
 
 function analyzeWord(word) {
   const chars = [...word];
+  // Prevent dynamic segmentation from salvaging a valid-looking syllable
+  // when adjacent tone marks make the original orthographic unit malformed.
+  if (chars.some((ch, i) => TONE_MARK_SET.has(ch) && TONE_MARK_SET.has(chars[i + 1]))) {
+    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: ["MULTIPLE_TONE_MARKS: phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
+  }
   // Do not let dynamic segmentation rescue a malformed prefix by dropping
   // characters before the first Lao onset (e.g. xເເກ -> x + ເເ + ເກ).
   // A token may have at most one recognized preposed vowel before its first
