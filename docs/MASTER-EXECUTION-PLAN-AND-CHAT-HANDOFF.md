@@ -376,3 +376,11 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 
 - End-to-end guard added in `tests/test_core.py::test_unconsumed_material_before_legal_final_withholds_full_output`: the malformed example now must have `EVIDENCE LIMITED`, no phonemic IPA, no practical Ukrainian output, no candidates, and a retained unconsumed-material warning.
 - Latest exact-head verification after the end-to-end test: [run 40195680085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40195680085) **passed**, `Ran 75 tests ... OK`, browser engine tests, build/regeneration, generated-data reproducibility, and built-page asset checks. Independent gold remains 0.
+
+
+## Pre-onset source-material guard — 2026-10-25
+
+- Found a Python/browser contract gap: the browser already required all material before the onset to be either empty or exactly one recognized preposed vowel, but Python only checked `before.endswith(pre)`. Thus a malformed prefix such as `xເເກ` could match the long-`ເ` template and silently discard `xເ`.
+- Python now applies the same allowed-prefix contract as the browser. The new test asserts the malformed input has no IPA or Ukrainian target output and records `UNCONSUMED_BEFORE_ONSET`.
+- Acceptance: exact branch-head `verify.yml` must pass Python tests, browser tests, generated-data reproducibility and build checks.
+- This is parser integrity, not a phonological mapping. Lao cluster coverage and independent gold remain open.
