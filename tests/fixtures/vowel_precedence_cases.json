@@ -13,8 +13,8 @@
       "phonemic_ipa": "kɤː"
     },
     {
-      "id": "VOWEL-IA-LONG",
-      "surface": "ເກຽ",
+      "id": "VOWEL-IA-LONG-IAE",
+      "surface": "ເກັຽ",
       "phonemic_ipa": "kiːə"
     },
     {
@@ -28,8 +28,13 @@
       "phonemic_ipa": "ʋiːəŋ"
     },
     {
+      "id": "VOWEL-IA-LONG-NYO",
+      "surface": "ເກຍ",
+      "phonemic_ipa": "kiːə"
+    },
+    {
       "id": "VOWEL-IA-SHORT",
-      "surface": "ເກັຽ",
+      "surface": "ເກັຍ",
       "phonemic_ipa": "kiə"
     },
     {

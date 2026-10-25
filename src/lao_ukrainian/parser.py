@@ -33,9 +33,12 @@ STRUCTURES = (
     ("pre_o_long", "ໂ", "", "OO"),
     ("pre_oe_short", "ເ", "ິ", "OE"),
     ("pre_oe_long", "ເ", "ີ", "OEE"),
-    ("pre_ia_short", "ເ", "ັຽ", "IA"),
+    # Source-indexed spelling distinctions from Ishida (2026): ເ◌ັຽ and ເ◌ຍ
+    # represent long /iːə̯/, while ເ◌ັຍ represents short /iə̯/.
+    # ເ◌ຽ is not listed as a preposed IA spelling and must not be promoted
+    # to a deterministic long-diphthong parse.
+    ("pre_ia_long_iae", "ເ", "ັຽ", "IA_LONG"),
     ("pre_ia_short_nyo", "ເ", "ັຍ", "IA"),
-    ("pre_ia_long", "ເ", "ຽ", "IA_LONG"),
     ("pre_ia_long_nyo", "ເ", "ຍ", "IA_LONG"),
     ("pre_ua_short", "ເ", "ຶອ", "UA"),
     ("pre_ua_long", "ເ", "ືອ", "UA_LONG"),
@@ -91,7 +94,7 @@ def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
     for _, pre, suffix, vowel_id in sorted(
         STRUCTURES, key=lambda item: (len(item[2]), len(item[1])), reverse=True
     ):
-        if before.endswith(pre) and after.startswith(suffix):
+        if before == pre and after.startswith(suffix):
             return next((v for v in registry["vowels"] if v["id"] == vowel_id), None)
     return None
 
@@ -133,7 +136,7 @@ def parse_syllable(surface: str):
     after = s[onset_i + onset_len:]
     suffix = ""
     for _, pre, candidate_suffix, vowel_id in STRUCTURES:
-        if vowel_id == vowel["id"] and s[:onset_i].endswith(pre) and after.startswith(candidate_suffix):
+        if vowel_id == vowel["id"] and s[:onset_i] == pre and after.startswith(candidate_suffix):
             suffix = candidate_suffix
             break
     remainder = after[len(suffix):]

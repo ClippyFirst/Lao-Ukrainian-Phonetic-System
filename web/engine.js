@@ -16,9 +16,10 @@ function matchVowel(before, after) {
   };
   if (before === "" && after.startsWith("ຽ")) return push("IA_LONG", "ຽ");
   if (before.endsWith("ເ")) {
-    if (after.startsWith("ັຽ")) return push("IA", "ັຽ");
+    if (after.startsWith("ັຽ")) return push("IA_LONG", "ັຽ");
     if (after.startsWith("ັຍ")) return push("IA", "ັຍ");
-    if (after.startsWith("ຽ")) return push("IA_LONG", "ຽ");
+    // ເ◌ຽ is not an established preposed IA spelling in the cited
+    // orthography reference. Leave it unconsumed rather than guessing.
     if (after.startsWith("ຍ")) return push("IA_LONG", "ຍ");
     if (after.startsWith("ຶອ")) return push("UA", "ຶອ");
     if (after.startsWith("ືອ")) return push("UA_LONG", "ືອ");
@@ -191,6 +192,23 @@ function analyzeWord(word) {
       }];
     }
   }
+  // The unlisted preposed sequence ເ + onset + ຽ must remain one
+  // unresolved token. Without this guard, dynamic segmentation can salvage
+  // ເ+onset as long /eː/ and leave ຽ behind, leaking a misleading IPA prefix.
+  const cleanWord = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+  const iaOnset = findOnset(cleanWord);
+  if (iaOnset &&
+      cleanWord.slice(0, iaOnset.onsetIndex) === "ເ" &&
+      cleanWord.slice(iaOnset.onsetIndex + iaOnset.onsetLength) === "ຽ") {
+    return [{
+      surface: word,
+      status: "EVIDENCE LIMITED",
+      warnings: ["ເ◌ຽ is not an established preposed IA spelling; phonetic output withheld."],
+      ukrainian: null,
+      ipa: null,
+    }];
+  }
+
   const n = chars.length;
   const best = Array(n + 1);
   best[n] = { score: 0, parts: [] };

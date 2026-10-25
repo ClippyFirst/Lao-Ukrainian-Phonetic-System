@@ -428,3 +428,14 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 
 
 - Post-merge evidence: PR #46 is merged as `4a01b1bf37ee0fae6579430a3ada33680e4debb9`; exact-head workflow [40209554020](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40209554020) passed. LAO-TONE-001 remains IN_PROGRESS because matrix integrity does not adjudicate acoustic contours or all dialect-specific examples.
+
+
+## IA spelling and length correction — 2026-10-25
+
+- A direct source review of Richard Ishida's *Lao Orthography Notes* (updated 28-Apr-2026, “Diphthongs, triphthongs, and rhymes”) identified an error in the existing vowel registry and engineering fixture: `ເ◌ັຽ` was labelled short IA, `ເ◌ັຍ` was also labelled short, and unsupported preposed `ເ◌ຽ` was labelled long IA.
+- Corrected the Python parser, browser engine, canonical vowel registry, structural-vowel table, evidence claims, generated browser data, and shared positive/negative fixtures. Long IA is now `ເ◌ັຽ` or `ເ◌ຍ`; short IA is `ເ◌ັຍ`; standalone/medial `◌ຽ` remains separately supported where structurally applicable. The unestablished preposed `ເ◌ຽ` sequence must withhold IPA and Ukrainian output.
+- Source: https://r12a.github.io/scripts/laoo/lo.html, updated 28-Apr-2026, lines 593–607. This is a correction to an orthographic pattern claim and test fixture, not an independent lexical gold label.
+- Branch: `fix/lao-ia-vowel-length-evidence-20261025`, based on main `00b905a170a5043685c6f730911f17dcadb9a6c6`. CI is pending until the PR workflow completes; do not mark DONE_VERIFIED before exact-head Python, browser, generated-data, build, and page checks pass. Accuracy remains unmeasured (independent gold count 0).
+
+
+- Follow-up adversarial review caught a browser-only segmentation hazard: after correctly rejecting `ເ◌ຽ` as a vowel pattern, dynamic word segmentation could still salvage `ເ+onset` as /eː/ and leave `ຽ` as an unresolved suffix. Added a whole-token guard and a browser regression asserting one unresolved token with no IPA/Ukrainian output. The updated exact-head CI is pending; verify this regression before merge.
