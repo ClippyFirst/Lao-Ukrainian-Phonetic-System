@@ -33,9 +33,12 @@ STRUCTURES = (
     ("pre_o_long", "ໂ", "", "OO"),
     ("pre_oe_short", "ເ", "ິ", "OE"),
     ("pre_oe_long", "ເ", "ີ", "OEE"),
-    ("pre_ia_short", "ເ", "ັຽ", "IA"),
+    # Source-indexed spelling distinctions from Ishida (2026): ເ◌ັຽ and ເ◌ຍ
+    # represent long /iːə̯/, while ເ◌ັຍ represents short /iə̯/.
+    # ເ◌ຽ is not listed as a preposed IA spelling and must not be promoted
+    # to a deterministic long-diphthong parse.
+    ("pre_ia_long_iae", "ເ", "ັຽ", "IA_LONG"),
     ("pre_ia_short_nyo", "ເ", "ັຍ", "IA"),
-    ("pre_ia_long", "ເ", "ຽ", "IA_LONG"),
     ("pre_ia_long_nyo", "ເ", "ຍ", "IA_LONG"),
     ("pre_ua_short", "ເ", "ຶອ", "UA"),
     ("pre_ua_long", "ເ", "ືອ", "UA_LONG"),
