@@ -273,3 +273,13 @@ test("unconsumed prefix before a preposed Lao vowel is not segmented away", () =
   assert.ok(result.syllables[0].warnings.some((w) => w.includes("Непідтримуваний фрагмент перед початковим приголосним")));
   assert.equal(result.output, "⟦" + surface + "⟧");
 });
+
+
+test("DEL and C1 controls are rejected in browser input", () => {
+  for (const control of ["\u007f", "\u0085", "\u009f"]) {
+    const result = analyze("ກ" + control + "ຂ");
+    assert.equal(result.status, "INVALID", "control " + control.codePointAt(0).toString(16));
+    assert.equal(result.output, "");
+    assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
+  }
+});
