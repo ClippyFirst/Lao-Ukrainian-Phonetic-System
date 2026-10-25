@@ -52,6 +52,10 @@ def analyze(text: str) -> Analysis:
             # vowels and can change the live/dead tone classification.
             rules = [*rules, "PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY",
                      "PHON-TONE-WITHHELD-STRUCTURAL-UNCERTAINTY"]
+            if unconsumed:
+                rules.append("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY")
+            if short_vowel_missing_coda:
+                rules.append("PHON-IPA-WITHHELD-SHORT-VOWEL-CODA-REQUIRED")
         if multiple_tone_marks:
             rules = [*rules, "PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS",
                      "PHON-TONE-WITHHELD-MULTIPLE-TONE-MARKS"]
