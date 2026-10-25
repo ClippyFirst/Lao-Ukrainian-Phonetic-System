@@ -196,10 +196,26 @@ test("preposed oe short and long vowel complexes are distinguished", () => {
   assert.equal(long.syllables[0].ipa, "kɤː");
 });
 
-test("preposed long ia is not shadowed by generic long e", () => {
+test("preposed long IA spellings match the source-indexed patterns", () => {
+  for (const surface of ["ເກັຽ", "ເກຍ"]) {
+    const r = analyze(surface);
+    assert.equal(r.syllables[0].vowel, "iːə", surface);
+    assert.equal(r.syllables[0].ipa, "kiːə", surface);
+  }
+});
+
+test("preposed short IA is distinct from long IA", () => {
+  const r = analyze("ເກັຍ");
+  assert.equal(r.syllables[0].vowel, "iə");
+  assert.equal(r.syllables[0].ipa, "kiə");
+});
+
+test("unattested preposed ເ◌ຽ does not emit a guessed IPA", () => {
   const r = analyze("ເກຽ");
-  assert.equal(r.syllables[0].vowel, "iːə");
-  assert.equal(r.syllables[0].ipa, "kiːə");
+  assert.equal(r.status, "PARTIAL");
+  assert.equal(r.syllables[0].ipa, null);
+  assert.equal(r.syllables[0].ukrainian, null);
+  assert.ok(r.syllables[0].warnings.length > 0);
 });
 
 
