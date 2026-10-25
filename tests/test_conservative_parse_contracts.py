@@ -21,3 +21,13 @@ def test_legal_final_coda_is_recognized_at_the_end_of_the_syllable():
         warning.startswith("UNCONSUMED_AFTER_VOWEL:")
         for warning in result["warnings"]
     )
+
+
+def test_material_before_final_legal_coda_is_not_silently_discarded():
+    result = parse_syllable("ກາກງ")
+
+    assert result["coda"] is None
+    assert any(
+        warning.startswith("UNCONSUMED_AFTER_VOWEL:")
+        for warning in result["warnings"]
+    )
