@@ -257,10 +257,14 @@ test("shared IPA-to-Ukrainian target fixtures match browser adapter", () => {
 });
 
 
-test("unconsumed prefix before a preposed Lao vowel is not ignored", () => {
-  const result = analyze("xເເກ");
+test("unconsumed prefix before a preposed Lao vowel is not segmented away", () => {
+  const surface = "xເເກ";
+  const result = analyze(surface);
   assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.length, 1, "malformed token must remain one unresolved unit");
+  assert.equal(result.syllables[0].surface, surface, "no source characters may be discarded");
   assert.ok(!result.syllables[0].ipa, "unresolved browser analysis must not expose IPA");
   assert.ok(!result.syllables[0].ukrainian, "unresolved browser analysis must not expose Ukrainian output");
   assert.ok(result.syllables[0].warnings.some((w) => w.includes("Непідтримуваний фрагмент перед початковим приголосним")));
+  assert.equal(result.output, "⟦" + surface + "⟧");
 });
