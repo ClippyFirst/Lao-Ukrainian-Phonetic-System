@@ -355,3 +355,11 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - Current-main verification [40124496409](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40124496409): `success`.
 - Latest categorized comparator evidence [40122329060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40122329060): 36 inputs, 0 runtime errors, strict string agreement 0/36, tone-stripped agreement 29/36 (diagnostic only), 7 remaining non-tone/format/length mismatches. Independent gold remains 0; accuracy null. Tone stripping is never a production normalization.
 - Engineering smoke/CI is DONE_VERIFIED. Source-by-source tone and composite-vowel adjudication, malformed/unsupported input coverage, coda representation review, target-policy review and independent Lao IPA gold remain PARTIAL/BLOCKED. The external engine is not promoted to production and no accuracy percentage is justified.
+
+
+## Conservative parser contract regression — 2026-10-25
+
+- PR #39: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/39
+- Added `tests/test_conservative_parse_contracts.py` to assert that a legal coda is accepted only at the end of the remaining syllable material and that trailing vowel structure is surfaced as unconsumed rather than silently discarded.
+- Verification: `verify` workflow run [40192520398](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40192520398) completed successfully on commit `444d64d30e79dee48b7c98ed1094bb2ff4a1af97`.
+- These are parser invariants, not source-adjudicated IPA gold. The independent gold count remains 0 and accuracy remains null; tone/composite-vowel adjudication remains blocked by source-located evidence and expert review.
