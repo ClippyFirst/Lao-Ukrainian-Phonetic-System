@@ -71,6 +71,16 @@ test("mai ti and mai catawa are not dropped", () => {
   assert.equal(analyze("ກ໋າ").syllables[0].tone, "low-rising");
 });
 
+test("multiple adjacent tone marks withhold the entire malformed token", () => {
+  const r = analyze("ກ່້າ");
+  assert.equal(r.status, "PARTIAL");
+  assert.equal(r.syllables.length, 1);
+  assert.equal(r.syllables[0].ipa, null);
+  assert.equal(r.syllables[0].ukrainian, null);
+  assert.ok(r.syllables[0].warnings.some((w) => w.startsWith("MULTIPLE_TONE_MARKS")));
+  assert.equal(r.output, "⟦ກ່້າ⟧");
+});
+
 test("silent high-class digraph is phonologically n", () => {
   const r = analyze("ຫນອງ");
   assert.equal(r.syllables[0].ipa, "nɔːŋ");
