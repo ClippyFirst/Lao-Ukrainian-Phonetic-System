@@ -169,10 +169,15 @@ test("Vientiane place name does not leave ວ ຽ ງ unresolved", () => {
   assert.equal(r.status, "OK");
 });
 
-test("postposed vowel sign is not accepted before a later onset", () => {
-  const r = analyze("ະຄອນ");
+test("postposed vowel sign before an onset remains an unresolved whole token", () => {
+  const surface = "ະຄອນ";
+  const r = analyze(surface);
   assert.equal(r.status, "PARTIAL");
-  assert.match(r.output, /⟦ະ⟧/);
+  assert.equal(r.syllables.length, 1);
+  assert.equal(r.syllables[0].surface, surface);
+  assert.equal(r.syllables[0].ipa, null);
+  assert.equal(r.syllables[0].ukrainian, null);
+  assert.equal(r.output, "⟦" + surface + "⟧");
 });
 
 test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
@@ -254,4 +259,17 @@ test("shared IPA-to-Ukrainian target fixtures match browser adapter", () => {
     assert.equal(result.syllables[0].ipa, item.phonemic_ipa, item.id);
     assert.equal(result.syllables[0].ukrainian, item.ukrainian, item.id);
   }
+});
+
+
+test("unconsumed prefix before a preposed Lao vowel is not segmented away", () => {
+  const surface = "xເເກ";
+  const result = analyze(surface);
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.length, 1, "malformed token must remain one unresolved unit");
+  assert.equal(result.syllables[0].surface, surface, "no source characters may be discarded");
+  assert.ok(!result.syllables[0].ipa, "unresolved browser analysis must not expose IPA");
+  assert.ok(!result.syllables[0].ukrainian, "unresolved browser analysis must not expose Ukrainian output");
+  assert.ok(result.syllables[0].warnings.some((w) => w.includes("Непідтримуваний фрагмент перед початковим приголосним")));
+  assert.equal(result.output, "⟦" + surface + "⟧");
 });

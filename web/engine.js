@@ -170,6 +170,24 @@ function isStructurallyComplete(s) {
 
 function analyzeWord(word) {
   const chars = [...word];
+  // Do not let dynamic segmentation rescue a malformed prefix by dropping
+  // characters before the first Lao onset (e.g. xເເກ -> x + ເເ + ເກ).
+  // A token may have at most one recognized preposed vowel before its first
+  // consonant; all other material must remain visible as one unresolved unit.
+  const firstOnsetIndex = chars.findIndex((ch) => Object.hasOwn(CONSONANTS, ch));
+  if (firstOnsetIndex >= 0) {
+    const prefix = chars.slice(0, firstOnsetIndex).join("");
+    const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
+    if (!allowedPreposed.has(prefix)) {
+      return [{
+        surface: word,
+        status: "EVIDENCE LIMITED",
+        warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + prefix],
+        ukrainian: null,
+        ipa: null,
+      }];
+    }
+  }
   const n = chars.length;
   const best = Array(n + 1);
   best[n] = { score: 0, parts: [] };

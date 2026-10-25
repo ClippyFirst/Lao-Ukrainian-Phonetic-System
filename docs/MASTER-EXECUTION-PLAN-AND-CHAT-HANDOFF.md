@@ -385,3 +385,21 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - The citation supports the five-tone Vientiane-oriented class/live-dead/length/tone-mark matrix. It does **not** validate the repository's exact IPA contour symbols acoustically, nor does it justify generalizing to every Lao variety. The 2020 Nam Pua study and the W3C/R12A notes demonstrate why dialect and contour convention must remain explicit.
 - Acceptance: exact branch-head CI must pass Python, browser, generated-data/reproducibility and build checks. The generator intentionally exports only runtime columns, so this evidence metadata must not change browser output.
 - Still open: source passage/page-level audit for each tone rule, adjudicated acoustic contours, full cluster/coda coverage, and independent lexical gold. No accuracy claim is made.
+
+
+## Pre-onset source-material guard — 2026-10-25
+
+- Found a Python/browser contract gap: the browser already required all material before the onset to be empty or exactly one recognized preposed vowel, but Python only checked `before.endswith(pre)`. Malformed `xເເກ` could match the long-`ເ` template and silently discard the extra prefix.
+- Python now applies the same allowed-prefix contract as the browser. Parser/core and browser tests assert that malformed input has no IPA or Ukrainian target output and records `UNCONSUMED_BEFORE_ONSET`.
+- Exact-head `verify.yml` must pass Python tests, browser tests, generated-data reproducibility and build checks.
+- This is parser integrity, not a phonological mapping. Lao cluster coverage and independent gold remain open.
+
+
+- Test-first note: the first browser regression expected `null`, but the browser's existing unresolved-result contract represents missing IPA/target as an empty string. The implementation already withheld both outputs; the test now checks absence rather than requiring a specific null representation. Python still asserts `None` through its typed model.
+
+
+## Lao malformed-prefix segmentation follow-up — 2026-10-25
+
+- The first PR #43 CI run exposed a real browser defect: the per-syllable parser rejected `xເເກ`, but the word segmenter could split the malformed token and retain a plausible substring. This is an implementation bug, not merely an assertion mismatch.
+- `analyzeWord` now checks material before the first Lao onset before dynamic segmentation. If it is not empty or exactly one recognized preposed vowel, the entire token is retained as one unresolved unit with no IPA or Ukrainian output.
+- The browser regression asserts whole-token preservation, withheld outputs, and a diagnostic. Exact-head CI must pass before PR #43 is eligible for merge.
