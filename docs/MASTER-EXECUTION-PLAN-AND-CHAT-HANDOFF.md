@@ -363,3 +363,13 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - Added `tests/test_conservative_parse_contracts.py` to assert that a legal coda is accepted only at the end of the remaining syllable material and that trailing vowel structure is surfaced as unconsumed rather than silently discarded.
 - Verification: `verify` workflow run [40192520398](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40192520398) completed successfully on commit `444d64d30e79dee48b7c98ed1094bb2ff4a1af97`.
 - These are parser invariants, not source-adjudicated IPA gold. The independent gold count remains 0 and accuracy remains null; tone/composite-vowel adjudication remains blocked by source-located evidence and expert review.
+
+
+## Parser fail-closed follow-up — 2026-10-25
+
+- Branch: `fix/reject-lao-unconsumed-before-coda-20261025`.
+- Structural defect fixed in `src/lao_ukrainian/parser.py`: the coda finder previously accepted any remaining string whose last character was a legal coda, so an input such as `ກາກງ` could be treated as if the preceding `ກ` did not exist. A coda is now accepted only when it is the sole remaining grapheme; otherwise the full remainder is marked `UNCONSUMED_AFTER_VOWEL` and downstream IPA/target output is withheld.
+- Test-discovery defect found and fixed: `tests/test_conservative_parse_contracts.py` used bare pytest-style functions, while `.github/workflows/verify.yml` runs `python -m unittest discover -s tests -v`. Those three functions were therefore not collected by the configured CI command. Converted them into a `unittest.TestCase`, preserving the existing two controls and adding the malformed-prefix-before-coda regression.
+- Verification: current branch run [40195428537](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40195428537) **passed**. The log confirms all three `ConservativeParseContracts` tests were executed and reports `Ran 74 tests ... OK`; browser tests, build/regeneration, reproducibility, and built-page/asset checks also passed. This is structural correctness evidence, not phonetic accuracy evidence.
+- PR: [#40](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/40). Not merged in this pass.
+- Still blocked for scientific completion: independent adjudicated Lao IPA gold remains 0; the existing 36-case external G2P comparison has 0/36 strict string matches and 7 non-tone/format/length mismatches after a tone-only diagnostic. Do not convert the new structural fix into a higher accuracy claim.
