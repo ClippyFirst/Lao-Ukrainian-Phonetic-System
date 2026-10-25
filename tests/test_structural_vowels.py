@@ -71,6 +71,17 @@ class TestShortVowelCodaConstraints(unittest.TestCase):
         self.assertEqual(result.syllables[0].phonemic_ipa, "kɔp")
 
 
+class TestPreposedMaterialValidation(unittest.TestCase):
+    def test_unconsumed_material_before_preposed_vowel_is_not_ignored(self):
+        parsed = parse_syllable("xເເກ")
+        self.assertIsNone(parsed["vowel"])
+        self.assertIn("UNCONSUMED_BEFORE_ONSET:xເເ", parsed["warnings"])
+        result = analyze("xເເກ")
+        self.assertIsNone(result.syllables[0].phonemic_ipa)
+        self.assertIsNone(result.syllables[0].practical_ukrainian)
+        self.assertEqual(result.status, "PARTIAL")
+
+
 class TestCodaPositionValidation(unittest.TestCase):
     def test_legal_coda_must_be_the_last_grapheme(self):
         parsed = parse_syllable("ກາງເ")
