@@ -153,21 +153,25 @@ function analyzeToken(surface) {
 
   const syllableType = classify(coda, matched.v);
   const tone = toneFor(onsetClass, syllableType, matched.v[3], mark);
+  const structuralWarning = warnings.some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("Невикористана частина"));
+  const resolvedTone = structuralWarning
+    ? { name: null, contour: null, status: "ANALYSIS DEPENDENT", ruleId: "TONE-NOT-ESTABLISHED-FOR-COMBINATION" }
+    : tone;
   const codaIpa = coda ? CODAS[coda] : "";
   const onsetIpa = onsetKey === "ອ" ? "" : onset[1];
-  const ipa = onsetIpa + matched.v[2] + codaIpa;
-  const ukrainian = mapIpa(ipa);
+  const ipa = structuralWarning ? null : onsetIpa + matched.v[2] + codaIpa;
+  const ukrainian = ipa ? mapIpa(ipa) : null;
 
   if (onsetForm !== onsetKey) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
   if (onsetKey === "ຣ") warnings.push("ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
-  if (tone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
+  if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
+  if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
-  const structuralWarning = warnings.some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("Невикористана частина"));
   const status = structuralWarning ? "EVIDENCE LIMITED"
-    : ukrainian && tone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
+    : ukrainian && resolvedTone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
-    coda: coda || "—", syllableType, tone: tone.name, toneContour: tone.contour, ipa, ukrainian, status,
-    rules: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, tone.ruleId ? "TONE-RULE:" + tone.ruleId : "TONE:UNRESOLVED"],
+    coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, status,
+    rules: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
 }
 
