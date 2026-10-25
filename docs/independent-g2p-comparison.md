@@ -51,3 +51,16 @@ The current fixture contains synthetic forms designed to isolate spelling struct
 ## Metric-schema hardening — 2026-10-24
 
 The prior schema-v2 artifact's `exact_match_rate: 0.0` was implementation agreement over an engineering fixture, not accuracy. Schema v3 now exposes that statistic as `implementation_agreement_rate`, explicitly sets `independent_gold_count: 0` and `accuracy: null`, and labels the report `NOT_SCORED_NO_INDEPENDENT_GOLD`. It separates implementation mismatches from runtime errors and removes the ambiguous `exact_match_rate` summary key. Per-row raw outputs and exact-equality booleans remain available for diagnostics. A unit test verifies the metric contract. Pending CI on branch `fix/label-lao-g2p-diagnostic-metrics-2026-10-24`; no pronunciation accuracy is claimed.
+
+
+## Source-adjudication correction — IA spelling classes — 2026-10-25
+
+A source-level review against Richard Ishida's *Lao Orthography Notes* (updated 28-Apr-2026, section “Diphthongs, triphthongs, and rhymes”) found that the engineering fixture previously labelled `ເກຽ` as long /iːə/ was not supported by the reference's listed preposed IA patterns. The reference lists `ເ◌ັຽ` and `ເ◌ຍ` for long /iːə̯/, and `ເ◌ັຍ` for short /iə̯/; `◌ຽ` is also used as a vowel component in other positions. The old fixture had both an incorrect spelling classification and an incorrect expected output.
+
+The implementation and regression fixtures now:
+- classify `ເ◌ັຽ` and `ເ◌ຍ` as long IA;
+- classify `ເ◌ັຍ` as short IA;
+- retain the independently described standalone/medial `◌ຽ` path, including `ວຽງ`;
+- withhold IPA and Ukrainian output for the unestablished preposed sequence `ເ◌ຽ` rather than choosing a vowel from a partial match.
+
+Source: https://r12a.github.io/scripts/laoo/lo.html (updated 28-Apr-2026; lines 593–607 in the published HTML). This correction changes an engineering fixture and a parser contract; it is not an adjudicated lexical gold label and does not change the benchmark accuracy status (independent gold remains 0).
