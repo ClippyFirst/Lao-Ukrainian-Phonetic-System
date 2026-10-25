@@ -116,6 +116,14 @@ def parse_syllable(surface: str):
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
                 "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET"]}
 
+    before = s[:onset_i]
+    allowed_preposed = {"", "ເ", "ແ", "ໂ", "ໃ", "ໄ"}
+    if before not in allowed_preposed:
+        return {"surface": surface, "onset": onset, "onset_class": onset_class,
+                "onset_form": onset_form, "vowel": None, "coda": None,
+                "tone_mark": tone_mark,
+                "warnings": [f"UNCONSUMED_BEFORE_ONSET:{before}"]}
+
     vowel = _match_vowel(s, onset_i, onset_len, registry)
     if vowel is None:
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
