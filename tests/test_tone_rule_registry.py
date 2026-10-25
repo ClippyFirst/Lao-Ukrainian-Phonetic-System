@@ -38,7 +38,7 @@ class TestToneRuleRegistry(unittest.TestCase):
                 claim_id = row.get("evidence_id")
                 self.assertIn(claim_id, claims)
                 claim = claims[claim_id]
-                self.assertEqual(claim["status"], "established")
+                self.assertEqual(claim["status"], "methodology")
                 for source_id in claim["evidence_ids"].split(";"):
                     self.assertIn(source_id, sources)
 
