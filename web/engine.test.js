@@ -140,6 +140,24 @@ test("multisyllabic Lao text is segmented without dropping syllables", () => {
   assert.equal(r.syllables.every((s) => s.ipa), true);
 });
 
+test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
+  for (const surface of ["ກັ", "ກັອ"]) {
+    const result = analyze(surface);
+    const syllable = result.syllables[0];
+    assert.equal(syllable.status, "EVIDENCE LIMITED");
+    assert.equal(syllable.ipa, null);
+    assert.equal(syllable.ukrainian, null);
+    assert.equal(syllable.tone, null);
+    assert.equal(syllable.toneContour, null);
+    assert.ok(syllable.rules.includes("TONE:UNRESOLVED"));
+  }
+});
+
+test("matched tone rule exposes its contour", () => {
+  assert.equal(analyze("ຂາ").syllables[0].tone, "low-rising");
+  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˩˥");
+});
+
 test("short o in a closed syllable is recognised", () => {
   const r = analyze("ຄົນ");
   assert.equal(r.syllables[0].ipa, "kʰon");
