@@ -475,3 +475,14 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - Exact-head CI for `63802e6b81300998f7b04ec57e540a248fb36c37`: [verification run 40780941839](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40780941839) **passed**. Python tests, browser engine tests, generated data reproducibility and built-page asset checks passed; the new romanization unit tests also passed.
 - Status: UI/engine integration **PARTIAL / CI-PASS**. Romanization must not be confused with IPA or with the existing Ukrainian candidate pipeline; tone metadata in IPA remains independent.
 - Next acceptance gates: implement/verify the full ICU context rules or explicitly constrain coverage further; add sourced word/sentence fixtures including coda-sensitive cases; manual browser/mobile and copy-action QA; independent review of the provisional UNGEGN scope. Keep PR draft until reviewed.
+
+
+## Publication checkpoint — 2026-10-29
+
+This checkpoint supersedes earlier notes in this handoff saying the romanization PR was open/draft.
+
+- PR #55 was merged to main as fdd8e788344cbfd57cddf71034117b4ac0dae9b5.
+- Exact post-merge verification [40782820596](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40782820596) passed.
+- Exact post-merge GitHub Pages deployment [40782820604](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40782820604) passed and reported URL: https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/
+- Published output order: Lao romanization → IPA → Ukrainian practical transcription. The current CLDR/UNGEGN implementation remains a constrained provisional subset; see the limitations above.
+- Remaining acceptance gates include coda-sensitive sourced fixtures, full transform-context handling or stricter coverage bounds, and manual browser/mobile/copy QA. Publication does not mean linguistic completeness.
