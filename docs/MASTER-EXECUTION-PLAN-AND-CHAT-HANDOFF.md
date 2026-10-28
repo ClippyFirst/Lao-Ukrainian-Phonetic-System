@@ -466,3 +466,12 @@ This checkpoint supersedes earlier notes that referred to an older main SHA or d
 - Python's `SyllableAnalysis.tone_contour` now exposes the matched rule's registered contour, consistent with browser `toneContour`. Shared fixture `tests/fixtures/tone_contour_cases.json` checks two existing Vientiane-scoped tone rules and two unresolved short-vowel cases across runtimes.
 - Exact-head CI [40221383984](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40221383984) passed. Post-merge main verification [40221658071](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40221658071) and Pages deployment [40221658065](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40221658065) passed.
 - The shared fixture is an implementation contract, not independent phonetic gold. Exact acoustic contours, the dialect scope of tone rules, full initial clusters, and an independently adjudicated lexical corpus remain open.
+
+
+## Romanization → IPA → Ukrainian result order — 2026-10-29
+
+- Open draft PR [#55](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/55) adds a distinct Lao-Latin romanization panel ahead of IPA and Ukrainian practical transcription, with independent copy actions.
+- Profile: ordered literal-rule subset from Unicode CLDR `common/transforms/Lao-Latin.xml`, transform variant UNGEGN, marked provisional by upstream. This is not a full ICU transform interpreter. Upstream explicitly notes final-consonant handling remains incomplete. Unmapped Lao code points are preserved and make the output partial.
+- Exact-head CI for `63802e6b81300998f7b04ec57e540a248fb36c37`: [verification run 40780941839](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40780941839) **passed**. Python tests, browser engine tests, generated data reproducibility and built-page asset checks passed; the new romanization unit tests also passed.
+- Status: UI/engine integration **PARTIAL / CI-PASS**. Romanization must not be confused with IPA or with the existing Ukrainian candidate pipeline; tone metadata in IPA remains independent.
+- Next acceptance gates: implement/verify the full ICU context rules or explicitly constrain coverage further; add sourced word/sentence fixtures including coda-sensitive cases; manual browser/mobile and copy-action QA; independent review of the provisional UNGEGN scope. Keep PR draft until reviewed.
