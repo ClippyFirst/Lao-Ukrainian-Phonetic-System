@@ -8,7 +8,7 @@
   },
   "scripts": {
     "generate:web-data": "python scripts/generate_web_data.py",
-    "test": "node --test web/engine.test.js",
+    "test": "node --test web/engine.test.js && node --test tests/romanization.test.mjs",
     "build": "npm run generate:web-data && python scripts/build_web.py",
     "prepare": "",
     "check:release": "npm test && npm run build"
