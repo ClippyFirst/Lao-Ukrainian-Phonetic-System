@@ -187,15 +187,19 @@ const LAO_ONSET_TO_ROMANIZATION = new Map([
   ["ຮ", "h"], ["ອ", ""], ["ໜ", "n"], ["ໝ", "m"],
 ]);
 
-const ASPIRATED_TARGETS = new Map([
-  ["ຂ", "к'"], ["ຄ", "к'"], ["ຖ", "т'"], ["ທ", "т'"],
-  ["ຜ", "п'"], ["ພ", "п'"],
+const LAO_ONSET_TARGETS = new Map([
+  ["ກ", "к"], ["ຂ", "к'"], ["ຄ", "к'"], ["ງ", "нг"], ["ຈ", "ч"],
+  ["ສ", "с"], ["ຊ", "с"], ["ຍ", "нь"], ["ດ", "д"], ["ຕ", "т"],
+  ["ຖ", "т'"], ["ທ", "т'"], ["ນ", "н"], ["ບ", "б"], ["ປ", "п"],
+  ["ຜ", "п'"], ["ຝ", "ф"], ["ພ", "п'"], ["ຟ", "ф"], ["ມ", "м"],
+  ["ຢ", "й"], ["ຣ", "л"], ["ລ", "л"], ["ວ", "в"], ["ຫ", "г"],
+  ["ຮ", "г"], ["ອ", ""], ["ໜ", "н"], ["ໝ", "м"],
 ]);
 
 function crosswalkUnit(unit, sourceOnset) {
   const expectedRomanization = LAO_ONSET_TO_ROMANIZATION.get(sourceOnset);
   if (expectedRomanization === undefined || expectedRomanization !== unit.onset) return null;
-  const onsetTarget = ASPIRATED_TARGETS.get(sourceOnset) || ONSETS.get(unit.onset) || "";
+  const onsetTarget = LAO_ONSET_TARGETS.get(sourceOnset);
   return {
     ...unit,
     ukrainian: onsetTarget + NUCLEI.get(unit.nucleus) +
