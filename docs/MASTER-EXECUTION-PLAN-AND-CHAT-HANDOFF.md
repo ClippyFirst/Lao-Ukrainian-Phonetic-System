@@ -7,10 +7,10 @@
 - Unit tests for the classifier passed on the previous branch head; full current-branch CI and optional comparison are required before merge. No accuracy or engine winner is claimed.
 # Master execution plan and chat handoff
 
-Last reviewed: 2026-10-25
+Last reviewed: 2026-10-30
 Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
-Baseline commit: `5353e737a8e47136fc1442a695dbd2b5724cdfc1`
+Baseline commit: `d64e201f6d417c71e3437daccfa465ddb77e224f`
 Work branch: `fix/python-vowel-pattern-priority-20261020`
 Work branch latest shared coda test commit: `01c712b201b231d42419279783a387db5e57d3ba`; full CI passed in [run 39484876447](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484876447). Shared coda fixtures also passed in Python [run 39484867250](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484867250). Evidence registry latest commit: `a19eb1e2d97ec89a67a7542ce89e9dca1ba145d6`.
 
@@ -47,6 +47,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | LAO-RELEASE-001 | P2 | TODO | `CITATION.cff` and `LICENSE` already exist | Verify metadata/license consistency; create tagged release and Zenodo archive only after P0 acceptance gates |
 | LAO-DEPLOY-001 | P1 | TODO | GitHub Pages workflow exists | Verify live site and generated artifacts against current commit; deployment success is not phonetic validation |
 | LAO-UI-001 | P1 | IN_PROGRESS | Reused open PR #61 branch `design/lao-layout-20261030`; editorial specimen/wordmark, clearer input-output hierarchy, unified copy feedback, skip links, responsive refinements and UI accessibility CI gates. Exact-head verify run [41110855525](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41110855525) passed for `21729be93cb5390d2c377d66e4618fd396a4e6b3`. | Complete visual QA with screenshots at 1440px, 768px and 390px, keyboard-only interaction review and live Pages verification; do not mark complete from CI alone |
+| LAO-ROM-UA-001 | P1 | IN_PROGRESS | New independent `web/romanization-ukrainian.js` adapter consumes the existing provisional CLDR Lao-Latin/UNGEGN string; selector in the primary Ukrainian result card leaves the IPA-first engine unchanged. Regression tests were added first and the test-only commit failed as expected because the adapter did not yet exist. | Exact-head CI must pass romanization mapping/partial-preservation tests, UI selector and selected-result copy behavior; docs must describe the project mapping and information-loss boundary. This verifies deterministic software behavior only, not linguistic accuracy or full CLDR coverage |
 
 ## Coverage matrix (initial; not yet a scientific completeness claim)
 
@@ -546,3 +547,15 @@ The mapping changes are project-level Ukrainian practical decisions, not an offi
 - `LAO-DEPLOY-001` is now **DONE_VERIFIED** at the workflow/deployment level. Public URL HTTP smoke-check could not be performed: web fetch rejected the Pages host and container DNS/network access was unavailable. URLs remain the configured Pages target: https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ and https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/system.html.
 - `LAO-UI-001` remains **IN_PROGRESS** pending actual visual browser QA at 1440px, 768px and 390px and keyboard-only review. Do not equate passing CI assertions with visual QA.
 - The deployment completion was documented in the subsequent main-branch handoff commit; no product code change was needed after the successful Pages deployment.
+
+
+## Continuation — selectable romanization-to-Ukrainian mode · 2026-10-30
+
+- Baseline: `main` at `d64e201f6d417c71e3437daccfa465ddb77e224f`; dedicated branch: `feat/romanization-ukrainian-mode-20261030`. No open PRs existed at branch start. Previously merged PR #55 (provisional CLDR romanization panel) and PR #64 (vertical full-width service layout) were preserved.
+- User selected a **two-mode selector** in the Ukrainian result card. Phonetic mode remains the default. The optional romanization mode consumes the output of the existing CLDR subset and never changes the IPA-first phonetic path.
+- Added `web/romanization-ukrainian.js`, selector markup and state in `index.html`/`web/app.js`, responsive selector styles, regression tests, and methodology/requirements/decision/limitations/README/final-audit updates.
+- The new adapter maps CLDR romanized spelling through a project-defined orthographic table, retains punctuation/whitespace/digits, preserves unsupported characters and reports `PARTIAL`. It does not restore tone, vowel length or pronunciation absent from the romanization.
+- TDD evidence: test-only commit `ee43e4fd0a0a7a5e484edb39f0a47f42cb8e9194` failed in verify run [41118552977](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41118552977) at browser tests with `ERR_MODULE_NOT_FOUND` for the not-yet-implemented adapter; all 46 existing engine tests passed. This was the expected RED result.
+- Current branch head at handoff update: `efd3de18296b2b09440f8ca0e554ae567ddf6e21`; exact-head verify run [41119097168](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41119097168) was in progress when this entry was written. Do not mark LAO-ROM-UA-001 complete until this and a final post-documentation verification pass.
+- Local clone and local command execution were unavailable because container DNS could not resolve `github.com`; GitHub Actions is the execution environment for the repository-defined suite. Manual browser screenshots/keyboard QA were not available here; LAO-UI-001 remains IN_PROGRESS.
+- No PR was opened or merged yet. The independent Lao IPA gold corpus remains empty; no empirical phonetic accuracy claim is added.
