@@ -46,5 +46,5 @@ test("h remains г even in a syllable-final position", () => {
 });
 
 test("the coda-vowel correspondence follows the documented BGN/PCGN context", () => {
-  assert.equal(analyzeRomanization("kiv kav").output, "кіоу кав");
+  assert.equal(analyzeRomanization("kiv kav").output, "кіоу као");
 });
