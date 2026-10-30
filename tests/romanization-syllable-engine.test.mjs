@@ -223,3 +223,25 @@ test("source vowel identity must agree with the romanized nucleus", () => {
   assert.equal(mismatch.status, "PARTIAL");
   assert.equal(mismatch.output, "⟦kha⟧");
 });
+
+
+test("source vowel identity distinguishes A plus final m from the AM nucleus", () => {
+  const aPlusM = analyzeRomanization("kam", {
+    sourceSyllableGroups: [[{ onset: "ກ", vowelId: "AA", coda: "ມ" }]],
+  });
+  const amNucleus = analyzeRomanization("kam", {
+    sourceSyllableGroups: [[{ onset: "ກ", vowelId: "AM", coda: "" }]],
+  });
+  assert.equal(aPlusM.status, "OK");
+  assert.equal(amNucleus.status, "OK");
+  assert.equal(aPlusM.output, "кам");
+  assert.equal(amNucleus.output, "кам");
+  assert.deepEqual(
+    [aPlusM.syllables[0].sourceVowelId, aPlusM.syllables[0].nucleus, aPlusM.syllables[0].coda],
+    ["AA", "a", "m"],
+  );
+  assert.deepEqual(
+    [amNucleus.syllables[0].sourceVowelId, amNucleus.syllables[0].nucleus, amNucleus.syllables[0].coda],
+    ["AM", "am", ""],
+  );
+});
