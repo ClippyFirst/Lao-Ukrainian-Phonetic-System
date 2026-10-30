@@ -33,7 +33,7 @@ The second route is not a letter-by-letter Latin-to-Cyrillic transliterator. Its
 
 ### Syllable-level mapping policy
 
-The current CLDR transform is provisional and based on the BGN/PCGN 1966 Lao romanization material reproduced in the Estonian Institute of Language / UNGEGN status report. That report explicitly distinguishes syllable-initial and syllable-final consonant spellings, and documents the vowel nuclei. It also states that no Lao romanization system has been approved at UN conferences and that Laos has no national romanization system. Accordingly, the project labels this route as a provisional romanization-based method, not as an official or universal standard.
+The current [CLDR Lao-Latin transform](https://github.com/unicode-org/cldr/blob/main/common/transforms/Lao-Latin.xml) is provisional and based on the BGN/PCGN 1966 Lao romanization material reproduced in the [Estonian Institute of Language / UNGEGN status report](https://eki.ee/wgrs/rom2_lo.pdf). That report explicitly distinguishes syllable-initial and syllable-final consonant spellings, and documents the vowel nuclei. It also states that no Lao romanization system has been approved at UN conferences and that Laos has no national romanization system. Accordingly, the project labels this route as a provisional romanization-based method, not as an official or universal standard.
 
 The project mapping table is position-sensitive:
 
