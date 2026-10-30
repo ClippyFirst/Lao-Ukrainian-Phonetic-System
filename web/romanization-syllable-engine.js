@@ -246,6 +246,9 @@ function crosswalkUnit(unit, sourceSyllable) {
   const sourceOnset = typeof sourceSyllable === "string"
     ? sourceSyllable
     : sourceSyllable?.onset;
+  const sourceOnsetForm = typeof sourceSyllable === "object" && sourceSyllable !== null
+    ? sourceSyllable.onsetForm || sourceOnset
+    : sourceOnset;
   const rawSourceCoda = typeof sourceSyllable === "object" && sourceSyllable !== null
     ? sourceSyllable.coda
     : undefined;
@@ -266,7 +269,8 @@ function crosswalkUnit(unit, sourceSyllable) {
     ...unit,
     ukrainian: correspondence.ukrainian + NUCLEI.get(unit.nucleus) +
       (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
-    sourceOnset,
+    sourceOnset: sourceOnsetForm,
+    sourceOnsetKey: sourceOnset,
     sourceCoda,
     sourceVowelId: hasSourceVowel ? sourceSyllable.vowelId : undefined,
     crosswalk: sourceCoda !== undefined
@@ -319,7 +323,8 @@ export function analyzeRomanization(input, options = {}) {
         const item = unresolved(part, "UNRESOLVED");
         if (aligned && sourceSlice?.length === 1 && parsed.path.length === 1) {
           const sourceUnit = sourceSlice[0];
-          item.sourceOnset = typeof sourceUnit === "string" ? sourceUnit : sourceUnit?.onset;
+          item.sourceOnset = typeof sourceUnit === "string" ? sourceUnit : sourceUnit?.onsetForm || sourceUnit?.onset;
+          item.sourceOnsetKey = typeof sourceUnit === "string" ? sourceUnit : sourceUnit?.onset;
           item.sourceCoda = typeof sourceUnit === "object" && sourceUnit !== null
             ? sourceUnit.coda
             : undefined;
