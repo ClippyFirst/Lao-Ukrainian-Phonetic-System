@@ -23,3 +23,8 @@ class TestTarget(unittest.TestCase):
         self.assertEqual(practical_from_ipa("ʃt͡ʃa"), "ща")
         self.assertEqual(practical_from_ipa("ʃa"), "ша")
         self.assertEqual(practical_from_ipa("t͡ʃa"), "ча")
+    def test_sh_and_zh_are_not_confused_with_affricates(self):
+        self.assertEqual(practical_from_ipa("ʃa"), "ша")
+        self.assertEqual(practical_from_ipa("ʒa"), "жа")
+        self.assertEqual(practical_from_ipa("ɦaː"), "га")
+

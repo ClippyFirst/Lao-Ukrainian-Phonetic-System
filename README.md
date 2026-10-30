@@ -32,7 +32,8 @@ Important current project decisions include:
 - /h/ → Ukrainian г as a project-specific practical approximation (not a claim of phonetic identity); /ɡ/ → ґ; genuine /x/ → х;
 - in the romanization method, Lao onset spelling, source vowel ID and supported coda are checked against CLDR romanization before Ukrainian output; `kh/th/ph` map as aspirated `к'/т'/п'`, independent /h/ from ຫ/ຮ maps to `г`, and supported silent-hoa spellings map their underlying sonorant without inserting an `h` sound;
 - /ŋ/ → нг;
-- /tɕ/ → ч; /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж;
+- /tɕ/ → ч; /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж; /ʃ/ → ш; /ʒ/ → ж;
+- the exact Ukrainian sequence /ʃt͡ʃ/ → щ is matched as a target orthographic unit; isolated /ʃ/ and /t͡ʃ/ remain ш and ч;
 - /ɯ/ → и;
 - source vowel quantity remains explicit in analysis but is normally neutralized in practical Ukrainian output.
 

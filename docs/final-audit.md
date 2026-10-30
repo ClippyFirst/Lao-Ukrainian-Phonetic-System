@@ -76,3 +76,10 @@ This does not establish a normative Ukrainian transcription standard or improve 
 - Added the official UK government BGN/PCGN 1966 agreement to the evidence registry. Its note 5 establishes silent-`h` omission and the abbreviated ligature forms ໜ/ໝ; these are now correctly treated as n/m, not as h+n/h+m.
 - Added explicit tests for source vowel mismatch, nasal ligature mapping, source-resolved `niav`, and the full `ເຂົ້າໜຽວ` source. The exact-head workflow above passes all gates.
 - This remains a bounded romanization adapter, not an accuracy-certified transcription standard. The romanization collapses vowel length and does not preserve tone; unsupported source vowel patterns remain partial. Manual visual/keyboard QA and an independently adjudicated linguistic gold corpus remain open.
+
+## Ukrainian target sequence completion — 2026-10-31
+
+- Added the exact IPA sequence mapping /ʃt͡ʃ/ → щ to the canonical target correspondence registry. The Python adapter and browser mirror use longest-match selection, so this sequence is handled as the Ukrainian orthographic unit while isolated /ʃ/ → ш and /t͡ʃ/ → ч remain separate.
+- Added source records for the Encyclopedia of Modern Ukraine article “Щ” (2025) and the Journal of the International Phonetic Association description of Ukrainian (2016), plus the source-linked claim `CLM-UA-SHCH-SEQUENCE`.
+- Added regression coverage for the sequence and the individual postalveolar fricatives, retaining explicit tests for /h/ → г, /ɦ/ → г, /ɡ/ → ґ, /x/ → х, /t͡s/ → ц, /d͡z/ → дз, /t͡ʃ/ → ч and /d͡ʒ/ → дж.
+- This is a target-language orthographic crosswalk decision. It does not assert that Lao contains /ʃt͡ʃ/ or alter Lao source phonology.

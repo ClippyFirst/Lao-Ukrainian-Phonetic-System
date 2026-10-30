@@ -19,6 +19,7 @@ These are project-wide target-language decisions applied only after source phono
 - /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж.
 - Alveolo-palatal /tɕ/ (also /t͡ɕ/) → ч; voiced /dʑ/ (also /d͡ʑ/) → дж as explicit target approximations.
 - Postalveolar fricatives /ʃ ʒ/ → ш ж.
+- The exact ordered sequence /ʃt͡ʃ/ → щ. This is a target-orthographic mapping of the Ukrainian fricative-plus-affricate sequence, not a claim that it is one affricate; isolated /ʃ/ → ш and /t͡ʃ/ → ч remain distinct.
 - Contrastive palatalization is preserved where Ukrainian orthography supports it: /tʲ dʲ nʲ lʲ rʲ/ → ть дь нь ль рь. Exact word-level spelling may require contextual Ukrainian orthographic rules.
 - A glottal stop /ʔ/ is not aspiration and does not trigger the apostrophe rule.
 - Do not turn a sequence of two consonants into an affricate unless the source phonological analysis identifies an affricate.
