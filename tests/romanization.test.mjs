@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { romanizeLao } from "../web/romanization.js";
+import { analyze } from "../web/engine.js";
 
 test("CLDR Lao-Latin keeps whitespace and punctuation and maps supported syllable letters",()=>{
  const r=romanizeLao("ຂາ, ຊາ!");
@@ -42,4 +43,14 @@ test("romanization fallback preserves unsupported characters and reports partial
  const result=romanizationToUkrainian("kha ໞ");
  assert.equal(result.output,"кха ໞ");
  assert.equal(result.status,"PARTIAL");
+});
+
+
+test("romanization-to-Ukrainian remains distinct from the IPA-first result",()=>{
+ const lao="ຂາ";
+ const latin=romanizeLao(lao);
+ const fallback=romanizationToUkrainian(latin.output);
+ assert.equal(latin.output,"kha");
+ assert.equal(fallback.output,"кха");
+ assert.equal(analyze(lao).output,"к'а");
 });
