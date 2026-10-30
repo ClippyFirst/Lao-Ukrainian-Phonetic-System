@@ -9,7 +9,7 @@ This repository develops a **project-specific Ukrainian practical transcription 
 It is deliberately **not**:
 
 - Lao-character → Ukrainian-character substitution;
-- a primary phonetic method that depends on romanization instead of IPA (a separate, explicitly lower-information romanization fallback is available in the web interface);
+- the primary phonetic method being Lao → romanization → Ukrainian; a separate, explicitly lower-information romanization fallback is available in the web interface, but it is not the source of the phonetic result;
 - a claim to be an official Ukrainian national standard;
 - a universal transcription system for every Lao dialect;
 - a lexical word-segmentation engine.
