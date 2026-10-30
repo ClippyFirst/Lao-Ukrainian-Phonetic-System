@@ -99,3 +99,18 @@ Exact-head verification: [workflow 41123400527](https://github.com/ClippyFirst/L
 - Built-page and relative-asset checks: passed.
 
 The tests verify deterministic software behavior for the implemented provisional romanization subset. They do not establish linguistic accuracy, complete CLDR coverage, or a gold-standard Ukrainian transcription. The source report itself states that Lao has no UN-approved romanization system and no national system. Manual visual and keyboard QA remains outstanding; the existing phonetic IPA gold corpus remains independently empty.
+
+
+### Final exact-head verification including evidence audit — 2026-10-30
+
+The current implementation and evidence-registry changes passed [workflow 41123807011](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41123807011), commit `02dd2bfe24e09a10fdb08265a4074aedbce97c8c`.
+
+- Repository data/evidence audit: passed — 43 consonant rows, 34 vowel rows, 17 tone rules, 69 Ukrainian mappings, 19 evidence sources and 33 evidence claims; all claim evidence references resolved.
+- Python unittest discovery: **92 passed**.
+- Browser phonetic engine: **46 passed**.
+- Romanization transform/compatibility: **9 passed**.
+- Romanization syllable engine: **9 passed**.
+- Web layout: **5 passed**.
+- External-G2P harness syntax/CLI, browser build, generated-data reproducibility and built-page/relative-asset checks: passed.
+
+This exact-head run verifies the code, the source/claim registry additions, and the corrected comma-containing CSV claim. It does not establish empirical pronunciation accuracy or complete coverage of the provisional CLDR transform. Manual visual/keyboard QA remains outstanding.
