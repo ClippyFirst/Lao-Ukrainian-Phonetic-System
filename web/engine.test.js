@@ -356,6 +356,9 @@ test("shared Ukrainian target distinguishes aspiration, h, g, x and affricates",
   assert.equal(CORRESPONDENCES["ɡ"], "ґ");
   assert.equal(CORRESPONDENCES["x"], "х");
   assert.equal(CORRESPONDENCES["t͡s"], "ц");
+  assert.equal(CORRESPONDENCES["t͡ɕ"], "ч");
+  assert.equal(CORRESPONDENCES["dʑ"], "дж");
+  assert.equal(CORRESPONDENCES["d͡ʑ"], "дж");
   assert.equal(CORRESPONDENCES["d͡z"], "дз");
   assert.equal(CORRESPONDENCES["t͡ʃ"], "ч");
   assert.equal(CORRESPONDENCES["d͡ʒ"], "дж");
