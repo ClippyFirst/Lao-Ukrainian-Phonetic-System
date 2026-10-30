@@ -50,10 +50,10 @@ async function copyWithFeedback(button, value) {
 
 function sourceOnsetGroupsForCrosswalk(sourceText) {
   const parts = String(sourceText ?? "")
-    .split(/(\\s+|[,.!?;:()[\\]{}"“”]+|-+)/u)
+    .split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
     .filter(Boolean);
   return parts
-    .filter((part) => !/^(\\s+|[,.!?;:()[\\]{}"“”]+|-+)$/u.test(part) && !/^[0-9]+$/u.test(part))
+    .filter((part) => !/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u.test(part) && !/^[0-9]+$/u.test(part))
     .map((part) => analyze(part).syllables
       .filter((syllable) => !syllable.passthrough)
       .map((syllable) => syllable.onset || null));
