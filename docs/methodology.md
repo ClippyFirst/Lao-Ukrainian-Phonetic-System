@@ -57,6 +57,8 @@ The project mapping table is position-sensitive:
 | Onset | ຣ/ລ | `r/l` | `л` (modern default for ຣ) |
 | Onset | ວ | `v` | `в` |
 | Onset | ຫ/ຮ | `h` | `г` (/h/, not aspiration) |
+| Onset | ໜ | `n` | `н` (silent ຫ + ນ) |
+| Onset | ໝ | `m` | `м` (silent ຫ + ມ) |
 | Nucleus | vowel combinations | CLDR sequences | project-defined Ukrainian vowel complexes |
 | Coda | ກ/ງ | `k/ng` | `к/нг` |
 | Coda | ດ/ບ | `d/b` | `т/п` |
@@ -64,7 +66,29 @@ The project mapping table is position-sensitive:
 | Coda | ຍ | `gn` (CLDR alias; BGN final form is `y`) | `й` |
 | Coda | ວ | `v` | `о` (or `оу` after `i`) |
 
-**The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree for both onset and supported coda before the Ukrainian syllable is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
+**The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree for onset, source vowel ID and supported coda before the Ukrainian syllable is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
+
+The vowel crosswalk is also position-aware and is checked against the source parser's `VOWEL:<ID>` trace:
+
+| Source vowel IDs | CLDR nucleus accepted by the adapter | Ukrainian nucleus |
+|---|---|---|
+| A, A2, AA | `a` | а |
+| I, II | `i` | і |
+| Y, YY | `u` | и |
+| U, UU | `ou` | у |
+| E, EE | `é` | е |
+| AE, AEE | `è` | е |
+| O, OO | `ô` | о |
+| AW, AWW_SHORT_ALT, AWW | `o` | о |
+| OE, OEE | `eu` | е |
+| IA, IA_LONG | `ia` | іа |
+| UA, UA_LONG | `ua` | уа |
+| UO, UO_LONG, UO_SHORT_ALT | `oua` | уа |
+| AI, AI2 | `ai` | ай |
+| AW_LONG | `ao` or transform-shaped `ôa` | ао |
+| AM | `am` | ам |
+
+The romanization collapses distinctions such as short versus long vowels; this table validates the represented nucleus but does not reconstruct lost length. Source IDs whose material is deleted or not represented by the supported CLDR subset (for example, medial `ອ` cases) are withheld rather than inferred. The target vowel spelling is an explicit project orthographic policy, not a claim of phonetic equivalence.
 
 The CLDR transform also maps ຊ to `x`, but this `x` represents Lao /s/ and therefore maps to Ukrainian `с`, not `кс`. Modern ຣ defaults to /l/ in the project source registry and is rendered `л`; a historical or loanword /r/ reading is not guessed from the romanized letter alone. The crosswalk preserves the source grapheme so these aliases are not mistaken for literal Latin sounds.
 
