@@ -106,4 +106,5 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  assert.match(app,/function sourceOnsetGroupsForCrosswalk\(sourceText\)/u);
  assert.match(app,/sourceOnsetGroups:\s*sourceOnsetGroupsForCrosswalk\(input\.value\)/u);
  assert.equal(app.includes("sourceOnsetsForCrosswalk"),false);
+ assert.ok(app.includes("Лаоська початкова графема"));
 });
