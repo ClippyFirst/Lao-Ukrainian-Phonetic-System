@@ -59,14 +59,14 @@ function candidatesAt(source, index) {
   // Ordinary Latin order: onset + nucleus + optional coda.
   for (const onset of longestMatchesAt(source, index, SORTED_ONSETS)) {
     const onsetEnd = index + onset.length;
-    for (const nucleus of longestMatchesAt(source, onsetEnd, SORTED_NUCLEI)) {
+    for (const nucleus of matchesAt(source, onsetEnd, SORTED_NUCLEI)) {
       const nucleusEnd = onsetEnd + nucleus.length;
       candidates.push({
         start: index, end: nucleusEnd, surface: source.slice(index, nucleusEnd),
         onset, nucleus, coda: "", order: "onset-first",
         ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus),
       });
-      for (const coda of longestMatchesAt(source, nucleusEnd, SORTED_CODAS)) {
+      for (const coda of matchesAt(source, nucleusEnd, SORTED_CODAS)) {
         const end = nucleusEnd + coda.length;
         candidates.push({
           start: index, end, surface: source.slice(index, end),
