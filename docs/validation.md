@@ -129,3 +129,11 @@ The final syllable-parser revision passed exact-head [workflow 41124439725](http
 - External-G2P harness syntax/CLI, browser build, generated-data reproducibility and built-page/relative-asset checks: passed.
 
 This run includes CLDR preposed-marker/postposed-nucleus parsing, longest-match onset/coda handling, position-sensitive final mappings, the `h → г` invariant, and explicit partial handling when concatenated syllables admit competing parses. The tests do not establish empirical pronunciation accuracy or complete CLDR/ICU coverage.
+
+
+## Source-aware romanization crosswalk correction — 2026-10-30
+
+- Replaced the former blanket h → г behavior inside kh/th/ph with a source-grapheme check: ຂ/ຄ + kh → к'; ຖ/ທ + th → т'; ຜ/ພ + ph → п'; ຫ/ຮ + h → г.
+- Added crosswalk tests for aspirated stops, independent /h/, mismatched source graphemes, 1:1 syllable alignment, the x → с alias for ຊ, and rejection of final h.
+- Test-first evidence: the new crosswalk test suite failed on the pre-correction implementation in workflow [41131862367](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41131862367), as expected. Subsequent code and test commits are present, but this documentation checkpoint does not claim they pass. Exact current-head workflow must complete before the correction is marked DONE_VERIFIED.
+- Linguistic scope: Richard Ishida's *Lao Orthography Notes* separates aspirated /kʰ tʰ pʰ/ from /h/ and identifies the corresponding Lao letters; the EKI/UNGEGN BGN/PCGN 1966 report provides the Latin spellings. The phonetic IPA-first engine is unchanged. No empirical accuracy or new IPA gold claim is made.
