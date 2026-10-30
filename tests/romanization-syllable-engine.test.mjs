@@ -5,15 +5,15 @@ import { analyzeRomanization } from "../web/romanization-syllable-engine.js";
 test("romanization engine parses a syllable into onset, nucleus and coda", () => {
   const result = analyzeRomanization("kha");
   assert.equal(result.status, "OK");
-  assert.equal(result.output, "кга");
+  assert.equal(result.output, "к'а");
   assert.deepEqual(result.syllables.map(({ onset, nucleus, coda, ukrainian }) =>
     ({ onset, nucleus, coda, ukrainian })), [
-      { onset: "kh", nucleus: "a", coda: "", ukrainian: "кга" },
+      { onset: "kh", nucleus: "a", coda: "", ukrainian: "к'а" },
     ]);
 });
 
 test("h is consistently adapted as Ukrainian г, including within romanization digraphs", () => {
-  assert.equal(analyzeRomanization("ha kha tha pha").output, "га кга тга пга");
+  assert.equal(analyzeRomanization("ha kha tha pha").output, "га к'а т'а п'а");
 });
 
 test("the engine handles CLDR preposed-vowel syllable patterns in Ukrainian syllable order", () => {
@@ -21,11 +21,11 @@ test("the engine handles CLDR preposed-vowel syllable patterns in Ukrainian syll
 });
 
 test("the engine uses position-aware coda mappings", () => {
-  assert.equal(analyzeRomanization("khat khap khang").output, "кгат кгап кганг");
+  assert.equal(analyzeRomanization("khat khap khang").output, "к'ат к'ап к'анг");
 });
 
 test("spaces and punctuation remain intact around analyzed syllables", () => {
-  assert.equal(analyzeRomanization("kha, tha!").output, "кга, тга!");
+  assert.equal(analyzeRomanization("kha, tha!").output, "к'а, т'а!");
 });
 
 test("ambiguous continuous romanization is withheld rather than arbitrarily segmented", () => {
@@ -53,7 +53,7 @@ test("the parser resolves CLDR preposed markers and postposed nuclei at syllable
   const first = analyzeRomanization("ékhôa");
   const second = analyzeRomanization("niav");
   assert.equal(first.status, "OK");
-  assert.equal(first.output, "кгао");
+  assert.equal(first.output, "к'ао");
   assert.deepEqual(first.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
     { onset: "kh", nucleus: "ôa", coda: "" },
   ]);
@@ -62,7 +62,7 @@ test("the parser resolves CLDR preposed markers and postposed nuclei at syllable
   assert.deepEqual(second.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
     { onset: "n", nucleus: "ia", coda: "v" },
   ]);
-  assert.equal(analyzeRomanization("ékhôa-niav").output, "кгао-ніао");
+  assert.equal(analyzeRomanization("ékhôa-niav").output, "к'ао-ніао");
 });
 
 test("concatenated multi-syllable romanization with competing parses is withheld", () => {
