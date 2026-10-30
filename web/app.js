@@ -132,6 +132,12 @@ document.querySelector("#example").addEventListener("click", () => {
   input.focus();
 });
 
+document.querySelector("#example-complex").addEventListener("click", () => {
+  input.value = "ເຂົ້າໜຽວ";
+  render();
+  input.focus();
+});
+
 document.querySelector("#clear").addEventListener("click", () => {
   input.value = "";
   render();
