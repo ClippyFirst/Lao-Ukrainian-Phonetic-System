@@ -52,7 +52,7 @@ The repository is substantially more defensible and reproducible than the initia
 - Distinctions: /h/ → г, /ɡ/ → ґ, /x/ → х.
 - Affricates: /t͡s/ → ц, /d͡z/ → дз, /t͡ʃ/ → ч, /d͡ʒ/ → дж; Lao /tɕ/ and documented alveolo-palatal aliases map to ч/дж as explicit approximations.
 - Palatalized consonants use Ukrainian soft-sign sequences only when the source analysis establishes palatalization. /ʔ/ is not aspiration.
-- Canonical CSV → generated browser-data parity was checked; exact-head workflow [41075912762](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41075912762) passed.
+- Canonical CSV → generated browser-data parity was checked; exact current-head workflow [41076881196](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41076881196) passed on branch head `70422a53d556470cd5220554d9925dffb1fbb2f5`.
 - Changes are in draft PR #56; no merge or deployment was performed.
 
 This does not establish a normative Ukrainian transcription standard or improve the independent Lao pronunciation gold set. The research corpus still has no independently adjudicated lexical IPA gold and accuracy remains unmeasured. The broader limitations listed above remain open.
