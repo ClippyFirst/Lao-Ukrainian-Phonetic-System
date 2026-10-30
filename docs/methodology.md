@@ -64,7 +64,7 @@ The project mapping table is position-sensitive:
 | Coda | ຍ | `gn` (CLDR alias; BGN final form is `y`) | `й` |
 | Coda | ວ | `v` | `о` (or `оу` after `i`) |
 
-**The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree before the Ukrainian onset is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
+**The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree for both onset and supported coda before the Ukrainian syllable is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
 
 The CLDR transform also maps ຊ to `x`, but this `x` represents Lao /s/ and therefore maps to Ukrainian `с`, not `кс`. Modern ຣ defaults to /l/ in the project source registry and is rendered `л`; a historical or loanword /r/ reading is not guessed from the romanized letter alone. The crosswalk preserves the source grapheme so these aliases are not mistaken for literal Latin sounds.
 
