@@ -1,12 +1,16 @@
 import { analyze } from "./engine.js";
 import { romanizeLao } from "./romanization.js";
-import { romanizationToUkrainian } from "./romanization-ukrainian.js";
+import { analyzeRomanization, romanizationToUkrainian } from "./romanization-syllable-engine.js";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
 const ipa = document.querySelector("#ipa");
 const romanization = document.querySelector("#romanization");
 const rows = document.querySelector("#rows");
+const romanizationTrace = document.querySelector("#romanization-trace");
+const romanizationRows = document.querySelector("#romanization-rows");
+const romanizationWarnings = document.querySelector("#romanization-warnings");
+const romanizationStatus = document.querySelector("#romanization-analysis-status");
 const warnings = document.querySelector("#warnings");
 const section = document.querySelector("#analysis-section");
 const emptyState = document.querySelector("#empty-state");
@@ -79,10 +83,14 @@ function render() {
     emptyState.hidden = false;
     results.hidden = true;
     section.classList.add("hidden");
+    romanizationTrace.hidden = true;
+    romanizationRows.replaceChildren();
+    romanizationWarnings.replaceChildren();
+    romanizationStatus.textContent = "";
     copy.disabled = true;
     outputMethodNote.textContent = outputMode === "phonetic"
       ? "Фонетичний режим: IPA → українська практична адаптація."
-      : "Режим за романізацією: латинський запис → українська графічна адаптація; вимова не перевіряється.";
+      : "Режим за романізацією: окремий складовий аналіз латинського запису; h → г.";
     copyRomanization.disabled = true;
     copyIpa.disabled = true;
     copyFeedback.textContent = "";
@@ -107,10 +115,10 @@ function render() {
         : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива."))
     : fallbackBlocked
       ? "Романізаційний режим недоступний: виправте вхідний текст, який не пройшов перевірку."
-      : "За романізацією: CLDR Lao-Latin/UNGEGN → українська графічна адаптація. IPA та поскладовий розбір нижче залишаються фонетичними. " +
+      : "За романізацією: CLDR Lao-Latin/UNGEGN → складовий рушій (початок + голосний комплекс + фіналь); h → г. " +
       (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
-        ? "Покриття часткове; непідтримані символи збережено."
-        : "Запис відтворює латинську форму, а не встановлену вимову.");
+        ? "Частину запису не вдалося розібрати однозначно; вона позначена в дужках."
+        : "Український результат формується за структурою романізованого складу, а не побуквеною заміною.");
   romanization.textContent = roman.output;
   romanization.className = "output";
   ipa.textContent = result.syllables.map((syllable) => syllable.ipa || "—").join(" ");
@@ -121,6 +129,7 @@ function render() {
   emptyState.hidden = true;
   results.hidden = false;
   section.classList.remove("hidden");
+  romanizationTrace.hidden = outputMode !== "romanization";
 
   status.textContent =
     result.status === "OK"
@@ -136,6 +145,47 @@ function render() {
     paragraph.className = "warning";
     paragraph.textContent = warning;
     warnings.append(paragraph);
+  });
+
+  romanizationStatus.textContent = romanized.status === "OK" ? "ГОТОВО" : "ЧАСТКОВИЙ АНАЛІЗ";
+  romanizationStatus.dataset.state = romanized.status === "OK" ? "OK" : "PARTIAL";
+  romanizationWarnings.replaceChildren();
+  romanized.warnings.forEach((warning) => {
+    const paragraph = document.createElement("p");
+    paragraph.className = "warning";
+    paragraph.textContent = warning;
+    romanizationWarnings.append(paragraph);
+  });
+  romanizationRows.replaceChildren();
+  romanized.syllables.forEach((syllable) => {
+    const element = document.createElement("article");
+    element.className = "analysis-row";
+    const grid = document.createElement("div");
+    grid.className = "analysis-grid";
+    [
+      ["Романізований склад", syllable.surface],
+      ["Початковий елемент", syllable.onset || "∅"],
+      ["Голосний комплекс", syllable.nucleus || "—"],
+      ["Фіналь", syllable.coda || "∅"],
+      ["Український склад", syllable.ukrainian],
+      ["Статус", syllable.status],
+    ].forEach(([label, value]) => {
+      const cell = document.createElement("div");
+      const caption = document.createElement("small");
+      const strong = document.createElement("strong");
+      caption.textContent = label;
+      strong.textContent = value;
+      cell.append(caption, strong);
+      grid.append(cell);
+    });
+    element.append(grid);
+    if (syllable.warning) {
+      const note = document.createElement("p");
+      note.className = "rules";
+      note.textContent = syllable.warning;
+      element.append(note);
+    }
+    romanizationRows.append(element);
   });
 
   rows.replaceChildren();
