@@ -49,14 +49,27 @@ test("the coda-vowel correspondence follows the documented BGN/PCGN context", ()
   assert.equal(analyzeRomanization("kiv kav").output, "кіоу као");
 });
 
-test("the parser resolves a CLDR preposed marker plus postposed nucleus as one syllable", () => {
-  const result = analyzeRomanization("ékhôaniav");
-  assert.equal(result.status, "OK");
-  assert.equal(result.output, "кгаоніао");
-  assert.deepEqual(result.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
+test("the parser resolves CLDR preposed markers and postposed nuclei at syllable level", () => {
+  const first = analyzeRomanization("ékhôa");
+  const second = analyzeRomanization("niav");
+  assert.equal(first.status, "OK");
+  assert.equal(first.output, "кгао");
+  assert.deepEqual(first.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
     { onset: "kh", nucleus: "ôa", coda: "" },
+  ]);
+  assert.equal(second.status, "OK");
+  assert.equal(second.output, "ніао");
+  assert.deepEqual(second.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
     { onset: "n", nucleus: "ia", coda: "v" },
   ]);
+  assert.equal(analyzeRomanization("ékhôa-niav").output, "кгао-ніао");
+});
+
+test("concatenated multi-syllable romanization with competing parses is withheld", () => {
+  const result = analyzeRomanization("ékhôaniav");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦ékhôaniav⟧");
+  assert.equal(result.syllables[0].status, "AMBIGUOUS");
 });
 
 test("the parser withholds a vowel sequence whose CLDR transform lost a distinguishing character", () => {
