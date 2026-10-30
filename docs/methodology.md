@@ -51,7 +51,6 @@ The project mapping table is position-sensitive:
 | Coda | `k ng y gn t n p m r l` | `к нг й й т н п м л л` |
 | Coda | `d b` | `т п` |
 | Coda | `v` | `о` (or `оу` after `i`) |
-| Coda | `h` | not supported; withheld |
 
 **The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree before the Ukrainian onset is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
 
