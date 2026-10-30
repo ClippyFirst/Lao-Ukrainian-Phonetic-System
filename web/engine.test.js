@@ -363,3 +363,15 @@ test("shared Ukrainian target distinguishes aspiration, h, g, x and affricates",
   assert.equal(CORRESPONDENCES["t͡ʃ"], "ч");
   assert.equal(CORRESPONDENCES["d͡ʒ"], "дж");
 });
+
+test("generated Ukrainian target map preserves the shch sequence and consonant distinctions", () => {
+  assert.equal(CORRESPONDENCES.h, "г");
+  assert.equal(CORRESPONDENCES["ɦ"], "г");
+  assert.equal(CORRESPONDENCES["ɡ"], "ґ");
+  assert.equal(CORRESPONDENCES.x, "х");
+  assert.equal(CORRESPONDENCES["ʃ"], "ш");
+  assert.equal(CORRESPONDENCES["ʃt͡ʃ"], "щ");
+  assert.equal(CORRESPONDENCES["t͡ʃ"], "ч");
+  assert.equal(CORRESPONDENCES["d͡ʒ"], "дж");
+  assert.equal(CORRESPONDENCES["d͡z"], "дз");
+});
