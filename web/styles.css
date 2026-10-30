@@ -157,3 +157,93 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:20px max(24px
   html{scroll-behavior:auto}
   *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
+
+
+/* Korean service layout parity: input first, Ukrainian result first, analysis disclosed below. */
+.workspace-layout{display:grid;grid-template-columns:minmax(320px,.82fr) minmax(0,1.18fr);gap:24px;align-items:start}
+.workbench,.results{min-width:0;padding:clamp(18px,2.5vw,30px);border:1px solid var(--line);background:var(--surface)}
+.workbench{position:relative;border-top:5px solid var(--red)}
+.section-title{display:flex;align-items:flex-start;gap:13px;margin:0 0 20px}
+.section-number{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;background:var(--ink);color:#fff;font-size:.76rem;font-weight:850}
+.section-kicker{margin:0 0 2px;color:var(--red);font:750 .68rem/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em}
+.section-title h2{margin:0;color:var(--ink);font-size:1.22rem;line-height:1.25;letter-spacing:-.025em}
+.input-shell{overflow:hidden;border:1px solid #bdbbb4;background:#fff}
+.input-shell:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,40,104,.11)}
+.input-shell textarea{display:block;width:100%;min-height:230px;resize:vertical;padding:18px;border:0;background:transparent;font:1.35rem/1.85 "Noto Sans Lao",system-ui,sans-serif}
+.input-shell textarea:focus{outline:0;box-shadow:none}
+.input-hint{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 14px;padding:10px 13px;border-top:1px solid var(--line);color:var(--muted);font-size:.76rem}
+.input-guidance{margin:11px 0 0;color:var(--muted);font-size:.83rem;line-height:1.55}
+.action-row{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.chip-row,.action-cell{display:flex;flex-wrap:wrap;gap:7px}
+.mini-button,.button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:7px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:.8rem;font-weight:700}
+.mini-button:hover,.button-secondary:hover{border-color:var(--blue);background:#f0f2f7}
+.action-cell{justify-content:flex-end}
+.output-workspace{min-width:0}
+.empty-state{display:flex;align-items:flex-start;gap:17px;min-height:190px;padding:clamp(22px,3vw,32px);border:1px solid var(--line);border-top:5px solid var(--blue);background:var(--surface);color:var(--muted)}
+.empty-glyph{display:grid;place-items:center;flex:0 0 56px;width:56px;height:56px;border:1px solid var(--line);background:#edf1f7;color:var(--blue);font:800 1.35rem/1.2 "Noto Sans Lao",sans-serif}
+.empty-state strong{display:block;margin:2px 0 5px;color:var(--ink);font-size:1.06rem}
+.empty-state span{display:block;font-size:.88rem}
+.results{border-top:5px solid var(--blue)}
+.results-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:19px}
+.results-bar .section-title{margin:0}
+.results-note{max-width:48%;color:var(--muted);font-size:.76rem;text-align:right}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.result-card{min-width:0;padding:16px;border:1px solid var(--line);background:#fff}
+.result-card-primary{grid-column:1/-1;border-color:var(--ink);background:#edf1f7}
+.result-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:13px;font-size:.82rem}
+.result-meta>span{display:inline-grid;place-items:center;min-width:34px;height:25px;padding:0 6px;border:1px solid var(--line);background:#f2efe8;color:var(--muted);font-size:.67rem;font-weight:900;letter-spacing:.05em}
+.result-card-primary .result-meta>span{border-color:var(--red);background:var(--red);color:#fff}
+.result-meta strong{font-weight:800}
+.copy-button{margin-left:auto;min-height:36px;padding:5px 8px;border:1px solid transparent;background:transparent;color:var(--blue);font-size:.76rem;font-weight:750}
+.copy-button:hover:not(:disabled){border-color:var(--line);background:#f6f5f1}
+.copy-button:disabled{opacity:.4;cursor:not-allowed}
+.result-body{margin:0;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere;font-size:1rem;line-height:1.75}
+.result-card-primary .result-body{font-size:clamp(1.5rem,2.7vw,2.25rem);line-height:1.45;font-weight:750;color:var(--blue)}
+.result-body.muted{color:var(--muted);font-size:.98rem;font-weight:400}
+.result-body.ipa{font:1.02rem/1.85 "Charis SIL","Doulos SIL","DejaVu Sans","Noto Sans",sans-serif;font-feature-settings:"ccmp" 1,"mark" 1,"mkmk" 1;font-synthesis:none;unicode-bidi:isolate}
+.romanization-note{margin:11px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.76rem;line-height:1.55}
+.copy-feedback{min-height:1.2em;margin:9px 0 0;color:var(--muted);font-size:.76rem}
+.analysis{margin-top:22px}
+.trace-panel{border:1px solid var(--line);background:#fff}
+.trace-summary{display:flex;align-items:center;gap:13px;min-height:72px;padding:14px 16px;cursor:pointer;list-style:none}
+.trace-summary::-webkit-details-marker{display:none}
+.trace-summary-index{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;background:var(--ink);color:#fff;font-size:.76rem;font-weight:850}
+.trace-summary-copy{display:grid;gap:3px;min-width:0}
+.trace-summary-copy strong{font-size:.9rem}
+.trace-summary-copy small{color:var(--muted);font-size:.76rem;line-height:1.45}
+.trace-summary-mark{margin-left:auto;color:var(--blue);font-size:1.25rem}
+.trace-panel[open] .trace-summary-mark{transform:rotate(45deg)}
+.trace-details{padding:0 16px 16px}
+.analysis-status{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line)}
+.analysis-status .section-kicker{margin:0}
+.status{max-width:55%;padding:5px 8px;border:1px solid var(--line);color:var(--muted);font:700 .72rem/1.4 ui-monospace,monospace;overflow-wrap:anywhere}
+.status[data-state=OK]{border-color:var(--blue);color:var(--blue)}
+.warning{margin:12px 0;padding:12px 14px;border-left:4px solid var(--red);background:#fff8f5;color:#554b4b;font-size:.87rem;line-height:1.6}
+.analysis-list{display:grid;gap:0;margin-top:12px}
+.analysis-row{padding:17px;border:1px solid var(--line);border-bottom:0;background:#fff}
+.analysis-row:last-child{border-bottom:1px solid var(--line)}
+.analysis-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.analysis-grid div{display:flex;min-width:0;flex-direction:column;gap:4px}
+.analysis-grid small{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
+.analysis-grid strong{font-size:.9rem;overflow-wrap:anywhere}
+.rules{margin:13px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font:.75rem/1.55 ui-monospace,monospace}
+.research-progress-after{margin-top:28px}
+@media(max-width:900px){
+  .workspace-layout{grid-template-columns:1fr;gap:16px}
+  .input-shell textarea{min-height:175px}
+  .analysis-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .workspace-layout{gap:13px}
+  .workbench,.results{padding:17px}
+  .input-shell textarea{min-height:155px;font-size:1.2rem}
+  .action-cell>*{flex:1 1 auto}
+  .results-bar{align-items:flex-start;flex-direction:column}
+  .results-note{max-width:100%;text-align:left}
+  .result-grid{grid-template-columns:1fr}
+  .result-card-primary{grid-column:auto}
+  .result-card-primary .result-body{font-size:1.75rem}
+  .analysis-grid{grid-template-columns:1fr 1fr;gap:11px}
+  .trace-summary{align-items:flex-start}
+  .status{max-width:65%}
+}

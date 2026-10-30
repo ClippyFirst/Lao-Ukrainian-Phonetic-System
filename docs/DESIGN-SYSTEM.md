@@ -58,7 +58,7 @@ Short labels, explicit terminology, no marketing claims. Use **system**, **corre
 
 The interface uses the Lao script itself as its signature visual material: a compact Lao wordmark and a real syllable specimen (ຂາ → /kʰaː/ → к'а). The specimen is a documented example, not a decorative placeholder or a simulated result.
 
-The service keeps the existing Lao red/blue palette and the editorial-instrument direction. The result panel retains the actual pipeline order: provisional CLDR/UNGEGN romanization, IPA, then Ukrainian practical transcription. The Ukrainian layer receives the strongest typographic emphasis; provisional and analytical layers remain visibly secondary.
+The service keeps the existing Lao red/blue palette and the editorial-instrument direction. The service workspace follows the established Korean-service composition: input on the left and results on the right on wide screens, collapsing to one column on narrower screens. Within the result area, Ukrainian practical transcription is first and visually primary, followed by the provisional CLDR/UNGEGN romanization and then IPA. Syllable-level analysis is a collapsed disclosure below the result cards, so diagnostics remain available without competing with the main output.
 
 ## Motion and micro-interactions
 
@@ -73,3 +73,17 @@ React Bits is used as a reference for the craft of small, reusable micro-interac
 - Methodology navigation is a labelled nav element; both pages expose a keyboard skip link.
 - Lao, IPA and Ukrainian output use separate typography roles and can wrap without clipping.
 - Focus remains visible, controls retain a 44px minimum target, and reduced-motion preferences are respected.
+
+
+## Korean-service layout parity · 2026-10-30
+
+The Lao service intentionally shares the Korean service's information architecture without importing Korean-only functionality:
+
+1. The input workbench occupies the left column.
+2. The result workspace occupies the right column.
+3. The Ukrainian practical transcription is the first, full-width result card.
+4. Romanization and IPA follow as secondary cards.
+5. Detailed syllable diagnostics are collapsed below the result cards and retain tone, syllable type, source form, IPA, Ukrainian mapping, rules, warnings and processing status.
+6. At tablet/mobile widths, the workbench and result workspace stack; result cards become a single column on narrow screens.
+
+The Lao service does not add Hanja, Korean G2P modes or other language-specific features merely to imitate the Korean page. The tests/web-layout.test.mjs suite protects the shared layout contract and output order.
