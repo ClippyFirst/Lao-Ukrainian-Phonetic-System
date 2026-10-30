@@ -24,7 +24,7 @@ export function romanizeLao(input) {
   const source = String(input ?? "").normalize("NFC");
   let output = source;
   for (const [from, to] of SEQUENCES) output = output.split(from).join(to);
-  // BGN/PCGN's silent-hoa note: ຫ before a sonorant is a high-class
+  // BGN/PCGN's silent-hoa note: ຫ before a supported sonorant onset is a high-class
   // marker, not a pronounced /h/. The ຫຼ ligature is likewise romanized l.
   output = output.replace(/ຫຼ/gu, "ລ");
   output = output.replace(/ຫ(?=[ງຍນມລວ])/gu, "");
