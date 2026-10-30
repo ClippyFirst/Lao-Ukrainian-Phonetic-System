@@ -21,7 +21,7 @@ test("the engine handles CLDR preposed-vowel syllable patterns in Ukrainian syll
 });
 
 test("the engine uses position-aware coda mappings", () => {
-  assert.equal(analyzeRomanization("khat khap khang").output, "кгат кгaп кгaнг".replaceAll("a", "а"));
+  assert.equal(analyzeRomanization("khat khap khang").output, "кгат кгап кганг");
 });
 
 test("spaces and punctuation remain intact around analyzed syllables", () => {
@@ -39,4 +39,12 @@ test("unsupported romanization remains visible and is flagged partial", () => {
   const result = analyzeRomanization("kha ໞ");
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "кга ⟦ໞ⟧");
+});
+
+test("h remains г even in a syllable-final position", () => {
+  assert.equal(analyzeRomanization("ah").output, "аг");
+});
+
+test("the coda-vowel correspondence follows the documented BGN/PCGN context", () => {
+  assert.equal(analyzeRomanization("kiv kav").output, "кіоу кав");
 });
