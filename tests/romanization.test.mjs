@@ -27,6 +27,7 @@ test("GitHub Pages navigation stays inside the repository site",()=>{
 });
 
 import { romanizationToUkrainian } from "../web/romanization-ukrainian.js";
+import { analyzeRomanization } from "../web/romanization-syllable-engine.js";
 
 test("romanization fallback maps CLDR Latin spelling independently of phonetic IPA",()=>{
  const result=romanizationToUkrainian("kha, xa!");
@@ -64,4 +65,12 @@ test("CLDR palatal nasal spelling maps to the project's Ukrainian palatal nasal"
  const latin=romanizeLao("ຍາ");
  assert.equal(latin.output,["g","n","a"].join(""));
  assert.equal(romanizationToUkrainian(latin.output).output,"ньа");
+});
+
+test("CLDR output for a multi-syllable Lao example feeds the independent syllable engine",()=>{
+ const latin=romanizeLao("ເຂົ້າໜຽວ");
+ assert.equal(latin.output,"ékhôaniav");
+ const adapted=analyzeRomanization(latin.output);
+ assert.equal(adapted.status,"OK");
+ assert.equal(adapted.output,"кгаоніао");
 });
