@@ -259,7 +259,7 @@ export function analyzeRomanization(input, options = {}) {
       continue;
     }
     const sourceGroup = sourceSyllableGroups ? (sourceSyllableGroups[sourceGroupIndex++] || []) : null;
-    const parsed = parseWord(part);
+    const parsed = parseWord(part, sourceSyllableGroups ? sourceGroup : null);
     if (parsed.count === 1 && parsed.path) {
       const sourceSlice = sourceSyllableGroups ? sourceGroup : sourceOnsets
         ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
@@ -301,7 +301,19 @@ export function analyzeRomanization(input, options = {}) {
         if (sourceOnsets) sourceIndex += sourceSlice.length;
       }
     } else {
+      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part) : null;
+      const sourceMismatch = Boolean(unrestricted?.count);
       const item = unresolved(part, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
+      if (sourceMismatch) {
+        item.warning = "Романізований склад можна розібрати, але його початок або фіналь не відповідають лаоським графемам; український результат утримано.";
+        if (sourceGroup.length === 1 && unrestricted.count === 1) {
+          item.sourceOnset = sourceGroup[0]?.onset;
+          item.sourceCoda = sourceGroup[0]?.coda;
+          item.onset = unrestricted.path[0].onset;
+          item.nucleus = unrestricted.path[0].nucleus;
+          item.coda = unrestricted.path[0].coda;
+        }
+      }
       syllables.push(item);
       output += item.ukrainian;
       partial = true;
