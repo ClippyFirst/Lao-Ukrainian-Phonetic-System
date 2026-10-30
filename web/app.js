@@ -1,5 +1,6 @@
 import { analyze } from "./engine.js";
 import { romanizeLao } from "./romanization.js";
+import { romanizationToUkrainian } from "./romanization-ukrainian.js";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
@@ -13,6 +14,10 @@ const results = document.querySelector("#results");
 const copy = document.querySelector("#copy");
 const copyRomanization = document.querySelector("#copy-romanization");
 const copyIpa = document.querySelector("#copy-ipa");
+const modePhonetic = document.querySelector("#mode-phonetic");
+const modeRomanization = document.querySelector("#mode-romanization");
+const outputMethodNote = document.querySelector("#output-method-note");
+let outputMode = "phonetic";
 const copyFeedback = document.querySelector("#copy-feedback");
 const count = document.querySelector("#count");
 const status = document.querySelector("#analysis-status");
@@ -39,9 +44,26 @@ async function copyWithFeedback(button, value) {
   }, 1400);
 }
 
+function currentUkrainianOutput() {
+  if (outputMode === "phonetic") return analyze(input.value).output;
+  const roman = romanizeLao(input.value);
+  return romanizationToUkrainian(roman.output).output;
+}
+
+function setOutputMode(mode) {
+  if (mode !== "phonetic" && mode !== "romanization") return;
+  outputMode = mode;
+  modePhonetic.setAttribute("aria-pressed", String(mode === "phonetic"));
+  modeRomanization.setAttribute("aria-pressed", String(mode === "romanization"));
+  modePhonetic.classList.toggle("is-active", mode === "phonetic");
+  modeRomanization.classList.toggle("is-active", mode === "romanization");
+  render();
+}
+
 function render() {
   const result = analyze(input.value);
   const roman = romanizeLao(input.value);
+  const romanized = romanizationToUkrainian(roman.output);
   count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
@@ -54,19 +76,33 @@ function render() {
     results.hidden = true;
     section.classList.add("hidden");
     copy.disabled = true;
+    outputMethodNote.textContent = outputMode === "phonetic"
+      ? "Фонетичний режим: IPA → українська практична адаптація."
+      : "Режим за романізацією: латинський запис → українська графічна адаптація; вимова не перевіряється.";
     copyRomanization.disabled = true;
     copyIpa.disabled = true;
     copyFeedback.textContent = "";
     return;
   }
 
-  output.textContent = result.output || "Немає достатньо даних для надійного запису.";
-  output.className = "output";
+  const activeOutput = outputMode === "phonetic" ? result.output : romanized.output;
+  output.textContent = activeOutput || (outputMode === "phonetic"
+    ? "Фонетичний результат не встановлено. Спробуйте режим за романізацією."
+    : "Немає доступного романізованого запису для адаптації.");
+  output.className = activeOutput ? "result-body output" : "result-body output muted";
+  outputMethodNote.textContent = outputMode === "phonetic"
+    ? (result.output
+      ? "Фонетичний режим: результат побудовано через IPA → українську практичну адаптацію."
+      : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива.")
+    : "За романізацією: CLDR Lao-Latin/UNGEGN → українська графічна адаптація. " +
+      (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
+        ? "Покриття часткове; непідтримані символи збережено."
+        : "Запис відтворює латинську форму, а не встановлену вимову.");
   romanization.textContent = roman.output;
   romanization.className = "output";
   ipa.textContent = result.syllables.map((syllable) => syllable.ipa || "—").join(" ");
 
-  copy.disabled = !result.output;
+  copy.disabled = !activeOutput;
   copyRomanization.disabled = !roman.output;
   copyIpa.disabled = !ipa.textContent;
   emptyState.hidden = true;
@@ -125,6 +161,8 @@ function render() {
 }
 
 input.addEventListener("input", render);
+modePhonetic.addEventListener("click", () => setOutputMode("phonetic"));
+modeRomanization.addEventListener("click", () => setOutputMode("romanization"));
 
 document.querySelector("#example").addEventListener("click", () => {
   input.value = "ຂາ";
@@ -145,7 +183,7 @@ document.querySelector("#clear").addEventListener("click", () => {
 });
 
 copy.addEventListener("click", () => {
-  const value = analyze(input.value).output;
+  const value = currentUkrainianOutput();
   if (value) copyWithFeedback(copy, value);
 });
 
