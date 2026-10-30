@@ -70,7 +70,7 @@ Lao G2P diagnostic metric hardening is merged at `5f003928c495e82a97f3077729ea4e
 
 ## Selectable romanization-to-Ukrainian mode — 2026-10-30
 
-Exact branch-head verification: workflow 41119525542, commit cfa95799c47eb683e590b061e4f40b6b4f154737.
+Exact branch-head verification: workflow 41120593831, commit 4db9dfe10045aa4d66af921b11e0d2fd5b9d738f.
 
 - Python unittest discovery: **92 passed**.
 - Browser engine tests: **46 passed**.
