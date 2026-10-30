@@ -195,3 +195,30 @@ test("a romanized string with competing vowel-versus-coda parses is withheld wit
 test("nullable optional crosswalk settings do not break standalone romanization", () => {
   assert.equal(analyzeRomanization("kha", null).output, "к'а");
 });
+
+test("atomic high-class nasal ligatures crosswalk through their underlying onset", () => {
+  const nasal = analyzeRomanization("niav", {
+    sourceSyllableGroups: [[{ onset: "ໜ", coda: "ວ", vowelId: "IA_LONG" }]],
+  });
+  const labial = analyzeRomanization("ma", {
+    sourceSyllableGroups: [[{ onset: "ໝ", coda: "", vowelId: "AA" }]],
+  });
+  assert.equal(nasal.status, "OK");
+  assert.equal(nasal.output, "ніао");
+  assert.equal(nasal.syllables[0].sourceOnset, "ໜ");
+  assert.equal(labial.status, "OK");
+  assert.equal(labial.output, "ма");
+});
+
+test("source vowel identity must agree with the romanized nucleus", () => {
+  const valid = analyzeRomanization("kha", {
+    sourceSyllableGroups: [[{ onset: "ຂ", coda: "", vowelId: "AA" }]],
+  });
+  const mismatch = analyzeRomanization("kha", {
+    sourceSyllableGroups: [[{ onset: "ຂ", coda: "", vowelId: "II" }]],
+  });
+  assert.equal(valid.status, "OK");
+  assert.equal(valid.output, "к'а");
+  assert.equal(mismatch.status, "PARTIAL");
+  assert.equal(mismatch.output, "⟦kha⟧");
+});
