@@ -140,3 +140,23 @@ At that historical checkpoint, this run included CLDR preposed-marker/postposed-
 
 
 - Intermediate workflow [41133435559](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41133435559) passed repository audit, Python tests and external-G2P harness, then failed one browser assertion because the source/provenance label no longer contained the word “romanization”. The label was restored in commit fc5d5eba43b890aa3bc4126f4c3af11ae59c6e69. This was a contract-label mismatch; the exact current-head run must still verify all browser tests and build gates.
+
+
+## Source-vowel and high-class nasal crosswalk verification — 2026-10-31
+
+Exact branch head: 7fef1a326c8d1f7c5dfc0cb3c2cb41a4ee9b4140. [GitHub Actions workflow 41137160734](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41137160734) completed successfully.
+
+- Repository data/evidence audit: **passed** — 43 consonant rows, 34 vowel rows, 17 tone rules, 69 Ukrainian mappings, 20 evidence sources and 44 evidence claims; all claim references resolved.
+- Python unittest discovery: **92 passed**.
+- Browser phonetic engine: **46 passed**.
+- Romanization transform/integration: **18 passed**.
+- Romanization syllable/crosswalk engine: **26 passed**.
+- Web layout: **5 passed**.
+- Optional external-G2P harness syntax/CLI: **passed**.
+- Static build and canonical browser-data regeneration: **passed**.
+- Generated-data reproducibility (git diff --exit-code -- web/data.js): **passed**.
+- Built-page and relative-asset checks: **passed**. The workflow's app-module assertion was adjusted to accept the cache-busting query string while retaining the relative ./web/app.js path.
+
+New coverage includes source-vowel ID agreement/mismatch, silent high-class nasal ligatures ໜ/ໝ, source-resolved niav, the full ເຂົ້າໜຽວ source, and the A+coda-m versus AM-nucleus distinction for kam. The IPA-first pipeline remains unchanged.
+
+This verifies deterministic implementation behavior for the supported subset only. It does not establish empirical pronunciation accuracy, complete CLDR/ICU coverage, or a normative Lao-to-Ukrainian standard. Manual visual/keyboard QA and an independently adjudicated gold corpus remain outstanding.
