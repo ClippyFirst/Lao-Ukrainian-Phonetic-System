@@ -209,7 +209,7 @@ const LAO_ONSET_CROSSWALK = new Map([
 ]);
 const LAO_CODA_TO_CLDR = new Map([
   ["ກ", "k"], ["ງ", "ng"], ["ດ", "d"], ["ບ", "b"], ["ນ", "n"],
-  ["ມ", "m"], ["ຍ", "gn"], ["ລ", "l"], ["ວ", "v"],
+  ["ມ", "m"], ["ຍ", "gn"], ["ວ", "v"],
 ]);
 
 function crosswalkUnit(unit, sourceSyllable) {
