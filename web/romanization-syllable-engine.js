@@ -209,7 +209,7 @@ const LAO_ONSET_CROSSWALK = new Map([
   ["ວ", { romanization: "v", ukrainian: "в" }],
   ["ຫ", { romanization: "h", ukrainian: "г" }],
   ["ຮ", { romanization: "h", ukrainian: "г" }],
-  // BGN/PCGN note 2: ໜ/ໝ are ligature forms of silent ຫ + ນ/ມ.
+  // BGN/PCGN silent-hoa note (numbering differs across copies): ໜ/ໝ are ligature forms of silent ຫ + ນ/ມ.
   // The silent high-class marker is not romanized; the nasal is.
   ["ໜ", { romanization: "n", ukrainian: "н" }],
   ["ໝ", { romanization: "m", ukrainian: "м" }],
