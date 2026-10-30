@@ -138,7 +138,7 @@ test("atomic high-class nasal graphemes absent from the BGN onset table are with
 
 test("an ambiguous earlier word does not shift later source-onset groups", () => {
   const result = analyzeRomanization("khakha kha", {
-    sourceOnsetGroups: [["ຂ", "ຂ"], ["ຂ"]],
+    sourceSyllableGroups: [[{ onset: "ຂ", coda: "" }, { onset: "ຂ", coda: "" }], [{ onset: "ຂ", coda: "" }]],
   });
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "⟦khakha⟧ к'а");
