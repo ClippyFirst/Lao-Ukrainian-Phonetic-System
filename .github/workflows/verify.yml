@@ -38,8 +38,16 @@ jobs:
           test -s dist/system.html
           test -s dist/web/app.js
           test -s dist/web/styles.css
-          grep -q 'href="./web/styles.css"' dist/index.html
+          grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js"' dist/index.html
           grep -q 'href="./system.html"' dist/index.html
           grep -q 'role="status"' dist/index.html
           grep -q 'focus-visible' web/styles.css
+          grep -q 'hero-specimen' dist/index.html
+          grep -q 'copy-feedback' dist/index.html
+          grep -q 'skip-link' dist/index.html
+          grep -q 'skip-link' dist/system.html
+          grep -q 'aria-label="Навігація методологією"' dist/system.html
+          grep -q 'copyWithFeedback' web/app.js
+          grep -q 'prefers-reduced-motion' web/styles.css
+          grep -q 'min-height:44px' web/styles.css
