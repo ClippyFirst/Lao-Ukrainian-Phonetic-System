@@ -209,11 +209,37 @@ const LAO_ONSET_CROSSWALK = new Map([
   ["ວ", { romanization: "v", ukrainian: "в" }],
   ["ຫ", { romanization: "h", ukrainian: "г" }],
   ["ຮ", { romanization: "h", ukrainian: "г" }],
+  // BGN/PCGN note 2: ໜ/ໝ are ligature forms of silent ຫ + ນ/ມ.
+  // The silent high-class marker is not romanized; the nasal is.
+  ["ໜ", { romanization: "n", ukrainian: "н" }],
+  ["ໝ", { romanization: "m", ukrainian: "м" }],
   ["ອ", { romanization: "", ukrainian: "" }],
 ]);
 const LAO_CODA_TO_CLDR = new Map([
   ["ກ", "k"], ["ງ", "ng"], ["ດ", "d"], ["ບ", "b"], ["ນ", "n"],
   ["ມ", "m"], ["ຍ", "gn"], ["ວ", "v"],
+]);
+
+// The source vowel parser retains distinctions that the romanization can
+// collapse (notably length). These aliases validate the represented nucleus;
+// unsupported/lost source vowels are deliberately withheld.
+const LAO_VOWEL_TO_CLDR = new Map([
+  ["A", ["a"]], ["A2", ["a"]], ["AA", ["a"]],
+  ["I", ["i"]], ["II", ["i"]],
+  ["Y", ["u"]], ["YY", ["u"]],
+  ["U", ["ou"]], ["UU", ["ou"]],
+  ["E", ["é"]], ["EE", ["é"]],
+  ["AE", ["è"]], ["AEE", ["è"]],
+  ["O", ["ô"]], ["OO", ["ô"]],
+  ["AW", ["o"]],
+  ["AWW_SHORT_ALT", ["o"]], ["AWW", ["o"]],
+  ["OE", ["eu"]], ["OEE", ["eu"]],
+  ["IA", ["ia"]], ["IA_LONG", ["ia"]],
+  ["UA", ["ua"]], ["UA_LONG", ["ua"]],
+  ["UO", ["oua"]], ["UO_LONG", ["oua"]], ["UO_SHORT_ALT", ["oua"]],
+  ["AI", ["ai"]], ["AI2", ["ai"]],
+  ["AW_LONG", ["ao", "ôa"]],
+  ["AM", ["am"]],
 ]);
 
 function crosswalkUnit(unit, sourceSyllable) {
@@ -226,6 +252,12 @@ function crosswalkUnit(unit, sourceSyllable) {
   const sourceCoda = rawSourceCoda === "—" ? "" : rawSourceCoda;
   const correspondence = LAO_ONSET_CROSSWALK.get(sourceOnset);
   if (!correspondence || correspondence.romanization !== unit.onset) return null;
+  const hasSourceVowel = typeof sourceSyllable === "object" && sourceSyllable !== null
+    && Object.prototype.hasOwnProperty.call(sourceSyllable, "vowelId");
+  if (hasSourceVowel) {
+    const expectedNuclei = LAO_VOWEL_TO_CLDR.get(sourceSyllable.vowelId);
+    if (!expectedNuclei || !expectedNuclei.includes(unit.nucleus)) return null;
+  }
   if (sourceCoda !== undefined) {
     const expectedCoda = sourceCoda === "" ? "" : LAO_CODA_TO_CLDR.get(sourceCoda);
     if (expectedCoda === undefined || expectedCoda !== unit.coda) return null;
@@ -236,6 +268,7 @@ function crosswalkUnit(unit, sourceSyllable) {
       (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
     sourceOnset,
     sourceCoda,
+    sourceVowelId: hasSourceVowel ? sourceSyllable.vowelId : undefined,
     crosswalk: sourceCoda !== undefined
       ? "LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN"
       : "LAO_ONSET_GRAPHEME↔CLDR_ROMANIZATION↔UKRAINIAN",
@@ -290,12 +323,15 @@ export function analyzeRomanization(input, options = {}) {
           item.sourceCoda = typeof sourceUnit === "object" && sourceUnit !== null
             ? sourceUnit.coda
             : undefined;
+          item.sourceVowelId = typeof sourceUnit === "object" && sourceUnit !== null
+            ? sourceUnit.vowelId
+            : undefined;
           item.onset = parsed.path[0].onset;
           item.nucleus = parsed.path[0].nucleus;
           item.coda = parsed.path[0].coda;
         }
         item.warning = aligned
-          ? "Романізований початок або фіналь не відповідають лаоським графемам; український результат утримано."
+          ? "Романізований початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано."
           : "Кількість розібраних романізованих складів не збігається з кількістю лаоських складових одиниць; звірку утримано.";
         syllables.push(item);
         output += item.ukrainian;
@@ -307,7 +343,7 @@ export function analyzeRomanization(input, options = {}) {
       const sourceMismatch = Boolean(unrestricted?.count);
       const item = unresolved(part, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
       if (sourceMismatch) {
-        item.warning = "Романізований склад можна розібрати, але його початок або фіналь не відповідають лаоським графемам; український результат утримано.";
+        item.warning = "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
         if (sourceGroup.length === 1 && unrestricted.count === 1) {
           item.sourceOnset = sourceGroup[0]?.onset;
           item.sourceCoda = sourceGroup[0]?.coda;
