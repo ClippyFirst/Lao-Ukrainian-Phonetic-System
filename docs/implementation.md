@@ -28,8 +28,8 @@ Unknown Unicode, unknown vowel structures, and unsupported phonological combinat
 ## Browser romanization fallback
 
 - `web/romanization.js` — constrained provisional CLDR Lao-Latin/UNGEGN conversion.
-- `web/romanization-syllable-engine.js` — independent parser for romanized syllable onset, nucleus and coda, followed by position-sensitive Ukrainian syllable assembly; ambiguous parses are withheld.
+- `web/romanization-syllable-engine.js` — parser for romanized syllable onset, nucleus and coda, with a source-Lao-onset crosswalk that distinguishes aspirated digraphs from independent /h/ and validates BGN aliases before Ukrainian syllable assembly; ambiguous or mismatched parses are withheld.
 - `web/romanization-ukrainian.js` — compatibility export for the syllable engine; it no longer contains a letter-by-letter mapping.
 - `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
 
-The phonetic engine remains the default. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the mapping policy, `h → г` invariant, and information-loss boundary.
+The phonetic engine remains the default. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
