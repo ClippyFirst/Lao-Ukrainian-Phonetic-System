@@ -44,14 +44,14 @@ The project mapping table is position-sensitive:
 | Onset | `ph` from ຜ/ພ | `п'` (aspirated /pʰ/) |
 | Onset | `h` from ຫ/ຮ | `г` (/h/) |
 | Onset | `ch`, `ng`, `gn` | `ч`, `нг`, `нь` |
-| Onset | `k s x d t n b p f m y r l v` | `к с с д т н б п ф м й л л в` |
+| Onset | `k s d t n b p f m y r l v` | `к с д т н б п ф м й л л в` |
 | Onset | `x` from ຊ | `с` (the BGN letter `x` is not /ks/) |
 | Nucleus | `a i u ou o é è ô eu` | `а і и у о е е о е` |
 | Nucleus | `ia ua oua ai ao am` | `іа уа уа ай ао ам` |
-| Coda | `k ng y t n p m r l` | `к нг й т н п м р л` |
+| Coda | `k ng y gn t n p m r l` | `к нг й й т н п м л л` |
 | Coda | `d b` | `т п` |
 | Coda | `v` | `о` (or `оу` after `i`) |
-| Coda | `h` | `г` |
+| Coda | `h` | not supported; withheld |
 
 **The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree before the Ukrainian onset is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
 
