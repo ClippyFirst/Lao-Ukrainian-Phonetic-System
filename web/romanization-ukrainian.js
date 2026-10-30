@@ -30,6 +30,11 @@ export function romanizationToUkrainian(input) {
 
   for (let i = 0; i < chars.length;) {
     const pair = (chars[i] + (chars[i + 1] || "")).toLowerCase();
+    if (chars[i].toLowerCase() === "g" && chars[i + 1]?.toLowerCase() === "n") {
+      output += "нь";
+      i += 2;
+      continue;
+    }
     if (SEQUENCES.has(pair)) {
       output += applyCase(SEQUENCES.get(pair), chars[i] + chars[i + 1]);
       i += 2;
