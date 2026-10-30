@@ -6,13 +6,12 @@ const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../web/styles.css", import.meta.url), "utf8");
 const app = await readFile(new URL("../web/app.js", import.meta.url), "utf8");
 
-test("service follows the Korean two-column workbench composition", () => {
+test("service stacks the full-width input above full-width results", () => {
   assert.match(html, /class="workspace-layout"/);
   assert.ok(html.indexOf('class="workbench"') < html.indexOf('class="output-workspace"'));
-  assert.match(css, /\.workspace-layout\{display:grid;direction:ltr;grid-template-columns:minmax\(320px,\.82fr\) minmax\(0,1\.18fr\);grid-template-areas:"input output"/);
-  assert.match(css, /\.workbench\{grid-area:input/);
-  assert.match(css, /\.output-workspace\{grid-area:output/);
-  assert.match(css, /@media\(max-width:900px\)\{\s*\.workspace-layout\{grid-template-columns:minmax\(0,1fr\);grid-template-areas:"input" "output"/s);
+  assert.match(css, /\.workspace-layout\{display:flex;flex-direction:column;gap:24px;align-items:stretch;width:100%/);
+  assert.match(css, /\.workbench,\.output-workspace\{width:100%;min-width:0/);
+  assert.doesNotMatch(css, /grid-template-areas:"input output"/);
 });
 
 test("result cards prioritize Ukrainian, then romanization, then IPA", () => {
