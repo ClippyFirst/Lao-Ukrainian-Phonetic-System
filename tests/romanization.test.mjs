@@ -189,3 +189,19 @@ test("source coda graphemes are checked against CLDR output before Ukrainian cod
   assert.equal(adapted.output,expectedUkrainian,lao);
  }
 });
+
+test("the full Lao source resolves concatenated CLDR syllables with source onset, vowel and coda evidence",()=>{
+ const lao="ເຂົ້າໜຽວ";
+ const latin=romanizeLao(lao);
+ const source=analyze(lao);
+ const sourceSyllableGroups=[source.syllables.map(s=>({
+  onset:s.onset,
+  vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+  coda:s.coda==="—"?"":s.coda??null,
+ }))];
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
+ assert.equal(latin.output,"ékhôaniav");
+ assert.equal(source.syllables.length,2,JSON.stringify(source.syllables));
+ assert.equal(adapted.status,"OK",JSON.stringify({source:sourceSyllableGroups,adapted:adapted.syllables,warnings:adapted.warnings}));
+ assert.equal(adapted.output,"к'аоніао");
+});
