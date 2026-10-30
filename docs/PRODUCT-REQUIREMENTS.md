@@ -21,7 +21,8 @@ The primary method must not be Lao → Latin romanization → Ukrainian.
 
 - Lao input with example and clear controls.
 - Primary result labelled **Український запис** with a two-mode selector: **Фонетичний** (default) and **За романізацією**.
-- The phonetic result continues to use IPA as its analytical boundary; the optional romanization mode is a separate orthographic fallback and must be disclosed as less informative, not represented as phonetic transcription.
+- The phonetic result continues to use IPA as its analytical boundary. The optional romanization mode must use a separate syllable parser that analyzes onset, vowel nucleus and coda from the romanized string; it must not be a character-by-character Latin-to-Cyrillic mapping or be represented as phonetic transcription.
+- The romanization method must apply `h → г` consistently in all positions, including inside romanization digraphs; ambiguous or unsupported syllable segmentation must be visible and marked partial.
 - IPA remains visible as an analytical layer for the phonetic engine.
 - Per-syllable explanation: onset, consonant class, vowel, syllable type, tone, mapping.
 - Warnings for unresolved or analysis-dependent cases.
