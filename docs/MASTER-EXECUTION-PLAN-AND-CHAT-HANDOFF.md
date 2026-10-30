@@ -12,7 +12,7 @@ Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `d64e201f6d417c71e3437daccfa465ddb77e224f`
 Work branch: `feat/romanization-ukrainian-mode-20261030`
-Implementation checkpoint before the handoff update: `3d0d71cc505695eb9e7e0dc5b60f40227cc79565`; exact-head verification passed in [run 41140937597](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140937597).
+Implementation checkpoint before the handoff update: `3d0d71cc505695eb9e7e0dc5b60f40227cc79565`; final verified documentation checkpoint: `51bdd2134a0910abfb3f534b036d06cf23fe9052`; exact-head verification passed in [run 41141081924](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41141081924).
 
 ## Status vocabulary
 Use: `TODO`, `IN_PROGRESS`, `PARTIAL`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`. `PARTIAL` means implementation exists but at least one acceptance criterion remains open.
