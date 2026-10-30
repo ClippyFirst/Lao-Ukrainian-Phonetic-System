@@ -81,3 +81,21 @@ Exact branch-head verification: workflow 41120593831, commit 4db9dfe10045aa4d66a
 - Built-page and relative-asset checks: passed.
 
 The verification workflow establishes deterministic engineering behavior for this branch. It does not establish completeness of the provisional CLDR transform, correctness of all project orthographic choices, or empirical Lao pronunciation accuracy. The workflow did not deploy GitHub Pages because deployment is configured for pushes to main; manual browser/keyboard QA remains unavailable in this session. Invalid source text is withheld from the romanization fallback rather than being reinterpreted as a Latin input.
+
+
+## Corrective revision: syllable-based romanization adapter — 2026-10-30
+
+The earlier character-by-character Latin adapter is superseded. Following user review, the selected romanization method now uses a separate syllable engine that parses onset, nucleus and coda, applies position-sensitive final mappings, and assembles Ukrainian syllables. The invariant `h → г` is enforced in all positions, including within `kh`, `th` and `ph`. The UI exposes a separate romanization syllable trace; ambiguous and unsupported segments remain visible and are marked partial.
+
+Exact-head verification: [workflow 41123400527](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41123400527), commit `9a4841c53705fa245f23f5c060e53cb146d8a185`.
+
+- Python unittest discovery: **92 passed**.
+- Browser phonetic engine tests: **46 passed**.
+- Existing romanization transform/adapter compatibility tests: **9 passed**.
+- New romanization syllable-engine tests: **9 passed**.
+- Web layout and selector tests: **5 passed**.
+- External-G2P harness syntax/CLI check: passed.
+- Browser build and generated-data reproducibility: passed; no drift in `web/data.js`.
+- Built-page and relative-asset checks: passed.
+
+The tests verify deterministic software behavior for the implemented provisional romanization subset. They do not establish linguistic accuracy, complete CLDR coverage, or a gold-standard Ukrainian transcription. The source report itself states that Lao has no UN-approved romanization system and no national system. Manual visual and keyboard QA remains outstanding; the existing phonetic IPA gold corpus remains independently empty.
