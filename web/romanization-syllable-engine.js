@@ -207,15 +207,31 @@ const LAO_ONSET_CROSSWALK = new Map([
   ["ຮ", { romanization: "h", ukrainian: "г" }],
   ["ອ", { romanization: "", ukrainian: "" }],
 ]);
-function crosswalkUnit(unit, sourceOnset) {
+const LAO_CODA_TO_CLDR = new Map([
+  ["ກ", "k"], ["ງ", "ng"], ["ດ", "d"], ["ບ", "b"], ["ນ", "n"],
+  ["ມ", "m"], ["ຍ", "gn"], ["ລ", "l"], ["ວ", "v"],
+]);
+
+function crosswalkUnit(unit, sourceSyllable) {
+  const sourceOnset = typeof sourceSyllable === "string"
+    ? sourceSyllable
+    : sourceSyllable?.onset;
+  const sourceCoda = typeof sourceSyllable === "object" && sourceSyllable !== null
+    ? sourceSyllable.coda
+    : undefined;
   const correspondence = LAO_ONSET_CROSSWALK.get(sourceOnset);
   if (!correspondence || correspondence.romanization !== unit.onset) return null;
+  if (sourceCoda !== undefined) {
+    const expectedCoda = sourceCoda === "" ? "" : LAO_CODA_TO_CLDR.get(sourceCoda);
+    if (expectedCoda === undefined || expectedCoda !== unit.coda) return null;
+  }
   return {
     ...unit,
     ukrainian: correspondence.ukrainian + NUCLEI.get(unit.nucleus) +
       (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
     sourceOnset,
-    crosswalk: "LAO_ONSET_GRAPHEME↔BGN_ROMANIZATION↔UKRAINIAN",
+    sourceCoda,
+    crosswalk: "LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN",
   };
 }
 
@@ -225,8 +241,8 @@ export function analyzeRomanization(input, options = {}) {
   const syllables = [];
   let output = "";
   let partial = false;
-  const sourceOnsetGroups = Array.isArray(options.sourceOnsetGroups) ? options.sourceOnsetGroups : null;
-  const sourceOnsets = sourceOnsetGroups ? null
+  const sourceSyllableGroups = Array.isArray(options.sourceSyllableGroups) ? options.sourceSyllableGroups : null;
+  const sourceOnsets = sourceSyllableGroups ? null
     : Array.isArray(options.sourceOnsets) ? options.sourceOnsets : null;
   let sourceIndex = 0;
   let sourceGroupIndex = 0;
@@ -236,13 +252,13 @@ export function analyzeRomanization(input, options = {}) {
       output += part;
       continue;
     }
-    const sourceGroup = sourceOnsetGroups ? (sourceOnsetGroups[sourceGroupIndex++] || []) : null;
+    const sourceGroup = sourceSyllableGroups ? (sourceSyllableGroups[sourceGroupIndex++] || []) : null;
     const parsed = parseWord(part);
     if (parsed.count === 1 && parsed.path) {
-      const sourceSlice = sourceOnsetGroups ? sourceGroup : sourceOnsets
+      const sourceSlice = sourceSyllableGroups ? sourceGroup : sourceOnsets
         ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
         : null;
-      const hasCrosswalk = Boolean(sourceOnsetGroups || sourceOnsets);
+      const hasCrosswalk = Boolean(sourceSyllableGroups || sourceOnsets);
       const aligned = !hasCrosswalk || sourceSlice.length === parsed.path.length;
       const crossed = aligned && hasCrosswalk
         ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index]))
@@ -281,7 +297,7 @@ export function analyzeRomanization(input, options = {}) {
     partial = true;
     warnings.push("Кількість лаоських початкових графем і романізованих складів не збігається; повну звірку не виконано.");
   }
-  if (sourceOnsetGroups && sourceGroupIndex !== sourceOnsetGroups.length) {
+  if (sourceSyllableGroups && sourceGroupIndex !== sourceSyllableGroups.length) {
     partial = true;
     warnings.push("Кількість лаоських фрагментів і романізованих фрагментів не збігається; повну звірку не виконано.");
   }
