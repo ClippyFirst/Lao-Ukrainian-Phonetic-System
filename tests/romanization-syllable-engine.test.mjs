@@ -111,7 +111,7 @@ test("a romanization onset that conflicts with the original Lao grapheme is with
   const result = analyzeRomanization("kha", { sourceOnsets: ["ກ"] });
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "⟦kha⟧");
-  assert.match(result.warnings.join(" "), /не відповідає/iu);
+  assert.match(result.warnings.join(" "), /не відповіда/iu);
 });
 
 test("the source-to-romanization crosswalk requires one-to-one syllable alignment", () => {
@@ -139,12 +139,13 @@ test("a real k syllable followed by an h-onset syllable keeps both consonants", 
 });
 
 
-test("atomic high-class nasal graphemes absent from the BGN onset table are withheld", () => {
-  for (const sourceOnset of ["ໜ", "ໝ"]) {
-    const result = analyzeRomanization("na", { sourceOnsets: [sourceOnset] });
-    assert.equal(result.status, "PARTIAL");
-    assert.equal(result.output, "⟦na⟧");
-  }
+test("atomic high-class nasal ligatures are romanized as n and m without audible h", () => {
+  const nasal = analyzeRomanization("na", { sourceOnsets: ["ໜ"] });
+  const labial = analyzeRomanization("ma", { sourceOnsets: ["ໝ"] });
+  assert.equal(nasal.status, "OK");
+  assert.equal(nasal.output, "на");
+  assert.equal(labial.status, "OK");
+  assert.equal(labial.output, "ма");
 });
 
 
