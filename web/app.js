@@ -180,6 +180,7 @@ function render() {
     [
       ["Лаоська початкова графема", syllable.sourceOnset || "—"],
       ["Романізований склад", syllable.surface],
+      ["Звірка графеми", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
       ["Початковий елемент", syllable.onset || "∅"],
       ["Голосний комплекс", syllable.nucleus || "—"],
       ["Фіналь", syllable.coda || "∅"],
