@@ -178,3 +178,8 @@ test("a romanized string with competing vowel-versus-coda parses is withheld wit
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "⟦kam⟧");
 });
+
+
+test("nullable optional crosswalk settings do not break standalone romanization", () => {
+  assert.equal(analyzeRomanization("kha", null).output, "к'а");
+});
