@@ -191,7 +191,7 @@ export function analyzeRomanization(input) {
     status: partial ? "PARTIAL" : "OK",
     syllables,
     warnings: syllables.filter((unit) => unit.warning).map((unit) => unit.warning),
-    source: "CLDR Lao-Latin/UNGEGN romanization → project syllable-level Ukrainian adapter",
+    source: "CLDR Lao-Latin (provisional; BGN alias) romanization → project syllable-level Ukrainian adapter",
   };
 }
 
