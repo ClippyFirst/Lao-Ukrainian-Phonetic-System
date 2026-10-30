@@ -109,3 +109,32 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  assert.ok(app.includes("Лаоська початкова графема"));
  assert.ok(app.includes("Звірка початкової графеми"));
 });
+
+
+test("full Lao source keeps an independent h onset distinct from aspirated kh",()=>{
+ const examples=[
+  ["ຂາ","к'а"],
+  ["ຄາ","к'а"],
+  ["ຮາ","га"],
+  ["ຫາ","га"],
+  ["ຊາ","са"],
+ ];
+ for(const [lao,expected] of examples){
+  const latin=romanizeLao(lao);
+  const source=analyze(lao);
+  const adapted=analyzeRomanization(latin.output,{sourceOnsets:source.syllables.map(s=>s.onset)});
+  assert.equal(adapted.status,"OK",lao);
+  assert.equal(adapted.output,expected,lao);
+ }
+});
+
+test("a Lao k syllable followed by a real h-onset syllable is preserved as two units",()=>{
+ const lao="ກາຮາ";
+ const latin=romanizeLao(lao);
+ const source=analyze(lao);
+ const adapted=analyzeRomanization(latin.output,{sourceOnsets:source.syllables.map(s=>s.onset)});
+ assert.equal(latin.output,"kaha");
+ assert.deepEqual(source.syllables.map(s=>s.onset),["ກ","ຮ"]);
+ assert.equal(adapted.status,"OK");
+ assert.equal(adapted.output,"кага");
+});
