@@ -231,7 +231,9 @@ function crosswalkUnit(unit, sourceSyllable) {
       (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
     sourceOnset,
     sourceCoda,
-    crosswalk: "LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN",
+    crosswalk: sourceCoda !== undefined
+      ? "LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN"
+      : "LAO_ONSET_GRAPHEME↔CLDR_ROMANIZATION↔UKRAINIAN",
   };
 }
 
