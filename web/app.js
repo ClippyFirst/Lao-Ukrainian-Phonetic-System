@@ -1,6 +1,6 @@
 import { analyze } from "./engine.js";
 import { romanizeLao } from "./romanization.js";
-import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261030-aspiration-crosswalk";
+import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261031-source-vowel-crosswalk";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
