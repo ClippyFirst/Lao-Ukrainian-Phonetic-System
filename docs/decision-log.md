@@ -49,3 +49,10 @@
 **Decision:** Validate each romanized onset against the corresponding original Lao onset grapheme. BGN/PCGN spellings kh/th/ph from ຂ/ຄ, ຖ/ທ and ຜ/ພ represent aspirated stops and map to к'/т'/п'. Independent Lao /h/ from ຫ/ຮ maps to г. BGN x from ຊ represents /s/ and maps to с. Reject final h because it is not a supported Lao coda. Withhold mismatched or unaligned source/romanization pairs.
 
 **Reason:** The letter h inside an established romanization digraph is not a separate /h/ phoneme. Richard Ishida's Lao Orthography Notes distinguishes /kʰ tʰ pʰ/ from /h/ and identifies their source graphemes; the EKI/UNGEGN report supplies the BGN/PCGN Latin spellings. A blanket h → г rule confuses aspiration with an independent consonant and produces the wrong Ukrainian result. The crosswalk uses original Lao grapheme evidence without routing the romanization mode through the IPA-first result pipeline.
+
+
+## D-009 — Validate supported coda graphemes against CLDR output
+
+**Decision:** The romanization route must validate both the original Lao onset and any supported Lao coda against the corresponding CLDR romanized elements before emitting a Ukrainian syllable. The supported coda crosswalk is intentionally bounded to ກ→k, ງ→ng, ດ→d, ບ→b, ນ→n, ມ→m, ຍ→gn and ວ→v. The adapter then applies its position-sensitive Ukrainian coda targets (including d→т, b→п, gn→й and v→о/оу). Unsupported or mismatched source codas are withheld rather than inferred from a Latin string.
+
+**Reason:** The provisional CLDR transform applies mostly context-insensitive grapheme substitutions and explicitly leaves special final-consonant handling incomplete. The source Lao coda is available in the analysis result; checking it prevents a plausible-looking but incorrect final from being emitted. The EKI/UNGEGN BGN/PCGN report documents position-dependent final forms, while the pinned CLDR transform documents the upstream aliases used by this adapter.
