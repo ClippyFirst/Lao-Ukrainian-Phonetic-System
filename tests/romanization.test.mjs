@@ -81,7 +81,7 @@ test("Lao source grapheme cross-check selects aspiration for ຂ instead of lite
  const lao="ຂາ";
  const latin=romanizeLao(lao);
  const source=analyze(lao);
- const adapted=analyzeRomanization(latin.output,{sourceOnsets:source.syllables.map(s=>s.onset)});
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
  assert.equal(latin.output,"kha");
  assert.equal(adapted.output,"к'а");
  assert.equal(adapted.status,"OK");
@@ -96,18 +96,20 @@ test("source grapheme cross-check does not allow kh to impersonate k",()=>{
 
 
 test("the compatibility API accepts source-onset evidence for the three-way crosswalk",()=>{
- const result=romanizationToUkrainian("kha",{sourceOnsets:["ຂ"]});
+ const result=romanizationToUkrainian("kha",{sourceSyllableGroups:[[{onset:"ຂ",coda:""}]]});
  assert.equal(result.output,"к'а");
- assert.equal(result.syllables[0].crosswalk,"LAO_ONSET_GRAPHEME↔BGN_ROMANIZATION↔UKRAINIAN");
+ assert.equal(result.syllables[0].crosswalk,"LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN");
 });
 
 test("the UI passes the parsed Lao onsets into romanization analysis and copy",()=>{
  const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
- assert.match(app,/function sourceOnsetGroupsForCrosswalk\(sourceText\)/u);
- assert.match(app,/sourceOnsetGroups:\s*sourceOnsetGroupsForCrosswalk\(input\.value\)/u);
+ assert.match(app,/function sourceSyllableGroupsForCrosswalk\(sourceText\)/u);
+ assert.match(app,/sourceSyllableGroups:\s*sourceSyllableGroupsForCrosswalk\(input\.value\)/u);
  assert.equal(app.includes("sourceOnsetsForCrosswalk"),false);
+ assert.equal(app.includes("sourceOnsetGroupsForCrosswalk"),false);
  assert.ok(app.includes("Лаоська початкова графема"));
- assert.ok(app.includes("Звірка початкової графеми"));
+ assert.ok(app.includes("Лаоська фінальна графема"));
+ assert.ok(app.includes("Звірка графем"));
 });
 
 
