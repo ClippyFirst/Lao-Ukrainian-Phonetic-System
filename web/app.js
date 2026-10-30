@@ -103,7 +103,7 @@ function render() {
       : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива.")
     : fallbackBlocked
       ? "Романізаційний режим недоступний: виправте вхідний текст, який не пройшов перевірку."
-      : "За романізацією: CLDR Lao-Latin/UNGEGN → українська графічна адаптація. " +
+      : "За романізацією: CLDR Lao-Latin/UNGEGN → українська графічна адаптація. IPA та поскладовий розбір нижче залишаються фонетичними. " +
       (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
         ? "Покриття часткове; непідтримані символи збережено."
         : "Запис відтворює латинську форму, а не встановлену вимову.");
@@ -148,7 +148,7 @@ function render() {
       ["Голосний", syllable.vowel || "—"],
       ["Тип складу", syllable.syllableType || "—"],
       ["Тон", syllable.tone ? syllable.tone + " " + syllable.toneContour : "—"],
-      ["Український", syllable.ukrainian || "—"],
+      ["Український · фонетичний", syllable.ukrainian || "—"],
       ["Статус", syllable.status],
     ].forEach(([label, value]) => {
       const cell = document.createElement("div");
