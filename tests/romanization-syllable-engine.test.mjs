@@ -41,8 +41,10 @@ test("unsupported romanization remains visible and is flagged partial", () => {
   assert.equal(result.output, "к'а ⟦ໞ⟧");
 });
 
-test("h remains г even in a syllable-final position", () => {
-  assert.equal(analyzeRomanization("ah").output, "аг");
+test("h is not accepted as a Lao coda because the coda inventory excludes it", () => {
+  const result = analyzeRomanization("ah");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦ah⟧");
 });
 
 test("the coda-vowel correspondence follows the documented BGN/PCGN context", () => {
