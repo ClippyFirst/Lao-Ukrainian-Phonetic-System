@@ -74,10 +74,10 @@ Exact branch-head verification: workflow 41119525542, commit cfa95799c47eb683e59
 
 - Python unittest discovery: **92 passed**.
 - Browser engine tests: **46 passed**.
-- Romanization tests: **7 passed**, including sequence/diacritic mapping, unsupported-character preservation, and a direct Lao example comparison showing the fallback output remains distinct from the phonetic result.
+- Romanization tests: **8 passed**, including sequence/diacritic mapping, unsupported-character preservation, the CLDR palatal-nasal spelling, and a direct Lao example comparison showing the fallback output remains distinct from the phonetic result.
 - Web layout tests: **5 passed**, including the accessible method selector and selected-result copy wiring.
 - Optional external-G2P harness syntax/CLI check: passed.
 - Browser data generation/build: passed; generated web/data.js had no drift.
 - Built-page and relative-asset checks: passed.
 
-The verification workflow establishes deterministic engineering behavior for this branch. It does not establish completeness of the provisional CLDR transform, correctness of all project orthographic choices, or empirical Lao pronunciation accuracy. The workflow did not deploy GitHub Pages because deployment is configured for pushes to main; manual browser/keyboard QA remains unavailable in this session.
+The verification workflow establishes deterministic engineering behavior for this branch. It does not establish completeness of the provisional CLDR transform, correctness of all project orthographic choices, or empirical Lao pronunciation accuracy. The workflow did not deploy GitHub Pages because deployment is configured for pushes to main; manual browser/keyboard QA remains unavailable in this session. Invalid source text is withheld from the romanization fallback rather than being reinterpreted as a Latin input.
