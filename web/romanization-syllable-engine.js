@@ -81,7 +81,7 @@ function candidatesAt(source, index) {
   // Short preposed vowels may carry a trailing "a" from the literal transform;
   // that final a is a spelling artefact of the provisional transform, not a
   // second syllable nucleus in the BGN/PCGN syllable table.
-  for (const nucleus of longestMatchesAt(source, index, SORTED_NUCLEI)) {
+  for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
     if (!PREPOSED_NUCLEI.has(nucleus)) continue;
     const onsetStart = index + nucleus.length;
     for (const onset of longestMatchesAt(source, onsetStart, SORTED_ONSETS)) {
