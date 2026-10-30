@@ -494,7 +494,7 @@ This checkpoint supersedes earlier notes in this handoff saying the romanization
 - Aspirated /kʰ tʰ pʰ/ now produce к' т' п' in practical output. IPA continues to carry aspiration. /ʔ/ remains distinct and does not trigger the apostrophe.
 - /h/ → г, /ɡ/ → ґ, genuine /x/ → х. Affricates include /tɕ/ and /t͡ɕ/ → ч, /dʑ/ and /d͡ʑ/ → дж, /t͡s/ → ц, /d͡z/ → дз, /t͡ʃ/ → ч, /d͡ʒ/ → дж; /ʃ ʒ/ → ш ж. Supported palatalization is represented explicitly.
 - Updated Python and browser regressions and compound examples for the resulting aspiration marker. Regenerated `web/data.js` from canonical CSV; independently reconstructed generator output matched the committed artifact byte-for-byte.
-- Exact-head verification [41075912762](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41075912762) passed the complete `verify` workflow. Verified branch head: `ed252abd34cb6b20c908234e75873e0b02a89762`.
+- Exact current-head verification [41076881196](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41076881196) passed the complete `verify` workflow. Verified branch head: `70422a53d556470cd5220554d9925dffb1fbb2f5`.
 - PR #56 remains draft and unmerged. Previously merged PR #55 and the published romanization layer were preserved.
 
 The mapping changes are project-level Ukrainian practical decisions, not an official standard and not independent Lao pronunciation gold. The research gold corpus remains empty and measured accuracy remains unreported. Existing segmentation, cluster, tone-scope and lexical adjudication blockers are unchanged.
