@@ -125,7 +125,7 @@ test("full Lao source keeps an independent h onset distinct from aspirated kh",(
   const latin=romanizeLao(lao);
   const source=analyze(lao);
   const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
-  assert.equal(adapted.status,"OK",lao);
+  assert.equal(adapted.status,"OK",JSON.stringify({lao,latin:latin.output,source:source.syllables.map(s=>({surface:s.surface,onset:s.onset,coda:s.coda,vowel:s.vowel,status:s.status})),adapted:adapted.syllables,warnings:adapted.warnings}));
   assert.equal(adapted.output,expected,lao);
  }
 });
