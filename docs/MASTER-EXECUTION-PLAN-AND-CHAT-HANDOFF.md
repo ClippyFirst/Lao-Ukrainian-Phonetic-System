@@ -521,3 +521,13 @@ The mapping changes are project-level Ukrainian practical decisions, not an offi
 - `LAO-UI-001` remains `IN_PROGRESS` until actual browser QA is completed at 1440px, 768px and 390px, including keyboard operation. CI assertions are not a visual review.
 - `LAO-DEPLOY-001` remains `TODO` until the post-merge Pages workflow succeeds and both public URLs serve the new build.
 - Latest branch head at this checkpoint: `a175669427ba6ffbe6c11a05fca3817d3531027a`; branch `design/lao-layout-20261030`; PR #61 remains open. No release tag created.
+
+
+## Post-merge checkpoint — 2026-10-30
+
+- PR #61 was squash-merged into `main`: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/61
+- Main merge commit: `10faed6e0012935f4001932aada1f9ed68a65eb2` (source branch `design/lao-layout-20261030`, head `8aff9cca546c2cd86e24d7dc1c5231eefab4eb44`).
+- The GitHub Pages workflow is configured to run on pushes to `main` when the site or Pages workflow files change. This merge includes `index.html`, `system.html`, `web/**` and `.github/workflows/pages.yml`, so it matches the deploy trigger. The workflow uses only GitHub Pages; no Vercel target is configured.
+- The latest exact-head `verify` run [41111609245](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41111609245) remained queued when checked. Do not report it as passed. An earlier UI implementation commit passed verify run [41110855525](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41110855525).
+- Deployment and visual acceptance are not yet marked complete: the available GitHub connector did not expose the push-triggered Pages run status, the public Pages URL could not be fetched in this session, and browser screenshot review was unavailable because the browser service had exhausted its credits. `LAO-DEPLOY-001` remains `TODO`; `LAO-UI-001` remains `IN_PROGRESS` until visual QA at 1440px, 768px and 390px plus keyboard interaction review.
+- No linguistic engine, source registry, phonetic mappings, or research accuracy claims were changed by this design/deployment batch. Research corpus and phonological adjudication blockers remain as previously documented.
