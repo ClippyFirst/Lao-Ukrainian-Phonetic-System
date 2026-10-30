@@ -215,7 +215,7 @@ function crosswalkUnit(unit, sourceOnset) {
     ukrainian: correspondence.ukrainian + NUCLEI.get(unit.nucleus) +
       (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
     sourceOnset,
-    crosswalk: "LAO_GRAPHEME↔BGN_ROMANIZATION↔UKRAINIAN",
+    crosswalk: "LAO_ONSET_GRAPHEME↔BGN_ROMANIZATION↔UKRAINIAN",
   };
 }
 
