@@ -113,3 +113,15 @@ test("source graphemes correct romanization-specific consonant aliases", () => {
   assert.equal(analyzeRomanization("xa", { sourceOnsets: ["ຊ"] }).output, "са");
   assert.equal(analyzeRomanization("ra", { sourceOnsets: ["ຣ"] }).output, "ла");
 });
+
+
+test("a real k syllable followed by an h-onset syllable keeps both consonants", () => {
+  const result = analyzeRomanization("kaha", { sourceOnsets: ["ກ", "ຮ"] });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "кага");
+  assert.deepEqual(result.syllables.map(({ onset, sourceOnset, ukrainian }) =>
+    ({ onset, sourceOnset, ukrainian })), [
+      { onset: "k", sourceOnset: "ກ", ukrainian: "ка" },
+      { onset: "h", sourceOnset: "ຮ", ukrainian: "га" },
+    ]);
+});
