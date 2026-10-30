@@ -12,7 +12,7 @@ test("romanization engine parses a syllable into onset, nucleus and coda", () =>
     ]);
 });
 
-test("h is consistently adapted as Ukrainian г, including within romanization digraphs", () => {
+test("aspiration digraphs are not mistaken for the independent Lao h consonant", () => {
   assert.equal(analyzeRomanization("ha kha tha pha").output, "га к'а т'а п'а");
 });
 
@@ -38,7 +38,7 @@ test("ambiguous continuous romanization is withheld rather than arbitrarily segm
 test("unsupported romanization remains visible and is flagged partial", () => {
   const result = analyzeRomanization("kha ໞ");
   assert.equal(result.status, "PARTIAL");
-  assert.equal(result.output, "кга ⟦ໞ⟧");
+  assert.equal(result.output, "к'а ⟦ໞ⟧");
 });
 
 test("h remains г even in a syllable-final position", () => {
@@ -104,4 +104,10 @@ test("the source-to-romanization crosswalk requires one-to-one syllable alignmen
   const result = analyzeRomanization("khakha", { sourceOnsets: ["ຂ"] });
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "⟦khakha⟧");
+});
+
+
+test("source graphemes correct romanization-specific consonant aliases", () => {
+  assert.equal(analyzeRomanization("xa", { sourceOnsets: ["ຊ"] }).output, "са");
+  assert.equal(analyzeRomanization("ra", { sourceOnsets: ["ຣ"] }).output, "ла");
 });
