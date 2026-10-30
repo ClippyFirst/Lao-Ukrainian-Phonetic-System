@@ -8,12 +8,14 @@ const romanization = document.querySelector("#romanization");
 const rows = document.querySelector("#rows");
 const warnings = document.querySelector("#warnings");
 const section = document.querySelector("#analysis-section");
+const emptyState = document.querySelector("#empty-state");
+const results = document.querySelector("#results");
 const copy = document.querySelector("#copy");
 const copyRomanization = document.querySelector("#copy-romanization");
 const copyIpa = document.querySelector("#copy-ipa");
 const copyFeedback = document.querySelector("#copy-feedback");
 const count = document.querySelector("#count");
-const status = document.querySelector("#status");
+const status = document.querySelector("#analysis-status");
 
 async function copyWithFeedback(button, value) {
   const defaultLabel = button.dataset.defaultLabel || button.textContent;
@@ -48,6 +50,8 @@ function render() {
     ipa.textContent = "";
     romanization.textContent = "Введіть лаоський текст, щоб отримати романізацію.";
     romanization.className = "output muted";
+    emptyState.hidden = false;
+    results.hidden = true;
     section.classList.add("hidden");
     copy.disabled = true;
     copyRomanization.disabled = true;
@@ -65,6 +69,8 @@ function render() {
   copy.disabled = !result.output;
   copyRomanization.disabled = !roman.output;
   copyIpa.disabled = !ipa.textContent;
+  emptyState.hidden = true;
+  results.hidden = false;
   section.classList.remove("hidden");
 
   status.textContent =
