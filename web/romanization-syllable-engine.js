@@ -215,21 +215,26 @@ export function analyzeRomanization(input, options = {}) {
   const syllables = [];
   let output = "";
   let partial = false;
-  const sourceOnsets = Array.isArray(options.sourceOnsets) ? options.sourceOnsets : null;
+  const sourceOnsetGroups = Array.isArray(options.sourceOnsetGroups) ? options.sourceOnsetGroups : null;
+  const sourceOnsets = sourceOnsetGroups ? null
+    : Array.isArray(options.sourceOnsets) ? options.sourceOnsets : null;
   let sourceIndex = 0;
+  let sourceGroupIndex = 0;
 
   for (const part of parts) {
     if (SEPARATORS.test(part) || /^[0-9]+$/u.test(part)) {
       output += part;
       continue;
     }
+    const sourceGroup = sourceOnsetGroups ? (sourceOnsetGroups[sourceGroupIndex++] || []) : null;
     const parsed = parseWord(part);
     if (parsed.count === 1 && parsed.path) {
-      const sourceSlice = sourceOnsets
+      const sourceSlice = sourceOnsetGroups ? sourceGroup : sourceOnsets
         ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
         : null;
-      const aligned = !sourceOnsets || sourceSlice.length === parsed.path.length;
-      const crossed = aligned && sourceOnsets
+      const hasCrosswalk = Boolean(sourceOnsetGroups || sourceOnsets);
+      const aligned = !hasCrosswalk || sourceSlice.length === parsed.path.length;
+      const crossed = aligned && hasCrosswalk
         ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index]))
         : parsed.path;
       const validCrosswalk = aligned && crossed.every(Boolean);
@@ -265,6 +270,10 @@ export function analyzeRomanization(input, options = {}) {
   if (sourceOnsets && sourceIndex !== sourceOnsets.length) {
     partial = true;
     warnings.push("Кількість лаоських початкових графем і романізованих складів не збігається; повну звірку не виконано.");
+  }
+  if (sourceOnsetGroups && sourceGroupIndex !== sourceOnsetGroups.length) {
+    partial = true;
+    warnings.push("Кількість лаоських фрагментів і романізованих фрагментів не збігається; повну звірку не виконано.");
   }
 
   return {
