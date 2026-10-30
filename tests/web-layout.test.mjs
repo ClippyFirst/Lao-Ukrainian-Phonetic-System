@@ -6,7 +6,7 @@ const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../web/styles.css", import.meta.url), "utf8");
 const app = await readFile(new URL("../web/app.js", import.meta.url), "utf8");
 
-test("service follows the Korean two-column workbench composition", () => {
+test("service stacks the full-width input above full-width results", () => {
   assert.match(html, /class="workspace-layout"/);
   assert.ok(html.indexOf('class="workbench"') < html.indexOf('class="output-workspace"'));
   assert.match(css, /\.workspace-layout\{display:grid;direction:ltr;grid-template-columns:minmax\(320px,\.82fr\) minmax\(0,1\.18fr\);grid-template-areas:"input output"/);
