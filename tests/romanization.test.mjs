@@ -75,8 +75,8 @@ test("CLDR output for a multi-syllable Lao example feeds the independent syllabl
  assert.equal(adapted.output,"⟦ékhôaniav⟧");
  const sourceAware = analyzeRomanization("ékhôa-niav",{
   sourceSyllableGroups:[
-   [{onset:"ຂ",coda:""}],
-   [{onset:"ໜ",coda:"ວ"}],
+   [{onset:"ຂ",coda:"",vowelId:"AW_LONG"}],
+   [{onset:"ໜ",coda:"ວ",vowelId:"IA_LONG"}],
   ],
  });
  assert.equal(sourceAware.status,"OK");
@@ -88,7 +88,11 @@ test("Lao source grapheme cross-check selects aspiration for ຂ instead of lite
  const lao="ຂາ";
  const latin=romanizeLao(lao);
  const source=analyze(lao);
- const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({
+   onset:s.onset,
+   vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+   coda:s.coda==="—"?"":s.coda,
+  }))]});
  assert.equal(latin.output,"kha");
  assert.equal(adapted.output,"к'а");
  assert.equal(adapted.status,"OK");
@@ -133,7 +137,11 @@ test("full Lao source keeps an independent h onset distinct from aspirated kh",(
  for(const [lao,expected] of examples){
   const latin=romanizeLao(lao);
   const source=analyze(lao);
-  const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
+  const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({
+   onset:s.onset,
+   vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+   coda:s.coda==="—"?"":s.coda,
+  }))]});
   assert.equal(adapted.status,"OK",JSON.stringify({lao,latin:latin.output,source:source.syllables.map(s=>({surface:s.surface,onset:s.onset,coda:s.coda,vowel:s.vowel,status:s.status})),adapted:adapted.syllables,warnings:adapted.warnings}));
   assert.equal(adapted.output,expected,lao);
  }
@@ -143,7 +151,11 @@ test("a Lao k syllable followed by a real h-onset syllable is preserved as two u
  const lao="ກາຮາ";
  const latin=romanizeLao(lao);
  const source=analyze(lao);
- const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({
+   onset:s.onset,
+   vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+   coda:s.coda==="—"?"":s.coda,
+  }))]});
  assert.equal(latin.output,"kaha");
  assert.deepEqual(source.syllables.map(s=>s.onset),["ກ","ຮ"]);
  assert.equal(adapted.status,"OK");
@@ -168,6 +180,7 @@ test("source coda graphemes are checked against CLDR output before Ukrainian cod
   const adapted=analyzeRomanization(latin.output,{
    sourceSyllableGroups:[source.syllables.map(s=>({
     onset:s.onset,
+    vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
     coda:s.coda==="—"?"":s.coda??null,
    }))],
   });
