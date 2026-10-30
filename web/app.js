@@ -1,6 +1,6 @@
 import { analyze } from "./engine.js";
 import { romanizeLao } from "./romanization.js";
-import { analyzeRomanization, romanizationToUkrainian } from "./romanization-syllable-engine.js";
+import { analyzeRomanization } from "./romanization-syllable-engine.js";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
@@ -53,7 +53,7 @@ function currentUkrainianOutput() {
   if (outputMode === "phonetic") return result.output;
   if (result.status === "INVALID") return "";
   const roman = romanizeLao(input.value);
-  return romanizationToUkrainian(roman.output).output;
+  return analyzeRomanization(roman.output).output;
 }
 
 function setOutputMode(mode) {
@@ -70,8 +70,8 @@ function render() {
   const result = analyze(input.value);
   const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
   const romanized = result.status === "INVALID"
-    ? { output: "", status: "PARTIAL" }
-    : romanizationToUkrainian(roman.output);
+    ? { output: "", status: "PARTIAL", warnings: [], syllables: [] }
+    : analyzeRomanization(roman.output);
   count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
