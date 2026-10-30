@@ -58,6 +58,7 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
       .filter((syllable) => !syllable.passthrough)
       .map((syllable) => ({
         onset: syllable.onset || null,
+        vowelId: syllable.vowel?.id ?? null,
         coda: syllable.coda === "—" ? "" : syllable.coda ?? null,
       })));
 }
@@ -182,6 +183,7 @@ function render() {
     grid.className = "analysis-grid";
     [
       ["Лаоська початкова графема", syllable.sourceOnset || "—"],
+      ["Лаоська голосна структура", syllable.sourceVowelId || "—"],
       ["Лаоська фінальна графема", syllable.sourceCoda || "—"],
       ["Романізований склад", syllable.surface],
       ["Звірка графем", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
