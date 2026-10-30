@@ -149,6 +149,7 @@ test("source coda graphemes are checked against CLDR output before Ukrainian cod
   ["ກາງ","kang","канг"],
   ["ການ","kan","кан"],
   ["ກາມ","kam","кам"],
+  ["ກຳ","kam","кам"],
   ["ກາຍ","kagn","кай"],
   ["ກາວ","kav","као"],
  ];
