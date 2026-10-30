@@ -278,6 +278,16 @@ export function analyzeRomanization(input, options = {}) {
         if (sourceOnsets) sourceIndex += parsed.path.length;
       } else {
         const item = unresolved(part, "UNRESOLVED");
+        if (aligned && sourceSlice?.length === 1 && parsed.path.length === 1) {
+          const sourceUnit = sourceSlice[0];
+          item.sourceOnset = typeof sourceUnit === "string" ? sourceUnit : sourceUnit?.onset;
+          item.sourceCoda = typeof sourceUnit === "object" && sourceUnit !== null
+            ? sourceUnit.coda
+            : undefined;
+          item.onset = parsed.path[0].onset;
+          item.nucleus = parsed.path[0].nucleus;
+          item.coda = parsed.path[0].coda;
+        }
         item.warning = aligned
           ? "Романізований початок або фіналь не відповідають лаоським графемам; український результат утримано."
           : "Кількість розібраних романізованих складів не збігається з кількістю лаоських складових одиниць; звірку утримано.";
