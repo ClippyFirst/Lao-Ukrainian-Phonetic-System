@@ -69,8 +69,13 @@
 
           <div class="result-grid">
             <article class="result-card result-card-primary" data-result-panel="ukrainian">
-              <div class="result-meta"><span>UA</span><strong>Українська практична транскрипція</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="result-meta"><span>UA</span><strong>Український запис</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="method-switch" role="group" aria-label="Метод українського запису">
+                <button id="mode-phonetic" class="method-button is-active" type="button" aria-pressed="true">Фонетичний</button>
+                <button id="mode-romanization" class="method-button" type="button" aria-pressed="false">За романізацією</button>
+              </div>
               <p id="output" class="result-body output muted" role="status" aria-live="polite" aria-atomic="true">Введіть лаоський текст, щоб отримати українське читання.</p>
+              <p id="output-method-note" class="method-note" aria-live="polite">Фонетичний режим: IPA → українська практична адаптація.</p>
             </article>
 
             <article class="result-card" data-result-panel="romanization">
