@@ -48,7 +48,7 @@ async function copyWithFeedback(button, value) {
   }, 1400);
 }
 
-function sourceOnsetGroupsForCrosswalk(sourceText) {
+function sourceSyllableGroupsForCrosswalk(sourceText) {
   const parts = String(sourceText ?? "")
     .split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
     .filter(Boolean);
@@ -56,7 +56,10 @@ function sourceOnsetGroupsForCrosswalk(sourceText) {
     .filter((part) => !/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u.test(part) && !/^[0-9]+$/u.test(part))
     .map((part) => analyze(part).syllables
       .filter((syllable) => !syllable.passthrough)
-      .map((syllable) => syllable.onset || null));
+      .map((syllable) => ({
+        onset: syllable.onset || null,
+        coda: syllable.coda === "—" ? "" : syllable.coda ?? null,
+      })));
 }
 
 function currentUkrainianOutput() {
@@ -65,7 +68,7 @@ function currentUkrainianOutput() {
   if (result.status === "INVALID") return "";
   const roman = romanizeLao(input.value);
   return analyzeRomanization(roman.output, {
-    sourceOnsetGroups: sourceOnsetGroupsForCrosswalk(input.value),
+    sourceSyllableGroups: sourceSyllableGroupsForCrosswalk(input.value),
   }).output;
 }
 
@@ -85,7 +88,7 @@ function render() {
   const romanized = result.status === "INVALID"
     ? { output: "", status: "PARTIAL", warnings: [], syllables: [] }
     : analyzeRomanization(roman.output, {
-      sourceOnsetGroups: sourceOnsetGroupsForCrosswalk(input.value),
+      sourceOnsetGroups: sourceSyllableGroupsForCrosswalk(input.value),
     });
   count.textContent = [...input.value].length + " символів";
 
@@ -179,8 +182,9 @@ function render() {
     grid.className = "analysis-grid";
     [
       ["Лаоська початкова графема", syllable.sourceOnset || "—"],
+      ["Лаоська фінальна графема", syllable.sourceCoda || "—"],
       ["Романізований склад", syllable.surface],
-      ["Звірка початкової графеми", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
+      ["Звірка графем", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
       ["Початковий елемент", syllable.onset || "∅"],
       ["Голосний комплекс", syllable.nucleus || "—"],
       ["Фіналь", syllable.coda || "∅"],
