@@ -292,7 +292,7 @@ export function analyzeRomanization(input, options = {}) {
     status: partial ? "PARTIAL" : "OK",
     syllables,
     warnings,
-    source: "CLDR Lao-Latin (provisional; BGN/PCGN 1966 basis) → Lao-grapheme crosswalk → Ukrainian syllable adapter",
+    source: "CLDR Lao-Latin (provisional; BGN/PCGN 1966 romanization basis) → Lao-grapheme crosswalk → Ukrainian syllable adapter",
   };
 }
 
