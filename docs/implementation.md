@@ -28,7 +28,7 @@ Unknown Unicode, unknown vowel structures, and unsupported phonological combinat
 ## Browser romanization fallback
 
 - `web/romanization.js` — constrained provisional CLDR Lao-Latin/UNGEGN conversion.
-- `web/romanization-syllable-engine.js` — parser for romanized syllable onset, nucleus and coda, with a source-Lao-onset crosswalk that distinguishes aspirated digraphs from independent /h/ and validates BGN aliases before Ukrainian syllable assembly; ambiguous or mismatched parses are withheld.
+- `web/romanization-syllable-engine.js` — parser for romanized syllable onset, nucleus and coda, with a source-Lao onset-and-coda crosswalk that distinguishes aspirated digraphs from independent /h/, validates supported CLDR coda aliases, and withholds mismatched grapheme pairs before Ukrainian syllable assembly; ambiguous or mismatched parses are withheld.
 - `web/romanization-ukrainian.js` — compatibility export for the syllable engine; it no longer contains a letter-by-letter mapping.
 - `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
 
