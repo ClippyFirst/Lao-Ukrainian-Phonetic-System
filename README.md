@@ -9,7 +9,7 @@ This repository develops a **project-specific Ukrainian practical transcription 
 It is deliberately **not**:
 
 - Lao-character → Ukrainian-character substitution;
-- Lao → romanization → Ukrainian;
+- a primary phonetic method that depends on romanization instead of IPA (a separate, explicitly lower-information romanization fallback is available in the web interface);
 - a claim to be an official Ukrainian national standard;
 - a universal transcription system for every Lao dialect;
 - a lexical word-segmentation engine.
@@ -88,7 +88,7 @@ The repository also contains a two-page local-first web instrument:
 **Live site:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/  
 **Methodology:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/system.html
 
-The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. The latest deployment of commit `007c6a7e0bce0ca72cda3ddda3054c69492ca3b8` succeeded in [workflow run 39597989697](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39597989697).
+The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. The Ukrainian result has two selectable methods: the default IPA-first phonetic adaptation and a separate CLDR Lao-Latin/UNGEGN spelling-to-Ukrainian fallback. The latter is provisional, does not reconstruct tone or pronunciation, and is not a phonetic equivalent. See [the methodology](docs/methodology.md#optional-romanization-to-ukrainian-mode). GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. The latest deployment of commit `007c6a7e0bce0ca72cda3ddda3054c69492ca3b8` succeeded in [workflow run 39597989697](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39597989697).
 
 Release verification:
 
