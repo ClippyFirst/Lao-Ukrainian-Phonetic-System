@@ -144,19 +144,19 @@ At that historical checkpoint, this run included CLDR preposed-marker/postposed-
 
 ## Source-vowel and high-class nasal crosswalk verification — 2026-10-31
 
-Exact branch head: 7fef1a326c8d1f7c5dfc0cb3c2cb41a4ee9b4140. [GitHub Actions workflow 41137160734](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41137160734) completed successfully.
+Verified implementation head: 6c620a3145d3fce0b9cea0cdf7aacba1f922d5d6. [GitHub Actions workflow 41137492940](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41137492940) completed successfully.
 
 - Repository data/evidence audit: **passed** — 43 consonant rows, 34 vowel rows, 17 tone rules, 69 Ukrainian mappings, 20 evidence sources and 44 evidence claims; all claim references resolved.
 - Python unittest discovery: **92 passed**.
 - Browser phonetic engine: **46 passed**.
 - Romanization transform/integration: **18 passed**.
-- Romanization syllable/crosswalk engine: **26 passed**.
+- Romanization syllable/crosswalk engine: **27 passed**.
 - Web layout: **5 passed**.
 - Optional external-G2P harness syntax/CLI: **passed**.
 - Static build and canonical browser-data regeneration: **passed**.
 - Generated-data reproducibility (git diff --exit-code -- web/data.js): **passed**.
-- Built-page and relative-asset checks: **passed**. The workflow's app-module assertion was adjusted to accept the cache-busting query string while retaining the relative ./web/app.js path.
+- Built-page and relative-asset checks: **passed**. The workflow's app-module assertion accepts the cache-busting query string while retaining the relative ./web/app.js path.
 
-New coverage includes source-vowel ID agreement/mismatch, silent high-class nasal ligatures ໜ/ໝ, source-resolved niav, the full ເຂົ້າໜຽວ source, and the A+coda-m versus AM-nucleus distinction for kam. The IPA-first pipeline remains unchanged.
+New coverage includes source-vowel ID agreement/mismatch, silent high-class nasal ligatures ໜ/ໝ, source-resolved niav, the full ເຂົ້າໜຽວ source, and the A+coda-m versus AM-nucleus distinction for kam. The UI labels the full source-syllable check explicitly. The IPA-first pipeline remains unchanged.
 
 This verifies deterministic implementation behavior for the supported subset only. It does not establish empirical pronunciation accuracy, complete CLDR/ICU coverage, or a normative Lao-to-Ukrainian standard. Manual visual/keyboard QA and an independently adjudicated gold corpus remain outstanding.
