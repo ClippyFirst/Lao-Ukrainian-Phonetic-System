@@ -171,3 +171,10 @@ test("a rejected source syllable keeps its Lao and romanized graphemes visible i
   assert.equal(result.syllables[0].sourceCoda, "");
   assert.equal(result.syllables[0].coda, "");
 });
+
+
+test("a romanized string with competing vowel-versus-coda parses is withheld without source evidence", () => {
+  const result = analyzeRomanization("kam");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦kam⟧");
+});
