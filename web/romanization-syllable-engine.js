@@ -2,9 +2,9 @@
 // This is an orthographic parsing policy, not an IPA or pronunciation engine.
 // It analyzes onset + vowel nucleus + coda and deliberately withholds ambiguous parses.
 const ONSETS = new Map([
-  ["kh", "кг"], ["th", "тг"], ["ph", "пг"], ["ch", "ч"],
+  ["kh", "к'"], ["th", "т'"], ["ph", "п'"], ["ch", "ч"],
   ["ng", "нг"], ["gn", "нь"],
-  ["k", "к"], ["s", "с"], ["x", "кс"], ["d", "д"], ["t", "т"],
+  ["k", "к"], ["s", "с"], ["x", "с"], ["d", "д"], ["t", "т"],
   ["n", "н"], ["b", "б"], ["p", "п"], ["f", "ф"], ["m", "м"],
   ["y", "й"], ["r", "р"], ["l", "л"], ["v", "в"], ["h", "г"],
 ]);
@@ -178,12 +178,41 @@ function unresolved(surface, status = "UNRESOLVED") {
   };
 }
 
-export function analyzeRomanization(input) {
+const LAO_ONSET_TO_ROMANIZATION = new Map([
+  ["ກ", "k"], ["ຂ", "kh"], ["ຄ", "kh"], ["ງ", "ng"], ["ຈ", "ch"],
+  ["ສ", "s"], ["ຊ", "x"], ["ຍ", "gn"], ["ດ", "d"], ["ຕ", "t"],
+  ["ຖ", "th"], ["ທ", "th"], ["ນ", "n"], ["ບ", "b"], ["ປ", "p"],
+  ["ຜ", "ph"], ["ຝ", "f"], ["ພ", "ph"], ["ຟ", "f"], ["ມ", "m"],
+  ["ຢ", "y"], ["ຣ", "r"], ["ລ", "l"], ["ວ", "v"], ["ຫ", "h"],
+  ["ຮ", "h"], ["ອ", ""], ["ໜ", "n"], ["ໝ", "m"],
+]);
+
+const ASPIRATED_TARGETS = new Map([
+  ["ຂ", "к'"], ["ຄ", "к'"], ["ຖ", "т'"], ["ທ", "т'"],
+  ["ຜ", "п'"], ["ພ", "п'"],
+]);
+
+function crosswalkUnit(unit, sourceOnset) {
+  const expectedRomanization = LAO_ONSET_TO_ROMANIZATION.get(sourceOnset);
+  if (expectedRomanization === undefined || expectedRomanization !== unit.onset) return null;
+  const onsetTarget = ASPIRATED_TARGETS.get(sourceOnset) || ONSETS.get(unit.onset) || "";
+  return {
+    ...unit,
+    ukrainian: onsetTarget + NUCLEI.get(unit.nucleus) +
+      (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
+    sourceOnset,
+    crosswalk: "LAO_GRAPHEME↔BGN_ROMANIZATION↔UKRAINIAN",
+  };
+}
+
+export function analyzeRomanization(input, options = {}) {
   const source = String(input ?? "").normalize("NFC");
   const parts = source.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
   const syllables = [];
   let output = "";
   let partial = false;
+  const sourceOnsets = Array.isArray(options.sourceOnsets) ? options.sourceOnsets : null;
+  let sourceIndex = 0;
 
   for (const part of parts) {
     if (SEPARATORS.test(part) || /^[0-9]+$/u.test(part)) {
@@ -192,14 +221,34 @@ export function analyzeRomanization(input) {
     }
     const parsed = parseWord(part);
     if (parsed.count === 1 && parsed.path) {
-      const units = parsed.path.map((unit) => ({
-        ...unit,
-        ukrainian: mapCase(unit.ukrainian, unit.surface),
-        status: "OK",
-        warning: "",
-      }));
-      syllables.push(...units);
-      output += units.map((unit) => unit.ukrainian).join("");
+      const sourceSlice = sourceOnsets
+        ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
+        : null;
+      const aligned = !sourceOnsets || sourceSlice.length === parsed.path.length;
+      const crossed = aligned && sourceOnsets
+        ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index]))
+        : parsed.path;
+      const validCrosswalk = aligned && crossed.every(Boolean);
+      if (validCrosswalk) {
+        const units = crossed.map((unit) => ({
+          ...unit,
+          ukrainian: mapCase(unit.ukrainian, unit.surface),
+          status: "OK",
+          warning: "",
+        }));
+        syllables.push(...units);
+        output += units.map((unit) => unit.ukrainian).join("");
+        if (sourceOnsets) sourceIndex += parsed.path.length;
+      } else {
+        const item = unresolved(part, "UNRESOLVED");
+        item.warning = aligned
+          ? "Романізований початковий елемент не відповідає лаоській графемі; український результат утримано."
+          : "Кількість розібраних романізованих складів не збігається з кількістю лаоських складових одиниць; звірку утримано.";
+        syllables.push(item);
+        output += item.ukrainian;
+        partial = true;
+        if (sourceOnsets) sourceIndex += sourceSlice.length;
+      }
     } else {
       const item = unresolved(part, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
       syllables.push(item);
@@ -208,13 +257,19 @@ export function analyzeRomanization(input) {
     }
   }
 
+  const warnings = syllables.filter((unit) => unit.warning).map((unit) => unit.warning);
+  if (sourceOnsets && sourceIndex !== sourceOnsets.length) {
+    partial = true;
+    warnings.push("Кількість лаоських початкових графем і романізованих складів не збігається; повну звірку не виконано.");
+  }
+
   return {
     input: source,
     output,
     status: partial ? "PARTIAL" : "OK",
     syllables,
-    warnings: syllables.filter((unit) => unit.warning).map((unit) => unit.warning),
-    source: "CLDR Lao-Latin (provisional; BGN alias) romanization → project syllable-level Ukrainian adapter",
+    warnings,
+    source: "CLDR Lao-Latin (provisional; BGN/PCGN 1966 basis) → Lao-grapheme crosswalk → Ukrainian syllable adapter",
   };
 }
 
