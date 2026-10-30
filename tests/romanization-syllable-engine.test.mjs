@@ -77,3 +77,31 @@ test("the parser withholds a vowel sequence whose CLDR transform lost a distingu
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "⟦éku⟧");
 });
+
+
+test("aspiration digraphs are interpreted through the source Lao consonant, not as literal h", () => {
+  assert.equal(analyzeRomanization("kha", { sourceOnsets: ["ຂ"] }).output, "к'а");
+  assert.equal(analyzeRomanization("kha", { sourceOnsets: ["ຄ"] }).output, "к'а");
+  assert.equal(analyzeRomanization("tha", { sourceOnsets: ["ຖ"] }).output, "т'а");
+  assert.equal(analyzeRomanization("tha", { sourceOnsets: ["ທ"] }).output, "т'а");
+  assert.equal(analyzeRomanization("pha", { sourceOnsets: ["ຜ"] }).output, "п'а");
+  assert.equal(analyzeRomanization("pha", { sourceOnsets: ["ພ"] }).output, "п'а");
+});
+
+test("a genuine Lao h onset remains г and is not confused with aspiration spelling", () => {
+  assert.equal(analyzeRomanization("ha", { sourceOnsets: ["ຮ"] }).output, "га");
+  assert.equal(analyzeRomanization("ha", { sourceOnsets: ["ຫ"] }).output, "га");
+});
+
+test("a romanization onset that conflicts with the original Lao grapheme is withheld", () => {
+  const result = analyzeRomanization("kha", { sourceOnsets: ["ກ"] });
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦kha⟧");
+  assert.match(result.warnings.join(" "), /не відповідає/iu);
+});
+
+test("the source-to-romanization crosswalk requires one-to-one syllable alignment", () => {
+  const result = analyzeRomanization("khakha", { sourceOnsets: ["ຂ"] });
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦khakha⟧");
+});
