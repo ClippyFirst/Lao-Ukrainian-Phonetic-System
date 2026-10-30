@@ -45,7 +45,9 @@ async function copyWithFeedback(button, value) {
 }
 
 function currentUkrainianOutput() {
-  if (outputMode === "phonetic") return analyze(input.value).output;
+  const result = analyze(input.value);
+  if (outputMode === "phonetic") return result.output;
+  if (result.status === "INVALID") return "";
   const roman = romanizeLao(input.value);
   return romanizationToUkrainian(roman.output).output;
 }
