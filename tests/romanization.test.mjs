@@ -105,4 +105,5 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
  assert.match(app,/function sourceOnsetGroupsForCrosswalk\(sourceText\)/u);
  assert.match(app,/sourceOnsetGroups:\s*sourceOnsetGroupsForCrosswalk\(input\.value\)/u);
+ assert.equal(app.includes("sourceOnsetsForCrosswalk"),false);
 });
