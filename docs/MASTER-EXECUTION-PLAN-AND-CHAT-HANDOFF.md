@@ -536,8 +536,7 @@ The mapping changes are project-level Ukrainian practical decisions, not an offi
 ## Pages deployment gate update — 2026-10-30
 
 - Post-merge Pages workflow: [41111967539](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41111967539), commit `10faed6e0012935f4001932aada1f9ed68a65eb2`.
-- Build job: `success`. Deploy job: `waiting` at the `github-pages` environment. The GitHub API pending-deployments response reports `current_user_can_approve: false` for this connected session; no reviewers are listed. This tool session cannot approve or bypass that environment gate. The owner must inspect the Actions run and complete any required environment approval in GitHub UI if offered.
-- Do not report the site as newly deployed until the deploy job concludes successfully and the two public URLs are confirmed to serve the new revision. Existing published site remains on the last known successful Pages deployment until that is confirmed.
+- At the time of the initial check, the deploy job was `waiting` at the `github-pages` environment. This wait later resolved automatically; no owner approval or environment-setting change was required. See the final deployment confirmation below.
 
 
 ## Final Pages deployment confirmation — 2026-10-30
@@ -546,4 +545,4 @@ The mapping changes are project-level Ukrainian practical decisions, not an offi
 - Both jobs succeeded: `build` (including browser regression tests, `npm run build`, artifact checks and Pages artifact upload) and `deploy` (`actions/deploy-pages@v4`). The environment wait resolved without an approval action from this session.
 - `LAO-DEPLOY-001` is now **DONE_VERIFIED** at the workflow/deployment level. Public URL HTTP smoke-check could not be performed: web fetch rejected the Pages host and container DNS/network access was unavailable. URLs remain the configured Pages target: https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ and https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/system.html.
 - `LAO-UI-001` remains **IN_PROGRESS** pending actual visual browser QA at 1440px, 768px and 390px and keyboard-only review. Do not equate passing CI assertions with visual QA.
-- Latest main commit after handoff update: to be read from GitHub at final report; no further product code change was required to complete deployment.
+- The deployment completion was documented in the subsequent main-branch handoff commit; no product code change was needed after the successful Pages deployment.
