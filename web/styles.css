@@ -160,7 +160,7 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:20px max(24px
 
 
 /* Korean service layout parity: input first, Ukrainian result first, analysis disclosed below. */
-.workspace-layout{display:grid;direction:ltr;grid-template-columns:minmax(320px,.82fr) minmax(0,1.18fr);grid-template-areas:"input output";gap:24px;align-items:start}\n.workbench{grid-area:input;direction:ltr}\n.output-workspace{grid-area:output;direction:ltr}
+.workspace-layout{display:flex;flex-direction:column;gap:24px;align-items:stretch;width:100%}\n.workbench,.output-workspace{width:100%;min-width:0}
 .workbench,.results{min-width:0;padding:clamp(18px,2.5vw,30px);border:1px solid var(--line);background:var(--surface)}
 .workbench{position:relative;border-top:5px solid var(--red)}
 .section-title{display:flex;align-items:flex-start;gap:13px;margin:0 0 20px}
@@ -229,7 +229,7 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:20px max(24px
 .rules{margin:13px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font:.75rem/1.55 ui-monospace,monospace}
 .research-progress-after{margin-top:28px}
 @media(max-width:900px){
-  .workspace-layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"input" "output";gap:16px}
+  .workspace-layout{gap:16px}
   .input-shell textarea{min-height:175px}
   .analysis-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
