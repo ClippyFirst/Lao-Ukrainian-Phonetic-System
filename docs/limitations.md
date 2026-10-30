@@ -8,3 +8,6 @@
 6. **Ukrainian target.** The target correspondences are project decisions. They are not presented as an adopted Ukrainian national standard.
 7. **Lexical exceptions and conventional names.** A regular phonological algorithm cannot by itself establish every conventional geographical or personal-name spelling.
 8. **Empirical accuracy.** No gold-standard adjudicated corpus is currently available, so no accuracy percentage is claimed.
+
+
+9. **Romanization fallback.** The optional Ukrainian-by-romanization mode depends on the constrained provisional CLDR Lao-Latin/UNGEGN subset. It is deterministic only for the implemented mapping table, cannot restore tone or other distinctions absent from romanization, and is not a pronunciation guarantee. Unsupported characters are retained and flagged as partial.
