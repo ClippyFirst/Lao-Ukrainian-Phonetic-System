@@ -88,7 +88,7 @@ function render() {
   const romanized = result.status === "INVALID"
     ? { output: "", status: "PARTIAL", warnings: [], syllables: [] }
     : analyzeRomanization(roman.output, {
-      sourceOnsetGroups: sourceSyllableGroupsForCrosswalk(input.value),
+      sourceSyllableGroups: sourceSyllableGroupsForCrosswalk(input.value),
     });
   count.textContent = [...input.value].length + " символів";
 
