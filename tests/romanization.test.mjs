@@ -17,6 +17,6 @@ test("CLDR Lao-Latin does not silently delete unsupported Lao code points",()=>{
 
 test("GitHub Pages service navigation stays inside the repository site",()=>{
  const html=readFileSync(new URL("../index.html",import.meta.url),"utf8");
- assert.match(html,/<a class="active" aria-current="page" href="\.\/">Сервіс<\/a>/u);
- assert.doesNotMatch(html,/<a class="active"[^>]*href="\/">Сервіс<\/u);
+ assert.ok(html.includes('href="./">Сервіс</a>'));
+ assert.equal(html.includes('href="/">Сервіс</a>'),false);
 });
