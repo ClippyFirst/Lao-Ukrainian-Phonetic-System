@@ -12,3 +12,7 @@
   unicode-bidi: isolate;
   overflow-wrap: anywhere;
 }
+
+/* Keep the desktop and mobile display scale aligned with sibling services. */
+.hero h1{font-size:clamp(2.6rem,5.6vw,5rem)}
+@media(max-width:760px){.hero h1{font-size:clamp(2.5rem,10vw,3rem)}}
