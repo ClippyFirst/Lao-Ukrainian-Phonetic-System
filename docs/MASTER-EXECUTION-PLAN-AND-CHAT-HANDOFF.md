@@ -510,3 +510,14 @@ This checkpoint supersedes earlier notes in this handoff saying the romanization
 - PR #56 remains draft and unmerged. Previously merged PR #55 and the published romanization layer were preserved.
 
 The mapping changes are project-level Ukrainian practical decisions, not an official standard and not independent Lao pronunciation gold. The research gold corpus remains empty and measured accuracy remains unreported. Existing segmentation, cluster, tone-scope and lexical adjudication blockers are unchanged.
+
+
+## Continuation — GitHub Pages release path · 2026-10-30
+
+- Deployment target confirmed by the owner: **GitHub Pages only**; Vercel is not part of this release path.
+- Existing `.github/workflows/pages.yml` deploys only from `main` and uses the official Pages artifact/deploy actions. Its asset assertion expected the unversioned CSS URL and would reject the new cache-busted stylesheet URL. Updated the assertion to accept the versioned relative asset path and extended the artifact gate to check the editorial specimen, copy-feedback live region, skip links and methodology navigation.
+- Pages workflow correction commit: `a175669427ba6ffbe6c11a05fca3817d3531027a`. Verify workflow run [41111527416](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41111527416) was queued when this handoff entry was written; do not treat it as passed until completed.
+- The Pages workflow cannot publish from the feature branch by its normal push trigger. Publication requires the reviewed PR to land on `main`; then the existing push trigger builds and deploys the static `dist/` artifact. No Vercel configuration or project was created or changed.
+- `LAO-UI-001` remains `IN_PROGRESS` until actual browser QA is completed at 1440px, 768px and 390px, including keyboard operation. CI assertions are not a visual review.
+- `LAO-DEPLOY-001` remains `TODO` until the post-merge Pages workflow succeeds and both public URLs serve the new build.
+- Latest branch head at this checkpoint: `a175669427ba6ffbe6c11a05fca3817d3531027a`; branch `design/lao-layout-20261030`; PR #61 remains open. No release tag created.
