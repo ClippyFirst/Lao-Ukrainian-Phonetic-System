@@ -30,7 +30,7 @@ Important current project decisions include:
 
 - /kʰ pʰ tʰ/ → Ukrainian к' п' т' rather than Russian кх пх тх; aspiration remains explicit in IPA and is marked with an apostrophe in practical output;
 - /h/ → Ukrainian г as a project-specific practical approximation (not a claim of phonetic identity); /ɡ/ → ґ; genuine /x/ → х;
-- in the romanization method, `kh/th/ph` are checked against their Lao source graphemes and mapped as aspirated `к'/т'/п'`; only an independent Lao /h/ onset maps to `г`;
+- in the romanization method, both Lao onset and supported coda graphemes are checked against CLDR romanization before Ukrainian output; `kh/th/ph` map as aspirated `к'/т'/п'`, while an independent Lao /h/ onset maps to `г`;
 - /ŋ/ → нг;
 - /tɕ/ → ч; /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж;
 - /ɯ/ → и;
