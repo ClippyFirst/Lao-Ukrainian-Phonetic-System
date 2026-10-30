@@ -1,14 +1,14 @@
 ipa,candidates,preferred_score,rationale,status
 k,к,1.0,shared stop place and manner,established
-kʰ,к,0.96,aspiration remains analytical rather than an added х in practical Ukrainian,project-policy
+kʰ,к',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy
 ŋ,нг,0.98,explicit velar nasal sequence,project-policy
 ɲ,нь|н,0.90,Ukrainian palatalized n is closer,project-policy
 tɕ,ч,1.0,closest Ukrainian affricate target,established
 d,д,1.0,shared voiced alveolar stop,established
 t,т,1.0,shared alveolar stop,established
-tʰ,т,0.95,aspiration remains in IPA only,project-policy
+tʰ,т',0.95,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy
 p,п,1.0,shared stop,established
-pʰ,п,0.96,aspiration remains in IPA only,project-policy
+pʰ,п',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy
 b,б,1.0,shared voiced stop,established
 m,м,1.0,shared nasal,established
 n,н,1.0,shared nasal,established
@@ -49,3 +49,22 @@ ai,ай,0.95,transparent glide sequence,project-policy
 aːj,ай,0.88,quantity neutralization,project-policy
 aw,ау,0.88,transparent /aw/ sequence,project-policy
 am,ам,0.90,Sara Am remains a structural vowel unit,project-policy
+ɡ,ґ,0.94,foreign hard voiced velar stop uses Ukrainian ґ,project-policy
+g,ґ,0.90,ASCII alias for a source transcription of hard /ɡ/,project-policy
+x,х,1.0,genuine velar fricative remains Ukrainian х,project-policy
+ɦ,г,0.90,voiced glottal fricative aligns with Ukrainian г,project-policy
+t͡s,ц,1.0,Ukrainian affricate correspondence,project-policy
+d͡z,дз,1.0,Ukrainian voiced affricate correspondence,project-policy
+t͡ʃ,ч,1.0,Ukrainian postalveolar affricate correspondence,project-policy
+d͡ʒ,дж,1.0,Ukrainian voiced postalveolar affricate correspondence,project-policy
+ʃ,ш,1.0,Ukrainian postalveolar fricative correspondence,project-policy
+ʒ,ж,1.0,Ukrainian voiced postalveolar fricative correspondence,project-policy
+tʲ,ть,0.90,palatalized dental stop is represented with soft sign,project-policy
+dʲ,дь,0.90,palatalized dental stop is represented with soft sign,project-policy
+nʲ,нь,0.96,palatalized nasal has a direct Ukrainian sequence,project-policy
+lʲ,ль,0.90,palatalized lateral is represented with soft sign,project-policy
+rʲ,рь,0.80,palatalized rhotic is represented with soft sign where contrastive,analysis-dependent
+tɕʰ,ч',0.85,aspirated palatal affricate keeps aspiration marker,analysis-dependent
+t͡ɕ,ч,0.90,alveolo-palatal affricate approximated by Ukrainian ч,project-policy
+dʑ,дж,0.90,voiced alveolo-palatal affricate approximated by Ukrainian дж,project-policy
+d͡ʑ,дж,0.90,voiced alveolo-palatal affricate approximated by Ukrainian дж,project-policy

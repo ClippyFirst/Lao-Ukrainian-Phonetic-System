@@ -42,3 +42,17 @@ The repository is substantially more defensible and reproducible than the initia
 - Strict raw IPA agreement is 0/36. A separate tone-letter-stripped diagnostic matches 29/36 (80.6%), leaving 7 tone/length/segmental/offglide cases for review. This is a string-difference diagnostic, not accuracy; Lao tone can be contrastive and must not be stripped from production IPA.
 - The benchmark gold-provenance guard is merged: every ADJUDICATED row requires non-empty IPA, source_id and profile. The independent gold corpus remains empty, so accuracy is null.
 - External systems remain optional. Epitran (`lao-Laoo`) and Goruut are upstream support candidates only, not yet executed in this repository. Remaining acceptance criteria: expert-adjudicated lexical IPA, documented tone convention, and source-based review of the seven non-tone/format cases.
+
+
+## Ukrainian target-policy audit — 2026-10-30
+
+**Scoped status: DONE_VERIFIED.** The IPA-to-Ukrainian correspondence registry, Python adapter, generated browser data and tests now preserve aspiration and distinguish the requested Ukrainian consonants.
+
+- Aspiration: /kʰ tʰ pʰ/ → к' т' п'; source IPA retains the aspiration feature.
+- Distinctions: /h/ → г, /ɡ/ → ґ, /x/ → х.
+- Affricates: /t͡s/ → ц, /d͡z/ → дз, /t͡ʃ/ → ч, /d͡ʒ/ → дж; Lao /tɕ/ and documented alveolo-palatal aliases map to ч/дж as explicit approximations.
+- Palatalized consonants use Ukrainian soft-sign sequences only when the source analysis establishes palatalization. /ʔ/ is not aspiration.
+- Canonical CSV → generated browser-data parity was checked; exact-head workflow [41075912762](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41075912762) passed.
+- Changes are in draft PR #56; no merge or deployment was performed.
+
+This does not establish a normative Ukrainian transcription standard or improve the independent Lao pronunciation gold set. The research corpus still has no independently adjudicated lexical IPA gold and accuracy remains unmeasured. The broader limitations listed above remain open.

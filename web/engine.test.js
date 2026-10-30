@@ -4,12 +4,13 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyze } from "./engine.js";
+import { CORRESPONDENCES } from "./data.js";
 
 test("basic long syllable", () => {
   const r = analyze("ຂາ");
   assert.equal(r.status, "OK");
   assert.equal(r.syllables[0].ipa, "kʰaː");
-  assert.equal(r.output, "ка");
+  assert.equal(r.output, "к\u0027а");
 });
 
 test("middle and low class inherent tones differ", () => {
@@ -122,7 +123,7 @@ test("invalid mixed script is rejected", () => {
 test("CRLF is accepted as line whitespace", () => {
   const r = analyze("ກາ\r\nຂາ");
   assert.notEqual(r.status, "INVALID");
-  assert.equal(r.output, "ка ка");
+  assert.equal(r.output, "ка к\u0027а");
 });
 
 test("zero-width space is rejected rather than silently removed", () => {
@@ -136,7 +137,7 @@ test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
 test("multisyllabic Lao text is segmented without dropping syllables", () => {
   const r = analyze("ພາສາລາວ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພາ|ສາ|ລາວ");
-  assert.equal(r.output, "пасалав");
+  assert.equal(r.output, "п\u0027асалав");
   assert.equal(r.syllables.every((s) => s.ipa), true);
 });
 
@@ -177,7 +178,7 @@ test("shared tone contour and structural withholding fixture", () => {
 test("short o in a closed syllable is recognised", () => {
   const r = analyze("ຄົນ");
   assert.equal(r.syllables[0].ipa, "kʰon");
-  assert.equal(r.output, "кон");
+  assert.equal(r.output, "к\u0027он");
 });
 
 test("compound greeting is segmented into all syllables", () => {
@@ -189,7 +190,7 @@ test("compound greeting is segmented into all syllables", () => {
 test("multi-syllable place-name phrase is not truncated", () => {
   const r = analyze("ຂອບໃຈ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ຂອບ|ໃຈ");
-  assert.equal(r.output, "копчай");
+  assert.equal(r.output, "к\u0027опчай");
 });
 
 test("unparsed characters remain visible instead of being silently dropped", () => {
@@ -227,7 +228,7 @@ test("postposed vowel sign before an onset remains an unresolved whole token", (
 test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
   const r = analyze("ພະນະຄອນ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
-  assert.equal(r.output, "панакон");
+  assert.equal(r.output, "п\u0027анак\u0027он");
 });
 
 
@@ -346,4 +347,19 @@ test("DEL and C1 controls are rejected in browser input", () => {
     assert.equal(result.output, "");
     assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
   }
+});
+
+
+test("shared Ukrainian target distinguishes aspiration, h, g, x and affricates", () => {
+  assert.equal(analyze("ຂາ").output, "к'а");
+  assert.equal(analyze("ຫາ").output, "га");
+  assert.equal(CORRESPONDENCES["ɡ"], "ґ");
+  assert.equal(CORRESPONDENCES["x"], "х");
+  assert.equal(CORRESPONDENCES["t͡s"], "ц");
+  assert.equal(CORRESPONDENCES["t͡ɕ"], "ч");
+  assert.equal(CORRESPONDENCES["dʑ"], "дж");
+  assert.equal(CORRESPONDENCES["d͡ʑ"], "дж");
+  assert.equal(CORRESPONDENCES["d͡z"], "дз");
+  assert.equal(CORRESPONDENCES["t͡ʃ"], "ч");
+  assert.equal(CORRESPONDENCES["d͡ʒ"], "дж");
 });

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Engineering regression fixtures for the IPA-to-Ukrainian target adapter. These expected outputs encode project policy and are not an independent Lao pronunciation gold corpus.",
   "cases": [
-    {"id": "aspirated-velar", "surface": "ຂາ", "phonemic_ipa": "kʰaː", "ukrainian": "ка"},
+    {"id": "aspirated-velar", "surface": "ຂາ", "phonemic_ipa": "kʰaː", "ukrainian": "к\u0027а"},
     {"id": "velar-nasal", "surface": "ງາ", "phonemic_ipa": "ŋaː", "ukrainian": "нга"},
     {"id": "checked-stop", "surface": "ກັບ", "phonemic_ipa": "kap", "ukrainian": "кап"},
     {"id": "closed-uo", "surface": "ດວງ", "phonemic_ipa": "duːəŋ", "ukrainian": "дуанг"},

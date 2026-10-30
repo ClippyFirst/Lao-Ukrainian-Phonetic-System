@@ -28,14 +28,14 @@ Serbian and Bulgarian material is used only as a target-script control where it 
 
 Important current project decisions include:
 
-- /kʰ pʰ tʰ/ → Ukrainian к п т rather than Russian кх пх тх;
-- /h/ → Ukrainian г as a project-specific practical approximation (not a claim of phonetic identity);
+- /kʰ pʰ tʰ/ → Ukrainian к' п' т' rather than Russian кх пх тх; aspiration remains explicit in IPA and is marked with an apostrophe in practical output;
+- /h/ → Ukrainian г as a project-specific practical approximation (not a claim of phonetic identity); /ɡ/ → ґ; genuine /x/ → х;
 - /ŋ/ → нг;
-- /tɕ/ → ч;
+- /tɕ/ → ч; /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж;
 - /ɯ/ → и;
 - source vowel quantity remains explicit in analysis but is normally neutralized in practical Ukrainian output.
 
-These are **project decisions**, not official Ukrainian orthographic rules.
+These are **project decisions**, not official Ukrainian orthographic rules. The shared target policy also distinguishes affricates from consonant sequences, preserves supported palatalization, and does not use the aspiration apostrophe for /ʔ/. See [the canonical foreign IPA → Ukrainian adaptation policy](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/blob/main/docs/foreign-target-adaptation.md).
 
 ## Repository structure
 
