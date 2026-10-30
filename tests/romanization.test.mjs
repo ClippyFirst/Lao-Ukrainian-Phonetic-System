@@ -124,7 +124,7 @@ test("full Lao source keeps an independent h onset distinct from aspirated kh",(
  for(const [lao,expected] of examples){
   const latin=romanizeLao(lao);
   const source=analyze(lao);
-  const adapted=analyzeRomanization(latin.output,{sourceOnsets:source.syllables.map(s=>s.onset)});
+  const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
   assert.equal(adapted.status,"OK",lao);
   assert.equal(adapted.output,expected,lao);
  }
@@ -134,7 +134,7 @@ test("a Lao k syllable followed by a real h-onset syllable is preserved as two u
  const lao="ກາຮາ";
  const latin=romanizeLao(lao);
  const source=analyze(lao);
- const adapted=analyzeRomanization(latin.output,{sourceOnsets:source.syllables.map(s=>s.onset)});
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups:[source.syllables.map(s=>({onset:s.onset,coda:s.coda==="—"?"":s.coda}))]});
  assert.equal(latin.output,"kaha");
  assert.deepEqual(source.syllables.map(s=>s.onset),["ກ","ຮ"]);
  assert.equal(adapted.status,"OK");
