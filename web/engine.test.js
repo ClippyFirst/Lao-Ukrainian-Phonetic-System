@@ -137,7 +137,7 @@ test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
 test("multisyllabic Lao text is segmented without dropping syllables", () => {
   const r = analyze("ພາສາລາວ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພາ|ສາ|ລາວ");
-  assert.equal(r.output, "пасалав");
+  assert.equal(r.output, "п\u0027асалав");
   assert.equal(r.syllables.every((s) => s.ipa), true);
 });
 
@@ -178,7 +178,7 @@ test("shared tone contour and structural withholding fixture", () => {
 test("short o in a closed syllable is recognised", () => {
   const r = analyze("ຄົນ");
   assert.equal(r.syllables[0].ipa, "kʰon");
-  assert.equal(r.output, "кон");
+  assert.equal(r.output, "к\u0027он");
 });
 
 test("compound greeting is segmented into all syllables", () => {
@@ -190,7 +190,7 @@ test("compound greeting is segmented into all syllables", () => {
 test("multi-syllable place-name phrase is not truncated", () => {
   const r = analyze("ຂອບໃຈ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ຂອບ|ໃຈ");
-  assert.equal(r.output, "копчай");
+  assert.equal(r.output, "к\u0027опчай");
 });
 
 test("unparsed characters remain visible instead of being silently dropped", () => {
@@ -228,7 +228,7 @@ test("postposed vowel sign before an onset remains an unresolved whole token", (
 test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
   const r = analyze("ພະນະຄອນ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
-  assert.equal(r.output, "панакон");
+  assert.equal(r.output, "п\u0027анак\u0027он");
 });
 
 
