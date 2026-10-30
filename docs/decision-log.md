@@ -56,3 +56,10 @@
 **Decision:** The romanization route must validate both the original Lao onset and any supported Lao coda against the corresponding CLDR romanized elements before emitting a Ukrainian syllable. The supported coda crosswalk is intentionally bounded to ກ→k, ງ→ng, ດ→d, ບ→b, ນ→n, ມ→m, ຍ→gn and ວ→v. The adapter then applies its position-sensitive Ukrainian coda targets (including d→т, b→п, gn→й and v→о/оу). Unsupported or mismatched source codas are withheld rather than inferred from a Latin string.
 
 **Reason:** The provisional CLDR transform applies mostly context-insensitive grapheme substitutions and explicitly leaves special final-consonant handling incomplete. The source Lao coda is available in the analysis result; checking it prevents a plausible-looking but incorrect final from being emitted. The EKI/UNGEGN BGN/PCGN report documents position-dependent final forms, while the pinned CLDR transform documents the upstream aliases used by this adapter.
+
+
+## D-010 — Validate source vowel nuclei and high-class nasal ligatures
+
+**Decision:** The romanization route validates the source vowel ID against the parsed CLDR nucleus in addition to the onset and supported coda. The supported vowel map is an explicit subset; distinctions collapsed by romanization (including vowel length) are not reconstructed, and source patterns deleted or not represented by the CLDR subset are withheld. BGN/PCGN 1966 note 5 identifies ໜ/ໝ as abbreviated forms of silent ຫ + ນ/ມ, so their romanized onsets are n/m and Ukrainian targets are н/м; they are not audible /h+n/ or /h+m/ clusters.
+
+**Reason:** Latin spelling alone can be ambiguous: `kam` may encode A + coda m or the AM nucleus, and `niav` has competing syllabifications. The original Lao parser already retains vowel IDs and atomic high-class nasal graphemes, so this information should be used as evidence rather than guessed or discarded. The official PCGN copy of the BGN/PCGN 1966 agreement and the EKI/UNGEGN report document the vowel table and silent-`h` note; the source-aware adapter can now resolve the corresponding cases while keeping the IPA-first method independent.
