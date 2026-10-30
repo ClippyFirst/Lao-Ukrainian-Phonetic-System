@@ -270,7 +270,7 @@ function crosswalkUnit(unit, sourceSyllable) {
     sourceCoda,
     sourceVowelId: hasSourceVowel ? sourceSyllable.vowelId : undefined,
     crosswalk: sourceCoda !== undefined
-      ? "LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN"
+      ? "LAO_SYLLABLE_STRUCTURE↔CLDR_ROMANIZATION↔UKRAINIAN"
       : "LAO_ONSET_GRAPHEME↔CLDR_ROMANIZATION↔UKRAINIAN",
   };
 }
