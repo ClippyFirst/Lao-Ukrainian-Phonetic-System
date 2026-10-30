@@ -30,18 +30,18 @@ import { romanizationToUkrainian } from "../web/romanization-ukrainian.js";
 
 test("romanization fallback maps CLDR Latin spelling independently of phonetic IPA",()=>{
  const result=romanizationToUkrainian("kha, xa!");
- assert.equal(result.output,"кха, кса!");
+ assert.equal(result.output,"кга, кса!");
  assert.equal(result.status,"OK");
  assert.match(result.source,/romanization/i);
 });
 
 test("romanization fallback applies explicit Latin digraph and diacritic rules",()=>{
- assert.equal(romanizationToUkrainian("ch ng ph th é è ô").output,"ч нг пх тх е е о");
+ assert.equal(romanizationToUkrainian("cha nga pha tha éka").output,"ча нга пга тга ке");
 });
 
 test("romanization fallback preserves unsupported characters and reports partial coverage",()=>{
  const result=romanizationToUkrainian("kha ໞ");
- assert.equal(result.output,"кха ໞ");
+ assert.equal(result.output,"кга ⟦ໞ⟧");
  assert.equal(result.status,"PARTIAL");
 });
 
@@ -51,10 +51,14 @@ test("romanization-to-Ukrainian remains distinct from the IPA-first result",()=>
  const latin=romanizeLao(lao);
  const fallback=romanizationToUkrainian(latin.output);
  assert.equal(latin.output,"kha");
- assert.equal(fallback.output,"кха");
+ assert.equal(fallback.output,"кга");
  assert.equal(analyze(lao).output,"к'а");
 });
 
+
+test("romanization h is always adapted as Ukrainian г",()=>{
+ assert.equal(romanizationToUkrainian("ha kha tha pha").output,"га кга тга пга");
+});
 
 test("CLDR palatal nasal spelling maps to the project's Ukrainian palatal nasal",()=>{
  const latin=romanizeLao("ຍາ");
