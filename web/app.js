@@ -64,7 +64,7 @@ function setOutputMode(mode) {
 
 function render() {
   const result = analyze(input.value);
-  const roman = romanizeLao(input.value);
+  const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
   const romanized = result.status === "INVALID"
     ? { output: "", status: "PARTIAL" }
     : romanizationToUkrainian(roman.output);
