@@ -48,10 +48,15 @@ async function copyWithFeedback(button, value) {
   }, 1400);
 }
 
-function sourceOnsetsForCrosswalk(result) {
-  return result.syllables
-    .filter((syllable) => !syllable.passthrough)
-    .map((syllable) => syllable.onset || null);
+function sourceOnsetGroupsForCrosswalk(sourceText) {
+  const parts = String(sourceText ?? "")
+    .split(/(\\s+|[,.!?;:()[\\]{}"“”]+|-+)/u)
+    .filter(Boolean);
+  return parts
+    .filter((part) => !/^(\\s+|[,.!?;:()[\\]{}"“”]+|-+)$/u.test(part) && !/^[0-9]+$/u.test(part))
+    .map((part) => analyze(part).syllables
+      .filter((syllable) => !syllable.passthrough)
+      .map((syllable) => syllable.onset || null));
 }
 
 function currentUkrainianOutput() {
@@ -60,7 +65,7 @@ function currentUkrainianOutput() {
   if (result.status === "INVALID") return "";
   const roman = romanizeLao(input.value);
   return analyzeRomanization(roman.output, {
-    sourceOnsets: sourceOnsetsForCrosswalk(result),
+    sourceOnsetGroups: sourceOnsetGroupsForCrosswalk(input.value),
   }).output;
 }
 
