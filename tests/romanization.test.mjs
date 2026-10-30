@@ -73,7 +73,14 @@ test("CLDR output for a multi-syllable Lao example feeds the independent syllabl
  const adapted=analyzeRomanization(latin.output);
  assert.equal(adapted.status,"PARTIAL");
  assert.equal(adapted.output,"⟦ékhôaniav⟧");
- assert.equal(analyzeRomanization("ékhôa-niav").output,"к'ао-ніао");
+ const sourceAware = analyzeRomanization("ékhôa-niav",{
+  sourceSyllableGroups:[
+   [{onset:"ຂ",coda:""}],
+   [{onset:"ໜ",coda:"ວ"}],
+  ],
+ });
+ assert.equal(sourceAware.status,"OK");
+ assert.equal(sourceAware.output,"к'ао-ніао");
 });
 
 
