@@ -65,3 +65,6 @@ nʲ,нь,0.96,palatalized nasal has a direct Ukrainian sequence,project-policy
 lʲ,ль,0.90,palatalized lateral is represented with soft sign,project-policy
 rʲ,рь,0.80,palatalized rhotic is represented with soft sign where contrastive,analysis-dependent
 tɕʰ,ч',0.85,aspirated palatal affricate keeps aspiration marker,analysis-dependent
+t͡ɕ,ч,0.90,alveolo-palatal affricate approximated by Ukrainian ч,project-policy
+dʑ,дж,0.90,voiced alveolo-palatal affricate approximated by Ukrainian дж,project-policy
+d͡ʑ,дж,0.90,voiced alveolo-palatal affricate approximated by Ukrainian дж,project-policy
