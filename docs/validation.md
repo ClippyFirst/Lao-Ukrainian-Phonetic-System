@@ -187,3 +187,16 @@ The final feature-branch commit `bd2b0b05e00c884d20818dce914603b4a0b09cc3` passe
 - Generated-data reproducibility and built-page/relative-asset checks: passed.
 
 The five test suites total **192 passing tests**. These are deterministic engineering and project-policy regressions, not independent Lao pronunciation gold. The feature branch remains in PR #65 and has not been merged or deployed. Separately, current `main` commit `d64e201f6d417c71e3437daccfa465ddb77e224f` passed GitHub Pages build and deploy in [run 41117044318](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41117044318). This is deployment evidence for `main`, not for PR #65's unmerged feature head.
+
+
+## Final main verification and deployment — 2026-10-31
+
+The source-aware romanization mode and Ukrainian target sequence extension were merged in PR #65 as `b2e1187629829b4242aa2430a9901d264910eea1`. Exact-main verification [41142746494](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142746494) passed: Python **94**, browser engine **47**, romanization integration **19**, syllable crosswalk **27**, web layout **5**, repository data/evidence audit, optional external-G2P harness syntax/CLI, build, generated-data reproducibility, and built-page/relative-asset checks.
+
+The first Pages workflow for that merge [41142746466](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142746466) exposed a stale exact-match check for the app script URL. PR #66 corrected the Pages assertion to accept the versioned `src` URL, consistent with `verify.yml`, and was merged as `a001046462de564dd2cb89e9237caa221624163c`.
+
+- Exact-main `verify` run [41142874231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142874231): **success**.
+- Exact-main GitHub Pages run [41142874311](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142874311): **success**; build, artifact checks, artifact upload and deploy jobs all succeeded.
+- The external `lao2ipa` comparison was not rerun; harness syntax/CLI validation is not an external-engine comparison.
+- No independent Lao IPA gold corpus or expert linguistic adjudication was added. Accuracy remains null/unmeasured.
+- Manual visual review and keyboard-only interaction testing remain unperformed; successful static artifact assertions are not a substitute.
