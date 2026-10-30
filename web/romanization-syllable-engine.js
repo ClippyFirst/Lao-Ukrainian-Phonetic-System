@@ -220,9 +220,10 @@ function crosswalkUnit(unit, sourceSyllable) {
   const sourceOnset = typeof sourceSyllable === "string"
     ? sourceSyllable
     : sourceSyllable?.onset;
-  const sourceCoda = typeof sourceSyllable === "object" && sourceSyllable !== null
+  const rawSourceCoda = typeof sourceSyllable === "object" && sourceSyllable !== null
     ? sourceSyllable.coda
     : undefined;
+  const sourceCoda = rawSourceCoda === "—" ? "" : rawSourceCoda;
   const correspondence = LAO_ONSET_CROSSWALK.get(sourceOnset);
   if (!correspondence || correspondence.romanization !== unit.onset) return null;
   if (sourceCoda !== undefined) {
@@ -242,14 +243,15 @@ function crosswalkUnit(unit, sourceSyllable) {
 }
 
 export function analyzeRomanization(input, options = {}) {
+  const settings = options && typeof options === "object" ? options : {};
   const source = String(input ?? "").normalize("NFC");
   const parts = source.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
   const syllables = [];
   let output = "";
   let partial = false;
-  const sourceSyllableGroups = Array.isArray(options.sourceSyllableGroups) ? options.sourceSyllableGroups : null;
+  const sourceSyllableGroups = Array.isArray(settings.sourceSyllableGroups) ? settings.sourceSyllableGroups : null;
   const sourceOnsets = sourceSyllableGroups ? null
-    : Array.isArray(options.sourceOnsets) ? options.sourceOnsets : null;
+    : Array.isArray(settings.sourceOnsets) ? settings.sourceOnsets : null;
   let sourceIndex = 0;
   let sourceGroupIndex = 0;
 
