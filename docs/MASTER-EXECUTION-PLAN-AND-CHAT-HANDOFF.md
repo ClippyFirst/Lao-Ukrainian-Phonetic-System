@@ -531,3 +531,10 @@ The mapping changes are project-level Ukrainian practical decisions, not an offi
 - The latest exact-head `verify` run [41111609245](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41111609245) remained queued when checked. Do not report it as passed. An earlier UI implementation commit passed verify run [41110855525](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41110855525).
 - Deployment and visual acceptance are not yet marked complete: the available GitHub connector did not expose the push-triggered Pages run status, the public Pages URL could not be fetched in this session, and browser screenshot review was unavailable because the browser service had exhausted its credits. `LAO-DEPLOY-001` remains `TODO`; `LAO-UI-001` remains `IN_PROGRESS` until visual QA at 1440px, 768px and 390px plus keyboard interaction review.
 - No linguistic engine, source registry, phonetic mappings, or research accuracy claims were changed by this design/deployment batch. Research corpus and phonological adjudication blockers remain as previously documented.
+
+
+## Pages deployment gate update — 2026-10-30
+
+- Post-merge Pages workflow: [41111967539](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41111967539), commit `10faed6e0012935f4001932aada1f9ed68a65eb2`.
+- Build job: `success`. Deploy job: `waiting` at the `github-pages` environment. The GitHub API pending-deployments response reports `current_user_can_approve: false` for this connected session; no reviewers are listed. This tool session cannot approve or bypass that environment gate. The owner must inspect the Actions run and complete any required environment approval in GitHub UI if offered.
+- Do not report the site as newly deployed until the deploy job concludes successfully and the two public URLs are confirmed to serve the new revision. Existing published site remains on the last known successful Pages deployment until that is confirmed.
