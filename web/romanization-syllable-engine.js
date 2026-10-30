@@ -23,7 +23,7 @@ const NUCLEI = new Map([
 const CODAS = new Map([
   ["ng", "нг"], ["gn", "й"], ["k", "к"], ["d", "т"], ["t", "т"],
   ["n", "н"], ["b", "п"], ["p", "п"], ["m", "м"],
-  ["r", "р"], ["l", "л"], ["v", "о"], ["y", "й"],
+  ["r", "р"], ["l", "л"], ["v", "о"], ["y", "й"], ["h", "г"],
 ]);
 
 const PREPOSED_NUCLEI = new Set(["oua", "ia", "ua", "ao", "eu", "é", "è", "ô", "ai"]);
@@ -32,6 +32,11 @@ const SORTED_ONSETS = [...ONSETS.keys()].sort((a, b) => b.length - a.length);
 const SORTED_NUCLEI = [...NUCLEI.keys()].sort((a, b) => b.length - a.length);
 const SORTED_CODAS = [...CODAS.keys()].sort((a, b) => b.length - a.length);
 const SEPARATORS = /^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
+
+function codaTarget(coda, nucleus) {
+  if (coda === "v") return nucleus === "i" ? "оу" : "о";
+  return CODAS.get(coda);
+}
 
 function mapCase(value, source) {
   return source && source === source.toUpperCase() ? value.toUpperCase() : value;
@@ -59,7 +64,7 @@ function candidatesAt(source, index) {
         candidates.push({
           start: index, end, surface: source.slice(index, end),
           onset, nucleus, coda, order: "onset-first",
-          ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus) + CODAS.get(coda),
+          ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
         });
       }
     }
@@ -74,11 +79,7 @@ function candidatesAt(source, index) {
     const onsetStart = index + nucleus.length;
     for (const onset of matchesAt(source, onsetStart, SORTED_ONSETS)) {
       let end = onsetStart + onset.length;
-      let shortMarker = "";
-      if (SHORT_PREPOSED.has(nucleus) && source.startsWith("a", end)) {
-        shortMarker = "a";
-        end += 1;
-      }
+      if (SHORT_PREPOSED.has(nucleus) && source.startsWith("a", end)) end += 1;
       const base = {
         start: index, end, surface: source.slice(index, end),
         onset, nucleus, coda: "", order: "vowel-first",
