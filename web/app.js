@@ -65,7 +65,9 @@ function setOutputMode(mode) {
 function render() {
   const result = analyze(input.value);
   const roman = romanizeLao(input.value);
-  const romanized = romanizationToUkrainian(roman.output);
+  const romanized = result.status === "INVALID"
+    ? { output: "", status: "PARTIAL" }
+    : romanizationToUkrainian(roman.output);
   count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
@@ -87,16 +89,21 @@ function render() {
     return;
   }
 
-  const activeOutput = outputMode === "phonetic" ? result.output : romanized.output;
+  const fallbackBlocked = outputMode === "romanization" && result.status === "INVALID";
+  const activeOutput = outputMode === "phonetic" ? result.output : (fallbackBlocked ? "" : romanized.output);
   output.textContent = activeOutput || (outputMode === "phonetic"
     ? "Фонетичний результат не встановлено. Спробуйте режим за романізацією."
-    : "Немає доступного романізованого запису для адаптації.");
+    : (fallbackBlocked
+      ? "Романізаційний результат не сформовано для некоректного вхідного тексту."
+      : "Немає доступного романізованого запису для адаптації."));
   output.className = activeOutput ? "result-body output" : "result-body output muted";
   outputMethodNote.textContent = outputMode === "phonetic"
     ? (result.output
       ? "Фонетичний режим: результат побудовано через IPA → українську практичну адаптацію."
       : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива.")
-    : "За романізацією: CLDR Lao-Latin/UNGEGN → українська графічна адаптація. " +
+    : fallbackBlocked
+      ? "Романізаційний режим недоступний: виправте вхідний текст, який не пройшов перевірку."
+      : "За романізацією: CLDR Lao-Latin/UNGEGN → українська графічна адаптація. " +
       (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
         ? "Покриття часткове; непідтримані символи збережено."
         : "Запис відтворює латинську форму, а не встановлену вимову.");
