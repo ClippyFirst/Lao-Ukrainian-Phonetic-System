@@ -58,7 +58,7 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
       .filter((syllable) => !syllable.passthrough)
       .map((syllable) => ({
         onset: syllable.onset || null,
-        vowelId: syllable.vowel?.id ?? null,
+        vowelId: syllable.rules?.find((rule) => rule.startsWith("VOWEL:"))?.slice(6) ?? null,
         coda: syllable.coda === "—" ? "" : syllable.coda ?? null,
       })));
 }
