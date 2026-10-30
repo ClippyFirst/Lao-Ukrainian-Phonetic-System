@@ -178,31 +178,41 @@ function unresolved(surface, status = "UNRESOLVED") {
   };
 }
 
-const LAO_ONSET_TO_ROMANIZATION = new Map([
-  ["ກ", "k"], ["ຂ", "kh"], ["ຄ", "kh"], ["ງ", "ng"], ["ຈ", "ch"],
-  ["ສ", "s"], ["ຊ", "x"], ["ຍ", "gn"], ["ດ", "d"], ["ຕ", "t"],
-  ["ຖ", "th"], ["ທ", "th"], ["ນ", "n"], ["ບ", "b"], ["ປ", "p"],
-  ["ຜ", "ph"], ["ຝ", "f"], ["ພ", "ph"], ["ຟ", "f"], ["ມ", "m"],
-  ["ຢ", "y"], ["ຣ", "r"], ["ລ", "l"], ["ວ", "v"], ["ຫ", "h"],
-  ["ຮ", "h"], ["ອ", ""],
+const LAO_ONSET_CROSSWALK = new Map([
+  ["ກ", { romanization: "k", ukrainian: "к" }],
+  ["ຂ", { romanization: "kh", ukrainian: "к'" }],
+  ["ຄ", { romanization: "kh", ukrainian: "к'" }],
+  ["ງ", { romanization: "ng", ukrainian: "нг" }],
+  ["ຈ", { romanization: "ch", ukrainian: "ч" }],
+  ["ສ", { romanization: "s", ukrainian: "с" }],
+  ["ຊ", { romanization: "x", ukrainian: "с" }],
+  ["ຍ", { romanization: "gn", ukrainian: "нь" }],
+  ["ດ", { romanization: "d", ukrainian: "д" }],
+  ["ຕ", { romanization: "t", ukrainian: "т" }],
+  ["ຖ", { romanization: "th", ukrainian: "т'" }],
+  ["ທ", { romanization: "th", ukrainian: "т'" }],
+  ["ນ", { romanization: "n", ukrainian: "н" }],
+  ["ບ", { romanization: "b", ukrainian: "б" }],
+  ["ປ", { romanization: "p", ukrainian: "п" }],
+  ["ຜ", { romanization: "ph", ukrainian: "п'" }],
+  ["ຝ", { romanization: "f", ukrainian: "ф" }],
+  ["ພ", { romanization: "ph", ukrainian: "п'" }],
+  ["ຟ", { romanization: "f", ukrainian: "ф" }],
+  ["ມ", { romanization: "m", ukrainian: "м" }],
+  ["ຢ", { romanization: "y", ukrainian: "й" }],
+  ["ຣ", { romanization: "r", ukrainian: "л" }],
+  ["ລ", { romanization: "l", ukrainian: "л" }],
+  ["ວ", { romanization: "v", ukrainian: "в" }],
+  ["ຫ", { romanization: "h", ukrainian: "г" }],
+  ["ຮ", { romanization: "h", ukrainian: "г" }],
+  ["ອ", { romanization: "", ukrainian: "" }],
 ]);
-
-const LAO_ONSET_TARGETS = new Map([
-  ["ກ", "к"], ["ຂ", "к'"], ["ຄ", "к'"], ["ງ", "нг"], ["ຈ", "ч"],
-  ["ສ", "с"], ["ຊ", "с"], ["ຍ", "нь"], ["ດ", "д"], ["ຕ", "т"],
-  ["ຖ", "т'"], ["ທ", "т'"], ["ນ", "н"], ["ບ", "б"], ["ປ", "п"],
-  ["ຜ", "п'"], ["ຝ", "ф"], ["ພ", "п'"], ["ຟ", "ф"], ["ມ", "м"],
-  ["ຢ", "й"], ["ຣ", "л"], ["ລ", "л"], ["ວ", "в"], ["ຫ", "г"],
-  ["ຮ", "г"], ["ອ", ""],
-]);
-
 function crosswalkUnit(unit, sourceOnset) {
-  const expectedRomanization = LAO_ONSET_TO_ROMANIZATION.get(sourceOnset);
-  if (expectedRomanization === undefined || expectedRomanization !== unit.onset) return null;
-  const onsetTarget = LAO_ONSET_TARGETS.get(sourceOnset);
+  const correspondence = LAO_ONSET_CROSSWALK.get(sourceOnset);
+  if (!correspondence || correspondence.romanization !== unit.onset) return null;
   return {
     ...unit,
-    ukrainian: onsetTarget + NUCLEI.get(unit.nucleus) +
+    ukrainian: correspondence.ukrainian + NUCLEI.get(unit.nucleus) +
       (unit.coda ? codaTarget(unit.coda, unit.nucleus) : ""),
     sourceOnset,
     crosswalk: "LAO_GRAPHEME↔BGN_ROMANIZATION↔UKRAINIAN",
