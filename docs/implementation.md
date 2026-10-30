@@ -23,3 +23,12 @@ The current parser is a syllable parser, not a lexical word segmenter. Lao space
 ## Failure discipline
 
 Unknown Unicode, unknown vowel structures, and unsupported phonological combinations produce explicit status/warning information rather than silently inventing a correspondence.
+
+
+## Browser romanization fallback
+
+- `web/romanization.js` — constrained provisional CLDR Lao-Latin/UNGEGN conversion.
+- `web/romanization-ukrainian.js` — separate orthographic adapter from the romanization string to Ukrainian; it does not consume IPA or Lao graphemes.
+- `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
+
+The phonetic engine remains the default. The fallback is explicitly a rendering of Latin spelling, not an alternate pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the mapping policy and information-loss boundary.
