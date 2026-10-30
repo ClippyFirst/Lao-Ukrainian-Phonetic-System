@@ -40,3 +40,14 @@ test("layout remains usable on narrow screens and retains Lao-specific analysis"
   assert.match(app, /syllable\.tone/);
   assert.match(app, /syllable\.rules/);
 });
+
+ 
+test("Ukrainian result offers an accessible two-method selector in one result card",()=>{
+ assert.ok(html.includes('id="mode-phonetic"'));
+ assert.ok(html.includes('id="mode-romanization"'));
+ assert.ok(html.includes('id="output-method-note"'));
+ assert.ok(app.includes("romanizationToUkrainian"));
+ assert.ok(app.includes("setOutputMode"));
+ assert.ok(app.includes("aria-pressed"));
+ assert.ok(css.includes(".method-switch"));
+});
