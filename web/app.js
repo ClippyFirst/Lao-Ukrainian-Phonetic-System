@@ -1,1 +1,150 @@
-import{analyze}from"./engine.js";import{romanizeLao}from"./romanization.js";const input=document.querySelector("#lao-input"),output=document.querySelector("#output"),ipa=document.querySelector("#ipa"),romanization=document.querySelector("#romanization"),rows=document.querySelector("#rows"),warnings=document.querySelector("#warnings"),section=document.querySelector("#analysis-section"),copy=document.querySelector("#copy"),count=document.querySelector("#count"),status=document.querySelector("#status");function render(){const r=analyze(input.value);const roman=romanizeLao(input.value);count.textContent=[...input.value].length+" символів";if(!input.value.trim()){output.textContent="Введіть лаоський текст, щоб отримати аналіз.";output.className="output muted";ipa.textContent="";romanization.textContent="Введіть лаоський текст, щоб отримати романізацію.";romanization.className="output muted";section.classList.add("hidden");copy.disabled=true;document.querySelector("#copy-romanization").disabled=true;document.querySelector("#copy-ipa").disabled=true;return}output.textContent=r.output||"Немає достатньо даних для надійного запису.";output.className="output";romanization.textContent=roman.output;romanization.className="output";ipa.textContent=r.syllables.map(s=>s.ipa||"—").join(" ");copy.disabled=!r.output;document.querySelector("#copy-romanization").disabled=!roman.output;document.querySelector("#copy-ipa").disabled=!ipa.textContent;section.classList.remove("hidden");status.textContent=r.status==="OK"?"ГОТОВО":r.status==="PARTIAL"?"ЧАСТКОВИЙ АНАЛІЗ":"НЕ ВСТАНОВЛЕНО";status.dataset.state=r.status;warnings.replaceChildren();r.warnings.forEach(w=>{const p=document.createElement("p");p.className="warning";p.textContent=w;warnings.append(p)});rows.replaceChildren();r.syllables.forEach(s=>{const el=document.createElement("article");el.className="analysis-row";const grid=document.createElement("div");grid.className="analysis-grid";[["Лао",s.surface],["IPA",s.ipa||"—"],["Клас",s.class||"—"],["Голосний",s.vowel||"—"],["Тип складу",s.syllableType||"—"],["Тон",s.tone?s.tone+" "+s.toneContour:"—"],["Український",s.ukrainian||"—"],["Статус",s.status]].forEach(([k,v])=>{const d=document.createElement("div"),small=document.createElement("small"),strong=document.createElement("strong");small.textContent=k;strong.textContent=v;d.append(small,strong);grid.append(d)});el.append(grid);const p=document.createElement("p");p.className="rules";p.textContent=(s.rules||[]).join(" · ");el.append(p);rows.append(el)})}input.addEventListener("input",render);document.querySelector("#example").addEventListener("click",()=>{input.value="ຂາ";render();input.focus()});document.querySelector("#clear").addEventListener("click",()=>{input.value="";render();input.focus()});copy.addEventListener("click",async()=>{try{const text=analyze(input.value).output;if(!text)return;await navigator.clipboard.writeText(text);copy.textContent="Скопійовано";setTimeout(()=>copy.textContent="Копіювати",1200)}catch{copy.textContent="Не вдалося"}});document.querySelector("#copy-romanization").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(romanizeLao(input.value).output)}catch{}});document.querySelector("#copy-ipa").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(document.querySelector("#ipa").textContent)}catch{}});render();
+import { analyze } from "./engine.js";
+import { romanizeLao } from "./romanization.js";
+
+const input = document.querySelector("#lao-input");
+const output = document.querySelector("#output");
+const ipa = document.querySelector("#ipa");
+const romanization = document.querySelector("#romanization");
+const rows = document.querySelector("#rows");
+const warnings = document.querySelector("#warnings");
+const section = document.querySelector("#analysis-section");
+const copy = document.querySelector("#copy");
+const copyRomanization = document.querySelector("#copy-romanization");
+const copyIpa = document.querySelector("#copy-ipa");
+const copyFeedback = document.querySelector("#copy-feedback");
+const count = document.querySelector("#count");
+const status = document.querySelector("#status");
+
+async function copyWithFeedback(button, value) {
+  const defaultLabel = button.dataset.defaultLabel || button.textContent;
+  button.dataset.defaultLabel = defaultLabel;
+
+  try {
+    await navigator.clipboard.writeText(value);
+    button.textContent = "Скопійовано";
+    button.classList.add("is-copied");
+    copyFeedback.textContent = defaultLabel + ": скопійовано";
+  } catch {
+    button.textContent = "Не вдалося";
+    button.classList.remove("is-copied");
+    copyFeedback.textContent = defaultLabel + ": не вдалося скопіювати";
+  }
+
+  window.clearTimeout(button.feedbackTimer);
+  button.feedbackTimer = window.setTimeout(() => {
+    button.textContent = defaultLabel;
+    button.classList.remove("is-copied");
+  }, 1400);
+}
+
+function render() {
+  const result = analyze(input.value);
+  const roman = romanizeLao(input.value);
+  count.textContent = [...input.value].length + " символів";
+
+  if (!input.value.trim()) {
+    output.textContent = "Введіть лаоський текст, щоб отримати аналіз.";
+    output.className = "output muted";
+    ipa.textContent = "";
+    romanization.textContent = "Введіть лаоський текст, щоб отримати романізацію.";
+    romanization.className = "output muted";
+    section.classList.add("hidden");
+    copy.disabled = true;
+    copyRomanization.disabled = true;
+    copyIpa.disabled = true;
+    copyFeedback.textContent = "";
+    return;
+  }
+
+  output.textContent = result.output || "Немає достатньо даних для надійного запису.";
+  output.className = "output";
+  romanization.textContent = roman.output;
+  romanization.className = "output";
+  ipa.textContent = result.syllables.map((syllable) => syllable.ipa || "—").join(" ");
+
+  copy.disabled = !result.output;
+  copyRomanization.disabled = !roman.output;
+  copyIpa.disabled = !ipa.textContent;
+  section.classList.remove("hidden");
+
+  status.textContent =
+    result.status === "OK"
+      ? "ГОТОВО"
+      : result.status === "PARTIAL"
+        ? "ЧАСТКОВИЙ АНАЛІЗ"
+        : "НЕ ВСТАНОВЛЕНО";
+  status.dataset.state = result.status;
+
+  warnings.replaceChildren();
+  result.warnings.forEach((warning) => {
+    const paragraph = document.createElement("p");
+    paragraph.className = "warning";
+    paragraph.textContent = warning;
+    warnings.append(paragraph);
+  });
+
+  rows.replaceChildren();
+  result.syllables.forEach((syllable) => {
+    const element = document.createElement("article");
+    element.className = "analysis-row";
+
+    const grid = document.createElement("div");
+    grid.className = "analysis-grid";
+    [
+      ["Лао", syllable.surface],
+      ["IPA", syllable.ipa || "—"],
+      ["Клас", syllable.class || "—"],
+      ["Голосний", syllable.vowel || "—"],
+      ["Тип складу", syllable.syllableType || "—"],
+      ["Тон", syllable.tone ? syllable.tone + " " + syllable.toneContour : "—"],
+      ["Український", syllable.ukrainian || "—"],
+      ["Статус", syllable.status],
+    ].forEach(([label, value]) => {
+      const cell = document.createElement("div");
+      const caption = document.createElement("small");
+      const strong = document.createElement("strong");
+      caption.textContent = label;
+      strong.textContent = value;
+      cell.append(caption, strong);
+      grid.append(cell);
+    });
+
+    element.append(grid);
+    const rules = document.createElement("p");
+    rules.className = "rules";
+    rules.textContent = (syllable.rules || []).join(" · ");
+    element.append(rules);
+    rows.append(element);
+  });
+}
+
+input.addEventListener("input", render);
+
+document.querySelector("#example").addEventListener("click", () => {
+  input.value = "ຂາ";
+  render();
+  input.focus();
+});
+
+document.querySelector("#clear").addEventListener("click", () => {
+  input.value = "";
+  render();
+  input.focus();
+});
+
+copy.addEventListener("click", () => {
+  const value = analyze(input.value).output;
+  if (value) copyWithFeedback(copy, value);
+});
+
+copyRomanization.addEventListener("click", () => {
+  const value = romanizeLao(input.value).output;
+  if (value) copyWithFeedback(copyRomanization, value);
+});
+
+copyIpa.addEventListener("click", () => {
+  const value = ipa.textContent;
+  if (value) copyWithFeedback(copyIpa, value);
+});
+
+render();
