@@ -22,7 +22,7 @@ The primary method must not be Lao → Latin romanization → Ukrainian.
 - Lao input with example and clear controls.
 - Primary result labelled **Український запис** with a two-mode selector: **Фонетичний** (default) and **За романізацією**.
 - The phonetic result continues to use IPA as its analytical boundary. The optional romanization mode must use a separate syllable parser that analyzes onset, vowel nucleus and coda from the romanized string; it must not be a character-by-character Latin-to-Cyrillic mapping or be represented as phonetic transcription.
-- The romanization method must cross-check each parsed onset against the original Lao consonant grapheme. BGN/PCGN `kh/th/ph` for ຂ/ຄ, ຖ/ທ, ຜ/ພ represent aspiration and map to `к'/т'/п'`; independent Lao /h/ from ຫ/ຮ maps to `г`. BGN `x` from ຊ maps to `с`. Invalid coda `h`, source/romanization mismatches and ambiguous or unsupported syllable segmentation must be visible and marked partial rather than guessed.
+- The romanization method must cross-check each parsed onset against the original Lao consonant grapheme. BGN/PCGN `kh/th/ph` for ຂ/ຄ, ຖ/ທ, ຜ/ພ represent aspiration and map to `к'/т'/п'`; independent Lao /h/ from ຫ/ຮ maps to `г`. BGN `x` from ຊ maps to `с`. Invalid coda `h`, onset/coda source/romanization mismatches and ambiguous or unsupported syllable segmentation must be visible and marked partial rather than guessed.
 - IPA remains visible as an analytical layer for the phonetic engine.
 - Per-syllable explanation: onset, consonant class, vowel, syllable type, tone, mapping.
 - Warnings for unresolved or analysis-dependent cases.
