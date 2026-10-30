@@ -186,4 +186,4 @@ The final feature-branch commit `bd2b0b05e00c884d20818dce914603b4a0b09cc3` passe
 - Static build and canonical browser-data generation: passed.
 - Generated-data reproducibility and built-page/relative-asset checks: passed.
 
-The five test suites total **192 passing tests**. These are deterministic engineering and project-policy regressions, not independent Lao pronunciation gold. The feature branch remains in PR #65 and has not been merged or deployed. The latest confirmed Pages deployment remains the earlier main commit recorded in the master handoff; current-main deployment parity requires separate verification.
+The five test suites total **192 passing tests**. These are deterministic engineering and project-policy regressions, not independent Lao pronunciation gold. The feature branch remains in PR #65 and has not been merged or deployed. Separately, current `main` commit `d64e201f6d417c71e3437daccfa465ddb77e224f` passed GitHub Pages build and deploy in [run 41117044318](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41117044318). This is deployment evidence for `main`, not for PR #65's unmerged feature head.
