@@ -54,3 +54,10 @@ test("romanization-to-Ukrainian remains distinct from the IPA-first result",()=>
  assert.equal(fallback.output,"кха");
  assert.equal(analyze(lao).output,"к'а");
 });
+
+
+test("CLDR palatal nasal spelling maps to the project's Ukrainian palatal nasal",()=>{
+ const latin=romanizeLao("ຍາ");
+ assert.equal(latin.output,["g","n","a"].join(""));
+ assert.equal(romanizationToUkrainian(latin.output).output,"ньа");
+});
