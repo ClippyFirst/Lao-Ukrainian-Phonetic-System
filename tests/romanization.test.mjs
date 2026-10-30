@@ -140,3 +140,29 @@ test("a Lao k syllable followed by a real h-onset syllable is preserved as two u
  assert.equal(adapted.status,"OK");
  assert.equal(adapted.output,"кага");
 });
+
+
+test("source coda graphemes are checked against CLDR output before Ukrainian coda adaptation",()=>{
+ const examples=[
+  ["ກັດ","kad","кат"],
+  ["ກັບ","kab","кап"],
+  ["ກາງ","kang","канг"],
+  ["ການ","kan","кан"],
+  ["ກາມ","kam","кам"],
+  ["ກາຍ","kagn","кай"],
+  ["ກາວ","kav","као"],
+ ];
+ for(const [lao,expectedLatin,expectedUkrainian] of examples){
+  const latin=romanizeLao(lao);
+  const source=analyze(lao);
+  const adapted=analyzeRomanization(latin.output,{
+   sourceSyllableGroups:[source.syllables.map(s=>({
+    onset:s.onset,
+    coda:s.coda==="—"?"":s.coda??null,
+   }))],
+  });
+  assert.equal(latin.output,expectedLatin,lao);
+  assert.equal(adapted.status,"OK",lao);
+  assert.equal(adapted.output,expectedUkrainian,lao);
+ }
+});
