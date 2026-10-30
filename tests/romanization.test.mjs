@@ -47,7 +47,7 @@ test("romanization fallback preserves unsupported characters and reports partial
 });
 
 
-test("romanization-to-Ukrainian remains distinct from the IPA-first result",()=>{
+test("romanization-to-Ukrainian independently agrees with the IPA-first aspirated-stop specimen",()=>{
  const lao="ຂາ";
  const latin=romanizeLao(lao);
  const fallback=romanizationToUkrainian(latin.output);
