@@ -112,6 +112,8 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
  assert.match(app,/function sourceSyllableGroupsForCrosswalk\(sourceText\)/u);
  assert.match(app,/sourceSyllableGroups:\s*sourceSyllableGroupsForCrosswalk\(input\.value\)/u);
+ assert.match(app,/vowelId:\s*syllable\.vowel\?\.id/u);
+ assert.ok(app.includes("Лаоська голосна структура"));
  assert.equal(app.includes("sourceOnsetsForCrosswalk"),false);
  assert.equal(app.includes("sourceOnsetGroupsForCrosswalk"),false);
  assert.ok(app.includes("Лаоська початкова графема"));
