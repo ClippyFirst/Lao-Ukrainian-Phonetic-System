@@ -46,6 +46,7 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | LAO-DOCS-001 | P1 | TODO | Existing methodology, validation, limitations, final audit | Docs match actual code and do not overclaim; final audit updated after CI and corpus results |
 | LAO-RELEASE-001 | P2 | TODO | `CITATION.cff` and `LICENSE` already exist | Verify metadata/license consistency; create tagged release and Zenodo archive only after P0 acceptance gates |
 | LAO-DEPLOY-001 | P1 | TODO | GitHub Pages workflow exists | Verify live site and generated artifacts against current commit; deployment success is not phonetic validation |
+| LAO-UI-001 | P1 | IN_PROGRESS | Reused open PR #61 branch `design/lao-layout-20261030`; editorial specimen/wordmark, clearer input-output hierarchy, unified copy feedback, skip links, responsive refinements and UI accessibility CI gates. Exact-head verify run [41110855525](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41110855525) passed for `21729be93cb5390d2c377d66e4618fd396a4e6b3`. | Complete visual QA with screenshots at 1440px, 768px and 390px, keyboard-only interaction review and live Pages verification; do not mark complete from CI alone |
 
 ## Coverage matrix (initial; not yet a scientific completeness claim)
 
@@ -65,6 +66,17 @@ Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings 
 | Browser/Python parity | Shared fixture `tests/fixtures/vowel_precedence_cases.json` is consumed by both `tests/test_structural_vowels.py` and `web/engine.test.js`; the fixture suite includes 36 expected-IPA cases | Vowel fixtures and full CI passed in run [39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983); full status/coda/tone/target-output parity remains unverified | Extend shared fixtures to status, coda, tone and Ukrainian output where semantics align |
 | CI/build/deployment | Workflow exists; baseline main run succeeded 2026-10-09 | Historical baseline only | Check current work-branch run and live deployment |
 | Sources and reproducibility | Sources/claims registries and generation scripts | Partial | Audit each claim, citation metadata and generated artifacts |
+
+## Current continuation — 2026-10-30 (interface design)
+
+- Current default-branch baseline: `main` at `08e4d0c0daa8cf7eb758b93a75520d30fa2cd16b`.
+- Reused the already-open, directly relevant PR #61 and its branch `design/lao-layout-20261030`, based on the current default branch. No competing PR was merged or closed.
+- Latest commit: `21729be93cb5390d2c377d66e4618fd396a4e6b3`. The branch is 10 commits ahead of `main`, 0 behind. PR #61 remains open and mergeable.
+- Implemented a Lao-script wordmark and a real `ຂາ → kʰaː → к'а` specimen; retained the established red/blue palette and the romanization → IPA → Ukrainian output order; improved responsive composition, focus/skip navigation, methodology navigation semantics and copy feedback for all three output layers.
+- Adapted React Bits micro-interaction principles in native CSS/JavaScript. No React runtime or third-party component source was added because this repository is a vanilla HTML/CSS/JavaScript service.
+- Updated `docs/DESIGN-SYSTEM.md` and added CI assertions for the new UI/accessibility contract.
+- Verification: GitHub Actions verify run [41110855525](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41110855525) completed successfully for the exact latest commit. The workflow runs Python tests, external-G2P harness syntax/CLI checks, Node/browser engine tests, build/data regeneration, generated-data drift checks and built-page/asset/UI assertions.
+- Remaining acceptance gate: visual browser review at 1440px, 768px and 390px, including keyboard-only use and confirmation against a live Pages deployment. A browser screenshot/preview runtime was not available in this session, so the design task remains `IN_PROGRESS`, not `DONE_VERIFIED`.
 
 ## Handoff — 2026-10-20
 
