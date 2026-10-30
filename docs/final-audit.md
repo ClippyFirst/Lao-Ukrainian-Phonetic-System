@@ -83,3 +83,7 @@ This does not establish a normative Ukrainian transcription standard or improve 
 - Added source records for the Encyclopedia of Modern Ukraine article “Щ” (2025) and the Journal of the International Phonetic Association description of Ukrainian (2016), plus the source-linked claim `CLM-UA-SHCH-SEQUENCE`.
 - Added regression coverage for the sequence and the individual postalveolar fricatives, retaining explicit tests for /h/ → г, /ɦ/ → г, /ɡ/ → ґ, /x/ → х, /t͡s/ → ц, /d͡z/ → дз, /t͡ʃ/ → ч and /d͡ʒ/ → дж.
 - This is a target-language orthographic crosswalk decision. It does not assert that Lao contains /ʃt͡ʃ/ or alter Lao source phonology.
+
+### Exact-head verification — Ukrainian target sequence extension
+
+The implementation in 3d0d71cc505695eb9e7e0dc5b60f40227cc79565 passed [workflow 41140937597](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140937597). The audit reported 43 consonant rows, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 22 evidence sources and 45 claims; all claim/source references resolved. Python 94, browser engine 47, romanization integration 19, syllable crosswalk 27 and web layout 5 passed. External-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. The test-first failure is retained in workflow [41140800731](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140800731).

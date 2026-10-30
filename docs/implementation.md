@@ -33,3 +33,7 @@ Unknown Unicode, unknown vowel structures, and unsupported phonological combinat
 - `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
 
 The phonetic engine remains the default. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
+
+## Ukrainian IPA target sequence handling
+
+The canonical IPA correspondence registry is shared by the Python target adapter and generated browser engine. Longest-match selection maps the exact Ukrainian sequence /ʃt͡ʃ/ to щ before considering the shorter /ʃ/ → ш and /t͡ʃ/ → ч entries. This does not merge arbitrary consonants: the exact ordered sequence is a documented target orthographic unit. The remaining distinctions /h, ɦ/ → г, /ɡ/ → ґ, /x/ → х, /d͡ʒ/ → дж, /d͡z/ → дз and /t͡s/ → ц are preserved in the same canonical table.

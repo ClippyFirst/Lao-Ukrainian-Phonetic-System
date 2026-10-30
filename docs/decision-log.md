@@ -63,3 +63,11 @@
 **Decision:** The romanization route validates the source vowel ID against the parsed CLDR nucleus in addition to the onset and supported coda. The supported vowel map is an explicit subset; distinctions collapsed by romanization (including vowel length) are not reconstructed, and source patterns deleted or not represented by the CLDR subset are withheld. BGN/PCGN 1966 note 5 identifies ໜ/ໝ as abbreviated forms of silent ຫ + ນ/ມ and says silent ຫ is generally omitted before sonorants. The implementation applies this to supported written forms ຫງ, ຫຍ, ຫນ, ຫມ, ຫລ, ຫຼ and ຫວ as well as atomic ໜ/ໝ; their romanized onsets retain the underlying sonorant, not an audible /h/. The BGN /r/ case remains unsupported until the structural parser models ຫຣ.
 
 **Reason:** Latin spelling alone can be ambiguous: `kam` may encode A + coda m or the AM nucleus, and `niav` has competing syllabifications. The original Lao parser already retains vowel IDs and atomic high-class nasal graphemes, so this information should be used as evidence rather than guessed or discarded. The official PCGN copy of the BGN/PCGN 1966 agreement and the EKI/UNGEGN report document the vowel table and silent-`h` note; the source-aware adapter can now resolve the corresponding cases while keeping the IPA-first method independent.
+
+## D-010 — Preserve Ukrainian /ʃt͡ʃ/ as the grapheme щ
+
+**Decision:** Add the exact ordered IPA sequence /ʃt͡ʃ/ → Ukrainian щ to the canonical target correspondence registry. Keep the individual mappings /ʃ/ → ш and /t͡ʃ/ → ч, as well as /d͡ʒ/ → дж, /d͡z/ → дз, /t͡s/ → ц, /ɡ/ → ґ, /ɦ/ → г and /x/ → х.
+
+**Reason:** Modern Ukrainian щ represents the fricative-plus-affricate sequence [ш]+[ч], not a single affricate. The Encyclopedia of Modern Ukraine and the Journal of the IPA Ukrainian description document this correspondence. The existing longest-match adapter can preserve the exact sequence without changing isolated segment mappings. This is target orthography, not a Lao phonological claim.
+
+**Evidence:** SRC-ESU-SHCH, SRC-JIPA-UKRAINIAN; claim CLM-UA-SHCH-SEQUENCE.

@@ -160,3 +160,14 @@ Verified implementation head: d0b9a585a3edf2ad0c89ba9f9b10fcbc35aa62e6. [GitHub 
 The romanization tests include supported decomposed high-class onsets (ຫງ/ຫຍ/ຫນ/ຫມ/ຫລ), the ຫຼ form, ຫວ, atomic ໜ/ໝ, source written-onset preservation, source-vowel mismatch, source-resolved niav, the full ເຂົ້າໜຽວ source, and A+coda-m versus AM-nucleus kam. The IPA-first pipeline remains unchanged.
 
 This verifies deterministic implementation behavior for the supported subset only. It does not establish empirical pronunciation accuracy, complete BGN/PCGN or CLDR/ICU coverage, or a normative Lao-to-Ukrainian standard. The BGN /r/ environment ຫຣ is not yet supported by the source structural parser. Manual visual/keyboard QA and an independently adjudicated gold corpus remain outstanding.
+
+## Ukrainian target sequence extension — 2026-10-31
+
+Test-first correction for the missing Ukrainian shcha sequence:
+- The new Python regression initially failed as expected: IPA ʃt͡ʃa returned шча instead of щ (workflow [41140800731](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140800731)).
+- The canonical data/lao/ukrainian_correspondences.csv now contains the longer exact sequence /ʃt͡ʃ/ → щ. The Python and browser adapters use longest-match selection; isolated /ʃ/ → ш and /t͡ʃ/ → ч remain unchanged. The generated browser mirror was regenerated and committed.
+- The evidence registry now includes 22 sources and 45 claims, including the 2025 Encyclopedia of Modern Ukraine entry and the Journal of the IPA Ukrainian description for the target sequence.
+- Exact-head verification [41140937597](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140937597) passed: repository audit (43 consonants, 34 vowels, 17 tone rules, 70 Ukrainian mappings; all 22 sources and 45 claims resolve); Python 94; browser engine 47; romanization integration 19; syllable crosswalk 27; web layout 5; external-G2P harness syntax/CLI; production build; generated-data reproducibility; built-page and relative-asset checks.
+- The regression is a Ukrainian target-orthography mapping only. It does not add /ʃ/ or /t͡ʃ/ to the Lao source inventory, and it does not combine arbitrary adjacent consonants into an affricate. The exact ordered sequence /ʃ/ + /t͡ʃ/ is rendered with the Ukrainian letter щ; each segment remains separately mapped when supplied alone.
+
+This verifies deterministic implementation behavior for the documented target subset. It does not complete independent expert review of the entire target policy or establish Lao pronunciation accuracy.
