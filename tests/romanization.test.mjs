@@ -109,7 +109,7 @@ test("source grapheme cross-check does not allow kh to impersonate k",()=>{
 test("the compatibility API accepts source-onset evidence for the three-way crosswalk",()=>{
  const result=romanizationToUkrainian("kha",{sourceSyllableGroups:[[{onset:"ຂ",coda:""}]]});
  assert.equal(result.output,"к'а");
- assert.equal(result.syllables[0].crosswalk,"LAO_SYLLABLE_GRAPHEMES↔CLDR_ROMANIZATION↔UKRAINIAN");
+ assert.equal(result.syllables[0].crosswalk,"LAO_SYLLABLE_STRUCTURE↔CLDR_ROMANIZATION↔UKRAINIAN");
 });
 
 test("the UI passes the parsed Lao onsets into romanization analysis and copy",()=>{
@@ -122,7 +122,7 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  assert.equal(app.includes("sourceOnsetGroupsForCrosswalk"),false);
  assert.ok(app.includes("Лаоська початкова графема"));
  assert.ok(app.includes("Лаоська фінальна графема"));
- assert.ok(app.includes("Звірка графем"));
+ assert.ok(app.includes("Звірка джерельної структури"));
 });
 
 
