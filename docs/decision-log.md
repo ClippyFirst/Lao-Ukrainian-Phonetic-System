@@ -39,6 +39,6 @@
 
 ## D-007 — Romanization fallback is a separate optional method
 
-**Decision:** Keep the IPA-first phonetic method as the default and add a user-selected, independent orthographic adapter from the provisional CLDR Lao-Latin/UNGEGN string to Ukrainian. Do not feed romanization into the phonetic IPA adapter or silently switch methods.
+**Decision:** Keep the IPA-first phonetic method as the default and add a user-selected, independent syllable-level adapter from the provisional CLDR Lao-Latin/BGN romanization to Ukrainian. The adapter parses onset, vowel nucleus and coda, then assembles a Ukrainian syllable. The project-wide romanization rule is `h → г` in every position, including `kh → кг`, `th → тг` and `ph → пг`. Ambiguous or unsupported segmentation is withheld and marked partial.
 
-**Reason:** The two paths answer different questions. The phonetic path models pronunciation; the fallback renders a Latin spelling when a user wants a deterministic but less informative alternative. Explicit separation prevents a romanized spelling from being presented as verified pronunciation.
+**Reason:** The two paths answer different questions. The phonetic path models pronunciation through IPA; the second method adapts the written romanization through a separate orthographic syllable model. It must not be a character-by-character Latin-to-Cyrillic substitution, must not consume IPA, and must not silently switch methods. The BGN/PCGN source distinguishes initial and final consonant forms; the provisional CLDR transform does not implement every final-position rule, so the adapter documents its project policy and its limits.
