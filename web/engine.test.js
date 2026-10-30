@@ -4,12 +4,13 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyze } from "./engine.js";
+import { CORRESPONDENCES } from "./data.js";
 
 test("basic long syllable", () => {
   const r = analyze("ຂາ");
   assert.equal(r.status, "OK");
   assert.equal(r.syllables[0].ipa, "kʰaː");
-  assert.equal(r.output, "ка");
+  assert.equal(r.output, "к\u0027а");
 });
 
 test("middle and low class inherent tones differ", () => {
@@ -122,7 +123,7 @@ test("invalid mixed script is rejected", () => {
 test("CRLF is accepted as line whitespace", () => {
   const r = analyze("ກາ\r\nຂາ");
   assert.notEqual(r.status, "INVALID");
-  assert.equal(r.output, "ка ка");
+  assert.equal(r.output, "ка к\u0027а");
 });
 
 test("zero-width space is rejected rather than silently removed", () => {
@@ -346,4 +347,16 @@ test("DEL and C1 controls are rejected in browser input", () => {
     assert.equal(result.output, "");
     assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
   }
+});
+
+
+test("shared Ukrainian target distinguishes aspiration, h, g, x and affricates", () => {
+  assert.equal(analyze("ຂາ").output, "к'а");
+  assert.equal(analyze("ຫາ").output, "га");
+  assert.equal(CORRESPONDENCES["ɡ"], "ґ");
+  assert.equal(CORRESPONDENCES["x"], "х");
+  assert.equal(CORRESPONDENCES["t͡s"], "ц");
+  assert.equal(CORRESPONDENCES["d͡z"], "дз");
+  assert.equal(CORRESPONDENCES["t͡ʃ"], "ч");
+  assert.equal(CORRESPONDENCES["d͡ʒ"], "дж");
 });
