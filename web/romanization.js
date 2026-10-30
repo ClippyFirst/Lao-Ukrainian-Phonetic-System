@@ -29,5 +29,5 @@ export function romanizeLao(input) {
   output = output.replace(/([\p{L}\p{M}])ອ/gu, "$1-");
   output = [...output].map(ch => MAP.has(ch) ? MAP.get(ch) : ch).join("");
   const remainingLao = LAO_RE.test(output);
-  return { output, status: remainingLao ? "PARTIAL" : "PROVISIONAL", source: "CLDR Lao-Latin/UNGEGN (provisional)" };
+  return { output, status: remainingLao ? "PARTIAL" : "PROVISIONAL", source: "CLDR Lao-Latin (provisional; BGN alias)" };
 }
