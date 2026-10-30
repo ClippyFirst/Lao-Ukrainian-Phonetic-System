@@ -103,6 +103,6 @@ test("the compatibility API accepts source-onset evidence for the three-way cros
 
 test("the UI passes the parsed Lao onsets into romanization analysis and copy",()=>{
  const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
- assert.match(app,/function sourceOnsetsForCrosswalk\(result\)/u);
- assert.match(app,/sourceOnsets:\s*sourceOnsetsForCrosswalk\(result\)/u);
+ assert.match(app,/function sourceOnsetGroupsForCrosswalk\(sourceText\)/u);
+ assert.match(app,/sourceOnsetGroups:\s*sourceOnsetGroupsForCrosswalk\(input\.value\)/u);
 });
