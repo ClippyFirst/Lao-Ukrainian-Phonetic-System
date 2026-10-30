@@ -19,3 +19,12 @@ class TestTarget(unittest.TestCase):
         self.assertEqual(practical_from_ipa("nʲa"), "ньа")
     def test_velar_nasal(self):
         self.assertEqual(practical_from_ipa("ŋaː"), "нга")
+    def test_ukrainian_shcha_sequence_is_not_split_into_sh_and_ch(self):
+        self.assertEqual(practical_from_ipa("ʃt͡ʃa"), "ща")
+        self.assertEqual(practical_from_ipa("ʃa"), "ша")
+        self.assertEqual(practical_from_ipa("t͡ʃa"), "ча")
+    def test_sh_and_zh_are_not_confused_with_affricates(self):
+        self.assertEqual(practical_from_ipa("ʃa"), "ша")
+        self.assertEqual(practical_from_ipa("ʒa"), "жа")
+        self.assertEqual(practical_from_ipa("ɦaː"), "га")
+

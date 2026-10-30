@@ -24,10 +24,14 @@ export function romanizeLao(input) {
   const source = String(input ?? "").normalize("NFC");
   let output = source;
   for (const [from, to] of SEQUENCES) output = output.split(from).join(to);
+  // BGN/PCGN's silent-hoa note: ຫ before a supported sonorant onset is a high-class
+  // marker, not a pronounced /h/. The ຫຼ ligature is likewise romanized l.
+  output = output.replace(/ຫຼ/gu, "ລ");
+  output = output.replace(/ຫ(?=[ງຍນມລວ])/gu, "");
   // CLDR's contextual rule maps an ອ following a letter/mark to a hyphen;
   // other ອ instances are deleted by the next literal rule.
   output = output.replace(/([\p{L}\p{M}])ອ/gu, "$1-");
   output = [...output].map(ch => MAP.has(ch) ? MAP.get(ch) : ch).join("");
   const remainingLao = LAO_RE.test(output);
-  return { output, status: remainingLao ? "PARTIAL" : "PROVISIONAL", source: "CLDR Lao-Latin/UNGEGN (provisional)" };
+  return { output, status: remainingLao ? "PARTIAL" : "PROVISIONAL", source: "CLDR Lao-Latin (provisional; BGN/PCGN-aligned subset)" };
 }

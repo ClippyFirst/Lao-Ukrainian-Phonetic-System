@@ -1,11 +1,16 @@
 import { analyze } from "./engine.js";
 import { romanizeLao } from "./romanization.js";
+import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261031-source-vowel-crosswalk";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
 const ipa = document.querySelector("#ipa");
 const romanization = document.querySelector("#romanization");
 const rows = document.querySelector("#rows");
+const romanizationTrace = document.querySelector("#romanization-trace");
+const romanizationRows = document.querySelector("#romanization-rows");
+const romanizationWarnings = document.querySelector("#romanization-warnings");
+const romanizationStatus = document.querySelector("#romanization-analysis-status");
 const warnings = document.querySelector("#warnings");
 const section = document.querySelector("#analysis-section");
 const emptyState = document.querySelector("#empty-state");
@@ -13,6 +18,10 @@ const results = document.querySelector("#results");
 const copy = document.querySelector("#copy");
 const copyRomanization = document.querySelector("#copy-romanization");
 const copyIpa = document.querySelector("#copy-ipa");
+const modePhonetic = document.querySelector("#mode-phonetic");
+const modeRomanization = document.querySelector("#mode-romanization");
+const outputMethodNote = document.querySelector("#output-method-note");
+let outputMode = "phonetic";
 const copyFeedback = document.querySelector("#copy-feedback");
 const count = document.querySelector("#count");
 const status = document.querySelector("#analysis-status");
@@ -39,9 +48,50 @@ async function copyWithFeedback(button, value) {
   }, 1400);
 }
 
+function sourceSyllableGroupsForCrosswalk(sourceText) {
+  const parts = String(sourceText ?? "")
+    .split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
+    .filter(Boolean);
+  return parts
+    .filter((part) => !/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u.test(part) && !/^[0-9]+$/u.test(part))
+    .map((part) => analyze(part).syllables
+      .filter((syllable) => !syllable.passthrough)
+      .map((syllable) => ({
+        onset: syllable.onset || null,
+        onsetForm: syllable.onsetForm || syllable.onset || null,
+        vowelId: syllable.rules?.find((rule) => rule.startsWith("VOWEL:"))?.slice(6) ?? null,
+        coda: syllable.coda === "—" ? "" : syllable.coda ?? null,
+      })));
+}
+
+function currentUkrainianOutput() {
+  const result = analyze(input.value);
+  if (outputMode === "phonetic") return result.output;
+  if (result.status === "INVALID") return "";
+  const roman = romanizeLao(input.value);
+  return analyzeRomanization(roman.output, {
+    sourceSyllableGroups: sourceSyllableGroupsForCrosswalk(input.value),
+  }).output;
+}
+
+function setOutputMode(mode) {
+  if (mode !== "phonetic" && mode !== "romanization") return;
+  outputMode = mode;
+  modePhonetic.setAttribute("aria-pressed", String(mode === "phonetic"));
+  modeRomanization.setAttribute("aria-pressed", String(mode === "romanization"));
+  modePhonetic.classList.toggle("is-active", mode === "phonetic");
+  modeRomanization.classList.toggle("is-active", mode === "romanization");
+  render();
+}
+
 function render() {
   const result = analyze(input.value);
-  const roman = romanizeLao(input.value);
+  const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
+  const romanized = result.status === "INVALID"
+    ? { output: "", status: "PARTIAL", warnings: [], syllables: [] }
+    : analyzeRomanization(roman.output, {
+      sourceSyllableGroups: sourceSyllableGroupsForCrosswalk(input.value),
+    });
   count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
@@ -53,25 +103,53 @@ function render() {
     emptyState.hidden = false;
     results.hidden = true;
     section.classList.add("hidden");
+    romanizationTrace.hidden = true;
+    romanizationRows.replaceChildren();
+    romanizationWarnings.replaceChildren();
+    romanizationStatus.textContent = "";
     copy.disabled = true;
+    outputMethodNote.textContent = outputMode === "phonetic"
+      ? "Фонетичний режим: IPA → українська практична адаптація."
+      : "Режим за романізацією: складовий аналіз зі звіркою початкової графеми, голосної структури й підтримуваної фіналі; придихове h відрізняється від окремого /h/.";
     copyRomanization.disabled = true;
     copyIpa.disabled = true;
     copyFeedback.textContent = "";
     return;
   }
 
-  output.textContent = result.output || "Немає достатньо даних для надійного запису.";
-  output.className = "output";
+  const fallbackBlocked = outputMode === "romanization" && result.status === "INVALID";
+  const activeOutput = outputMode === "phonetic" ? result.output : (fallbackBlocked ? "" : romanized.output);
+  output.textContent = activeOutput || (outputMode === "phonetic"
+    ? (result.status === "INVALID"
+      ? "Вхідний текст не пройшов перевірку. Виправте його перед повторним аналізом."
+      : "Фонетичний результат не встановлено. Спробуйте режим за романізацією.")
+    : (fallbackBlocked
+      ? "Романізаційний результат не сформовано для некоректного вхідного тексту."
+      : "Немає доступного романізованого запису для адаптації."));
+  output.className = activeOutput ? "result-body output" : "result-body output muted";
+  outputMethodNote.textContent = outputMode === "phonetic"
+    ? (result.output
+      ? "Фонетичний режим: результат побудовано через IPA → українську практичну адаптацію."
+      : (result.status === "INVALID"
+        ? "Вхідний текст не пройшов перевірку. Спочатку виправте його; романізаційний режим для такого вводу недоступний."
+        : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива."))
+    : fallbackBlocked
+      ? "Романізаційний режим недоступний: виправте вхідний текст, який не пройшов перевірку."
+      : "За романізацією: CLDR Lao-Latin (provisional; BGN/PCGN basis) → звірка початку, голосного комплексу й підтримуваної фіналі з лаоським складом → складовий рушій. kh/th/ph передають придиховість, окреме h — /h/ → г, а ໜ/ໝ — беззвучний висококласовий маркер перед /n,m/. " +
+      (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
+        ? "Частину запису не вдалося розібрати однозначно; вона позначена в дужках."
+        : "Український результат формується за структурою романізованого складу, а не побуквеною заміною.");
   romanization.textContent = roman.output;
   romanization.className = "output";
   ipa.textContent = result.syllables.map((syllable) => syllable.ipa || "—").join(" ");
 
-  copy.disabled = !result.output;
+  copy.disabled = !activeOutput;
   copyRomanization.disabled = !roman.output;
   copyIpa.disabled = !ipa.textContent;
   emptyState.hidden = true;
   results.hidden = false;
   section.classList.remove("hidden");
+  romanizationTrace.hidden = outputMode !== "romanization";
 
   status.textContent =
     result.status === "OK"
@@ -89,6 +167,51 @@ function render() {
     warnings.append(paragraph);
   });
 
+  romanizationStatus.textContent = romanized.status === "OK" ? "ГОТОВО" : "ЧАСТКОВИЙ АНАЛІЗ";
+  romanizationStatus.dataset.state = romanized.status === "OK" ? "OK" : "PARTIAL";
+  romanizationWarnings.replaceChildren();
+  romanized.warnings.forEach((warning) => {
+    const paragraph = document.createElement("p");
+    paragraph.className = "warning";
+    paragraph.textContent = warning;
+    romanizationWarnings.append(paragraph);
+  });
+  romanizationRows.replaceChildren();
+  romanized.syllables.forEach((syllable) => {
+    const element = document.createElement("article");
+    element.className = "analysis-row";
+    const grid = document.createElement("div");
+    grid.className = "analysis-grid";
+    [
+      ["Лаоська початкова графема", syllable.sourceOnset || "—"],
+      ["Лаоська голосна структура", syllable.sourceVowelId || "—"],
+      ["Лаоська фінальна графема", syllable.sourceCoda || "—"],
+      ["Романізований склад", syllable.surface],
+      ["Звірка джерельної структури", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
+      ["Початковий елемент", syllable.onset || "∅"],
+      ["Голосний комплекс", syllable.nucleus || "—"],
+      ["Фіналь", syllable.coda || "∅"],
+      ["Український склад", syllable.ukrainian],
+      ["Статус", syllable.status],
+    ].forEach(([label, value]) => {
+      const cell = document.createElement("div");
+      const caption = document.createElement("small");
+      const strong = document.createElement("strong");
+      caption.textContent = label;
+      strong.textContent = value;
+      cell.append(caption, strong);
+      grid.append(cell);
+    });
+    element.append(grid);
+    if (syllable.warning) {
+      const note = document.createElement("p");
+      note.className = "rules";
+      note.textContent = syllable.warning;
+      element.append(note);
+    }
+    romanizationRows.append(element);
+  });
+
   rows.replaceChildren();
   result.syllables.forEach((syllable) => {
     const element = document.createElement("article");
@@ -103,7 +226,7 @@ function render() {
       ["Голосний", syllable.vowel || "—"],
       ["Тип складу", syllable.syllableType || "—"],
       ["Тон", syllable.tone ? syllable.tone + " " + syllable.toneContour : "—"],
-      ["Український", syllable.ukrainian || "—"],
+      ["Український · фонетичний", syllable.ukrainian || "—"],
       ["Статус", syllable.status],
     ].forEach(([label, value]) => {
       const cell = document.createElement("div");
@@ -125,6 +248,8 @@ function render() {
 }
 
 input.addEventListener("input", render);
+modePhonetic.addEventListener("click", () => setOutputMode("phonetic"));
+modeRomanization.addEventListener("click", () => setOutputMode("romanization"));
 
 document.querySelector("#example").addEventListener("click", () => {
   input.value = "ຂາ";
@@ -145,7 +270,7 @@ document.querySelector("#clear").addEventListener("click", () => {
 });
 
 copy.addEventListener("click", () => {
-  const value = analyze(input.value).output;
+  const value = currentUkrainianOutput();
   if (value) copyWithFeedback(copy, value);
 });
 

@@ -56,3 +56,42 @@ The repository is substantially more defensible and reproducible than the initia
 - Changes are in draft PR #56; no merge or deployment was performed.
 
 This does not establish a normative Ukrainian transcription standard or improve the independent Lao pronunciation gold set. The research corpus still has no independently adjudicated lexical IPA gold and accuracy remains unmeasured. The broader limitations listed above remain open.
+
+
+## Optional romanization-to-Ukrainian result mode — 2026-10-30
+
+- Added a two-method selector inside the primary Ukrainian result card. The IPA-first phonetic output remains the default and is unchanged.
+- The first revision used a character-level Latin adapter. That revision is **superseded** after user review; do not treat its mapping table as the current implementation.
+- Current implementation uses `web/romanization-syllable-engine.js`: it parses romanized onset, vowel nucleus and coda, validates each onset against the original Lao consonant grapheme, validates the nucleus against the source vowel ID, checks supported coda graphemes against CLDR forms, applies position-sensitive coda correspondences, and assembles Ukrainian syllables. The compatibility file `web/romanization-ukrainian.js` re-exports this engine and no longer implements character-by-character substitution.
+- Corrected source-aware policy: BGN/PCGN `kh/th/ph` spell aspirated Lao stops and map to `к'/т'/п'`; standalone Lao `h` (/h/, ຫ/ຮ) maps to `г`. The BGN `x` spelling for ຊ maps to `с`, not `кс`; final `h` is rejected because it is not a supported Lao coda. BGN/PCGN note 5 explicitly says silent ຫ is omitted before sonorants and that ໜ/ໝ are abbreviated forms of ຫນ/ຫມ. The adapter applies this to supported written forms ຫງ/ຫຍ/ຫນ/ຫມ/ຫລ/ຫຼ/ຫວ and atomic ໜ/ໝ, retaining the underlying sonorant rather than an audible `h`; BGN's /r/ case is still unsupported by the structural parser. Ambiguous, mismatched or unsupported syllable segmentation is retained in visible brackets and marked partial.
+- Evidence sources for the romanization layer are registered in `data/evidence/sources.csv`: the provisional CLDR transform and the EKI/UNGEGN report for BGN/PCGN 1966. The report states that Lao has no UN-approved romanization system and no national romanization system. The CLDR transform itself leaves special final-consonant handling as TODO.
+- The earlier engineering verification at commit `753b82c89076b2e23fbbcd937df45bf4289b7dfc` remains historical evidence for the prior adapter only. The corrected source-vowel and nasal-ligature crosswalk is verified at implementation head `d0b9a585a3edf2ad0c89ba9f9b10fcbc35aa62e6` by [workflow 41137893545](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41137893545): repository audit passed (43 consonant rows, 34 vowel rows, 17 tone rules, 69 Ukrainian mappings, 20 evidence sources and 44 claims; all references resolved); Python 92; browser engine 46; romanization integration 19; syllable crosswalk 27; web layout 5; external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed. The workflow assertion for the versioned app module URL was updated to accept the cache-busting query string; the built relative path remains verified.
+- This verifies deterministic behavior for the implemented subset, not linguistic accuracy or full CLDR coverage. It does not change the independent IPA gold-corpus count (still zero). Manual visual/keyboard QA remains open; PR #65 remains unmerged and the feature has not been deployed.
+
+
+### Source-vowel and high-class nasal crosswalk — 2026-10-31
+
+- Added `LAO_VOWEL_TO_CLDR` source mapping for the implemented vowel subset. The browser app passes the IPA-first structural parser's `VOWEL:<ID>` rule identity as evidence; the romanization result itself is still generated independently from CLDR syllable parsing and does not consume IPA.
+- The crosswalk checks source onset, source vowel ID and supported source coda. It resolves homographic `kam` from source structure (A + coda m versus AM nucleus), and resolves `niav` as ໜ + IA_LONG + final ວ only when the Lao syllable evidence is available. Without that evidence, ambiguous parses remain PARTIAL.
+- Added the official UK government BGN/PCGN 1966 agreement to the evidence registry. Its note 5 establishes silent-`h` omission and the abbreviated ligature forms ໜ/ໝ; these are now correctly treated as n/m, not as h+n/h+m.
+- Added explicit tests for source vowel mismatch, nasal ligature mapping, source-resolved `niav`, and the full `ເຂົ້າໜຽວ` source. The exact-head workflow above passes all gates.
+- This remains a bounded romanization adapter, not an accuracy-certified transcription standard. The romanization collapses vowel length and does not preserve tone; unsupported source vowel patterns remain partial. Manual visual/keyboard QA and an independently adjudicated linguistic gold corpus remain open.
+
+## Ukrainian target sequence completion — 2026-10-31
+
+- Added the exact IPA sequence mapping /ʃt͡ʃ/ → щ to the canonical target correspondence registry. The Python adapter and browser mirror use longest-match selection, so this sequence is handled as the Ukrainian orthographic unit while isolated /ʃ/ → ш and /t͡ʃ/ → ч remain separate.
+- Added source records for the Encyclopedia of Modern Ukraine article “Щ” (2025) and the Journal of the International Phonetic Association description of Ukrainian (2016), plus the source-linked claim `CLM-UA-SHCH-SEQUENCE`.
+- Added regression coverage for the sequence and the individual postalveolar fricatives, retaining explicit tests for /h/ → г, /ɦ/ → г, /ɡ/ → ґ, /x/ → х, /t͡s/ → ц, /d͡z/ → дз, /t͡ʃ/ → ч and /d͡ʒ/ → дж.
+- This is a target-language orthographic crosswalk decision. It does not assert that Lao contains /ʃt͡ʃ/ or alter Lao source phonology.
+
+### Exact-head verification — Ukrainian target sequence extension
+
+The implementation in 3d0d71cc505695eb9e7e0dc5b60f40227cc79565 passed [workflow 41140937597](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140937597). The audit reported 43 consonant rows, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 22 evidence sources and 45 claims; all claim/source references resolved. Python 94, browser engine 47, romanization integration 19, syllable crosswalk 27 and web layout 5 passed. External-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. The test-first failure is retained in workflow [41140800731](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41140800731).
+
+## Reconciliation audit — 2026-10-31
+
+- Current base: `main` at `d64e201f6d417c71e3437daccfa465ddb77e224f`. UI PRs #61–#64 and shared Ukrainian target PR #56 are merged; their changes are already present in the base. The previously open PR #56 branch has no additional target-registry or target-spec changes to port. No duplicate work was added.
+- Active feature: PR #65, `feat/romanization-ukrainian-mode-20261030`, remains open and unmerged. Its current exact head `fdd1ddacedc5a82890431384877182e00af3aba3` passed the push-triggered `verify` workflow [41142627085](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142627085): audit, Python 94, browser 47, romanization integration 19, syllable crosswalk 27, web layout 5, optional G2P harness syntax/CLI, build, generated-data reproducibility, and built-page/relative-asset checks.
+- Current `main` head `d64e201f6d417c71e3437daccfa465ddb77e224f` passed its own Pages deployment workflow [41117044318](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41117044318); both build and deploy jobs succeeded. This does not deploy the unmerged PR #65 branch.
+- The target mapping extension `/ʃt͡ʃ/ → щ` is verified as a longest-match target orthography sequence; it does not claim a single source affricate. The IPA-first route remains the default, and the romanization route remains explicitly provisional and bounded.
+- Release/readiness judgement remains **research MVP / partial prototype**. Green engineering CI and Pages deployment do not close independent gold-corpus, expert target review, source adjudication, cluster grammar, full CLDR/ICU coverage, or visual/keyboard QA gates. No accuracy score is justified.

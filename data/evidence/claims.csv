@@ -19,7 +19,7 @@ CLM-LAO-VOWEL-OE-SHORT,The preposed spelling ເ◌ິ represents short /ɤ/ in 
 CLM-LAO-VOWEL-OE-LONG,The preposed spelling ເ◌ີ represents long /ɤː/ in the descriptive Vientiane-oriented orthography reference,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VOWEL-O-SHORT-CLOSED,The spelling ◌ົ represents short /o/ in closed-syllable contexts,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VOWEL-IA-SHORT,The short IA diphthong has spelling variants including ເ◌ັຍ and medial ◌ັຽ,established,SRC-ISHIDA-ORTHO-2026
-CLM-LAO-VOWEL-IA-LONG,The long IA diphthong has spelling variants including ເ◌ັຽ, ເ◌ຍ, and standalone/medial ◌ຽ in attested contexts,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-IA-LONG,"The long IA diphthong has spelling variants including ເ◌ັຽ, ເ◌ຍ, and standalone/medial ◌ຽ in attested contexts",established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VOWEL-UA-SHORT,The spelling ເ◌ຶອ represents short /ɯə/,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VOWEL-UA-LONG,The spelling ເ◌ືອ represents long /ɯːə/,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VOWEL-UO-SHORT,The spelling ◌ົວະ represents short /uə/,established,SRC-ISHIDA-ORTHO-2026
@@ -29,3 +29,19 @@ CLM-LAO-VOWEL-AM,The spelling ◌ຳ represents the /am/ sequence,established,SR
 CLM-LAO-VOWEL-AWW-LONG,The spellings ◌ໍ and medial ◌ອ represent long /ɔː/ in the contexts described by the reference,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-SHORT-VOWEL-CLOSED-CONTEXT,The vowel signs ◌ັ and ◌ັອ are used for short vowels in closed-syllable contexts in the descriptive orthography reference,established,SRC-ISHIDA-ORTHO-2026
 CLM-LAO-VIENTIANE-TONE-MATRIX,The implemented tone selector is scoped to a Vientiane-oriented five-tone reference matrix; its class/syllable-type/length/mark conditions are not a universal Lao dialect model,methodology,SRC-SEASITE-TONECHART;SRC-UEDA
+CLM-LAO-ROM-BGN-PCGN,The EKI/UNGEGN status report documents the BGN/PCGN 1966 Lao romanization and states that no Lao romanization system has been approved at UN conferences and Laos has no national system,established,SRC-LAO-ROM-UNGEGN
+CLM-LAO-ROM-POSITION,The BGN/PCGN Lao romanization distinguishes syllable-initial and syllable-final consonant spellings and defines a table of vocalic nuclei,established,SRC-LAO-ROM-UNGEGN
+CLM-LAO-ROM-CLDR-SCOPE,The CLDR Lao-Latin transform is marked provisional and explicitly leaves special final-consonant handling as TODO,established,SRC-CLDR-LAO-LATIN
+CLM-LAO-ROM-ASPIRATE-DIGRAPHS,"BGN/PCGN initial spellings kh, th and ph correspond to Lao aspirated consonant letters ຂ/ຄ, ຖ/ທ and ຜ/ພ; h in these digraphs is not an independent /h/ segment",established,SRC-LAO-ROM-UNGEGN;SRC-ISHIDA-ORTHO-2026
+CLM-LAO-ORTHO-H-ONSET,"Lao /h/ onsets are represented by ຫ and ຮ, while the phonological inventory distinguishes /h/ from aspirated /kʰ/, /tʰ/ and /pʰ/",established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-ROM-UA-CROSSWALK,"The romanization adapter validates onset spellings against the original Lao consonant grapheme and maps aspirated stops with an apostrophe while mapping independent /h/ to Ukrainian г",methodology,SRC-LAO-ROM-UNGEGN;SRC-ISHIDA-ORTHO-2026;SRC-UA-INVENTORY
+CLM-LAO-ROM-X-ALIAS,"The CLDR/BGN romanization spelling x corresponds to Lao ຊ, whose Lao consonant value is /s/; it is not the Latin sequence /ks/",established,SRC-CLDR-LAO-LATIN;SRC-LAO-ROM-UNGEGN;SRC-ISHIDA-ORTHO-2026
+CLM-LAO-CODA-H-UNSUPPORTED,"The described Lao syllable-coda inventory does not include /h/; a final h is not accepted as a supported Lao coda",established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-ONSET-CLUSTER-LIMIT,"The descriptive Lao orthography reference identifies restricted labialized onsets as the productive audible initial-cluster pattern and distinguishes high-class written sequences from independent /h/ clusters",established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-LETTER-R-MODERN-L,"The Lao letter ຣ has a modern /l/ reading in ordinary Lao, while /r/ is associated with restricted loanword or foreign-language contexts; the adapter uses /l/ as its default",established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-CODA-CROSSWALK,"The romanization adapter validates supported Lao coda graphemes against CLDR output aliases before applying position-sensitive Ukrainian coda mappings; unsupported source codas are withheld",methodology,SRC-CLDR-LAO-LATIN;SRC-LAO-ROM-UNGEGN;SRC-ISHIDA-ORTHO-2026
+
+CLM-LAO-ROM-HIGH-NASAL-LIGATURES,"BGN/PCGN note 5 says silent ຫ is generally omitted before the listed sonorants and that ໜ/ໝ are abbreviated forms of ຫນ/ຫມ; these are tone-class spellings, not audible h+sonorant clusters",established,SRC-LAO-ROM-UNGEGN;SRC-PCGN-LAO-1966;SRC-ISHIDA-ORTHO-2026;SRC-CLDR-LAO-LATIN
+CLM-LAO-ROM-VOWEL-CROSSWALK,"The romanized vowel nucleus is checked against the source Lao vowel-structure ID; vowel length distinctions that the romanization collapses are not reconstructed, and unsupported or lost nuclei are withheld",methodology,SRC-PCGN-LAO-1966;SRC-LAO-ROM-UNGEGN;SRC-CLDR-LAO-LATIN;SRC-ISHIDA-ORTHO-2026
+CLM-LAO-ROM-KAM-DISAMBIGUATION,"The source vowel and coda distinguish Lao ກາມ (AA plus final ມ) from ກຳ (AM nucleus) even though both produce the same CLDR string kam; the source-aware parser uses those structures to resolve the romanization",methodology,SRC-PCGN-LAO-1966;SRC-LAO-ROM-UNGEGN;SRC-CLDR-LAO-LATIN;SRC-ISHIDA-ORTHO-2026
+CLM-UA-SHCH-SEQUENCE,"In modern Ukrainian, щ represents the ordered sequence /ʃ/ plus /t͡ʃ/; the target adapter maps that exact sequence to щ while preserving standalone /ʃ/ → ш and /t͡ʃ/ → ч",established,SRC-ESU-SHCH;SRC-JIPA-UKRAINIAN

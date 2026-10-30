@@ -6,7 +6,7 @@
   <meta name="description" content="Лаоський текст — українське читання. Практична фонетико-графемна система з IPA як аналітичним проміжним шаром.">
   <meta name="theme-color" content="#f7f5f0">
   <title>Лаоський текст · українське читання</title>
-  <link rel="stylesheet" href="./web/styles.css?v=20261030-vertical-flow">
+  <link rel="stylesheet" href="./web/styles.css?v=20261030-romanization-mode">
 </head>
 <body>
   <a class="skip-link" href="#lao-input">Перейти до інструмента</a>
@@ -69,14 +69,19 @@
 
           <div class="result-grid">
             <article class="result-card result-card-primary" data-result-panel="ukrainian">
-              <div class="result-meta"><span>UA</span><strong>Українська практична транскрипція</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="result-meta"><span>UA</span><strong>Український запис</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="method-switch" role="group" aria-label="Метод українського запису">
+                <button id="mode-phonetic" class="method-button is-active" type="button" aria-pressed="true">Фонетичний</button>
+                <button id="mode-romanization" class="method-button" type="button" aria-pressed="false">За романізацією</button>
+              </div>
               <p id="output" class="result-body output muted" role="status" aria-live="polite" aria-atomic="true">Введіть лаоський текст, щоб отримати українське читання.</p>
+              <p id="output-method-note" class="method-note" aria-live="polite">Фонетичний режим: IPA → українська практична адаптація.</p>
             </article>
 
             <article class="result-card" data-result-panel="romanization">
-              <div class="result-meta"><span>LAT</span><strong>Романізація · CLDR Lao-Latin/UNGEGN</strong><button id="copy-romanization" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="result-meta"><span>LAT</span><strong>Романізація · CLDR Lao-Latin (provisional)</strong><button id="copy-romanization" class="copy-button" type="button" disabled>Копіювати</button></div>
               <p id="romanization" class="result-body romanization muted" lang="en">Введіть лаоський текст, щоб отримати романізацію.</p>
-              <p class="romanization-note">Попередній CLDR/UNGEGN профіль (provisional); він є допоміжним записом і не використовується для побудови українського результату.</p>
+              <p class="romanization-note">Попередній CLDR Lao-Latin профіль на основі BGN/PCGN (provisional). Це вхід для окремого складового рушія української адаптації; він не бере участі у фонетичному режимі.</p>
             </article>
 
             <article class="result-card" data-result-panel="ipa">
@@ -90,9 +95,17 @@
             <details class="trace-panel trace-disclosure">
               <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Показати, як кожен склад проходить від лаоського написання через IPA до українського запису.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
               <div class="trace-details">
-                <div class="analysis-status"><span class="section-kicker">СТАН ОБРОБКИ</span><strong id="analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
+                <div class="analysis-status"><span class="section-kicker">СТАН ФОНЕТИЧНОГО АНАЛІЗУ</span><strong id="analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
                 <div id="warnings"></div>
                 <div id="rows" class="analysis-list"></div>
+              </div>
+            </details>
+            <details id="romanization-trace" class="trace-panel trace-disclosure" hidden>
+              <summary class="trace-summary"><span class="trace-summary-index">R</span><span class="trace-summary-copy"><strong>Складовий розбір романізації</strong><small>Складовий аналіз латинського запису зі звіркою початкової графеми, голосної структури й підтримуваної фіналі; придиховість kh/th/ph відокремлено від самостійного /h/, а ໜ/ໝ читаються як /n,m/ без озвучення ຫ.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+              <div class="trace-details">
+                <div class="analysis-status"><span class="section-kicker">СТАН РОМАНІЗАЦІЙНОГО АНАЛІЗУ</span><strong id="romanization-analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
+                <div id="romanization-warnings"></div>
+                <div id="romanization-rows" class="analysis-list"></div>
               </div>
             </details>
           </section>
@@ -113,6 +126,6 @@
     <span>ClippyFirst · Lao → Ukrainian</span>
     <span>Дослідницький проєкт · не офіційний стандарт</span>
   </footer>
-  <script type="module" src="./web/app.js"></script>
+  <script type="module" src="./web/app.js?v=20261031-source-vowel-crosswalk"></script>
 </body>
 </html>

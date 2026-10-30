@@ -23,3 +23,17 @@ The current parser is a syllable parser, not a lexical word segmenter. Lao space
 ## Failure discipline
 
 Unknown Unicode, unknown vowel structures, and unsupported phonological combinations produce explicit status/warning information rather than silently inventing a correspondence.
+
+
+## Browser romanization fallback
+
+- `web/romanization.js` — constrained provisional CLDR Lao-Latin/UNGEGN conversion.
+- `web/romanization-syllable-engine.js` — parser for romanized syllable onset, nucleus and coda, with a source-Lao onset, vowel-ID and coda crosswalk that distinguishes aspirated digraphs from independent /h/, preserves written onset forms, applies the supported silent-hoa sonorant rule, validates supported CLDR vowel/coda aliases, and withholds mismatched structures before Ukrainian syllable assembly; ambiguous or mismatched parses are withheld.
+- `web/romanization-ukrainian.js` — compatibility export for the syllable engine; it no longer contains a letter-by-letter mapping.
+- `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
+
+The phonetic engine remains the default. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
+
+## Ukrainian IPA target sequence handling
+
+The canonical IPA correspondence registry is shared by the Python target adapter and generated browser engine. Longest-match selection maps the exact Ukrainian sequence /ʃt͡ʃ/ to щ before considering the shorter /ʃ/ → ш and /t͡ʃ/ → ч entries. This does not merge arbitrary consonants: the exact ordered sequence is a documented target orthographic unit. The remaining distinctions /h, ɦ/ → г, /ɡ/ → ґ, /x/ → х, /d͡ʒ/ → дж, /d͡z/ → дз and /t͡s/ → ц are preserved in the same canonical table.
