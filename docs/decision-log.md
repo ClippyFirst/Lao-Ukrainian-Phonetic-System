@@ -39,6 +39,13 @@
 
 ## D-007 — Romanization fallback is a separate optional method
 
-**Decision:** Keep the IPA-first phonetic method as the default and add a user-selected, independent syllable-level adapter from the provisional CLDR Lao-Latin/BGN romanization to Ukrainian. The adapter parses onset, vowel nucleus and coda, then assembles a Ukrainian syllable. The project-wide romanization rule is `h → г` in every position, including `kh → кг`, `th → тг` and `ph → пг`. Ambiguous or unsupported segmentation is withheld and marked partial.
+**Decision:** Keep the IPA-first phonetic method as the default and add a user-selected, independent syllable-level adapter from the provisional CLDR Lao-Latin/BGN romanization to Ukrainian. The adapter parses onset, vowel nucleus and coda, then assembles a Ukrainian syllable. This decision's initial blanket `h → г` mapping for `kh/th/ph` was superseded by D-008 after phonological source review. The original decision to keep the mode optional, syllable-based and separate from the IPA-first pipeline remains in force.
 
 **Reason:** The two paths answer different questions. The phonetic path models pronunciation through IPA; the second method adapts the written romanization through a separate orthographic syllable model. It must not be a character-by-character Latin-to-Cyrillic substitution, must not consume IPA, and must not silently switch methods. The BGN/PCGN source distinguishes initial and final consonant forms; the provisional CLDR transform does not implement every final-position rule, so the adapter documents its project policy and its limits.
+
+
+## D-008 — Cross-check Lao graphemes before adapting romanization onsets
+
+**Decision:** Validate each romanized onset against the corresponding original Lao onset grapheme. BGN/PCGN spellings kh/th/ph from ຂ/ຄ, ຖ/ທ and ຜ/ພ represent aspirated stops and map to к'/т'/п'. Independent Lao /h/ from ຫ/ຮ maps to г. BGN x from ຊ represents /s/ and maps to с. Reject final h because it is not a supported Lao coda. Withhold mismatched or unaligned source/romanization pairs.
+
+**Reason:** The letter h inside an established romanization digraph is not a separate /h/ phoneme. Richard Ishida's Lao Orthography Notes distinguishes /kʰ tʰ pʰ/ from /h/ and identifies their source graphemes; the EKI/UNGEGN report supplies the BGN/PCGN Latin spellings. A blanket h → г rule confuses aspiration with an independent consonant and produces the wrong Ukrainian result. The crosswalk uses original Lao grapheme evidence without routing the romanization mode through the IPA-first result pipeline.
