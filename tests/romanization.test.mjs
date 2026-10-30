@@ -24,3 +24,22 @@ test("GitHub Pages navigation stays inside the repository site",()=>{
  }
  assert.ok(system.includes('aria-current="page" href="./system.html"'));
 });
+
+import { romanizationToUkrainian } from "../web/romanization-ukrainian.js";
+
+test("romanization fallback maps CLDR Latin spelling independently of phonetic IPA",()=>{
+ const result=romanizationToUkrainian("kha, xa!");
+ assert.equal(result.output,"кха, кса!");
+ assert.equal(result.status,"OK");
+ assert.match(result.source,/romanization/i);
+});
+
+test("romanization fallback applies explicit Latin digraph and diacritic rules",()=>{
+ assert.equal(romanizationToUkrainian("ch ng ph th é è ô").output,"ч нг пх тх е е о");
+});
+
+test("romanization fallback preserves unsupported characters and reports partial coverage",()=>{
+ const result=romanizationToUkrainian("kha ໞ");
+ assert.equal(result.output,"кха ໞ");
+ assert.equal(result.status,"PARTIAL");
+});
