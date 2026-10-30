@@ -24,15 +24,37 @@ The Ukrainian target is the external canonical inventory. Comparative Cyrillic s
 
 ## Optional romanization-to-Ukrainian mode
 
-The service offers a second, explicitly lower-information route alongside the primary phonetic method:
+The service offers a second, explicitly lower-information method alongside the primary phonetic method:
 
 - **Phonetic (default):** Lao → structural/phonological analysis → IPA → Ukrainian practical adaptation.
-- **By romanization:** Lao → the existing provisional CLDR Lao-Latin/UNGEGN string → a separate Latin-spelling-to-Ukrainian orthographic adapter.
+- **By romanization:** Lao → provisional CLDR Lao-Latin/BGN transform (with the profile currently identified as UNGEGN) → independent romanized-syllable parser → Ukrainian syllable assembly.
 
-The optional adapter consumes only the output of `romanizeLao()`. It does not feed, replace, or modify the IPA-first phonetic engine. The user selects the method in the Ukrainian result card; the service does not silently switch methods. Input rejected by the Lao engine's validation is not passed through the romanization fallback. The copy action copies the currently selected Ukrainian result, while the romanization intermediate and IPA remain separately inspectable.
+The second route is not a letter-by-letter Latin-to-Cyrillic transliterator. Its adapter consumes only the romanized string and attempts to parse each segment into a **syllable onset, vowel nucleus and coda**. The target Ukrainian syllable is assembled from those three components. It does not consume IPA, call the phonetic target adapter, or change the IPA-first engine. The user selects the method explicitly; there is no silent fallback. Input rejected by Lao validation is not passed through the romanization method. The main copy action follows the selected Ukrainian result.
 
-The adapter applies longest sequences first: `kh → кх`, `th → тх`, `ph → пх`, `ch → ч`, `ng → нг`. The CLDR two-letter spelling for the Lao palatal nasal (`g` followed by `n`) maps to `нь`, matching the project's explicit Ukrainian palatal-nasal target policy. Individual letters map as follows: `a а, b б, c к, d д, e е, f ф, g ґ, h г, i і, j дж, k к, l л, m м, n н, o о, p п, q к, r р, s с, t т, u у, v в, w в, x кс, y й, z з`. The CLDR marked vowels `é`, `è`, and `ô` map to `е`, `е`, and `о`. Punctuation, whitespace and digits are preserved; unsupported characters remain visible and produce a partial status.
+### Syllable-level mapping policy
 
-These are project-defined orthographic correspondences for the Latin spelling, not an official Ukrainian standard and not phonetic equivalences. The romanization route cannot restore tone, vowel length, pronunciation, or context that the Latin representation does not encode. The upstream CLDR implementation is itself a constrained provisional subset, not a full ICU transform interpreter. A complete romanization result therefore does not imply a verified pronunciation.
+The current CLDR transform is provisional and based on the BGN/PCGN 1966 Lao romanization material reproduced in the Estonian Institute of Language / UNGEGN status report. That report explicitly distinguishes syllable-initial and syllable-final consonant spellings, and documents the vowel nuclei. It also states that no Lao romanization system has been approved at UN conferences and that Laos has no national romanization system. Accordingly, the project labels this route as a provisional romanization-based method, not as an official or universal standard.
 
-The adapter and selector are covered by deterministic unit and structural UI tests. Those tests establish software behavior, not linguistic accuracy or completeness of the provisional CLDR profile.
+The project mapping table is position-sensitive:
+
+| Component | Romanized form | Ukrainian target |
+|---|---|---|
+| Onset | `kh`, `th`, `ph` | `кг`, `тг`, `пг` |
+| Onset | `ch`, `ng`, `gn` | `ч`, `нг`, `нь` |
+| Onset | `k s x d t n b p f m y r l v h` | `к с кс д т н б п ф м й р л в г` |
+| Nucleus | `a i u ou o é è ô eu` | `а і и у о е е о е` |
+| Nucleus | `ia ua oua ai ao am` | `іа уа уа ай ао ам` |
+| Coda | `k ng y t n p m r l` | `к нг й т н п м р л` |
+| Coda | `d b` | `т п` |
+| Coda | `v` | `о` (or `оу` after `i`) |
+| Coda | `h` | `г` |
+
+**The project-wide romanization policy is `h → г` in every position.** It is not overridden inside `kh`, `th`, or `ph`: those onsets are assembled as `кг`, `тг`, and `пг`. This rule applies only to the romanization route; the phonetic route continues to use the existing IPA-to-Ukrainian target correspondences.
+
+For preposed Lao vowels, the CLDR output can retain vowel-before-consonant order. The syllable adapter recognizes the documented preposed-vowel patterns and assembles Ukrainian in onset-before-vowel order. The short `a` left after some literal CLDR transforms is treated as a transform artefact only in those recognized preposed patterns. Position-sensitive final mappings follow the cited BGN/PCGN table; in particular, `d` and `b` become `t` and `p` in coda position, and final `v` is rendered as `o` (or `ou` after `i`).
+
+The segmenter uses dynamic parsing of the romanized string. If a complete unique syllable parse is not available, or if multiple parses are possible, the affected segment is retained in visible brackets and the result is marked `PARTIAL`. It does not guess word boundaries from spaces: Lao spaces are phrase-level, and romanization can be ambiguous when multiple syllables are concatenated without a delimiter. This remains a constrained syllable adapter, not a validated lexical segmenter.
+
+These mappings are explicit project policy for the romanized spelling, not a claim that the romanization preserves pronunciation. This route cannot restore tone, vowel length, consonant-class distinctions, or any other information absent from the Latin form. The upstream CLDR implementation is itself a constrained provisional subset, not a full ICU transform interpreter. A complete software parse therefore does not imply a verified pronunciation.
+
+The adapter and selector are covered by deterministic tests for onset/nucleus/coda parsing, position-sensitive finals, preposed vowels, the `h → г` invariant, ambiguity withholding, and UI wiring. These tests establish software behavior for the implemented subset, not linguistic accuracy or completeness of the CLDR profile.
