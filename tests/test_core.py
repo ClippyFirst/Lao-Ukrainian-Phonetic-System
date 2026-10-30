@@ -7,7 +7,7 @@ class TestCore(unittest.TestCase):
     def test_long_open_high_class(self):
         s = analyze("ຂາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "kʰaː")
-        self.assertEqual(s.practical_ukrainian, "ка")
+        self.assertEqual(s.practical_ukrainian, "к\u0027а")
         self.assertEqual(s.tone, "low-rising")
 
     def test_tone_contour_is_preserved_from_the_matched_rule(self):
