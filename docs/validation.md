@@ -114,3 +114,18 @@ The current implementation and evidence-registry changes passed [workflow 411238
 - External-G2P harness syntax/CLI, browser build, generated-data reproducibility and built-page/relative-asset checks: passed.
 
 This exact-head run verifies the code, the source/claim registry additions, and the corrected comma-containing CSV claim. It does not establish empirical pronunciation accuracy or complete coverage of the provisional CLDR transform. Manual visual/keyboard QA remains outstanding.
+
+
+### Final syllable-engine verification — 2026-10-30
+
+The final syllable-parser revision passed exact-head [workflow 41124439725](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41124439725), commit `753b82c89076b2e23fbbcd937df45bf4289b7dfc`.
+
+- Repository data/evidence audit: passed — 43 consonant rows, 34 vowel rows, 17 tone rules, 69 Ukrainian mappings, 19 evidence sources and 33 claims; all references resolved.
+- Python unittest discovery: **92 passed**.
+- Browser phonetic engine: **46 passed**.
+- Romanization transform/compatibility: **10 passed**.
+- Romanization syllable engine: **12 passed**.
+- Web layout: **5 passed**.
+- External-G2P harness syntax/CLI, browser build, generated-data reproducibility and built-page/relative-asset checks: passed.
+
+This run includes CLDR preposed-marker/postposed-nucleus parsing, longest-match onset/coda handling, position-sensitive final mappings, the `h → г` invariant, and explicit partial handling when concatenated syllables admit competing parses. The tests do not establish empirical pronunciation accuracy or complete CLDR/ICU coverage.
