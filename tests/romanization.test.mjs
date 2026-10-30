@@ -71,6 +71,7 @@ test("CLDR output for a multi-syllable Lao example feeds the independent syllabl
  const latin=romanizeLao("ເຂົ້າໜຽວ");
  assert.equal(latin.output,"ékhôaniav");
  const adapted=analyzeRomanization(latin.output);
- assert.equal(adapted.status,"OK");
- assert.equal(adapted.output,"кгаоніао");
+ assert.equal(adapted.status,"PARTIAL");
+ assert.equal(adapted.output,"⟦ékhôaniav⟧");
+ assert.equal(analyzeRomanization("ékhôa-niav").output,"кгао-ніао");
 });
