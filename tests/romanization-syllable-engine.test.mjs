@@ -145,3 +145,17 @@ test("an ambiguous earlier word does not shift later source-onset groups", () =>
   assert.equal(result.syllables[1].sourceOnset, "ຂ");
   assert.match(result.warnings.join(" "), /межі складів неоднозначні/iu);
 });
+
+
+test("the source coda grapheme must agree with the CLDR romanized coda", () => {
+  const valid = analyzeRomanization("kad", {
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ດ" }]],
+  });
+  assert.equal(valid.status, "OK");
+  assert.equal(valid.output, "кат");
+  const mismatch = analyzeRomanization("kad", {
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ບ" }]],
+  });
+  assert.equal(mismatch.status, "PARTIAL");
+  assert.equal(mismatch.output, "⟦kad⟧");
+});
