@@ -279,7 +279,7 @@ export function analyzeRomanization(input, options = {}) {
       } else {
         const item = unresolved(part, "UNRESOLVED");
         item.warning = aligned
-          ? "Романізований початковий елемент не відповідає лаоській графемі; український результат утримано."
+          ? "Романізований початок або фіналь не відповідають лаоським графемам; український результат утримано."
           : "Кількість розібраних романізованих складів не збігається з кількістю лаоських складових одиниць; звірку утримано.";
         syllables.push(item);
         output += item.ukrainian;
@@ -297,11 +297,11 @@ export function analyzeRomanization(input, options = {}) {
   const warnings = syllables.filter((unit) => unit.warning).map((unit) => unit.warning);
   if (sourceOnsets && sourceIndex !== sourceOnsets.length) {
     partial = true;
-    warnings.push("Кількість лаоських початкових графем і романізованих складів не збігається; повну звірку не виконано.");
+    warnings.push("Кількість лаоських початкових графем і романізованих складів не збігається; звірку не виконано.");
   }
   if (sourceSyllableGroups && sourceGroupIndex !== sourceSyllableGroups.length) {
     partial = true;
-    warnings.push("Кількість лаоських фрагментів і романізованих фрагментів не збігається; повну звірку не виконано.");
+    warnings.push("Кількість лаоських складових груп і романізованих фрагментів не збігається; повну звірку не виконано.");
   }
 
   return {
