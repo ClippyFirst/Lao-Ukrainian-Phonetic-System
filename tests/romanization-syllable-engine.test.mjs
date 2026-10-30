@@ -48,3 +48,19 @@ test("h remains г even in a syllable-final position", () => {
 test("the coda-vowel correspondence follows the documented BGN/PCGN context", () => {
   assert.equal(analyzeRomanization("kiv kav").output, "кіоу као");
 });
+
+test("the parser resolves a CLDR preposed marker plus postposed nucleus as one syllable", () => {
+  const result = analyzeRomanization("ékhôaniav");
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "кгаоніао");
+  assert.deepEqual(result.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
+    { onset: "kh", nucleus: "ôa", coda: "" },
+    { onset: "n", nucleus: "ia", coda: "v" },
+  ]);
+});
+
+test("the parser withholds a vowel sequence whose CLDR transform lost a distinguishing character", () => {
+  const result = analyzeRomanization("éku");
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦éku⟧");
+});
