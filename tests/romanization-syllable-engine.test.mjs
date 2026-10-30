@@ -159,3 +159,16 @@ test("the source coda grapheme must agree with the CLDR romanized coda", () => {
   assert.equal(mismatch.status, "PARTIAL");
   assert.equal(mismatch.output, "⟦kad⟧");
 });
+
+
+test("a rejected source syllable keeps its Lao and romanized graphemes visible in the trace", () => {
+  const result = analyzeRomanization("kha", {
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "" }]],
+  });
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦kha⟧");
+  assert.equal(result.syllables[0].sourceOnset, "ກ");
+  assert.equal(result.syllables[0].onset, "kh");
+  assert.equal(result.syllables[0].sourceCoda, "");
+  assert.equal(result.syllables[0].coda, "");
+});
