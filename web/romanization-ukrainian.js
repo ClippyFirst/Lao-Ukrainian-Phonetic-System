@@ -50,6 +50,6 @@ export function romanizationToUkrainian(input) {
   return {
     output,
     status: partial ? "PARTIAL" : "OK",
-    source: "CLDR Lao-Latin/UNGEGN → Ukrainian orthographic adaptation (project policy)"
+    source: "CLDR Lao-Latin/UNGEGN romanization → Ukrainian orthographic adaptation (project policy)"
   };
 }
