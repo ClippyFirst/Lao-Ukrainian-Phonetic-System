@@ -94,13 +94,17 @@ function candidatesAt(source, index) {
       }
     }
     // A vowel-only syllable is possible where the Lao onset is omitted by
-    // romanization. Do not interpret preposed vowel + consonant as a coda.
-    candidates.push({
-      start: index, end: index + nucleus.length,
-      surface: source.slice(index, index + nucleus.length),
-      onset: "", nucleus, coda: "", order: "vowel-only",
-      ukrainian: NUCLEI.get(nucleus),
-    });
+    // romanization, but not when the next consonant can be the onset following
+    // this preposed vowel (that is the normal CLDR order for Lao).
+    const nextHasOnset = matchesAt(source, onsetStart, SORTED_ONSETS).length > 0;
+    if (!nextHasOnset) {
+      candidates.push({
+        start: index, end: index + nucleus.length,
+        surface: source.slice(index, index + nucleus.length),
+        onset: "", nucleus, coda: "", order: "vowel-only",
+        ukrainian: NUCLEI.get(nucleus),
+      });
+    }
   }
 
   // Vowel + coda, for onsetless syllables.
