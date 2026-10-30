@@ -48,12 +48,20 @@ async function copyWithFeedback(button, value) {
   }, 1400);
 }
 
+function sourceOnsetsForCrosswalk(result) {
+  return result.syllables
+    .filter((syllable) => !syllable.passthrough)
+    .map((syllable) => syllable.onset || null);
+}
+
 function currentUkrainianOutput() {
   const result = analyze(input.value);
   if (outputMode === "phonetic") return result.output;
   if (result.status === "INVALID") return "";
   const roman = romanizeLao(input.value);
-  return analyzeRomanization(roman.output).output;
+  return analyzeRomanization(roman.output, {
+    sourceOnsets: sourceOnsetsForCrosswalk(result),
+  }).output;
 }
 
 function setOutputMode(mode) {
@@ -71,7 +79,9 @@ function render() {
   const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
   const romanized = result.status === "INVALID"
     ? { output: "", status: "PARTIAL", warnings: [], syllables: [] }
-    : analyzeRomanization(roman.output);
+    : analyzeRomanization(roman.output, {
+      sourceOnsets: sourceOnsetsForCrosswalk(result),
+    });
   count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
@@ -90,7 +100,7 @@ function render() {
     copy.disabled = true;
     outputMethodNote.textContent = outputMode === "phonetic"
       ? "Фонетичний режим: IPA → українська практична адаптація."
-      : "Режим за романізацією: окремий складовий аналіз латинського запису; h → г.";
+      : "Режим за романізацією: складовий аналіз із перевіркою початкової лаоської графеми; придихове h не читається як /h/.";
     copyRomanization.disabled = true;
     copyIpa.disabled = true;
     copyFeedback.textContent = "";
@@ -115,7 +125,7 @@ function render() {
         : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива."))
     : fallbackBlocked
       ? "Романізаційний режим недоступний: виправте вхідний текст, який не пройшов перевірку."
-      : "За романізацією: CLDR Lao-Latin (provisional; BGN basis) → складовий рушій (початок + голосний комплекс + фіналь); h → г. " +
+      : "За романізацією: CLDR Lao-Latin (provisional; BGN/PCGN basis) → звірка лаоської початкової графеми → складовий рушій. kh/th/ph передають придиховість, а окреме h — звук /h/ → г. " +
       (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
         ? "Частину запису не вдалося розібрати однозначно; вона позначена в дужках."
         : "Український результат формується за структурою романізованого складу, а не побуквеною заміною.");
