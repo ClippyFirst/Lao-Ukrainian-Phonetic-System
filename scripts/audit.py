@@ -13,15 +13,24 @@ def main():
     vowels=read_csv(ROOT/"data/lao/vowels.csv")
     tones=read_csv(ROOT/"data/lao/tone_rules.csv")
     ua=read_csv(ROOT/"data/lao/ukrainian_correspondences.csv")
+    sources=read_csv(ROOT/"data/evidence/sources.csv")
+    claims=read_csv(ROOT/"data/evidence/claims.csv")
 
     assert len({r["grapheme"] for r in consonants})==len(consonants), "duplicate consonant grapheme"
     assert len({r["id"] for r in vowels})==len(vowels), "duplicate vowel id"
     assert len({r["rule_id"] for r in tones})==len(tones), "duplicate tone rule"
     assert len({r["ipa"] for r in ua})==len(ua), "duplicate IPA mapping"
+    assert len({r["source_id"] for r in sources})==len(sources), "duplicate evidence source id"
+    assert len({r["claim_id"] for r in claims})==len(claims), "duplicate evidence claim id"
+    source_ids={r["source_id"] for r in sources}
+    for row in claims:
+        evidence_ids={item for item in row["evidence_ids"].split(";") if item}
+        assert evidence_ids, f"claim without evidence: {row['claim_id']}"
+        assert evidence_ids <= source_ids, f"claim references unknown sources: {row['claim_id']} {sorted(evidence_ids-source_ids)}"
     for row in consonants:
         cp=int(row["codepoint"].replace("U+",""),16)
         assert 0x0E80 <= cp <= 0x0EFF, f"non-Lao codepoint: {row}"
-    print(f"OK: {len(consonants)} consonant rows; {len(vowels)} vowel rows; {len(tones)} tone rules; {len(ua)} UA mappings")
+    print(f"OK: {len(consonants)} consonant rows; {len(vowels)} vowel rows; {len(tones)} tone rules; {len(ua)} UA mappings; {len(sources)} evidence sources; {len(claims)} evidence claims")
 
 if __name__=="__main__":
     main()
