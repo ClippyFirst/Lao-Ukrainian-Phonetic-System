@@ -49,5 +49,7 @@ test("Ukrainian result offers an accessible two-method selector in one result ca
  assert.ok(app.includes("romanizationToUkrainian"));
  assert.ok(app.includes("setOutputMode"));
  assert.ok(app.includes("aria-pressed"));
+ assert.ok(app.includes("currentUkrainianOutput"));
+ assert.ok(app.includes("modeRomanization.addEventListener"));
  assert.ok(css.includes(".method-switch"));
 });
