@@ -17,6 +17,7 @@ These are project-wide target-language decisions applied only after source phono
 - Aspiration is retained with the ASCII apostrophe after the corresponding Ukrainian consonant: /kʰ tʰ pʰ/ → к' т' п'. The source IPA continues to preserve aspiration independently.
 - Foreign /h/ → г; hard /ɡ/ → ґ; genuine /x/ → х. These distinctions must not be collapsed.
 - /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж.
+- Alveolo-palatal /tɕ/ (also /t͡ɕ/) → ч; voiced /dʑ/ (also /d͡ʑ/) → дж as explicit target approximations.
 - Postalveolar fricatives /ʃ ʒ/ → ш ж.
 - Contrastive palatalization is preserved where Ukrainian orthography supports it: /tʲ dʲ nʲ lʲ rʲ/ → ть дь нь ль рь. Exact word-level spelling may require contextual Ukrainian orthographic rules.
 - A glottal stop /ʔ/ is not aspiration and does not trigger the apostrophe rule.
