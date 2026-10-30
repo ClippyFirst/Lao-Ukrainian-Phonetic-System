@@ -142,21 +142,21 @@ At that historical checkpoint, this run included CLDR preposed-marker/postposed-
 - Intermediate workflow [41133435559](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41133435559) passed repository audit, Python tests and external-G2P harness, then failed one browser assertion because the source/provenance label no longer contained the word “romanization”. The label was restored in commit fc5d5eba43b890aa3bc4126f4c3af11ae59c6e69. This was a contract-label mismatch; the exact current-head run must still verify all browser tests and build gates.
 
 
-## Source-vowel and high-class nasal crosswalk verification — 2026-10-31
+## Source-vowel and silent-hoa crosswalk verification — 2026-10-31
 
-Verified implementation head: 6c620a3145d3fce0b9cea0cdf7aacba1f922d5d6. [GitHub Actions workflow 41137492940](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41137492940) completed successfully.
+Verified implementation head: d0b9a585a3edf2ad0c89ba9f9b10fcbc35aa62e6. [GitHub Actions workflow 41137893545](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41137893545) completed successfully.
 
 - Repository data/evidence audit: **passed** — 43 consonant rows, 34 vowel rows, 17 tone rules, 69 Ukrainian mappings, 20 evidence sources and 44 evidence claims; all claim references resolved.
 - Python unittest discovery: **92 passed**.
 - Browser phonetic engine: **46 passed**.
-- Romanization transform/integration: **18 passed**.
+- Romanization transform/integration: **19 passed**.
 - Romanization syllable/crosswalk engine: **27 passed**.
 - Web layout: **5 passed**.
 - Optional external-G2P harness syntax/CLI: **passed**.
 - Static build and canonical browser-data regeneration: **passed**.
 - Generated-data reproducibility (git diff --exit-code -- web/data.js): **passed**.
-- Built-page and relative-asset checks: **passed**. The workflow's app-module assertion accepts the cache-busting query string while retaining the relative ./web/app.js path.
+- Built-page and relative-asset checks: **passed**.
 
-New coverage includes source-vowel ID agreement/mismatch, silent high-class nasal ligatures ໜ/ໝ, source-resolved niav, the full ເຂົ້າໜຽວ source, and the A+coda-m versus AM-nucleus distinction for kam. The UI labels the full source-syllable check explicitly. The IPA-first pipeline remains unchanged.
+The romanization tests include supported decomposed high-class onsets (ຫງ/ຫຍ/ຫນ/ຫມ/ຫລ), the ຫຼ form, ຫວ, atomic ໜ/ໝ, source written-onset preservation, source-vowel mismatch, source-resolved niav, the full ເຂົ້າໜຽວ source, and A+coda-m versus AM-nucleus kam. The IPA-first pipeline remains unchanged.
 
-This verifies deterministic implementation behavior for the supported subset only. It does not establish empirical pronunciation accuracy, complete CLDR/ICU coverage, or a normative Lao-to-Ukrainian standard. Manual visual/keyboard QA and an independently adjudicated gold corpus remain outstanding.
+This verifies deterministic implementation behavior for the supported subset only. It does not establish empirical pronunciation accuracy, complete BGN/PCGN or CLDR/ICU coverage, or a normative Lao-to-Ukrainian standard. The BGN /r/ environment ຫຣ is not yet supported by the source structural parser. Manual visual/keyboard QA and an independently adjudicated gold corpus remain outstanding.
