@@ -7,7 +7,7 @@ import { analyze } from "../web/engine.js";
 test("CLDR Lao-Latin keeps whitespace and punctuation and maps supported syllable letters",()=>{
  const r=romanizeLao("ຂາ, ຊາ!");
  assert.equal(r.output,"kha, xa!");
- assert.equal(r.source,"CLDR Lao-Latin/UNGEGN (provisional)");
+ assert.equal(r.source,"CLDR Lao-Latin (provisional; BGN alias)");
 });
 
 test("CLDR Lao-Latin does not silently delete unsupported Lao code points",()=>{
