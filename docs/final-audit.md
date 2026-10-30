@@ -56,3 +56,11 @@ The repository is substantially more defensible and reproducible than the initia
 - Changes are in draft PR #56; no merge or deployment was performed.
 
 This does not establish a normative Ukrainian transcription standard or improve the independent Lao pronunciation gold set. The research corpus still has no independently adjudicated lexical IPA gold and accuracy remains unmeasured. The broader limitations listed above remain open.
+
+
+## Optional romanization-to-Ukrainian result mode — 2026-10-30
+
+- Added a second selectable method inside the Ukrainian result card. Phonetic IPA-first output remains the default and unchanged.
+- The new adapter consumes only the provisional CLDR Lao-Latin/UNGEGN output and applies an explicit project orthographic mapping. It is not a phonological engine and cannot restore tone, length or other information absent from romanization.
+- Unknown characters are preserved and flagged partial. The romanization intermediate remains independently visible and copyable; the main copy action follows the selected Ukrainian method.
+- Engineering acceptance is pending exact-head CI and review of the final branch diff. This feature does not change the scientific status of the Lao phonology model, the provisional CLDR profile, or the independent gold-corpus count (still zero).
