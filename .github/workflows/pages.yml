@@ -44,8 +44,13 @@ jobs:
           test -s dist/system.html
           test -s dist/web/app.js
           test -s dist/web/styles.css
-          grep -q 'href="./web/styles.css"' dist/index.html
+          grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js"' dist/index.html
+          grep -q 'hero-specimen' dist/index.html
+          grep -q 'copy-feedback' dist/index.html
+          grep -q 'skip-link' dist/index.html
+          grep -q 'skip-link' dist/system.html
+          grep -q 'aria-label="Навігація методологією"' dist/system.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
