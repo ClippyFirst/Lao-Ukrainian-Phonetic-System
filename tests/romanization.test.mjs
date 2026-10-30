@@ -31,18 +31,18 @@ import { analyzeRomanization } from "../web/romanization-syllable-engine.js";
 
 test("romanization fallback maps CLDR Latin spelling independently of phonetic IPA",()=>{
  const result=romanizationToUkrainian("kha, xa!");
- assert.equal(result.output,"кга, кса!");
+ assert.equal(result.output,"к'а, са!");
  assert.equal(result.status,"OK");
  assert.match(result.source,/romanization/i);
 });
 
 test("romanization fallback applies explicit Latin digraph and diacritic rules",()=>{
- assert.equal(romanizationToUkrainian("cha nga pha tha éka").output,"ча нга пга тга ке");
+ assert.equal(romanizationToUkrainian("cha nga pha tha éka").output,"ча нга п'а т'а ке");
 });
 
 test("romanization fallback preserves unsupported characters and reports partial coverage",()=>{
  const result=romanizationToUkrainian("kha ໞ");
- assert.equal(result.output,"кга ⟦ໞ⟧");
+ assert.equal(result.output,"к'а ⟦ໞ⟧");
  assert.equal(result.status,"PARTIAL");
 });
 
@@ -52,13 +52,13 @@ test("romanization-to-Ukrainian remains distinct from the IPA-first result",()=>
  const latin=romanizeLao(lao);
  const fallback=romanizationToUkrainian(latin.output);
  assert.equal(latin.output,"kha");
- assert.equal(fallback.output,"кга");
+ assert.equal(fallback.output,"к'а");
  assert.equal(analyze(lao).output,"к'а");
 });
 
 
-test("romanization h is always adapted as Ukrainian г",()=>{
- assert.equal(romanizationToUkrainian("ha kha tha pha").output,"га кга тга пга");
+test("romanization h is adapted by phonological function, not as a universal letter rule",()=>{
+ assert.equal(romanizationToUkrainian("ha kha tha pha").output,"га к'а т'а п'а");
 });
 
 test("CLDR palatal nasal spelling maps to the project's Ukrainian palatal nasal",()=>{
@@ -73,5 +73,23 @@ test("CLDR output for a multi-syllable Lao example feeds the independent syllabl
  const adapted=analyzeRomanization(latin.output);
  assert.equal(adapted.status,"PARTIAL");
  assert.equal(adapted.output,"⟦ékhôaniav⟧");
- assert.equal(analyzeRomanization("ékhôa-niav").output,"кгао-ніао");
+ assert.equal(analyzeRomanization("ékhôa-niav").output,"к'ао-ніао");
+});
+
+
+test("Lao source grapheme cross-check selects aspiration for ຂ instead of literal h",()=>{
+ const lao="ຂາ";
+ const latin=romanizeLao(lao);
+ const source=analyze(lao);
+ const adapted=analyzeRomanization(latin.output,{sourceOnsets:source.syllables.map(s=>s.onset)});
+ assert.equal(latin.output,"kha");
+ assert.equal(adapted.output,"к'а");
+ assert.equal(adapted.status,"OK");
+ assert.equal(adapted.syllables[0].sourceOnset,"ຂ");
+});
+
+test("source grapheme cross-check does not allow kh to impersonate k",()=>{
+ const result=analyzeRomanization("kha",{sourceOnsets:["ກ"]});
+ assert.equal(result.status,"PARTIAL");
+ assert.equal(result.output,"⟦kha⟧");
 });
