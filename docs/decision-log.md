@@ -35,3 +35,10 @@
 **Decision:** Analysis-dependent and evidence-limited cases are not forced into a false definitive mapping.
 
 **Reason:** Research reproducibility requires the distinction between established evidence and project policy.
+
+
+## D-007 — Romanization fallback is a separate optional method
+
+**Decision:** Keep the IPA-first phonetic method as the default and add a user-selected, independent orthographic adapter from the provisional CLDR Lao-Latin/UNGEGN string to Ukrainian. Do not feed romanization into the phonetic IPA adapter or silently switch methods.
+
+**Reason:** The two paths answer different questions. The phonetic path models pronunciation; the fallback renders a Latin spelling when a user wants a deterministic but less informative alternative. Explicit separation prevents a romanized spelling from being presented as verified pronunciation.
