@@ -171,3 +171,19 @@ Test-first correction for the missing Ukrainian shcha sequence:
 - The regression is a Ukrainian target-orthography mapping only. It does not add /ʃ/ or /t͡ʃ/ to the Lao source inventory, and it does not combine arbitrary adjacent consonants into an affricate. The exact ordered sequence /ʃ/ + /t͡ʃ/ is rendered with the Ukrainian letter щ; each segment remains separately mapped when supplied alone.
 
 This verifies deterministic implementation behavior for the documented target subset. It does not complete independent expert review of the entire target policy or establish Lao pronunciation accuracy.
+
+## Exact-head verification — 2026-10-31 (reconciliation)
+
+The final feature-branch commit `bd2b0b05e00c884d20818dce914603b4a0b09cc3` passed the exact-head `verify` workflow twice; the later confirmation is [run 41141316134](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41141316134).
+
+- Repository data/evidence audit: passed (43 consonants, 34 vowels, 17 tone rules, 70 Ukrainian mappings, 22 sources, 45 claims; references resolved).
+- Python unittest discovery: **94 passed**.
+- Browser phonetic engine: **47 passed**.
+- Romanization integration: **19 passed**.
+- Romanization syllable/crosswalk engine: **27 passed**.
+- Web layout: **5 passed**.
+- External-G2P harness syntax/CLI check: passed; external engine comparison was not rerun by this verification.
+- Static build and canonical browser-data generation: passed.
+- Generated-data reproducibility and built-page/relative-asset checks: passed.
+
+The five test suites total **192 passing tests**. These are deterministic engineering and project-policy regressions, not independent Lao pronunciation gold. The feature branch remains in PR #65 and has not been merged or deployed. The latest confirmed Pages deployment remains the earlier main commit recorded in the master handoff; current-main deployment parity requires separate verification.
