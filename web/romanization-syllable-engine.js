@@ -277,7 +277,7 @@ export function analyzeRomanization(input, options = {}) {
   };
 }
 
-export function romanizationToUkrainian(input) {
-  const result = analyzeRomanization(input);
+export function romanizationToUkrainian(input, options = {}) {
+  const result = analyzeRomanization(input, options);
   return { output: result.output, status: result.status, syllables: result.syllables, source: result.source, warnings: result.warnings };
 }
