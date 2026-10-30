@@ -66,3 +66,18 @@ PR #14 branch verification [40093370613](https://github.com/ClippyFirst/Lao-Ukra
 ## Final merge status (2026-10-24)
 
 Lao G2P diagnostic metric hardening is merged at `5f003928c495e82a97f3077729ea4ec50af044ba`. The current main-branch validation and optional comparator runs triggered by the merge are tracked separately; the verified PR-head runs were [40093508377](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093508377) and [40093508384](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40093508384). This closes the diagnostic-schema task only, not the independent gold-corpus task.
+
+
+## Selectable romanization-to-Ukrainian mode — 2026-10-30
+
+Exact branch-head verification: workflow 41119525542, commit cfa95799c47eb683e590b061e4f40b6b4f154737.
+
+- Python unittest discovery: **92 passed**.
+- Browser engine tests: **46 passed**.
+- Romanization tests: **7 passed**, including sequence/diacritic mapping, unsupported-character preservation, and a direct Lao example comparison showing the fallback output remains distinct from the phonetic result.
+- Web layout tests: **5 passed**, including the accessible method selector and selected-result copy wiring.
+- Optional external-G2P harness syntax/CLI check: passed.
+- Browser data generation/build: passed; generated web/data.js had no drift.
+- Built-page and relative-asset checks: passed.
+
+The verification workflow establishes deterministic engineering behavior for this branch. It does not establish completeness of the provisional CLDR transform, correctness of all project orthographic choices, or empirical Lao pronunciation accuracy. The workflow did not deploy GitHub Pages because deployment is configured for pushes to main; manual browser/keyboard QA remains unavailable in this session.
