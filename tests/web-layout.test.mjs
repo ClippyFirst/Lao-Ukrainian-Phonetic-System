@@ -9,8 +9,10 @@ const app = await readFile(new URL("../web/app.js", import.meta.url), "utf8");
 test("service follows the Korean two-column workbench composition", () => {
   assert.match(html, /class="workspace-layout"/);
   assert.ok(html.indexOf('class="workbench"') < html.indexOf('class="output-workspace"'));
-  assert.match(css, /\.workspace-layout\{display:grid;grid-template-columns:minmax\(320px,\.82fr\) minmax\(0,1\.18fr\)/);
-  assert.match(css, /@media\(max-width:900px\)\{\s*\.workspace-layout\{grid-template-columns:1fr/s);
+  assert.match(css, /\.workspace-layout\{display:grid;direction:ltr;grid-template-columns:minmax\(320px,\.82fr\) minmax\(0,1\.18fr\);grid-template-areas:"input output"/);
+  assert.match(css, /\.workbench\{grid-area:input/);
+  assert.match(css, /\.output-workspace\{grid-area:output/);
+  assert.match(css, /@media\(max-width:900px\)\{\s*\.workspace-layout\{grid-template-columns:minmax\(0,1fr\);grid-template-areas:"input" "output"/s);
 });
 
 test("result cards prioritize Ukrainian, then romanization, then IPA", () => {
