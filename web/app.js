@@ -186,7 +186,7 @@ function render() {
       ["Лаоська голосна структура", syllable.sourceVowelId || "—"],
       ["Лаоська фінальна графема", syllable.sourceCoda || "—"],
       ["Романізований склад", syllable.surface],
-      ["Звірка графем", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
+      ["Звірка джерельної структури", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
       ["Початковий елемент", syllable.onset || "∅"],
       ["Голосний комплекс", syllable.nucleus || "—"],
       ["Фіналь", syllable.coda || "∅"],
