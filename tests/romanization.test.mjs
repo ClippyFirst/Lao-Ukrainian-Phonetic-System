@@ -116,6 +116,7 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
  assert.match(app,/function sourceSyllableGroupsForCrosswalk\(sourceText\)/u);
  assert.match(app,/sourceSyllableGroups:\s*sourceSyllableGroupsForCrosswalk\(input\.value\)/u);
+ assert.match(app,/onsetForm:\s*syllable\.onsetForm/u);
  assert.match(app,/vowelId:\s*syllable\.rules\?\.find/u);
  assert.match(app,/romanization-syllable-engine\.js\?v=20261031-source-vowel-crosswalk/u);
  assert.ok(app.includes("Лаоська голосна структура"));
@@ -205,4 +206,31 @@ test("the full Lao source resolves concatenated CLDR syllables with source onset
  assert.equal(source.syllables.length,2,JSON.stringify(source.syllables));
  assert.equal(adapted.status,"OK",JSON.stringify({source:sourceSyllableGroups,adapted:adapted.syllables,warnings:adapted.warnings}));
  assert.equal(adapted.output,"к'аоніао");
+});
+
+test("BGN silent-hoa spellings romanize sonorants without an audible h",()=>{
+ const examples=[
+  ["ຫງາ","nga","нга"],
+  ["ຫຍາ","gna","ньа"],
+  ["ຫນາ","na","на"],
+  ["ຫມາ","ma","ма"],
+  ["ຫລາ","la","ла"],
+  ["ຫຼາ","la","ла"],
+  ["ຫວາງ","vang","ванг"],
+ ];
+ for(const [lao,expectedLatin,expectedUkrainian] of examples){
+  const latin=romanizeLao(lao);
+  const source=analyze(lao);
+  const sourceSyllableGroups=[source.syllables.map(s=>({
+   onset:s.onset,
+   onsetForm:s.onsetForm||s.onset,
+   vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+   coda:s.coda==="—"?"":s.coda??null,
+  }))];
+  const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
+  assert.equal(latin.output,expectedLatin,lao);
+  assert.equal(adapted.status,"OK",JSON.stringify({lao,sourceSyllableGroups,adapted:adapted.syllables,warnings:adapted.warnings}));
+  assert.equal(adapted.output,expectedUkrainian,lao);
+  assert.equal(adapted.syllables[0].sourceOnset,source.syllables[0].onsetForm||source.syllables[0].onset);
+ }
 });
