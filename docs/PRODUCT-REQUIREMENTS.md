@@ -20,8 +20,9 @@ The primary method must not be Lao → Latin romanization → Ukrainian.
 ## 3. Service requirements
 
 - Lao input with example and clear controls.
-- Primary result labelled **Український запис**.
-- IPA shown as an analytical layer.
+- Primary result labelled **Український запис** with a two-mode selector: **Фонетичний** (default) and **За романізацією**.
+- The phonetic result continues to use IPA as its analytical boundary; the optional romanization mode is a separate orthographic fallback and must be disclosed as less informative, not represented as phonetic transcription.
+- IPA remains visible as an analytical layer for the phonetic engine.
 - Per-syllable explanation: onset, consonant class, vowel, syllable type, tone, mapping.
 - Warnings for unresolved or analysis-dependent cases.
 - Copy controls.
