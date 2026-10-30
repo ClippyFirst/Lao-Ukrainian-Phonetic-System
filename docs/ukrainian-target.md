@@ -15,7 +15,7 @@ not:
 These are project-wide target-language decisions applied only after source phonology has produced IPA or an explicitly typed phonetic result. They are not direct source-grapheme substitutions and do not claim to be a new official Ukrainian standard.
 
 - Aspiration is retained with the ASCII apostrophe after the corresponding Ukrainian consonant: /kʰ tʰ pʰ/ → к' т' п'. The source IPA continues to preserve aspiration independently.
-- Foreign /h/ → г; hard /ɡ/ → ґ; genuine /x/ → х. These distinctions must not be collapsed.
+- Lao /h/ and IPA /ɦ/ both map to Ukrainian г but remain distinct source values; hard /ɡ/ maps to ґ; genuine /x/ maps to х. These distinctions must not be collapsed. The /h/ → г choice is a project-specific approximation, not a claim of phonetic identity.
 - /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж.
 - Alveolo-palatal /tɕ/ (also /t͡ɕ/) → ч; voiced /dʑ/ (also /d͡ʑ/) → дж as explicit target approximations.
 - Postalveolar fricatives /ʃ ʒ/ → ш ж.
@@ -31,6 +31,6 @@ These are project-wide target-language decisions applied only after source phono
 - /tɕ/ → ч; this is the current Lao palatal-affricate project correspondence.
 - /ɯ/ → и as a project approximation; uncertainty remains visible in the IPA layer.
 - Vowel quantity remains analytical rather than automatically doubling vowels.
-- /h/ → г is a target-language approximation, not a claim that Lao /h/ and Ukrainian /ɦ/ are phonetically identical.
+- Lao /h/ → г is a target-language approximation, not a claim that Lao /h/ and Ukrainian /ɦ/ are phonetically identical; the target registry also retains /ɦ/ → г as its own IPA correspondence.
 
 The Russian system remains a comparator, never the source of Ukrainian output.
