@@ -10,7 +10,7 @@ const ONSETS = new Map([
 ]);
 
 const NUCLEI = new Map([
-  ["oua", "уа"], ["ia", "іа"], ["ua", "уа"], ["ao", "ао"],
+  ["oua", "уа"], ["ia", "іа"], ["ua", "уа"], ["ao", "ао"], ["ôa", "ао"],
   ["eu", "е"], ["é", "е"], ["è", "е"], ["ô", "о"],
   ["ai", "ай"], ["am", "ам"], ["ou", "у"],
   ["a", "а"], ["i", "і"], ["u", "и"], ["o", "о"],
@@ -46,13 +46,20 @@ function matchesAt(source, index, tokens) {
   return tokens.filter((token) => source.startsWith(token, index));
 }
 
+function longestMatchesAt(source, index, tokens) {
+  const matches = matchesAt(source, index, tokens);
+  if (!matches.length) return [];
+  const longest = matches[0].length;
+  return matches.filter((token) => token.length === longest);
+}
+
 function candidatesAt(source, index) {
   const candidates = [];
 
   // Ordinary Latin order: onset + nucleus + optional coda.
   for (const onset of matchesAt(source, index, SORTED_ONSETS)) {
     const onsetEnd = index + onset.length;
-    for (const nucleus of matchesAt(source, onsetEnd, SORTED_NUCLEI)) {
+    for (const nucleus of longestMatchesAt(source, onsetEnd, SORTED_NUCLEI)) {
       const nucleusEnd = onsetEnd + nucleus.length;
       candidates.push({
         start: index, end: nucleusEnd, surface: source.slice(index, nucleusEnd),
@@ -74,23 +81,39 @@ function candidatesAt(source, index) {
   // Short preposed vowels may carry a trailing "a" from the literal transform;
   // that final a is a spelling artefact of the provisional transform, not a
   // second syllable nucleus in the BGN/PCGN syllable table.
-  for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
+  for (const nucleus of longestMatchesAt(source, index, SORTED_NUCLEI)) {
     if (!PREPOSED_NUCLEI.has(nucleus)) continue;
     const onsetStart = index + nucleus.length;
     for (const onset of matchesAt(source, onsetStart, SORTED_ONSETS)) {
+      let outputNucleus = nucleus;
       let end = onsetStart + onset.length;
-      if (SHORT_PREPOSED.has(nucleus) && source.startsWith("a", end)) end += 1;
+      if (["é", "è", "ô"].includes(nucleus)) {
+        const followingNucleus = longestMatchesAt(source, end, SORTED_NUCLEI)[0] || "";
+        if (followingNucleus && followingNucleus !== "a") {
+          // In the provisional literal CLDR transform, the preposed vowel
+          // marker remains visible before the onset while the actual nucleus
+          // is also emitted after it (e.g. ékhôa for the EKI nucleus ao).
+          // A bare u after this marker is ambiguous because the transform
+          // deletes Lao ອ; withhold it instead of inventing the missing diphthong.
+          if (followingNucleus === "u") continue;
+          outputNucleus = followingNucleus;
+          end += followingNucleus.length;
+        } else {
+          outputNucleus = nucleus;
+          if (followingNucleus === "a") end += 1;
+        }
+      }
       const base = {
         start: index, end, surface: source.slice(index, end),
-        onset, nucleus, coda: "", order: "vowel-first",
-        ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus),
+        onset, nucleus: outputNucleus, coda: "", order: "vowel-first",
+        ukrainian: ONSETS.get(onset) + NUCLEI.get(outputNucleus),
       };
       candidates.push(base);
       for (const coda of matchesAt(source, end, SORTED_CODAS)) {
         const codaEnd = end + coda.length;
         candidates.push({
           ...base, end: codaEnd, surface: source.slice(index, codaEnd),
-          coda, ukrainian: base.ukrainian + codaTarget(coda, nucleus),
+          coda, ukrainian: base.ukrainian + codaTarget(coda, outputNucleus),
         });
       }
     }
