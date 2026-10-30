@@ -54,17 +54,29 @@ test("the coda-vowel correspondence follows the documented BGN/PCGN context", ()
 test("the parser resolves CLDR preposed markers and postposed nuclei at syllable level", () => {
   const first = analyzeRomanization("ékhôa");
   const second = analyzeRomanization("niav");
+  const secondWithSource = analyzeRomanization("niav", {
+    sourceSyllableGroups: [[{ onset: "ໜ", coda: "ວ" }]],
+  });
   assert.equal(first.status, "OK");
   assert.equal(first.output, "к'ао");
   assert.deepEqual(first.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
     { onset: "kh", nucleus: "ôa", coda: "" },
   ]);
-  assert.equal(second.status, "OK");
-  assert.equal(second.output, "ніао");
-  assert.deepEqual(second.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
+  assert.equal(second.status, "PARTIAL");
+  assert.equal(second.output, "⟦niav⟧");
+  assert.equal(secondWithSource.status, "OK");
+  assert.equal(secondWithSource.output, "ніао");
+  assert.deepEqual(secondWithSource.syllables.map(({ onset, nucleus, coda }) => ({ onset, nucleus, coda })), [
     { onset: "n", nucleus: "ia", coda: "v" },
   ]);
-  assert.equal(analyzeRomanization("ékhôa-niav").output, "к'ао-ніао");
+  const phraseWithSource = analyzeRomanization("ékhôa-niav", {
+    sourceSyllableGroups: [
+      [{ onset: "ຂ", coda: "" }],
+      [{ onset: "ໜ", coda: "ວ" }],
+    ],
+  });
+  assert.equal(phraseWithSource.status, "OK");
+  assert.equal(phraseWithSource.output, "к'ао-ніао");
 });
 
 test("concatenated multi-syllable romanization with competing parses is withheld", () => {
