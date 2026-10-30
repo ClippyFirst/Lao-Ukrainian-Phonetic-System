@@ -1,4 +1,4 @@
-// Syllable-level adapter for the provisional CLDR Lao-Latin/UNGEGN string.
+// Syllable-level adapter for the provisional CLDR Lao-Latin transform with a BGN/PCGN-aligned subset.
 // This is an orthographic parsing policy, not an IPA or pronunciation engine.
 // It analyzes onset + vowel nucleus + coda and deliberately withholds ambiguous parses.
 const ONSETS = new Map([
