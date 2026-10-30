@@ -178,6 +178,7 @@ function render() {
     const grid = document.createElement("div");
     grid.className = "analysis-grid";
     [
+      ["Лаоська початкова графема", syllable.sourceOnset || "—"],
       ["Романізований склад", syllable.surface],
       ["Початковий елемент", syllable.onset || "∅"],
       ["Голосний комплекс", syllable.nucleus || "—"],
