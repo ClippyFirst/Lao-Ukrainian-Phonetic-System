@@ -29,7 +29,7 @@ The service offers a second, explicitly lower-information method alongside the p
 - **Phonetic (default):** Lao → structural/phonological analysis → IPA → Ukrainian practical adaptation.
 - **By romanization:** Lao → provisional CLDR Lao-Latin/BGN transform → source-grapheme/romanization crosswalk → independent romanized-syllable parser → Ukrainian syllable assembly.
 
-The second route is not a letter-by-letter Latin-to-Cyrillic transliterator. It parses the romanized string into a **syllable onset, vowel nucleus and coda**, while checking each parsed onset against the original Lao onset grapheme. This crosswalk is essential because a Latin digraph can encode one Lao phoneme rather than two independent consonants. The route does not consume the IPA string or call the phonetic target adapter; it uses the source grapheme registry and documented phonological correspondences to validate the romanized onset. The IPA-first engine remains unchanged. The user selects the method explicitly; there is no silent fallback. Input rejected by Lao validation is not passed through the romanization method. The main copy action follows the selected Ukrainian result.
+The second route is not a letter-by-letter Latin-to-Cyrillic transliterator. It parses the romanized string into a **syllable onset, vowel nucleus and coda**, then checks both consonant positions against the original Lao syllable: the onset grapheme must agree with the romanized onset, and a supported coda grapheme must agree with the CLDR coda output. A Latin digraph can encode one Lao phoneme rather than two independent consonants, and CLDR's transform is not position-sensitive for every consonant. The route does not consume the IPA string or call the phonetic target adapter; it uses the source grapheme registry and documented orthographic correspondences to validate the romanized onset and supported coda. The IPA-first engine remains unchanged. The user selects the method explicitly; there is no silent fallback. Input rejected by Lao validation is not passed through the romanization method. The main copy action follows the selected Ukrainian result.
 
 ### Syllable-level mapping policy
 
@@ -37,20 +37,32 @@ The current [CLDR Lao-Latin transform](https://github.com/unicode-org/cldr/blob/
 
 The project mapping table is position-sensitive:
 
-| Component | Romanized form | Ukrainian target |
-|---|---|---|
-| Onset | `kh` from ຂ/ຄ | `к'` (aspirated /kʰ/) |
-| Onset | `th` from ຖ/ທ | `т'` (aspirated /tʰ/) |
-| Onset | `ph` from ຜ/ພ | `п'` (aspirated /pʰ/) |
-| Onset | `h` from ຫ/ຮ | `г` (/h/) |
-| Onset | `ch`, `ng`, `gn` | `ч`, `нг`, `нь` |
-| Onset | `k s d t n b p f m y r l v` | `к с д т н б п ф м й л л в` |
-| Onset | `x` from ຊ | `с` (the BGN letter `x` is not /ks/) |
-| Nucleus | `a i u ou o é è ô eu` | `а і и у о е е о е` |
-| Nucleus | `ia ua oua ai ao am` | `іа уа уа ай ао ам` |
-| Coda | `k ng y gn t n p m r l` | `к нг й й т н п м л л` |
-| Coda | `d b` | `т п` |
-| Coda | `v` | `о` (or `оу` after `i`) |
+| Position | Lao source grapheme | CLDR form | Ukrainian target |
+|---|---|---|---|
+| Onset | ກ | `k` | `к` |
+| Onset | ຂ/ຄ | `kh` | `к'` (aspirated /kʰ/) |
+| Onset | ງ | `ng` | `нг` |
+| Onset | ຈ | `ch` | `ч` |
+| Onset | ສ | `s` | `с` |
+| Onset | ຊ | `x` | `с` (not literal /ks/) |
+| Onset | ຍ | `gn` | `нь` |
+| Onset | ດ/ຕ | `d/t` | `д/т` |
+| Onset | ຖ/ທ | `th` | `т'` (aspirated /tʰ/) |
+| Onset | ນ | `n` | `н` |
+| Onset | ບ/ປ | `b/p` | `б/п` |
+| Onset | ຜ/ພ | `ph` | `п'` (aspirated /pʰ/) |
+| Onset | ຝ/ຟ | `f` | `ф` |
+| Onset | ມ | `m` | `м` |
+| Onset | ຢ | `y` | `й` |
+| Onset | ຣ/ລ | `r/l` | `л` (modern default for ຣ) |
+| Onset | ວ | `v` | `в` |
+| Onset | ຫ/ຮ | `h` | `г` (/h/, not aspiration) |
+| Nucleus | vowel combinations | CLDR sequences | project-defined Ukrainian vowel complexes |
+| Coda | ກ/ງ | `k/ng` | `к/нг` |
+| Coda | ດ/ບ | `d/b` | `т/п` |
+| Coda | ນ/ມ | `n/m` | `н/м` |
+| Coda | ຍ | `gn` (CLDR alias; BGN final form is `y`) | `й` |
+| Coda | ວ | `v` | `о` (or `оу` after `i`) |
 
 **The former blanket rule `h → г` was linguistically wrong for BGN digraphs.** In `kh`, `th`, and `ph`, the letter `h` is part of the conventional spelling of aspirated Lao stops, not a separate /h/ segment. The correct project outputs are therefore `к'`, `т'`, and `п'`. A standalone `h` from Lao ຫ or ຮ represents /h/ and maps to `г`. The source-to-romanization check must agree before the Ukrainian onset is emitted; a mismatch or missing alignment is withheld as `PARTIAL`.
 
