@@ -163,7 +163,7 @@ test("source coda graphemes are checked against CLDR output before Ukrainian cod
    }))],
   });
   assert.equal(latin.output,expectedLatin,lao);
-  assert.equal(adapted.status,"OK",lao);
+  assert.equal(adapted.status,"OK",JSON.stringify({lao,latin:latin.output,source:source.syllables.map(s=>({surface:s.surface,onset:s.onset,coda:s.coda,vowel:s.vowel,status:s.status})),adapted:adapted.syllables,warnings:adapted.warnings}));
   assert.equal(adapted.output,expectedUkrainian,lao);
  }
 });
