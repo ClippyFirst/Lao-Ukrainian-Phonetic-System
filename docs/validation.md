@@ -128,7 +128,7 @@ The final syllable-parser revision passed exact-head [workflow 41124439725](http
 - Web layout: **5 passed**.
 - External-G2P harness syntax/CLI, browser build, generated-data reproducibility and built-page/relative-asset checks: passed.
 
-This run includes CLDR preposed-marker/postposed-nucleus parsing, longest-match onset/coda handling, position-sensitive final mappings, the `h → г` invariant, and explicit partial handling when concatenated syllables admit competing parses. The tests do not establish empirical pronunciation accuracy or complete CLDR/ICU coverage.
+At that historical checkpoint, this run included CLDR preposed-marker/postposed-nucleus parsing, longest-match onset/coda handling, position-sensitive final mappings, and the then-current blanket `h → г` interpretation inside `kh/th/ph`. That blanket rule is superseded by D-008 and the source-grapheme crosswalk below. The tests do not establish empirical pronunciation accuracy or complete CLDR/ICU coverage.
 
 
 ## Source-aware romanization crosswalk correction — 2026-10-30
