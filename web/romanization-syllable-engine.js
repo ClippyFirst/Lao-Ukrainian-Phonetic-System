@@ -90,7 +90,7 @@ function candidatesAt(source, index) {
         const codaEnd = end + coda.length;
         candidates.push({
           ...base, end: codaEnd, surface: source.slice(index, codaEnd),
-          coda, ukrainian: base.ukrainian + CODAS.get(coda),
+          coda, ukrainian: base.ukrainian + codaTarget(coda, nucleus),
         });
       }
     }
@@ -117,7 +117,7 @@ function candidatesAt(source, index) {
       candidates.push({
         start: index, end, surface: source.slice(index, end),
         onset: "", nucleus, coda, order: "vowel-only",
-        ukrainian: NUCLEI.get(nucleus) + CODAS.get(coda),
+        ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
       });
     }
   }
