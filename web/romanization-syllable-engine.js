@@ -147,15 +147,20 @@ function candidatesAt(source, index) {
   return candidates;
 }
 
-function parseWord(word) {
+function parseWord(word, sourceGroup = null) {
   const memo = new Map();
-  function solve(index) {
-    if (index === word.length) return { count: 1, path: [] };
-    if (memo.has(index)) return memo.get(index);
+  function solve(index, sourceIndex) {
+    if (index === word.length) {
+      if (sourceGroup && sourceIndex !== sourceGroup.length) return { count: 0, path: null };
+      return { count: 1, path: [] };
+    }
+    const key = sourceGroup ? `${index}:${sourceIndex}` : String(index);
+    if (memo.has(key)) return memo.get(key);
     let count = 0;
     let path = null;
     for (const candidate of candidatesAt(word, index)) {
-      const next = solve(candidate.end);
+      if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex])) continue;
+      const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
       if (count === 0 && next.count === 1) path = [candidate, ...next.path];
       else path = null;
@@ -163,12 +168,11 @@ function parseWord(word) {
       if (count > 1) break;
     }
     const result = { count, path };
-    memo.set(index, result);
+    memo.set(key, result);
     return result;
   }
-  return solve(0);
+  return solve(0, 0);
 }
-
 function unresolved(surface, status = "UNRESOLVED") {
   return {
     surface, onset: "", nucleus: "", coda: "", ukrainian: "⟦" + surface + "⟧",
