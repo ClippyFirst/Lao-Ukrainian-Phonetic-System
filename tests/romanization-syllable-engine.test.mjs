@@ -125,3 +125,12 @@ test("a real k syllable followed by an h-onset syllable keeps both consonants", 
       { onset: "h", sourceOnset: "ຮ", ukrainian: "га" },
     ]);
 });
+
+
+test("atomic high-class nasal graphemes absent from the BGN onset table are withheld", () => {
+  for (const sourceOnset of ["ໜ", "ໝ"]) {
+    const result = analyzeRomanization("na", { sourceOnsets: [sourceOnset] });
+    assert.equal(result.status, "PARTIAL");
+    assert.equal(result.output, "⟦na⟧");
+  }
+});
