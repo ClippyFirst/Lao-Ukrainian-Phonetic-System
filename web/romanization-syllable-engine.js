@@ -57,7 +57,7 @@ function candidatesAt(source, index) {
   const candidates = [];
 
   // Ordinary Latin order: onset + nucleus + optional coda.
-  for (const onset of matchesAt(source, index, SORTED_ONSETS)) {
+  for (const onset of longestMatchesAt(source, index, SORTED_ONSETS)) {
     const onsetEnd = index + onset.length;
     for (const nucleus of longestMatchesAt(source, onsetEnd, SORTED_NUCLEI)) {
       const nucleusEnd = onsetEnd + nucleus.length;
@@ -66,7 +66,7 @@ function candidatesAt(source, index) {
         onset, nucleus, coda: "", order: "onset-first",
         ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus),
       });
-      for (const coda of matchesAt(source, nucleusEnd, SORTED_CODAS)) {
+      for (const coda of longestMatchesAt(source, nucleusEnd, SORTED_CODAS)) {
         const end = nucleusEnd + coda.length;
         candidates.push({
           start: index, end, surface: source.slice(index, end),
@@ -84,7 +84,7 @@ function candidatesAt(source, index) {
   for (const nucleus of longestMatchesAt(source, index, SORTED_NUCLEI)) {
     if (!PREPOSED_NUCLEI.has(nucleus)) continue;
     const onsetStart = index + nucleus.length;
-    for (const onset of matchesAt(source, onsetStart, SORTED_ONSETS)) {
+    for (const onset of longestMatchesAt(source, onsetStart, SORTED_ONSETS)) {
       let outputNucleus = nucleus;
       let end = onsetStart + onset.length;
       if (["é", "è", "ô"].includes(nucleus)) {
@@ -109,7 +109,7 @@ function candidatesAt(source, index) {
         ukrainian: ONSETS.get(onset) + NUCLEI.get(outputNucleus),
       };
       candidates.push(base);
-      for (const coda of matchesAt(source, end, SORTED_CODAS)) {
+      for (const coda of longestMatchesAt(source, end, SORTED_CODAS)) {
         const codaEnd = end + coda.length;
         candidates.push({
           ...base, end: codaEnd, surface: source.slice(index, codaEnd),
@@ -135,7 +135,7 @@ function candidatesAt(source, index) {
   for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
     if (PREPOSED_NUCLEI.has(nucleus)) continue;
     const nucleusEnd = index + nucleus.length;
-    for (const coda of matchesAt(source, nucleusEnd, SORTED_CODAS)) {
+    for (const coda of longestMatchesAt(source, nucleusEnd, SORTED_CODAS)) {
       const end = nucleusEnd + coda.length;
       candidates.push({
         start: index, end, surface: source.slice(index, end),
