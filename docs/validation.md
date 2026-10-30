@@ -85,7 +85,7 @@ The verification workflow establishes deterministic engineering behavior for thi
 
 ## Corrective revision: syllable-based romanization adapter — 2026-10-30
 
-The earlier character-by-character Latin adapter is superseded. Following user review, the selected romanization method now uses a separate syllable engine that parses onset, nucleus and coda, applies position-sensitive final mappings, and assembles Ukrainian syllables. The invariant `h → г` is enforced in all positions, including within `kh`, `th` and `ph`. The UI exposes a separate romanization syllable trace; ambiguous and unsupported segments remain visible and are marked partial.
+The earlier character-by-character Latin adapter is superseded. At this historical checkpoint, the syllable engine used a blanket `h → г` rule inside `kh/th/ph`; that interpretation was later found to confuse aspiration with an independent /h/ and is superseded by the source-grapheme crosswalk documented in D-008. The separate syllable trace and partial-on-ambiguity behavior remain in force.
 
 Exact-head verification: [workflow 41123400527](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41123400527), commit `9a4841c53705fa245f23f5c060e53cb146d8a185`.
 
