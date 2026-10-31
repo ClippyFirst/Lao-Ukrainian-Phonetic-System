@@ -19,6 +19,13 @@ def main():
     assert len({r["grapheme"] for r in consonants})==len(consonants), "duplicate consonant grapheme"
     assert len({r["id"] for r in vowels})==len(vowels), "duplicate vowel id"
     assert len({r["rule_id"] for r in tones})==len(tones), "duplicate tone rule"
+    for row in tones:
+        if row["tone_mark"] != "none":
+            assert row["syllable_type"] == "live", f"tone mark on non-live syllable selector: {row['rule_id']}"
+        if row["tone_mark"] == "mai_ti":
+            assert row["class"] == "middle" and row["tone"] == "high-falling", f"invalid mai ti selector: {row['rule_id']}"
+        if row["tone_mark"] == "mai_catawa":
+            assert row["class"] == "middle" and row["tone"] == "low-rising", f"invalid mai catawa selector: {row['rule_id']}"
     assert len({r["ipa"] for r in ua})==len(ua), "duplicate IPA mapping"
     assert len({r["source_id"] for r in sources})==len(sources), "duplicate evidence source id"
     assert len({r["claim_id"] for r in claims})==len(claims), "duplicate evidence claim id"
