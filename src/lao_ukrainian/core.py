@@ -34,8 +34,11 @@ def analyze(text: str) -> Analysis:
             for warning in local_warnings
         )
         multiple_tone_marks = "MULTIPLE_TONE_MARKS" in local_warnings
+        malformed_tone_mark_order = any(
+            warning.startswith("MALFORMED_TONE_MARK_") for warning in local_warnings
+        )
         structural_uncertainty = unconsumed or short_vowel_missing_coda
-        if structural_uncertainty or multiple_tone_marks:
+        if structural_uncertainty or multiple_tone_marks or malformed_tone_mark_order:
             # Once the written unit is structurally uncertain, a previously
             # matched tone rule is not evidence for this malformed surface.
             tone_rule_ids = {row["rule_id"] for row in registry["tone_rules"]}
@@ -59,6 +62,9 @@ def analyze(text: str) -> Analysis:
         if multiple_tone_marks:
             rules = [*rules, "PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS",
                      "PHON-TONE-WITHHELD-MULTIPLE-TONE-MARKS"]
+        if malformed_tone_mark_order:
+            rules = [*rules, "PHON-IPA-WITHHELD-MALFORMED-TONE-MARK-ORDER",
+                     "PHON-TONE-WITHHELD-MALFORMED-TONE-MARK-ORDER"]
 
         candidates = []
         if ipa:
@@ -83,7 +89,7 @@ def analyze(text: str) -> Analysis:
 
         if practical is None and ipa:
             status = "EVIDENCE LIMITED"
-        if structural_uncertainty or multiple_tone_marks:
+        if structural_uncertainty or multiple_tone_marks or malformed_tone_mark_order:
             status = "EVIDENCE LIMITED"
 
         # Even if an IPA string is computable, malformed/unconsumed source
