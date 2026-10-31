@@ -239,3 +239,14 @@ PR #71 added project-specific agent instructions and removed unnecessary npm dep
 - The npm CLI emits a separate `DEP0040` punycode deprecation warning during npm commands. This did not fail the workflow; the logs do not identify a project-owned source of that warning.
 
 These checks validate the current engineering contracts and build only. They do not establish phonological accuracy, independent gold-corpus coverage, expert review, or manual visual/keyboard QA.
+
+## Pages Node 24 action migration — 2026-10-31
+
+The first Pages run after PR #71 ([41188440580](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188440580)) succeeded but emitted Node 20 deprecation warnings from the nested upload-artifact action and deploy-pages v4. PR #72 upgraded the Pages workflow to `upload-pages-artifact@v5` and `deploy-pages@v5`, verified against the official upstream release metadata (both use Node 24-compatible action code, including the nested upload-artifact v7).
+
+- PR #72 merged to main as `649973f320a8eb0e6cf2d927c9b90add5cdcdd68`.
+- Exact-main verify [41188708711](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708711): repository audit passed; Python **94 passed**; browser **47 passed**; romanization integration **19 passed**; syllable crosswalk **27 passed**; web layout **6 passed**; build, generated-data reproducibility and built-page/relative-asset checks passed.
+- Pages build and deploy [41188708689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708689): both jobs **passed**. No Node 20 action-runtime deprecation warning appears in either Pages job log.
+- npm CLI still emits a separate non-fatal Node `DEP0040` punycode deprecation warning. This is not an action-runtime warning and did not fail the workflows.
+
+Total engineering tests remain **193 passed**. No external G2P comparison was run. This validates CI and deployment, not Lao pronunciation accuracy, expert gold coverage, or manual visual/keyboard QA.
