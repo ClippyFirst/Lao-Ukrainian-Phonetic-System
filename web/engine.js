@@ -6,7 +6,6 @@ const HIGH_DIGRAPHS = new Map([
   ["ຫລ", "ລ"], ["ຫຼ", "ລ"], ["ຫວ", "ວ"],
 ]);
 const VOWEL_COMBINING_MARKS = new Set(["ັ", "ິ", "ີ", "ຶ", "ື", "ຸ", "ູ", "ົ", "ໍ"]);
-const LABIALIZED_ONSET_BASES = new Set(["ຖ", "ທ", "ຈ", "ກ", "ຂ", "ຄ", "ອ", "ສ", "ຊ", "ງ", "ລ"]);
 const sortedIpa = () => Object.keys(CORRESPONDENCES).sort((a, b) => b.length - a.length);
 
 function vowelById(id) { return VOWELS.find((v) => v[0] === id) || null; }
@@ -159,7 +158,7 @@ function toneMarkOrderError(chars, clean, found) {
   const cleanChars = [...clean];
   const afterOnset = cleanMarkIndex === onsetBoundary;
   const afterLabializedSecond = cleanMarkIndex === onsetBoundary + 1 &&
-    cleanChars[onsetBoundary] === "ວ" && LABIALIZED_ONSET_BASES.has(found.onsetKey);
+    cleanChars[onsetBoundary] === "ວ" && Object.values(ONSET_CLUSTERS).some((row) => row[0] === found.onsetKey);
   const afterCombiningVowel = markIndex > 0 && VOWEL_COMBINING_MARKS.has(chars[markIndex - 1]);
   if (chars.slice(markIndex + 1).some((ch) => VOWEL_COMBINING_MARKS.has(ch))) {
     return "MALFORMED_TONE_MARK_ORDER";
