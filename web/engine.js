@@ -71,6 +71,7 @@ function classify(coda, vowel) {
     if (["p", "t", "k", "ʔ"].includes(final)) return "dead";
     if (["m", "n", "ŋ", "w", "j", "l", "r"].includes(final)) return "live";
   }
+  if (vowel?.[6] === "diphthong" || vowel?.[7] === "nasal") return "live";
   return vowel?.[3] === "long" ? "live" : "dead";
 }
 
