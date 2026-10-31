@@ -69,3 +69,5 @@ These are methodological references, not runtime dependencies. The project adopt
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846): smallest complete diff, reuse before invention, review of connected code rather than diff alone, and explicit deferred-work accounting.
 
 When these references conflict with this file, the existing project requirements, or the user's explicit instructions, follow the project requirements and user instructions. Do not import or install these repositories as project dependencies merely to follow their methods.
+
+- Keep the restricted labialized onset inventory in `data/lao/onset_clusters.csv` and generate its browser mirror; do not hard-code a second divergent list. Preserve the superscript `ʷ` at the IPA boundary, reject clusters before rounded nuclei, and withhold overlapping `Cວາ` analyses rather than guessing between labialized-onset + AA and UO-long-open. Do not invent Ukrainian correspondences for these IPA sequences. Search for silent high-class `ຫ` digraphs after any preposed vowel, not only at token index zero.
