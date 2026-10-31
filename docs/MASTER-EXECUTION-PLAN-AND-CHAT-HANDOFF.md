@@ -818,3 +818,10 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - The supplied short sample \`ສະບາຍດີ 123! ພາສາລາວ.\` now has an explicit romanization input-integrity regression. It verifies Latin output and preservation of ASCII digits, spaces, exclamation mark and full stop.
 - Exact-head workflow [41242351010](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41242351010) passed repository data/evidence audit, Python tests, external-G2P harness checks, browser engine tests, build, generated-data reproducibility, and built-page/relative-asset checks.
 - This is not a gold transcription or sentence-accuracy score. It does not change runtime code or trigger the path-filtered Pages workflow. Existing linguistic evidence blockers remain unchanged.
+
+
+## Native numerals and mixed Latin sentence regression — 2026-10-31
+
+- PR #89 merged as `3a38d1f5500f12b13f2d0f5c0ab89a4470a2cc40`. The sample `ຂາ ໒໐໒໖, ABC-42!` verifies that Lao numerals remain visible, ASCII digits and Latin text are preserved, and spaces/comma/exclamation mark survive CLDR romanization. The result remains `PARTIAL` because the Lao numerals are deliberately retained as source numerals rather than assigned an unverified transformation.
+- Exact-head workflow [41242834364](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41242834364) passed repository data/evidence audit, Python tests, external-G2P harness validation, browser engine tests, canonical data generation/reproducibility, and built-page/relative-asset checks.
+- Combined with PR #87's short mixed-text sentence and PR #84's full greeting sentence, romanization now has explicit coverage for sentence spaces, punctuation, ASCII digits, Lao numerals, Latin mixed text and unsupported-code-point preservation. These are engineering regressions, not independently adjudicated lexical gold or accuracy scores.
