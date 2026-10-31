@@ -21,6 +21,8 @@ def analyze(text: str) -> Analysis:
         parsed = parse_syllable(surface)
         local_warnings = list(parsed.get("warnings", []))
         ipa, rules, tone_status, tone = phonologize(parsed)
+        if parsed.get("onset_ipa"):
+            rules = [*rules, f"ONSET-CLUSTER:{parsed.get('onset_form')}"]
 
         # An unconsumed source suffix means the parser did not establish the
         # whole orthographic unit. Never let a valid onset/vowel prefix become
