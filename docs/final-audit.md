@@ -227,3 +227,11 @@ Implementation status: `LAO-CLUSTER-001` is `DONE_VERIFIED`. The IPA-to-Ukrainia
 - PR #89 merged as `3a38d1f5500f12b13f2d0f5c0ab89a4470a2cc40`; exact-head workflow [41242834364](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41242834364) passed the complete configured verification pipeline.
 - `ຂາ ໒໐໒໖, ABC-42!` retains Lao numerals, ASCII numbers, Latin text, spaces and punctuation in romanization. Status remains PARTIAL because the Lao numerals remain in source form; no unverified digit conversion is claimed.
 - This complements PR #87's ASCII-number mixed-text sample and PR #84's full-sentence regression. Tests only; no runtime or Pages input changed. Not linguistic gold.
+
+
+## Main-head and sentence-level regression checkpoint — 2026-10-31
+
+- Main head `2ae2971c2526cba57504e294f37caf64c964c3f6` passed exact-main workflow [41243897060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41243897060): data/evidence audit, Python, browser engine, optional G2P harness CLI validation, build, generated-data reproducibility and built-page checks.
+- Sentence-level regression coverage includes full Lao greeting input through source-preservation and romanization-to-Ukrainian paths, short mixed-script text, ASCII digits, native Lao numerals, spaces and punctuation. Unsupported numeral transformations remain withheld rather than guessed.
+- These are deterministic engineering regressions only. No independent IPA/Ukrainian gold or phonetic accuracy score is added.
+- Latest verified Pages deployment remains [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for `550d1d63b31965e68b40f30cd5099601ab203ec8`; subsequent changes did not alter runtime build inputs.
