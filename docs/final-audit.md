@@ -105,3 +105,11 @@ The implementation in 3d0d71cc505695eb9e7e0dc5b60f40227cc79565 passed [workflow 
 - PRs #56, #61–#65 and #66 are merged. Relevant changes from the earlier target-policy and interface branches were already in main; no duplicate code was introduced. No force-push or branch deletion occurred.
 - Remaining release blockers are scientific and manual, not CI: independent expert review of the full Ukrainian target inventory; source-by-source Lao vowel/tone/coda/cluster adjudication; a licensed, versioned, expert-adjudicated IPA gold corpus (currently 0 rows); complete CLDR/ICU romanization coverage including unsupported `ຫຣ`; and real-browser visual/keyboard QA at 1440px, 768px and 390px.
 - Quality judgement: **research MVP / partial prototype, deployed but not publication-grade or production-ready**. The test suite verifies implementation contracts and reproducibility; it does not prove phonological accuracy. No empirical accuracy percentage is reported.
+
+## Public status reconciliation — 2026-10-31
+
+The homepage and methodology were corrected to match the merged implementation and latest verified deployment. The stale status date and broad wording about `ໜ/ໝ` were corrected: the romanization adapter supports a bounded subset of silent-`ຫ` and ligature spellings, while complete phonological/tone analysis remains open. The homepage now explicitly names the Ukrainian `/ʃt͡ʃ/ → щ` target sequence and the separate source-aware romanization method.
+
+Exact-head workflow [41183548004](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183548004) passed the full repository audit, Python 94, browser 47, romanization integration 19, syllable crosswalk 27 and web-layout 6 tests, plus harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. Test-first stale-copy failure is preserved in [41183451808](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183451808).
+
+Quality status remains **deployed Research MVP / partial prototype**. Independent expert-reviewed Lao IPA gold remains 0 and accuracy remains unmeasured/null. Real-browser visual/keyboard QA, expert target review, source adjudication and complete CLDR/ICU coverage remain open. This documentation update is not evidence of phonological accuracy.
