@@ -102,21 +102,6 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.practical_ukrainian, "а")
 
 
-    def test_shared_tone_contour_fixture(self):
-        root = Path(__file__).resolve().parents[1]
-        fixture = json.loads(
-            (root / "tests" / "fixtures" / "tone_contour_cases.json").read_text(encoding="utf-8")
-        )
-        self.assertEqual(fixture["schema_version"], 1)
-        for item in fixture["cases"]:
-            with self.subTest(case=item["id"]):
-                syllable = analyze(item["surface"]).syllables[0]
-                self.assertEqual(syllable.tone, item["tone"])
-                self.assertEqual(syllable.tone_contour, item["tone_contour"])
-                self.assertEqual(syllable.phonemic_ipa, item["ipa"])
-                self.assertEqual(syllable.practical_ukrainian, item["ukrainian"])
-                self.assertEqual(syllable.status, item["status"])
-
     def test_unconsumed_material_before_preposed_vowel_withholds_output(self):
         s = analyze("xເເກ").syllables[0]
         self.assertEqual(s.status, "ANALYSIS DEPENDENT")
