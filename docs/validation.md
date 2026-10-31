@@ -250,3 +250,9 @@ The first Pages run after PR #71 ([41188440580](https://github.com/ClippyFirst/L
 - npm CLI still emits a separate non-fatal Node `DEP0040` punycode deprecation warning. This is not an action-runtime warning and did not fail the workflows.
 
 Total engineering tests remain **193 passed**. No external G2P comparison was run. This validates CI and deployment, not Lao pronunciation accuracy, expert gold coverage, or manual visual/keyboard QA.
+
+## Tone-mark live-syllable regression — 2026-10-31
+
+Test-first run [41189555009](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41189555009) passed the repository data/evidence audit and then failed the newly added Python regression as expected: **16 cases** across high/middle/low onsets, four marks, and short-vowel/long-vowel dead contexts were assigned tones by the old wildcard selectors. This established the defect before changing the registry.
+
+The correction narrows every tone-mark selector to `syllable_type=live`, renames the rule IDs to make the condition explicit, registers Appen Butler Hill's 2017 Lao LSP document, and adds a source-linked claim for the rare middle-class-only `mai ti`/`mai catawa` mappings. The canonical browser data is regenerated from the CSV. Shared fixture cases now cover all 24 onset × mark × dead-rime combinations in both Python and browser engines. The full post-fix exact-head verification is pending.
