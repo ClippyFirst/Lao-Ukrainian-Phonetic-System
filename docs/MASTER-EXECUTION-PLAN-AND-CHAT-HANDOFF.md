@@ -835,3 +835,11 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - This is engineering coverage for source preservation, segmentation and route integration. It is not an independently adjudicated IPA/Ukrainian gold corpus and does not establish full-sentence phonetic accuracy.
 - The last verified Pages deployment remains [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306), for commit `550d1d63b31965e68b40f30cd5099601ab203ec8`. Latest changes are tests/documentation and do not alter the deployed runtime artifact; no newer Pages deployment is claimed.
 - Remaining blockers: exhaustive source-unit coverage, specialist adjudication of ambiguous nuclei/loanwords/conventional names, Ukrainian adaptation for labialized `ʷ` segments, and independently reviewed pronunciation gold. Research prototype status remains unchanged.
+
+
+## Post-merge verification for PR #90 — 2026-10-31
+
+- PR #90 merged as `69fa43e7d66e2c4c6468945497ff5a1b1ab7b717`; it synchronizes the main-head verification, sentence-level regression summary and romanization matrix without changing runtime code.
+- Exact post-merge main workflow [41246317109](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41246317109) passed on the merge commit. The prior main implementation head `2ae2971c2526cba57504e294f37caf64c964c3f6` had already passed [41243897060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41243897060).
+- Last verified Pages deployment remains [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for `550d1d63b31965e68b40f30cd5099601ab203ec8`; PR #90 and the intervening updates are documentation-only and do not change the published runtime artifact.
+- This closes the exact-main engineering verification checkpoint, not the linguistic research gates. Independent IPA/Ukrainian gold remains absent; exhaustive source-unit coverage and specialist review remain open.
