@@ -32,8 +32,6 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: "22"
-      - name: Install build dependency
-        run: npm install --no-audit --no-fund
       - name: Run browser regression tests
         run: npm test
       - name: Build both public pages and generated data
