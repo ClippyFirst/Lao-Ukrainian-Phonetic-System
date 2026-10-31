@@ -811,3 +811,10 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - This is a sentence-level engineering regression, not independently adjudicated IPA or Ukrainian lexical gold. The test allows \`PARTIAL\` because the crosswalk deliberately withholds unsupported/ambiguous cases; it does not claim a fully correct sentence transcription.
 - No runtime code or Pages build input changed in PR #84. The last recorded Pages deployment remains run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for commit \`550d1d63b31965e68b40f30cd5099601ab203ec8\`; no newer deployment is claimed.
 - Existing blockers remain: exhaustive source-unit coverage, specialist review of ambiguous nuclei/loanwords/conventional names, IPA-to-Ukrainian correspondence for labialized \`ʷ\`, and independent pronunciation gold. The system remains a partial research prototype.
+
+## Short mixed-text romanization regression — 2026-10-31
+
+- PR #87 merged as \`a4871384fb195c732bd8acf4ed941875cb7263e8\`.
+- The supplied short sample \`ສະບາຍດີ 123! ພາສາລາວ.\` now has an explicit romanization input-integrity regression. It verifies Latin output and preservation of ASCII digits, spaces, exclamation mark and full stop.
+- Exact-head workflow [41242351010](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41242351010) passed repository data/evidence audit, Python tests, external-G2P harness checks, browser engine tests, build, generated-data reproducibility, and built-page/relative-asset checks.
+- This is not a gold transcription or sentence-accuracy score. It does not change runtime code or trigger the path-filtered Pages workflow. Existing linguistic evidence blockers remain unchanged.
