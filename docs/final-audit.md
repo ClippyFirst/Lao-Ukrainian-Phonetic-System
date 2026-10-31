@@ -207,3 +207,8 @@ Implementation status: `LAO-CLUSTER-001` is `DONE_VERIFIED`. The IPA-to-Ukrainia
 - PR #81 merged as `542d66268e96b98a309ff45bca167d4b1e4d4541`; exact-head CI [41238184863](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41238184863) passed the full configured workflow.
 - The supplied Lao sentence is now covered by a regression that verifies every non-whitespace source unit survives segmentation and that the engine produces a non-empty result.
 - This is an engineering integrity check only. It is not a pronunciation benchmark, gold IPA corpus, or evidence of sentence-level phonetic accuracy. Existing coverage and specialist-review blockers remain unchanged.
+
+
+## Sentence-level engineering verification — 2026-10-31
+
+The latest main head `9e439f4a56c6c5f91635195c5413acd964480b6c` includes PR #84's full-sentence romanization regression. Exact-main CI [41240558039](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41240558039) passed the repository audit, Python suite, browser engine suite, external-G2P harness CLI/syntax check, canonical data generation/reproducibility, and built-page asset checks. PR #81's independent source-preservation regression passed [41238184863](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41238184863). These checks establish that the tested sentence traverses the implemented engineering path while retaining separators and output; they do not establish lexical pronunciation accuracy. Independent IPA gold remains empty, accuracy remains null, and the repository remains a research prototype requiring broader source-backed coverage and specialist review.
