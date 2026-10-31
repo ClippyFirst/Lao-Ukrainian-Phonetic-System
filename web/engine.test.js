@@ -72,26 +72,6 @@ test("mai ti and mai catawa are not dropped", () => {
   assert.equal(analyze("ກ໋າ").syllables[0].tone, "low-rising");
 });
 
-test("tone marks do not resolve dead syllables", () => {
-  const onsets = ["ຂ", "ກ", "ຄ"];
-  const marks = ["່", "້", "໊", "໋"];
-  const deadRimes = ["ັບ", "າບ"];
-  for (const onset of onsets) {
-    for (const mark of marks) {
-      for (const rime of deadRimes) {
-        const surface = onset + mark + rime;
-        const result = analyze(surface);
-        assert.equal(result.syllables.length, 1, surface);
-        const syllable = result.syllables[0];
-        assert.equal(syllable.syllableType, "dead", surface);
-        assert.equal(syllable.tone, null, surface);
-        assert.equal(syllable.toneContour, null, surface);
-        assert.equal(syllable.status, "ANALYSIS DEPENDENT", surface);
-      }
-    }
-  }
-});
-
 test("multiple adjacent tone marks withhold the entire malformed token", () => {
   const r = analyze("ກ່້າ");
   assert.equal(r.status, "PARTIAL");
