@@ -21,6 +21,37 @@ HIGH_DIGRAPHS = {
     "ຫວ": "ວ",
 }
 
+# Ishida's Lao Orthography Notes specifies that tone marks follow the base
+# consonant (or a superscript vowel sign), and precede the spacing AM letter.
+# A tone mark on the second letter of a documented onset sequence is also
+# valid (e.g. ຫຍ້າ and ກວ້າງ).
+VOWEL_COMBINING_MARKS = set("ັິີຶືຸູົໍ")
+LABIALIZED_ONSET_BASES = set("ຖທຈກຂຄອສຊງລ")
+
+
+def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset) -> list[str]:
+    positions = [i for i, ch in enumerate(surface) if ch in TONE_MARKS]
+    if not positions:
+        return []
+    if onset_i is None or onset_len is None:
+        return ["MALFORMED_TONE_MARK_POSITION"]
+
+    onset_boundary = onset_i + onset_len
+    warnings = []
+    for index in positions:
+        after_onset = index == onset_boundary
+        after_labialized_second = (
+            index == onset_boundary + 1
+            and surface[onset_boundary:onset_boundary + 1] == "ວ"
+            and onset in LABIALIZED_ONSET_BASES
+        )
+        after_combining_vowel = index > 0 and surface[index - 1] in VOWEL_COMBINING_MARKS
+        if any(ch in VOWEL_COMBINING_MARKS for ch in surface[index + 1:]):
+            warnings.append("MALFORMED_TONE_MARK_ORDER")
+        elif not (after_onset or after_labialized_second or after_combining_vowel):
+            warnings.append("MALFORMED_TONE_MARK_POSITION")
+    return list(dict.fromkeys(warnings))
+
 STRUCTURES = (
     ("pre_e_short", "ເ", "ະ", "E"),
     ("pre_e_short_kan", "ເ", "ັ", "E"),
@@ -115,6 +146,7 @@ def parse_syllable(surface: str):
     onset, onset_i, onset_len, onset_class, onset_form = _find_onset(s)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
     tone_warnings = ["MULTIPLE_TONE_MARKS"] if sum(ch in TONE_MARKS for ch in surface) > 1 else []
+    tone_warnings.extend(_tone_mark_order_warnings(surface, onset_i, onset_len, onset))
 
     if onset is None:
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
