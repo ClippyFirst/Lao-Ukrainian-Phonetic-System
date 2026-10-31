@@ -10,9 +10,9 @@
 Last reviewed: 2026-10-31
 Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
-Baseline commit: `649973f320a8eb0e6cf2d927c9b90add5cdcdd68` (current main after PR #72)
+Baseline commit: `649973f320a8eb0e6cf2d927c9b90add5cdcdd68` (PR #72 integration commit; following commits only reconcile audit and handoff documentation)
 Work branch: `chore/pages-actions-node24-20261031` (merged as PR #72)
-Current implementation baseline: application logic remains at `a001046462de564dd2cb89e9237caa221624163c`; PR #71 added project agent guidance and dependency-free CI setup (`ec2c210be9b4fb91a635a48b5b1900e87a2a3e06`), and PR #72 moved Pages artifact/deploy actions to Node 24-compatible majors (`649973f320a8eb0e6cf2d927c9b90add5cdcdd68`). Main verification [41188708711](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708711) and Pages build/deploy [41188708689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708689) passed on the latest main commit.
+Current implementation baseline: application logic remains at `a001046462de564dd2cb89e9237caa221624163c`; PR #71 added project agent guidance and dependency-free CI setup (`ec2c210be9b4fb91a635a48b5b1900e87a2a3e06`), and PR #72 moved Pages artifact/deploy actions to Node 24-compatible majors (`649973f320a8eb0e6cf2d927c9b90add5cdcdd68`). Exact-main verification [41188708711](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708711) and Pages build/deploy [41188708689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708689) passed on the PR #72 integration commit. Subsequent changes reconcile documentation only; latest exact-main documentation-state verification [41188837261](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188837261) passed before this final handoff-only edit.
 
 ## Status vocabulary
 Use: `TODO`, `IN_PROGRESS`, `PARTIAL`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`. `PARTIAL` means implementation exists but at least one acceptance criterion remains open.
