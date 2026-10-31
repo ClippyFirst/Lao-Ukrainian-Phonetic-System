@@ -268,3 +268,11 @@ test("the full Lao greeting sentence traverses CLDR romanization and the source-
  assert.ok(adapted.output.includes("!"));
  assert.ok(adapted.output.includes("."));
 });
+
+
+test("CLDR Lao-Latin preserves Lao numerals, ASCII numbers, mixed Latin text and punctuation",()=>{
+ const source="ຂາ ໒໐໒໖, ABC-42!";
+ const result=romanizeLao(source);
+ assert.equal(result.output,"kha ໒໐໒໖, ABC-42!");
+ assert.equal(result.status,"PARTIAL","Lao numerals remain visible rather than being guessed or discarded");
+});
