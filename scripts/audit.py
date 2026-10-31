@@ -10,6 +10,7 @@ def read_csv(path):
 
 def main():
     consonants=read_csv(ROOT/"data/lao/consonants.csv")
+    onset_clusters=read_csv(ROOT/"data/lao/onset_clusters.csv")
     vowels=read_csv(ROOT/"data/lao/vowels.csv")
     tones=read_csv(ROOT/"data/lao/tone_rules.csv")
     ua=read_csv(ROOT/"data/lao/ukrainian_correspondences.csv")
@@ -17,6 +18,7 @@ def main():
     claims=read_csv(ROOT/"data/evidence/claims.csv")
 
     assert len({r["grapheme"] for r in consonants})==len(consonants), "duplicate consonant grapheme"
+    assert len({r["grapheme"] for r in onset_clusters})==len(onset_clusters), "duplicate onset cluster grapheme"
     assert len({r["id"] for r in vowels})==len(vowels), "duplicate vowel id"
     for row in vowels:
         assert row["nucleus_type"] in {"monophthong", "diphthong"}, f"unknown nucleus type: {row['id']}"
@@ -32,6 +34,18 @@ def main():
     assert len({r["source_id"] for r in sources})==len(sources), "duplicate evidence source id"
     assert len({r["claim_id"] for r in claims})==len(claims), "duplicate evidence claim id"
     source_ids={r["source_id"] for r in sources}
+    claim_ids={r["claim_id"] for r in claims}
+    consonant_by_grapheme={r["grapheme"]: r for r in consonants}
+    allowed_labialized_ipa={"tʷʰ", "tɕʷ", "kʷ", "kʷʰ", "ʔʷ", "sʷ", "ŋʷ", "lʷ"}
+    for row in onset_clusters:
+        base=consonant_by_grapheme.get(row["base"])
+        assert base, f"unknown onset cluster base: {row['grapheme']}"
+        assert row["grapheme"] == row["base"] + "ວ", f"invalid labialized onset spelling: {row['grapheme']}"
+        assert row["class"] == base["class"], f"onset cluster class mismatch: {row['grapheme']}"
+        assert row["ipa_initial"] in allowed_labialized_ipa, f"unsupported labialized IPA: {row['grapheme']}"
+        assert row["status"] == "well-supported", f"unexpected onset cluster status: {row['grapheme']}"
+        assert row["source_id"] in source_ids, f"unknown onset cluster source: {row['grapheme']}"
+        assert row["claim_id"] in claim_ids, f"unknown onset cluster claim: {row['grapheme']}"
     for row in claims:
         evidence_ids={item for item in row["evidence_ids"].split(";") if item}
         assert evidence_ids, f"claim without evidence: {row['claim_id']}"
