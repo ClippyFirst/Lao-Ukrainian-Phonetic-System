@@ -11,8 +11,8 @@ Last reviewed: 2026-10-31
 Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
 Baseline commit: `0770773d896bed2820541ba53c5ac521c2819236` (current `main` head)
-Work branch: `fix/tone-marks-live-syllables-20261031` (PR #73; exact-head verification passed)
-Current implementation baseline: `main` includes the merged agent-guidance/dependency-free CI and Node 24 Pages-action work (PRs #71/#72); exact-main verification [41188910015](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188910015) passed on `0770773d896bed2820541ba53c5ac521c2819236`. PR #73 corrects the tone-mark selector domain and open-rhyme classification; exact-head verification [41190189983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190189983) passed on `13b4aee52fb7249cceceb8e494f00dcf907ce7d3`.
+Work branch: `fix/tone-marks-live-syllables-20261031` (PR #73; final exact head `803d1346b6278c3b25260063931bf72dc4e10457`)
+Current implementation baseline: `main` includes the merged agent-guidance/dependency-free CI and Node 24 Pages-action work (PRs #71/#72); exact-main verification [41188910015](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188910015) passed on `0770773d896bed2820541ba53c5ac521c2819236`. PR #73 corrects the tone-mark selector domain and open-rhyme classification; final exact-head verification [41190275031](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190275031) passed on `803d1346b6278c3b25260063931bf72dc4e10457`.
 
 ## Status vocabulary
 Use: `TODO`, `IN_PROGRESS`, `PARTIAL`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`. `PARTIAL` means implementation exists but at least one acceptance criterion remains open.
@@ -729,3 +729,7 @@ The mapping changes are project-level Ukrainian practical decisions, not an offi
 - The final exact-head workflow [41190189983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190189983) passed: audit (43 consonants, 34 vowels, 17 tone rules, 70 UA mappings, 23 sources, 47 claims); Python 97; browser 47; romanization integration 19; syllable crosswalk 27; web layout 6; optional external-G2P harness syntax/CLI; production build; generated-data reproducibility; built-page/relative-asset checks. Total: **196 tests passed**.
 - Intermediate failures were retained as evidence: [41189875486](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41189875486) exposed the open-AI classifier issue; [41190146649](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190146649) exposed an incorrect fixture expectation (the onset in `ໄກ` is middle-class `ກ`, not high-class). Both were corrected before the final passing run.
 - This closes the selector/rhyme implementation contract only. It does not resolve all dialect-specific tone analyses, establish acoustic contours, create an independent gold corpus, or certify pronunciation accuracy.
+
+### Final branch-head verification — 2026-10-31
+
+The final branch head `803d1346b6278c3b25260063931bf72dc4e10457`, including the updated master handoff, final audit and validation records, passed exact-head workflow [41190275031](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190275031). All steps passed: repository audit; Python 97; browser 47; romanization integration 19; syllable crosswalk 27; web layout 6; optional external-G2P harness syntax/CLI; production build; generated-data reproducibility; built-page and relative-asset checks. Total: **196 tests passed**. Merge and post-merge main/Pages verification remain.
