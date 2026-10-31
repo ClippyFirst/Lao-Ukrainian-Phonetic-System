@@ -57,3 +57,14 @@ test("Ukrainian result offers an accessible two-method selector in one result ca
  assert.ok(app.includes('result.status === "INVALID"'));
  assert.ok(css.includes(".method-switch"));
 });
+
+
+test("public research status reflects the merged 2026-10-31 implementation", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(html, /ДОСЛІДНИЦЬКИЙ СТАТУС · 31\.10\.2026/);
+  assert.match(html, /\/ʃt͡ʃ\/ → щ/);
+  assert.match(html, /романізац[ія].{0,100}складов/i);
+  assert.match(methodology, /Оновлено 31 жовтня 2026/);
+  assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
+  assert.match(methodology, /accuracy.{0,20}null/i);
+});

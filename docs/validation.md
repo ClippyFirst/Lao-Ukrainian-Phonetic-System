@@ -200,3 +200,19 @@ The first Pages workflow for that merge [41142746466](https://github.com/ClippyF
 - The external `lao2ipa` comparison was not rerun; harness syntax/CLI validation is not an external-engine comparison.
 - No independent Lao IPA gold corpus or expert linguistic adjudication was added. Accuracy remains null/unmeasured.
 - Manual visual review and keyboard-only interaction testing remain unperformed; successful static artifact assertions are not a substitute.
+
+## Public research-status regression — 2026-10-31
+
+Test-first run [41183451808](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183451808) passed the repository audit and 94 Python tests, then failed the new browser status assertion against the stale 30 October copy (5/6 web-layout tests passed). The failure was the expected RED result.
+
+After updating `index.html` and `system.html`, exact branch-head verification [41183638346](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183638346) passed:
+- Repository data/evidence audit: 43 consonant rows, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 22 evidence sources and 45 claims; all references resolved.
+- Python: **94 passed**.
+- Browser engine: **47 passed**.
+- Romanization integration: **19 passed**.
+- Syllable crosswalk: **27 passed**.
+- Web layout/status: **6 passed**.
+- Optional external-G2P harness syntax and CLI: passed; no new external engine comparison was run.
+- Production build, canonical browser data generation, generated-data reproducibility, built-page and relative-asset checks: passed.
+
+This is a docs/UI-status regression only. No phonological engine, romanization engine, canonical registry or generated artifact changed. It does not change the independent gold count (0), establish accuracy, or complete manual browser/keyboard QA.
