@@ -205,7 +205,7 @@ The first Pages workflow for that merge [41142746466](https://github.com/ClippyF
 
 Test-first run [41183451808](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183451808) passed the repository audit and 94 Python tests, then failed the new browser status assertion against the stale 30 October copy (5/6 web-layout tests passed). The failure was the expected RED result.
 
-After updating `index.html` and `system.html`, exact branch-head verification [41183548004](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183548004) passed:
+After updating `index.html` and `system.html`, exact branch-head verification [41183638346](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183638346) passed:
 - Repository data/evidence audit: 43 consonant rows, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 22 evidence sources and 45 claims; all references resolved.
 - Python: **94 passed**.
 - Browser engine: **47 passed**.
