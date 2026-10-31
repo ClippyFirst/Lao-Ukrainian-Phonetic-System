@@ -71,7 +71,7 @@ test("public research status reflects the merged 2026-10-31 implementation", asy
 
 test("methodology tables that scroll horizontally are keyboard-focusable and named", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  const tables = [...methodology.matchAll(/<table\\b([^>]*)>/g)].map((match) => match[1]);
+  const tables = [...methodology.matchAll(/<table\b([^>]*)>/g)].map((match) => match[1]);
   assert.equal(tables.length, 3);
   const scrollableTables = tables.filter((attributes) => /tabindex="0"/.test(attributes));
   assert.equal(scrollableTables.length, 2);
