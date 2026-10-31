@@ -57,6 +57,27 @@ class TestToneRuleRegistry(unittest.TestCase):
                 self.assertTrue(row["contour"])
                 self.assertTrue(row["status"])
 
+    def test_tone_mark_rules_are_restricted_to_live_syllables(self):
+        for row in self.rules:
+            if row["tone_mark"] != "none":
+                with self.subTest(rule=row["rule_id"]):
+                    self.assertEqual(row["syllable_type"], "live")
+
+    def test_rare_tone_marks_are_middle_class_only_and_source_linked(self):
+        rare_rules = {
+            row["tone_mark"]: row
+            for row in self.rules
+            if row["tone_mark"] in {"mai_ti", "mai_catawa"}
+        }
+        self.assertEqual(set(rare_rules), {"mai_ti", "mai_catawa"})
+        self.assertEqual(rare_rules["mai_ti"]["class"], "middle")
+        self.assertEqual(rare_rules["mai_ti"]["tone"], "high-falling")
+        self.assertEqual(rare_rules["mai_catawa"]["class"], "middle")
+        self.assertEqual(rare_rules["mai_catawa"]["tone"], "low-rising")
+        for row in rare_rules.values():
+            self.assertEqual(row["syllable_type"], "live")
+            self.assertEqual(row["evidence_id"], "CLM-LAO-TONE-RARE-MARKS")
+
     def test_every_declared_rule_is_reachable_by_the_selector(self):
         """Synthetic inputs check selector reachability, not phonetic truth."""
         mark_graphemes = {
