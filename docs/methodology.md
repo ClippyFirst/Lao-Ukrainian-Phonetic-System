@@ -115,3 +115,13 @@ The adapter and selector are covered by deterministic tests for onset/nucleus/co
 ## Lao tone-mark storage order
 
 The Lao orthography reference specifies that tone marks are stored after the base consonant or a superscript vowel sign; when an onset is written with multiple characters, the mark is attached to the second character. The AM sign `ຳ` is a spacing letter, so the tone mark precedes it (for example, `ກ່ຳ`). This storage order is distinct from the visual stacking performed by fonts. The parser now rejects a mark placed before a following combining vowel sign, after AM, after a coda, or before the onset. For malformed placement, it withholds IPA, tone, and Ukrainian output rather than normalizing the sequence into a plausible result. Valid forms such as `ກ່າ`, `ກິ່`, `ກ່ຳ`, `ກວ້າງ`, and `ຫຍ້າ` are preserved. This is an orthographic validation rule; it does not establish acoustic tone contours or independent pronunciation accuracy. Source: [Richard Ishida, Lao Orthography Notes](https://r12a.github.io/scripts/laoo/lo), sections on tone and code-point sequences.
+
+## Restricted labialized onset inventory
+
+The orthographic reference describes modern Lao syllables as `(C)w?V(C)`: one restricted onset class is written as a base consonant followed by `ວ`, with secondary labialization (`ʷ`) on the onset. The source lists eight phonological values: `tʷʰ`, `tɕʷ`, `kʷ`, `kʷʰ`, `ʔʷ`, `sʷ`, `ŋʷ`, and `lʷ`. The canonical `data/lao/onset_clusters.csv` registry records the eleven high/mid/low-class spellings and keeps tone class tied to the first consonant.
+
+Clusters are accepted only when the following nucleus is unrounded. Where both a base-onset plus UO-long-open rhyme and a labialized-onset plus AA rhyme consume the same `Cວາ` spelling, the parser returns `AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY` and withholds IPA, tone, and target output. Rounded-nucleus cluster candidates are rejected. Preposed vowels are analyzed before the complete onset; silent high-class `ຫ` digraphs are recognized after the preposed vowel.
+
+The IPA adapter preserves the source's superscript-labialization notation. No Ukrainian correspondence is registered for these `ʷ` sequences, so the system deliberately exposes the IPA analysis but withholds Ukrainian output (`EVIDENCE LIMITED`). This is a target-adaptation gap, not a claim that a Ukrainian spelling has been validated. The cluster fixture is a structural grammar control, not independent pronunciation gold.
+
+Source: Richard Ishida, *Lao Orthography Notes*, syllable structure and onset sections (phonological inventory, spelling as base consonant + `ວ`, and tone-mark placement on the second character): https://r12a.github.io/scripts/laoo/lo.
