@@ -33,6 +33,7 @@ class TestLaoLabializedOnsets(unittest.TestCase):
                 self.assertIsNone(syllable.practical_ukrainian)
                 self.assertEqual(syllable.ukrainian_candidates, [])
                 self.assertEqual(syllable.status, "EVIDENCE LIMITED")
+                self.assertIn(f"ONSET-CLUSTER:{case['onset_form']}", syllable.rules)
 
     def test_attested_spelling_is_structurally_recognized_without_claiming_gold(self):
         for case in self.fixture["attested_spelling_controls"]:
