@@ -35,6 +35,7 @@ The primary pipeline is:
 - In the Vientiane-oriented tone model, written tone-mark selectors apply only to live/open syllables. `mai ti` (`໊`) and `mai catawa` (`໋`) are rare and restricted to middle-class onsets in the documented reference.
 - Do not infer live/dead class from the `length` label alone: use canonical `nucleus_type` and `coda_class` as well. Open diphthong rhymes and the nasal-final `AM` rhyme are live; a stop coda remains dead. Preserve phonetic IPA length independently from this structural classification.
 - The shared tone fixture is consumed by both Python and browser suites. Extend it when changing tone selectors, vowel rhyme classification, or cross-runtime behavior.
+- Validate tone-mark storage order before stripping marks: a mark follows the base onset or superscript vowel sign (or the second character of a documented onset sequence), follows any combining vowel sign, and precedes the spacing AM letter. Malformed positions must withhold IPA, tone, and target output in both runtimes; use the shared `tests/fixtures/tone_mark_order_cases.json` fixture.
 
 ## Verification commands
 

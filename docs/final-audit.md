@@ -173,3 +173,11 @@ PR #74 removes two unused imports left by the fixture-test refactor and reconcil
 ## PR #74 merge — 2026-10-31
 
 PR #74 merged by squash as `2c53e174b2bc36f56b15efe84c350a5941ff0a82`. It removes two unused test imports and reconciles documentation only. Exact PR-head verification [41190649502](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190649502) passed all 196 tests, repository audit, build and generated-data checks. The main-branch push run remains unconfirmed; Pages was not retriggered by this docs/test-only PR, and the Pages run expected after PR #73 is still unverified.
+
+## PR #76 — Lao tone-mark storage-order validation
+
+PR #76 adds source-backed tone-mark position checks to Python and browser engines. Malformed ordering is fail-closed: IPA, tone and Ukrainian output are withheld. Five valid and four invalid shared controls are consumed by both runtimes. The test-first RED run [41208426712](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41208426712) failed the four intended malformed cases before implementation. The first implementation run exposed 12 older synthetic dead-short fixture spellings that violated the same storage-order rule; those cases were corrected without weakening dead-syllable tone-selector assertions.
+
+Exact-head verification [41208764334](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41208764334) passed on `5fb2d98ac6e263fa591846eaa32e16f0bacea8bd`: audit (43 consonants, 34 vowels, 17 tone rules, 70 Ukrainian mappings, 23 sources, 48 claims); Python 99; browser 48; romanization integration 19; syllable crosswalk 27; web layout 6; optional external-G2P harness syntax/CLI; production build; generated-data reproducibility; and built-page/relative-asset checks. Total: **199 deterministic engineering tests passed**. No external G2P comparison was run; the test corpus is not independent pronunciation gold.
+
+Post-merge main and Pages deployment checks remain separate from this PR-head verification.

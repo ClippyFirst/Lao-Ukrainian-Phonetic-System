@@ -5,6 +5,8 @@ const HIGH_DIGRAPHS = new Map([
   ["ຫງ", "ງ"], ["ຫຍ", "ຍ"], ["ຫນ", "ນ"], ["ຫມ", "ມ"],
   ["ຫລ", "ລ"], ["ຫຼ", "ລ"], ["ຫວ", "ວ"],
 ]);
+const VOWEL_COMBINING_MARKS = new Set(["ັ", "ິ", "ີ", "ຶ", "ື", "ຸ", "ູ", "ົ", "ໍ"]);
+const LABIALIZED_ONSET_BASES = new Set(["ຖ", "ທ", "ຈ", "ກ", "ຂ", "ຄ", "ອ", "ສ", "ຊ", "ງ", "ລ"]);
 const sortedIpa = () => Object.keys(CORRESPONDENCES).sort((a, b) => b.length - a.length);
 
 function vowelById(id) { return VOWELS.find((v) => v[0] === id) || null; }
@@ -121,6 +123,25 @@ function findOnset(clean) {
   return onsetKey ? { onsetKey, onsetIndex: clean.indexOf(onsetKey), onsetLength: 1, onsetClass: CONSONANTS[onsetKey][0], onsetForm: onsetKey } : null;
 }
 
+function toneMarkOrderError(chars, clean, found) {
+  const positions = chars.map((ch, index) => TONE_MARK_SET.has(ch) ? index : -1).filter((index) => index >= 0);
+  if (positions.length !== 1) return null;
+  const markIndex = positions[0];
+  if (!found) return "MALFORMED_TONE_MARK_POSITION";
+  const cleanMarkIndex = chars.slice(0, markIndex).filter((ch) => !TONE_MARK_SET.has(ch)).length;
+  const onsetBoundary = found.onsetIndex + found.onsetLength;
+  const cleanChars = [...clean];
+  const afterOnset = cleanMarkIndex === onsetBoundary;
+  const afterLabializedSecond = cleanMarkIndex === onsetBoundary + 1 &&
+    cleanChars[onsetBoundary] === "ວ" && LABIALIZED_ONSET_BASES.has(found.onsetKey);
+  const afterCombiningVowel = markIndex > 0 && VOWEL_COMBINING_MARKS.has(chars[markIndex - 1]);
+  if (chars.slice(markIndex + 1).some((ch) => VOWEL_COMBINING_MARKS.has(ch))) {
+    return "MALFORMED_TONE_MARK_ORDER";
+  }
+  return afterOnset || afterLabializedSecond || afterCombiningVowel
+    ? null : "MALFORMED_TONE_MARK_POSITION";
+}
+
 function analyzeToken(surface) {
   const chars = [...surface];
   const toneMarkCount = chars.filter((ch) => TONE_MARK_SET.has(ch)).length;
@@ -130,6 +151,10 @@ function analyzeToken(surface) {
   const mark = chars.find((ch) => TONE_MARK_SET.has(ch)) || null;
   const clean = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
   const found = findOnset(clean);
+  const markOrderError = toneMarkOrderError(chars, clean, found);
+  if (markOrderError) {
+    return { surface, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ipa: null, ukrainian: null, tone: null };
+  }
   if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."] };
 
   const { onsetKey, onsetIndex, onsetLength, onsetClass, onsetForm } = found;
@@ -178,11 +203,18 @@ function analyzeToken(surface) {
 
 function isStructurallyComplete(s) {
   return Boolean(s.ipa && s.ukrainian) &&
-    !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA"));
+    !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
 function analyzeWord(word) {
   const chars = [...word];
+  // A malformed tone-mark position belongs to the whole orthographic unit;
+  // do not let dynamic segmentation salvage a plausible-looking substring.
+  const cleanForMarkOrder = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+  const markOrderError = toneMarkOrderError(chars, cleanForMarkOrder, findOnset(cleanForMarkOrder));
+  if (markOrderError) {
+    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
+  }
   // Prevent dynamic segmentation from salvaging a valid-looking syllable
   // when adjacent tone marks make the original orthographic unit malformed.
   if (chars.some((ch, i) => TONE_MARK_SET.has(ch) && TONE_MARK_SET.has(chars[i + 1]))) {
