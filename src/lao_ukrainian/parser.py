@@ -236,7 +236,7 @@ def parse_syllable(surface: str):
                 "vowel": None, "coda": None, "tone_mark": tone_mark,
                 "warnings": ["VOWEL-STRUCTURE-NOT-ESTABLISHED", *tone_warnings]}
 
-    tone_warnings = _tone_mark_order_warnings(surface, onset_i, onset_len, onset)
+    tone_warnings = mark_warnings(onset_i, onset_len, onset)
     warnings = [*tone_warnings, *selected["warnings"]]
     return {"surface": surface, "onset": onset, "onset_class": onset_class,
             "onset_form": onset_form, "onset_ipa": onset_ipa,
