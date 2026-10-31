@@ -234,3 +234,28 @@ test("BGN silent-hoa spellings romanize sonorants without an audible h",()=>{
   assert.equal(adapted.syllables[0].sourceOnset,source.syllables[0].onsetForm||source.syllables[0].onset);
  }
 });
+
+
+test("the full Lao greeting sentence traverses CLDR romanization and the source-aware Ukrainian crosswalk",()=>{
+ const sentence="ສະບາຍດີ! ຂ້ອຍຊື່ ນາລີ. ຂ້ອຍມາຈາກປະເທດລາວ ແລະມັກຮຽນພາສາໃໝ່.";
+ const separators=/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
+ const sourceSyllableGroups=sentence.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean)
+  .filter(part=>!separators.test(part)&&!/^[0-9]+$/u.test(part))
+  .map(part=>analyze(part).syllables.filter(s=>!s.passthrough).map(s=>({
+   onset:s.onset||null,
+   onsetForm:s.onsetForm||s.onset||null,
+   vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+   coda:s.coda==="—"?"":s.coda??null,
+  })));
+ const latin=romanizeLao(sentence);
+ assert.ok(/[a-z]/iu.test(latin.output));
+ assert.ok(latin.output.includes(" "));
+ assert.ok(latin.output.includes("!"));
+ assert.ok(latin.output.includes("."));
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
+ assert.ok(["OK","PARTIAL"].includes(adapted.status));
+ assert.ok(adapted.output.length>0);
+ assert.ok(adapted.output.includes(" "));
+ assert.ok(adapted.output.includes("!"));
+ assert.ok(adapted.output.includes("."));
+});
