@@ -10,8 +10,8 @@
 Last reviewed: 2026-10-31
 Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
 Baseline branch: `main`
-Baseline commit: `95f908185b09e0aa6c72cc24016fe117a4f3d20c` (current main before this continuation)
-Work branch: `docs/reconcile-research-status-20261031`
+Baseline commit: `6293f52848b675ff53c2a1d191cdcbca3cb034b4` (current main before this continuation)
+Work branch: `docs/postmerge-evidence-20261031`
 Current implementation baseline: main code commit `a001046462de564dd2cb89e9237caa221624163c`; final documentation PR head: `213e5281d9ce229205079d1bbb0430a605575c0a`; exact-head verification passed in [run 41183689662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183689662). PR #68 merged to main as `6293f52848b675ff53c2a1d191cdcbca3cb034b4`.
 
 ## Status vocabulary
@@ -20,7 +20,7 @@ Do not mark code changes `DONE_VERIFIED` until the current commit's relevant che
 
 ## Current audit summary
 
-The project has separate Python and browser engines, canonical Lao consonant/vowel/coda/tone registries, Ukrainian correspondences, source/claim CSVs, regression suites, and methodology/limitations/audit documentation. Current main includes the source-aware romanization mode, Ukrainian `/ʃt͡ʃ/ → щ` mapping, vertical service layout, and successful Pages deployment. Main verification [41142874231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142874231) and deployment [41142874311](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41142874311) passed on code commit `a001046462de564dd2cb89e9237caa221624163c`; later main head `95f908...` was a documentation-only reconciliation.
+The project has separate Python and browser engines, canonical Lao consonant/vowel/coda/tone registries, Ukrainian correspondences, source/claim CSVs, regression suites, and methodology/limitations/audit documentation. Current main includes the source-aware romanization mode, Ukrainian `/ʃt͡ʃ/ → щ` mapping, vertical service layout, and successful Pages deployment. The application-code baseline remains `a001046462de564dd2cb89e9237caa221624163c`; current main head `6293f52848b675ff53c2a1d191cdcbca3cb034b4` adds the public research-status reconciliation. Exact-main verification [41183746948](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183746948) and Pages deployment [41183746951](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183746951) passed on that head.
 
 Audit found and fixed: (1) Python vowel-pattern precedence; (2) parser warnings incorrectly coexisting with an `ESTABLISHED` status; (3) missing Python structures for short /o/ in closed syllables and standalone ຽ; (4) a browser segmentation tie where `ກົວະ` was split as `ກົ|ວະ`; (5) missing closed-coda constraints for the short A2 and AWW_SHORT_ALT spelling forms. Shared fixtures are consumed by both engines. Full Python, browser, build, data regeneration, reproducibility and built-page checks passed for the 36-case vowel fixture suite in [run 39484094983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/39484094983); the newest short-vowel constraint tests are pending current-head CI. The shared fixtures are engineering regression cases, not an independently adjudicated gold corpus.
 
