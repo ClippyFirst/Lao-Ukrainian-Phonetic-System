@@ -307,6 +307,9 @@ function analyzeWord(word) {
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
   const wholeCandidate = analyzeToken(word);
+  if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
+    return [wholeCandidate];
+  }
   if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
       w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
       w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||
