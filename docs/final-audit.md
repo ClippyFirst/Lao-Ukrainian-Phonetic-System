@@ -215,3 +215,15 @@ Implementation status: `LAO-CLUSTER-001` is `DONE_VERIFIED`. The IPA-to-Ukrainia
 - The test accepts \`OK\` or \`PARTIAL\` by design and asserts only non-empty result plus boundary preservation. It is not a gold transcription or a sentence-accuracy score.
 - PR #84 changes tests only; no new Pages deployment is claimed. Existing Pages evidence remains run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for commit \`550d1d63b31965e68b40f30cd5099601ab203ec8\`.
 - Remaining acceptance work: exhaustive source coverage, specialist review of ambiguous nuclei/loanwords/names, labialized-onset Ukrainian adaptation, and independent lexical IPA gold.
+
+## Short Lao mixed-text romanization regression — 2026-10-31
+
+- PR #87 merged as \`a4871384fb195c732bd8acf4ed941875cb7263e8\`; exact-head workflow [41242351010](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41242351010) passed the complete configured verification pipeline.
+- The short sample \`ສະບາຍດີ 123! ພາສາລາວ.\` verifies ASCII digits, whitespace, \`!\` and \`.\` survive CLDR romanization. Tests only; no runtime or Pages input changed. Not linguistic gold.
+
+
+## Native numerals and mixed Latin preservation — 2026-10-31
+
+- PR #89 merged as `3a38d1f5500f12b13f2d0f5c0ab89a4470a2cc40`; exact-head workflow [41242834364](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41242834364) passed the complete configured verification pipeline.
+- `ຂາ ໒໐໒໖, ABC-42!` retains Lao numerals, ASCII numbers, Latin text, spaces and punctuation in romanization. Status remains PARTIAL because the Lao numerals remain in source form; no unverified digit conversion is claimed.
+- This complements PR #87's ASCII-number mixed-text sample and PR #84's full-sentence regression. Tests only; no runtime or Pages input changed. Not linguistic gold.
