@@ -169,3 +169,7 @@ Post-merge `main` verification and Pages deployment are **unconfirmed**, not fai
 ### PR #74 hygiene and handoff verification
 
 PR #74 removes two unused imports left by the fixture-test refactor and reconciles the master handoff with PR #73's merge. Exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190577692) passed on `56436f6f980bf7eceb148b9d7d32f935f6325d3f`: repository audit, Python 97, browser 47, romanization 19, syllable crosswalk 27, web layout 6, optional G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. This is PR-head verification, not post-merge `main`/Pages evidence.
+
+## PR #74 merge — 2026-10-31
+
+PR #74 merged by squash as `2c53e174b2bc36f56b15efe84c350a5941ff0a82`. It removes two unused test imports and reconciles documentation only. Exact PR-head verification [41190649502](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190649502) passed all 196 tests, repository audit, build and generated-data checks. The main-branch push run remains unconfirmed; Pages was not retriggered by this docs/test-only PR, and the Pages run expected after PR #73 is still unverified.
