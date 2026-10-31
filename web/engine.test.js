@@ -429,3 +429,12 @@ test("generated Ukrainian target map preserves the shch sequence and consonant d
   assert.equal(CORRESPONDENCES["d͡ʒ"], "дж");
   assert.equal(CORRESPONDENCES["d͡z"], "дз");
 });
+
+test("long Lao greeting sentence preserves every non-whitespace source unit", () => {
+  const sentence = "ສະບາຍດີ! ຂ້ອຍຊື່ ນາລີ. ຂ້ອຍມາຈາກປະເທດລາວ ແລະມັກຮຽນພາສາໃໝ່.";
+  const result = analyze(sentence);
+  assert.notEqual(result.status, "INVALID");
+  assert.ok(result.syllables.length > 0);
+  assert.equal(result.syllables.map((unit) => unit.surface).join(""), sentence.replace(/\s/gu, ""));
+  assert.ok(result.output.length > 0);
+});
