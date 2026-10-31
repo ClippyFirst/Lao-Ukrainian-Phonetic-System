@@ -226,3 +226,16 @@ GitHub Pages deployment [41183960573](https://github.com/ClippyFirst/Lao-Ukraini
 PR #69 merged as `8664d800c683af28b2af840027844d53471d25d3`. Its exact-head verification [41183931581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183931581) passed. Exact-main verification [41183960495](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183960495) passed the full audit, Python 94, browser engine 47, romanization integration 19, syllable crosswalk 27, web layout/status 6, optional external-G2P harness syntax/CLI, production build, generated-data reproducibility and built-page/relative-asset checks.
 
 Pages deployment [41183960573](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183960573) passed both build and deploy jobs. README now points to stable workflow histories, avoiding a run-specific 'latest deployment' claim. No phonological or romanization runtime behavior changed; gold remains 0 and accuracy remains null.
+
+
+## Agent workflow and dependency-free CI verification — 2026-10-31
+
+PR #71 added project-specific agent instructions and removed unnecessary npm dependency setup.
+
+- `package.json` has no runtime or development dependencies; its test files import Node built-ins and local project modules, and the build scripts use Python. The empty `devDependencies`, no-op `prepare`, and both workflow `npm install` steps were removed.
+- `verify.yml` now uses the same action major versions as Pages: checkout v5, setup-python v6 and setup-node v5. The Node 20 action-runtime deprecation warning from the previous workflow run no longer appears.
+- Exact PR-head verification [41188217991](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188217991), commit `e2b0effdfb2091a3f9ca1450d32b6f0e110d29ba`: audit passed (43 consonants, 34 vowels, 17 tone rules, 70 UA mappings, 22 evidence sources, 45 claims); Python **94 passed**; browser engine **47 passed**; romanization integration **19 passed**; syllable crosswalk **27 passed**; web layout **6 passed**; production build, generated-data reproducibility and built-page/relative-asset checks passed.
+- Total engineering tests: **193 passed**. No npm package installation occurred. No external G2P comparison was run.
+- The npm CLI emits a separate `DEP0040` punycode deprecation warning during npm commands. This did not fail the workflow; the logs do not identify a project-owned source of that warning.
+
+These checks validate the current engineering contracts and build only. They do not establish phonological accuracy, independent gold-corpus coverage, expert review, or manual visual/keyboard QA.
