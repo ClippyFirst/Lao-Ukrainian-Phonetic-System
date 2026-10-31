@@ -205,7 +205,7 @@ The first Pages workflow for that merge [41142746466](https://github.com/ClippyF
 
 Test-first run [41183451808](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183451808) passed the repository audit and 94 Python tests, then failed the new browser status assertion against the stale 30 October copy (5/6 web-layout tests passed). The failure was the expected RED result.
 
-After updating `index.html` and `system.html`, exact branch-head verification [41183638346](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183638346) passed:
+After updating `index.html` and `system.html`, exact branch-head verification [41183689662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183689662) passed:
 - Repository data/evidence audit: 43 consonant rows, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 22 evidence sources and 45 claims; all references resolved.
 - Python: **94 passed**.
 - Browser engine: **47 passed**.
@@ -216,3 +216,8 @@ After updating `index.html` and `system.html`, exact branch-head verification [4
 - Production build, canonical browser data generation, generated-data reproducibility, built-page and relative-asset checks: passed.
 
 This is a docs/UI-status regression only. No phonological engine, romanization engine, canonical registry or generated artifact changed. It does not change the independent gold count (0), establish accuracy, or complete manual browser/keyboard QA.
+## Post-merge exact-main verification and Pages deployment — 2026-10-31
+
+PR #68 merged as `6293f52848b675ff53c2a1d191cdcbca3cb034b4`. Exact-main verification [41183746948](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183746948) passed: repository audit (43 consonants, 34 vowels, 17 tone rules, 70 Ukrainian mappings, 22 sources, 45 claims); Python 94; browser engine 47; romanization integration 19; syllable crosswalk 27; web layout/status 6; optional external-G2P harness syntax/CLI; production build; generated-data reproducibility; built-page and relative-asset checks.
+
+GitHub Pages deployment [41183746951](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41183746951) passed both build and deploy jobs. This confirms the updated public status copy is deployed. It does not complete visual screenshots, keyboard-only QA, or phonological adjudication. Independent gold remains 0 and accuracy remains null.
