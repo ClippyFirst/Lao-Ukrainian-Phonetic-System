@@ -40,7 +40,7 @@
     },
     {
       "id": "DEAD-HIGH-EK-SHORT",
-      "surface": "ຂ່ັບ",
+      "surface": "ຂັ່ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -58,7 +58,7 @@
     },
     {
       "id": "DEAD-HIGH-THO-SHORT",
-      "surface": "ຂ້ັບ",
+      "surface": "ຂັ້ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -76,7 +76,7 @@
     },
     {
       "id": "DEAD-HIGH-TI-SHORT",
-      "surface": "ຂ໊ັບ",
+      "surface": "ຂັ໊ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -94,7 +94,7 @@
     },
     {
       "id": "DEAD-HIGH-CATAWA-SHORT",
-      "surface": "ຂ໋ັບ",
+      "surface": "ຂັ໋ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -112,7 +112,7 @@
     },
     {
       "id": "DEAD-MIDDLE-EK-SHORT",
-      "surface": "ກ່ັບ",
+      "surface": "ກັ່ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kap",
@@ -130,7 +130,7 @@
     },
     {
       "id": "DEAD-MIDDLE-THO-SHORT",
-      "surface": "ກ້ັບ",
+      "surface": "ກັ້ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kap",
@@ -148,7 +148,7 @@
     },
     {
       "id": "DEAD-MIDDLE-TI-SHORT",
-      "surface": "ກ໊ັບ",
+      "surface": "ກັ໊ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kap",
@@ -166,7 +166,7 @@
     },
     {
       "id": "DEAD-MIDDLE-CATAWA-SHORT",
-      "surface": "ກ໋ັບ",
+      "surface": "ກັ໋ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kap",
@@ -184,7 +184,7 @@
     },
     {
       "id": "DEAD-LOW-EK-SHORT",
-      "surface": "ຄ່ັບ",
+      "surface": "ຄັ່ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -202,7 +202,7 @@
     },
     {
       "id": "DEAD-LOW-THO-SHORT",
-      "surface": "ຄ້ັບ",
+      "surface": "ຄັ້ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -220,7 +220,7 @@
     },
     {
       "id": "DEAD-LOW-TI-SHORT",
-      "surface": "ຄ໊ັບ",
+      "surface": "ຄັ໊ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
@@ -238,7 +238,7 @@
     },
     {
       "id": "DEAD-LOW-CATAWA-SHORT",
-      "surface": "ຄ໋ັບ",
+      "surface": "ຄັ໋ບ",
       "tone": null,
       "tone_contour": null,
       "ipa": "kʰap",
