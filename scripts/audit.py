@@ -53,7 +53,7 @@ def main():
     for row in consonants:
         cp=int(row["codepoint"].replace("U+",""),16)
         assert 0x0E80 <= cp <= 0x0EFF, f"non-Lao codepoint: {row}"
-    print(f"OK: {len(consonants)} consonant rows; {len(vowels)} vowel rows; {len(tones)} tone rules; {len(ua)} UA mappings; {len(sources)} evidence sources; {len(claims)} evidence claims")
+    print(f"OK: {len(consonants)} consonant rows; {len(onset_clusters)} onset clusters; {len(vowels)} vowel rows; {len(tones)} tone rules; {len(ua)} UA mappings; {len(sources)} evidence sources; {len(claims)} evidence claims")
 
 if __name__=="__main__":
     main()
