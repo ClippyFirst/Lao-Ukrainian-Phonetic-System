@@ -72,6 +72,27 @@ test("mai ti and mai catawa are not dropped", () => {
   assert.equal(analyze("ກ໋າ").syllables[0].tone, "low-rising");
 });
 
+test("shared Lao tone-mark storage-order fixture", () => {
+  const fixturePath = resolve(dirname(fileURLToPath(import.meta.url)), "../tests/fixtures/tone_mark_order_cases.json");
+  const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.valid) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.ok(result.syllables[0].ipa, item.id);
+    assert.ok(!result.syllables[0].warnings.some((warning) => warning.startsWith("MALFORMED_TONE_MARK_")), item.id);
+  }
+  for (const item of fixture.invalid) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].ipa, null, item.id);
+    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.equal(result.syllables[0].tone, null, item.id);
+    assert.equal(result.status, "PARTIAL", item.id);
+    assert.ok(result.syllables[0].warnings.some((warning) => warning.startsWith("MALFORMED_TONE_MARK_")), item.id);
+  }
+});
+
 test("multiple adjacent tone marks withhold the entire malformed token", () => {
   const r = analyze("ກ່້າ");
   assert.equal(r.status, "PARTIAL");
