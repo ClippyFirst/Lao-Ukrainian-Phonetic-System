@@ -290,3 +290,10 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 ### PR #74 merge state
 
 PR #74 merged by squash as `2c53e174b2bc36f56b15efe84c350a5941ff0a82`. The exact PR-head verification [41190649502](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190649502) passed 196 tests and all build/data checks. PR #74 changed no Pages-triggering paths; the expected Pages deployment after PR #73 remains unverified. Exact post-merge `main` verification is also unconfirmed.
+
+
+## Lao tone-mark storage-order regression
+
+The shared `tests/fixtures/tone_mark_order_cases.json` fixture defines five valid and four malformed storage-order controls. Python and browser tests consume the same cases. Valid controls cover a mark after the base onset, after a superscript vowel, before the spacing AM letter, and after the second character of a written onset sequence. Negative controls cover a mark before a superscript vowel, after AM, after a coda, and before the onset. Malformed cases must withhold IPA, tone, and Ukrainian candidates.
+
+Test-first evidence: draft PR #76's initial exact-head workflow [41208426712](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41208426712) failed the four intended negative controls while the five valid controls passed (Python 99 tests run). This confirms the regression tests exposed missing validation before the implementation. The post-implementation exact-head workflow is pending; do not mark this task `DONE_VERIFIED` until it passes.
