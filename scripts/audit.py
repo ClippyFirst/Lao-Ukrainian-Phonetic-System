@@ -18,6 +18,8 @@ def main():
 
     assert len({r["grapheme"] for r in consonants})==len(consonants), "duplicate consonant grapheme"
     assert len({r["id"] for r in vowels})==len(vowels), "duplicate vowel id"
+    for row in vowels:
+        assert row["nucleus_type"] in {"monophthong", "diphthong"}, f"unknown nucleus type: {row['id']}"
     assert len({r["rule_id"] for r in tones})==len(tones), "duplicate tone rule"
     for row in tones:
         if row["tone_mark"] != "none":
