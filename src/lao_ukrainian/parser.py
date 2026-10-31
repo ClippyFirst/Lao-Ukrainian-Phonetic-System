@@ -211,7 +211,7 @@ def parse_syllable(surface: str):
                         "vowel": None, "coda": None, "tone_mark": tone_mark,
                         "warnings": ["LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL", *tone_warnings]}
         elif base_complete and cluster_complete:
-            tone_warnings = _tone_mark_order_warnings(surface, onset_i, 2, onset)
+            tone_warnings = mark_warnings(onset_i, 2, onset)
             return {"surface": surface, "onset": onset, "onset_class": onset_class,
                     "onset_form": cluster_row["grapheme"], "onset_ipa": None,
                     "vowel": None, "coda": None, "tone_mark": tone_mark,
@@ -230,7 +230,7 @@ def parse_syllable(surface: str):
             onset_class = cluster_row["class"]
 
     if selected is None:
-        tone_warnings = _tone_mark_order_warnings(surface, onset_i, onset_len, onset)
+        tone_warnings = mark_warnings(onset_i, onset_len, onset)
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
                 "onset_form": onset_form, "onset_ipa": onset_ipa,
                 "vowel": None, "coda": None, "tone_mark": tone_mark,
