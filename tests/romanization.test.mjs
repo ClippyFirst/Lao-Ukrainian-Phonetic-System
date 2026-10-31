@@ -10,6 +10,15 @@ test("CLDR Lao-Latin keeps whitespace and punctuation and maps supported syllabl
  assert.equal(r.source,"CLDR Lao-Latin (provisional; BGN/PCGN-aligned subset)");
 });
 
+test("the short Lao mixed-text sample preserves ASCII digits and punctuation",()=>{
+ const result=romanizeLao("ສະບາຍດີ 123! ພາສາລາວ.");
+ assert.ok(/[a-z]/iu.test(result.output));
+ assert.ok(result.output.includes("123"));
+ assert.ok(result.output.includes(" "));
+ assert.ok(result.output.includes("!"));
+ assert.ok(result.output.includes("."));
+});
+
 test("CLDR Lao-Latin does not silently delete unsupported Lao code points",()=>{
  const r=romanizeLao("ຂາໞ");
  assert.equal(r.status,"PARTIAL");
