@@ -184,7 +184,7 @@ def parse_syllable(surface: str):
     before = s[:onset_i]
     allowed_preposed = {"", "ເ", "ແ", "ໂ", "ໃ", "ໄ"}
     if before not in allowed_preposed:
-        tone_warnings = _tone_mark_order_warnings(surface, onset_i, onset_len, onset)
+        tone_warnings = mark_warnings(onset_i, onset_len, onset)
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
                 "onset_form": onset_form, "onset_ipa": onset_ipa,
                 "vowel": None, "coda": None, "tone_mark": tone_mark,
