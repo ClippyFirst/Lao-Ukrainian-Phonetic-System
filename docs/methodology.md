@@ -19,6 +19,15 @@ Critical separations:
 
 Lao-specific handling includes context-sensitive ອ, structural ຳ, sequence-like ໜ/ໝ, and a separate Pali/Sanskrit namespace.
 
+## Tone-mark selector domain
+
+The Vientiane-oriented selector applies written tone-mark rules only to **live/open syllables**. A marked dead/checked syllable (short-vowel syllable or a syllable closed by a stop) does not receive a tone from this matrix; its tone remains unresolved and the analysis is marked `ANALYSIS DEPENDENT`. This is a conservative domain restriction, not a claim that every possible string containing a tone mark is a well-formed Lao syllable.
+
+The two common marks, `mai ek` (່) and `mai tho` (້), retain their class-dependent live-syllable mappings. The less common `mai ti` (໊) and `mai catawa` (໋) are represented only for middle-class onsets: high-falling and low-rising, respectively. Appen Butler Hill's *Language Specific Peculiarities Document for Lao as Spoken in Laos* (p. 14) explicitly describes all tone marks as used with open syllables and identifies the latter two as rare in modern writing and restricted to mid-class consonants. The SEAsite Vientiane chart independently places its two common tone-mark columns under live syllables. See the source-linked claims `CLM-LAO-VIENTIANE-TONE-MATRIX` and `CLM-LAO-TONE-RARE-MARKS` in the evidence registry.
+
+For tone classification, **phonetic vowel length and rhyme type are separate properties**. A short diphthong can form an open/live rhyme; the short/long label alone must not force it into the dead class. The `AM` spelling includes a nasal coda and is live for the same reason as an overt sonorant-final syllable. The canonical vowel registry records `nucleus_type` and `coda_class`, and both engines use those fields before falling back to monophthong length. Ueda (1994, pp. 96–97) describes VV rhymes as permitting an absent coda and contrasts them with short monophthongs, which generally require a coda; the source-linked implementation claim is `CLM-LAO-OPEN-RHYMES`.
+
+
 The Ukrainian target is the external canonical inventory. Comparative Cyrillic systems are evidence and diagnostics, not hidden source-of-truth tables.
 
 

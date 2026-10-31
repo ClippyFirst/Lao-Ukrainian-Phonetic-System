@@ -21,7 +21,7 @@ for r in consonant_rows:
     cons[r["grapheme"]] = [r["class"], r["ipa_initial"], r["status"], corr.get(r["ipa_initial"], "")]
 
 vowels = [
-    [r["id"], r["pattern"], r["ipa"], r["length"], r["position"], r["status"]]
+    [r["id"], r["pattern"], r["ipa"], r["length"], r["position"], r["status"], r["nucleus_type"], r["coda_class"]]
     for r in rows("vowels.csv")
     if r["status"] in {"core", "well-supported"}
 ]

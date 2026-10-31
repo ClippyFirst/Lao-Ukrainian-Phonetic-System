@@ -5,8 +5,10 @@ MARKS={"່":"mai_ek","້":"mai_tho","໊":"mai_ti","໋":"mai_catawa",None:"no
 def classify_syllable_type(vowel, coda):
     """Classify live/dead from the phonological rhyme.
 
-    In the Vientiane-oriented model, a final stop/glottal or a short vowel
-    makes a syllable checked/dead. Long vowels and sonorant finals are live.
+    In the Vientiane-oriented model, stop/glottal finals and short
+    monophthongs are dead. Long monophthongs, diphthong rhymes and
+    sonorant-final rhymes are live; vowel length alone is not enough to
+    classify an open diphthong or a nasal-final AM rhyme.
     """
     r=load_registry()
     if coda:
@@ -15,6 +17,11 @@ def classify_syllable_type(vowel, coda):
         if final in {"p","t","k","ʔ"}: return "dead"
         if final in {"m","n","ŋ","w","j","l","r"}: return "live"
     if vowel:
+        # A diphthong is a VV rhyme and can form an open/live syllable even
+        # when its registry length label is "short". AM already contains a
+        # nasal coda, represented by coda_class in the canonical vowel row.
+        if vowel.get("nucleus_type") == "diphthong" or vowel.get("coda_class") == "nasal":
+            return "live"
         return "live" if vowel["length"]=="long" else "dead"
     return None
 

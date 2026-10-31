@@ -250,3 +250,29 @@ The first Pages run after PR #71 ([41188440580](https://github.com/ClippyFirst/L
 - npm CLI still emits a separate non-fatal Node `DEP0040` punycode deprecation warning. This is not an action-runtime warning and did not fail the workflows.
 
 Total engineering tests remain **193 passed**. No external G2P comparison was run. This validates CI and deployment, not Lao pronunciation accuracy, expert gold coverage, or manual visual/keyboard QA.
+
+## Tone-mark live-syllable regression — 2026-10-31
+
+Test-first run [41189555009](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41189555009) passed the repository data/evidence audit and then failed the newly added Python regression as expected: **16 cases** across high/middle/low onsets, four marks, and short-vowel/long-vowel dead contexts were assigned tones by the old wildcard selectors. This established the defect before changing the registry.
+
+The correction narrows every tone-mark selector to `syllable_type=live`, renames the rule IDs to make the condition explicit, registers Appen Butler Hill's 2017 Lao LSP document, and adds a source-linked claim for the rare middle-class-only `mai ti`/`mai catawa` mappings. The canonical browser data is regenerated from the CSV. Shared fixture cases now cover all 24 onset × mark × dead-rime combinations in both Python and browser engines. The full post-fix exact-head verification passed in [run 41190189983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190189983): audit, Python 97, browser 47, romanization integration 19, syllable crosswalk 27, web layout 6, optional external-G2P harness syntax/CLI, production build, generated-data reproducibility and built-page/relative-asset checks all passed.
+
+### Exact-head verification — tone-mark and rhyme-class correction
+
+PR #73 exact-head workflow [41190189983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190189983) passed on commit `13b4aee52fb7249cceceb8e494f00dcf907ce7d3`.
+
+- Repository data/evidence audit: **43 consonant rows, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 23 evidence sources and 47 evidence claims**; all source references resolved.
+- Python: **97 passed**.
+- Browser engine: **47 passed**.
+- Romanization integration: **19 passed**.
+- Syllable crosswalk: **27 passed**.
+- Web layout: **6 passed**.
+- Production build, canonical browser-data generation, generated-data reproducibility, and built-page/relative-asset checks: **passed**.
+- Optional external-G2P harness syntax and CLI validation: passed; no external G2P comparison was run.
+- The shared tone fixture now has 37 cases, including 24 dead-syllable/mark combinations and open diphthong/nasal-rhyme cases. Python and browser consume the same fixture.
+- Total deterministic engineering tests: **196 passed**. This is not independent pronunciation gold and does not establish empirical Lao accuracy.
+- npm CLI continues to emit a non-fatal Node `DEP0040` punycode deprecation warning. It is separate from the GitHub Actions Node runtime, and the workflow passes.
+
+### Final documentation-state verification
+
+After updating the master handoff, final audit and validation records, exact branch-head verification [41190275031](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190275031) passed on `803d1346b6278c3b25260063931bf72dc4e10457`. All workflow steps passed: repository audit, Python 97, browser 47, romanization integration 19, syllable crosswalk 27, web layout 6, optional external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. This is the final documentation-state check; the Pages deployment remains a post-merge gate.

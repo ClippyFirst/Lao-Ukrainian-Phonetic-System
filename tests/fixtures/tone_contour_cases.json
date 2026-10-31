@@ -8,7 +8,7 @@
       "tone": "low-rising",
       "tone_contour": "˩˥",
       "ipa": "kʰaː",
-      "ukrainian": "к\u0027а",
+      "ukrainian": "к'а",
       "status": "ESTABLISHED"
     },
     {
@@ -37,6 +37,303 @@
       "ipa": null,
       "ukrainian": null,
       "status": "EVIDENCE LIMITED"
+    },
+    {
+      "id": "DEAD-HIGH-EK-SHORT",
+      "surface": "ຂ່ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-EK-LONG",
+      "surface": "ຂ່າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-THO-SHORT",
+      "surface": "ຂ້ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-THO-LONG",
+      "surface": "ຂ້າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-TI-SHORT",
+      "surface": "ຂ໊ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-TI-LONG",
+      "surface": "ຂ໊າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-CATAWA-SHORT",
+      "surface": "ຂ໋ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-HIGH-CATAWA-LONG",
+      "surface": "ຂ໋າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-EK-SHORT",
+      "surface": "ກ່ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kap",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-EK-LONG",
+      "surface": "ກ່າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kaːp",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-THO-SHORT",
+      "surface": "ກ້ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kap",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-THO-LONG",
+      "surface": "ກ້າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kaːp",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-TI-SHORT",
+      "surface": "ກ໊ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kap",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-TI-LONG",
+      "surface": "ກ໊າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kaːp",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-CATAWA-SHORT",
+      "surface": "ກ໋ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kap",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-MIDDLE-CATAWA-LONG",
+      "surface": "ກ໋າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kaːp",
+      "ukrainian": "кап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-EK-SHORT",
+      "surface": "ຄ່ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-EK-LONG",
+      "surface": "ຄ່າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-THO-SHORT",
+      "surface": "ຄ້ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-THO-LONG",
+      "surface": "ຄ້າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-TI-SHORT",
+      "surface": "ຄ໊ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-TI-LONG",
+      "surface": "ຄ໊າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-CATAWA-SHORT",
+      "surface": "ຄ໋ັບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰap",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "DEAD-LOW-CATAWA-LONG",
+      "surface": "ຄ໋າບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kʰaːp",
+      "ukrainian": "к'ап",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-AI",
+      "surface": "ໄກ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kai",
+      "ukrainian": "кай",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-AI2",
+      "surface": "ໃກ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kai",
+      "ukrainian": "кай",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-AI-MAI-EK",
+      "surface": "ໄກ່",
+      "tone": "high-mid",
+      "tone_contour": "˧",
+      "ipa": "kai",
+      "ukrainian": "кай",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "DEAD-MIDDLE-CLASS-AI-MAI-EK",
+      "surface": "ໄກ່ບ",
+      "tone": null,
+      "tone_contour": null,
+      "ipa": "kaip",
+      "ukrainian": "кайп",
+      "status": "ANALYSIS DEPENDENT"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-AM",
+      "surface": "ກຳ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kam",
+      "ukrainian": "кам",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-IA-SHORT",
+      "surface": "ເກັຍ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kiə",
+      "ukrainian": "кіа",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-UA-SHORT",
+      "surface": "ເກຶອ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kɯə",
+      "ukrainian": "киа",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-UO-SHORT",
+      "surface": "ກົວະ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kuə",
+      "ukrainian": "куа",
+      "status": "ESTABLISHED"
+    },
+    {
+      "id": "LIVE-MIDDLE-CLASS-AW-DIPHTHONG",
+      "surface": "ເກົາ",
+      "tone": "low-rising",
+      "tone_contour": "˩˥",
+      "ipa": "kaw",
+      "ukrainian": "кау",
+      "status": "ESTABLISHED"
     }
   ]
 }

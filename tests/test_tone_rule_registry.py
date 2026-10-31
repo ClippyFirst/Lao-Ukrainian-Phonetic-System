@@ -57,6 +57,27 @@ class TestToneRuleRegistry(unittest.TestCase):
                 self.assertTrue(row["contour"])
                 self.assertTrue(row["status"])
 
+    def test_tone_mark_rules_are_restricted_to_live_syllables(self):
+        for row in self.rules:
+            if row["tone_mark"] != "none":
+                with self.subTest(rule=row["rule_id"]):
+                    self.assertEqual(row["syllable_type"], "live")
+
+    def test_rare_tone_marks_are_middle_class_only_and_source_linked(self):
+        rare_rules = {
+            row["tone_mark"]: row
+            for row in self.rules
+            if row["tone_mark"] in {"mai_ti", "mai_catawa"}
+        }
+        self.assertEqual(set(rare_rules), {"mai_ti", "mai_catawa"})
+        self.assertEqual(rare_rules["mai_ti"]["class"], "middle")
+        self.assertEqual(rare_rules["mai_ti"]["tone"], "high-falling")
+        self.assertEqual(rare_rules["mai_catawa"]["class"], "middle")
+        self.assertEqual(rare_rules["mai_catawa"]["tone"], "low-rising")
+        for row in rare_rules.values():
+            self.assertEqual(row["syllable_type"], "live")
+            self.assertEqual(row["evidence_id"], "CLM-LAO-TONE-RARE-MARKS")
+
     def test_every_declared_rule_is_reachable_by_the_selector(self):
         """Synthetic inputs check selector reachability, not phonetic truth."""
         mark_graphemes = {
@@ -135,6 +156,34 @@ class TestToneRuleRegistry(unittest.TestCase):
                                 self.assertEqual(tone, expected["tone"])
                                 self.assertEqual(status, expected["status"])
                                 self.assertEqual(matched_rules, [expected["rule_id"]])
+
+    def test_tone_marks_do_not_resolve_dead_syllables(self):
+        """Tone marks are used with open/live syllables, not dead syllables."""
+        onsets = {"high": "ຂ", "middle": "ກ", "low": "ຄ"}
+        marks = {"mai_ek": "່", "mai_tho": "້", "mai_ti": "໊", "mai_catawa": "໋"}
+        dead_contexts = (
+            ({"length": "short", "ipa": "a"}, None),
+            ({"length": "long", "ipa": "aː"}, "ກ"),
+        )
+
+        for onset_class, onset in onsets.items():
+            for mark_name, mark_grapheme in marks.items():
+                for vowel, coda in dead_contexts:
+                    tone, status, matched_rules = determine_tone(
+                        onset, vowel, coda, mark_grapheme, onset_class=onset_class
+                    )
+                    with self.subTest(
+                        onset_class=onset_class,
+                        mark=mark_name,
+                        length=vowel["length"],
+                        coda=coda,
+                    ):
+                        self.assertIsNone(tone)
+                        self.assertEqual(status, "ANALYSIS DEPENDENT")
+                        self.assertEqual(
+                            matched_rules,
+                            ["TONE-NOT-ESTABLISHED-FOR-COMBINATION"],
+                        )
 
     def test_unlisted_class_and_tone_mark_combination_stays_unresolved(self):
         vowel = {"length": "long", "ipa": "aː"}

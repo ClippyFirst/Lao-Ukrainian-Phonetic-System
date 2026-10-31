@@ -1,35 +1,35 @@
-id,pattern,ipa,length,position,coda_class,status,notes
-A,ະ,a,short,postposed,none,core,explicit /a/ in open syllables
-A2,ັ,a,short,postposed,none,core,short a in closed syllables and composite vowels
-AA,າ,aː,long,postposed,none,core,
-I,ິ,i,short,above,none,core,
-II,ີ,iː,long,above,none,core,
-Y,ຶ,ɯ,short,above,none,core,
-YY,ື,ɯː,long,above,none,core,
-U,ຸ,u,short,below,none,core,
-UU,ູ,uː,long,below,none,core,
-E,ເ,e,short,preposed,none,core,short e with ເ◌ະ/ເ◌ັ◌
-EE,ເ,eː,long,preposed,none,core,long e with ເ◌
-AE,ແ,ɛ,short,preposed,none,core,short ɛ with ແ◌ະ/ແ◌ັ◌
-AEE,ແ,ɛː,long,preposed,none,core,long ɛ with ແ◌
-O,ໂ,o,short,preposed,none,core,short o with ໂ◌ະ/◌ົ
-OO,ໂ,oː,long,preposed,none,core,long o with ໂ◌
-AW,ເາະ,ɔ,short,around,none,core,short ɔ in ເ◌າະ
-AWW_SHORT_ALT,ັອ,ɔ,short,postposed,none,core,short ɔ in closed syllables
-AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ
-AWW_MEDIAL,ອ,ɔː,long,postposed,none,core,long ɔ in medial ◌ອ
-OE,ເິ,ɤ,short,preposed,none,core,
-OEE,ເີ,ɤː,long,preposed,none,core,
-IA,ເັຍ,iə,short,around,none,core,short IA: ເ◌ັຍ; medial ◌ັຽ
-IA_LONG,ເຍ,iːə,long,around,none,core,long IA: ເ◌ຍ and ເ◌ັຽ; standalone ◌ຽ in forms such as ວຽງ
-UA,ເຶອ,ɯə,short,around,none,core,short ɯə
-UA_LONG,ເືອ,ɯːə,long,around,none,core,long ɯːə
-UO,ົວະ,uə,short,around,none,core,short uə
-UO_LONG,ົວ,uːə,long,around,none,core,uːə
-UO_SHORT_ALT,ັວ,uə,short,around,none,core,dated/alternative short uə spelling
-UO_LONG_ALT,ວ,uːə,long,around,none,core,closed-syllable vowel ວ; e.g. ດວງ
-UO_LONG_OPEN,ວາ,uːə,long,around,none,core,open uːə spelling before a following glide/coda
-AI,ໄ,ai,short,preposed,none,core,preposed ai
-AI2,ໃ,ai,short,preposed,none,core,preposed ai variant
-AW_LONG,ເົາ,aw,short,around,none,core,orthographic /aw/
-AM,ຳ,am,short,postposed,nasal,core,Sara Am structural vowel unit
+id,pattern,ipa,length,position,coda_class,status,notes,nucleus_type
+A,ະ,a,short,postposed,none,core,explicit /a/ in open syllables,monophthong
+A2,ັ,a,short,postposed,none,core,short a in closed syllables and composite vowels,monophthong
+AA,າ,aː,long,postposed,none,core,,monophthong
+I,ິ,i,short,above,none,core,,monophthong
+II,ີ,iː,long,above,none,core,,monophthong
+Y,ຶ,ɯ,short,above,none,core,,monophthong
+YY,ື,ɯː,long,above,none,core,,monophthong
+U,ຸ,u,short,below,none,core,,monophthong
+UU,ູ,uː,long,below,none,core,,monophthong
+E,ເ,e,short,preposed,none,core,short e with ເ◌ະ/ເ◌ັ◌,monophthong
+EE,ເ,eː,long,preposed,none,core,long e with ເ◌,monophthong
+AE,ແ,ɛ,short,preposed,none,core,short ɛ with ແ◌ະ/ແ◌ັ◌,monophthong
+AEE,ແ,ɛː,long,preposed,none,core,long ɛ with ແ◌,monophthong
+O,ໂ,o,short,preposed,none,core,short o with ໂ◌ະ/◌ົ,monophthong
+OO,ໂ,oː,long,preposed,none,core,long o with ໂ◌,monophthong
+AW,ເາະ,ɔ,short,around,none,core,short ɔ in ເ◌າະ,monophthong
+AWW_SHORT_ALT,ັອ,ɔ,short,postposed,none,core,short ɔ in closed syllables,monophthong
+AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ,monophthong
+AWW_MEDIAL,ອ,ɔː,long,postposed,none,core,long ɔ in medial ◌ອ,monophthong
+OE,ເິ,ɤ,short,preposed,none,core,,monophthong
+OEE,ເີ,ɤː,long,preposed,none,core,,monophthong
+IA,ເັຍ,iə,short,around,none,core,short IA: ເ◌ັຍ; medial ◌ັຽ,diphthong
+IA_LONG,ເຍ,iːə,long,around,none,core,long IA: ເ◌ຍ and ເ◌ັຽ; standalone ◌ຽ in forms such as ວຽງ,diphthong
+UA,ເຶອ,ɯə,short,around,none,core,short ɯə,diphthong
+UA_LONG,ເືອ,ɯːə,long,around,none,core,long ɯːə,diphthong
+UO,ົວະ,uə,short,around,none,core,short uə,diphthong
+UO_LONG,ົວ,uːə,long,around,none,core,uːə,diphthong
+UO_SHORT_ALT,ັວ,uə,short,around,none,core,dated/alternative short uə spelling,diphthong
+UO_LONG_ALT,ວ,uːə,long,around,none,core,closed-syllable vowel ວ; e.g. ດວງ,diphthong
+UO_LONG_OPEN,ວາ,uːə,long,around,none,core,open uːə spelling before a following glide/coda,diphthong
+AI,ໄ,ai,short,preposed,none,core,preposed ai,diphthong
+AI2,ໃ,ai,short,preposed,none,core,preposed ai variant,diphthong
+AW_LONG,ເົາ,aw,short,around,none,core,orthographic /aw/,diphthong
+AM,ຳ,am,short,postposed,nasal,core,Sara Am structural vowel unit,monophthong
