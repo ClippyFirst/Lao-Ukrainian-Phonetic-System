@@ -15,6 +15,11 @@ def classify_syllable_type(vowel, coda):
         if final in {"p","t","k","ʔ"}: return "dead"
         if final in {"m","n","ŋ","w","j","l","r"}: return "live"
     if vowel:
+        # A diphthong is a VV rhyme and can form an open/live syllable even
+        # when its registry length label is "short". AM already contains a
+        # nasal coda, represented by coda_class in the canonical vowel row.
+        if vowel.get("nucleus_type") == "diphthong" or vowel.get("coda_class") == "nasal":
+            return "live"
         return "live" if vowel["length"]=="long" else "dead"
     return None
 
