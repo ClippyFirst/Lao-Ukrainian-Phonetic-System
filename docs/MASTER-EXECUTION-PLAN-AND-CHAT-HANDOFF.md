@@ -793,3 +793,12 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Pages is live at https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/; last verified deployment run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) deployed commit 550d1d63b31965e68b40f30cd5099601ab203ec8. PR #79 was docs-only and did not require a new runtime deployment.
 - The existing syllable-level romanization adapter and tests were preserved. No runtime code or phonetic behavior was changed in this continuation.
 - Remaining: exhaustive source-unit coverage and independent Lao specialist review of ambiguous nuclei, loanwords and conventional names.
+
+
+## Sentence-level source-preservation regression — 2026-10-31
+
+- Added and merged PR [#81](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/81) as `542d66268e96b98a309ff45bca167d4b1e4d4541`.
+- The regression runs the supplied Lao greeting sentence through the browser engine and asserts that all non-whitespace source units, including punctuation, remain represented in the segmentation; it also requires a non-empty result.
+- Exact-head workflow [41238184863](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41238184863) passed repository data/evidence audit, Python tests, external-G2P CLI syntax check, browser engine tests, build, generated-data reproducibility, and built-page/relative-asset assertions.
+- This is a source-preservation and segmentation regression, not independently adjudicated IPA or Ukrainian gold. It does not establish pronunciation accuracy for the whole sentence.
+- No runtime code or Pages build input changed in PR #81; the last verified Pages deployment remains run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for commit `550d1d63b31965e68b40f30cd5099601ab203ec8`.
