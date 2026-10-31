@@ -241,7 +241,7 @@ function analyzeToken(surface) {
   if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
-  const status = structuralWarning ? "EVIDENCE LIMITED"
+  const status = structuralWarning || (ipa && !ukrainian) ? "EVIDENCE LIMITED"
     : ukrainian && resolvedTone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
     coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, status,
@@ -310,7 +310,8 @@ function analyzeWord(word) {
   const wholeCandidate = analyzeToken(word);
   if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
       w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
-      w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL"))) {
+      w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||
+      w.startsWith("ONSET-LABIALIZED:"))) {
     return [wholeCandidate];
   }
 
