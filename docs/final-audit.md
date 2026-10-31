@@ -191,3 +191,12 @@ Exact-head verification [41210220456](https://github.com/ClippyFirst/Lao-Ukraini
 The optional external diagnostic [41210220450](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41210220450), artifact ID `13045313856`, compared `lao2ipa` 1.0.0 (Apache-2.0) with 37 vowel-precedence engineering controls. It found no strict raw matches, 31 tone-stripped string agreements (diagnostic only), and six non-tone differences (four segmental/vowel-sequence, two AI offglide convention). The report has zero independent gold items and null accuracy; it is not evidence that either implementation is correct. It does not include the new cluster fixture.
 
 Implementation status: `LAO-CLUSTER-001` is `DONE_VERIFIED`. The IPA-to-Ukrainian adaptation for `ʷ` remains open under `LAO-UKR-001`; the six external-comparator differences remain source-review items under `LAO-G2P-DIFF-001`. Neither is hidden by the passing engineering test count.
+
+
+## Romanization standard / method separation — 2026-10-31
+
+- PR #79 merged to main as b99733814f4b322df230ac66dade236593e24035. It records the project-specific selection of BGN/PCGN 1966 as represented by CLDR Lao-Latin, explicitly labelled provisional because Laos has no official current national romanization.
+- The existing syllable-level source → CLDR → Ukrainian crosswalk remains canonical in methodology.md and the romanization engine. It validates onset, vowel identity and coda, preserves source context, and withholds ambiguous or mismatched syllables rather than guessing.
+- Main verification: workflow [41228957865](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228957865) completed successfully after the documentation merge.
+- GitHub Pages deployment [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) succeeded at https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ (deployed site commit 550d1d63b31965e68b40f30cd5099601ab203ec8). PR #79 was documentation-only, so it did not change the deployed runtime.
+- Current romanization statuses: standard selection DONE_VERIFIED; syllable matrix PARTIAL pending full coverage audit; coverage PARTIAL pending exhaustive inventory; specialist review BLOCKED for ambiguous nuclei, loanwords and conventional names. The phonetic route remains IPA-first and separate.
