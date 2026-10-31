@@ -49,6 +49,7 @@ rules = [
 
 out = "// Generated from data/lao/*.csv. Do not edit by hand.\n"
 out += "export const CONSONANTS=" + json.dumps(cons, ensure_ascii=False, separators=(",", ":")) + ";\n"
+out += "export const ONSET_CLUSTERS=" + json.dumps(onset_clusters, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const VOWELS=" + json.dumps(vowels, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const CODAS=" + json.dumps(codas, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const CORRESPONDENCES=" + json.dumps(corr, ensure_ascii=False, separators=(",", ":")) + ";\n"
