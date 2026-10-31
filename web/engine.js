@@ -145,7 +145,7 @@ function parseVowelCandidate(clean, before, onsetIndex, onsetLength) {
   }
   return {
     matched, coda, warnings, complete: warnings.length === 0,
-    rounded: ["u", "uː", "uə", "uːə", "o", "oː", "ɔ", "ɔː"].includes(matched.v[2]),
+    rounded: ["u", "o", "ɔ"].some((prefix) => matched.v[2].startsWith(prefix)),
   };
 }
 
