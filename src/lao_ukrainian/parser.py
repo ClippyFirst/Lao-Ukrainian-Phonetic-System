@@ -169,9 +169,15 @@ def parse_syllable(surface: str):
     s = _strip_tone_marks(surface)
     onset, onset_i, onset_len, onset_class, onset_form, onset_ipa = _find_onset(s, registry)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
+    multiple_tone_marks = sum(ch in TONE_MARKS for ch in surface) > 1
+
+    def mark_warnings(index, length, base):
+        warnings = ["MULTIPLE_TONE_MARKS"] if multiple_tone_marks else []
+        warnings.extend(_tone_mark_order_warnings(surface, index, length, base, registry))
+        return warnings
 
     if onset is None:
-        tone_warnings = _tone_mark_order_warnings(surface, onset_i, onset_len, onset, registry)
+        tone_warnings = mark_warnings(onset_i, onset_len, onset)
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
                 "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET", *tone_warnings]}
 
@@ -199,7 +205,7 @@ def parse_syllable(surface: str):
 
         if cluster_is_rounded:
             if not base_complete:
-                tone_warnings = _tone_mark_order_warnings(surface, onset_i, 2, onset, registry)
+                tone_warnings = mark_warnings(onset_i, 2, onset)
                 return {"surface": surface, "onset": onset, "onset_class": onset_class,
                         "onset_form": cluster_row["grapheme"], "onset_ipa": None,
                         "vowel": None, "coda": None, "tone_mark": tone_mark,
