@@ -12,6 +12,7 @@ def rows(name):
         return list(csv.DictReader(f))
 
 consonant_rows = rows("consonants.csv")
+onset_cluster_rows = rows("onset_clusters.csv")
 corr = {r["ipa"]: r["candidates"].split("|")[0] for r in rows("ukrainian_correspondences.csv")}
 
 cons = {}
@@ -19,6 +20,12 @@ for r in consonant_rows:
     if r["status"] not in {"core", "analysis-dependent"}:
         continue
     cons[r["grapheme"]] = [r["class"], r["ipa_initial"], r["status"], corr.get(r["ipa_initial"], "")]
+
+onset_clusters = {
+    r["grapheme"]: [r["base"], r["ipa_initial"], r["class"], r["status"]]
+    for r in onset_cluster_rows
+    if r["status"] == "well-supported"
+}
 
 vowels = [
     [r["id"], r["pattern"], r["ipa"], r["length"], r["position"], r["status"], r["nucleus_type"], r["coda_class"]]
