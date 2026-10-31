@@ -73,7 +73,7 @@ test("shared Lao labialized onset cluster fixture", () => {
     assert.equal(result.syllables[0].ukrainian, null, item.id);
     assert.equal(result.syllables[0].status, "EVIDENCE LIMITED", item.id);
   }
-  for (const item of fixture.attested_spelling_controls) {
+  for (const item of fixture.constructed_cluster_controls) {
     const result = analyze(item.surface);
     assert.equal(result.syllables[0].onsetForm, item.onset_form, item.id);
     assert.equal(result.syllables[0].ipa, item.ipa, item.id);
