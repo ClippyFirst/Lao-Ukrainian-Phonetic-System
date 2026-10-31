@@ -802,3 +802,12 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Exact-head workflow [41238184863](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41238184863) passed repository data/evidence audit, Python tests, external-G2P CLI syntax check, browser engine tests, build, generated-data reproducibility, and built-page/relative-asset assertions.
 - This is a source-preservation and segmentation regression, not independently adjudicated IPA or Ukrainian gold. It does not establish pronunciation accuracy for the whole sentence.
 - No runtime code or Pages build input changed in PR #81; the last verified Pages deployment remains run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for commit `550d1d63b31965e68b40f30cd5099601ab203ec8`.
+
+## Full-sentence romanization crosswalk regression — 2026-10-31
+
+- Main head: \`9e439f4a56c6c5f91635195c5413acd964480b6c\` (PR #84).
+- PR #84 adds the supplied full Lao greeting sentence to the existing CLDR Lao-Latin → source-aware Ukrainian syllable crosswalk tests. The test derives source syllable evidence from the Lao structural analyzer, runs the complete sentence through \`romanizeLao\`, then adapts the romanized result using the aligned source groups. It verifies non-empty outputs and preservation of explicit spaces and punctuation.
+- Exact-head workflow [41240383835](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41240383835) passed all configured gates: repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, browser engine tests, production build, generated-data reproducibility, and built-page/relative-asset checks.
+- This is a sentence-level engineering regression, not independently adjudicated IPA or Ukrainian lexical gold. The test allows \`PARTIAL\` because the crosswalk deliberately withholds unsupported/ambiguous cases; it does not claim a fully correct sentence transcription.
+- No runtime code or Pages build input changed in PR #84. The last recorded Pages deployment remains run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for commit \`550d1d63b31965e68b40f30cd5099601ab203ec8\`; no newer deployment is claimed.
+- Existing blockers remain: exhaustive source-unit coverage, specialist review of ambiguous nuclei/loanwords/conventional names, IPA-to-Ukrainian correspondence for labialized \`ʷ\`, and independent pronunciation gold. The system remains a partial research prototype.
