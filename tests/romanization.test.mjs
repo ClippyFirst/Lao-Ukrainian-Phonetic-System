@@ -238,8 +238,8 @@ test("BGN silent-hoa spellings romanize sonorants without an audible h",()=>{
 
 test("the full Lao greeting sentence traverses CLDR romanization and the source-aware Ukrainian crosswalk",()=>{
  const sentence="ສະບາຍດີ! ຂ້ອຍຊື່ ນາລີ. ຂ້ອຍມາຈາກປະເທດລາວ ແລະມັກຮຽນພາສາໃໝ່.";
- const separators=/^(\\s+|[,.!?;:()[\\]{}\"“”]+|-+)$/u;
- const sourceSyllableGroups=sentence.split(/(\\s+|[,.!?;:()[\\]{}\"“”]+|-+)/u).filter(Boolean)
+ const separators=/^(\s+|[,.!?;:()[\]{}\"“”]+|-+)$/u;
+ const sourceSyllableGroups=sentence.split(/(\s+|[,.!?;:()[\]{}\"“”]+|-+)/u).filter(Boolean)
   .filter(part=>!separators.test(part)&&!/^[0-9]+$/u.test(part))
   .map(part=>analyze(part).syllables.filter(s=>!s.passthrough).map(s=>({
    onset:s.onset||null,
