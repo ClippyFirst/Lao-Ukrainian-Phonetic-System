@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "purpose": "Source-backed structural controls for restricted Lao labialized onsets. Constructed rows test the phonological inventory and parser contract; they are not independent lexical IPA gold.",
+  "purpose": "Source-backed structural controls for restricted Lao labialized onsets. Constructed orthographic forms test the phonological inventory and parser contract; they are not independent lexical IPA gold.",
   "clusters": [
     {
       "id": "LABIALIZED-HIGH-T-ASPIRATED",
@@ -91,14 +91,6 @@
       "ipa": "lʷit"
     }
   ],
-  "attested_spelling_controls": [
-    {
-      "id": "DICTIONARY-ATTESTED-KHWAN",
-      "surface": "ຂວັນ",
-      "onset_form": "ຂວ",
-      "ipa": "kʷʰan"
-    }
-  ],
   "ambiguous": [
     {
       "id": "CWAA-OVERLAPS-UO-OPEN-RHYME",
@@ -121,6 +113,14 @@
       "onset": "ລ",
       "onset_class": "high",
       "ipa": "lɯːəŋ"
+    }
+  ],
+  "constructed_cluster_controls": [
+    {
+      "id": "LABIALIZED-KH-A2-NASAL-CODA-CONTROL",
+      "surface": "ຂວັນ",
+      "onset_form": "ຂວ",
+      "ipa": "kʷʰan"
     }
   ]
 }
