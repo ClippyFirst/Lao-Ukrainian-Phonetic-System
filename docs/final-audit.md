@@ -207,3 +207,11 @@ Implementation status: `LAO-CLUSTER-001` is `DONE_VERIFIED`. The IPA-to-Ukrainia
 - PR #81 merged as `542d66268e96b98a309ff45bca167d4b1e4d4541`; exact-head CI [41238184863](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41238184863) passed the full configured workflow.
 - The supplied Lao sentence is now covered by a regression that verifies every non-whitespace source unit survives segmentation and that the engine produces a non-empty result.
 - This is an engineering integrity check only. It is not a pronunciation benchmark, gold IPA corpus, or evidence of sentence-level phonetic accuracy. Existing coverage and specialist-review blockers remain unchanged.
+
+## Full-sentence Lao romanization crosswalk regression — 2026-10-31
+
+- PR #84 merged as \`9e439f4a56c6c5f91635195c5413acd964480b6c\`; exact-head workflow [41240383835](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41240383835) passed the configured audit, Python, browser-engine, romanization, crosswalk, build, generated-data and built-page/asset checks.
+- The supplied Lao greeting now has a full-sentence test through CLDR Lao-Latin and the source-aware Ukrainian syllable crosswalk. It derives source syllable groups from the structural analyzer and checks that whitespace/punctuation survive both stages.
+- The test accepts \`OK\` or \`PARTIAL\` by design and asserts only non-empty result plus boundary preservation. It is not a gold transcription or a sentence-accuracy score.
+- PR #84 changes tests only; no new Pages deployment is claimed. Existing Pages evidence remains run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for commit \`550d1d63b31965e68b40f30cd5099601ab203ec8\`.
+- Remaining acceptance work: exhaustive source coverage, specialist review of ambiguous nuclei/loanwords/names, labialized-onset Ukrainian adaptation, and independent lexical IPA gold.
