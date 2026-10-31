@@ -47,7 +47,9 @@ def phonologize(parsed):
 
     # ອ is a middle-class vowel carrier. With an overt vowel it is normally
     # silent; in a closed syllable the spelling ອ itself can represent /ɔː/.
-    onset_ipa="" if parsed["onset"]=="ອ" else (o["ipa_initial"] or "")
+    onset_ipa=parsed.get("onset_ipa")
+    if onset_ipa is None:
+        onset_ipa="" if parsed["onset"]=="ອ" else (o["ipa_initial"] or "")
     tone,status,rules=determine_tone(parsed["onset"],v,coda,parsed["tone_mark"],parsed.get("onset_class"))
     ipa=onset_ipa+v["ipa"]+coda_ipa
     return ipa,rules+([f"TONE:{tone}"] if tone else []),status,tone

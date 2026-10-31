@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "purpose": "Source-backed structural controls for restricted Lao labialized onsets. Constructed orthographic forms test the phonological inventory and parser contract; they are not independent lexical IPA gold.",
+  "clusters": [
+    {
+      "id": "LABIALIZED-HIGH-T-ASPIRATED",
+      "surface": "ຖວິດ",
+      "onset_form": "ຖວ",
+      "onset": "ຖ",
+      "onset_class": "high",
+      "ipa": "tʷʰit"
+    },
+    {
+      "id": "LABIALIZED-LOW-T-ASPIRATED",
+      "surface": "ທວິດ",
+      "onset_form": "ທວ",
+      "onset": "ທ",
+      "onset_class": "low",
+      "ipa": "tʷʰit"
+    },
+    {
+      "id": "LABIALIZED-MID-AFFRICATE",
+      "surface": "ຈວິດ",
+      "onset_form": "ຈວ",
+      "onset": "ຈ",
+      "onset_class": "middle",
+      "ipa": "tɕʷit"
+    },
+    {
+      "id": "LABIALIZED-MID-K",
+      "surface": "ກວິດ",
+      "onset_form": "ກວ",
+      "onset": "ກ",
+      "onset_class": "middle",
+      "ipa": "kʷit"
+    },
+    {
+      "id": "LABIALIZED-HIGH-K-ASPIRATED",
+      "surface": "ຂວິດ",
+      "onset_form": "ຂວ",
+      "onset": "ຂ",
+      "onset_class": "high",
+      "ipa": "kʷʰit"
+    },
+    {
+      "id": "LABIALIZED-LOW-K-ASPIRATED",
+      "surface": "ຄວິດ",
+      "onset_form": "ຄວ",
+      "onset": "ຄ",
+      "onset_class": "low",
+      "ipa": "kʷʰit"
+    },
+    {
+      "id": "LABIALIZED-MID-GLOTTAL",
+      "surface": "ອວິດ",
+      "onset_form": "ອວ",
+      "onset": "ອ",
+      "onset_class": "middle",
+      "ipa": "ʔʷit"
+    },
+    {
+      "id": "LABIALIZED-HIGH-S",
+      "surface": "ສວິດ",
+      "onset_form": "ສວ",
+      "onset": "ສ",
+      "onset_class": "high",
+      "ipa": "sʷit"
+    },
+    {
+      "id": "LABIALIZED-LOW-S",
+      "surface": "ຊວິດ",
+      "onset_form": "ຊວ",
+      "onset": "ຊ",
+      "onset_class": "low",
+      "ipa": "sʷit"
+    },
+    {
+      "id": "LABIALIZED-LOW-NG",
+      "surface": "ງວິດ",
+      "onset_form": "ງວ",
+      "onset": "ງ",
+      "onset_class": "low",
+      "ipa": "ŋʷit"
+    },
+    {
+      "id": "LABIALIZED-LOW-L",
+      "surface": "ລວິດ",
+      "onset_form": "ລວ",
+      "onset": "ລ",
+      "onset_class": "low",
+      "ipa": "lʷit"
+    }
+  ],
+  "ambiguous": [
+    {
+      "id": "CWAA-OVERLAPS-UO-OPEN-RHYME",
+      "surface": "ກວາງ",
+      "warning": "AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY"
+    }
+  ],
+  "rounded_rejected": [
+    {
+      "id": "LABIALIZED-ONSET-BEFORE-ROUNDED-UU",
+      "surface": "ຂວູງ",
+      "warning": "LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL"
+    }
+  ],
+  "high_class_digraphs": [
+    {
+      "id": "PREPOSED-VOWEL-BEFORE-HO-LIGATURE",
+      "surface": "ເຫຼືອງ",
+      "onset_form": "ຫຼ",
+      "onset": "ລ",
+      "onset_class": "high",
+      "ipa": "lɯːəŋ"
+    }
+  ],
+  "constructed_cluster_controls": [
+    {
+      "id": "LABIALIZED-KH-A2-NASAL-CODA-CONTROL",
+      "surface": "ຂວັນ",
+      "onset_form": "ຂວ",
+      "ipa": "kʷʰan"
+    }
+  ]
+}

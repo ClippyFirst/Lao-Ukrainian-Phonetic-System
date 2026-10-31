@@ -56,9 +56,42 @@ test("closed uo spelling is recognised", () => {
 });
 
 test("open uo spelling is recognised", () => {
-  const r = analyze("ກວາງ");
-  assert.equal(r.syllables[0].ipa, "kuːəŋ");
-  assert.equal(r.output, "куанг");
+  const r = analyze("ດວາງ");
+  assert.equal(r.syllables[0].ipa, "duːəŋ");
+  assert.equal(r.output, "дуанг");
+});
+
+
+test("shared Lao labialized onset cluster fixture", () => {
+  const fixturePath = resolve(dirname(fileURLToPath(import.meta.url)), "../tests/fixtures/onset_cluster_cases.json");
+  const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
+  for (const item of fixture.clusters) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].onsetForm, item.onset_form, item.id);
+    assert.equal(result.syllables[0].ipa, item.ipa, item.id);
+    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.equal(result.syllables[0].status, "EVIDENCE LIMITED", item.id);
+  }
+  for (const item of fixture.constructed_cluster_controls) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables[0].onsetForm, item.onset_form, item.id);
+    assert.equal(result.syllables[0].ipa, item.ipa, item.id);
+    assert.equal(result.syllables[0].ukrainian, null, item.id);
+  }
+  for (const item of [...fixture.ambiguous, ...fixture.rounded_rejected]) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables.length, 1, item.id);
+    assert.equal(result.syllables[0].ipa, null, item.id);
+    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.ok(result.syllables[0].warnings.some((warning) => warning.startsWith(item.warning)), item.id);
+  }
+  for (const item of fixture.high_class_digraphs) {
+    const result = analyze(item.surface);
+    assert.equal(result.syllables[0].onsetForm, item.onset_form, item.id);
+    assert.equal(result.syllables[0].class, item.onset_class, item.id);
+    assert.equal(result.syllables[0].ipa, item.ipa, item.id);
+  }
 });
 
 test("medial ອ is long ɔ", () => {

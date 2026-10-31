@@ -1,4 +1,4 @@
-import { CONSONANTS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES } from "./data.js";
+import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES } from "./data.js";
 
 const TONE_MARK_SET = new Set(Object.keys(TONE_MARKS));
 const HIGH_DIGRAPHS = new Map([
@@ -6,7 +6,6 @@ const HIGH_DIGRAPHS = new Map([
   ["ຫລ", "ລ"], ["ຫຼ", "ລ"], ["ຫວ", "ວ"],
 ]);
 const VOWEL_COMBINING_MARKS = new Set(["ັ", "ິ", "ີ", "ຶ", "ື", "ຸ", "ູ", "ົ", "ໍ"]);
-const LABIALIZED_ONSET_BASES = new Set(["ຖ", "ທ", "ຈ", "ກ", "ຂ", "ຄ", "ອ", "ສ", "ຊ", "ງ", "ລ"]);
 const sortedIpa = () => Object.keys(CORRESPONDENCES).sort((a, b) => b.length - a.length);
 
 function vowelById(id) { return VOWELS.find((v) => v[0] === id) || null; }
@@ -116,11 +115,37 @@ function validateInput(text) {
 }
 
 function findOnset(clean) {
-  for (const [form, target] of HIGH_DIGRAPHS) {
-    if (clean.startsWith(form)) return { onsetKey: target, onsetIndex: 0, onsetLength: [...form].length, onsetClass: "high", onsetForm: form };
+  for (let index = 0; index < clean.length; index++) {
+    for (const [form, target] of HIGH_DIGRAPHS) {
+      if (clean.startsWith(form, index)) {
+        return { onsetKey: target, onsetIndex: index, onsetLength: [...form].length, onsetClass: "high", onsetForm: form };
+      }
+    }
+    const onsetKey = clean[index];
+    if (Object.hasOwn(CONSONANTS, onsetKey)) {
+      return { onsetKey, onsetIndex: index, onsetLength: 1, onsetClass: CONSONANTS[onsetKey][0], onsetForm: onsetKey };
+    }
   }
-  const onsetKey = [...clean].find((ch) => Object.hasOwn(CONSONANTS, ch)) || null;
-  return onsetKey ? { onsetKey, onsetIndex: clean.indexOf(onsetKey), onsetLength: 1, onsetClass: CONSONANTS[onsetKey][0], onsetForm: onsetKey } : null;
+  return null;
+}
+
+function parseVowelCandidate(clean, before, onsetIndex, onsetLength) {
+  const after = clean.slice(onsetIndex + onsetLength);
+  const matched = matchVowel(before, after);
+  if (!matched) return null;
+  const remainder = after.slice(matched.consumed.length);
+  const finalChar = [...remainder].at(-1);
+  const coda = finalChar && Object.hasOwn(CODAS, finalChar) ? finalChar : null;
+  const unconsumed = coda ? remainder.slice(0, -1) : remainder;
+  const warnings = [];
+  if (unconsumed) warnings.push("Невикористана частина структури складу: " + unconsumed);
+  if (!coda && ["A2", "AWW_SHORT_ALT"].includes(matched.v[0])) {
+    warnings.push("SHORT_VOWEL_REQUIRES_CODA:" + matched.v[0]);
+  }
+  return {
+    matched, coda, warnings, complete: warnings.length === 0,
+    rounded: ["u", "o", "ɔ"].some((prefix) => matched.v[2].startsWith(prefix)),
+  };
 }
 
 function toneMarkOrderError(chars, clean, found) {
@@ -133,7 +158,7 @@ function toneMarkOrderError(chars, clean, found) {
   const cleanChars = [...clean];
   const afterOnset = cleanMarkIndex === onsetBoundary;
   const afterLabializedSecond = cleanMarkIndex === onsetBoundary + 1 &&
-    cleanChars[onsetBoundary] === "ວ" && LABIALIZED_ONSET_BASES.has(found.onsetKey);
+    cleanChars[onsetBoundary] === "ວ" && Object.values(ONSET_CLUSTERS).some((row) => row[0] === found.onsetKey);
   const afterCombiningVowel = markIndex > 0 && VOWEL_COMBINING_MARKS.has(chars[markIndex - 1]);
   if (chars.slice(markIndex + 1).some((ch) => VOWEL_COMBINING_MARKS.has(ch))) {
     return "MALFORMED_TONE_MARK_ORDER";
@@ -157,26 +182,47 @@ function analyzeToken(surface) {
   }
   if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."] };
 
-  const { onsetKey, onsetIndex, onsetLength, onsetClass, onsetForm } = found;
+  const { onsetKey, onsetIndex, onsetLength, onsetClass } = found;
   const onset = CONSONANTS[onsetKey];
   const before = clean.slice(0, onsetIndex);
   const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
   if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before] };
-  const after = clean.slice(onsetIndex + onsetLength);
-  const matched = matchVowel(before, after);
-  if (!matched) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."] };
 
-  const remainder = after.slice(matched.consumed.length);
-  const finalChar = [...remainder].at(-1);
-  const coda = finalChar && Object.hasOwn(CODAS, finalChar) ? finalChar : null;
-
-  const unconsumed = coda ? remainder.replace(coda, "") : remainder;
-  const warnings = [];
-  if (unconsumed) warnings.push("Невикористана частина структури складу: " + unconsumed);
-  if (!coda && ["A2", "AWW_SHORT_ALT"].includes(matched.v[0])) {
-    warnings.push("SHORT_VOWEL_REQUIRES_CODA:" + matched.v[0]);
+  let selectedLength = onsetLength;
+  let onsetForm = found.onsetForm;
+  let onsetIpaOverride = null;
+  let candidate = parseVowelCandidate(clean, before, onsetIndex, onsetLength);
+  const clusterRow = onsetLength === 1 ? ONSET_CLUSTERS[clean.slice(onsetIndex, onsetIndex + 2)] : null;
+  if (clusterRow) {
+    const baseCandidate = candidate;
+    const clusterCandidate = parseVowelCandidate(clean, before, onsetIndex, 2);
+    if (clusterCandidate?.rounded) {
+      if (!baseCandidate?.complete) {
+        return { surface, onset: onsetKey, status: "EVIDENCE LIMITED",
+          warnings: ["LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL: phonetic output withheld."],
+          ukrainian: null, ipa: null, tone: null };
+      }
+    } else if (baseCandidate?.complete && clusterCandidate?.complete) {
+      return { surface, onset: onsetKey, status: "EVIDENCE LIMITED",
+        warnings: ["AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY: phonetic output withheld."],
+        ukrainian: null, ipa: null, tone: null };
+    } else if (clusterCandidate?.complete || (!baseCandidate && clusterCandidate)) {
+      candidate = clusterCandidate;
+      selectedLength = 2;
+      onsetForm = clean.slice(onsetIndex, onsetIndex + 2);
+      onsetIpaOverride = clusterRow[1];
+    } else if (!baseCandidate && clusterCandidate) {
+      candidate = clusterCandidate;
+      selectedLength = 2;
+      onsetForm = clean.slice(onsetIndex, onsetIndex + 2);
+      onsetIpaOverride = clusterRow[1];
+    }
   }
 
+  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null };
+  const matched = candidate.matched;
+  const coda = candidate.coda;
+  const warnings = [...candidate.warnings];
   const syllableType = classify(coda, matched.v);
   const tone = toneFor(onsetClass, syllableType, matched.v[3], mark);
   const structuralWarning = warnings.some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("Невикористана частина"));
@@ -184,20 +230,22 @@ function analyzeToken(surface) {
     ? { name: null, contour: null, status: "ANALYSIS DEPENDENT", ruleId: "TONE-NOT-ESTABLISHED-FOR-COMBINATION" }
     : tone;
   const codaIpa = coda ? CODAS[coda] : "";
-  const onsetIpa = onsetKey === "ອ" ? "" : onset[1];
+  const onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
   const ipa = structuralWarning ? null : onsetIpa + matched.v[2] + codaIpa;
   const ukrainian = ipa ? mapIpa(ipa) : null;
 
-  if (onsetForm !== onsetKey) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
+  if (onsetForm !== onsetKey && !onsetIpaOverride) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
+  if (onsetIpaOverride) warnings.push("ONSET-LABIALIZED:" + onsetForm);
   if (onsetKey === "ຣ") warnings.push("ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
   if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
-  const status = structuralWarning ? "EVIDENCE LIMITED"
+  const status = structuralWarning || (ipa && !ukrainian) ? "EVIDENCE LIMITED"
     : ukrainian && resolvedTone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
     coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, status,
-    rules: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
+    rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
+      "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
 }
 
@@ -259,7 +307,13 @@ function analyzeWord(word) {
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
   const wholeCandidate = analyzeToken(word);
-  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA"))) {
+  if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
+    return [wholeCandidate];
+  }
+  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
+      w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
+      w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||
+      w.startsWith("ONSET-LABIALIZED:"))) {
     return [wholeCandidate];
   }
 

@@ -26,10 +26,9 @@ HIGH_DIGRAPHS = {
 # A tone mark on the second letter of a documented onset sequence is also
 # valid (e.g. ຫຍ້າ and ກວ້າງ).
 VOWEL_COMBINING_MARKS = set("ັິີຶືຸູົໍ")
-LABIALIZED_ONSET_BASES = set("ຖທຈກຂຄອສຊງລ")
 
 
-def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset) -> list[str]:
+def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset, registry: dict | None = None) -> list[str]:
     positions = [i for i, ch in enumerate(surface) if ch in TONE_MARKS]
     if not positions:
         return []
@@ -37,13 +36,14 @@ def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset) -> list[s
         return ["MALFORMED_TONE_MARK_POSITION"]
 
     onset_boundary = onset_i + onset_len
+    labialized_bases = {row["base"] for row in (registry or load_registry())["onset_clusters"].values()}
     warnings = []
     for index in positions:
         after_onset = index == onset_boundary
         after_labialized_second = (
             index == onset_boundary + 1
             and surface[onset_boundary:onset_boundary + 1] == "ວ"
-            and onset in LABIALIZED_ONSET_BASES
+            and onset in labialized_bases
         )
         after_combining_vowel = index > 0 and surface[index - 1] in VOWEL_COMBINING_MARKS
         if any(ch in VOWEL_COMBINING_MARKS for ch in surface[index + 1:]):
@@ -105,15 +105,39 @@ def segment_syllables(text: str) -> list[str]:
 def _strip_tone_marks(surface: str) -> str:
     return "".join(ch for ch in surface if ch not in TONE_MARKS)
 
-def _find_onset(s: str):
-    r = load_registry()["consonants"]
-    for form, target in sorted(HIGH_DIGRAPHS.items(), key=lambda x: len(x[0]), reverse=True):
-        if s.startswith(form):
-            return target, 0, len(form), "high", form
+def _find_onset(s: str, registry: dict | None = None):
+    registry = registry or load_registry()
+    consonants = registry["consonants"]
+    # Search after a preposed vowel as well as at index zero. In Lao, a
+    # pre-base vowel is stored before the complete onset, including ຫ digraphs.
     for i, ch in enumerate(s):
-        if ch in r and r[ch]["status"] in {"core", "analysis-dependent"}:
-            return ch, i, 1, r[ch]["class"], ch
-    return None, None, None, None, None
+        for form, target in sorted(HIGH_DIGRAPHS.items(), key=lambda x: len(x[0]), reverse=True):
+            if s.startswith(form, i):
+                return target, i, len(form), "high", form, None
+        if ch in consonants and consonants[ch]["status"] in {"core", "analysis-dependent"}:
+            return ch, i, 1, consonants[ch]["class"], ch, None
+    return None, None, None, None, None, None
+
+
+def _vowel_candidate(s: str, onset_i: int, onset_len: int, registry: dict):
+    vowel = _match_vowel(s, onset_i, onset_len, registry)
+    if vowel is None:
+        return None
+    after = s[onset_i + onset_len:]
+    suffix = ""
+    for _, pre, candidate_suffix, vowel_id in STRUCTURES:
+        if vowel_id == vowel["id"] and s[:onset_i] == pre and after.startswith(candidate_suffix):
+            suffix = candidate_suffix
+            break
+    remainder = after[len(suffix):]
+    coda = _find_coda(remainder, registry)
+    warnings = []
+    if coda is None and remainder:
+        warnings.append(f"UNCONSUMED_AFTER_VOWEL:{remainder}")
+    if coda is None and vowel["id"] in {"A2", "AWW_SHORT_ALT"}:
+        warnings.append(f"SHORT_VOWEL_REQUIRES_CODA:{vowel['id']}")
+    return {"vowel": vowel, "coda": coda, "warnings": warnings,
+            "complete": not warnings, "remainder": remainder}
 
 def _match_vowel(surface: str, onset_i: int, onset_len: int, registry: dict):
     s = _strip_tone_marks(surface)
@@ -143,43 +167,78 @@ def _find_coda(after_vowel: str, registry: dict):
 def parse_syllable(surface: str):
     registry = load_registry()
     s = _strip_tone_marks(surface)
-    onset, onset_i, onset_len, onset_class, onset_form = _find_onset(s)
+    onset, onset_i, onset_len, onset_class, onset_form, onset_ipa = _find_onset(s, registry)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
-    tone_warnings = ["MULTIPLE_TONE_MARKS"] if sum(ch in TONE_MARKS for ch in surface) > 1 else []
-    tone_warnings.extend(_tone_mark_order_warnings(surface, onset_i, onset_len, onset))
+    multiple_tone_marks = sum(ch in TONE_MARKS for ch in surface) > 1
+
+    def mark_warnings(index, length, base):
+        warnings = ["MULTIPLE_TONE_MARKS"] if multiple_tone_marks else []
+        warnings.extend(_tone_mark_order_warnings(surface, index, length, base, registry))
+        return warnings
 
     if onset is None:
+        tone_warnings = mark_warnings(onset_i, onset_len, onset)
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
                 "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET", *tone_warnings]}
 
     before = s[:onset_i]
     allowed_preposed = {"", "ເ", "ແ", "ໂ", "ໃ", "ໄ"}
     if before not in allowed_preposed:
+        tone_warnings = mark_warnings(onset_i, onset_len, onset)
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
-                "onset_form": onset_form, "vowel": None, "coda": None,
-                "tone_mark": tone_mark,
+                "onset_form": onset_form, "onset_ipa": onset_ipa,
+                "vowel": None, "coda": None, "tone_mark": tone_mark,
                 "warnings": [f"UNCONSUMED_BEFORE_ONSET:{before}", *tone_warnings]}
 
-    vowel = _match_vowel(s, onset_i, onset_len, registry)
-    if vowel is None:
+    base_candidate = _vowel_candidate(s, onset_i, onset_len, registry)
+    selected = base_candidate
+    cluster_row = registry["onset_clusters"].get(s[onset_i:onset_i + 2]) if onset_len == 1 else None
+
+    if cluster_row:
+        cluster_candidate = _vowel_candidate(s, onset_i, 2, registry)
+        rounded_vowels = ("u", "o", "ɔ")
+        cluster_is_rounded = bool(
+            cluster_candidate and cluster_candidate["vowel"]["ipa"].startswith(rounded_vowels)
+        )
+        base_complete = bool(base_candidate and base_candidate["complete"])
+        cluster_complete = bool(cluster_candidate and cluster_candidate["complete"])
+
+        if cluster_is_rounded:
+            if not base_complete:
+                tone_warnings = mark_warnings(onset_i, 2, onset)
+                return {"surface": surface, "onset": onset, "onset_class": onset_class,
+                        "onset_form": cluster_row["grapheme"], "onset_ipa": None,
+                        "vowel": None, "coda": None, "tone_mark": tone_mark,
+                        "warnings": ["LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL", *tone_warnings]}
+        elif base_complete and cluster_complete:
+            tone_warnings = mark_warnings(onset_i, 2, onset)
+            return {"surface": surface, "onset": onset, "onset_class": onset_class,
+                    "onset_form": cluster_row["grapheme"], "onset_ipa": None,
+                    "vowel": None, "coda": None, "tone_mark": tone_mark,
+                    "warnings": ["AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY", *tone_warnings]}
+        elif cluster_complete or (cluster_candidate and not base_candidate):
+            selected = cluster_candidate
+            onset_len = 2
+            onset_form = cluster_row["grapheme"]
+            onset_ipa = cluster_row["ipa_initial"]
+            onset_class = cluster_row["class"]
+        elif base_candidate is None and cluster_candidate is not None:
+            selected = cluster_candidate
+            onset_len = 2
+            onset_form = cluster_row["grapheme"]
+            onset_ipa = cluster_row["ipa_initial"]
+            onset_class = cluster_row["class"]
+
+    if selected is None:
+        tone_warnings = mark_warnings(onset_i, onset_len, onset)
         return {"surface": surface, "onset": onset, "onset_class": onset_class,
-                "onset_form": onset_form, "vowel": None, "coda": None,
-                "tone_mark": tone_mark, "warnings": ["VOWEL-STRUCTURE-NOT-ESTABLISHED", *tone_warnings]}
+                "onset_form": onset_form, "onset_ipa": onset_ipa,
+                "vowel": None, "coda": None, "tone_mark": tone_mark,
+                "warnings": ["VOWEL-STRUCTURE-NOT-ESTABLISHED", *tone_warnings]}
 
-    after = s[onset_i + onset_len:]
-    suffix = ""
-    for _, pre, candidate_suffix, vowel_id in STRUCTURES:
-        if vowel_id == vowel["id"] and s[:onset_i] == pre and after.startswith(candidate_suffix):
-            suffix = candidate_suffix
-            break
-    remainder = after[len(suffix):]
-    coda = _find_coda(remainder, registry)
-    warnings = list(tone_warnings)
-    if coda is None and remainder:
-        warnings.append(f"UNCONSUMED_AFTER_VOWEL:{remainder}")
-    if coda is None and vowel["id"] in {"A2", "AWW_SHORT_ALT"}:
-        warnings.append(f"SHORT_VOWEL_REQUIRES_CODA:{vowel['id']}")
-
+    tone_warnings = mark_warnings(onset_i, onset_len, onset)
+    warnings = [*tone_warnings, *selected["warnings"]]
     return {"surface": surface, "onset": onset, "onset_class": onset_class,
-            "onset_form": onset_form, "vowel": vowel, "coda": coda,
+            "onset_form": onset_form, "onset_ipa": onset_ipa,
+            "vowel": selected["vowel"], "coda": selected["coda"],
             "tone_mark": tone_mark, "warnings": warnings}

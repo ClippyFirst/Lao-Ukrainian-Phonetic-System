@@ -1,7 +1,7 @@
 # Limitations and unresolved questions
 
 1. **Unspaced multi-syllable text.** The current public parser accepts explicit syllable/phrase chunks and ZWSP boundaries. Full automatic syllable segmentation is not yet a validated lexical parser.
-2. **Initial clusters.** Lao permits restricted initial clusters and high-class consonant sequences. These require a dedicated cluster model rather than treating every second consonant as a coda.
+2. **Initial clusters.** The restricted modern labialized onset inventory and silent high-class `ຫ` sequences are now modeled in the canonical parser and browser engine. The eleven grapheme forms cover eight source-listed `ʷ` onsets; rounded-vowel clusters are rejected, and `Cວາ` overlap between a labialized onset + AA and the UO-long-open rhyme is withheld as ambiguous. No Ukrainian target correspondence is yet registered for `ʷ` IPA sequences, so these remain IPA-only (`EVIDENCE LIMITED`). The parser does not claim automatic lexical disambiguation of every unmarked `Cວ` sequence.
 3. **ໜ/ໝ.** Unicode defines these as sequences corresponding to [h]+[n]/[m] with special tonal implications. The repository currently preserves them structurally but does not claim a complete independent tonal grammar for every such form.
 4. **Pali/Sanskrit.** Extended letters and virama are registered separately but are not part of the modern-Lao core output model.
 5. **Tone contours.** The five-tone Vientiane system is well supported, but exact contour notation varies among descriptions.

@@ -53,9 +53,9 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.practical_ukrainian, "дуанг")
 
     def test_open_uo_spelling(self):
-        s = analyze("ກວາງ").syllables[0]
-        self.assertEqual(s.phonemic_ipa, "kuːəŋ")
-        self.assertEqual(s.practical_ukrainian, "куанг")
+        s = analyze("ດວາງ").syllables[0]
+        self.assertEqual(s.phonemic_ipa, "duːəŋ")
+        self.assertEqual(s.practical_ukrainian, "дуанг")
 
     def test_medial_o_vowel(self):
         s = analyze("ຈອກ").syllables[0]

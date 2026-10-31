@@ -21,6 +21,8 @@ def analyze(text: str) -> Analysis:
         parsed = parse_syllable(surface)
         local_warnings = list(parsed.get("warnings", []))
         ipa, rules, tone_status, tone = phonologize(parsed)
+        if parsed.get("onset_ipa"):
+            rules = [*rules, f"ONSET-CLUSTER:{parsed.get('onset_form')}"]
 
         # An unconsumed source suffix means the parser did not establish the
         # whole orthographic unit. Never let a valid onset/vowel prefix become
@@ -37,7 +39,11 @@ def analyze(text: str) -> Analysis:
         malformed_tone_mark_order = any(
             warning.startswith("MALFORMED_TONE_MARK_") for warning in local_warnings
         )
-        structural_uncertainty = unconsumed or short_vowel_missing_coda
+        onset_cluster_uncertainty = any(
+            warning in {"AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY", "LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL"}
+            for warning in local_warnings
+        )
+        structural_uncertainty = unconsumed or short_vowel_missing_coda or onset_cluster_uncertainty
         if structural_uncertainty or multiple_tone_marks or malformed_tone_mark_order:
             # Once the written unit is structurally uncertain, a previously
             # matched tone rule is not evidence for this malformed surface.
@@ -59,6 +65,9 @@ def analyze(text: str) -> Analysis:
                 rules.append("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY")
             if short_vowel_missing_coda:
                 rules.append("PHON-IPA-WITHHELD-SHORT-VOWEL-CODA-REQUIRED")
+            if onset_cluster_uncertainty:
+                rules.append("PHON-IPA-WITHHELD-ONSET-CLUSTER-UNCERTAINTY")
+                rules.append("PHON-TONE-WITHHELD-ONSET-CLUSTER-UNCERTAINTY")
         if multiple_tone_marks:
             rules = [*rules, "PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS",
                      "PHON-TONE-WITHHELD-MULTIPLE-TONE-MARKS"]
