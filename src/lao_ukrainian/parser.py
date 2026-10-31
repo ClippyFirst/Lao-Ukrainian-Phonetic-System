@@ -190,9 +190,9 @@ def parse_syllable(surface: str):
 
     if cluster_row:
         cluster_candidate = _vowel_candidate(s, onset_i, 2, registry)
-        rounded_vowels = {"u", "uː", "uə", "uːə", "o", "oː", "ɔ", "ɔː"}
+        rounded_vowels = ("u", "o", "ɔ")
         cluster_is_rounded = bool(
-            cluster_candidate and cluster_candidate["vowel"]["ipa"] in rounded_vowels
+            cluster_candidate and cluster_candidate["vowel"]["ipa"].startswith(rounded_vowels)
         )
         base_complete = bool(base_candidate and base_candidate["complete"])
         cluster_complete = bool(cluster_candidate and cluster_candidate["complete"])
