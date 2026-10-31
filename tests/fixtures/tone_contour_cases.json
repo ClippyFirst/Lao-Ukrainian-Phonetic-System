@@ -255,39 +255,39 @@
       "status": "ANALYSIS DEPENDENT"
     },
     {
-      "id": "LIVE-HIGH-CLASS-AI",
+      "id": "LIVE-MIDDLE-CLASS-AI",
       "surface": "ໄກ",
       "tone": "low-rising",
       "tone_contour": "˩˥",
-      "ipa": "kʰai",
-      "ukrainian": "к'ай",
+      "ipa": "kai",
+      "ukrainian": "кай",
       "status": "ESTABLISHED"
     },
     {
-      "id": "LIVE-HIGH-CLASS-AI2",
+      "id": "LIVE-MIDDLE-CLASS-AI2",
       "surface": "ໃກ",
       "tone": "low-rising",
       "tone_contour": "˩˥",
-      "ipa": "kʰai",
-      "ukrainian": "к'ай",
+      "ipa": "kai",
+      "ukrainian": "кай",
       "status": "ESTABLISHED"
     },
     {
-      "id": "LIVE-HIGH-CLASS-AI-MAI-EK",
+      "id": "LIVE-MIDDLE-CLASS-AI-MAI-EK",
       "surface": "ໄກ່",
       "tone": "high-mid",
       "tone_contour": "˧",
-      "ipa": "kʰai",
-      "ukrainian": "к'ай",
+      "ipa": "kai",
+      "ukrainian": "кай",
       "status": "ESTABLISHED"
     },
     {
-      "id": "DEAD-HIGH-CLASS-AI-MAI-EK",
+      "id": "DEAD-MIDDLE-CLASS-AI-MAI-EK",
       "surface": "ໄກ່ບ",
       "tone": null,
       "tone_contour": null,
-      "ipa": "kʰaip",
-      "ukrainian": "к'айп",
+      "ipa": "kaip",
+      "ukrainian": "кайп",
       "status": "ANALYSIS DEPENDENT"
     },
     {
