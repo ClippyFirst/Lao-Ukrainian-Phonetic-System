@@ -32,6 +32,9 @@ The primary pipeline is:
 - Distinguish project policy from established Lao phonology and from an official Ukrainian standard. Do not invent sources, IPA, lexical examples, benchmark scores, accuracy, or licensing permissions.
 - Shared regression fixtures are engineering tests, not an independently adjudicated gold corpus. Keep empirical accuracy null while independent gold is absent.
 - Canonical linguistic registries live in `data/lao/*.csv`. Regenerate `web/data.js` with the project generator; do not hand-edit generated data. Keep Python and browser behavior aligned through shared fixtures and parity tests.
+- In the Vientiane-oriented tone model, written tone-mark selectors apply only to live/open syllables. `mai ti` (`໊`) and `mai catawa` (`໋`) are rare and restricted to middle-class onsets in the documented reference.
+- Do not infer live/dead class from the `length` label alone: use canonical `nucleus_type` and `coda_class` as well. Open diphthong rhymes and the nasal-final `AM` rhyme are live; a stop coda remains dead. Preserve phonetic IPA length independently from this structural classification.
+- The shared tone fixture is consumed by both Python and browser suites. Extend it when changing tone selectors, vowel rhyme classification, or cross-runtime behavior.
 
 ## Verification commands
 
