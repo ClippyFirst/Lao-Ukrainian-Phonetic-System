@@ -1,0 +1,12 @@
+grapheme,base,ipa_initial,class,status,source_id,claim_id,notes
+ຖວ,ຖ,tʷʰ,high,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"High-class spelling of the labialized aspirated alveolar onset."
+ທວ,ທ,tʷʰ,low,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Low-class spelling of the labialized aspirated alveolar onset."
+ຈວ,ຈ,tɕʷ,middle,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Middle-class spelling of the labialized palatal affricate onset."
+ກວ,ກ,kʷ,middle,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Middle-class spelling of the labialized velar stop onset."
+ຂວ,ຂ,kʷʰ,high,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"High-class spelling of the labialized aspirated velar onset."
+ຄວ,ຄ,kʷʰ,low,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Low-class spelling of the labialized aspirated velar onset."
+ອວ,ອ,ʔʷ,middle,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Middle-class glottal carrier with labialization; explicit cluster IPA overrides silent-carrier behavior."
+ສວ,ສ,sʷ,high,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"High-class spelling of the labialized sibilant onset."
+ຊວ,ຊ,sʷ,low,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Low-class spelling of the labialized sibilant onset."
+ງວ,ງ,ŋʷ,low,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Low-class spelling of the labialized velar nasal onset."
+ລວ,ລ,lʷ,low,well-supported,SRC-ISHIDA-ORTHO-2026,CLM-LAO-LABIALIZED-ONSETS,"Low-class spelling of the labialized lateral approximant onset."
