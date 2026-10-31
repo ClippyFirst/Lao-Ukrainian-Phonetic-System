@@ -68,3 +68,12 @@ test("public research status reflects the merged 2026-10-31 implementation", asy
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
   assert.match(methodology, /accuracy.{0,20}null/i);
 });
+
+test("methodology tables that scroll horizontally are keyboard-focusable and named", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  const tables = [...methodology.matchAll(/<table\b([^>]*)>/g)].map((match) => match[1]);
+  assert.equal(tables.length, 3);
+  const scrollableTables = tables.filter((attributes) => /tabindex="0"/.test(attributes));
+  assert.equal(scrollableTables.length, 2);
+  assert.ok(scrollableTables.every((attributes) => /aria-label="[^"]+"/.test(attributes)));
+});
