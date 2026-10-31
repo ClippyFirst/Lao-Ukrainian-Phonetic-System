@@ -2,16 +2,43 @@
   "schema_version": 1,
   "purpose": "Unicode-order regression controls for Lao tone marks. These verify the orthographic storage contract, not pronunciation gold.",
   "valid": [
-    {"id":"MARK-AFTER-BASE-BEFORE-SPACING-VOWEL","surface":"ກ່າ"},
-    {"id":"MARK-AFTER-SUPERSCRIPT-VOWEL","surface":"ກິ່"},
-    {"id":"MARK-BEFORE-AM-SPACING-LETTER","surface":"ກ່ຳ"},
-    {"id":"MARK-ON-LABIALIZED-SECOND-LETTER","surface":"ກວ້າງ"},
-    {"id":"MARK-ON-SILENT-H-DIGRAPH-SECOND-LETTER","surface":"ຫຍ້າ"}
+    {
+      "id": "MARK-AFTER-BASE-BEFORE-SPACING-VOWEL",
+      "surface": "ກ່າ"
+    },
+    {
+      "id": "MARK-AFTER-SUPERSCRIPT-VOWEL",
+      "surface": "ກິ່"
+    },
+    {
+      "id": "MARK-BEFORE-AM-SPACING-LETTER",
+      "surface": "ກ່ຳ"
+    },
+    {
+      "id": "MARK-ON-LABIALIZED-SECOND-LETTER",
+      "surface": "ຂວັ່ນ"
+    },
+    {
+      "id": "MARK-ON-SILENT-H-DIGRAPH-SECOND-LETTER",
+      "surface": "ຫຍ້າ"
+    }
   ],
   "invalid": [
-    {"id":"MARK-BEFORE-SUPERSCRIPT-VOWEL","surface":"ກ່ິ"},
-    {"id":"MARK-AFTER-AM","surface":"ກຳ່"},
-    {"id":"MARK-AFTER-CODA","surface":"ກາງ່"},
-    {"id":"MARK-BEFORE-ONSET","surface":"່ກາ"}
+    {
+      "id": "MARK-BEFORE-SUPERSCRIPT-VOWEL",
+      "surface": "ກ່ິ"
+    },
+    {
+      "id": "MARK-AFTER-AM",
+      "surface": "ກຳ່"
+    },
+    {
+      "id": "MARK-AFTER-CODA",
+      "surface": "ກາງ່"
+    },
+    {
+      "id": "MARK-BEFORE-ONSET",
+      "surface": "່ກາ"
+    }
   ]
 }
