@@ -35,8 +35,8 @@ class TestLaoLabializedOnsets(unittest.TestCase):
                 self.assertEqual(syllable.status, "EVIDENCE LIMITED")
                 self.assertIn(f"ONSET-CLUSTER:{case['onset_form']}", syllable.rules)
 
-    def test_attested_spelling_is_structurally_recognized_without_claiming_gold(self):
-        for case in self.fixture["attested_spelling_controls"]:
+    def test_constructed_cluster_control_is_structurally_recognized_without_gold(self):
+        for case in self.fixture["constructed_cluster_controls"]:
             with self.subTest(case=case["id"]):
                 parsed = parse_syllable(case["surface"])
                 self.assertEqual(parsed["onset_form"], case["onset_form"])
