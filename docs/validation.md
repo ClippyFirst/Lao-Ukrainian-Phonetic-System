@@ -286,3 +286,7 @@ The post-merge `push` workflow and Pages deployment are not verified in this exe
 ### PR #74 exact-head verification
 
 PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190577692) passed on `56436f6f980bf7eceb148b9d7d32f935f6325d3f`: audit, Python 97, browser 47, romanization 19, syllable crosswalk 27, web layout 6, optional G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. This reruns the full suite on the merged PR #73 code with the unused-import cleanup. Post-merge push/Pages run evidence remains unconfirmed.
+
+### PR #74 merge state
+
+PR #74 merged by squash as `2c53e174b2bc36f56b15efe84c350a5941ff0a82`. The exact PR-head verification [41190649502](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190649502) passed 196 tests and all build/data checks. PR #74 changed no Pages-triggering paths; the expected Pages deployment after PR #73 remains unverified. Exact post-merge `main` verification is also unconfirmed.
