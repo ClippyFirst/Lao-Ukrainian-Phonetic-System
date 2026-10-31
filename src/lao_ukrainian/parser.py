@@ -26,10 +26,9 @@ HIGH_DIGRAPHS = {
 # A tone mark on the second letter of a documented onset sequence is also
 # valid (e.g. ຫຍ້າ and ກວ້າງ).
 VOWEL_COMBINING_MARKS = set("ັິີຶືຸູົໍ")
-LABIALIZED_ONSET_BASES = set("ຖທຈກຂຄອສຊງລ")
 
 
-def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset) -> list[str]:
+def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset, registry: dict | None = None) -> list[str]:
     positions = [i for i, ch in enumerate(surface) if ch in TONE_MARKS]
     if not positions:
         return []
@@ -37,13 +36,14 @@ def _tone_mark_order_warnings(surface: str, onset_i, onset_len, onset) -> list[s
         return ["MALFORMED_TONE_MARK_POSITION"]
 
     onset_boundary = onset_i + onset_len
+    labialized_bases = {row["base"] for row in (registry or load_registry())["onset_clusters"].values()}
     warnings = []
     for index in positions:
         after_onset = index == onset_boundary
         after_labialized_second = (
             index == onset_boundary + 1
             and surface[onset_boundary:onset_boundary + 1] == "ວ"
-            and onset in LABIALIZED_ONSET_BASES
+            and onset in labialized_bases
         )
         after_combining_vowel = index > 0 and surface[index - 1] in VOWEL_COMBINING_MARKS
         if any(ch in VOWEL_COMBINING_MARKS for ch in surface[index + 1:]):
@@ -171,7 +171,7 @@ def parse_syllable(surface: str):
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
 
     if onset is None:
-        tone_warnings = _tone_mark_order_warnings(surface, onset_i, onset_len, onset)
+        tone_warnings = _tone_mark_order_warnings(surface, onset_i, onset_len, onset, registry)
         return {"surface": surface, "onset": None, "vowel": None, "coda": None,
                 "tone_mark": tone_mark, "warnings": ["NO-MODERN-LAO-ONSET", *tone_warnings]}
 
@@ -199,7 +199,7 @@ def parse_syllable(surface: str):
 
         if cluster_is_rounded:
             if not base_complete:
-                tone_warnings = _tone_mark_order_warnings(surface, onset_i, 2, onset)
+                tone_warnings = _tone_mark_order_warnings(surface, onset_i, 2, onset, registry)
                 return {"surface": surface, "onset": onset, "onset_class": onset_class,
                         "onset_form": cluster_row["grapheme"], "onset_ipa": None,
                         "vowel": None, "coda": None, "tone_mark": tone_mark,
