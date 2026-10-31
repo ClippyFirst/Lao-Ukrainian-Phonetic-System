@@ -784,3 +784,12 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - The user-approved product contract is two separate methods: orthographic romanization-based Ukrainian rendering and IPA-first phonetic Ukrainian rendering. Romanization cannot be used to invent IPA/tone/length; phonetic output may remain PARTIAL/UNSUPPORTED.
 - Current task statuses: LAO-ROM-STD-001 DONE_VERIFIED (source review); LAO-ROM-MATRIX-001 PARTIAL; LAO-ROM-COVERAGE-001 PARTIAL; LAO-ROM-REVIEW-001 BLOCKED pending specialist review of ambiguous nuclei, loanwords and conventional names.
 - Branch: work/romanization-matrix-completion-20261031. No runtime code changed in this checkpoint; no new test result is claimed.
+
+
+## Final romanization checkpoint — 2026-10-31
+
+- Final audit register updated with PR #79 merge SHA b99733814f4b322df230ac66dade236593e24035.
+- Main verification [41228957865](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228957865) passed after the documentation merge.
+- Pages is live at https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/; last verified deployment run [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) deployed commit 550d1d63b31965e68b40f30cd5099601ab203ec8. PR #79 was docs-only and did not require a new runtime deployment.
+- The existing syllable-level romanization adapter and tests were preserved. No runtime code or phonetic behavior was changed in this continuation.
+- Remaining: exhaustive source-unit coverage and independent Lao specialist review of ambiguous nuclei, loanwords and conventional names.
