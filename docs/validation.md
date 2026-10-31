@@ -276,3 +276,13 @@ PR #73 exact-head workflow [41190189983](https://github.com/ClippyFirst/Lao-Ukra
 ### Final documentation-state verification
 
 After updating the master handoff, final audit and validation records, exact branch-head verification [41190275031](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190275031) passed on `803d1346b6278c3b25260063931bf72dc4e10457`. All workflow steps passed: repository audit, Python 97, browser 47, romanization integration 19, syllable crosswalk 27, web layout 6, optional external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. This is the final documentation-state check; the Pages deployment remains a post-merge gate.
+
+## PR #73 merge-state verification — 2026-10-31
+
+PR #73 merged to `main` as `0b99fd451507717664a0190dbc3bcfb7069ce15c`. The final PR-head workflow [41190329422](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190329422) passed Python 97, browser 47, romanization integration 19, syllable crosswalk 27, web layout 6, repository audit, optional G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+
+The post-merge `push` workflow and Pages deployment are not verified in this execution. The GitHub connector's workflow-run listing only exposes PR-triggered runs; the merge commit has no classic status entries; Firecrawl had insufficient credits; and the public Pages URL could not be fetched. Do not claim deployment success from PR CI or the older Pages run. See `LAO-POSTMERGE-VERIFY-001` in the master handoff for the exact remaining acceptance criteria.
+
+### PR #74 exact-head verification
+
+PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190577692) passed on `56436f6f980bf7eceb148b9d7d32f935f6325d3f`: audit, Python 97, browser 47, romanization 19, syllable crosswalk 27, web layout 6, optional G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. This reruns the full suite on the merged PR #73 code with the unused-import cleanup. Post-merge push/Pages run evidence remains unconfirmed.

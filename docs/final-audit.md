@@ -159,3 +159,13 @@ The same shared 37-case tone fixture is consumed by Python and browser tests. It
 ### Final documentation-state verification — 2026-10-31
 
 The final PR #73 branch head `803d1346b6278c3b25260063931bf72dc4e10457`, including the updated handoff and audit records, passed exact-head verification [41190275031](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190275031). Repository audit, Python 97, browser 47, romanization 19, syllable crosswalk 27, web layout 6, optional G2P harness syntax/CLI, production build, generated-data reproducibility and built-page/relative-asset checks all passed. Total: 196 deterministic engineering tests. A post-merge exact-main run and Pages deployment are still required.
+
+## PR #73 merge and deployment verification — 2026-10-31
+
+PR #73 merged to `main` as `0b99fd451507717664a0190dbc3bcfb7069ce15c`. Its final PR-head workflow [41190329422](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190329422) passed 196 deterministic tests, repository audit, build, generated-data reproducibility and built-page/relative-asset checks.
+
+Post-merge `main` verification and Pages deployment are **unconfirmed**, not failed: the available GitHub connector only exposes PR-triggered workflow runs; the combined classic commit status had no entries; Firecrawl reported insufficient credits; and the public Pages URL could not be fetched through the available web reader. The prior Pages deployment run [41188708689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41188708689) predates the new browser/rhyme data and cannot verify this update. Acceptance remains: confirm main verify, Pages build+deploy, and the public `index.html`/`system.html` content.
+
+### PR #74 hygiene and handoff verification
+
+PR #74 removes two unused imports left by the fixture-test refactor and reconciles the master handoff with PR #73's merge. Exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41190577692) passed on `56436f6f980bf7eceb148b9d7d32f935f6325d3f`: repository audit, Python 97, browser 47, romanization 19, syllable crosswalk 27, web layout 6, optional G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. This is PR-head verification, not post-merge `main`/Pages evidence.
