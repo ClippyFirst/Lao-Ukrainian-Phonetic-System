@@ -1019,7 +1019,7 @@ The following current statuses supersede older checkpoint rows above where they 
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| IPA-GOLD-SCHEMA-001 | DONE_VERIFIED | Four versioned JSON Schemas; empty JSONL templates; validator and regression tests in exact-head CI |
+| IPA-GOLD-SCHEMA-001 | DONE_VERIFIED | Five versioned JSON Schemas; empty JSONL templates; validator and regression tests in exact-head CI |
 | IPA-GOLD-DOUBLE-ANNOTATION-001 | PARTIAL | Enforces two distinct annotators and third independent adjudicator; actual blind collection needs qualified human annotators and a controlled intake channel |
 | IPA-GOLD-ADJUDICATION-001 | PARTIAL | Agreement/resolved/unresolved semantics and rationale validation implemented; no real adjudicated rows exist |
 | IPA-GOLD-SPLIT-001 | DONE_VERIFIED | Deterministic SHA-256 split assignment, preserves frozen assignments, prevents lexeme-group leakage; current manifest empty |
@@ -1051,7 +1051,7 @@ The rights registry does not itself grant permission. Each real source still nee
 
 - IPA-GOLD-SCHEMA-001 remains DONE_VERIFIED (mechanism), now with runtime/schema parity checks: closed object properties, mandatory annotation notes, string uncertainty arrays, ISO dates and optional field types.
 - IPA-TYPED-BENCHMARK-001 remains DONE_VERIFIED (mechanism): adjudicated gold requires a valid IPA kind; missing/different prediction kinds cannot score as exact matches or enter CER.
-- Ueda (1994) supports the five-category central Vientiane tone baseline and rhyme structure. Erickson (2001) argues Lao labialized consonants are unit phonemes; this supports preserving /kʷ/ as a typed segment, not rendering it as a confirmed Ukrainian sequence.
+- Ueda (1994) supports the five-category central Vientiane tone baseline and rhyme structure. Erickson (1996) argues Lao labialized consonants are unit phonemes; this supports preserving /kʷ/ as a typed segment, not rendering it as a confirmed Ukrainian sequence.
 - Independent expert gold remains 0; gold.tsv remains header-only. No IPA entries or Ukrainian labialized-onset mappings were invented.
 
 
