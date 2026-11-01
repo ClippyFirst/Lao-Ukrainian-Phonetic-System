@@ -415,9 +415,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
 
 def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
     minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test}
-    if any(value <= 0 for value in minimums.values()):
-        raise ValueError("release gate minimums must be positive integers")
     problems = []
+    if any(value <= 0 for value in minimums.values()):
+        problems.append("release gate minimums must be positive integers")
     adjudicated = data["adjudicated"]
     if not adjudicated:
         problems.append("no independently adjudicated IPA records")
