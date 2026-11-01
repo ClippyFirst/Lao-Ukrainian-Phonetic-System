@@ -178,7 +178,7 @@ def test_probe_preserves_upstream_dictionary_randomization_metadata():
 
 def test_report_counts_randomized_inputs_without_scoring_accuracy(tmp_path):
     fixture = tmp_path / "probes.txt"
-    fixture.write_text("word\\n", encoding="utf-8")
+    fixture.write_text("word\n", encoding="utf-8")
     record = {
         "input": "word", "status": "OK", "raw_response": "{}",
         "phonetic_tokens": ["wɜːd"], "error": None,
@@ -252,7 +252,7 @@ def test_probe_and_report_separate_complete_from_partial_source_coverage(tmp_pat
         {"word_index": 0, "field": "PrePunct", "text": "បេះបិ"}
     ]
     fixture = tmp_path / "probes.txt"
-    fixture.write_text("បេះបិទ\\n", encoding="utf-8")
+    fixture.write_text("បេះបិទ\n", encoding="utf-8")
     report = MODULE.build_report(
         ["បេះបិទ"], [record], language="Khmer", engine_commit="test",
         input_path=fixture, input_sha256="sha", base_url="http://127.0.0.1:18080",
@@ -285,7 +285,7 @@ def test_source_attested_match_is_rejected_when_response_only_covers_a_suffix(tm
             "http://127.0.0.1:18080", "KhmerCentral", "បេះបិទ", 1.0, 1, repeat_count=3,
         )
     fixture = tmp_path / "source.csv"
-    fixture.write_text("orth,ipa\\nបេះបិទ,t\\n", encoding="utf-8")
+    fixture.write_text("orth,ipa\nបេះបិទ,t\n", encoding="utf-8")
     inputs = MODULE.load_inputs(fixture, input_format="csv", text_column="orth", expected_column="ipa")
     report = MODULE.build_report(
         inputs, [record], language="Khmer", engine_commit="test",
