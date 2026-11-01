@@ -106,3 +106,10 @@ A current, small Lao audio candidate is now documented in `docs/ipa-gold-collect
 **Ruling:** treat this as supplementary contextual audio and candidate discovery, not as the 30-item citation-form lexical gold source. The catalog does not prove Vientiane variety. Citation-form gold should use consented recordings from confirmed target-variety speakers unless manifest review establishes a suitable sample. Keep source clip IDs and time locators; do not infer IPA from transcripts or model output.
 
 Status remains `LAO-GOLD-001 = BLOCKED`: no annotations, annotators or adjudications have been created. Independent gold remains 0 and accuracy remains null.
+
+
+## Common Voice v27.0 manifest verified — 2026-11-01
+
+The official release manifest `cv-corpus-27.0-2026-09-11.json` has been inspected (https://github.com/common-voice/cv-dataset/blob/main/datasets/scripted-speech/cv-corpus-27.0-2026-09-11.json). Lao metadata: 223 clips, 193 validated clips, 16 contributor IDs, 0.35 validated hours (0.40 total). No named accent or variant category is supplied. Gender metadata is 88.79% male / 11.21% unspecified. Locale checksum in the manifest: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260b6`.
+
+This confirms the archive is small and profile metadata is insufficient to establish Vientiane speech. Common Voice remains a supplementary contextual source, not citation-form lexical IPA gold. The 30-item pilot can use it only if 30 suitable tokens are found and a specialist accepts the profile; otherwise use controlled elicitation. No data imported; `LAO-GOLD-001` remains `BLOCKED`, gold 0, accuracy null.
