@@ -10,8 +10,9 @@ import argparse, csv, json, unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id"]
-PRED_FIELDS = ["id", "engine", "raw_output", "ipa", "status", "version"]
+GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind"]
+PRED_FIELDS = ["id", "engine", "raw_output", "ipa", "status", "version", "ipa_kind"]
+IPA_KINDS = {"PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW"}
 
 def read_tsv(path: Path, required: list[str]) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
@@ -58,6 +59,8 @@ def main() -> int:
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires source_id")
             if not row["profile"].strip():
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires profile")
+            if row["ipa_kind"].strip() not in IPA_KINDS:
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires valid ipa_kind")
     eligible = {k: v for k, v in gold.items()
                 if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
     predictions = defaultdict(dict)
@@ -77,7 +80,7 @@ def main() -> int:
             "gold_gate": "gold_status == ADJUDICATED and non-empty gold_ipa",
             "normalization": "Unicode NFC plus outer whitespace trim only",
             "exact_match": "strict full-string IPA match; tone, length and syllable separators remain significant",
-            "cer": "Levenshtein over Unicode code points; not articulatory/feature-weighted",
+            "cer": "Levenshtein over Unicode code points only for rows with matching IPA representation kind; not articulatory/feature-weighted",
             "missing_predictions": "every eligible gold row is in each engine's denominator; absent/empty IPA counts as a missing prediction and incurs reference-length edit cost",
             "accuracy_claim": "descriptive only for the supplied adjudicated rows; no generalization claim",
         },
@@ -92,27 +95,40 @@ def main() -> int:
             pred = predictions[engine].get(ident)
             ref = norm(g["gold_ipa"])
             p = norm(pred["ipa"]) if pred else ""
+            gold_kind = g.get("ipa_kind", "").strip()
+            prediction_kind = pred.get("ipa_kind", "").strip() if pred else ""
+            ipa_kind_mismatch = bool(p and prediction_kind != gold_kind)
             rows.append({
                 "id": ident, "profile": g["profile"],
-                "exact_match": bool(p) and p == ref,
+                "exact_match": bool(p) and p == ref and not ipa_kind_mismatch,
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
-                "edit_distance": distance(ref, p) if p else len(ref),
+                "edit_distance": distance(ref, p) if p and not ipa_kind_mismatch else len(ref) if not p else None,
                 "reference_codepoints": len(ref),
                 "raw_output_present": bool(pred and pred["raw_output"]),
                 "status": pred["status"] if pred else "MISSING_ROW",
                 "version": pred["version"] if pred else "",
+                "source_id": g.get("source_id", ""),
+                "gold_license_id": g.get("license_id", ""),
+                "rights_evidence_locator": g.get("rights_evidence_locator", ""),
+                "gold_ipa_kind": gold_kind,
+                "prediction_ipa_kind": prediction_kind,
+                "ipa_kind_mismatch": ipa_kind_mismatch,
             })
         n = len(rows)
-        edits = sum(r["edit_distance"] for r in rows)
-        chars = sum(r["reference_codepoints"] for r in rows)
+        comparable_rows = [r for r in rows if not r["ipa_kind_mismatch"]]
+        edits = sum(r["edit_distance"] for r in comparable_rows)
+        chars = sum(r["reference_codepoints"] for r in comparable_rows)
         report["engines"][engine] = {
             "n_adjudicated_gold_rows": n,
             "exact_matches": sum(r["exact_match"] for r in rows),
+            "ipa_kind_mismatches": sum(r["ipa_kind_mismatch"] for r in rows),
             "exact_match_rate": sum(r["exact_match"] for r in rows) / n if n else None,
             "missing_predictions": sum(r["missing_prediction"] for r in rows),
             "missing_prediction_rate": sum(r["missing_prediction"] for r in rows) / n if n else None,
             "codepoint_cer": edits / chars if chars else None,
+            "codepoint_cer_comparable_rows": len(comparable_rows),
+            "codepoint_cer_excluded_type_mismatch_rows": sum(r["ipa_kind_mismatch"] for r in rows),
             "profiles": sorted({r["profile"] for r in rows if r["profile"]}),
             "versions": sorted({r["version"] for r in predictions[engine].values() if r["version"]}),
             "rows": rows,

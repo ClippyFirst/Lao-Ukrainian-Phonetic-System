@@ -1,0 +1,26 @@
+name: IPA gold release gate
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adjudicated-gold:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Validate provenance, double annotation and adjudication
+        run: python scripts/ipa_gold_corpus.py validate --language lao
+      - name: Require frozen, redistributable train/dev/test gold
+        run: python scripts/ipa_gold_corpus.py gate --language lao --min-train 100 --min-dev 25 --min-test 25
+      - name: Export adjudicated IPA only
+        run: python scripts/ipa_gold_corpus.py export-gold --language lao --output "$RUNNER_TEMP/ipa-gold.tsv"
+      - name: Validate exported benchmark contract
+        run: python scripts/benchmark_ipa.py --gold "$RUNNER_TEMP/ipa-gold.tsv" --predictions data/benchmark/predictions.tsv --output "$RUNNER_TEMP/ipa-benchmark.json"

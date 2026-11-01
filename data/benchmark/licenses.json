@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "licenses": {
+    "CC0-1.0": {
+      "redistributable": true,
+      "commercial_use": true,
+      "attribution_required": false,
+      "share_alike": false,
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    "CC-BY-4.0": {
+      "redistributable": true,
+      "commercial_use": true,
+      "attribution_required": true,
+      "share_alike": false,
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "CC-BY-SA-4.0": {
+      "redistributable": true,
+      "commercial_use": true,
+      "attribution_required": true,
+      "share_alike": true,
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    "PROJECT-CREATED": {
+      "redistributable": false,
+      "commercial_use": null,
+      "attribution_required": null,
+      "share_alike": null,
+      "url": null,
+      "note": "Not redistributable until the owner approves a corpus license and documented contributor permissions."
+    },
+    "CC-BY-NC-SA-4.0": {
+      "redistributable": false,
+      "commercial_use": false,
+      "attribution_required": true,
+      "share_alike": true,
+      "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+    },
+    "RESTRICTED": {
+      "redistributable": false,
+      "commercial_use": false,
+      "attribution_required": null,
+      "share_alike": null,
+      "url": null
+    },
+    "UNKNOWN": {
+      "redistributable": false,
+      "commercial_use": false,
+      "attribution_required": null,
+      "share_alike": null,
+      "url": null
+    }
+  }
+}

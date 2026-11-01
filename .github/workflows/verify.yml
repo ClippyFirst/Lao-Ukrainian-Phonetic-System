@@ -11,10 +11,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+      - name: Validate independent IPA gold corpus structure
+        run: python scripts/ipa_gold_corpus.py validate --language lao
       - name: Repository data and evidence audit
         run: python scripts/audit.py
       - name: Python tests
@@ -23,7 +25,7 @@ jobs:
         run: |
           python -m py_compile scripts/compare_external_g2p.py
           PYTHONPATH=src python scripts/compare_external_g2p.py --help >/dev/null
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
       - name: Browser engine tests

@@ -1,3 +1,40 @@
+# Master execution plan and chat handoff — Lao → Ukrainian
+
+**Current checkpoint:** 2026-11-02  
+**Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
+**Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
+**Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
+**Branch comparison at this checkpoint:** 98 commits ahead of main, 0 behind.
+**Exact-head methodology verification:** [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) SUCCESS; optional diagnostics [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) SUCCESS.
+**Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
+
+## Current task ledger and next blocker
+
+- **DONE_VERIFIED (engineering):** independent IPA corpus schemas, runtime validation, deterministic split/rights gates, source/evidence documentation, and exact-head automated engineering checks are present on the active branch. This is not linguistic validation.
+- **PARTIAL:** source-language phonology, IPA conventions, and Ukrainian target adaptation remain bounded by the language-specific evidence matrices and unresolved cases.
+- **BLOCKED:** the 30-lexeme blind pilot cannot start until the target variety/profile and IPA convention are approved, two qualified independent annotators and a separate adjudicator are confirmed, rights-cleared source packets are prepared, and the blind intake dry-run passes.
+- **TODO:** manual deployed-site visual, keyboard, assistive-technology, and mobile QA.
+- **Next actionable human milestone:** resolve the recruitment and convention checklist in [issue #99](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/99) and follow [the controlled acquisition protocol](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/feat/ipa-gold-corpus-20261101-review/docs/ipa-gold-collection-playbook.md).
+
+No local checkout was available for this checkpoint; do not interpret hosted CI as local test execution, expert adjudication, visual QA, or release approval. Preserve the fail-closed pipeline and do not create IPA/gold labels from model output or unsupported spelling inference.
+
+
+
+## Methodology source refresh — 2026-11-02
+
+The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:
+
+- Superpowers 7.0.1: `obra/superpowers@2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. At GREEN, verify the project suite, not only the narrow test that first went red.
+- mattpocock/skills current main: `d1478fcb140db0b93c0c8df17bcfd311844749d0` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
+- Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
+
+These references guide the method; project-specific linguistic, provenance, privacy, rights, and fail-closed requirements remain authoritative.
+
+**Methodology refresh commit:** `748b84d7c2af7e26191e5d1e12bf875800148a13` on the active review branch. **Exact-head verification:** [PR verify 41356347659](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347659) and [push verify 41356342591](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356342591) SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; [Goruut 41356347649](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347649) and [external G2P 41356347662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347662) SUCCESS.
+
+## Historical records
+
+The dated entries below are retained as audit history. When a historical status or SHA conflicts with this current checkpoint, the active branch ref, completion register, and exact-head workflow run above are authoritative.
 
 ## Lao external G2P mismatch taxonomy — 2026-10-24
 
@@ -5,7 +42,7 @@
 - Categorized pinned run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427): 36 engineering cases, 0 runtime errors, 0/36 exact implementation agreement, independent gold=0, accuracy=null. Categories: 29 tone-suffix-only, 2 offglide-convention, 4 segmental/vowel-sequence, 1 tone+length. Durable report: `data/benchmark/runs/external-g2p-smoke-2026-10-24.json`; artifact ZIP SHA-256 `a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8`.
 - The category labels are heuristic review hints only. Lao tone may be contrastive, so tone-suffix differences are not automatically harmless. Prioritize source-located adjudication of tone convention and the four segmental/vowel-sequence cases.
 - Unit tests for the classifier passed on the previous branch head; full current-branch CI and optional comparison are required before merge. No accuracy or engine winner is claimed.
-# Master execution plan and chat handoff
+## Historical master handoff snapshot — 2026-10-31
 
 Last reviewed: 2026-10-31
 Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
@@ -988,3 +1025,239 @@ The latest final-head run [41325409867](https://github.com/ClippyFirst/Lao-Ukrai
 - Final PR-head runtime [41325800728](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41325800728) PASS; artifact [13091306560](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41325800728/artifacts/13091306560), SHA-256 `f7df1f158b51eb08ee8498a334a56a04cb885b7751870d7a824983da84679b65`. The 100-row result: 81 outputs, 19 none; 47 complete, 34 partial, 19 unknown; 68 stable, 13 unstable; 17 randomized inputs; 3 strict all-repeat and 9 any-repeat source-attested matches. The 23 engineering probes: 18 outputs, 5 none; 13 complete, 5 partial, 5 unknown; 9 unstable. The lao2ipa comparison [41325800724](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41325800724) PASS and reports 0/37 exact implementation matches (31 tone-only, 2 offglide, 4 segmental/vowel differences).
 - Goruut runtime-probe harness and exact-head CI: **DONE_VERIFIED**. Production phonology remains **PARTIAL/BLOCKED**: no independent expert-adjudicated Lao IPA gold (0), repeated random homograph selection, missing/partial outputs, and unresolved `weights9.bin.zlib` warning. MekongPhon remains an external source-attested diagnostic, not gold; no permanent data/model import.
 - No local checkout was available in this session; all reported engineering verification is from the exact-head and post-merge GitHub Actions runs. See the runtime audit above for artifact hashes and detailed boundaries.
+
+
+## Linguistic completion register — 2026-11-01
+
+- Current verified `main` baseline: `6f607d7ab4d432fd8491a5fcee32186e4269fc32`; latest exact-main engineering workflow: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41326457758 (success). See the linked current audit register for the verified status and next acceptance criteria: [Linguistic completion register](audits/current/LINGUISTIC-COMPLETION-REGISTER-2026-11-01.md).
+- Reconfirmed `data/benchmark/gold.tsv` contains only its header. Independent expert-adjudicated lexical IPA gold remains **0**; empirical accuracy remains **null**. No external source-attested labels or engine outputs are promoted to gold.
+- The register separates implementable repository work from external expert, primary-source and licensing blockers. Preserve existing canonical plans, registries, tests and generated data; do not create parallel corpora or weaken fail-closed behavior.
+- No local checkout was available for this pass. GitHub Actions provide exact-main engineering evidence only; they do not prove linguistic accuracy, manual accessibility QA or legal permissions.
+## Current master-matrix status override — 2026-11-01
+
+The following current statuses supersede older checkpoint rows above where they conflict; historical evidence remains preserved.
+
+| Task | Current status | Current acceptance boundary |
+|---|---|---|
+| LAO-CORPUS-001 | BLOCKED | Gold TSV is header-only; no independent expert-adjudicated lexical IPA gold; accuracy=null. Requires licensed/source-attributed material, dialect and IPA convention, independent annotation and adjudication. |
+| LAO-PARSER-001 | PARTIAL | Core structural guards are implemented; complete lexical segmentation and exhaustive source-backed coda/cluster coverage remain open. |
+| LAO-VOWEL-001 | PARTIAL | Registry/parser coverage exists; source-level verification of all spelling variants and contexts remains open. |
+| LAO-CODA-001 | PARTIAL | Registered coda cases are tested; inventory-wide source review and disputed representations remain open. |
+| LAO-TONE-001 | PARTIAL | Tone selector contracts and mark-order guards are implemented; dialect-scoped rule adjudication and acoustic contour validation remain open. |
+| LAO-UKR-001 | PARTIAL | IPA-first target mapping exists for a subset; independent expert review and broader adjudicated target examples remain open. |
+| LAO-G2P-001 | DONE_VERIFIED (harness only) | Goruut/other comparisons are diagnostics; no production engine selected and no accuracy claim. |
+| LAO-UI-001 | TODO | Manual deployed visual, keyboard, screen-reader and mobile QA not evidenced by CI. |
+| LAO-RELEASE-001 | DEFERRED | Do not publish a release until P0 linguistic evidence gates close and owner authorizes it. |
+
+
+## IPA gold corpus implementation checkpoint — 2026-11-01
+
+### Current task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| IPA-GOLD-SCHEMA-001 | DONE_VERIFIED | Six versioned JSON Schemas; empty JSONL templates; validator and regression tests in exact-head CI |
+| IPA-GOLD-DOUBLE-ANNOTATION-001 | PARTIAL | Enforces two distinct annotators and third independent adjudicator; actual blind collection needs qualified human annotators and a controlled intake channel |
+| IPA-GOLD-ADJUDICATION-001 | PARTIAL | Agreement/resolved/unresolved semantics and rationale validation implemented; no real adjudicated rows exist |
+| IPA-GOLD-SPLIT-001 | DONE_VERIFIED | Deterministic SHA-256 split assignment, preserves frozen assignments, prevents lexeme-group leakage; current manifest empty |
+| IPA-GOLD-EXPORT-001 | DONE_VERIFIED | Exports only adjudicated, redistributable rows into existing benchmark TSV; current export has header only |
+| IPA-TYPED-BENCHMARK-001 | DONE_VERIFIED | PHONEMIC / PHONETIC_BROAD / PHONETIC_NARROW retained; type mismatch cannot count as exact match |
+| IPA-GOLD-RELEASE-GATE-001 | PARTIAL | Tag/manual workflow requires 100/25/25 adjudicated split rows and rights; owner must require the check in release rulesets/procedure |
+| LAO-TONE-RHYME-RESEARCH-001 | PARTIAL | New Vientiane source-grounded workpack; still needs primary-source table extraction, dialect/audio adjudication and full tone × rhyme evidence matrix |
+| LAO-LABIALIZED-ONSET-001 | BLOCKED | Enfield/Gedney-Hudak analysis conflict needs direct primary-source reconciliation and speaker evidence before choosing /kw/ vs /kʷ/ |
+| LAO-UKRAINIAN-IPA-ADAPTER-001 | PARTIAL | Existing adapter retained; labialized-onset candidates need adjudicated IPA and expert Ukrainian review |
+
+### Evidence boundary
+
+`data/benchmark/records.jsonl`, `annotations.jsonl`, `adjudications.jsonl`, and `splits.jsonl` are empty templates. `gold.tsv` is header-only; independent expert gold=0 and accuracy=null. Ueda (1994) supports a five-category central Vientiane model with phonemic vowel length and nine finals, but does not substitute for lexical expert gold or acoustic speaker coverage. No IPA labels were added.
+
+See [IPA gold protocol](docs/ipa-gold-corpus.md) and [Lao phonology research workpack](docs/audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md).
+
+### Additional rights and export controls
+
+| Task | Status | Acceptance / remaining work |
+|---|---|---|
+| IPA-GOLD-RIGHTS-001 | DONE_VERIFIED (mechanism) | Approved license registry, per-record rights evidence, rejection of unregistered/non-redistributable licenses; legal verification of future source-specific records remains required |
+| IPA-GOLD-PROVENANCE-EXPORT-001 | DONE_VERIFIED | Gold TSV and benchmark rows retain source ID, license ID and rights-evidence locator |
+| IPA-GOLD-BLIND-INTAKE-001 | BLOCKED | Requires external controlled intake; public GitHub history cannot provide blind annotation |
+
+The rights registry does not itself grant permission. Each real source still needs its exact license/permission verified by a responsible curator, and share-alike/attribution terms must be honored in distribution.
+
+
+### 2026-11-01 follow-up — validator and research evidence
+
+- IPA-GOLD-SCHEMA-001 remains DONE_VERIFIED (mechanism), now with runtime/schema parity checks: closed object properties, mandatory annotation notes, string uncertainty arrays, ISO dates and optional field types.
+- IPA-TYPED-BENCHMARK-001 remains DONE_VERIFIED (mechanism): adjudicated gold requires a valid IPA kind; missing/different prediction kinds cannot score as exact matches or enter CER.
+- Ueda (1994) supports the five-category central Vientiane tone baseline and rhyme structure. Erickson (1996) argues Lao labialized consonants are unit phonemes; this supports preserving /kʷ/ as a typed segment, not rendering it as a confirmed Ukrainian sequence.
+- Independent expert gold remains 0; gold.tsv remains header-only. No IPA entries or Ukrainian labialized-onset mappings were invented.
+
+
+### Research artifact — Lao
+
+- [LAO tone–rhyme evidence matrix](docs/audits/current/LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md): source-derived central Vientiane baseline, explicit unknown tone × rhyme cells, unit-labialization evidence and unresolved Ukrainian target mapping.
+- The matrix does not create gold IPA or assert a full tone-mark × coda rule table.
+
+
+## 2026-11-01 implementation and verification closeout
+
+- Starting main SHA: 6f607d7ab4d432fd8491a5fcee32186e4269fc32 (main remains unchanged).
+- Implementation branch: feat/ipa-gold-corpus-20261101-review.
+- Comprehensive PR: [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98); PR-head implementation checkpoint SHA: 3c7050e1589018e2bdacd512b363d83d1905ea6e.
+- PR CI: [verify](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41337403690) SUCCESS — 134 Python tests; Node/browser suites 50 + 23 + 27 + 7 passed; independent-corpus validation, evidence audit, generated-data reproducibility and production build passed.
+- This branch includes the previous documentation-only PR #97 in full; #97 was closed as superseded after its content was verified in #98. No branch was deleted.
+- Existing feature branch feat/independent-ipa-gold-corpus-20261101 was left untouched because its history is substantially broader; the narrower review branch is the PR source.
+- No local checkout was available; all verification claims above are GitHub Actions evidence, not local command runs.
+
+### Final task ledger
+
+- Corpus schemas/runtime validator, license registry, frozen group-safe splits and typed benchmark: DONE_VERIFIED (implementation and CI only).
+- Actual independent expert annotations and adjudicated gold: BLOCKED — no qualified annotators or adjudicated source dataset supplied; gold.tsv remains header-only, gold count 0, accuracy null.
+- Tone × rhyme acoustic coverage and labialized-onset Ukrainian mapping: PARTIAL/BLOCKED — see the Lao evidence matrix; Ueda is one-speaker evidence and conflicts analytically with Erickson on C+w/labialization.
+- Release gate: PARTIAL — count, rights, adjudication and split checks exist and fail closed on empty gold; project owner must require the gate in repository rulesets/release procedure, and feature-coverage thresholds require an expert-approved matrix.
+- Manual UI/accessibility review: TODO.
+
+**Readiness:** research infrastructure is substantially improved; the language system remains a research prototype, not production/release-ready.
+
+
+## 2026-11-01 final IPA-kind consistency verification
+
+- Added fail-closed cross-annotation consistency: both independent annotations for one record must use the same `ipa.kind`, and a `RESOLVED` adjudicated result must preserve that kind. This prevents phonemic-vs-phonetic representation differences from being misclassified as pronunciation disagreements.
+- Regression evidence: both new tests failed against the pre-fix validator on the test-only commit, then passed after the validator change.
+- New task `IPA-GOLD-REPRESENTATION-KIND-001`: **DONE_VERIFIED** (mechanism and exact-head CI). Blindness, annotator qualifications and independent adjudicator competence remain external operational evidence, not properties CI can prove.
+- Final PR head: `0b348d191e93e15b543d95538daccf8490e8239c`; CI run [41338456936](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41338456936) SUCCESS — 137 Python tests; Node/browser suites 50 + 23 + 27 + 7; data/evidence audit, generated-data reproducibility and production build passed.
+- The Lao evidence matrix remains bounded to central/Vientiane source analyses; no automatic labialized-onset Ukrainian mapping was added.
+- Gold remains zero; `gold.tsv` remains header-only; empirical accuracy remains null. No IPA labels were generated.
+
+
+## CI action runtime modernization — 2026-11-01
+
+- Status: `DONE_VERIFIED` (CI maintenance only; no phonological or transcription behavior changed).
+- Updated all five workflow files to the current Node.js 24-compatible major releases: `actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`, `actions/setup-go@v7`, and `actions/upload-artifact@v7`. Existing Pages actions remain at `configure-pages@v6`, `upload-pages-artifact@v5`, and `deploy-pages@v5`.
+- Exact branch head: `622159afec448906be91e79515e761c87ac3e405`.
+- Exact-head verification: [verify run 41339601530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601530) SUCCESS; [optional external-G2P run 41339601524](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601524) SUCCESS; [optional Goruut run 41339601526](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601526) SUCCESS.
+- Verified workflow coverage: 137 Python tests, repository evidence/data audit, browser/Node suites, generated-data reproducibility, production build and built-page/relative-asset checks all passed on the exact head.
+- Local checkout was unavailable; verification evidence is GitHub Actions on the exact branch head. The gold corpus remains empty and empirical accuracy remains unmeasured.
+
+
+## Frozen split-manifest schema parity — 2026-11-01
+
+- Status: `DONE_VERIFIED`.
+- Review found that `assign-splits` accepted unknown properties in existing split rows even though the split JSON Schema is closed; the generator could silently discard those fields when rewriting the manifest.
+- RED evidence: regression `test_assign_splits_rejects_unknown_properties_in_existing_manifest` failed as expected on test-only commit `945c81b4b4ddb4f48517549353f5a3e14b26bcad` ([run 41340243504](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340243504)).
+- GREEN implementation: shared `SPLIT_PROPERTIES` is now used by both cross-file validation and `assign-splits`; the generator rejects unknown fields instead of dropping them. Code commit: `af97613ae959b59825d1cb6c863ad85b3b5a44d2`.
+- Exact-head verification: [PR verify 41340390805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340390805) SUCCESS and [push verify 41340385157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340385157) SUCCESS — 138 Python tests; browser/Node suites, data/evidence audit, generated-data reproducibility and production build passed. Optional external G2P and Goruut checks also passed on this head.
+- Shared implementation and regression test are byte-identical across Lao, Khmer and Burmese branches. No corpus rows or IPA labels were added; independent gold remains zero and accuracy remains null.
+
+
+## Product-corpus license eligibility — 2026-11-01
+
+- Status: `DONE_VERIFIED` (policy enforcement; no source corpus or license grant was changed).
+- Review found that the license registry accepted `redistributable: true` together with `commercial_use: false/null` or unknown attribution/share-alike terms. That could make a non-commercial or legally incomplete entry eligible for the product corpus if the registry were misconfigured.
+- RED evidence: the new runtime and schema-contract tests failed on test-only commit `74b2349e7054950078f8d875103a30972b9bd7be` ([run 41340769858](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340769858)).
+- GREEN implementation: a redistributable license must explicitly set `commercial_use: true` and boolean `attribution_required` + `share_alike`; the JSON Schema now encodes the same conditional rule. Code/schema commit: `9d3cae33d742f86b9b9e741669da892504ef3dee`.
+- Exact-head verification: [PR verify 41340903259](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340903259) SUCCESS and [push verify 41340897734](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340897734) SUCCESS — 140 Python tests; browser/Node suites, evidence/data audit, generated-data reproducibility and production build passed. Optional external G2P and Goruut diagnostics also passed.
+- This is a conservative product-corpus eligibility rule, not a legal opinion about all uses of these licenses. Each real source still needs human rights review. No IPA gold rows were added; independent gold remains zero and accuracy remains null.
+
+
+## Release-gate threshold validation — 2026-11-01
+
+- Status: `DONE_VERIFIED`.
+- Review found that the CLI accepted zero/negative `--min-train`, `--min-dev` and `--min-test` thresholds. That could let an operator weaken a release gate below a meaningful non-empty split requirement.
+- RED evidence: the six invalid threshold cases (0 and -1 for each split) failed as expected on test-only commit `5e34cf8cbce93ba1cc1bdc82b2de260c88b403de` ([run 41341504442](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341504442)).
+- GREEN implementation: all three minimums must be positive integers. Invalid threshold configuration is added to the gate's aggregated findings rather than raised before corpus checks, preserving diagnostics for other blockers. Final code commit: `44c9de1804f9de47a72f297aa5ed544d90d3629e`.
+- Exact-head verification: [PR verify 41341723054](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341723054) SUCCESS and [push verify 41341719433](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341719433) SUCCESS — 141 Python tests; browser/Node suites, evidence/data audit, generated-data reproducibility and production build passed.
+- The configured release-gate defaults remain train=100, dev=25, test=25. No gold rows or IPA labels were added; independent gold remains zero and accuracy remains null.
+
+
+## Controlled IPA gold acquisition checkpoint — 2026-11-01
+
+- Added `docs/ipa-gold-collection-playbook.md` on `feat/ipa-gold-corpus-20261101-review`. This defines a human-led 30-lexeme process pilot, one predeclared pronunciation profile and IPA convention per corpus version, a curator, two blind independent annotators, and a third independent adjudicator. It sets explicit start/pilot-accepted/benchmark-ready gates and distinguishes pilot data from held-out evaluation.
+- This is a protocol/documentation deliverable, not evidence that annotators have been recruited or that any IPA gold has been collected. The four JSONL corpus inputs remain empty; no gold labels or accuracy claims were added.
+- External source lead: MekongPhon (LREC 2026) reports 367k Lao and 1.3m Khmer orthography–IPA pairs. It is recorded only as a candidate external reference. Its dataset-specific license, variety/profile, IPA convention, provenance, verification method, and overlap with engine development data must be checked before use. The LREC proceedings CC BY-NC-4.0 notice does not establish the dataset license. https://lrec.elra.info/lrec2026-main-129
+- Khmer additional lead: chemvatho/Khmer-acoustic-model reports a 29,204-entry IPA dictionary and states dictionary data are CC BY-SA 4.0, distinct from MIT code/model. Per-entry provenance, dialect, IPA consistency, exact version and actual reuse rights still require inspection before importing. https://github.com/chemvatho/Khmer-acoustic-model
+- Lao sampling guidance distinguishes Vientiane from other profiles and preserves lexical tone separately from contextual F0 effects; sources include Yanagimura (2013) and EURPhon profiles. Khmer guidance distinguishes Phnom Penh vowel/coda effects and variable /r/-loss. Burmese guidance keeps competing tone/prosody analyses explicit and requires source-table transcription to be independently checked before annotation.
+- Current blockers: recruit/confirm two qualified annotators and one independent adjudicator per language; choose and approve target variety/convention; identify rights-cleared pilot lexemes; test a blind intake channel; verify candidate external datasets before use. Burmese additionally needs specialist approval of its prosodic transcription convention and source extraction. These are human/source/rights dependencies, not additional automation tasks.
+- No repository test was run for this documentation-only checkpoint; existing CI evidence belongs to the preceding code head. Re-run exact-head CI after the documentation commits before merge.
+
+
+## External corpus provenance audit — 2026-11-01
+
+- Inspected https://github.com/byu-matrix-lab/MekongPhon. Its pipeline README describes SEAlang frequency lists, IPA scraping, minor lexicon post-processing, OPUS sentence downloads, lexicon train/eval splits, and trie-based sentence conversion from word-level IPA entries. Treat this as a large external orthography–IPA resource and possible comparator, not automatically as independent sentence-level phonetic gold.
+- The upstream repository root LICENSE path was not present in the inspected tree. Dataset-specific redistribution permission, source terms, variety, IPA conventions, human verification/correction process, exact data files and overlap with our engine sources remain unverified. Do not import or redistribute any of it until those are resolved. Proceedings CC BY-NC-4.0 and Apache-2.0 model-card licenses do not license the underlying dataset by implication.
+- Khmer Acoustic Model dictionary remains a candidate external comparator only; its README states dictionary CC BY-SA 4.0 and claims native-linguist validation, but per-entry provenance, variety, IPA convention and exact version require inspection.
+- Burmese audio lead: Oo et al. (LREC 2020) speech corpus is described as 2,528 utterances from 20 female speakers with manual segmentation, plus G2P/normalization grammars. This is not IPA gold; inspect primary source, audio/transcript rights, consent, variety and metadata before considering it as lawful audio material for expert re-transcription.
+- No data files were imported and no IPA labels were added. Corpus remains empty and benchmark accuracy remains null.
+
+
+## Controlled IPA acquisition documentation CI — 2026-11-01
+
+The documentation-only playbook, corpus-guide and handoff changes at the preceding branch head were checked by GitHub Actions. Lao: verify run 41343495676 SUCCESS; optional external G2P 41343495667 SUCCESS; optional Goruut 41343495681 SUCCESS. No language-engine runtime or gold data changed. This validates the repository state, not the linguistic correctness of future annotations. Pages deployment and release-gate workflow were not run.
+
+
+## Source acquisition update — 2026-11-01
+
+- **New candidate:** Common Voice Scripted Speech v27.0 Lao. Official catalog lists locale `lo`, CC0-1.0 and an 8.93 MB MP3 archive: https://commonvoice.allizom.org/en/datasets. The Common Voice dataset documentation says Scripted Speech consists of pre-written sentences read by contributors and community-validated: https://github.com/common-voice/cv-dataset/tree/main/datasets/scripted-speech. Archive size is not a clip/speaker count; inspect the exact v27.0 manifest before selecting any items.
+- **Evidence boundary:** Common Voice contains sentence-level recordings/transcripts, not IPA. The catalog does not establish Vientiane dialect, speaker profile or citation-form pronunciations. Use it only for supplementary contextual audio/candidate discovery until metadata is inspected. For the lexical G2P gold, prioritize consented citation-form recordings from confirmed Vientiane speakers.
+- The existing MekongPhon decision is unchanged: candidate external comparator only, not admitted gold. No external labels or audio were imported.
+- `LAO-GOLD-001` remains `BLOCKED`; 0 independent gold rows, accuracy `null`. Next acceptance step: inspect the v27.0 manifest, confirm profile coverage, then freeze 30 attested lexemes and a citation-form recording protocol with recruited experts.
+
+
+## Common Voice v27.0 exact manifest audit — 2026-11-01
+
+Inspected the official release manifest: https://github.com/common-voice/cv-dataset/blob/main/datasets/scripted-speech/cv-corpus-27.0-2026-09-11.json. Lao: 223 clips; 193 validated; 16 contributor IDs; 0.35 validated hours (0.40 total). No named accent/variant metadata; contributor gender metadata is 88.79% male and 11.21% unspecified. Manifest locale checksum: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260b6`.
+
+**Decision:** useful only as a small contextual-audio/process-pilot candidate. It cannot establish Vientiane profile or balanced speaker coverage and is not IPA gold. Use only if specialist approves the profile and 30 suitable validated tokens exist; otherwise prioritize controlled citation-form recordings. No audio/labels imported; gold remains 0, accuracy null.
+
+
+## Final exact-head verification — 2026-11-01
+
+Branch `feat/ipa-gold-corpus-20261101-review`, source-audit content commit `440975c82c5005a24952ce883cea269aa3cb3198`. Lao exact-head CI: verify [41345121935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345121935) SUCCESS; optional Goruut [41345121928](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345121928) SUCCESS; optional external G2P [41345121943](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345121943) SUCCESS. Core job passed corpus structure validation, repository data/evidence audit, Python tests, browser engine tests, browser data generation/reproducibility, and built-pages/relative-asset checks.
+
+These checks validate the committed repository and its automated engineering contracts. They do **not** validate the linguistic correctness of future human annotations, create gold labels, or change the release blocker. Gold remains empty and accuracy remains null.
+
+
+## Follow-up handoff-head CI — 2026-11-01
+
+The subsequent documentation-only handoff/register state at commit `072713627185ec5a3d0eaa2eb29fc23aa0cca77f` was also checked on its exact head: verify [41345372448](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345372448) SUCCESS; optional Goruut [41345372474](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345372474) SUCCESS; optional external G2P [41345372469](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345372469) SUCCESS. These runs validate the updated documentation and existing automated checks, not future IPA annotations. Any later branch update must be checked again on its new exact head.
+
+
+## Open-rights state consistency fix — 2026-11-01
+
+- Code review found that a source could pass corpus validation with `rights_status: OPEN` but `redistributable: false`. The export and release gate would later exclude/reject it, but the canonical record itself was contradictory.
+- Added a test-first regression. Test-only commit `f50619febaf7b75d5d1c65973a6cb1b1ba241973` failed as expected in the language CI because validation incorrectly returned success for that contradictory state.
+- Added the fail-closed Python validation and matching conditional in `schemas/ipa-gold-record.schema.json`; regression also asserts the schema condition. Exact code/schema head: `4e4327e7bfdf0789c6a67b99a2b53e2bdbbc772b`.
+- Exact-head CI [41347942661](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41347942661) passed: 142 Python tests; Node/browser suites 50 + 23 + 27 + 7; data/evidence audit, generated-data reproducibility and production build passed; optional Goruut and external G2P passed.
+- No external corpus, restricted source data, IPA label or benchmark record was imported or created. Gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains null.
+
+## Exact current-head verification and handoff reconciliation — 2026-11-01
+
+- Verified default branch `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`; work branch `feat/ipa-gold-corpus-20261101-review` at `5e5f3de73fa96696e8087220c24c5d245f38797d`. GitHub compare reports **83/84/82 commits ahead respectively and 0 behind** (see the repository's PR compare; no main commits need porting at this checkpoint).
+- Exact current-head GitHub Actions core run: [41348202260](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41348202260) — SUCCESS. 142 Python tests; Node/browser suites 50 + 23 + 27 + 7; repository data/evidence audit, generated-data reproducibility and production build passed. Optional Goruut and external Lao G2P diagnostics passed.
+- These are hosted CI results. No local checkout or local test execution is claimed. Optional G2P/Goruut/Epitran checks are diagnostics only and do not establish linguistic correctness.
+- The current branch contains the open-rights invariant: `rights_status=OPEN` requires `redistributable=true` in both the Python validator and `schemas/ipa-gold-record.schema.json`, with a regression test.
+- Independent expert-adjudicated gold remains **0**; `gold.tsv` remains header-only; empirical accuracy remains **null**. Engineering CI does not close human annotation, profile/convention approval, or linguistic validation gates.
+- This entry supersedes earlier handoff statements that described the documentation/code checkpoint as awaiting exact-head CI. The PR description may contain older or superseded SHA references; the branch ref and exact-head run above are authoritative.
+
+
+## Cross-repository validator cleanup checkpoint — 2026-11-01
+
+- Methodology review: the repository's pinned references in `AGENTS.md` already capture the relevant practices from Superpowers (test-first changes and evidence-gated verification), mattpocock/skills (clear module seams and behavior-focused tests), and Ponytail (small complete diffs and connected-code review). They remain methodology references, not runtime dependencies; no external skill bundle was copied into the product.
+- Removed four consecutive duplicate nested-object validation calls from `scripts/ipa_gold_corpus.py` (orthography, profile, source, and rights_evidence). This removes redundant work without changing the contract. The resulting file has the same blob SHA across all three repositories: `a072297e320b4b91a36c59fc90328b6ff98d2a5f`.
+- Code commit: `7eea774803654372e7d400cd1fde7c9079c23a64`. - Core PR CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242607 (SUCCESS); core push CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354237853 (SUCCESS); optional language diagnostics: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242594, https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242625 (SUCCESS).
+- No schema, source data, linguistic rule, IPA label, or gold row changed. Independent expert-adjudicated gold remains 0; accuracy remains null. The next substantive blocker is still qualified target-variety annotation and adjudication, not more validator scaffolding.
+
+
+### Upstream methodology review — follow-up 2026-11-02
+
+- **mattpocock/skills v1.3.2**: `d1478fcb140db0b93c0c8df17bcfd311844749d0` (released 2026-10-29). Applied the relevant improvements: standards review reads repository standards and reports separately; spec compliance and repository standards are separate review axes; bug-diagnosis RED evidence must prove the intended mutation changed relevant source; issue/PR tracker operations follow repository templates and ownership boundaries.
+- **Superpowers 7.0.1** remains pinned at `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; its current workflow guidance reinforces preserving untracked work when worktree cleanup refuses and keeping human-authored report sections genuinely human-authored. The October 20 template changes are included in the reviewed 7.0.1 lineage.
+- **Ponytail 5.3.3** remains pinned at `7801d061243d7b753bad0e0b3c057cd250b11755`. Upstream `main` advances to `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`; the inspected post-pin change only adds a README product/logo mention, not engineering-method guidance, so the method pin remains appropriate.
+- No upstream skill bundle, code, dependency, dataset, or runtime integration was copied. These instructions are a selective adaptation, not a claim that third-party tools are installed.
+
+
+## Exact-head verification — methodology refresh 2026-11-02
+
+- Documentation and agent guidance checkpoint: `d964db76a4228f2a7f84138ef69cbe1ae8cb7086`.
+- [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) completed SUCCESS on this exact commit; full verify workflow.
+- Optional diagnostic runs [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) also completed SUCCESS. These diagnostics are not accuracy evidence.
+- The current branch has one subsequent documentation-only evidence-register commit; its exact-head CI is recorded in the final session report. No engine, linguistic rules, IPA labels, gold records, datasets, or runtime dependencies were changed.
