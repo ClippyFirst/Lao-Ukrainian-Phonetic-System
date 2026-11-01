@@ -327,5 +327,12 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertEqual(condition["then"]["properties"]["attribution_required"]["type"], "boolean")
         self.assertEqual(condition["then"]["properties"]["share_alike"]["type"], "boolean")
 
+    def test_release_gate_requires_positive_minimums_for_every_split(self):
+        for option in ("--min-train", "--min-dev", "--min-test"):
+            for value in ("0", "-1"):
+                with self.subTest(option=option, value=value):
+                    run = self.run_cli("gate", option, value, expected=1)
+                    self.assertIn("release gate minimums must be positive integers", run.stderr)
+
 if __name__ == "__main__":
     unittest.main()
