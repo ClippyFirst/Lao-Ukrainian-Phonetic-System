@@ -277,5 +277,24 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1", "--min-test", "1", expected=1)
         self.assertIn("release gate failed", run.stderr.lower())
 
+
+    def test_rejects_independent_annotations_with_mixed_ipa_kinds(self):
+        self.annotations[1]["ipa"] = ipa("ka", "PHONETIC_BROAD")
+        self.adjudications[0]["decision"] = "RESOLVED"
+        self.adjudications[0]["final_ipa"] = ipa("ka")
+        self.adjudications[0]["rationale"] = "The annotators used different representation kinds."
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("same IPA kind", run.stderr)
+
+    def test_rejects_resolved_ipa_with_kind_different_from_annotations(self):
+        self.annotations[1]["ipa"] = ipa("kʰa")
+        self.adjudications[0]["decision"] = "RESOLVED"
+        self.adjudications[0]["final_ipa"] = ipa("ka", "PHONETIC_BROAD")
+        self.adjudications[0]["rationale"] = "The final result must retain the annotation convention."
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("final_ipa.kind must match annotation IPA kind", run.stderr)
+
 if __name__ == "__main__":
     unittest.main()
