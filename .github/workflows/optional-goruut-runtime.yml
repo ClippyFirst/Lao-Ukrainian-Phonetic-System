@@ -72,6 +72,7 @@ jobs:
             --expected-column pron_with_tones \
             --config-file goruut/configs/config.json \
             --runtime-version "$(go version)" \
+            --server-log artifacts/goruut-server.log \
             --repeat 3 \
             --language Lao \
             --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
