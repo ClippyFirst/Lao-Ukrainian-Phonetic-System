@@ -10,8 +10,9 @@ import argparse, csv, json, unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id"]
-PRED_FIELDS = ["id", "engine", "raw_output", "ipa", "status", "version"]
+GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind"]
+PRED_FIELDS = ["id", "engine", "raw_output", "ipa", "status", "version", "ipa_kind"]
+IPA_KINDS = {"PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW"}
 
 def read_tsv(path: Path, required: list[str]) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
@@ -58,6 +59,8 @@ def main() -> int:
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires source_id")
             if not row["profile"].strip():
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires profile")
+            if row["ipa_kind"].strip() not in IPA_KINDS:
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires valid ipa_kind")
     eligible = {k: v for k, v in gold.items()
                 if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
     predictions = defaultdict(dict)
@@ -94,7 +97,7 @@ def main() -> int:
             p = norm(pred["ipa"]) if pred else ""
             gold_kind = g.get("ipa_kind", "").strip()
             prediction_kind = pred.get("ipa_kind", "").strip() if pred else ""
-            ipa_kind_mismatch = bool(p and gold_kind and (not prediction_kind or prediction_kind != gold_kind))
+            ipa_kind_mismatch = bool(p and prediction_kind != gold_kind)
             rows.append({
                 "id": ident, "profile": g["profile"],
                 "exact_match": bool(p) and p == ref and not ipa_kind_mismatch,
