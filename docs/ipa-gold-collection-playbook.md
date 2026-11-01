@@ -103,3 +103,14 @@ These are **audio/transcript candidates**, not IPA gold. The distinction matters
 ### Collection decision
 
 Common Voice v27.0 is the best currently identified small, publicly catalogued Lao audio lead, but it is **not yet accepted as the 30-item lexical pilot source**. First inspect its actual v27.0 manifest and determine whether enough target-variety speakers and contrast-bearing tokens exist. If not, recruit speakers for controlled citation-form recordings. Do not use MekongPhon or any G2P output as a substitute for independent expert transcription.
+
+
+### Exact v27.0 manifest audit
+
+The official Common Voice release manifest has now been inspected: [`cv-corpus-27.0-2026-09-11.json`](https://github.com/common-voice/cv-dataset/blob/main/datasets/scripted-speech/cv-corpus-27.0-2026-09-11.json).
+
+- Lao locale entry: **223 clips**, **193 validated clips**, **16 contributor/user IDs**, **0.35 validated hours** (0.40 total hours).
+- The manifest provides no named accent category for Lao (the accent key is empty); the variant dimension is empty. Gender metadata is 88.79% male and 11.21% unspecified; ages are 55.61% thirties, 32.74% twenties, 0.45% forties and 11.21% unspecified.
+- Manifest locale checksum field: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260b6`. Manifest file blob SHA: `e401c4a8e923cad5c8baacb6120c095b1e1bd561`.
+
+This is a small, demographically narrow sample with **no dialect evidence**. It is not a sound basis for asserting Vientiane coverage or a balanced lexical benchmark. It may support a 30-token process pilot only if the actual validated transcripts contain 30 suitable lexemes and a specialist explicitly approves the contextual profile. It does not replace controlled citation-form elicitation.
