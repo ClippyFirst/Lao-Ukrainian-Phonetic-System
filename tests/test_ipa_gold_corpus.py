@@ -182,6 +182,11 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.write_all()
         run = self.run_cli("validate", expected=1)
         self.assertIn("OPEN rights require source.redistributable=true", run.stderr)
+        schema = json.loads((ROOT / "schemas" / "ipa-gold-record.schema.json").read_text(encoding="utf-8"))
+        source_schema = schema["properties"]["source"]
+        condition = source_schema["allOf"][0]
+        self.assertEqual(condition["if"]["properties"]["rights_status"]["const"], "OPEN")
+        self.assertEqual(condition["then"]["properties"]["redistributable"]["const"], True)
 
     def test_split_assignment_is_deterministic_and_group_safe(self):
         self.records.append(dict(self.records[0], record_id="r2", orthography={"text": "ກາໆ", "normalized": "ກາໆ"}))
