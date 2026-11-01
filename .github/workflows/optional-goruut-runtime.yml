@@ -72,6 +72,7 @@ jobs:
             --expected-column pron_with_tones \
             --config-file goruut/configs/config.json \
             --runtime-version "$(go version)" \
+            --repeat 3 \
             --language Lao \
             --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
             --output artifacts/goruut-lao-mekongphon-source-attested.json
