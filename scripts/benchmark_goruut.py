@@ -100,6 +100,9 @@ def build_report(
     input_path: Path,
     input_sha256: str,
     base_url: str,
+    config_path: Path,
+    config_sha256: str,
+    runtime_version: str,
 ) -> dict[str, Any]:
     successes = sum(record["status"] == "OK" for record in records)
     failures = len(records) - successes
@@ -112,6 +115,9 @@ def build_report(
         "language_identifier": language,
         "api_endpoint": base_url.rstrip("/") + "/tts/phonemize/sentence",
         "python_version": platform.python_version(),
+        "go_runtime_version": runtime_version,
+        "effective_config_path": str(config_path),
+        "effective_config_sha256": config_sha256,
         "input_path": str(input_path),
         "input_sha256": input_sha256,
         "input_count": len(inputs),
@@ -134,6 +140,8 @@ def main() -> int:
     parser.add_argument("--base-url", default="http://127.0.0.1:18080")
     parser.add_argument("--timeout", type=float, default=20.0)
     parser.add_argument("--attempts", type=int, default=4)
+    parser.add_argument("--config-file", type=Path, required=True)
+    parser.add_argument("--runtime-version", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.timeout <= 0 or args.attempts < 1:
@@ -152,11 +160,15 @@ def main() -> int:
         input_path=args.input,
         input_sha256=sha256_file(args.input),
         base_url=args.base_url,
+        config_path=args.config_file,
+        config_sha256=sha256_file(args.config_file),
+        runtime_version=args.runtime_version,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: report[key] for key in (
-        "engine", "engine_commit", "language_identifier", "input_count",
+        "engine", "engine_commit", "language_identifier", "go_runtime_version",
+        "effective_config_sha256", "input_count",
         "successful_outputs", "failed_outputs", "independent_gold_count",
         "accuracy", "score_status"
     )}, ensure_ascii=False, indent=2))
