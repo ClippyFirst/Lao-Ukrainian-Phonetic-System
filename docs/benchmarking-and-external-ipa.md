@@ -139,3 +139,6 @@ See `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md` for exact run 
 ## Cross-engine comparator evidence — 2026-11-01
 
 Additional optional lao2ipa 1.0.0 run on the 37-case engineering fixture: 0/37 exact string agreements, 31 tone-suffix-only, 2 diphthong-offglide, 4 segmental/vowel-sequence differences; zero runtime errors. The local engine matched its own fixture 37/37, but that fixture is not gold. This points to a major tone-convention difference and six cases requiring segmental review, not a winner. Latest Goruut three-repeat: 18/23 engineering outputs, 12 stable/6 unstable; 81/100 MekongPhon outputs, 70 stable/11 unstable; 5/100 all-repeat source-attested exact/notation matches, 10/100 at least one repeat. Accuracy remains null.
+
+
+**Goruut warning caveat:** the pinned language module contains `weights8.bin.zlib`, but the server log attempts `weights9.bin.zlib`; no `weights9` asset exists in the inspected pinned tree. The loader path and causal relation to phonetic failures are unproven. Track this as an unresolved upstream runtime warning, not a confirmed root cause.
