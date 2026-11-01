@@ -60,6 +60,7 @@ jobs:
             --input tests/fixtures/goruut-probes.txt \
             --config-file goruut/configs/config.json \
             --runtime-version "$(go version)" \
+            --repeat 3 \
             --server-log artifacts/goruut-server.log \
             --language Lao \
             --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
