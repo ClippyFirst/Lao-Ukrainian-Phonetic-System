@@ -988,3 +988,27 @@ The latest final-head run [41325409867](https://github.com/ClippyFirst/Lao-Ukrai
 - Final PR-head runtime [41325800728](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41325800728) PASS; artifact [13091306560](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41325800728/artifacts/13091306560), SHA-256 `f7df1f158b51eb08ee8498a334a56a04cb885b7751870d7a824983da84679b65`. The 100-row result: 81 outputs, 19 none; 47 complete, 34 partial, 19 unknown; 68 stable, 13 unstable; 17 randomized inputs; 3 strict all-repeat and 9 any-repeat source-attested matches. The 23 engineering probes: 18 outputs, 5 none; 13 complete, 5 partial, 5 unknown; 9 unstable. The lao2ipa comparison [41325800724](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41325800724) PASS and reports 0/37 exact implementation matches (31 tone-only, 2 offglide, 4 segmental/vowel differences).
 - Goruut runtime-probe harness and exact-head CI: **DONE_VERIFIED**. Production phonology remains **PARTIAL/BLOCKED**: no independent expert-adjudicated Lao IPA gold (0), repeated random homograph selection, missing/partial outputs, and unresolved `weights9.bin.zlib` warning. MekongPhon remains an external source-attested diagnostic, not gold; no permanent data/model import.
 - No local checkout was available in this session; all reported engineering verification is from the exact-head and post-merge GitHub Actions runs. See the runtime audit above for artifact hashes and detailed boundaries.
+
+
+## IPA gold corpus implementation checkpoint — 2026-11-01
+
+### Current task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| IPA-GOLD-SCHEMA-001 | DONE_VERIFIED | Four versioned JSON Schemas; empty JSONL templates; validator and regression tests in exact-head CI |
+| IPA-GOLD-DOUBLE-ANNOTATION-001 | PARTIAL | Enforces two distinct annotators and third independent adjudicator; actual blind collection needs qualified human annotators and a controlled intake channel |
+| IPA-GOLD-ADJUDICATION-001 | PARTIAL | Agreement/resolved/unresolved semantics and rationale validation implemented; no real adjudicated rows exist |
+| IPA-GOLD-SPLIT-001 | DONE_VERIFIED | Deterministic SHA-256 split assignment, preserves frozen assignments, prevents lexeme-group leakage; current manifest empty |
+| IPA-GOLD-EXPORT-001 | DONE_VERIFIED | Exports only adjudicated, redistributable rows into existing benchmark TSV; current export has header only |
+| IPA-TYPED-BENCHMARK-001 | DONE_VERIFIED | PHONEMIC / PHONETIC_BROAD / PHONETIC_NARROW retained; type mismatch cannot count as exact match |
+| IPA-GOLD-RELEASE-GATE-001 | PARTIAL | Tag/manual workflow requires 100/25/25 adjudicated split rows and rights; owner must require the check in release rulesets/procedure |
+| LAO-TONE-RHYME-RESEARCH-001 | PARTIAL | New Vientiane source-grounded workpack; still needs primary-source table extraction, dialect/audio adjudication and full tone × rhyme evidence matrix |
+| LAO-LABIALIZED-ONSET-001 | BLOCKED | Enfield/Gedney-Hudak analysis conflict needs direct primary-source reconciliation and speaker evidence before choosing /kw/ vs /kʷ/ |
+| LAO-UKRAINIAN-IPA-ADAPTER-001 | PARTIAL | Existing adapter retained; labialized-onset candidates need adjudicated IPA and expert Ukrainian review |
+
+### Evidence boundary
+
+`data/benchmark/records.jsonl`, `annotations.jsonl`, `adjudications.jsonl`, and `splits.jsonl` are empty templates. `gold.tsv` is header-only; independent expert gold=0 and accuracy=null. Ueda (1994) supports a five-category central Vientiane model with phonemic vowel length and nine finals, but does not substitute for lexical expert gold or acoustic speaker coverage. No IPA labels were added.
+
+See [IPA gold protocol](docs/ipa-gold-corpus.md) and [Lao phonology research workpack](docs/audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md).
