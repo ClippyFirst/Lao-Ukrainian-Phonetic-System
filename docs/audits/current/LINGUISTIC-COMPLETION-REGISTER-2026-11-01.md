@@ -134,3 +134,9 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 | LAO-IPA-RIGHTS-OPEN-001 | DONE_VERIFIED | A test-first regression rejected a source with `rights_status=OPEN` and `redistributable=false`; the runtime validator and record JSON Schema now both require `redistributable=true` for OPEN. Test-only RED commit: `f50619febaf7b75d5d1c65973a6cb1b1ba241973`. Fix/schema code head: `4e4327e7bfdf0789c6a67b99a2b53e2bdbbc772b`; exact-head CI run [41347942661](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41347942661) passed: 142 Python tests; Node/browser suites 50 + 23 + 27 + 7; data/evidence audit, generated-data reproducibility and production build passed; optional Goruut and external G2P passed. |
 
 This is a consistency/eligibility invariant, not a new legal determination. It does not change source licenses, rights evidence, gold labels or measured accuracy. Independent adjudicated gold remains 0; accuracy remains null.
+
+## Exact current-head engineering checkpoint — 2026-11-01
+
+- Current code checkpoint: `5e5f3de73fa96696e8087220c24c5d245f38797d`; exact-head core CI [41348202260](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41348202260) **SUCCESS**. 142 Python tests; Node/browser suites 50 + 23 + 27 + 7; repository data/evidence audit, generated-data reproducibility and production build passed. Optional Goruut and external Lao G2P diagnostics passed.
+- The `OPEN` / `redistributable` consistency regression is present in runtime validation, JSON Schema and tests.
+- Independent expert gold remains 0 and accuracy remains null. Human annotation/profile/convention gates remain open; CI is not linguistic validation.
