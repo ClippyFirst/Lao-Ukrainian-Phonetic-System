@@ -942,3 +942,19 @@ The repository owner explicitly directed that external Goruut assets may be used
 - **Production packaging or redistribution:** not authorized by this instruction and remains outside this test-only scope; asset provenance/rights must be revisited before any bundling, redistribution, or production deployment.
 
 This is a project scope decision, not a legal conclusion about the upstream assets.
+
+
+### Lao source-coverage repeat-run evidence
+
+## Independent repeated CI run — source-coverage and randomization variability
+
+A second three-repeat run on the same pinned engine, same 100-row MekongPhon input SHA `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`, and same config SHA `afdab11396e77d171fd4683c8692dbe8513edfe6ed02aa3a20bac9db9f11c44c` produced a different phonetic result profile:
+
+- Run [41312511636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41312511636), artifact [13085893546](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41312511636/artifacts/13085893546), ZIP SHA-256 `76fba836abbafcc6ffe9c153da46e895f9b97a2dd8677b070a59c1b5857225d7`.
+- 81/100 responses; 19 no output. Source coverage: 47 complete, 34 partial, 19 unknown/no output (same coverage split as prior run).
+- Reproducibility changed: 66 stable, 15 unstable (prior run: 68 stable, 13 unstable). 17/100 inputs carried dictionary-randomization metadata across 51 repeat responses; all 15 unstable cases were flagged.
+- Strict all-repeat source-attested concordance changed from 2/100 in the prior artifact to **3/100**; at-least-one-repeat matches changed from 9/100 to **10/100**. Neither is accuracy; this run-to-run movement is itself evidence that the random homograph fallback makes the comparator unsuitable for stable scoring.
+- Engineering probes: 13/23 complete coverage, 5/23 partial coverage, 5/23 no output; 7/18 returned outputs were unstable and all 7 had randomization metadata.
+
+The new report contract therefore correctly separates response availability, source coverage, randomization ambiguity, repeat stability and source concordance. No score is promoted to accuracy.
+
