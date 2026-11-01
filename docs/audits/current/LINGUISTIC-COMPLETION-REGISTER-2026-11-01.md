@@ -158,3 +158,11 @@ This closes only the nested-object shape contract. It does not establish the tru
 | IPA-GOLD-DUPLICATE-VALIDATION-001 | DONE_VERIFIED | Removed four consecutive duplicate `reject_unknown_properties` calls from nested `orthography`, `profile`, `source`, and `source.rights_evidence` validation. Code commit: `7eea774803654372e7d400cd1fde7c9079c23a64`; Git blob SHA: `a072297e320b4b91a36c59fc90328b6ff98d2a5f`. - Core PR CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242607 (SUCCESS); core push CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354237853 (SUCCESS); optional language diagnostics: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242594, https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242625 (SUCCESS). |
 
 This is dead-code cleanup only: each contract check remains once; no validation rule, schema, IPA value, phonology rule, or corpus row changed. The shared validator remains identical across Lao, Khmer and Burmese. Hosted CI only; no local checkout or local test command is claimed. Independent expert-adjudicated gold remains 0 and empirical accuracy remains null.
+
+
+## Methodology source refresh — 2026-11-02
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| ENGINEERING-METHOD-REFRESH-001 | PARTIAL | Refreshed the Ponytail reference to v5.3.3 and documented the current Superpowers 7.0.1, mattpocock/skills main, and Ponytail 5.3.3 method snapshots in `AGENTS.md` and the canonical handoff. Exact-head CI for this documentation update is pending. |
+

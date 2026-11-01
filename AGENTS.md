@@ -66,9 +66,20 @@ These are methodological references, not runtime dependencies. The project adopt
 
 - [obra/superpowers](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b): skill-triggered workflow, explicit plans, test-first implementation, root-cause debugging, review, and evidence before completion.
 - [mattpocock/skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d): deep modules and clear interfaces, test seams, behavior-focused tests, and source-backed research.
-- [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846): smallest complete diff, reuse before invention, review of connected code rather than diff alone, and explicit deferred-work accounting.
+- [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/7801d061243d7b753bad0e0b3c057cd250b11755): Ponytail 5.3.3: trace the real code path and data flow, map entry points and expected load before repository-level audit, review beyond the diff, preserve trust-boundary validation/data-loss handling/accessibility, test branching/parser/security logic, and report skipped checks and residual risk.
 
 When these references conflict with this file, the existing project requirements, or the user's explicit instructions, follow the project requirements and user instructions. Do not import or install these repositories as project dependencies merely to follow their methods.
+
+## Methodology source refresh — 2026-11-02
+
+The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:
+
+- Superpowers 7.0.1: `obra/superpowers@2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. At GREEN, verify the project suite, not only the narrow test that first went red.
+- mattpocock/skills current main: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
+- Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
+
+These references guide the method; project-specific linguistic, provenance, privacy, rights, and fail-closed requirements remain authoritative.
+
 
 - Keep the restricted labialized onset inventory in `data/lao/onset_clusters.csv` and generate its browser mirror; do not hard-code a second divergent list. Preserve the superscript `ʷ` at the IPA boundary, reject clusters before rounded nuclei, and withhold overlapping `Cວາ` analyses rather than guessing between labialized-onset + AA and UO-long-open. Do not invent Ukrainian correspondences for these IPA sequences. Search for silent high-class `ຫ` digraphs after any preposed vowel, not only at token index zero. Extend `tests/fixtures/onset_cluster_cases.json` when adding a cluster or a boundary exception; Python and browser tests must consume the same cases.
 
