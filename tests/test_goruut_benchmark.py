@@ -92,3 +92,23 @@ def test_source_attested_concordance_is_not_gold_or_accuracy(tmp_path):
     assert report["source_attested_diagnostic"]["status"] == "SOURCE_ATTESTED_CONCORDANCE_ONLY_NOT_GOLD"
     assert report["independent_gold_count"] == 0
     assert report["accuracy"] is None
+
+
+def test_missing_model_assets_are_recorded_from_server_log(tmp_path):
+    fixture = tmp_path / "probes.txt"
+    fixture.write_text("word\\n", encoding="utf-8")
+    log = tmp_path / "server.log"
+    log.write_text('level=error msg="open weights9.bin.zlib: file does not exist"\\n', encoding="utf-8")
+    report = MODULE.build_report(
+        ["word"], [{
+            "input": "word", "status": "OK", "raw_response": "{}",
+            "phonetic_tokens": ["wɜːd"], "error": None,
+        }],
+        language="Lao", engine_commit="test", input_path=fixture,
+        input_sha256="sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config", runtime_version="go test",
+        server_log_path=log,
+    )
+    assert report["server_log_sha256"]
+    assert len(report["model_asset_warnings"]) == 1
+    assert "weights9.bin.zlib" in report["model_asset_warnings"][0]
