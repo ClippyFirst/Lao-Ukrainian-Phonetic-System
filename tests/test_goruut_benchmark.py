@@ -33,6 +33,13 @@ def test_rejects_empty_and_unexpected_response_shapes():
             raise AssertionError("empty phonetic response must be rejected")
 
 
+def test_csv_loader_keeps_source_attested_ipa_separate(tmp_path):
+    path = tmp_path / "mekongphon.csv"
+    path.write_text("orth,pron_with_tones\\nຂາ,kʰaː˩˧\\n", encoding="utf-8")
+    rows = MODULE.load_inputs(path, input_format="csv", text_column="orth", expected_column="pron_with_tones")
+    assert rows == [{"text": "ຂາ", "source_attested_ipa": "kʰaː˩˧"}]
+
+
 def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
     fixture = tmp_path / "probes.txt"
     fixture.write_text("ຂາ\n", encoding="utf-8")
@@ -54,6 +61,7 @@ def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
     assert report["records"][0]["phonetic_tokens"] == ["kʰaː"]
     assert report["effective_config_sha256"] == "config-sha"
     assert report["go_runtime_version"] == "go version go1.23"
+    assert report["source_attested_diagnostic"] is None
     assert report["failed_outputs"] == 0
 
 
