@@ -41,3 +41,20 @@ The final diagnostic sends each input three times to the same running server. Th
 Latest three-repeat artifact: [workflow 41309088407](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41309088407). Engineering fixture SHA-256 `a3cdf11fc00e87380787ae2fbf421c83de697cf98c66078414a2c99c81dccd19`; MekongPhon eval SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`; effective config SHA-256 `afdab11396e77d171fd4683c8692dbe8513edfe6ed02aa3a20bac9db9f11c44c`; server log SHA-256 `5c5885c2362ebdce977d7837cc1d3ce7e3fb08bdd17445ede7bda3683377e1ad`.
 
 **Disposition remains: do not integrate as a production phonology provider.** Three-repeat output instability plus 4% strict source-attested concordance is insufficient for production use. The MekongPhon split is still not expert gold.
+
+
+## Additional comparator: lao2ipa 1.0.0 — 2026-11-01
+
+The existing optional external comparator was also executed on the 37-case engineering fixture:
+
+- Project output matched its own engineering fixture: 37/37.
+- `lao2ipa==1.0.0` output matched the project fixture: 0/37.
+- Exact string agreement between project output and lao2ipa: 0/37; no runtime errors.
+- Heuristic difference decomposition: 31 tone-suffix-only, 2 diphthong offglide convention, 4 segmental/vowel-sequence differences. Tone-stripped agreement is 31/37 (83.8%) diagnostic-only.
+- This does not establish the project output as correct: the 37-case fixture is an engineering regression fixture, not independent expert gold. The external package's tone output differs systematically from the project's tone-less default, and six cases need segmental/convention review.
+
+Evidence: [optional comparator workflow 41310116216](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310116216). Package version `1.0.0`; independent gold remains 0.
+
+## Latest three-repeat Goruut report — 2026-11-01
+
+The most recent pinned run supersedes the earlier repeat counts: engineering probes 18/23 usable, 12 reproducible and 6 unstable; MekongPhon 81/100 usable, 70 reproducible and 11 unstable. Strict and limited-notation source-attested concordance across all three repetitions is 5/100 (5%); 10/100 matched in at least one repetition. This is still not gold or accuracy. Latest run: [41310116195](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310116195). Server log SHA-256 `1a4b77036d9e3e2c275f5604e55f0e2c935ba755ed380e1cfcc94a292471877a` (engineering) and `90641614476946b5a8de27cd72fe480d78746d1d9b55b1b5158fdc7582c979d3` (MekongPhon).
