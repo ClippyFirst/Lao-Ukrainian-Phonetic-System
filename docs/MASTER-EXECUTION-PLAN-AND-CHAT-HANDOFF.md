@@ -1090,3 +1090,13 @@ The rights registry does not itself grant permission. Each real source still nee
 - Final PR head: `0b348d191e93e15b543d95538daccf8490e8239c`; CI run [41338456936](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41338456936) SUCCESS — 137 Python tests; Node/browser suites 50 + 23 + 27 + 7; data/evidence audit, generated-data reproducibility and production build passed.
 - The Lao evidence matrix remains bounded to central/Vientiane source analyses; no automatic labialized-onset Ukrainian mapping was added.
 - Gold remains zero; `gold.tsv` remains header-only; empirical accuracy remains null. No IPA labels were generated.
+
+
+## CI action runtime modernization — 2026-11-01
+
+- Status: `DONE_VERIFIED` (CI maintenance only; no phonological or transcription behavior changed).
+- Updated all five workflow files to the current Node.js 24-compatible major releases: `actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`, `actions/setup-go@v7`, and `actions/upload-artifact@v7`. Existing Pages actions remain at `configure-pages@v6`, `upload-pages-artifact@v5`, and `deploy-pages@v5`.
+- Exact branch head: `622159afec448906be91e79515e761c87ac3e405`.
+- Exact-head verification: [verify run 41339601530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601530) SUCCESS; [optional external-G2P run 41339601524](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601524) SUCCESS; [optional Goruut run 41339601526](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601526) SUCCESS.
+- Verified workflow coverage: 137 Python tests, repository evidence/data audit, browser/Node suites, generated-data reproducibility, production build and built-page/relative-asset checks all passed on the exact head.
+- Local checkout was unavailable; verification evidence is GitHub Actions on the exact branch head. The gold corpus remains empty and empirical accuracy remains unmeasured.

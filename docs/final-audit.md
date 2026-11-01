@@ -271,3 +271,8 @@ Blind annotation cannot be guaranteed in a public Git repository. Two submission
 ## 2026-11-01 closeout
 
 The independent IPA gold-corpus implementation and Lao evidence matrix are in [PR #98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98). PR CI passed: 134 Python tests, 107 Node/browser tests, data/evidence validation, generated-data reproducibility and production build. The code and schemas are mechanism-verified, but gold data is still empty (0 independent adjudicated IPA); tone/rhyme and Ukrainian labialization research remain partial. Main was not changed.
+
+
+## CI action runtime audit — 2026-11-01
+
+All five workflows now use the Node.js 24-compatible current major action releases. Exact-head verification passed: [verify 41339601530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601530), [external G2P 41339601524](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601524), and [Goruut 41339601526](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601526). This is CI maintenance evidence only; it does not establish linguistic accuracy or expert gold.
