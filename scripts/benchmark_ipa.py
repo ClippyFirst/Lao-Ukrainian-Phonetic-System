@@ -103,14 +103,20 @@ def main() -> int:
                 "reference_codepoints": len(ref),
                 "raw_output_present": bool(pred and pred["raw_output"]),
                 "status": pred["status"] if pred else "MISSING_ROW",
-                "version": pred["version"] if pred else "",\n                "gold_ipa_kind": g.get("ipa_kind", ""),\n                "prediction_ipa_kind": pred.get("ipa_kind", "") if pred else "",\n                "ipa_kind_mismatch": bool(pred and g.get("ipa_kind", "") and\n                                          (not pred.get("ipa_kind", "").strip() or\n                                           pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
+                "version": pred["version"] if pred else "",
+                "gold_ipa_kind": g.get("ipa_kind", ""),
+                "prediction_ipa_kind": pred.get("ipa_kind", "") if pred else "",
+                "ipa_kind_mismatch": bool(pred and g.get("ipa_kind", "") and
+                                          (not pred.get("ipa_kind", "").strip() or
+                                           pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
             })
         n = len(rows)
         edits = sum(r["edit_distance"] for r in rows)
         chars = sum(r["reference_codepoints"] for r in rows)
         report["engines"][engine] = {
             "n_adjudicated_gold_rows": n,
-            "exact_matches": sum(r["exact_match"] for r in rows),\n            "ipa_kind_mismatches": sum(r["ipa_kind_mismatch"] for r in rows),
+            "exact_matches": sum(r["exact_match"] for r in rows),
+            "ipa_kind_mismatches": sum(r["ipa_kind_mismatch"] for r in rows),
             "exact_match_rate": sum(r["exact_match"] for r in rows) / n if n else None,
             "missing_predictions": sum(r["missing_prediction"] for r in rows),
             "missing_prediction_rate": sum(r["missing_prediction"] for r in rows) / n if n else None,
