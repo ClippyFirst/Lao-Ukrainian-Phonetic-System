@@ -148,7 +148,7 @@ def test_stable_three_repeat_source_match_remains_non_gold(tmp_path):
             "http://127.0.0.1:18080", "Lao", "word", 1.0, 1, repeat_count=3,
         )
     fixture = tmp_path / "source.csv"
-    fixture.write_text("orth,ipa\\nword,kʰaː\\n", encoding="utf-8")
+    fixture.write_text("orth,ipa\nword,kʰaː\n", encoding="utf-8")
     report = MODULE.build_report(
         [{"text": "word", "source_attested_ipa": "kʰaː"}], [record],
         language="Lao", engine_commit="test", input_path=fixture,
