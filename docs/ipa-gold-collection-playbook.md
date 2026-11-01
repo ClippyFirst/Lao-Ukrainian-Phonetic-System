@@ -86,3 +86,20 @@ Existing numeric thresholds (100 train / 25 dev / 25 test) are minimum engineeri
 The upstream repository is https://github.com/byu-matrix-lab/MekongPhon. Its README describes data/ as lexicons, OPUS download scripts, sampled sentences and train/eval splits. pipeline/README.md describes: SEAlang frequency lists → IPA scraping via scrape.py → minor lexicon post-processing (including Lao tone-mark conversion) → OPUS sentence download → lexicon split → trie-based word lookup to convert sentences, filtering sentences containing out-of-lexicon tokens. This is an important provenance clue: sentence IPA is composed from a scraped word lexicon, not necessarily independently transcribed sentence-level phonetic gold.
 
 The repository root LICENSE path was not present when inspected. No dataset-specific redistribution license has therefore been verified. The paper's claim that pairs are aligned and verified and the proceedings' CC BY-NC-4.0 license do not substitute for the dataset license, per-entry source provenance, or a description of human verification. Do not import or redistribute any MekongPhon records yet. First inspect the exact lexicon files, scraping source/terms, correction protocol, variety and tone conventions, split construction, and data permissions; contact maintainers if these remain ambiguous. The public model cards' Apache-2.0 model license must not be assumed to license training data.
+
+
+## Audio-source shortlist — reviewed 2026-11-01
+
+These are **audio/transcript candidates**, not IPA gold. The distinction matters: the engine's lexical G2P contract is best evaluated against a declared citation-form pronunciation. A sentence-level corpus records contextual tokens, often with coarticulation and prosodic effects; it cannot silently stand in for citation-form lexicon entries.
+
+### Common Voice Scripted Speech 27.0 — Lao
+
+- Official catalog: https://commonvoice.allizom.org/en/datasets (catalog lists “Common Voice Scripted Speech 27.0 - Lao”, locale `lo`, CC0-1.0, MP3, 8.93 MB).
+- Dataset/version documentation: https://github.com/common-voice/cv-dataset/tree/main/datasets/scripted-speech. Scripted Speech consists of contributors reading pre-written sentences; community members validate recordings. The v27.0 release is dated 2026-09-11 in the current release history.
+- The catalog's 8.93 MB is a compressed dataset size, **not** a clip/speaker count. Exact validated clip count, speaker count, sentence coverage and metadata must be computed from the v27.0 manifest before sampling.
+- No IPA labels are supplied. The language code alone does not establish Vientiane variety, register or speaker background. Do not infer the desired Vientiane-oriented profile from the catalog label.
+- Recommended use: a supplementary contextual-audio source and a way to identify possible lexical prompts. For citation-form lexical gold, prefer consented recordings elicited from speakers whose target variety has been confirmed. If Common Voice is used, retain the clip ID, transcript, time interval and source/version metadata; do not attempt to identify speakers.
+
+### Collection decision
+
+Common Voice v27.0 is the best currently identified small, publicly catalogued Lao audio lead, but it is **not yet accepted as the 30-item lexical pilot source**. First inspect its actual v27.0 manifest and determine whether enough target-variety speakers and contrast-bearing tokens exist. If not, recruit speakers for controlled citation-form recordings. Do not use MekongPhon or any G2P output as a substitute for independent expert transcription.
