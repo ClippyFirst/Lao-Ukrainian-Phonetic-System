@@ -1170,3 +1170,10 @@ The documentation-only playbook, corpus-guide and handoff changes at the precedi
 Inspected the official release manifest: https://github.com/common-voice/cv-dataset/blob/main/datasets/scripted-speech/cv-corpus-27.0-2026-09-11.json. Lao: 223 clips; 193 validated; 16 contributor IDs; 0.35 validated hours (0.40 total). No named accent/variant metadata; contributor gender metadata is 88.79% male and 11.21% unspecified. Manifest locale checksum: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260b6`.
 
 **Decision:** useful only as a small contextual-audio/process-pilot candidate. It cannot establish Vientiane profile or balanced speaker coverage and is not IPA gold. Use only if specialist approves the profile and 30 suitable validated tokens exist; otherwise prioritize controlled citation-form recordings. No audio/labels imported; gold remains 0, accuracy null.
+
+
+## Final exact-head verification — 2026-11-01
+
+Branch `feat/ipa-gold-corpus-20261101-review`, final handoff commit `440975c82c5005a24952ce883cea269aa3cb3198`. Lao exact-head CI: verify [41345121935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345121935) SUCCESS; optional Goruut [41345121928](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345121928) SUCCESS; optional external G2P [41345121943](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41345121943) SUCCESS. Core job passed corpus structure validation, repository data/evidence audit, Python tests, browser engine tests, browser data generation/reproducibility, and built-pages/relative-asset checks.
+
+These checks validate the committed repository and its automated engineering contracts. They do **not** validate the linguistic correctness of future human annotations, create gold labels, or change the release blocker. Gold remains empty and accuracy remains null.
