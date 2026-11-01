@@ -160,3 +160,44 @@ def test_stable_three_repeat_source_match_remains_non_gold(tmp_path):
     assert report["source_attested_diagnostic"]["notation_normalized_matches"] == 1
     assert report["accuracy"] is None
     assert report["independent_gold_count"] == 0
+
+
+def test_probe_preserves_upstream_dictionary_randomization_metadata():
+    raw = '{"Words":[{"Linguistic":"word","Phonetic":"kʰaː˩˧"}],"RandomizationWordsCount":1,"RandomizationWordsChoices":2}'
+    with patch.object(MODULE, "request_raw_response", side_effect=[raw, raw, raw]):
+        record = MODULE.run_probe(
+            "http://127.0.0.1:18080", "Lao", "word", 1.0, 1, repeat_count=3,
+        )
+    assert record["randomization_words_count_max"] == 1
+    assert record["randomization_words_choices_max"] == 2
+    assert record["randomized_repetitions"] == 3
+    assert record["ambiguous_dictionary_selection"] is True
+    assert record["repetitions"][0]["randomization_words_count"] == 1
+    assert record["repetitions"][0]["randomization_words_choices"] == 2
+
+
+def test_report_counts_randomized_inputs_without_scoring_accuracy(tmp_path):
+    fixture = tmp_path / "probes.txt"
+    fixture.write_text("word\\n", encoding="utf-8")
+    record = {
+        "input": "word", "status": "OK", "raw_response": "{}",
+        "phonetic_tokens": ["wɜːd"], "error": None,
+        "repetitions": [{
+            "repeat": 1, "status": "OK", "phonetic_tokens": ["wɜːd"],
+            "randomization_words_count": 1, "randomization_words_choices": 2,
+        }],
+        "randomization_words_count_max": 1,
+        "randomization_words_choices_max": 2,
+        "randomized_repetitions": 1,
+        "ambiguous_dictionary_selection": True,
+        "unstable": False, "reproducible": True,
+    }
+    report = MODULE.build_report(
+        ["word"], [record], language="Lao", engine_commit="test",
+        input_path=fixture, input_sha256="sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config", runtime_version="go test",
+    )
+    assert report["randomized_input_count"] == 1
+    assert report["randomized_repetition_count"] == 1
+    assert report["unstable_randomized_input_count"] == 0
+    assert report["accuracy"] is None
