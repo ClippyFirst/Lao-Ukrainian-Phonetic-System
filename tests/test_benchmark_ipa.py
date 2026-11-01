@@ -92,7 +92,9 @@ class BenchmarkIpaTests(unittest.TestCase):
         metrics = self.run_benchmark(gold, pred)["engines"]["candidate"]
         self.assertEqual(metrics["exact_matches"], 0)
         self.assertEqual(metrics["ipa_kind_mismatches"], 1)
-        self.assertFalse(metrics["rows"][0]["exact_match"])\n        self.assertEqual(metrics["rows"][0]["source_id"], "src#1")\n        self.assertEqual(metrics["rows"][0]["gold_license_id"], "CC-BY-4.0")
+        self.assertFalse(metrics["rows"][0]["exact_match"])
+        self.assertEqual(metrics["rows"][0]["source_id"], "src#1")
+        self.assertEqual(metrics["rows"][0]["gold_license_id"], "CC-BY-4.0")
 
     def test_mismatch_reports_codepoint_cer(self):
         report = self.run_benchmark(
