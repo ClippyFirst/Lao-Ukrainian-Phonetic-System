@@ -17,13 +17,20 @@ def test_extracts_raw_phonetic_words_without_rewriting():
     }) == ["kʰaː˩˧", "kʰon"]
 
 
-def test_rejects_unexpected_response_shape():
+def test_rejects_empty_and_unexpected_response_shapes():
     try:
         MODULE.extract_phonetics({"words": []})
     except ValueError as exc:
         assert "Words array" in str(exc)
     else:
         raise AssertionError("unexpected API shape must be rejected")
+    for payload in ({"Words": []}, {"Words": [{"Linguistic": "word", "Phonetic": ""}]}):
+        try:
+            MODULE.extract_phonetics(payload)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("empty phonetic response must be rejected")
 
 
 def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
