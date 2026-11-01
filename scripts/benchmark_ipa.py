@@ -94,7 +94,9 @@ def main() -> int:
             p = norm(pred["ipa"]) if pred else ""
             rows.append({
                 "id": ident, "profile": g["profile"],
-                "exact_match": bool(p) and p == ref,
+                "exact_match": bool(p) and p == ref and not bool(pred and g.get("ipa_kind", "") and
+                                                                  (not pred.get("ipa_kind", "").strip() or
+                                                                   pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
                 "edit_distance": distance(ref, p) if p else len(ref),
@@ -102,6 +104,14 @@ def main() -> int:
                 "raw_output_present": bool(pred and pred["raw_output"]),
                 "status": pred["status"] if pred else "MISSING_ROW",
                 "version": pred["version"] if pred else "",
+                "source_id": g.get("source_id", ""),
+                "gold_license_id": g.get("license_id", ""),
+                "rights_evidence_locator": g.get("rights_evidence_locator", ""),
+                "gold_ipa_kind": g.get("ipa_kind", ""),
+                "prediction_ipa_kind": pred.get("ipa_kind", "") if pred else "",
+                "ipa_kind_mismatch": bool(pred and g.get("ipa_kind", "") and
+                                          (not pred.get("ipa_kind", "").strip() or
+                                           pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
             })
         n = len(rows)
         edits = sum(r["edit_distance"] for r in rows)
@@ -109,6 +119,7 @@ def main() -> int:
         report["engines"][engine] = {
             "n_adjudicated_gold_rows": n,
             "exact_matches": sum(r["exact_match"] for r in rows),
+            "ipa_kind_mismatches": sum(r["ipa_kind_mismatch"] for r in rows),
             "exact_match_rate": sum(r["exact_match"] for r in rows) / n if n else None,
             "missing_predictions": sum(r["missing_prediction"] for r in rows),
             "missing_prediction_rate": sum(r["missing_prediction"] for r in rows) / n if n else None,

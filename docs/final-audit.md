@@ -251,3 +251,18 @@ Implementation status: `LAO-CLUSTER-001` is `DONE_VERIFIED`. The IPA-to-Ukrainia
 - Exact expected output preserves all non-Lao text and separators. Native Lao numerals remain visible and the result is correctly marked PARTIAL rather than silently claiming full coverage.
 - Exact PR-head verification [41289891336](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41289891336) passed: repository audit, Python suite, optional G2P harness syntax/CLI validation, browser suite, canonical data regeneration/reproducibility and built-page/relative-asset checks.
 - This is an orthographic source-preservation regression, not IPA gold or pronunciation accuracy evidence.
+
+
+## Current-head reconciliation — 2026-11-01
+
+- Audit baseline: `6f607d7ab4d432fd8491a5fcee32186e4269fc32`; exact-main CI: verify 41326457758; latest check completed successfully.
+- The canonical gold TSV currently has a header only. Independent adjudicated IPA gold = 0; accuracy is not measured and must remain null.
+- Current language-specific unresolved tasks and acceptance criteria are recorded in [LINGUISTIC-COMPLETION-REGISTER-2026-11-01.md](audits/current/LINGUISTIC-COMPLETION-REGISTER-2026-11-01.md). This register does not replace historical audit evidence.
+- CI success is limited to configured engineering checks. It does not establish expert phonetic correctness, production readiness, manual accessibility QA or rights to redistribute third-party assets.
+
+
+## Independent IPA gold corpus audit — 2026-11-01
+
+The repository now has a standard-library JSONL validator, five versioned JSON Schemas, a source-license registry, independent annotation/adjudication records, deterministic split manifests, a typed IPA export into the existing benchmark and a tag/manual gold release gate. The corpus files remain empty and `gold.tsv` remains header-only. This is infrastructure completion, not scientific completion: independent expert gold=0, accuracy=null, and production readiness remains blocked.
+
+Blind annotation cannot be guaranteed in a public Git repository. Two submissions must be collected separately in a controlled channel and merged only after both are locked. Every future source still requires a human-verified license/permission locator; a registry entry is not itself a grant of rights.

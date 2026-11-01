@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["annotation_id", "record_id", "annotator_id", "ipa", "confidence", "uncertainty", "notes", "annotated_at"],
+  "properties": {
+    "annotation_id": {"type": "string", "minLength": 1},
+    "record_id": {"type": "string", "minLength": 1},
+    "annotator_id": {"type": "string", "minLength": 1},
+    "ipa": {"$ref": "#/$defs/ipa"},
+    "confidence": {"enum": ["HIGH", "MEDIUM", "LOW", "UNSET"]},
+    "uncertainty": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"},
+    "annotated_at": {"type": "string", "format": "date"}
+  },
+  "$defs": {
+    "ipa": {"type": "object", "additionalProperties": false, "required": ["value", "kind"], "properties": {
+      "value": {"type": "string", "minLength": 1},
+      "kind": {"enum": ["PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW"]},
+      "syllable_boundaries": {"type": "array", "items": {"type": "string", "minLength": 1}},
+      "tone": {"type": ["string", "null"]},
+      "vowel_length": {"type": ["string", "null"]},
+      "phonation": {"type": ["string", "null"]}
+    }}
+  }
+}

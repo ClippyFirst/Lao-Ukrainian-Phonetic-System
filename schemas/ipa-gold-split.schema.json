@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "group_id", "split", "seed", "version"],
+  "properties": {
+    "record_id": {"type": "string", "minLength": 1},
+    "group_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["train", "dev", "test"]},
+    "seed": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1}
+  }
+}
