@@ -35,7 +35,7 @@ Do not infer tone-by-coda restrictions from Lao orthographic tone marks alone. O
 
 ## Labialized onsets and Ukrainian adaptation
 
-Erickson (2001), [“On the Origins of Labialized Consonants in Lao”](https://sealang.net/sala/archives/pdf8/erickson2001origins.pdf), argues that labialized consonants pattern as unit phonemes rather than consonant–glide sequences. The paper reports restricted distribution, including absence before rounded vowels. Its six-tone discussion cites a different descriptive tradition; do not merge that account into Ueda's five-category central Vientiane profile without dialect reconciliation.
+Erickson (1996), [“On the Origins of Labialized Consonants in Lao”](https://sealang.net/sala/archives/pdf8/erickson2001origins.pdf), argues that labialized consonants pattern as unit phonemes rather than consonant–glide sequences. The paper reports restricted distribution, including absence before rounded vowels. Its six-tone discussion cites a different descriptive tradition; do not merge that account into Ueda's five-category central Vientiane profile without dialect reconciliation.
 
 | Analysis | Ukrainian adapter status | Decision |
 |---|---|---|
@@ -53,3 +53,16 @@ Erickson (2001), [“On the Origins of Labialized Consonants in Lao”](https://
 5. Review labialized segments against both the selected Vientiane profile and Erickson before choosing Ukrainian spellings.
 
 **Status:** PARTIAL. The inventory baseline is source-supported; tone × rhyme cells, acoustic contours and Ukrainian labialization policy remain unverified. Independent expert gold = 0. No IPA labels were created.
+
+
+## Separate six-tone/rhyme analysis in Erickson (1996)
+
+Erickson's §2.4 (pp. 137–138) adopts six tones from Hoshino & Marcus (1981) and Morev et al. (1979), rather than Ueda's five-tone central Vientiane inventory. In that adopted analysis:
+
+| Syllable/rhyme type | Tone distribution reported by Erickson | Scope |
+|---|---|---|
+| Open syllable | all six tones | Erickson's reference framework |
+| Glottal-stop coda /ʔ/ | short vowels only; two tones | Erickson's reference framework |
+| Other stop codas | four tones | Erickson's reference framework |
+
+This is valuable tone × rhyme evidence, but it is not evidence that central Vientiane has six tones. The two systems must be represented as distinct source analyses until dialect, informant and transcription conventions are reconciled. Erickson's synchronic unit-phoneme argument for labialized consonants (§3, pp. 138–139) is stronger than its tentative historical CuV → CʷV derivation (§5.1 and conclusion, pp. 142–143).
