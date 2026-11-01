@@ -94,14 +94,16 @@ def main() -> int:
             p = norm(pred["ipa"]) if pred else ""
             rows.append({
                 "id": ident, "profile": g["profile"],
-                "exact_match": bool(p) and p == ref and not bool(pred and g.get("ipa_kind", "") and\n                                                                  (not pred.get("ipa_kind", "").strip() or\n                                                                   pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
+                "exact_match": bool(p) and p == ref and not bool(pred and g.get("ipa_kind", "") and
+                                                                  (not pred.get("ipa_kind", "").strip() or
+                                                                   pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
                 "edit_distance": distance(ref, p) if p else len(ref),
                 "reference_codepoints": len(ref),
                 "raw_output_present": bool(pred and pred["raw_output"]),
                 "status": pred["status"] if pred else "MISSING_ROW",
-                "version": pred["version"] if pred else "",
+                "version": pred["version"] if pred else "",\n                "gold_ipa_kind": g.get("ipa_kind", ""),\n                "prediction_ipa_kind": pred.get("ipa_kind", "") if pred else "",\n                "ipa_kind_mismatch": bool(pred and g.get("ipa_kind", "") and\n                                          (not pred.get("ipa_kind", "").strip() or\n                                           pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
             })
         n = len(rows)
         edits = sum(r["edit_distance"] for r in rows)
