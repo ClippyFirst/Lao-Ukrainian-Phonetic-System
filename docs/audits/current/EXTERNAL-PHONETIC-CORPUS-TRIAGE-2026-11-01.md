@@ -26,3 +26,29 @@ The source code is MIT, but the corresponding `neurlang/dataset/lao/` lexicon ha
 5. Keep tone, vowel length, syllable boundaries and uncertain readings intact. Do not normalize away tonal distinctions to improve agreement.
 
 Current independent, project-owned, expert-adjudicated Lao gold remains 0. No MekongPhon/Goruut accuracy claim is added to this repository.
+
+
+## Test-only Goruut runtime evaluation
+
+Added an optional, test-only HTTP runtime probe for Goruut at pinned upstream commit `b224bde02151f8f86d0fe260804e4ca743bda620`. It explicitly enables `Lao` in Goruut's `BuiltinDictLanguages`, builds the upstream Go binary, starts the documented HTTP service and records every raw JSON response for source-engineering probes (including multiword/punctuation cases). `scripts/benchmark_goruut.py` records engine commit, language identifier, input SHA-256, raw response, token outputs and errors. It performs no IPA normalization and always reports `accuracy: null`, independent gold=0. Workflow: `.github/workflows/optional-goruut-runtime.yml`; artifact retention 30 days. Project fixtures are engineering probes, not adjudicated gold.
+
+The earlier asset-license blocker applies to copying, redistribution and production integration. The owner has authorized use for testing only; therefore the optional CI probe may check out and execute the pinned upstream source transiently. It does not persist upstream assets, does not bundle them, and does not approve a production dependency. Linguistic gold and accuracy remain unestablished.
+
+
+## Goruut runtime evidence update — 2026-11-01
+
+The pinned Goruut runtime was executed, not merely inspected. Go 1.23.12, Lao explicitly enabled; 23 engineering probes yielded 18 usable outputs/5 empty; 100 MekongPhon eval rows yielded 81 usable outputs/19 empty. Strict NFC+outer-whitespace source-attested concordance was 8/100 (8%); heuristic diagnostic: 13 tone-only, 1 tone/length, 59 segmental/format, 19 no output. This is NOT accuracy or gold: MekongPhon sentence IPA is lexicon-generated and its eval is not independent expert adjudication. Server log repeatedly reports missing `weights9.bin.zlib`. Do not promote. Full evidence: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
+
+Testing-only owner authorization was used to execute the pinned upstream source in ephemeral CI. No external asset was copied into the repository or production artifact. Full report: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
+
+
+## Repeatability findings — 2026-11-01
+
+Three-repeat re-evaluation supersedes one-shot counts: engineering probes 18/23 usable, with 7/18 usable outputs unstable across repetitions; MekongPhon 81/100 usable, with 13/81 unstable; only 4/100 source-attested rows matched exactly across all three repetitions (10/100 matched at least once). Example `ຄົນ` alternated between `kʰon˩˨` and `kʰon˧˥`. This demonstrates a serious tone/reproducibility defect. It remains source-attested concordance, not accuracy. See runtime evaluation audit.
+
+The three-repeat raw outputs are preserved in workflow artifacts and summarized in `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`. Do not treat these results as gold or as a production approval.
+
+
+## Cross-engine comparison update
+
+Additional optional lao2ipa 1.0.0 run on the 37-case engineering fixture: 0/37 exact string agreements, 31 tone-suffix-only, 2 diphthong-offglide, 4 segmental/vowel-sequence differences; zero runtime errors. The local engine matched its own fixture 37/37, but that fixture is not gold. This points to a major tone-convention difference and six cases requiring segmental review, not a winner. Latest Goruut three-repeat: 18/23 engineering outputs, 12 stable/6 unstable; 81/100 MekongPhon outputs, 70 stable/11 unstable; 5/100 all-repeat source-attested exact/notation matches, 10/100 at least one repeat. Accuracy remains null.
