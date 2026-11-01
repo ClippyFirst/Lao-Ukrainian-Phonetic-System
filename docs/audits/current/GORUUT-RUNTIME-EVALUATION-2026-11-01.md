@@ -78,3 +78,12 @@ The exact current PR #96 head `bca9d4a802be0e873bef34618da78bd73cd6eb79` was exe
 - The server logs `weights9.bin.zlib: file does not exist`; the pinned tree has `weights8.bin.zlib` but no `weights9.bin.zlib`. The loader path and causal relation to empty/unstable outputs remain unproven.
 
 This exact-head run supersedes earlier 4%, 5%, and 8% figures in this audit. **Disposition remains: reject Goruut for production use; retain only as an optional raw-output research comparator.** Independent adjudicated Lao gold remains 0.
+
+
+## Upstream cause of nondeterministic dictionary selection — Lao
+
+Pinned Goruut source explains the instability signal. In [parts_of_speech_selector_service.go](https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/repo/services/parts_of_speech_selector_service.go#L168-L205), `SelectE` counts multiple dictionary pronunciations for a word; when more than one exists it increments the escape counters. If the homograph selector has not marked a `preferred` pronunciation, the fallback loop iterates the dictionary mapping and selects a dictionary pronunciation; the upstream source comment explicitly describes this as random selection when no homograph model is available. The [sentence use case](https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/usecases/phonemize_usecase.go#L84-L85) exposes those counters as `RandomizationWordsCount` and `RandomizationWordsChoices` in the HTTP response.
+
+Across the latest artifact, all 10/10 unstable engineering inputs and all 13/13 unstable MekongPhon-eval inputs carried Goruut's RandomizationWordsCount / RandomizationWordsChoices metadata. Metadata appeared on 11/23 engineering inputs and 17/100 eval inputs; not every ambiguous input changed across the three samples. The response metadata is therefore a direct upstream signal for the observed instability, not an inference from output differences alone.
+
+This gives a source-level explanation for the observed unstable cases. It does **not** establish that the separate `weights9.bin.zlib` warning causes the selection behavior; that warning remains independently unresolved. The project does not patch Goruut or choose a random pronunciation as acceptable output. Any result carrying these ambiguity counters should remain flagged as non-deterministic/ambiguous for downstream use.
