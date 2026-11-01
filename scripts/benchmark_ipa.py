@@ -104,6 +104,9 @@ def main() -> int:
                 "raw_output_present": bool(pred and pred["raw_output"]),
                 "status": pred["status"] if pred else "MISSING_ROW",
                 "version": pred["version"] if pred else "",
+                "source_id": g.get("source_id", ""),
+                "gold_license_id": g.get("license_id", ""),
+                "rights_evidence_locator": g.get("rights_evidence_locator", ""),
                 "gold_ipa_kind": g.get("ipa_kind", ""),
                 "prediction_ipa_kind": pred.get("ipa_kind", "") if pred else "",
                 "ipa_kind_mismatch": bool(pred and g.get("ipa_kind", "") and
