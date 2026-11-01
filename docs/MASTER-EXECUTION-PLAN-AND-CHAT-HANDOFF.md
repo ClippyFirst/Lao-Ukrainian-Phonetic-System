@@ -1019,7 +1019,7 @@ The following current statuses supersede older checkpoint rows above where they 
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| IPA-GOLD-SCHEMA-001 | DONE_VERIFIED | Five versioned JSON Schemas; empty JSONL templates; validator and regression tests in exact-head CI |
+| IPA-GOLD-SCHEMA-001 | DONE_VERIFIED | Six versioned JSON Schemas; empty JSONL templates; validator and regression tests in exact-head CI |
 | IPA-GOLD-DOUBLE-ANNOTATION-001 | PARTIAL | Enforces two distinct annotators and third independent adjudicator; actual blind collection needs qualified human annotators and a controlled intake channel |
 | IPA-GOLD-ADJUDICATION-001 | PARTIAL | Agreement/resolved/unresolved semantics and rationale validation implemented; no real adjudicated rows exist |
 | IPA-GOLD-SPLIT-001 | DONE_VERIFIED | Deterministic SHA-256 split assignment, preserves frozen assignments, prevents lexeme-group leakage; current manifest empty |
