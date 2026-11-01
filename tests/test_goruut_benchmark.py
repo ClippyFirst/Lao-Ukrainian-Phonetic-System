@@ -73,3 +73,22 @@ def test_empty_words_response_is_preserved_as_a_probe_failure():
         assert "must not be empty" in str(exc)
     else:
         raise AssertionError("empty response must be detected")
+
+
+def test_source_attested_concordance_is_not_gold_or_accuracy(tmp_path):
+    fixture = tmp_path / "source.csv"
+    fixture.write_text("orth,ipa\\nword,kʰaː\\n", encoding="utf-8")
+    inputs = MODULE.load_inputs(fixture, input_format="csv", text_column="orth", expected_column="ipa")
+    records = [{
+        "input": "word", "status": "OK", "raw_response": "{}",
+        "phonetic_tokens": ["kʰaː"], "error": None,
+    }]
+    report = MODULE.build_report(
+        inputs, records, language="Lao", engine_commit="test",
+        input_path=fixture, input_sha256="sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config", runtime_version="go test",
+    )
+    assert report["source_attested_diagnostic"]["exact_matches"] == 1
+    assert report["source_attested_diagnostic"]["status"] == "SOURCE_ATTESTED_CONCORDANCE_ONLY_NOT_GOLD"
+    assert report["independent_gold_count"] == 0
+    assert report["accuracy"] is None
