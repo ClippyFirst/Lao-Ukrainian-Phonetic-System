@@ -16,6 +16,7 @@ from collections import defaultdict
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 SPLITS = ("train", "dev", "test")
 IPA_KINDS = ("PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW")
@@ -72,6 +73,14 @@ def require_iso_date(value: Any, label: str) -> str:
     return raw
 
 
+def require_uri(value: Any, label: str) -> str:
+    raw = require_text(value, label)
+    parsed = urlsplit(raw)
+    if not parsed.scheme or (parsed.scheme.lower() in ("http", "https") and not parsed.netloc):
+        raise ValueError(f"{label} must be a valid URI")
+    return raw
+
+
 def validate_ipa(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be an IPA object")
@@ -97,9 +106,29 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         license_document = json.loads(args.licenses.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"{args.licenses}: invalid license registry JSON: {exc.msg}") from exc
-    license_registry = license_document.get("licenses") if isinstance(license_document, dict) else None
-    if not isinstance(license_registry, dict):
-        raise ValueError(f"{args.licenses}: expected a licenses object")
+    if not isinstance(license_document, dict):
+        raise ValueError(f"{args.licenses}: license registry must be an object")
+    reject_unknown_properties(license_document, {"schema_version", "licenses"}, "license registry")
+    require_text(license_document.get("schema_version"), "license registry.schema_version")
+    license_registry = license_document.get("licenses")
+    if not isinstance(license_registry, dict) or not license_registry:
+        raise ValueError(f"{args.licenses}: licenses must contain at least one license")
+    for license_id, license_info in license_registry.items():
+        if not isinstance(license_info, dict):
+            raise ValueError(f"license registry entry {license_id!r} must be an object")
+        for field in ("redistributable", "commercial_use", "attribution_required", "share_alike"):
+            if field not in license_info:
+                raise ValueError(f"license registry entry {license_id!r} missing required property {field}")
+            value = license_info[field]
+            if field == "redistributable":
+                if not isinstance(value, bool):
+                    raise ValueError(f"license registry entry {license_id!r} must define boolean redistributable")
+            elif value is not None and not isinstance(value, bool):
+                raise ValueError(f"license registry entry {license_id!r}.{field} must be boolean or null")
+        if license_info.get("url") is not None:
+            require_uri(license_info["url"], f"license registry entry {license_id!r}.url")
+        if "note" in license_info and not isinstance(license_info["note"], str):
+            raise ValueError(f"license registry entry {license_id!r}.note must be a string")
     annotations = read_jsonl(args.annotations)
     adjudications = read_jsonl(args.adjudications)
     splits = read_jsonl(args.splits)
@@ -134,8 +163,8 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
             raise ValueError(f"record {ident}: source must be an object")
         for field in ("source_id", "citation", "locator", "license_id"):
             require_text(source.get(field), f"record {ident}.source.{field}")
-        if source.get("url") is not None and not isinstance(source["url"], str):
-            raise ValueError(f"record {ident}.source.url must be a string or null")
+        if source.get("url") is not None:
+            require_uri(source["url"], f"record {ident}.source.url")
         digest = source.get("sha256")
         if digest is not None and (not isinstance(digest, str) or len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest)):
             raise ValueError(f"record {ident}.source.sha256 must be a lowercase 64-character SHA-256 digest")
@@ -295,11 +324,20 @@ def group_split(group_id: str, seed: str) -> str:
 
 
 def command_assign(args: argparse.Namespace) -> int:
+    seed = require_text(args.seed, "--seed")
+    version = require_text(args.version, "--version")
     records = read_jsonl(args.records)
     existing = read_jsonl(args.splits)
-    record_by_id = {require_text(row.get("record_id"), "record.record_id"): row for row in records}
+    record_by_id: dict[str, dict[str, Any]] = {}
+    for record in records:
+        ident = require_text(record.get("record_id"), "record.record_id")
+        if ident in record_by_id:
+            raise ValueError(f"duplicate record_id: {ident}")
+        require_text(record.get("lexeme_group_id"), f"record {ident}.lexeme_group_id")
+        record_by_id[ident] = record
+
     existing_by_group: dict[str, dict[str, Any]] = {}
-    existing_by_id = {}
+    existing_by_id: dict[str, dict[str, Any]] = {}
     for row in existing:
         ident = require_text(row.get("record_id"), "split.record_id")
         if ident not in record_by_id:
@@ -309,30 +347,34 @@ def command_assign(args: argparse.Namespace) -> int:
             raise ValueError(f"split {ident}: group_id must equal record.lexeme_group_id")
         if row.get("split") not in SPLITS:
             raise ValueError(f"split {ident}: invalid split")
-        if row["split"] != group_split(group, require_text(row.get("seed"), f"split {ident}.seed")):
+        row_seed = require_text(row.get("seed"), f"split {ident}.seed")
+        row_version = require_text(row.get("version"), f"split {ident}.version")
+        if row["split"] != group_split(group, row_seed):
             raise ValueError(f"split {ident} does not match deterministic hash for its seed")
-        if group in existing_by_group and existing_by_group[group]["split"] != row["split"]:
-            raise ValueError(f"lexeme_group_id crosses splits: {group}")
+        assignment = {"split": row["split"], "seed": row_seed, "version": row_version}
+        group_prior = existing_by_group.get(group)
+        if group_prior and group_prior != assignment:
+            raise ValueError(f"inconsistent frozen split metadata for lexeme_group_id: {group}")
         if ident in existing_by_id:
             raise ValueError(f"duplicate split assignment for record_id: {ident}")
-        existing_by_group[group] = row
-        existing_by_id[ident] = row
+        existing_by_group[group] = assignment
+        existing_by_id[ident] = assignment
+
     output = []
     for ident, record in sorted(record_by_id.items()):
         group = record["lexeme_group_id"]
         prior = existing_by_id.get(ident)
         group_prior = existing_by_group.get(group)
-        assigned = group_prior["split"] if group_prior else group_split(group, args.seed)
+        assigned = group_prior["split"] if group_prior else group_split(group, seed)
         output.append({
             "record_id": ident, "group_id": group, "split": assigned,
-            "seed": prior.get("seed", args.seed) if prior else group_prior.get("seed", args.seed) if group_prior else args.seed,
-            "version": prior.get("version", args.version) if prior else group_prior.get("version", args.version) if group_prior else args.version,
+            "seed": prior["seed"] if prior else group_prior["seed"] if group_prior else seed,
+            "version": prior["version"] if prior else group_prior["version"] if group_prior else version,
         })
     write_jsonl(args.output, output)
     print(json.dumps({"assigned_records": len(output), "output": str(args.output),
-                      "seed": args.seed, "existing_assignments_preserved": len(existing)}, ensure_ascii=False))
+                      "seed": seed, "existing_assignments_preserved": len(existing)}, ensure_ascii=False))
     return 0
-
 
 def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
     rows = []
