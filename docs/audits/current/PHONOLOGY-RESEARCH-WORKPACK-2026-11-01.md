@@ -47,7 +47,7 @@ Ueda (1994), J-STAGE article abstract and bibliographic record (pp. 95–115; [D
 
 ### Labialized consonants
 
-Blaine Erickson (2001), “On the Origins of Labialized Consonants in Lao,” [full paper](https://sealang.net/sala/archives/pdf8/erickson2001origins.pdf), argues that Lao labialized consonants should be treated as unit phonemes rather than consonant–glide sequences. The paper describes restricted distribution, absence before rounded vowels, and a skewed inventory (all velars, some alveolars, one palatal). It also cites a six-tone description from Hoshino & Marcus / Morev, which must not be silently merged with Ueda's five-category central Vientiane model. The two sources differ in analytical scope and underlying reference materials; create separate profile/source claims rather than averaging the tone inventories.
+Blaine Erickson (1996), “On the Origins of Labialized Consonants in Lao,” [full paper](https://sealang.net/sala/archives/pdf8/erickson2001origins.pdf), argues that Lao labialized consonants should be treated as unit phonemes rather than consonant–glide sequences. The paper describes restricted distribution, absence before rounded vowels, and a skewed inventory (all velars, some alveolars, one palatal). It also cites a six-tone description from Hoshino & Marcus / Morev, which must not be silently merged with Ueda's five-category central Vientiane model. The two sources differ in analytical scope and underlying reference materials; create separate profile/source claims rather than averaging the tone inventories.
 
 ### Ukrainian adaptation consequence
 
@@ -57,3 +57,10 @@ Keep a labialized input such as /kʷ/ typed as a unit IPA segment through the ad
 
 
 See the source-grounded [Lao tone–rhyme evidence matrix](LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md) for the Vientiane inventory baseline, unfilled tone × coda cells, labialized-onset analysis and Ukrainian-adapter blockers.
+
+
+### Erickson source correction and tone/rhyme cross-check
+
+The SEA-language archive PDF filename contains “2001”, but its bibliographic publication is Erickson (1996), *Papers from the Sixth Annual Meeting of the Southeast Asian Linguistics Society*, pp. 135–148. The source's own §2.4 adopts a six-tone description from Hoshino & Marcus (1981) / Morev et al. (1979): all six tones may occur in open syllables; glottal-stop codas occur only with short vowels and two tones; other stop codas occur with four tones. This is a distinct source framework from Ueda's five-tone central Vientiane description and must remain a separate profile/analysis column.
+
+Erickson's synchronic argument that labialized consonants are unit phonemes is explicit (§3, pp. 138–139). The proposed historical derivation from earlier CuV sequences is explicitly tentative in §5.1 and the conclusion (pp. 142–143); do not treat that diachronic hypothesis as established fact.
