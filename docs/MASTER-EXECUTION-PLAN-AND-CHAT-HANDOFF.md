@@ -1012,3 +1012,13 @@ The latest final-head run [41325409867](https://github.com/ClippyFirst/Lao-Ukrai
 `data/benchmark/records.jsonl`, `annotations.jsonl`, `adjudications.jsonl`, and `splits.jsonl` are empty templates. `gold.tsv` is header-only; independent expert gold=0 and accuracy=null. Ueda (1994) supports a five-category central Vientiane model with phonemic vowel length and nine finals, but does not substitute for lexical expert gold or acoustic speaker coverage. No IPA labels were added.
 
 See [IPA gold protocol](docs/ipa-gold-corpus.md) and [Lao phonology research workpack](docs/audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md).
+
+### Additional rights and export controls
+
+| Task | Status | Acceptance / remaining work |
+|---|---|---|
+| IPA-GOLD-RIGHTS-001 | DONE_VERIFIED (mechanism) | Approved license registry, per-record rights evidence, rejection of unregistered/non-redistributable licenses; legal verification of future source-specific records remains required |
+| IPA-GOLD-PROVENANCE-EXPORT-001 | DONE_VERIFIED | Gold TSV and benchmark rows retain source ID, license ID and rights-evidence locator |
+| IPA-GOLD-BLIND-INTAKE-001 | BLOCKED | Requires external controlled intake; public GitHub history cannot provide blind annotation |
+
+The rights registry does not itself grant permission. Each real source still needs its exact license/permission verified by a responsible curator, and share-alike/attribution terms must be honored in distribution.
