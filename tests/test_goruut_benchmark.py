@@ -263,3 +263,16 @@ def test_probe_and_report_separate_complete_from_partial_source_coverage(tmp_pat
     assert report["source_coverage_unknown_outputs"] == 0
     assert report["unphonemized_source_fragment_count"] == 1
     assert report["accuracy"] is None
+
+
+def test_source_coverage_flags_empty_phonetic_word_inside_nonempty_response():
+    payload = {
+        "Words": [
+            {"CleanWord": "ក", "PrePunct": "", "PostPunct": "", "Phonetic": ""},
+            {"CleanWord": "េ", "PrePunct": "", "PostPunct": "", "Phonetic": "e"},
+        ]
+    }
+    coverage = MODULE.analyze_source_coverage(payload, "កេ")
+    assert coverage["source_reconstruction_matches_input"] is True
+    assert coverage["source_coverage_complete"] is False
+    assert coverage["empty_phonetic_word_indices"] == [0]
