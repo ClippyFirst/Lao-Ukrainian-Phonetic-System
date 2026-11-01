@@ -307,7 +307,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
         rows.append({
             "id": ident, "text": record["orthography"]["text"], "gold_ipa": ipa["value"],
             "gold_status": "ADJUDICATED", "profile": record["profile"]["id"],
-            "source_id": source["source_id"], "ipa_kind": ipa["kind"],\n            "license_id": source["license_id"],\n            "rights_evidence_locator": source["rights_evidence"]["locator"],
+            "source_id": source["source_id"], "ipa_kind": ipa["kind"],
+            "license_id": source["license_id"],
+            "rights_evidence_locator": source["rights_evidence"]["locator"],
         })
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as handle:
