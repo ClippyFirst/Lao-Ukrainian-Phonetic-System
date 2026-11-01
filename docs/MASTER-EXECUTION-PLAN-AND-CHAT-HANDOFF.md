@@ -1155,3 +1155,11 @@ The rights registry does not itself grant permission. Each real source still nee
 ## Controlled IPA acquisition documentation CI — 2026-11-01
 
 The documentation-only playbook, corpus-guide and handoff changes at the preceding branch head were checked by GitHub Actions. Lao: verify run 41343495676 SUCCESS; optional external G2P 41343495667 SUCCESS; optional Goruut 41343495681 SUCCESS. No language-engine runtime or gold data changed. This validates the repository state, not the linguistic correctness of future annotations. Pages deployment and release-gate workflow were not run.
+
+
+## Source acquisition update — 2026-11-01
+
+- **New candidate:** Common Voice Scripted Speech v27.0 Lao. Official catalog lists locale `lo`, CC0-1.0 and an 8.93 MB MP3 archive: https://commonvoice.allizom.org/en/datasets. The Common Voice dataset documentation says Scripted Speech consists of pre-written sentences read by contributors and community-validated: https://github.com/common-voice/cv-dataset/tree/main/datasets/scripted-speech. Archive size is not a clip/speaker count; inspect the exact v27.0 manifest before selecting any items.
+- **Evidence boundary:** Common Voice contains sentence-level recordings/transcripts, not IPA. The catalog does not establish Vientiane dialect, speaker profile or citation-form pronunciations. Use it only for supplementary contextual audio/candidate discovery until metadata is inspected. For the lexical G2P gold, prioritize consented citation-form recordings from confirmed Vientiane speakers.
+- The existing MekongPhon decision is unchanged: candidate external comparator only, not admitted gold. No external labels or audio were imported.
+- `LAO-GOLD-001` remains `BLOCKED`; 0 independent gold rows, accuracy `null`. Next acceptance step: inspect the v27.0 manifest, confirm profile coverage, then freeze 30 attested lexemes and a citation-form recording protocol with recruited experts.
