@@ -37,3 +37,20 @@
 - [ ] Review Ukrainian candidates only after the source IPA decision is adjudicated.
 
 **Current status:** PARTIAL. Existing tone/rhyme logic and tests are retained. Independent lexical gold is still 0. No new Lao IPA labels are added in this workpack.
+
+
+## Verified source audit — 2026-11-01
+
+### Central Vientiane tone/rhyme baseline
+
+Ueda (1994), J-STAGE article abstract and bibliographic record (pp. 95–115; [DOI](https://doi.org/10.11435/gengo1939.1994.106_95)), explicitly models syllables as consonant + rhyme + tone. For the central Vientiane variety it reports nine finals, short/long vowel contrast, three diphthongs, and five lexical tone categories: low-rising, high-rising, high-mid level, low-falling and high-falling. It also flags non-phonemic variation within the low-rising category and an exceptional unstressed, tone-neutral non-final /a/ syllable. This is sufficient to preserve a five-category Vientiane profile baseline; it is not a word-level pronunciation corpus or a complete tone-mark × coda rule table.
+
+### Labialized consonants
+
+Blaine Erickson (2001), “On the Origins of Labialized Consonants in Lao,” [full paper](https://sealang.net/sala/archives/pdf8/erickson2001origins.pdf), argues that Lao labialized consonants should be treated as unit phonemes rather than consonant–glide sequences. The paper describes restricted distribution, absence before rounded vowels, and a skewed inventory (all velars, some alveolars, one palatal). It also cites a six-tone description from Hoshino & Marcus / Morev, which must not be silently merged with Ueda's five-category central Vientiane model. The two sources differ in analytical scope and underlying reference materials; create separate profile/source claims rather than averaging the tone inventories.
+
+### Ukrainian adaptation consequence
+
+Keep a labialized input such as /kʷ/ typed as a unit IPA segment through the adapter boundary. Writing it as an unqualified Ukrainian sequence «кв» may falsely imply two independently timed consonants; writing a diacritic or another practical convention requires an explicit target-language decision and Ukrainian phonetic review. No Ukrainian spelling has been promoted from this source alone.
+
+**Status update:** tone/rhyme baseline is better sourced but the full lexical matrix and acoustic coverage remain PARTIAL. Labialized onset representation is now source-supported as a unit analysis in Erickson's account, while its compatibility with the selected Vientiane profile and Ukrainian output remains evidence-limited. No IPA gold labels were added.
