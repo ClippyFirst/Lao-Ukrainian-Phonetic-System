@@ -107,6 +107,6 @@ The four JSONL files are intentionally empty. `gold.tsv` remains header-only. No
 
 ## Rights verification
 
-The source `license_id` must exist in `data/benchmark/licenses.json`; an arbitrary free-text license label is rejected. Each record also needs `rights_evidence` with a basis, exact locator, verifier pseudonym and verification date. A source cannot be marked redistributable when its registered license disallows redistribution, or when rights are restricted/unknown. The non-commercial CC BY-NC-SA 4.0 entry is explicitly non-redistributable for this product corpus.
+The source `license_id` must exist in `data/benchmark/licenses.json`; an arbitrary free-text license label is rejected. Each record also needs `rights_evidence` with a basis, exact locator, verifier pseudonym and verification date. A source cannot be marked redistributable when its registered license disallows redistribution, or when rights are restricted/unknown. The non-commercial CC BY-NC-SA 4.0 entry is explicitly non-redistributable for this product corpus. Project-created material is also non-redistributable by default until the owner approves a corpus license and contributor permissions.
 
 The generated `gold.tsv` carries `license_id` and `rights_evidence_locator` alongside `source_id`, and the benchmark report preserves these fields. CC BY-SA share-alike and attribution duties still need to be honored in the distribution package; the registry records those terms rather than silently waiving them.
