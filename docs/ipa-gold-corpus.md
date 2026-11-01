@@ -120,3 +120,8 @@ The standard-library validator now enforces the schema's closed top-level record
 ### Additional validator contract — frozen splits and license registry
 
 The runtime also validates the license-registry JSON Schema contract: non-empty registry, schema version, required redistribution/commercial-use/attribution/share-alike flags, nullable boolean semantics and URI validity. It validates optional source URIs and SHA-256 digests. Split generation rejects duplicate record IDs, empty lexical group IDs, unknown/duplicate prior assignments and inconsistent frozen split/seed/version metadata within one lexical group. Regression tests cover these failure paths.
+
+
+### Canonical corpus versus benchmark export
+
+The JSONL files are the archival source of truth. The annotation and adjudication records preserve the complete typed IPA object (value, IPA kind, syllable boundaries, tone, vowel length and phonation), annotator uncertainty/notes, adjudicator identity/rationale, source provenance and rights evidence. The generated gold.tsv is a deliberately minimal benchmark projection: IPA string + explicit IPA kind + source/rights identifiers. It is not a replacement for the JSONL corpus and must not be used to archive or reconstruct annotation uncertainty or adjudication rationale. IPA stress and other segmental/suprasegmental marks remain in the IPA value string under the selected transcription convention.
