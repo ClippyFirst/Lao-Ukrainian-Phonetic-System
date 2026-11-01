@@ -282,5 +282,5 @@ test("full Lao mixed-script multiline text preserves separators, native numerals
  const input="ຂາ\tABC-42\r\n໑໒໓, ខ្មែរ 😀!";
  const result=romanizeLao(input);
  assert.equal(result.output,"kha\tABC-42\r\n໑໒໓, ខ្មែរ 😀!");
- assert.equal(result.status,"PROVISIONAL");
+ assert.equal(result.status,"PARTIAL");
 });
