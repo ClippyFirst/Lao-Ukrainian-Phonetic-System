@@ -47,7 +47,7 @@ def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
     records = [{
         "input": "ຂາ", "status": "OK",
         "raw_response": '{"Words":[{"Linguistic":"ຂາ","Phonetic":"kʰaː"}]}',
-        "phonetic_tokens": ["kʰaː"], "error": None,
+        "phonetic_tokens": ["kʰaː"], "source_coverage_complete": True, "error": None,
     }]
     report = MODULE.build_report(
         ["ຂາ"], records, language="Lao", engine_commit="b224bde",
@@ -142,7 +142,7 @@ def test_notation_diagnostic_preserves_tone_length_aspiration_and_tie_bars():
 
 
 def test_stable_three_repeat_source_match_remains_non_gold(tmp_path):
-    raw = '{"Words":[{"Linguistic":"word","Phonetic":"kʰaː"}]}'
+    raw = '{"Words":[{"Linguistic":"word","CleanWord":"word","PrePunct":"","PostPunct":"","Phonetic":"kʰaː"}]}'
     with patch.object(MODULE, "request_raw_response", side_effect=[raw, raw, raw]):
         record = MODULE.run_probe(
             "http://127.0.0.1:18080", "Lao", "word", 1.0, 1, repeat_count=3,
