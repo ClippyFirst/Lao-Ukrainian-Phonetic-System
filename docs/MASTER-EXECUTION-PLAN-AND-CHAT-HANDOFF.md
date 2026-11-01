@@ -860,3 +860,11 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Inspected and pinned upstream Goruut commit `b224bde02151f8f86d0fe260804e4ca743bda620`; upstream README advertises Lao, IPA output, word tokens, tone support, but no syllable tokens or tie bars and no number/date normalization. The source-code repository contains an MIT license; embedded language asset licenses remain unaudited.
 - Added the source-backed candidate record to `docs/benchmarking-and-external-ipa.md` in PR [#93](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/93). Exact PR-head CI [41302057418](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41302057418) passed.
 - No runtime invocation or output artifact was produced. Gold count remains 0; no accuracy or winner claim. Next acceptance: run pinned Go comparator in isolated optional workflow, audit dictionary/model provenance, and compare only on independent expert-adjudicated Lao IPA.
+
+
+## Goruut asset licensing reconciliation — 2026-11-01
+
+- Task `LAO-G2P-GORUUT-001` remains `BLOCKED` for runtime execution, not merely PARTIAL: the source-code MIT license does not establish rights for the language-specific lexicon/model assets.
+- The pinned Goruut source tree contains embedded files under `dicts/lao/`; Goruut's own data-preparation documentation states these model assets derive from a `lexicon.tsv`. The corresponding separate `neurlang/dataset/lao/` lexicon is present, but dataset repo metadata declares no license, root tree has no LICENSE/COPYING, and the README does not allocate a license/provenance to this language.
+- No runtime invocation, output artifact, or quality claim is made. Next acceptance: per-language source/provenance and rights for both lexicon and derived weights, then owner-approved usage decision, followed by isolated pinned execution and independent expert IPA adjudication.
+- Detailed evidence and exact upstream paths: `docs/audits/current/GORUUT-ASSET-LICENSE-REVIEW-2026-11-01.md`.
