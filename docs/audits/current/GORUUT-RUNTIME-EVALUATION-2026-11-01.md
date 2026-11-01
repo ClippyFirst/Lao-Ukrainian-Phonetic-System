@@ -87,3 +87,14 @@ Pinned Goruut source explains the instability signal. In [parts_of_speech_select
 Across the latest artifact, all 10/10 unstable engineering inputs and all 13/13 unstable MekongPhon-eval inputs carried Goruut's RandomizationWordsCount / RandomizationWordsChoices metadata. Metadata appeared on 11/23 engineering inputs and 17/100 eval inputs; not every ambiguous input changed across the three samples. The response metadata is therefore a direct upstream signal for the observed instability, not an inference from output differences alone.
 
 This gives a source-level explanation for the observed unstable cases. It does **not** establish that the separate `weights9.bin.zlib` warning causes the selection behavior; that warning remains independently unresolved. The project does not patch Goruut or choose a random pronunciation as acceptable output. Any result carrying these ambiguity counters should remain flagged as non-deterministic/ambiguous for downstream use.
+
+
+## Source-coverage re-analysis of the exact-head artifact — 2026-11-01
+
+A second inspection of the saved raw JSON used the API's `PrePunct`, `CleanWord`, and `PostPunct` fields, not just its non-empty `Phonetic` field. Coverage was counted complete only when (a) the concatenated source fields reconstructed the input after NFC and whitespace removal and (b) no letters, combining marks, or numbers appeared in PrePunct/PostPunct. This is a conservative source-coverage check, not phonetic correctness.
+
+- MekongPhon eval: of 100 inputs, 81 had a phonetic response and 19 had none. Only **47/100** had complete source coverage; **34/100** had partial source coverage; 19/100 had no output. The 13 unstable cases were among the 47 complete-coverage outputs and all 13 carried Goruut's randomization counters. The 34 partial cases were stable but had dropped/relegated source characters.
+- Engineering probes: 18 responses, 5 no-output; 13 complete coverage and 5 partial coverage. Ten complete-coverage cases were unstable; all ten carried randomization counters.
+- This re-analysis shows that response count alone overstated usable coverage. The benchmark harness is being extended to report source coverage separately from response availability and IPA concordance.
+
+Raw artifact: [13085003615](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516/artifacts/13085003615), ZIP SHA-256 `025e5444d0a096ca07c39cbf9297ef4229275937ff487d38548fd3a551269612`.
