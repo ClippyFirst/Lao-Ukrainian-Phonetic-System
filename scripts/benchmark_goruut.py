@@ -108,7 +108,8 @@ def run_probe_once(
         try:
             raw = request_raw_response(base_url, language, text, timeout)
             try:
-                phonetics = extract_phonetics(json.loads(raw))
+                payload = json.loads(raw)
+                phonetics = extract_phonetics(payload)
             except (json.JSONDecodeError, ValueError) as exc:
                 return {
                     "status": "NO_PHONETIC_OUTPUT",
@@ -116,10 +117,18 @@ def run_probe_once(
                     "phonetic_tokens": None,
                     "error": f"{type(exc).__name__}: {exc}",
                 }
+            randomization_count = payload.get("RandomizationWordsCount", 0)
+            randomization_choices = payload.get("RandomizationWordsChoices", 0)
+            if type(randomization_count) is not int or randomization_count < 0:
+                randomization_count = None
+            if type(randomization_choices) is not int or randomization_choices < 0:
+                randomization_choices = None
             return {
                 "status": "OK",
                 "raw_response": raw,
                 "phonetic_tokens": phonetics,
+                "randomization_words_count": randomization_count,
+                "randomization_words_choices": randomization_choices,
                 "error": None,
             }
         except urllib.error.HTTPError as exc:
@@ -171,9 +180,26 @@ def run_probe(
         for index, item in enumerate(repetitions)
         if item["error"]
     ]
+    randomization_counts = [
+        item.get("randomization_words_count")
+        for item in repetitions
+        if isinstance(item.get("randomization_words_count"), int)
+        and not isinstance(item.get("randomization_words_count"), bool)
+    ]
+    randomization_choices = [
+        item.get("randomization_words_choices")
+        for item in repetitions
+        if isinstance(item.get("randomization_words_choices"), int)
+        and not isinstance(item.get("randomization_words_choices"), bool)
+    ]
+    randomized_repetitions = sum(value > 0 for value in randomization_counts)
     return {
         "input": text,
         "status": status,
+        "randomization_words_count_max": max(randomization_counts, default=0),
+        "randomization_words_choices_max": max(randomization_choices, default=0),
+        "randomized_repetitions": randomized_repetitions,
+        "ambiguous_dictionary_selection": randomized_repetitions > 0,
         "raw_response": first["raw_response"],
         "phonetic_tokens": first["phonetic_tokens"],
         "error": "; ".join(errors) if errors else None,
@@ -208,6 +234,12 @@ def build_report(
     unstable_outputs = sum(record.get("unstable") is True for record in records)
     partial_repeat_cases = sum(record.get("status") == "PARTIAL_REPETITIONS" for record in records)
     repeat_count = max((len(record.get("repetitions", [])) for record in records), default=1)
+    randomized_input_count = sum(record.get("ambiguous_dictionary_selection") is True for record in records)
+    randomized_repetition_count = sum(record.get("randomized_repetitions", 0) or 0 for record in records)
+    unstable_randomized_input_count = sum(
+        record.get("unstable") is True and record.get("ambiguous_dictionary_selection") is True
+        for record in records
+    )
     comparisons = []
     notation_comparisons = []
     for item, record in zip(normalized_inputs, records, strict=True):
@@ -277,6 +309,9 @@ def build_report(
         "repeat_count": repeat_count,
         "reproducible_outputs": reproducible_outputs,
         "unstable_outputs": unstable_outputs,
+        "randomized_input_count": randomized_input_count,
+        "randomized_repetition_count": randomized_repetition_count,
+        "unstable_randomized_input_count": unstable_randomized_input_count,
         "partial_repeat_cases": partial_repeat_cases,
         "source_attested_diagnostic": source_attested_diagnostic,
         "successful_outputs": successes,
@@ -335,8 +370,9 @@ def main() -> int:
         "effective_config_sha256", "server_log_sha256", "model_asset_warnings",
         "input_count", "repeat_count", "reproducible_outputs", "unstable_outputs",
         "partial_repeat_cases", "source_attested_diagnostic",
-        "successful_outputs", "failed_outputs", "independent_gold_count",
-        "accuracy", "score_status"
+        "successful_outputs", "failed_outputs", "randomized_input_count",
+        "randomized_repetition_count", "unstable_randomized_input_count",
+        "independent_gold_count", "accuracy", "score_status"
     )}, ensure_ascii=False, indent=2))
     print(f"Raw-output report: {args.output}")
     # Partial coverage is a valid diagnostic result: failures remain explicit in the artifact.
