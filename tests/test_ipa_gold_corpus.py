@@ -179,7 +179,9 @@ class IpaGoldCorpusTests(unittest.TestCase):
             rows = list(csv.DictReader(handle, delimiter="\t"))
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["gold_status"], "ADJUDICATED")
-        self.assertEqual(rows[0]["gold_ipa"], "ka")\n        self.assertEqual(rows[0]["license_id"], "CC-BY-4.0")\n        self.assertTrue(rows[0]["rights_evidence_locator"].startswith("https://"))
+        self.assertEqual(rows[0]["gold_ipa"], "ka")
+        self.assertEqual(rows[0]["license_id"], "CC-BY-4.0")
+        self.assertTrue(rows[0]["rights_evidence_locator"].startswith("https://"))
 
     def test_empty_gold_is_not_release_ready(self):
         self.annotations = []
