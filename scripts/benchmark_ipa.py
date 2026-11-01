@@ -77,7 +77,7 @@ def main() -> int:
             "gold_gate": "gold_status == ADJUDICATED and non-empty gold_ipa",
             "normalization": "Unicode NFC plus outer whitespace trim only",
             "exact_match": "strict full-string IPA match; tone, length and syllable separators remain significant",
-            "cer": "Levenshtein over Unicode code points; not articulatory/feature-weighted",
+            "cer": "Levenshtein over Unicode code points only for rows with matching IPA representation kind; not articulatory/feature-weighted",
             "missing_predictions": "every eligible gold row is in each engine's denominator; absent/empty IPA counts as a missing prediction and incurs reference-length edit cost",
             "accuracy_claim": "descriptive only for the supplied adjudicated rows; no generalization claim",
         },
@@ -92,14 +92,15 @@ def main() -> int:
             pred = predictions[engine].get(ident)
             ref = norm(g["gold_ipa"])
             p = norm(pred["ipa"]) if pred else ""
+            gold_kind = g.get("ipa_kind", "").strip()
+            prediction_kind = pred.get("ipa_kind", "").strip() if pred else ""
+            ipa_kind_mismatch = bool(p and gold_kind and (not prediction_kind or prediction_kind != gold_kind))
             rows.append({
                 "id": ident, "profile": g["profile"],
-                "exact_match": bool(p) and p == ref and not bool(pred and g.get("ipa_kind", "") and
-                                                                  (not pred.get("ipa_kind", "").strip() or
-                                                                   pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
+                "exact_match": bool(p) and p == ref and not ipa_kind_mismatch,
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
-                "edit_distance": distance(ref, p) if p else len(ref),
+                "edit_distance": distance(ref, p) if p and not ipa_kind_mismatch else len(ref) if not p else None,
                 "reference_codepoints": len(ref),
                 "raw_output_present": bool(pred and pred["raw_output"]),
                 "status": pred["status"] if pred else "MISSING_ROW",
@@ -107,15 +108,14 @@ def main() -> int:
                 "source_id": g.get("source_id", ""),
                 "gold_license_id": g.get("license_id", ""),
                 "rights_evidence_locator": g.get("rights_evidence_locator", ""),
-                "gold_ipa_kind": g.get("ipa_kind", ""),
-                "prediction_ipa_kind": pred.get("ipa_kind", "") if pred else "",
-                "ipa_kind_mismatch": bool(pred and g.get("ipa_kind", "") and
-                                          (not pred.get("ipa_kind", "").strip() or
-                                           pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
+                "gold_ipa_kind": gold_kind,
+                "prediction_ipa_kind": prediction_kind,
+                "ipa_kind_mismatch": ipa_kind_mismatch,
             })
         n = len(rows)
-        edits = sum(r["edit_distance"] for r in rows)
-        chars = sum(r["reference_codepoints"] for r in rows)
+        comparable_rows = [r for r in rows if not r["ipa_kind_mismatch"]]
+        edits = sum(r["edit_distance"] for r in comparable_rows)
+        chars = sum(r["reference_codepoints"] for r in comparable_rows)
         report["engines"][engine] = {
             "n_adjudicated_gold_rows": n,
             "exact_matches": sum(r["exact_match"] for r in rows),
@@ -124,6 +124,8 @@ def main() -> int:
             "missing_predictions": sum(r["missing_prediction"] for r in rows),
             "missing_prediction_rate": sum(r["missing_prediction"] for r in rows) / n if n else None,
             "codepoint_cer": edits / chars if chars else None,
+            "codepoint_cer_comparable_rows": len(comparable_rows),
+            "codepoint_cer_excluded_type_mismatch_rows": sum(r["ipa_kind_mismatch"] for r in rows),
             "profiles": sorted({r["profile"] for r in rows if r["profile"]}),
             "versions": sorted({r["version"] for r in predictions[engine].values() if r["version"]}),
             "rows": rows,
