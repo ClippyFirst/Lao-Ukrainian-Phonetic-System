@@ -54,3 +54,14 @@ def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
     assert report["records"][0]["phonetic_tokens"] == ["kʰaː"]
     assert report["effective_config_sha256"] == "config-sha"
     assert report["go_runtime_version"] == "go version go1.23"
+    assert report["failed_outputs"] == 0
+
+
+def test_empty_words_response_is_preserved_as_a_probe_failure():
+    raw = '{"Words":[]}'
+    try:
+        MODULE.extract_phonetics(__import__("json").loads(raw))
+    except ValueError as exc:
+        assert "must not be empty" in str(exc)
+    else:
+        raise AssertionError("empty response must be detected")
