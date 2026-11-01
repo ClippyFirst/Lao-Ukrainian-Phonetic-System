@@ -94,7 +94,7 @@ def main() -> int:
             p = norm(pred["ipa"]) if pred else ""
             rows.append({
                 "id": ident, "profile": g["profile"],
-                "exact_match": bool(p) and p == ref,
+                "exact_match": bool(p) and p == ref and not bool(pred and g.get("ipa_kind", "") and\n                                                                  (not pred.get("ipa_kind", "").strip() or\n                                                                   pred.get("ipa_kind", "").strip() != g.get("ipa_kind", "").strip())),
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
                 "edit_distance": distance(ref, p) if p else len(ref),
@@ -108,7 +108,7 @@ def main() -> int:
         chars = sum(r["reference_codepoints"] for r in rows)
         report["engines"][engine] = {
             "n_adjudicated_gold_rows": n,
-            "exact_matches": sum(r["exact_match"] for r in rows),
+            "exact_matches": sum(r["exact_match"] for r in rows),\n            "ipa_kind_mismatches": sum(r["ipa_kind_mismatch"] for r in rows),
             "exact_match_rate": sum(r["exact_match"] for r in rows) / n if n else None,
             "missing_predictions": sum(r["missing_prediction"] for r in rows),
             "missing_prediction_rate": sum(r["missing_prediction"] for r in rows) / n if n else None,
