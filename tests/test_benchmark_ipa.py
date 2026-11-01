@@ -32,11 +32,13 @@ class BenchmarkIpaTests(unittest.TestCase):
             return json.loads(output.read_text(encoding="utf-8"))
 
     def test_adjudicated_gold_requires_ipa_source_and_profile(self):
-        base = {"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"source#section"}
+        base = {"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"source#section", "ipa_kind":"PHONEMIC"}
         cases = [
             ({"gold_ipa":""}, "requires non-empty gold_ipa"),
             ({"source_id":""}, "requires source_id"),
             ({"profile":""}, "requires profile"),
+            ({"ipa_kind":""}, "requires valid ipa_kind"),
+            ({"ipa_kind":"UNSPECIFIED"}, "requires valid ipa_kind"),
         ]
         for changes, expected_message in cases:
             with self.subTest(changes=changes):
@@ -56,11 +58,11 @@ class BenchmarkIpaTests(unittest.TestCase):
 
     def test_scores_only_adjudicated_rows_and_preserves_diacritics(self):
         gold = [
-            {"id":"a", "text":"x", "gold_ipa":"aː", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1"},
+            {"id":"a", "text":"x", "gold_ipa":"aː", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"},
             {"id":"b", "text":"y", "gold_ipa":"not-gold", "gold_status":"PROJECT_PROBE_NOT_GOLD", "profile":"", "source_id":""},
         ]
         pred = [
-            {"id":"a", "engine":"candidate", "raw_output":"aː", "ipa":"aː", "status":"ok", "version":"1"},
+            {"id":"a", "engine":"candidate", "raw_output":"aː", "ipa":"aː", "status":"ok", "version":"1", "ipa_kind":"PHONEMIC"},
             {"id":"b", "engine":"candidate", "raw_output":"not-gold", "ipa":"not-gold", "status":"ok", "version":"1"},
         ]
         report = self.run_benchmark(gold, pred)
@@ -72,10 +74,10 @@ class BenchmarkIpaTests(unittest.TestCase):
 
     def test_missing_prediction_row_remains_in_denominator(self):
         gold = [
-            {"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1"},
-            {"id":"b", "text":"y", "gold_ipa":"p", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#2"},
+            {"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"},
+            {"id":"b", "text":"y", "gold_ipa":"p", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#2", "ipa_kind":"PHONEMIC"},
         ]
-        pred = [{"id":"a", "engine":"candidate", "raw_output":"k", "ipa":"k", "status":"ok", "version":"1"}]
+        pred = [{"id":"a", "engine":"candidate", "raw_output":"k", "ipa":"k", "status":"ok", "version":"1", "ipa_kind":"PHONEMIC"}]
         metrics = self.run_benchmark(gold, pred)["engines"]["candidate"]
         self.assertEqual(metrics["n_adjudicated_gold_rows"], 2)
         self.assertEqual(metrics["exact_matches"], 1)
@@ -98,6 +100,16 @@ class BenchmarkIpaTests(unittest.TestCase):
         self.assertIsNone(metrics["codepoint_cer"])
         self.assertEqual(metrics["codepoint_cer_comparable_rows"], 0)
 
+    def test_nonempty_prediction_without_ipa_kind_is_not_comparable(self):
+        gold = [{"id":"a", "text":"x", "gold_ipa":"ka", "gold_status":"ADJUDICATED",
+                 "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"}]
+        pred = [{"id":"a", "engine":"candidate", "raw_output":"ka", "ipa":"ka",
+                 "status":"ok", "version":"1", "ipa_kind":""}]
+        metrics = self.run_benchmark(gold, pred)["engines"]["candidate"]
+        self.assertEqual(metrics["ipa_kind_mismatches"], 1)
+        self.assertEqual(metrics["exact_matches"], 0)
+        self.assertIsNone(metrics["codepoint_cer"])
+
     def test_empty_prediction_is_missing_not_ipa_kind_mismatch(self):
         gold = [{"id":"a", "text":"x", "gold_ipa":"ka", "gold_status":"ADJUDICATED",
                  "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"}]
@@ -109,8 +121,8 @@ class BenchmarkIpaTests(unittest.TestCase):
 
     def test_mismatch_reports_codepoint_cer(self):
         report = self.run_benchmark(
-            [{"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1"}],
-            [{"id":"a", "engine":"candidate", "raw_output":"g", "ipa":"g", "status":"ok", "version":"1"}],
+            [{"id":"a", "text":"x", "gold_ipa":"k", "gold_status":"ADJUDICATED", "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"}],
+            [{"id":"a", "engine":"candidate", "raw_output":"g", "ipa":"g", "status":"ok", "version":"1", "ipa_kind":"PHONEMIC"}],
         )
         metrics = report["engines"]["candidate"]
         self.assertEqual(metrics["exact_matches"], 0)
