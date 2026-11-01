@@ -2,33 +2,183 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["record_id", "language", "orthography", "lexeme_group_id", "profile", "source"],
+  "required": [
+    "record_id",
+    "language",
+    "orthography",
+    "lexeme_group_id",
+    "profile",
+    "source"
+  ],
   "properties": {
-    "record_id": {"type": "string", "minLength": 1},
-    "language": {"enum": ["lao", "khmer", "burmese"]},
-    "orthography": {"type": "object", "required": ["text", "normalized"], "properties": {
-      "text": {"type": "string", "minLength": 1},
-      "normalized": {"type": "string", "minLength": 1},
-      "segmentation": {"type": ["array", "null"], "items": {"type": "string"}}
-    }},
-    "lexeme_group_id": {"type": "string", "minLength": 1},
-    "profile": {"type": "object", "required": ["id", "variety"], "properties": {
-      "id": {"type": "string", "minLength": 1},
-      "variety": {"type": "string", "minLength": 1},
-      "region": {"type": ["string", "null"]},
-      "register": {"type": ["string", "null"]},
-      "speaker_id": {"type": ["string", "null"]},
-      "audio_id": {"type": ["string", "null"]}
-    }},
-    "source": {"type": "object", "required": ["source_id", "citation", "locator", "license_id", "rights_status", "redistributable"], "properties": {
-      "source_id": {"type": "string", "minLength": 1},
-      "citation": {"type": "string", "minLength": 1},
-      "locator": {"type": "string", "minLength": 1},
-      "url": {"type": ["string", "null"], "format": "uri"},
-      "license_id": {"type": "string", "minLength": 1},
-      "rights_status": {"enum": ["OPEN", "PROJECT_CREATED", "RESTRICTED", "UNKNOWN"]},
-      "redistributable": {"type": "boolean"},
-      "sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"}
-    }}
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "enum": [
+        "lao",
+        "khmer",
+        "burmese"
+      ]
+    },
+    "orthography": {
+      "type": "object",
+      "required": [
+        "text",
+        "normalized"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized": {
+          "type": "string",
+          "minLength": 1
+        },
+        "segmentation": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "lexeme_group_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile": {
+      "type": "object",
+      "required": [
+        "id",
+        "variety"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variety": {
+          "type": "string",
+          "minLength": 1
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "register": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "speaker_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "audio_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "citation",
+        "locator",
+        "license_id",
+        "rights_status",
+        "redistributable",
+        "rights_evidence"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "license_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rights_status": {
+          "enum": [
+            "OPEN",
+            "PROJECT_CREATED",
+            "RESTRICTED",
+            "UNKNOWN"
+          ]
+        },
+        "redistributable": {
+          "type": "boolean"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "rights_evidence": {
+          "type": "object",
+          "required": [
+            "basis",
+            "locator",
+            "verified_by",
+            "verified_at"
+          ],
+          "properties": {
+            "basis": {
+              "enum": [
+                "LICENSE",
+                "DIRECT_PERMISSION",
+                "PUBLIC_DOMAIN",
+                "PROJECT_CREATED",
+                "UNKNOWN"
+              ]
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "verified_by": {
+              "type": "string",
+              "minLength": 1
+            },
+            "verified_at": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        }
+      }
+    }
   }
 }
