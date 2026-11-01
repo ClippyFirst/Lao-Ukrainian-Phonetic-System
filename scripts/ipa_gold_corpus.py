@@ -172,7 +172,8 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         adjudication_by_record[ident] = row
 
     split_by_record: dict[str, dict[str, Any]] = {}
-    split_by_group: dict[str, str] = {}\n    split_meta_by_group: dict[str, tuple[str, str]] = {}
+    split_by_group: dict[str, str] = {}
+    split_meta_by_group: dict[str, tuple[str, str]] = {}
     for row in splits:
         ident = require_text(row.get("record_id"), "split.record_id")
         if ident not in record_by_id:
