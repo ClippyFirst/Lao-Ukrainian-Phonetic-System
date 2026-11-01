@@ -296,5 +296,12 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("final_ipa.kind must match annotation IPA kind", run.stderr)
 
+    def test_assign_splits_rejects_unknown_properties_in_existing_manifest(self):
+        self.splits[0]["unexpected"] = "must-not-be-dropped"
+        self.write_all()
+        output = self.root / "generated.jsonl"
+        run = self.run_cli("assign-splits", "--seed", "test-seed", "--output", output, expected=1)
+        self.assertIn("unknown properties: unexpected", run.stderr)
+
 if __name__ == "__main__":
     unittest.main()
