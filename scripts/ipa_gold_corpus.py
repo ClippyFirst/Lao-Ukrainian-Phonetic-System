@@ -172,7 +172,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         adjudication_by_record[ident] = row
 
     split_by_record: dict[str, dict[str, Any]] = {}
-    split_by_group: dict[str, str] = {}
+    split_by_group: dict[str, str] = {}\n    split_meta_by_group: dict[str, tuple[str, str]] = {}
     for row in splits:
         ident = require_text(row.get("record_id"), "split.record_id")
         if ident not in record_by_id:
@@ -185,11 +185,16 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         split = row.get("split")
         if split not in SPLITS:
             raise ValueError(f"split {ident}: split must be train, dev or test")
-        require_text(row.get("seed"), f"split {ident}.seed")
-        require_text(row.get("version"), f"split {ident}.version")
+        seed = require_text(row.get("seed"), f"split {ident}.seed")
+        version = require_text(row.get("version"), f"split {ident}.version")
         if group in split_by_group and split_by_group[group] != split:
             raise ValueError(f"lexeme_group_id crosses splits: {group}")
+        if group in split_meta_by_group and split_meta_by_group[group] != (seed, version):
+            raise ValueError(f"lexeme_group_id has inconsistent split seed/version: {group}")
+        if split != group_split(group, seed):
+            raise ValueError(f"split {ident} does not match deterministic hash for seed {seed!r}")
         split_by_group[group] = split
+        split_meta_by_group[group] = (seed, version)
         split_by_record[ident] = row
 
     adjudicated = {ident: row for ident, row in adjudication_by_record.items()
@@ -235,6 +240,8 @@ def command_assign(args: argparse.Namespace) -> int:
             raise ValueError(f"split {ident}: group_id must equal record.lexeme_group_id")
         if row.get("split") not in SPLITS:
             raise ValueError(f"split {ident}: invalid split")
+        if row["split"] != group_split(group, require_text(row.get("seed"), f"split {ident}.seed")):
+            raise ValueError(f"split {ident} does not match deterministic hash for its seed")
         if group in existing_by_group and existing_by_group[group]["split"] != row["split"]:
             raise ValueError(f"lexeme_group_id crosses splits: {group}")
         if ident in existing_by_id:
