@@ -125,3 +125,8 @@ The runtime also validates the license-registry JSON Schema contract: non-empty 
 ### Canonical corpus versus benchmark export
 
 The JSONL files are the archival source of truth. The annotation and adjudication records preserve the complete typed IPA object (value, IPA kind, syllable boundaries, tone, vowel length and phonation), annotator uncertainty/notes, adjudicator identity/rationale, source provenance and rights evidence. The generated gold.tsv is a deliberately minimal benchmark projection: IPA string + explicit IPA kind + source/rights identifiers. It is not a replacement for the JSONL corpus and must not be used to archive or reconstruct annotation uncertainty or adjudication rationale. IPA stress and other segmental/suprasegmental marks remain in the IPA value string under the selected transcription convention.
+
+
+### Operational independence limitation
+
+The validator proves structural separation only: two distinct annotator IDs and a different adjudicator ID. It cannot prove that annotators were blinded to each other's work, that they are qualified for the named language/variety/IPA convention, that no cross-talk occurred, or that the adjudicator is an independent expert. Those claims require a controlled external annotation process, qualification records, separate assignment/review access and auditable adjudication. Until that process supplies evidence, structural validation must not be described as proof of expert-independent gold.
