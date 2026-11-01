@@ -144,12 +144,12 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         decision = require_text(row.get("decision"), f"adjudication {ident}.decision")
         rationale = require_text(row.get("rationale"), f"adjudication {ident}.rationale")
         require_text(row.get("adjudicated_at"), f"adjudication {ident}.adjudicated_at")
-        refs = row.get("annotation_ids")
-        if not isinstance(refs, list) or len(refs) != 2 or set(refs) != {a["annotation_id"] for a in annotations_by_record.get(ident, [])}:
-            raise ValueError(f"adjudication {ident}: annotation_ids must reference both independent annotations")
         source_annotators = annotator_ids.get(ident, set())
         if len(source_annotators) != 2:
             raise ValueError(f"record {ident}: adjudication requires exactly two distinct annotators")
+        refs = row.get("annotation_ids")
+        if not isinstance(refs, list) or len(refs) != 2 or set(refs) != {a["annotation_id"] for a in annotations_by_record.get(ident, [])}:
+            raise ValueError(f"adjudication {ident}: annotation_ids must reference both independent annotations")
         if adjudicator in source_annotators:
             raise ValueError(f"record {ident}: adjudicator_id must differ from both annotators")
         pair = annotations_by_record[ident]
