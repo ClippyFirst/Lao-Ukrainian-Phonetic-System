@@ -227,6 +227,8 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     for ident, rows in annotations_by_record.items():
         if len(rows) > 2:
             raise ValueError(f"record {ident}: exactly two distinct annotators are supported; found more than two")
+        if len({row["ipa"]["kind"] for row in rows}) > 1:
+            raise ValueError(f"record {ident}: independent annotations must use the same IPA kind")
 
     adjudication_by_record: dict[str, dict[str, Any]] = {}
     for row in adjudications:
@@ -257,9 +259,11 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
             if final_ipa != pair[0]["ipa"]:
                 raise ValueError(f"record {ident}: AGREEMENT final_ipa must equal both annotations")
         elif decision == "RESOLVED":
-            validate_ipa(row.get("final_ipa"), f"adjudication {ident}.final_ipa")
+            final_ipa = validate_ipa(row.get("final_ipa"), f"adjudication {ident}.final_ipa")
             if same:
                 raise ValueError(f"record {ident}: identical annotations must use AGREEMENT, not RESOLVED")
+            if final_ipa["kind"] != pair[0]["ipa"]["kind"]:
+                raise ValueError(f"record {ident}: final_ipa.kind must match annotation IPA kind")
         elif decision == "UNRESOLVED":
             if row.get("final_ipa") is not None:
                 raise ValueError(f"record {ident}: UNRESOLVED must not contain final_ipa")
