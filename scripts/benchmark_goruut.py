@@ -143,6 +143,7 @@ def build_report(
     config_path: Path,
     config_sha256: str,
     runtime_version: str,
+    server_log_path: Path | None = None,
 ) -> dict[str, Any]:
     normalized_inputs = [item if isinstance(item, dict) else {"text": str(item), "source_attested_ipa": None} for item in inputs]
     successes = sum(record["status"] == "OK" for record in records)
@@ -169,6 +170,8 @@ def build_report(
             "status": "SOURCE_ATTESTED_CONCORDANCE_ONLY_NOT_GOLD",
             "normalization": "NFC and outer whitespace only; tone, length, phones and separators remain significant.",
         }
+    log_text = server_log_path.read_text(encoding="utf-8", errors="replace") if server_log_path and server_log_path.exists() else ""
+    model_asset_warnings = sorted({line.strip() for line in log_text.splitlines() if "weights" in line.lower() and ("does not exist" in line.lower() or "not found" in line.lower())})
     return {
         "schema_version": 1,
         "purpose": "Optional runtime availability and raw-output probe; not an accuracy benchmark.",
@@ -181,6 +184,9 @@ def build_report(
         "go_runtime_version": runtime_version,
         "effective_config_path": str(config_path),
         "effective_config_sha256": config_sha256,
+        "server_log_path": str(server_log_path) if server_log_path else None,
+        "server_log_sha256": sha256_file(server_log_path) if server_log_path and server_log_path.exists() else None,
+        "model_asset_warnings": model_asset_warnings,
         "input_path": str(input_path),
         "input_sha256": input_sha256,
         "input_count": len(inputs),
@@ -209,6 +215,7 @@ def main() -> int:
     parser.add_argument("--attempts", type=int, default=4)
     parser.add_argument("--config-file", type=Path, required=True)
     parser.add_argument("--runtime-version", required=True)
+    parser.add_argument("--server-log", type=Path, default=None)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.timeout <= 0 or args.attempts < 1:
@@ -230,12 +237,14 @@ def main() -> int:
         config_path=args.config_file,
         config_sha256=sha256_file(args.config_file),
         runtime_version=args.runtime_version,
+        server_log_path=args.server_log,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: report[key] for key in (
         "engine", "engine_commit", "language_identifier", "go_runtime_version",
-        "effective_config_sha256", "input_count", "source_attested_diagnostic",
+        "effective_config_sha256", "server_log_sha256", "model_asset_warnings",
+        "input_count", "source_attested_diagnostic",
         "successful_outputs", "failed_outputs", "independent_gold_count",
         "accuracy", "score_status"
     )}, ensure_ascii=False, indent=2))
