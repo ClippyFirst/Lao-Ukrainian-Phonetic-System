@@ -958,3 +958,12 @@ A second three-repeat run on the same pinned engine, same 100-row MekongPhon inp
 
 The new report contract therefore correctly separates response availability, source coverage, randomization ambiguity, repeat stability and source concordance. No score is promoted to accuracy.
 
+
+
+## Final Goruut PR #96 reconciliation — 2026-11-01
+
+- Final branch head: `168bb118d69c3ddc4c9c406f517cd2a93857dda0`. Repository verification [41313419948](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41313419948) and pinned runtime [41313419967](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41313419967) both **PASS** on this exact head. The repository job covered data/evidence audit, Python/browser tests, build/regeneration and generated-data drift; the runtime job built the pinned Go engine and captured three repeats.
+- Artifact [13085974013](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41313419967/artifacts/13085974013), SHA-256 `c0e61794e98941be9a2e6449fc5f2052f9f5ead20abf366ea09d98881b45c850` (downloaded archive independently hashed and matched).
+- Final 100-row MekongPhon result: 81 outputs, 19 none; coverage 47 complete / 34 partial / 19 unknown; 68 stable / 13 unstable; 17 inputs with randomization metadata; strict all-repeat source-attested matches 3/100 and any-repeat matches 9/100. The 23 engineering probes: 18 outputs, 5 none; 13 complete / 5 partial; 12 stable / 6 unstable. Accuracy remains null; independent gold=0.
+- This exact-head run supersedes earlier 9/10 any-repeat concordance and repeatability counts where they differ. The server's missing `weights9.bin.zlib` warning remains unresolved and is not established as the cause of phonetic failures.
+- Status: runtime-probe implementation and exact-head engineering verification **DONE_VERIFIED**; external-engine phonetic validity and production promotion remain **BLOCKED/PARTIAL** pending expert-adjudicated Lao IPA gold, dialect/profile specification and upstream issue investigation. Goruut remains test-only.
