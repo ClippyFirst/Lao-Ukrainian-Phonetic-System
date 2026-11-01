@@ -1200,3 +1200,11 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 - The current branch contains the open-rights invariant: `rights_status=OPEN` requires `redistributable=true` in both the Python validator and `schemas/ipa-gold-record.schema.json`, with a regression test.
 - Independent expert-adjudicated gold remains **0**; `gold.tsv` remains header-only; empirical accuracy remains **null**. Engineering CI does not close human annotation, profile/convention approval, or linguistic validation gates.
 - This entry supersedes earlier handoff statements that described the documentation/code checkpoint as awaiting exact-head CI. The PR description may contain older or superseded SHA references; the branch ref and exact-head run above are authoritative.
+
+
+## Cross-repository validator cleanup checkpoint — 2026-11-01
+
+- Methodology review: the repository's pinned references in `AGENTS.md` already capture the relevant practices from Superpowers (test-first changes and evidence-gated verification), mattpocock/skills (clear module seams and behavior-focused tests), and Ponytail (small complete diffs and connected-code review). They remain methodology references, not runtime dependencies; no external skill bundle was copied into the product.
+- Removed four consecutive duplicate nested-object validation calls from `scripts/ipa_gold_corpus.py` (orthography, profile, source, and rights_evidence). This removes redundant work without changing the contract. The resulting file has the same blob SHA across all three repositories: `a072297e320b4b91a36c59fc90328b6ff98d2a5f`.
+- Code commit: `7eea774803654372e7d400cd1fde7c9079c23a64`. - Core PR CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242607 (SUCCESS); core push CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354237853 (SUCCESS); optional language diagnostics: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242594, https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242625 (SUCCESS).
+- No schema, source data, linguistic rule, IPA label, or gold row changed. Independent expert-adjudicated gold remains 0; accuracy remains null. The next substantive blocker is still qualified target-variety annotation and adjudication, not more validator scaffolding.
