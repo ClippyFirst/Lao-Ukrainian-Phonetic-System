@@ -150,3 +150,15 @@ A license entry marked `redistributable: true` is eligible for this product corp
 ### Release-gate threshold requirements
 
 The release gate requires positive integer minimums for train, dev and test. Zero and negative thresholds are invalid; invalid configuration is reported alongside other corpus/rights blockers rather than hiding them. Defaults remain 100 train, 25 dev and 25 test records.
+
+
+## Controlled collection protocol — 2026-11-01
+
+The language-specific human acquisition protocol is maintained in [docs/ipa-gold-collection-playbook.md](ipa-gold-collection-playbook.md). It defines the target profile, 30-item process pilot, curator/annotator/adjudicator separation, blind double annotation, rights checks, and acceptance gates. This playbook does not create records or imply that annotators have been recruited.
+
+The following external resources are **candidates only**, not admitted gold:
+
+- MekongPhon (LREC 2026) reports 367k Lao and 1.3m Khmer orthography–IPA pairs: https://lrec.elra.info/lrec2026-main-129. Verify the dataset-specific license, variety, IPA convention, source provenance, verification method, and overlap before use. The proceedings CC BY-NC-4.0 license is not evidence of the dataset license.
+- Khmer Acoustic Model reports a 29,204-entry IPA dictionary and states dictionary data are CC BY-SA 4.0, distinct from MIT code/model: https://github.com/chemvatho/Khmer-acoustic-model. Verify per-entry provenance, target variety, transcription convention, exact version, and rights before import.
+
+No candidate source may be copied into the gold files until its exact data terms and provenance are verified. Keep source corpus, independently submitted annotations, adjudications, and engine predictions as separate evidence classes.
