@@ -6,7 +6,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]\nREPO_NAME = ROOT.name.lower()\nLANGUAGE = "khmer" if "khmer" in REPO_NAME else "burmese" if "burmese" in REPO_NAME else "lao"\nSCRIPT = ROOT / "scripts" / "ipa_gold_corpus.py"
+ROOT = Path(__file__).resolve().parents[1]
+REPO_NAME = ROOT.name.lower()
+LANGUAGE = "khmer" if "khmer" in REPO_NAME else "burmese" if "burmese" in REPO_NAME else "lao"
+SCRIPT = ROOT / "scripts" / "ipa_gold_corpus.py"
 
 def ipa(value="ka", kind="PHONEMIC"):
     return {"value": value, "kind": kind, "syllable_boundaries": [value],
@@ -53,11 +56,14 @@ class IpaGoldCorpusTests(unittest.TestCase):
             self.write_jsonl(name, rows)
 
     def run_cli(self, command, *extra, expected=0):
-        args = [sys.executable, str(SCRIPT), command,
-                "--records", str(self.paths["records"]),
-                "--annotations", str(self.paths["annotations"]),
-                "--adjudications", str(self.paths["adjudications"]),
-                "--splits", str(self.paths["splits"]), "--language", LANGUAGE, *map(str, extra)]
+        args = [sys.executable, str(SCRIPT), command, "--records", str(self.paths["records"])]
+        if command == "assign-splits":
+            args += ["--splits", str(self.paths["splits"])]
+        else:
+            args += ["--annotations", str(self.paths["annotations"]),
+                     "--adjudications", str(self.paths["adjudications"]),
+                     "--splits", str(self.paths["splits"]), "--language", LANGUAGE]
+        args += list(map(str, extra))
         run = subprocess.run(args, text=True, capture_output=True, check=False)
         self.assertEqual(run.returncode, expected, msg=run.stdout + run.stderr)
         return run
