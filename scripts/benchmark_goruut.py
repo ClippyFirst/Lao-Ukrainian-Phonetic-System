@@ -144,10 +144,11 @@ def build_report(
     config_sha256: str,
     runtime_version: str,
 ) -> dict[str, Any]:
+    normalized_inputs = [item if isinstance(item, dict) else {"text": str(item), "source_attested_ipa": None} for item in inputs]
     successes = sum(record["status"] == "OK" for record in records)
     failures = len(records) - successes
     comparisons = []
-    for item, record in zip(inputs, records, strict=True):
+    for item, record in zip(normalized_inputs, records, strict=True):
         expected = item.get("source_attested_ipa")
         actual = "".join(record.get("phonetic_tokens") or []) if record["status"] == "OK" else None
         match = None
