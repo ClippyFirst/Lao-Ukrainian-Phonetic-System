@@ -142,3 +142,8 @@ Additional optional lao2ipa 1.0.0 run on the 37-case engineering fixture: 0/37 e
 
 
 **Goruut warning caveat:** the pinned language module contains `weights8.bin.zlib`, but the server log attempts `weights9.bin.zlib`; no `weights9` asset exists in the inspected pinned tree. The loader path and causal relation to phonetic failures are unproven. Track this as an unresolved upstream runtime warning, not a confirmed root cause.
+
+
+### Latest pinned Goruut run — exact PR head
+
+PR #96 exact head `bca9d4a802be0e873bef34618da78bd73cd6eb79` built and ran successfully: [runtime workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516), artifact SHA-256 `025e5444d0a096ca07c39cbf9297ef4229275937ff487d38548fd3a551269612`. Three repeats produced 18/23 usable engineering outputs (8 stable, 10 unstable) and 81/100 usable MekongPhon outputs (68 stable, 13 unstable). Strict all-repeat source-attested concordance was 2/100; at least one repeat matched 9/100. 19/100 MekongPhon rows had no output. This is not accuracy; independent gold=0. A missing `weights9.bin.zlib` warning remains unexplained. See `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md` for full evidence and checksums. Do not promote Goruut.
