@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - ".github/workflows/optional-goruut-runtime.yml"
-      - "tests/fixtures/goruut-runtime-probe-20261101"
       - "tests/fixtures/goruut-probes.txt"
       - "scripts/compare_external_g2p.py"
       - "tests/fixtures/vowel_precedence_cases.json"
@@ -13,7 +12,6 @@ on:
   pull_request:
     paths:
       - ".github/workflows/optional-goruut-runtime.yml"
-      - "tests/fixtures/goruut-runtime-probe-20261101"
       - "tests/fixtures/goruut-probes.txt"
       - "scripts/compare_external_g2p.py"
       - "tests/fixtures/vowel_precedence_cases.json"
