@@ -414,6 +414,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
 
 
 def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
+    minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test}
+    if any(value <= 0 for value in minimums.values()):
+        raise ValueError("release gate minimums must be positive integers")
     problems = []
     adjudicated = data["adjudicated"]
     if not adjudicated:
@@ -429,7 +432,6 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
         source = record["source"]
         if source["rights_status"] not in ("OPEN", "PROJECT_CREATED") or not source["redistributable"]:
             problems.append(f"adjudicated record {ident} source is not redistributable")
-    minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test}
     for split, minimum in minimums.items():
         if counts[split] < minimum:
             problems.append(f"{split} has {counts[split]} adjudicated records; requires {minimum}")
