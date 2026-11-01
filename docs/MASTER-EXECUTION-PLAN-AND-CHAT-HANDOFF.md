@@ -1045,3 +1045,11 @@ See [IPA gold protocol](docs/ipa-gold-corpus.md) and [Lao phonology research wor
 | IPA-GOLD-BLIND-INTAKE-001 | BLOCKED | Requires external controlled intake; public GitHub history cannot provide blind annotation |
 
 The rights registry does not itself grant permission. Each real source still needs its exact license/permission verified by a responsible curator, and share-alike/attribution terms must be honored in distribution.
+
+
+### 2026-11-01 follow-up — validator and research evidence
+
+- IPA-GOLD-SCHEMA-001 remains DONE_VERIFIED (mechanism), now with runtime/schema parity checks: closed object properties, mandatory annotation notes, string uncertainty arrays, ISO dates and optional field types.
+- IPA-TYPED-BENCHMARK-001 remains DONE_VERIFIED (mechanism): adjudicated gold requires a valid IPA kind; missing/different prediction kinds cannot score as exact matches or enter CER.
+- Ueda (1994) supports the five-category central Vientiane tone baseline and rhyme structure. Erickson (2001) argues Lao labialized consonants are unit phonemes; this supports preserving /kʷ/ as a typed segment, not rendering it as a confirmed Ukrainian sequence.
+- Independent expert gold remains 0; gold.tsv remains header-only. No IPA entries or Ukrainian labialized-onset mappings were invented.
