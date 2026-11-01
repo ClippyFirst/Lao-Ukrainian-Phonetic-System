@@ -20,7 +20,7 @@ class BenchmarkIpaTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             td = Path(td)
             gold, pred, output = td / "gold.tsv", td / "pred.tsv", td / "report.json"
-            write_tsv(gold, ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind"], gold_rows)
+            write_tsv(gold, ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator"], gold_rows)
             write_tsv(pred, ["id", "engine", "raw_output", "ipa", "status", "version", "ipa_kind"], pred_rows)
             run = subprocess.run(
                 [sys.executable, str(SCRIPT), "--gold", str(gold), "--predictions", str(pred), "--output", str(output)],
@@ -86,13 +86,13 @@ class BenchmarkIpaTests(unittest.TestCase):
 
     def test_typed_ipa_prevents_phonemic_phonetic_false_match(self):
         gold = [{"id":"a", "text":"x", "gold_ipa":"ka", "gold_status":"ADJUDICATED",
-                 "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"}]
+                 "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC", "license_id":"CC-BY-4.0", "rights_evidence_locator":"https://example.org/license"}]
         pred = [{"id":"a", "engine":"candidate", "raw_output":"ka", "ipa":"ka",
                  "status":"ok", "version":"1", "ipa_kind":"PHONETIC_BROAD"}]
         metrics = self.run_benchmark(gold, pred)["engines"]["candidate"]
         self.assertEqual(metrics["exact_matches"], 0)
         self.assertEqual(metrics["ipa_kind_mismatches"], 1)
-        self.assertFalse(metrics["rows"][0]["exact_match"])
+        self.assertFalse(metrics["rows"][0]["exact_match"])\n        self.assertEqual(metrics["rows"][0]["source_id"], "src#1")\n        self.assertEqual(metrics["rows"][0]["gold_license_id"], "CC-BY-4.0")
 
     def test_mismatch_reports_codepoint_cer(self):
         report = self.run_benchmark(
