@@ -46,7 +46,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "additionalProperties": false
     },
     "lexeme_group_id": {
       "type": "string",
@@ -91,7 +92,8 @@
             "null"
           ]
         }
-      }
+      },
+      "additionalProperties": false
     },
     "source": {
       "type": "object",
@@ -176,7 +178,8 @@
               "type": "string",
               "format": "date"
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "allOf": [
@@ -202,7 +205,8 @@
             ]
           }
         }
-      ]
+      ],
+      "additionalProperties": false
     }
   }
 }
