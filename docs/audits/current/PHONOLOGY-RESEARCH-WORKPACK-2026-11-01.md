@@ -54,3 +54,6 @@ Blaine Erickson (2001), “On the Origins of Labialized Consonants in Lao,” [f
 Keep a labialized input such as /kʷ/ typed as a unit IPA segment through the adapter boundary. Writing it as an unqualified Ukrainian sequence «кв» may falsely imply two independently timed consonants; writing a diacritic or another practical convention requires an explicit target-language decision and Ukrainian phonetic review. No Ukrainian spelling has been promoted from this source alone.
 
 **Status update:** tone/rhyme baseline is better sourced but the full lexical matrix and acoustic coverage remain PARTIAL. Labialized onset representation is now source-supported as a unit analysis in Erickson's account, while its compatibility with the selected Vientiane profile and Ukrainian output remains evidence-limited. No IPA gold labels were added.
+
+
+See the source-grounded [Lao tone–rhyme evidence matrix](LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md) for the Vientiane inventory baseline, unfilled tone × coda cells, labialized-onset analysis and Ukrainian-adapter blockers.
