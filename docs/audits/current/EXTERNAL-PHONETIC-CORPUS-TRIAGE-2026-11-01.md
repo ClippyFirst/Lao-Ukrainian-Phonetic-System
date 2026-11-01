@@ -33,3 +33,10 @@ Current independent, project-owned, expert-adjudicated Lao gold remains 0. No Me
 Added an optional, test-only HTTP runtime probe for Goruut at pinned upstream commit `b224bde02151f8f86d0fe260804e4ca743bda620`. It explicitly enables `Lao` in Goruut's `BuiltinDictLanguages`, builds the upstream Go binary, starts the documented HTTP service and records every raw JSON response for source-engineering probes (including multiword/punctuation cases). `scripts/benchmark_goruut.py` records engine commit, language identifier, input SHA-256, raw response, token outputs and errors. It performs no IPA normalization and always reports `accuracy: null`, independent gold=0. Workflow: `.github/workflows/optional-goruut-runtime.yml`; artifact retention 30 days. Project fixtures are engineering probes, not adjudicated gold.
 
 The earlier asset-license blocker applies to copying, redistribution and production integration. The owner has authorized use for testing only; therefore the optional CI probe may check out and execute the pinned upstream source transiently. It does not persist upstream assets, does not bundle them, and does not approve a production dependency. Linguistic gold and accuracy remain unestablished.
+
+
+## Goruut runtime evidence update — 2026-11-01
+
+The pinned Goruut runtime was executed, not merely inspected. Go 1.23.12, Lao explicitly enabled; 23 engineering probes yielded 18 usable outputs/5 empty; 100 MekongPhon eval rows yielded 81 usable outputs/19 empty. Strict NFC+outer-whitespace source-attested concordance was 8/100 (8%); heuristic diagnostic: 13 tone-only, 1 tone/length, 59 segmental/format, 19 no output. This is NOT accuracy or gold: MekongPhon sentence IPA is lexicon-generated and its eval is not independent expert adjudication. Server log repeatedly reports missing `weights9.bin.zlib`. Do not promote. Full evidence: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
+
+Testing-only owner authorization was used to execute the pinned upstream source in ephemeral CI. No external asset was copied into the repository or production artifact. Full report: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
