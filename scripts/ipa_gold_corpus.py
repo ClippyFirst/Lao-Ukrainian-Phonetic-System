@@ -13,6 +13,7 @@ import json
 import sys
 import unicodedata
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -54,9 +55,27 @@ def require_text(value: Any, label: str) -> str:
     return value
 
 
+def reject_unknown_properties(value: dict[str, Any], allowed: set[str], label: str) -> None:
+    unknown = sorted(set(value) - allowed)
+    if unknown:
+        raise ValueError(f"{label}: unknown properties: {', '.join(unknown)}")
+
+
+def require_iso_date(value: Any, label: str) -> str:
+    raw = require_text(value, label)
+    try:
+        parsed = date.fromisoformat(raw)
+    except ValueError as exc:
+        raise ValueError(f"{label} must be an ISO 8601 calendar date (YYYY-MM-DD)") from exc
+    if parsed.isoformat() != raw:
+        raise ValueError(f"{label} must use canonical YYYY-MM-DD format")
+    return raw
+
+
 def validate_ipa(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be an IPA object")
+    reject_unknown_properties(value, {"value", "kind", "syllable_boundaries", "tone", "vowel_length", "phonation"}, label)
     ipa = require_text(value.get("value"), f"{label}.value")
     kind = require_text(value.get("kind"), f"{label}.kind")
     if kind not in IPA_KINDS:
@@ -87,6 +106,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
 
     record_by_id: dict[str, dict[str, Any]] = {}
     for row in records:
+        reject_unknown_properties(row, {"record_id", "language", "orthography", "lexeme_group_id", "profile", "source"}, "record")
         ident = require_text(row.get("record_id"), "record.record_id")
         if ident in record_by_id:
             raise ValueError(f"duplicate record_id: {ident}")
@@ -97,17 +117,28 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
             raise ValueError(f"record {ident}: orthography must be an object")
         require_text(orth.get("text"), f"record {ident}.orthography.text")
         require_text(orth.get("normalized"), f"record {ident}.orthography.normalized")
+        segmentation = orth.get("segmentation")
+        if segmentation is not None and (not isinstance(segmentation, list) or any(not isinstance(item, str) for item in segmentation)):
+            raise ValueError(f"record {ident}.orthography.segmentation must be an array of strings or null")
         require_text(row.get("lexeme_group_id"), f"record {ident}.lexeme_group_id")
         profile = row.get("profile")
         if not isinstance(profile, dict):
             raise ValueError(f"record {ident}: profile must be an object")
         require_text(profile.get("id"), f"record {ident}.profile.id")
         require_text(profile.get("variety"), f"record {ident}.profile.variety")
+        for field in ("region", "register", "speaker_id", "audio_id"):
+            if profile.get(field) is not None and not isinstance(profile[field], str):
+                raise ValueError(f"record {ident}.profile.{field} must be a string or null")
         source = row.get("source")
         if not isinstance(source, dict):
             raise ValueError(f"record {ident}: source must be an object")
         for field in ("source_id", "citation", "locator", "license_id"):
             require_text(source.get(field), f"record {ident}.source.{field}")
+        if source.get("url") is not None and not isinstance(source["url"], str):
+            raise ValueError(f"record {ident}.source.url must be a string or null")
+        digest = source.get("sha256")
+        if digest is not None and (not isinstance(digest, str) or len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest)):
+            raise ValueError(f"record {ident}.source.sha256 must be a lowercase 64-character SHA-256 digest")
         license_id = source["license_id"]
         license_info = license_registry.get(license_id)
         if not isinstance(license_info, dict):
@@ -120,8 +151,9 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         basis = require_text(rights_evidence.get("basis"), f"record {ident}.source.rights_evidence.basis")
         if basis not in ("LICENSE", "DIRECT_PERMISSION", "PUBLIC_DOMAIN", "PROJECT_CREATED", "UNKNOWN"):
             raise ValueError(f"record {ident}: invalid rights evidence basis {basis!r}")
-        for field in ("locator", "verified_by", "verified_at"):
+        for field in ("locator", "verified_by"):
             require_text(rights_evidence.get(field), f"record {ident}.source.rights_evidence.{field}")
+        require_iso_date(rights_evidence.get("verified_at"), f"record {ident}.source.rights_evidence.verified_at")
         if source.get("rights_status") not in RIGHTS:
             raise ValueError(f"record {ident}: source.rights_status must be one of {', '.join(RIGHTS)}")
         if not isinstance(source.get("redistributable"), bool):
@@ -145,6 +177,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         if ident not in record_by_id:
             raise ValueError(f"annotation references unknown record_id: {ident}")
         annotation_id = require_text(row.get("annotation_id"), "annotation.annotation_id")
+        reject_unknown_properties(row, {"annotation_id", "record_id", "annotator_id", "ipa", "confidence", "uncertainty", "notes", "annotated_at"}, f"annotation {annotation_id}")
         if annotation_id in annotation_ids:
             raise ValueError(f"duplicate annotation_id: {annotation_id}")
         annotation_ids.add(annotation_id)
@@ -155,9 +188,12 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         validate_ipa(row.get("ipa"), f"annotation {annotation_id}.ipa")
         if row.get("confidence") not in ("HIGH", "MEDIUM", "LOW", "UNSET"):
             raise ValueError(f"annotation {annotation_id}: invalid confidence")
-        if not isinstance(row.get("uncertainty", []), list):
-            raise ValueError(f"annotation {annotation_id}: uncertainty must be an array")
-        require_text(row.get("annotated_at"), f"annotation {annotation_id}.annotated_at")
+        uncertainty = row.get("uncertainty")
+        if not isinstance(uncertainty, list) or any(not isinstance(item, str) for item in uncertainty):
+            raise ValueError(f"annotation {annotation_id}: uncertainty must be an array of strings")
+        if not isinstance(row.get("notes"), str):
+            raise ValueError(f"annotation {annotation_id}: notes must be a string")
+        require_iso_date(row.get("annotated_at"), f"annotation {annotation_id}.annotated_at")
         annotations_by_record[ident].append(row)
     for ident, rows in annotations_by_record.items():
         if len(rows) > 2:
@@ -166,6 +202,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     adjudication_by_record: dict[str, dict[str, Any]] = {}
     for row in adjudications:
         ident = require_text(row.get("record_id"), "adjudication.record_id")
+        reject_unknown_properties(row, {"record_id", "adjudicator_id", "annotation_ids", "decision", "final_ipa", "rationale", "adjudicated_at"}, f"adjudication {ident}")
         if ident not in record_by_id:
             raise ValueError(f"adjudication references unknown record_id: {ident}")
         if ident in adjudication_by_record:
@@ -173,7 +210,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         adjudicator = require_text(row.get("adjudicator_id"), f"adjudication {ident}.adjudicator_id")
         decision = require_text(row.get("decision"), f"adjudication {ident}.decision")
         rationale = require_text(row.get("rationale"), f"adjudication {ident}.rationale")
-        require_text(row.get("adjudicated_at"), f"adjudication {ident}.adjudicated_at")
+        require_iso_date(row.get("adjudicated_at"), f"adjudication {ident}.adjudicated_at")
         source_annotators = annotator_ids.get(ident, set())
         if len(source_annotators) != 2:
             raise ValueError(f"record {ident}: adjudication requires exactly two distinct annotators")
@@ -206,6 +243,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     split_meta_by_group: dict[str, tuple[str, str]] = {}
     for row in splits:
         ident = require_text(row.get("record_id"), "split.record_id")
+        reject_unknown_properties(row, {"record_id", "group_id", "split", "seed", "version"}, f"split {ident}")
         if ident not in record_by_id:
             raise ValueError(f"split references unknown record_id: {ident}")
         if ident in split_by_record:
