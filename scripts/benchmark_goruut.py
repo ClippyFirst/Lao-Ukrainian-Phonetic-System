@@ -59,6 +59,19 @@ def load_inputs(
         raise ValueError(f"No probe inputs found in {path}")
     return values
 
+def notation_comparison_key(value: str) -> str:
+    """Remove only outer IPA slashes, whitespace, syllable dots and stress marks.
+
+    Phone symbols, aspiration, length, tone, diacritics and tie bars remain intact.
+    This is a notation diagnostic, not a phonological normalization.
+    """
+    value = value.strip()
+    if len(value) >= 2 and value.startswith("/") and value.endswith("/"):
+        value = value[1:-1]
+    value = unicodedata.normalize("NFC", value)
+    return "".join(char for char in value if not char.isspace() and char not in {".", "ˈ", "ˌ"})
+
+
 def extract_phonetics(payload: Any) -> list[str]:
     if not isinstance(payload, dict) or not isinstance(payload.get("Words"), list):
         raise ValueError("Response must be an object containing a Words array")
@@ -196,6 +209,7 @@ def build_report(
     partial_repeat_cases = sum(record.get("status") == "PARTIAL_REPETITIONS" for record in records)
     repeat_count = max((len(record.get("repetitions", [])) for record in records), default=1)
     comparisons = []
+    notation_comparisons = []
     for item, record in zip(normalized_inputs, records, strict=True):
         expected = item.get("source_attested_ipa")
         repetitions = record.get("repetitions") or [{
@@ -212,26 +226,33 @@ def build_report(
             unicodedata.normalize("NFC", value.strip()) == unicodedata.normalize("NFC", expected.strip())
             for value in actual_outputs
         ] if expected is not None else []
+        notation_matches = [notation_comparison_key(value) == notation_comparison_key(expected) for value in actual_outputs] if expected is not None else []
         match = bool(repeat_matches) and len(repeat_matches) == len(repetitions) and all(repeat_matches)
+        notation_match = bool(notation_matches) and len(notation_matches) == len(repetitions) and all(notation_matches)
         if expected is None:
             match = None
+            notation_match = None
         record["source_attested_ipa"] = expected
         record["phonetic_concatenated"] = actual
         record["source_attested_matches"] = repeat_matches
         record["source_attested_match"] = match
+        record["source_attested_notation_match"] = notation_match
         if expected is not None:
             comparisons.append(match)
+            notation_comparisons.append(notation_match)
     source_attested_diagnostic = None
     if comparisons:
         source_attested_diagnostic = {
             "eligible_source_attested_rows": len(comparisons),
             "exact_matches": sum(value is True for value in comparisons),
+            "notation_normalized_matches": sum(value is True for value in notation_comparisons),
+            "notation_normalized_match_rate": sum(value is True for value in notation_comparisons) / len(notation_comparisons),
             "any_repeat_exact_matches": sum(bool(record.get("source_attested_matches")) and any(record.get("source_attested_matches", [])) for record in records),
             "unstable_cases": unstable_outputs,
             "mismatches_or_missing_outputs": sum(value is False or value is None for value in comparisons),
             "match_rate": sum(value is True for value in comparisons) / len(comparisons),
             "status": "SOURCE_ATTESTED_CONCORDANCE_ONLY_NOT_GOLD",
-            "normalization": "NFC and outer whitespace only; tone, length, phones and separators remain significant.",
+            "normalization": "Strict: NFC and outer whitespace only. Secondary notation diagnostic: also removes outer /.../ wrappers, whitespace, syllable dots and ˈ/ˌ only; tone, length, phone symbols, aspiration, diacritics and tie bars remain significant.",
         }
     log_text = server_log_path.read_text(encoding="utf-8", errors="replace") if server_log_path and server_log_path.exists() else ""
     model_asset_warnings = sorted({line.strip() for line in log_text.splitlines() if "weights" in line.lower() and ("does not exist" in line.lower() or "not found" in line.lower())})
