@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "ipa_gold_corpus.py"
+ROOT = Path(__file__).resolve().parents[1]\nREPO_NAME = ROOT.name.lower()\nLANGUAGE = "khmer" if "khmer" in REPO_NAME else "burmese" if "burmese" in REPO_NAME else "lao"\nSCRIPT = ROOT / "scripts" / "ipa_gold_corpus.py"
 
 def ipa(value="ka", kind="PHONEMIC"):
     return {"value": value, "kind": kind, "syllable_boundaries": [value],
@@ -19,7 +19,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.paths = {name: self.root / f"{name}.jsonl" for name in
                       ("records", "annotations", "adjudications", "splits")}
         self.records = [{
-            "record_id": "r1", "language": "lao",
+            "record_id": "r1", "language": LANGUAGE,
             "orthography": {"text": "ກາ", "normalized": "ກາ"},
             "lexeme_group_id": "lemma-1",
             "profile": {"id": "standard-lao", "variety": "Vientiane-oriented Standard Lao"},
@@ -33,7 +33,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
              "ipa": ipa(), "confidence": "HIGH", "uncertainty": [], "notes": "", "annotated_at": "2026-11-01"}
         ]
         self.adjudications = [{
-            "record_id": "r1", "adjudicator_id": "ling-3", "decision": "AGREEMENT",
+            "record_id": "r1", "adjudicator_id": "ling-3", "annotation_ids": ["a1", "a2"], "decision": "AGREEMENT",
             "final_ipa": ipa(), "rationale": "Both independent annotations agree.",
             "adjudicated_at": "2026-11-01"
         }]
@@ -57,7 +57,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
                 "--records", str(self.paths["records"]),
                 "--annotations", str(self.paths["annotations"]),
                 "--adjudications", str(self.paths["adjudications"]),
-                "--splits", str(self.paths["splits"]), "--language", "lao", *map(str, extra)]
+                "--splits", str(self.paths["splits"]), "--language", LANGUAGE, *map(str, extra)]
         run = subprocess.run(args, text=True, capture_output=True, check=False)
         self.assertEqual(run.returncode, expected, msg=run.stdout + run.stderr)
         return run
