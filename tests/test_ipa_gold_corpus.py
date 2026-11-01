@@ -177,6 +177,12 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("gate", "--min-train", "1", "--min-dev", "0", "--min-test", "0", expected=1)
         self.assertIn("not redistributable", run.stderr)
 
+    def test_rejects_open_rights_when_source_is_not_redistributable(self):
+        self.records[0]["source"]["redistributable"] = False
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("OPEN rights require source.redistributable=true", run.stderr)
+
     def test_split_assignment_is_deterministic_and_group_safe(self):
         self.records.append(dict(self.records[0], record_id="r2", orthography={"text": "ກາໆ", "normalized": "ກາໆ"}))
         self.splits = []
