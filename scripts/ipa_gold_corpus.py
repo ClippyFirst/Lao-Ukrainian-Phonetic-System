@@ -152,7 +152,6 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         if not isinstance(orth, dict):
             raise ValueError(f"record {ident}: orthography must be an object")
         reject_unknown_properties(orth, {"text", "normalized", "segmentation"}, f"record {ident}.orthography")
-        reject_unknown_properties(orth, {"text", "normalized", "segmentation"}, f"record {ident}.orthography")
         require_text(orth.get("text"), f"record {ident}.orthography.text")
         require_text(orth.get("normalized"), f"record {ident}.orthography.normalized")
         segmentation = orth.get("segmentation")
@@ -163,7 +162,6 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         if not isinstance(profile, dict):
             raise ValueError(f"record {ident}: profile must be an object")
         reject_unknown_properties(profile, {"id", "variety", "region", "register", "speaker_id", "audio_id"}, f"record {ident}.profile")
-        reject_unknown_properties(profile, {"id", "variety", "region", "register", "speaker_id", "audio_id"}, f"record {ident}.profile")
         require_text(profile.get("id"), f"record {ident}.profile.id")
         require_text(profile.get("variety"), f"record {ident}.profile.variety")
         for field in ("region", "register", "speaker_id", "audio_id"):
@@ -172,7 +170,6 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         source = row.get("source")
         if not isinstance(source, dict):
             raise ValueError(f"record {ident}: source must be an object")
-        reject_unknown_properties(source, {"source_id", "citation", "locator", "url", "license_id", "rights_status", "redistributable", "sha256", "rights_evidence"}, f"record {ident}.source")
         reject_unknown_properties(source, {"source_id", "citation", "locator", "url", "license_id", "rights_status", "redistributable", "sha256", "rights_evidence"}, f"record {ident}.source")
         for field in ("source_id", "citation", "locator", "license_id"):
             require_text(source.get(field), f"record {ident}.source.{field}")
@@ -190,7 +187,6 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         rights_evidence = source.get("rights_evidence")
         if not isinstance(rights_evidence, dict):
             raise ValueError(f"record {ident}: source.rights_evidence must be an object")
-        reject_unknown_properties(rights_evidence, {"basis", "locator", "verified_by", "verified_at"}, f"record {ident}.source.rights_evidence")
         reject_unknown_properties(rights_evidence, {"basis", "locator", "verified_by", "verified_at"}, f"record {ident}.source.rights_evidence")
         basis = require_text(rights_evidence.get("basis"), f"record {ident}.source.rights_evidence.basis")
         if basis not in ("LICENSE", "DIRECT_PERMISSION", "PUBLIC_DOMAIN", "PROJECT_CREATED", "UNKNOWN"):
