@@ -178,7 +178,31 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "rights_status": {
+                "const": "OPEN"
+              }
+            },
+            "required": [
+              "rights_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "redistributable": {
+                "const": true
+              }
+            },
+            "required": [
+              "redistributable"
+            ]
+          }
+        }
+      ]
     }
   }
 }
