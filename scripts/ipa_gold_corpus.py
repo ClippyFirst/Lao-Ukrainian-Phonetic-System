@@ -153,12 +153,12 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         if adjudicator in source_annotators:
             raise ValueError(f"record {ident}: adjudicator_id must differ from both annotators")
         pair = annotations_by_record[ident]
-        same = (pair[0]["ipa"]["value"], pair[0]["ipa"]["kind"]) == (pair[1]["ipa"]["value"], pair[1]["ipa"]["kind"])
+        same = pair[0]["ipa"] == pair[1]["ipa"]
         if decision == "AGREEMENT":
             final_ipa = validate_ipa(row.get("final_ipa"), f"adjudication {ident}.final_ipa")
             if not same:
                 raise ValueError(f"record {ident}: AGREEMENT requires identical independent IPA annotations")
-            if (final_ipa["value"], final_ipa["kind"]) != (pair[0]["ipa"]["value"], pair[0]["ipa"]["kind"]):
+            if final_ipa != pair[0]["ipa"]:
                 raise ValueError(f"record {ident}: AGREEMENT final_ipa must equal both annotations")
         elif decision == "RESOLVED":
             validate_ipa(row.get("final_ipa"), f"adjudication {ident}.final_ipa")
