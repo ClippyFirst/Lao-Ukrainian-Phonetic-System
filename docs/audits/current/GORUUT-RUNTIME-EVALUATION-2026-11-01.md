@@ -63,3 +63,18 @@ The most recent pinned run supersedes the earlier repeat counts: engineering pro
 ## Model-asset warning interpretation
 
 The runtime log warning is now more precisely classified: the pinned Goruut language module contains `weights8.bin.zlib`, while the runtime repeatedly logs an attempt to open `weights9.bin.zlib`. No `weights9.bin.zlib` asset was found in the pinned repository tree. The exact loader path and causal relation to empty outputs/tone instability have not been established; treat this as an unresolved upstream asset/version warning, not a proven root cause.
+
+
+## Exact-head three-repeat runtime evidence — 2026-11-01 (supersedes prior counts)
+
+The exact current PR #96 head `bca9d4a802be0e873bef34618da78bd73cd6eb79` was executed in GitHub Actions, including a clean pinned-source Go build and three HTTP requests per input.
+
+- Runtime workflow: [41310804516](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516); artifact [13085003615](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516/artifacts/13085003615); ZIP SHA-256 `025e5444d0a096ca07c39cbf9297ef4229275937ff487d38548fd3a551269612`.
+- Engine `b224bde02151f8f86d0fe260804e4ca743bda620`, Go `1.23.12`, language `Lao`, effective config SHA-256 `afdab11396e77d171fd4683c8692dbe8513edfe6ed02aa3a20bac9db9f11c44c`.
+- Engineering probes: 18/23 had usable output; 5/23 returned no phonetic output. Of the 18, 8 were identical across all three repeats and 10 were unstable.
+- MekongPhon `lao_eval.csv`: 81/100 had usable output; 19/100 returned no output. 68 were identical across all three repeats; 13 were unstable.
+- Strict source-attested concordance requiring all three repeats to match: **2/100 (2%)**. At least one repeat matched for 9/100. No limited-notation normalization increased the strict count. These are source-attested concordance diagnostics, emphatically not accuracy or gold agreement.
+- Examples of variability include `ຂາ` alternating between `kʰaː˥˧˧` and `kʰaː˩˧`, and `ຄົນ` returning both `kʰon˧˥` and `kʰon˩˨`. Tone is not discarded or normalized away.
+- The server logs `weights9.bin.zlib: file does not exist`; the pinned tree has `weights8.bin.zlib` but no `weights9.bin.zlib`. The loader path and causal relation to empty/unstable outputs remain unproven.
+
+This exact-head run supersedes earlier 4%, 5%, and 8% figures in this audit. **Disposition remains: reject Goruut for production use; retain only as an optional raw-output research comparator.** Independent adjudicated Lao gold remains 0.
