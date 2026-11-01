@@ -906,3 +906,11 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 
 
 **Goruut warning caveat:** the pinned language module contains `weights8.bin.zlib`, but the server log attempts `weights9.bin.zlib`; no `weights9` asset exists in the inspected pinned tree. The loader path and causal relation to phonetic failures are unproven. Track this as an unresolved upstream runtime warning, not a confirmed root cause.
+
+
+## LAO-GORUUT-RUNTIME-001 — PARTIAL (exact-head evidence recorded)
+
+- Exact PR #96 head `bca9d4a802be0e873bef34618da78bd73cd6eb79` runtime build and HTTP probe passed: [41310804516](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516); artifact SHA-256 `025e5444d0a096ca07c39cbf9297ef4229275937ff487d38548fd3a551269612`.
+- Three-repeat results: engineering 18/23 usable (8 stable, 10 unstable); MekongPhon eval 81/100 usable (68 stable, 13 unstable); 19/100 eval inputs returned no output; strict all-repeat source-attested concordance 2/100, at least-one-repeat 9/100. Not accuracy; gold=0.
+- Missing `weights9.bin.zlib` warning persists; causal relation unknown. Keep as optional research comparator only; production promotion rejected.
+- Full run evidence and config/input hashes: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
