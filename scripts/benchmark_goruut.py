@@ -11,7 +11,6 @@ import hashlib
 import json
 import platform
 import time
-import unicodedata
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -41,11 +40,15 @@ def load_inputs(path: Path) -> list[str]:
 def extract_phonetics(payload: Any) -> list[str]:
     if not isinstance(payload, dict) or not isinstance(payload.get("Words"), list):
         raise ValueError("Response must be an object containing a Words array")
+    if not payload["Words"]:
+        raise ValueError("Words array must not be empty")
     phonetics: list[str] = []
     for index, word in enumerate(payload["Words"]):
         if not isinstance(word, dict) or not isinstance(word.get("Phonetic"), str):
             raise ValueError(f"Words[{index}] must contain a string Phonetic field")
         phonetics.append(word["Phonetic"])
+    if not any(value.strip() for value in phonetics):
+        raise ValueError("Response contains no non-empty phonetic output")
     return phonetics
 
 
