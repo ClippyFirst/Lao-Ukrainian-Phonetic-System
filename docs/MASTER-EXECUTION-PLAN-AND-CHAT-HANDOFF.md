@@ -1110,3 +1110,13 @@ The rights registry does not itself grant permission. Each real source still nee
 - GREEN implementation: shared `SPLIT_PROPERTIES` is now used by both cross-file validation and `assign-splits`; the generator rejects unknown fields instead of dropping them. Code commit: `af97613ae959b59825d1cb6c863ad85b3b5a44d2`.
 - Exact-head verification: [PR verify 41340390805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340390805) SUCCESS and [push verify 41340385157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340385157) SUCCESS — 138 Python tests; browser/Node suites, data/evidence audit, generated-data reproducibility and production build passed. Optional external G2P and Goruut checks also passed on this head.
 - Shared implementation and regression test are byte-identical across Lao, Khmer and Burmese branches. No corpus rows or IPA labels were added; independent gold remains zero and accuracy remains null.
+
+
+## Product-corpus license eligibility — 2026-11-01
+
+- Status: `DONE_VERIFIED` (policy enforcement; no source corpus or license grant was changed).
+- Review found that the license registry accepted `redistributable: true` together with `commercial_use: false/null` or unknown attribution/share-alike terms. That could make a non-commercial or legally incomplete entry eligible for the product corpus if the registry were misconfigured.
+- RED evidence: the new runtime and schema-contract tests failed on test-only commit `74b2349e7054950078f8d875103a30972b9bd7be` ([run 41340769858](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340769858)).
+- GREEN implementation: a redistributable license must explicitly set `commercial_use: true` and boolean `attribution_required` + `share_alike`; the JSON Schema now encodes the same conditional rule. Code/schema commit: `9d3cae33d742f86b9b9e741669da892504ef3dee`.
+- Exact-head verification: [PR verify 41340903259](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340903259) SUCCESS and [push verify 41340897734](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340897734) SUCCESS — 140 Python tests; browser/Node suites, evidence/data audit, generated-data reproducibility and production build passed. Optional external G2P and Goruut diagnostics also passed.
+- This is a conservative product-corpus eligibility rule, not a legal opinion about all uses of these licenses. Each real source still needs human rights review. No IPA gold rows were added; independent gold remains zero and accuracy remains null.

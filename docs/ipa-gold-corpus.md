@@ -140,3 +140,8 @@ The typed IPA result is defined once in schemas/ipa-gold-ipa.schema.json and ref
 ### Frozen split-manifest property enforcement
 
 The `assign-splits` generator and cross-file corpus validator use the same closed split-field allowlist (`record_id`, `group_id`, `split`, `seed`, `version`). Unknown properties in an existing frozen manifest are rejected; the generator must not silently discard unrecognized metadata while rewriting assignments.
+
+
+### Product-corpus license eligibility
+
+A license entry marked `redistributable: true` is eligible for this product corpus only when it explicitly sets `commercial_use: true` and defines boolean `attribution_required` and `share_alike` terms. False or unknown commercial permission, or unknown distribution obligations, fail closed. This is a project eligibility policy, not a general legal interpretation of the license. Every source still requires human verification of the actual license/permission and applicable attribution/share-alike duties.
