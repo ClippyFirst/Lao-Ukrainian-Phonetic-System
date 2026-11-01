@@ -203,6 +203,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
 
     def test_rejects_unknown_ipa_properties(self):
         self.annotations[0]["ipa"]["guessed_pronunciation"] = "not-gold"
+        self.annotations[1]["ipa"]["guessed_pronunciation"] = "not-gold"
         self.write_all()
         run = self.run_cli("validate", expected=1)
         self.assertIn("unknown properties", run.stderr)
