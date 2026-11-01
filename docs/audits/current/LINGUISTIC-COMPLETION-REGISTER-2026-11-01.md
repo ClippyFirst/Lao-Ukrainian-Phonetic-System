@@ -166,3 +166,8 @@ This is dead-code cleanup only: each contract check remains once; no validation 
 |---|---|---|
 | ENGINEERING-METHOD-REFRESH-001 | DONE_VERIFIED | Updated `AGENTS.md` and canonical handoff to pin Superpowers 7.0.1, mattpocock/skills current main, and Ponytail 5.3.3. Exact-head CI on methodology commit `748b84d7c2af7e26191e5d1e12bf875800148a13`: [PR verify 41356347659](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347659) and [push verify 41356342591](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356342591) SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; [Goruut 41356347649](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347649) and [external G2P 41356347662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347662) SUCCESS. No runtime dependencies or copied skill bundles were added. |
 
+
+
+## Methodology source refresh follow-up — 2026-11-02
+
+| ENGINEERING-METHOD-REFRESH-002 | PARTIAL | Updated `AGENTS.md` and canonical handoff from the pre-v1.3.2 Matt Pocock snapshot to v1.3.2 (`d1478fcb140db0b93c0c8df17bcfd311844749d0`); added two-axis review, genuine-RED evidence, template/ownership, and safe worktree-cleanup guidance. Reconciled handoff metadata with branch HEAD `a2a88fc26d1596cd79870bf2b1f03bf152c760a2` (97 ahead / 0 behind `main`). Exact-head CI pending for this documentation commit. | Verify the new documentation commit on GitHub Actions, then mark DONE_VERIFIED with exact run IDs. |

@@ -2,10 +2,10 @@
 
 **Current checkpoint:** 2026-11-02  
 **Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
-**Implementation checkpoint before this documentation-only methodology refresh:** `fed923f8e40ce24d4260061b92c4b175b2e27e94` on `feat/ipa-gold-corpus-20261101-review`  
+**Implementation checkpoint before this documentation-only methodology refresh:** `a2a88fc26d1596cd79870bf2b1f03bf152c760a2` on `feat/ipa-gold-corpus-20261101-review`
 **Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
-**Branch comparison:** 93 commits ahead of main, 0 behind.  
-**Pre-refresh implementation verification:** [verify PR 41354530530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354530530) and [verify push 41354526991](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354526991) both SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; optional Goruut and external Lao G2P diagnostics also SUCCESS.
+**Branch comparison:** 97 commits ahead of main, 0 behind.
+**Pre-refresh implementation verification:** [core CI](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356894124) SUCCESS; 144 Python tests; Node/browser suites 50 + 23 + 27 + 7; optional diagnostics: Goruut 41356894133; external G2P 41356894143 (all SUCCESS).
 **Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
 
 ## Current task ledger and next blocker
@@ -25,7 +25,7 @@ No local checkout was available for this checkpoint; do not interpret hosted CI 
 The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:
 
 - Superpowers 7.0.1: `obra/superpowers@2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. At GREEN, verify the project suite, not only the narrow test that first went red.
-- mattpocock/skills current main: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
+- mattpocock/skills current main: `d1478fcb140db0b93c0c8df17bcfd311844749d0` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
 - Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
 
 These references guide the method; project-specific linguistic, provenance, privacy, rights, and fail-closed requirements remain authoritative.
@@ -1245,3 +1245,11 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 - Removed four consecutive duplicate nested-object validation calls from `scripts/ipa_gold_corpus.py` (orthography, profile, source, and rights_evidence). This removes redundant work without changing the contract. The resulting file has the same blob SHA across all three repositories: `a072297e320b4b91a36c59fc90328b6ff98d2a5f`.
 - Code commit: `7eea774803654372e7d400cd1fde7c9079c23a64`. - Core PR CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242607 (SUCCESS); core push CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354237853 (SUCCESS); optional language diagnostics: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242594, https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354242625 (SUCCESS).
 - No schema, source data, linguistic rule, IPA label, or gold row changed. Independent expert-adjudicated gold remains 0; accuracy remains null. The next substantive blocker is still qualified target-variety annotation and adjudication, not more validator scaffolding.
+
+
+### Upstream methodology review — follow-up 2026-11-02
+
+- **mattpocock/skills v1.3.2**: `d1478fcb140db0b93c0c8df17bcfd311844749d0` (released 2026-10-29). Applied the relevant improvements: standards review reads repository standards and reports separately; spec compliance and repository standards are separate review axes; bug-diagnosis RED evidence must prove the intended mutation changed relevant source; issue/PR tracker operations follow repository templates and ownership boundaries.
+- **Superpowers 7.0.1** remains pinned at `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; its current workflow guidance reinforces preserving untracked work when worktree cleanup refuses and keeping human-authored report sections genuinely human-authored. The October 20 template changes are included in the reviewed 7.0.1 lineage.
+- **Ponytail 5.3.3** remains pinned at `7801d061243d7b753bad0e0b3c057cd250b11755`. Upstream `main` advances to `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`; the inspected post-pin change only adds a README product/logo mention, not engineering-method guidance, so the method pin remains appropriate.
+- No upstream skill bundle, code, dependency, dataset, or runtime integration was copied. These instructions are a selective adaptation, not a claim that third-party tools are installed.
