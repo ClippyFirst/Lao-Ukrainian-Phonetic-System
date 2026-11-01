@@ -303,5 +303,29 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("assign-splits", "--seed", "test-seed", "--output", output, expected=1)
         self.assertIn("unknown properties: unexpected", run.stderr)
 
+    def test_rejects_redistributable_license_with_noncommercial_or_unknown_terms(self):
+        for field, value in (
+            ("commercial_use", False),
+            ("commercial_use", None),
+            ("attribution_required", None),
+            ("share_alike", None),
+        ):
+            with self.subTest(field=field, value=value):
+                registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
+                registry["licenses"]["CC-BY-4.0"][field] = value
+                license_path = self.root / "licenses.json"
+                license_path.write_text(json.dumps(registry), encoding="utf-8")
+                run = self.run_cli("validate", "--licenses", license_path, expected=1)
+                self.assertIn("redistributable license", run.stderr)
+
+    def test_license_schema_conditions_redistributable_entries_on_complete_commercial_terms(self):
+        schema = json.loads((ROOT / "schemas" / "ipa-gold-licenses.schema.json").read_text(encoding="utf-8"))
+        entry = schema["properties"]["licenses"]["additionalProperties"]
+        condition = entry["allOf"][0]
+        self.assertEqual(condition["if"]["properties"]["redistributable"]["const"], True)
+        self.assertEqual(condition["then"]["properties"]["commercial_use"]["const"], True)
+        self.assertEqual(condition["then"]["properties"]["attribution_required"]["type"], "boolean")
+        self.assertEqual(condition["then"]["properties"]["share_alike"]["type"], "boolean")
+
 if __name__ == "__main__":
     unittest.main()
