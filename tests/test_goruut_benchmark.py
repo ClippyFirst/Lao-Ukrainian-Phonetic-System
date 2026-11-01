@@ -130,3 +130,12 @@ def test_repeated_requests_detect_nondeterministic_outputs():
     assert record["unstable"] is True
     assert record["reproducible"] is False
     assert len(record["repetitions"]) == 3
+
+
+def test_notation_diagnostic_preserves_tone_length_aspiration_and_tie_bars():
+    key = MODULE.notation_comparison_key
+    assert key("/pʰiə.saː/") == key("pʰiəsaː")
+    assert key("/tʰaː˥/") != key("taː˥")
+    assert key("/taː˥/") != key("ta˥")
+    assert key("/ta˥/") != key("ta˩")
+    assert key("/t͡ɕi/") != key("tɕi")
