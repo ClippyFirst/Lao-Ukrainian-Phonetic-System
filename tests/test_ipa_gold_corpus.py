@@ -123,6 +123,29 @@ class IpaGoldCorpusTests(unittest.TestCase):
         rows = [json.loads(line) for line in first.splitlines()]
         self.assertEqual(len({row["split"] for row in rows}), 1)
 
+
+    def test_new_records_inherit_frozen_group_split_and_seed(self):
+        self.splits = []
+        self.write_all()
+        frozen = self.root / "frozen.jsonl"
+        self.run_cli("assign-splits", "--seed", "first-seed", "--output", frozen)
+        frozen_rows = [json.loads(line) for line in frozen.read_text(encoding="utf-8").splitlines()]
+        self.write_jsonl("splits", frozen_rows)
+        self.records.append(dict(self.records[0], record_id="r2",
+                                 orthography={"text": "ກາໆ", "normalized": "ກາໆ"}))
+        self.write_jsonl("records", self.records)
+        extended = self.root / "extended.jsonl"
+        self.run_cli("assign-splits", "--seed", "second-seed", "--output", extended)
+        rows = [json.loads(line) for line in extended.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(rows[0]["split"], rows[1]["split"])
+        self.assertEqual(rows[1]["seed"], "first-seed")
+
+    def test_json_schemas_are_valid_draft_2020_documents(self):
+        for name in ("record", "annotation", "adjudication", "split"):
+            schema = json.loads((ROOT / "schemas" / f"ipa-gold-{name}.schema.json").read_text(encoding="utf-8"))
+            self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
+            self.assertEqual(schema["type"], "object")
+
     def test_gold_export_contains_only_adjudicated_redistributable_rows(self):
         output = self.root / "gold.tsv"
         self.run_cli("export-gold", "--output", output)
