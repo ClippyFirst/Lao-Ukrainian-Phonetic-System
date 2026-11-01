@@ -990,6 +990,29 @@ The latest final-head run [41325409867](https://github.com/ClippyFirst/Lao-Ukrai
 - No local checkout was available in this session; all reported engineering verification is from the exact-head and post-merge GitHub Actions runs. See the runtime audit above for artifact hashes and detailed boundaries.
 
 
+## Linguistic completion register — 2026-11-01
+
+- Current verified `main` baseline: `6f607d7ab4d432fd8491a5fcee32186e4269fc32`; latest exact-main engineering workflow: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41326457758 (success). See the linked current audit register for the verified status and next acceptance criteria: [Linguistic completion register](audits/current/LINGUISTIC-COMPLETION-REGISTER-2026-11-01.md).
+- Reconfirmed `data/benchmark/gold.tsv` contains only its header. Independent expert-adjudicated lexical IPA gold remains **0**; empirical accuracy remains **null**. No external source-attested labels or engine outputs are promoted to gold.
+- The register separates implementable repository work from external expert, primary-source and licensing blockers. Preserve existing canonical plans, registries, tests and generated data; do not create parallel corpora or weaken fail-closed behavior.
+- No local checkout was available for this pass. GitHub Actions provide exact-main engineering evidence only; they do not prove linguistic accuracy, manual accessibility QA or legal permissions.
+## Current master-matrix status override — 2026-11-01
+
+The following current statuses supersede older checkpoint rows above where they conflict; historical evidence remains preserved.
+
+| Task | Current status | Current acceptance boundary |
+|---|---|---|
+| LAO-CORPUS-001 | BLOCKED | Gold TSV is header-only; no independent expert-adjudicated lexical IPA gold; accuracy=null. Requires licensed/source-attributed material, dialect and IPA convention, independent annotation and adjudication. |
+| LAO-PARSER-001 | PARTIAL | Core structural guards are implemented; complete lexical segmentation and exhaustive source-backed coda/cluster coverage remain open. |
+| LAO-VOWEL-001 | PARTIAL | Registry/parser coverage exists; source-level verification of all spelling variants and contexts remains open. |
+| LAO-CODA-001 | PARTIAL | Registered coda cases are tested; inventory-wide source review and disputed representations remain open. |
+| LAO-TONE-001 | PARTIAL | Tone selector contracts and mark-order guards are implemented; dialect-scoped rule adjudication and acoustic contour validation remain open. |
+| LAO-UKR-001 | PARTIAL | IPA-first target mapping exists for a subset; independent expert review and broader adjudicated target examples remain open. |
+| LAO-G2P-001 | DONE_VERIFIED (harness only) | Goruut/other comparisons are diagnostics; no production engine selected and no accuracy claim. |
+| LAO-UI-001 | TODO | Manual deployed visual, keyboard, screen-reader and mobile QA not evidenced by CI. |
+| LAO-RELEASE-001 | DEFERRED | Do not publish a release until P0 linguistic evidence gates close and owner authorizes it. |
+
+
 ## IPA gold corpus implementation checkpoint — 2026-11-01
 
 ### Current task ledger
