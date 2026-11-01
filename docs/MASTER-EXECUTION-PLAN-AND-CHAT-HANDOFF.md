@@ -5,7 +5,7 @@
 **Implementation checkpoint before this documentation-only methodology refresh:** `fed923f8e40ce24d4260061b92c4b175b2e27e94` on `feat/ipa-gold-corpus-20261101-review`  
 **Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
 **Branch comparison:** 93 commits ahead of main, 0 behind.  
-**Exact-head engineering verification:** [verify PR 41354530530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354530530) and [verify push 41354526991](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354526991) both SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; optional Goruut and external Lao G2P diagnostics also SUCCESS.
+**Pre-refresh implementation verification:** [verify PR 41354530530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354530530) and [verify push 41354526991](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354526991) both SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; optional Goruut and external Lao G2P diagnostics also SUCCESS.
 **Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
 
 ## Current task ledger and next blocker
@@ -29,6 +29,8 @@ The adopted engineering references were checked against current upstream revisio
 - Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
 
 These references guide the method; project-specific linguistic, provenance, privacy, rights, and fail-closed requirements remain authoritative.
+
+**Methodology refresh commit:** `748b84d7c2af7e26191e5d1e12bf875800148a13` on the active review branch. **Exact-head verification:** [PR verify 41356347659](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347659) and [push verify 41356342591](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356342591) SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; [Goruut 41356347649](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347649) and [external G2P 41356347662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347662) SUCCESS.
 
 ## Historical records
 

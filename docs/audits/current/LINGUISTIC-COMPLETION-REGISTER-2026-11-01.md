@@ -164,5 +164,5 @@ This is dead-code cleanup only: each contract check remains once; no validation 
 
 | ID | Status | Evidence / acceptance |
 |---|---|---|
-| ENGINEERING-METHOD-REFRESH-001 | PARTIAL | Refreshed the Ponytail reference to v5.3.3 and documented the current Superpowers 7.0.1, mattpocock/skills main, and Ponytail 5.3.3 method snapshots in `AGENTS.md` and the canonical handoff. Exact-head CI for this documentation update is pending. |
+| ENGINEERING-METHOD-REFRESH-001 | DONE_VERIFIED | Updated `AGENTS.md` and canonical handoff to pin Superpowers 7.0.1, mattpocock/skills current main, and Ponytail 5.3.3. Exact-head CI on methodology commit `+q.head+`: [PR verify 41356347659](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347659) and [push verify 41356342591](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356342591) SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; [Goruut 41356347649](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347649) and [external G2P 41356347662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347662) SUCCESS. No runtime dependencies or copied skill bundles were added. |
 
