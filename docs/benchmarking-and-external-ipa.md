@@ -167,3 +167,14 @@ A second inspection of the saved raw JSON used the API's `PrePunct`, `CleanWord`
 - This re-analysis shows that response count alone overstated usable coverage. The benchmark harness is being extended to report source coverage separately from response availability and IPA concordance.
 
 Raw artifact: [13085003615](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516/artifacts/13085003615), ZIP SHA-256 `025e5444d0a096ca07c39cbf9297ef4229275937ff487d38548fd3a551269612`.
+
+
+## Owner scope decision — temporary test-only use — 2026-11-01
+
+The repository owner explicitly directed that external Goruut assets may be used for temporary verification and comparison without blocking these tests on license review. Accordingly:
+
+- **Test-only execution:** authorized for this research task; do not stop runtime probes because the external asset license is unresolved.
+- **No data/model import:** no Goruut dictionary, model weight, or MekongPhon source row is copied into the product runtime or committed as a corpus by this decision.
+- **Production packaging or redistribution:** not authorized by this instruction and remains outside this test-only scope; asset provenance/rights must be revisited before any bundling, redistribution, or production deployment.
+
+This is a project scope decision, not a legal conclusion about the upstream assets.
