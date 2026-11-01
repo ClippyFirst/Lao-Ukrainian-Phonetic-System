@@ -94,7 +94,16 @@ class BenchmarkIpaTests(unittest.TestCase):
         self.assertEqual(metrics["ipa_kind_mismatches"], 1)
         self.assertFalse(metrics["rows"][0]["exact_match"])
         self.assertEqual(metrics["rows"][0]["source_id"], "src#1")
-        self.assertEqual(metrics["rows"][0]["gold_license_id"], "CC-BY-4.0")
+        self.assertEqual(metrics["rows"][0]["gold_license_id"], "CC-BY-4.0")\n        self.assertIsNone(metrics["codepoint_cer"])\n        self.assertEqual(metrics["codepoint_cer_comparable_rows"], 0)
+
+    def test_empty_prediction_is_missing_not_ipa_kind_mismatch(self):
+        gold = [{"id":"a", "text":"x", "gold_ipa":"ka", "gold_status":"ADJUDICATED",
+                 "profile":"standard", "source_id":"src#1", "ipa_kind":"PHONEMIC"}]
+        pred = [{"id":"a", "engine":"candidate", "raw_output":"", "ipa":"",
+                 "status":"empty", "version":"1", "ipa_kind":""}]
+        metrics = self.run_benchmark(gold, pred)["engines"]["candidate"]
+        self.assertEqual(metrics["missing_predictions"], 1)
+        self.assertEqual(metrics["ipa_kind_mismatches"], 0)
 
     def test_mismatch_reports_codepoint_cer(self):
         report = self.run_benchmark(
