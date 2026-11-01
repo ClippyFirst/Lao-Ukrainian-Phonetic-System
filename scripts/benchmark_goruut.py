@@ -116,10 +116,12 @@ def analyze_source_coverage(payload: Any, input_text: str) -> dict[str, Any]:
                     "text": value,
                 })
     reconstructed = "".join(reconstructed_parts)
-    compact = lambda value: unicodedata.normalize(
-        "NFC", "".join(char for char in value if not char.isspace())
-    )
-    reconstruction_matches = compact(reconstructed) == compact(input_text)
+    def compact_source(value: str) -> str:
+        return unicodedata.normalize(
+            "NFC", "".join(char for char in value if not char.isspace())
+        )
+
+    reconstruction_matches = compact_source(reconstructed) == compact_source(input_text)
     return {
         "source_reconstructed_text": reconstructed,
         "source_reconstruction_matches_input": reconstruction_matches,
