@@ -2,10 +2,10 @@
 
 **Current checkpoint:** 2026-11-02  
 **Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
-**Implementation checkpoint before this documentation-only methodology refresh:** `a2a88fc26d1596cd79870bf2b1f03bf152c760a2` on `feat/ipa-gold-corpus-20261101-review`
+**Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
 **Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
-**Branch comparison:** 97 commits ahead of main, 0 behind.
-**Pre-refresh implementation verification:** [core CI](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356894124) SUCCESS; 144 Python tests; Node/browser suites 50 + 23 + 27 + 7; optional diagnostics: Goruut 41356894133; external G2P 41356894143 (all SUCCESS).
+**Branch comparison at this checkpoint:** 98 commits ahead of main, 0 behind.
+**Exact-head methodology verification:** [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) SUCCESS; optional diagnostics [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) SUCCESS.
 **Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
 
 ## Current task ledger and next blocker
@@ -1253,3 +1253,11 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 - **Superpowers 7.0.1** remains pinned at `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; its current workflow guidance reinforces preserving untracked work when worktree cleanup refuses and keeping human-authored report sections genuinely human-authored. The October 20 template changes are included in the reviewed 7.0.1 lineage.
 - **Ponytail 5.3.3** remains pinned at `7801d061243d7b753bad0e0b3c057cd250b11755`. Upstream `main` advances to `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`; the inspected post-pin change only adds a README product/logo mention, not engineering-method guidance, so the method pin remains appropriate.
 - No upstream skill bundle, code, dependency, dataset, or runtime integration was copied. These instructions are a selective adaptation, not a claim that third-party tools are installed.
+
+
+## Exact-head verification — methodology refresh 2026-11-02
+
+- Documentation and agent guidance checkpoint: `d964db76a4228f2a7f84138ef69cbe1ae8cb7086`.
+- [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) completed SUCCESS on this exact commit; full verify workflow.
+- Optional diagnostic runs [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) also completed SUCCESS. These diagnostics are not accuracy evidence.
+- The current branch has one subsequent documentation-only evidence-register commit; its exact-head CI is recorded in the final session report. No engine, linguistic rules, IPA labels, gold records, datasets, or runtime dependencies were changed.
