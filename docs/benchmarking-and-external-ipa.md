@@ -127,3 +127,10 @@ This probe intentionally uses upstream language assets only inside an ephemeral 
 The pinned Goruut runtime was executed, not merely inspected. Go 1.23.12, Lao explicitly enabled; 23 engineering probes yielded 18 usable outputs/5 empty; 100 MekongPhon eval rows yielded 81 usable outputs/19 empty. Strict NFC+outer-whitespace source-attested concordance was 8/100 (8%); heuristic diagnostic: 13 tone-only, 1 tone/length, 59 segmental/format, 19 no output. This is NOT accuracy or gold: MekongPhon sentence IPA is lexicon-generated and its eval is not independent expert adjudication. Server log repeatedly reports missing `weights9.bin.zlib`. Do not promote. Full evidence: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
 
 The optional workflow builds the pinned source in an ephemeral CI checkout, captures raw HTTP output and server logs, hashes the fixture/effective config/log, and stores a 30-day artifact. It is a comparator, not an accuracy benchmark or production dependency.
+
+
+## Three-repeat runtime evidence — supersedes one-shot figures
+
+Three-repeat re-evaluation supersedes one-shot counts: engineering probes 18/23 usable, with 7/18 usable outputs unstable across repetitions; MekongPhon 81/100 usable, with 13/81 unstable; only 4/100 source-attested rows matched exactly across all three repetitions (10/100 matched at least once). Example `ຄົນ` alternated between `kʰon˩˨` and `kʰon˧˥`. This demonstrates a serious tone/reproducibility defect. It remains source-attested concordance, not accuracy. See runtime evaluation audit.
+
+See `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md` for exact run links, hashes and per-language interpretation.
