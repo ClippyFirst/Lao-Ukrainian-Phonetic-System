@@ -210,3 +210,6 @@ The benchmark now retains `ipa_kind` (PHONEMIC, PHONETIC_BROAD, PHONETIC_NARROW)
 Normal CI validates corpus structure while allowing an empty research corpus. The tag/manual `ipa-gold-release-gate.yml` requires at least 100 train, 25 dev and 25 test adjudicated records with redistribution rights. These are project release thresholds, not a universal statistical claim. A separate feature-stratified engine and Ukrainian-adapter quality gate is still required.
 
 **Current status:** the four JSONL files are intentionally empty and the gold TSV remains header-only. Independent adjudicated gold=0; accuracy=null. No phonemizer output or synthetic test fixture has been promoted to gold. Blind annotation must be collected through a controlled channel before the two submissions are merged; a public shared repository cannot enforce blinding.
+
+
+The rights layer is executable: `data/benchmark/licenses.json` is the allowlist, each record must carry `rights_evidence` (basis, locator, verifier pseudonym and date), and unknown or non-redistributable license IDs are rejected. Exported gold rows retain `license_id` and `rights_evidence_locator`; benchmark reports carry those fields forward. The allowlist is not a substitute for source-by-source legal verification.
