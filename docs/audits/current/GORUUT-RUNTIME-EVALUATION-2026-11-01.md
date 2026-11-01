@@ -58,3 +58,8 @@ Evidence: [optional comparator workflow 41310116216](https://github.com/ClippyFi
 ## Latest three-repeat Goruut report — 2026-11-01
 
 The most recent pinned run supersedes the earlier repeat counts: engineering probes 18/23 usable, 12 reproducible and 6 unstable; MekongPhon 81/100 usable, 70 reproducible and 11 unstable. Strict and limited-notation source-attested concordance across all three repetitions is 5/100 (5%); 10/100 matched in at least one repetition. This is still not gold or accuracy. Latest run: [41310116195](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310116195). Server log SHA-256 `1a4b77036d9e3e2c275f5604e55f0e2c935ba755ed380e1cfcc94a292471877a` (engineering) and `90641614476946b5a8de27cd72fe480d78746d1d9b55b1b5158fdc7582c979d3` (MekongPhon).
+
+
+## Model-asset warning interpretation
+
+The runtime log warning is now more precisely classified: the pinned Goruut language module contains `weights8.bin.zlib`, while the runtime repeatedly logs an attempt to open `weights9.bin.zlib`. No `weights9.bin.zlib` asset was found in the pinned repository tree. The exact loader path and causal relation to empty outputs/tone instability have not been established; treat this as an unresolved upstream asset/version warning, not a proven root cause.
