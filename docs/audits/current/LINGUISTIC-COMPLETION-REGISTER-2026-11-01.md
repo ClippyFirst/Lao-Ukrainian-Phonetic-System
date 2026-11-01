@@ -140,3 +140,12 @@ This is a consistency/eligibility invariant, not a new legal determination. It d
 - Current code checkpoint: `5e5f3de73fa96696e8087220c24c5d245f38797d`; exact-head core CI [41348202260](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41348202260) **SUCCESS**. 142 Python tests; Node/browser suites 50 + 23 + 27 + 7; repository data/evidence audit, generated-data reproducibility and production build passed. Optional Goruut and external Lao G2P diagnostics passed.
 - The `OPEN` / `redistributable` consistency regression is present in runtime validation, JSON Schema and tests.
 - Independent expert gold remains 0 and accuracy remains null. Human annotation/profile/convention gates remain open; CI is not linguistic validation.
+
+ 
+## Nested IPA record contract closure — 2026-11-01
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| IPA-GOLD-NESTED-STRICT-001 | DONE_VERIFIED (engineering contract) | Test-first RED: [run 41352928328](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41352928328); GREEN exact-code-head CI: [run 41353028676](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41353028676). Runtime validator and JSON Schema both reject undeclared fields in `orthography`, `profile`, `source` and `source.rights_evidence`. 144 Python unittest tests passed; repository CI checks passed. |
+
+This closes only the nested-object shape contract. It does not establish the truth of source metadata, rights determinations, speaker profiles, IPA, or expert adjudication. Independent gold remains 0 and accuracy remains null.
