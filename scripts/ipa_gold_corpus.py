@@ -224,7 +224,7 @@ def command_assign(args: argparse.Namespace) -> int:
     records = read_jsonl(args.records)
     existing = read_jsonl(args.splits)
     record_by_id = {require_text(row.get("record_id"), "record.record_id"): row for row in records}
-    existing_by_group: dict[str, str] = {}
+    existing_by_group: dict[str, dict[str, Any]] = {}
     existing_by_id = {}
     for row in existing:
         ident = require_text(row.get("record_id"), "split.record_id")
@@ -235,21 +235,22 @@ def command_assign(args: argparse.Namespace) -> int:
             raise ValueError(f"split {ident}: group_id must equal record.lexeme_group_id")
         if row.get("split") not in SPLITS:
             raise ValueError(f"split {ident}: invalid split")
-        if group in existing_by_group and existing_by_group[group] != row["split"]:
+        if group in existing_by_group and existing_by_group[group]["split"] != row["split"]:
             raise ValueError(f"lexeme_group_id crosses splits: {group}")
         if ident in existing_by_id:
             raise ValueError(f"duplicate split assignment for record_id: {ident}")
-        existing_by_group[group] = row["split"]
+        existing_by_group[group] = row
         existing_by_id[ident] = row
     output = []
     for ident, record in sorted(record_by_id.items()):
         group = record["lexeme_group_id"]
         prior = existing_by_id.get(ident)
-        assigned = existing_by_group.get(group) or group_split(group, args.seed)
+        group_prior = existing_by_group.get(group)
+        assigned = group_prior["split"] if group_prior else group_split(group, args.seed)
         output.append({
             "record_id": ident, "group_id": group, "split": assigned,
-            "seed": prior.get("seed", args.seed) if prior else args.seed,
-            "version": prior.get("version", args.version) if prior else args.version,
+            "seed": prior.get("seed", args.seed) if prior else group_prior.get("seed", args.seed) if group_prior else args.seed,
+            "version": prior.get("version", args.version) if prior else group_prior.get("version", args.version) if group_prior else args.version,
         })
     write_jsonl(args.output, output)
     print(json.dumps({"assigned_records": len(output), "output": str(args.output),
