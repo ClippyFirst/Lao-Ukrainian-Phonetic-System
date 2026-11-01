@@ -167,7 +167,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertEqual(rows[1]["seed"], "first-seed")
 
     def test_json_schemas_are_valid_draft_2020_documents(self):
-        for name in ("record", "annotation", "adjudication", "split"):
+        for name in ("record", "annotation", "adjudication", "split", "licenses"):
             schema = json.loads((ROOT / "schemas" / f"ipa-gold-{name}.schema.json").read_text(encoding="utf-8"))
             self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
             self.assertEqual(schema["type"], "object")
