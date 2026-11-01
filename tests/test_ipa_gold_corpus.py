@@ -183,6 +183,30 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertEqual(rows[0]["license_id"], "CC-BY-4.0")
         self.assertTrue(rows[0]["rights_evidence_locator"].startswith("https://"))
 
+    def test_rejects_annotation_missing_schema_required_notes(self):
+        del self.annotations[0]["notes"]
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("notes", run.stderr)
+
+    def test_rejects_non_iso_annotation_date(self):
+        self.annotations[0]["annotated_at"] = "yesterday"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("annotated_at", run.stderr)
+
+    def test_rejects_unknown_record_properties(self):
+        self.records[0]["unreviewed_ipa"] = "not-gold"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("unknown properties", run.stderr)
+
+    def test_rejects_unknown_ipa_properties(self):
+        self.annotations[0]["ipa"]["guessed_pronunciation"] = "not-gold"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("unknown properties", run.stderr)
+
     def test_empty_gold_is_not_release_ready(self):
         self.annotations = []
         self.adjudications = []
