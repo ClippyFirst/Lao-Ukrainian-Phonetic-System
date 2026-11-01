@@ -26,3 +26,18 @@
 - Optional runtime workflow: [41307986513](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41307986513) (initial completed runtime comparison); latest exact-head run is tracked by PR #96.
 - Artifact contains both engineering and MekongPhon reports plus the server log; retention is 30 days.
 - Current independent, project-owned, expert-adjudicated Lao gold remains 0.
+
+
+## Repeatability follow-up — supersedes one-shot figures — 2026-11-01
+
+The final diagnostic sends each input three times to the same running server. The earlier one-shot 8%/9% concordance figures are superseded by this stricter repeated-request result:
+
+- Engineering probes: 23 inputs; 18 had at least one usable output, 5 had no output. Of the 18 with outputs, 11 were identical across all three repetitions and 7 changed between repetitions.
+- MekongPhon eval: 100 inputs; 81 had at least one usable output, 19 had no output. 68 outputs were identical across all three repetitions; 13 changed between repetitions.
+- Strict source-attested exact concordance across all three repetitions: 4/100 (4%). At least one of the three repetitions matched for 10/100 (10%); these are not interchangeable measures. The comparison remains non-gold and not accuracy.
+- Observed variability is often tonal: e.g. `ຄົນ` returned both `kʰon˩˨` and `kʰon˧˥` in repeated requests; `ເກືອ` alternated tone contours. This is a reproducibility blocker for deterministic transcription.
+- The same input can also vary across separate CI runs; e.g. `ຂາ` returned different tone contours in earlier runs.
+
+Latest three-repeat artifact: [workflow 41309088407](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41309088407). Engineering fixture SHA-256 `a3cdf11fc00e87380787ae2fbf421c83de697cf98c66078414a2c99c81dccd19`; MekongPhon eval SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`; effective config SHA-256 `afdab11396e77d171fd4683c8692dbe8513edfe6ed02aa3a20bac9db9f11c44c`; server log SHA-256 `5c5885c2362ebdce977d7837cc1d3ce7e3fb08bdd17445ede7bda3683377e1ad`.
+
+**Disposition remains: do not integrate as a production phonology provider.** Three-repeat output instability plus 4% strict source-attested concordance is insufficient for production use. The MekongPhon split is still not expert gold.
