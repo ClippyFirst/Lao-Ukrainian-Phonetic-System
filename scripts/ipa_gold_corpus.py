@@ -74,6 +74,13 @@ def validate_ipa(value: Any, label: str) -> dict[str, Any]:
 
 def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     records = read_jsonl(args.records)
+    try:
+        license_document = json.loads(args.licenses.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{args.licenses}: invalid license registry JSON: {exc.msg}") from exc
+    license_registry = license_document.get("licenses") if isinstance(license_document, dict) else None
+    if not isinstance(license_registry, dict):
+        raise ValueError(f"{args.licenses}: expected a licenses object")
     annotations = read_jsonl(args.annotations)
     adjudications = read_jsonl(args.adjudications)
     splits = read_jsonl(args.splits)
@@ -101,10 +108,33 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
             raise ValueError(f"record {ident}: source must be an object")
         for field in ("source_id", "citation", "locator", "license_id"):
             require_text(source.get(field), f"record {ident}.source.{field}")
+        license_id = source["license_id"]
+        license_info = license_registry.get(license_id)
+        if not isinstance(license_info, dict):
+            raise ValueError(f"record {ident}: unregistered license_id {license_id!r}")
+        if not isinstance(license_info.get("redistributable"), bool):
+            raise ValueError(f"license registry entry {license_id!r} must define boolean redistributable")
+        rights_evidence = source.get("rights_evidence")
+        if not isinstance(rights_evidence, dict):
+            raise ValueError(f"record {ident}: source.rights_evidence must be an object")
+        basis = require_text(rights_evidence.get("basis"), f"record {ident}.source.rights_evidence.basis")
+        if basis not in ("LICENSE", "DIRECT_PERMISSION", "PUBLIC_DOMAIN", "PROJECT_CREATED", "UNKNOWN"):
+            raise ValueError(f"record {ident}: invalid rights evidence basis {basis!r}")
+        for field in ("locator", "verified_by", "verified_at"):
+            require_text(rights_evidence.get(field), f"record {ident}.source.rights_evidence.{field}")
         if source.get("rights_status") not in RIGHTS:
             raise ValueError(f"record {ident}: source.rights_status must be one of {', '.join(RIGHTS)}")
         if not isinstance(source.get("redistributable"), bool):
             raise ValueError(f"record {ident}: source.redistributable must be boolean")
+        if source["redistributable"] and not license_info["redistributable"]:
+            raise ValueError(f"record {ident}: license {license_id!r} does not permit redistribution")
+        rights_status = source["rights_status"]
+        if rights_status == "OPEN" and (not license_info["redistributable"] or basis not in ("LICENSE", "DIRECT_PERMISSION", "PUBLIC_DOMAIN")):
+            raise ValueError(f"record {ident}: OPEN rights require a redistributable license and verified rights evidence")
+        if rights_status == "PROJECT_CREATED" and (license_id != "PROJECT-CREATED" or basis != "PROJECT_CREATED"):
+            raise ValueError(f"record {ident}: PROJECT_CREATED rights require PROJECT-CREATED license and evidence")
+        if rights_status in ("RESTRICTED", "UNKNOWN") and source["redistributable"]:
+            raise ValueError(f"record {ident}: {rights_status} source cannot be marked redistributable")
         record_by_id[ident] = row
 
     annotations_by_record: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -325,6 +355,7 @@ def build_parser() -> argparse.ArgumentParser:
         command.add_argument("--adjudications", type=Path, default=Path("data/benchmark/adjudications.jsonl"))
         command.add_argument("--splits", type=Path, default=Path("data/benchmark/splits.jsonl"))
         command.add_argument("--language", required=True, choices=("lao", "khmer", "burmese"))
+        command.add_argument("--licenses", type=Path, default=Path("data/benchmark/licenses.json"))
     validate = sub.add_parser("validate", help="validate corpus provenance and annotation workflow")
     add_paths(validate)
     validate.add_argument("--report", type=Path)
