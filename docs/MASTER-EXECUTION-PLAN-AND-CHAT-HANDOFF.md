@@ -1100,3 +1100,13 @@ The rights registry does not itself grant permission. Each real source still nee
 - Exact-head verification: [verify run 41339601530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601530) SUCCESS; [optional external-G2P run 41339601524](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601524) SUCCESS; [optional Goruut run 41339601526](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601526) SUCCESS.
 - Verified workflow coverage: 137 Python tests, repository evidence/data audit, browser/Node suites, generated-data reproducibility, production build and built-page/relative-asset checks all passed on the exact head.
 - Local checkout was unavailable; verification evidence is GitHub Actions on the exact branch head. The gold corpus remains empty and empirical accuracy remains unmeasured.
+
+
+## Frozen split-manifest schema parity — 2026-11-01
+
+- Status: `DONE_VERIFIED`.
+- Review found that `assign-splits` accepted unknown properties in existing split rows even though the split JSON Schema is closed; the generator could silently discard those fields when rewriting the manifest.
+- RED evidence: regression `test_assign_splits_rejects_unknown_properties_in_existing_manifest` failed as expected on test-only commit `945c81b4b4ddb4f48517549353f5a3e14b26bcad` ([run 41340243504](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340243504)).
+- GREEN implementation: shared `SPLIT_PROPERTIES` is now used by both cross-file validation and `assign-splits`; the generator rejects unknown fields instead of dropping them. Code commit: `af97613ae959b59825d1cb6c863ad85b3b5a44d2`.
+- Exact-head verification: [PR verify 41340390805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340390805) SUCCESS and [push verify 41340385157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340385157) SUCCESS — 138 Python tests; browser/Node suites, data/evidence audit, generated-data reproducibility and production build passed. Optional external G2P and Goruut checks also passed on this head.
+- Shared implementation and regression test are byte-identical across Lao, Khmer and Burmese branches. No corpus rows or IPA labels were added; independent gold remains zero and accuracy remains null.

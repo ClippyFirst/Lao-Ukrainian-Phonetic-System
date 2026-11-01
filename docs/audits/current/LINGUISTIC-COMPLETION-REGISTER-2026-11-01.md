@@ -76,3 +76,10 @@ Preserve `Lao orthography → structural analysis → Lao phonology → typed IP
 - Final PR head: `0b348d191e93e15b543d95538daccf8490e8239c`; CI run [41338456936](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41338456936) SUCCESS — 137 Python tests; Node/browser suites 50 + 23 + 27 + 7; data/evidence audit, generated-data reproducibility and production build passed.
 - The Lao evidence matrix remains bounded to central/Vientiane source analyses; no automatic labialized-onset Ukrainian mapping was added.
 - Gold remains zero; `gold.tsv` remains header-only; empirical accuracy remains null. No IPA labels were generated.
+
+
+## IPA gold split-manifest runtime/schema parity — 2026-11-01
+
+| ID | Priority | Status | Scope / evidence | Acceptance criteria / dependencies |
+|---|---|---|---|---|
+| LAO-IPA-SPLIT-STRICT-001 | P1 | DONE_VERIFIED | RED test on commit `945c81b4b4ddb4f48517549353f5a3e14b26bcad` failed as expected; GREEN code commit `af97613ae959b59825d1cb6c863ad85b3b5a44d2`; exact-head CI [41340390805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340390805) passed | The split generator and corpus validator share the closed split-field contract; unknown prior-manifest properties are rejected rather than silently dropped. No expert gold is created by this change. |

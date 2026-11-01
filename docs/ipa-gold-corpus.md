@@ -135,3 +135,8 @@ The validator proves structural separation only: two distinct annotator IDs and 
 ### Shared typed IPA schema
 
 The typed IPA result is defined once in schemas/ipa-gold-ipa.schema.json and referenced by both independent annotation and adjudication schemas through a local JSON Schema $ref. The shared object requires value + kind (PHONEMIC, PHONETIC_BROAD or PHONETIC_NARROW), rejects unknown properties, and preserves optional syllable-boundary, tone, vowel-length and phonation metadata. This prevents annotation and adjudication IPA contracts from drifting apart.
+
+
+### Frozen split-manifest property enforcement
+
+The `assign-splits` generator and cross-file corpus validator use the same closed split-field allowlist (`record_id`, `group_id`, `split`, `seed`, `version`). Unknown properties in an existing frozen manifest are rejected; the generator must not silently discard unrecognized metadata while rewriting assignments.
