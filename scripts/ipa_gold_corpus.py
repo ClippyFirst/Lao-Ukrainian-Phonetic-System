@@ -130,6 +130,12 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
             require_uri(license_info["url"], f"license registry entry {license_id!r}.url")
         if "note" in license_info and not isinstance(license_info["note"], str):
             raise ValueError(f"license registry entry {license_id!r}.note must be a string")
+        if license_info["redistributable"]:
+            if license_info["commercial_use"] is not True:
+                raise ValueError(f"license registry entry {license_id!r}: redistributable license must explicitly permit commercial use")
+            for field in ("attribution_required", "share_alike"):
+                if not isinstance(license_info[field], bool):
+                    raise ValueError(f"license registry entry {license_id!r}: redistributable license must define boolean {field}")
     annotations = read_jsonl(args.annotations)
     adjudications = read_jsonl(args.adjudications)
     splits = read_jsonl(args.splits)
