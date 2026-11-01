@@ -60,3 +60,6 @@ Preserve `Lao orthography → structural analysis → Lao phonology → typed IP
 
 
 **Source correction:** Erickson's paper is bibliographically 1996 (the SEA-language PDF filename says 2001). Its adopted six-tone/coda analysis is kept separate from Ueda's five-tone central Vientiane baseline. The proposed historical origin of labialized consonants remains tentative.
+
+
+**Full-text evidence update:** Ueda (1994) pp. 96, 100–108, 110–112 now provides a speaker-specific Vientiane tone × rhyme matrix: plain rhymes allow five tones; long checked rhymes allow [21]/[52]; short checked rhymes allow [34]/[33]. A restricted [22] variant overlaps with [24] in some onsets/connected contexts. Ueda's one-informant sample and its conflict with Erickson's labialized-phoneme analysis remain explicit limitations.
