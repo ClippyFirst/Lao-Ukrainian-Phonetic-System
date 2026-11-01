@@ -1,3 +1,26 @@
+# Master execution plan and chat handoff — Lao → Ukrainian
+
+**Current checkpoint:** 2026-11-02  
+**Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
+**Active review branch:** `feat/ipa-gold-corpus-20261101-review` at `fed923f8e40ce24d4260061b92c4b175b2e27e94`  
+**Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
+**Branch comparison:** 93 commits ahead of main, 0 behind.  
+**Exact-head engineering verification:** [verify PR 41354530530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354530530) and [verify push 41354526991](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41354526991) both SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; optional Goruut and external Lao G2P diagnostics also SUCCESS.
+**Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
+
+## Current task ledger and next blocker
+
+- **DONE_VERIFIED (engineering):** independent IPA corpus schemas, runtime validation, deterministic split/rights gates, source/evidence documentation, and exact-head automated engineering checks are present on the active branch. This is not linguistic validation.
+- **PARTIAL:** source-language phonology, IPA conventions, and Ukrainian target adaptation remain bounded by the language-specific evidence matrices and unresolved cases.
+- **BLOCKED:** the 30-lexeme blind pilot cannot start until the target variety/profile and IPA convention are approved, two qualified independent annotators and a separate adjudicator are confirmed, rights-cleared source packets are prepared, and the blind intake dry-run passes.
+- **TODO:** manual deployed-site visual, keyboard, assistive-technology, and mobile QA.
+- **Next actionable human milestone:** resolve the recruitment and convention checklist in [issue #99](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/99) and follow [the controlled acquisition protocol](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/feat/ipa-gold-corpus-20261101-review/docs/ipa-gold-collection-playbook.md).
+
+No local checkout was available for this checkpoint; do not interpret hosted CI as local test execution, expert adjudication, visual QA, or release approval. Preserve the fail-closed pipeline and do not create IPA/gold labels from model output or unsupported spelling inference.
+
+## Historical records
+
+The dated entries below are retained as audit history. When a historical status or SHA conflicts with this current checkpoint, the active branch ref, completion register, and exact-head workflow run above are authoritative.
 
 ## Lao external G2P mismatch taxonomy — 2026-10-24
 
@@ -5,7 +28,7 @@
 - Categorized pinned run [40121272427](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/40121272427): 36 engineering cases, 0 runtime errors, 0/36 exact implementation agreement, independent gold=0, accuracy=null. Categories: 29 tone-suffix-only, 2 offglide-convention, 4 segmental/vowel-sequence, 1 tone+length. Durable report: `data/benchmark/runs/external-g2p-smoke-2026-10-24.json`; artifact ZIP SHA-256 `a2fea18c48e337ce37b070b2da9ff2e5236b51295f80100d2ebae06a4478d4b8`.
 - The category labels are heuristic review hints only. Lao tone may be contrastive, so tone-suffix differences are not automatically harmless. Prioritize source-located adjudication of tone convention and the four segmental/vowel-sequence cases.
 - Unit tests for the classifier passed on the previous branch head; full current-branch CI and optional comparison are required before merge. No accuracy or engine winner is claimed.
-# Master execution plan and chat handoff
+## Historical master handoff snapshot — 2026-10-31
 
 Last reviewed: 2026-10-31
 Repository: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System
