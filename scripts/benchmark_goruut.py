@@ -93,6 +93,7 @@ def analyze_source_coverage(payload: Any, input_text: str) -> dict[str, Any]:
         raise ValueError("Response must contain Words to inspect source coverage")
     reconstructed_parts: list[str] = []
     unphonemized: list[dict[str, Any]] = []
+    empty_phonetic_word_indices: list[int] = []
     for index, word in enumerate(payload["Words"]):
         if not isinstance(word, dict):
             raise ValueError(f"Words[{index}] must be an object")
@@ -107,6 +108,9 @@ def analyze_source_coverage(payload: Any, input_text: str) -> dict[str, Any]:
         reconstructed_parts.append(
             values["PrePunct"] + values["CleanWord"] + values["PostPunct"]
         )
+        phonetic = word.get("Phonetic")
+        if isinstance(phonetic, str) and not phonetic.strip():
+            empty_phonetic_word_indices.append(index)
         for field in ("PrePunct", "PostPunct"):
             value = values[field]
             if any(unicodedata.category(char)[0] in "LMN" for char in value):
@@ -125,8 +129,9 @@ def analyze_source_coverage(payload: Any, input_text: str) -> dict[str, Any]:
     return {
         "source_reconstructed_text": reconstructed,
         "source_reconstruction_matches_input": reconstruction_matches,
-        "source_coverage_complete": reconstruction_matches and not unphonemized,
+        "source_coverage_complete": reconstruction_matches and not unphonemized and not empty_phonetic_word_indices,
         "unphonemized_source_fragments": unphonemized,
+        "empty_phonetic_word_indices": empty_phonetic_word_indices,
         "source_coverage_error": None,
     }
 
@@ -258,10 +263,12 @@ def run_probe(
     else:
         source_coverage_status = "UNKNOWN"
     fragments_by_key = {}
+    empty_phonetic_indices = set()
     for item in successful:
         for fragment in item.get("unphonemized_source_fragments", []):
             key = (fragment["word_index"], fragment["field"], fragment["text"])
             fragments_by_key[key] = fragment
+        empty_phonetic_indices.update(item.get("empty_phonetic_word_indices", []))
     return {
         "input": text,
         "status": status,
@@ -274,6 +281,7 @@ def run_probe(
         "source_coverage_partial_repetitions": sum(value is False for value in coverage_values),
         "source_coverage_unknown_repetitions": repeat_count - sum(value is not None for value in coverage_values),
         "unphonemized_source_fragments": list(fragments_by_key.values()),
+        "empty_phonetic_word_indices": sorted(empty_phonetic_indices),
         "randomization_words_count_max": max(randomization_counts, default=0),
         "randomization_words_choices_max": max(randomization_choices, default=0),
         "randomized_repetitions": randomized_repetitions,
@@ -322,6 +330,7 @@ def build_report(
     source_coverage_partial_outputs = sum(record.get("source_coverage_status") == "PARTIAL" for record in records)
     source_coverage_unknown_outputs = sum(record.get("source_coverage_status", "UNKNOWN") == "UNKNOWN" for record in records)
     unphonemized_source_fragment_count = sum(len(record.get("unphonemized_source_fragments", [])) for record in records)
+    empty_phonetic_word_count = sum(len(record.get("empty_phonetic_word_indices", [])) for record in records)
     comparisons = []
     notation_comparisons = []
     for item, record in zip(normalized_inputs, records, strict=True):
@@ -400,6 +409,7 @@ def build_report(
         "source_coverage_partial_outputs": source_coverage_partial_outputs,
         "source_coverage_unknown_outputs": source_coverage_unknown_outputs,
         "unphonemized_source_fragment_count": unphonemized_source_fragment_count,
+        "empty_phonetic_word_count": empty_phonetic_word_count,
         "partial_repeat_cases": partial_repeat_cases,
         "source_attested_diagnostic": source_attested_diagnostic,
         "successful_outputs": successes,
@@ -462,7 +472,7 @@ def main() -> int:
         "randomized_repetition_count", "unstable_randomized_input_count",
         "source_coverage_complete_outputs", "source_coverage_partial_outputs",
         "source_coverage_unknown_outputs", "unphonemized_source_fragment_count",
-        "independent_gold_count", "accuracy", "score_status"
+        "empty_phonetic_word_count", "independent_gold_count", "accuracy", "score_status"
     )}, ensure_ascii=False, indent=2))
     print(f"Raw-output report: {args.output}")
     # Partial coverage is a valid diagnostic result: failures remain explicit in the artifact.
