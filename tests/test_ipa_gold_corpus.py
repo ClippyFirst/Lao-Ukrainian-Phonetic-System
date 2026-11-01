@@ -92,6 +92,12 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("AGREEMENT requires identical", run.stderr)
 
+    def test_agreement_compares_tone_and_syllable_metadata_not_only_ipa_text(self):
+        self.annotations[1]["ipa"]["tone"] = "H"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("AGREEMENT requires identical", run.stderr)
+
     def test_rejects_unresolved_case_with_final_ipa(self):
         self.adjudications[0].update({"decision": "UNRESOLVED", "final_ipa": ipa(), "rationale": "Not resolved."})
         self.write_all()
