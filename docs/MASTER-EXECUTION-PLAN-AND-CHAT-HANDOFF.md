@@ -921,3 +921,13 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Across the latest artifact, all 10/10 unstable engineering inputs and all 13/13 unstable MekongPhon-eval inputs carried Goruut's RandomizationWordsCount / RandomizationWordsChoices metadata. Metadata appeared on 11/23 engineering inputs and 17/100 eval inputs; not every ambiguous input changed across the three samples. The response metadata is therefore a direct upstream signal for the observed instability, not an inference from output differences alone.
 - Upstream pinned selector counts homographs and falls back to a random dictionary pronunciation when no preferred entry is selected; response counters are `RandomizationWordsCount` and `RandomizationWordsChoices`. See [selector source](https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/repo/services/parts_of_speech_selector_service.go#L168-L205).
 - Missing `weights9.bin.zlib` is a separate warning; causality is not established.
+
+
+## LAO Goruut source-coverage gate — PARTIAL
+
+- Raw runtime evidence was re-analysed using `PrePunct`, `CleanWord`, and `PostPunct`; non-empty phonetic output is not sufficient evidence of complete coverage.
+- - MekongPhon eval: of 100 inputs, 81 had a phonetic response and 19 had none. Only **47/100** had complete source coverage; **34/100** had partial source coverage; 19/100 had no output. The 13 unstable cases were among the 47 complete-coverage outputs and all 13 carried Goruut's randomization counters. The 34 partial cases were stable but had dropped/relegated source characters.
+- - Engineering probes: 18 responses, 5 no-output; 13 complete coverage and 5 partial coverage. Ten complete-coverage cases were unstable; all ten carried randomization counters.
+- - This re-analysis shows that response count alone overstated usable coverage. The benchmark harness is being extended to report source coverage separately from response availability and IPA concordance.
+- The benchmark harness now has tests for dropped source characters and source letters in punctuation fields; exact-head CI is still pending. No accuracy score or production promotion is claimed.
+- Full evidence: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
