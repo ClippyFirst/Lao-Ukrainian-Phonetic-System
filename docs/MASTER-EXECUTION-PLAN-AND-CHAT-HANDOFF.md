@@ -852,3 +852,11 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Exact expected output preserves all non-Lao text and separators. Native Lao numerals remain visible and the result is correctly marked PARTIAL rather than silently claiming full coverage.
 - Exact PR-head verification [41289891336](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41289891336) passed: repository audit, Python suite, optional G2P harness syntax/CLI validation, browser suite, canonical data regeneration/reproducibility and built-page/relative-asset checks.
 - This is an orthographic source-preservation regression, not IPA gold or pronunciation accuracy evidence.
+
+
+## Goruut comparator research — 2026-11-01
+
+- Task `LAO-G2P-GORUUT-001`: `PARTIAL` (upstream availability/source triage only; runtime execution and quality validation pending).
+- Inspected and pinned upstream Goruut commit `b224bde02151f8f86d0fe260804e4ca743bda620`; upstream README advertises Lao, IPA output, word tokens, tone support, but no syllable tokens or tie bars and no number/date normalization. The source-code repository contains an MIT license; embedded language asset licenses remain unaudited.
+- Added the source-backed candidate record to `docs/benchmarking-and-external-ipa.md` in PR [#93](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/93). Exact PR-head CI [41302057418](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41302057418) passed.
+- No runtime invocation or output artifact was produced. Gold count remains 0; no accuracy or winner claim. Next acceptance: run pinned Go comparator in isolated optional workflow, audit dictionary/model provenance, and compare only on independent expert-adjudicated Lao IPA.
