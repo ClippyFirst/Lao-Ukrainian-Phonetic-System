@@ -115,3 +115,8 @@ The generated `gold.tsv` carries `license_id` and `rights_evidence_locator` alon
 ### Runtime/schema parity checkpoint — 2026-11-01
 
 The standard-library validator now enforces the schema's closed top-level record, annotation, adjudication and split objects; the IPA object rejects unknown properties; required annotation notes and string-array uncertainty are checked; and rights-verification, annotation and adjudication dates must be canonical ISO calendar dates. Optional segmentation/profile/source fields are type-checked. The benchmark requires a valid ipa_kind for every adjudicated gold row and a prediction kind column; a non-empty prediction with a missing or different kind is not comparable for exact match or code-point CER. These checks are covered by regression tests and exact-head CI.
+
+
+### Additional validator contract — frozen splits and license registry
+
+The runtime also validates the license-registry JSON Schema contract: non-empty registry, schema version, required redistribution/commercial-use/attribution/share-alike flags, nullable boolean semantics and URI validity. It validates optional source URIs and SHA-256 digests. Split generation rejects duplicate record IDs, empty lexical group IDs, unknown/duplicate prior assignments and inconsistent frozen split/seed/version metadata within one lexical group. Regression tests cover these failure paths.
