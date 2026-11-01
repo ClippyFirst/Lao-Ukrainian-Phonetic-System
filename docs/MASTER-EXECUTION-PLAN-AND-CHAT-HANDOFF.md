@@ -1053,3 +1053,9 @@ The rights registry does not itself grant permission. Each real source still nee
 - IPA-TYPED-BENCHMARK-001 remains DONE_VERIFIED (mechanism): adjudicated gold requires a valid IPA kind; missing/different prediction kinds cannot score as exact matches or enter CER.
 - Ueda (1994) supports the five-category central Vientiane tone baseline and rhyme structure. Erickson (2001) argues Lao labialized consonants are unit phonemes; this supports preserving /kʷ/ as a typed segment, not rendering it as a confirmed Ukrainian sequence.
 - Independent expert gold remains 0; gold.tsv remains header-only. No IPA entries or Ukrainian labialized-onset mappings were invented.
+
+
+### Research artifact — Lao
+
+- [LAO tone–rhyme evidence matrix](docs/audits/current/LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md): source-derived central Vientiane baseline, explicit unknown tone × rhyme cells, unit-labialization evidence and unresolved Ukrainian target mapping.
+- The matrix does not create gold IPA or assert a full tone-mark × coda rule table.
