@@ -1,4 +1,5 @@
 import importlib.util
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,3 +113,20 @@ def test_missing_model_assets_are_recorded_from_server_log(tmp_path):
     assert report["server_log_sha256"]
     assert len(report["model_asset_warnings"]) == 1
     assert "weights9.bin.zlib" in report["model_asset_warnings"][0]
+
+
+def test_repeated_requests_detect_nondeterministic_outputs():
+    outputs = [
+        '{"Words":[{"Linguistic":"word","Phonetic":"kʰaː˩˧"}]}',
+        '{"Words":[{"Linguistic":"word","Phonetic":"kʰaː˥˧˧"}]}',
+        '{"Words":[{"Linguistic":"word","Phonetic":"kʰaː˩˧"}]}',
+    ]
+    with patch.object(MODULE, "request_raw_response", side_effect=outputs):
+        record = MODULE.run_probe(
+            "http://127.0.0.1:18080", "Lao", "word", 1.0, 1, repeat_count=3,
+        )
+    assert record["status"] == "OK"
+    assert record["successful_repetitions"] == 3
+    assert record["unstable"] is True
+    assert record["reproducible"] is False
+    assert len(record["repetitions"]) == 3
