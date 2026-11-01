@@ -97,3 +97,12 @@ Preserve `Lao orthography → structural analysis → Lao phonology → typed IP
 | ID | Priority | Status | Scope / evidence | Acceptance criteria / dependencies |
 |---|---|---|---|---|
 | LAO-IPA-RELEASE-THRESHOLDS-001 | P1 | DONE_VERIFIED | RED test on `5e34cf8cbce93ba1cc1bdc82b2de260c88b403de`; GREEN code commit `44c9de1804f9de47a72f297aa5ed544d90d3629e`; exact-head CI [41341723054](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341723054) passed | All split minimums reject zero and negative values; threshold errors aggregate with other release-gate findings. Default minimums remain 100/25/25. |
+
+
+## Audio-source review update — 2026-11-01
+
+A current, small Lao audio candidate is now documented in `docs/ipa-gold-collection-playbook.md`: Common Voice Scripted Speech v27.0 (locale `lo`, catalogued CC0-1.0, MP3 archive 8.93 MB; official catalog https://commonvoice.allizom.org/en/datasets; release documentation https://github.com/common-voice/cv-dataset/tree/main/datasets/scripted-speech). The archive size is not a clip count. The v27.0 manifest still needs inspection for validated clips, speaker count, transcript coverage and dialect metadata. Common Voice supplies sentence audio/transcripts, not IPA.
+
+**Ruling:** treat this as supplementary contextual audio and candidate discovery, not as the 30-item citation-form lexical gold source. The catalog does not prove Vientiane variety. Citation-form gold should use consented recordings from confirmed target-variety speakers unless manifest review establishes a suitable sample. Keep source clip IDs and time locators; do not infer IPA from transcripts or model output.
+
+Status remains `LAO-GOLD-001 = BLOCKED`: no annotations, annotators or adjudications have been created. Independent gold remains 0 and accuracy remains null.
