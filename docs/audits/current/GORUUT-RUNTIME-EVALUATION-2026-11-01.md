@@ -111,3 +111,18 @@ A second three-repeat run on the same pinned engine, same 100-row MekongPhon inp
 - Engineering probes: 13/23 complete coverage, 5/23 partial coverage, 5/23 no output; 7/18 returned outputs were unstable and all 7 had randomization metadata.
 
 The new report contract therefore correctly separates response availability, source coverage, randomization ambiguity, repeat stability and source concordance. No score is promoted to accuracy.
+
+
+## Final exact-head verification — 2026-11-01
+
+The final PR #96 head `168bb118d69c3ddc4c9c406f517cd2a93857dda0` completed both required workflows:
+
+- Repository verification [41313419948](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41313419948): PASS. The job completed the repository data/evidence audit, Python tests, optional external-G2P harness syntax/CLI checks, browser engine tests, canonical browser-data build/regeneration, generated-data drift check and built-page/relative-asset checks.
+- Pinned Goruut runtime [41313419967](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41313419967): PASS. It built pinned Goruut commit `b224bde02151f8f86d0fe260804e4ca743bda620` with Go 1.23.12, explicitly enabled Lao and captured three repeats per input.
+- Artifact [13085974013](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41313419967/artifacts/13085974013), ZIP SHA-256 `c0e61794e98941be9a2e6449fc5f2052f9f5ead20abf366ea09d98881b45c850`; downloaded archive hash independently recomputed and matched GitHub's artifact digest. Input SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`; effective config SHA-256 `afdab11396e77d171fd4683c8692dbe8513edfe6ed02aa3a20bac9db9f11c44c`.
+
+The final 100-row MekongPhon diagnostic produced 81 responses and 19 no-output cases. Source coverage was 47 complete, 34 partial and 19 unknown/no-output. Repeats were 68 stable and 13 unstable; 17 inputs carried dictionary-randomization metadata across 51 responses, and all 13 unstable inputs carried that metadata. Strict all-repeat source-attested concordance was 3/100; at least one repeat matched for 9/100. These are source-attested diagnostics, not accuracy; independent expert gold remains 0 and `accuracy` remains null.
+
+The 23 engineering probes produced 18 responses (13 complete-coverage, 5 partial-coverage) and 5 no-output cases. Of the 18 returned outputs, 12 were stable and 6 unstable; 11 inputs carried randomization metadata and all 6 unstable inputs were flagged. The `weights9.bin.zlib` warning persists; its causal relationship to output failures is unproven.
+
+**Disposition:** the exact-head code and optional experiment are verified; Goruut remains rejected for production. The benchmark harness/source-coverage gate is implemented and CI-tested. Expert-adjudicated Lao IPA gold, dialect-scoped accuracy, root-cause investigation of the model warning and phonetic remediation remain PARTIAL/BLOCKED.
