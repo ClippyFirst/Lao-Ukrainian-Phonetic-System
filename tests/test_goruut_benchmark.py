@@ -44,6 +44,7 @@ def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
     report = MODULE.build_report(
         ["ຂາ"], records, language="Lao", engine_commit="b224bde",
         input_path=fixture, input_sha256="fixture-sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config-sha", runtime_version="go version go1.23",
     )
     assert report["successful_outputs"] == 1
     assert report["independent_gold_count"] == 0
@@ -51,3 +52,5 @@ def test_report_never_scores_runtime_output_as_accuracy(tmp_path):
     assert report["score_status"] == "NOT_SCORED_NO_INDEPENDENT_GOLD"
     assert "not an accuracy benchmark" in report["purpose"]
     assert report["records"][0]["phonetic_tokens"] == ["kʰaː"]
+    assert report["effective_config_sha256"] == "config-sha"
+    assert report["go_runtime_version"] == "go version go1.23"
