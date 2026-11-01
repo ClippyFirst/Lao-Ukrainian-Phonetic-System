@@ -63,3 +63,6 @@ Preserve `Lao orthography → structural analysis → Lao phonology → typed IP
 
 
 **Full-text evidence update:** Ueda (1994) pp. 96, 100–108, 110–112 now provides a speaker-specific Vientiane tone × rhyme matrix: plain rhymes allow five tones; long checked rhymes allow [21]/[52]; short checked rhymes allow [34]/[33]. A restricted [22] variant overlaps with [24] in some onsets/connected contexts. Ueda's one-informant sample and its conflict with Erickson's labialized-phoneme analysis remain explicit limitations.
+
+
+**2026-11-01 closeout:** PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) is the comprehensive implementation and research-matrix change. Its PR CI passed 134 Python tests and all four Node/browser suites (107 total). Main remains at 6f607d7. Gold remains 0; release readiness remains blocked on expert annotation, full feature coverage and owner-enforced release rules.
