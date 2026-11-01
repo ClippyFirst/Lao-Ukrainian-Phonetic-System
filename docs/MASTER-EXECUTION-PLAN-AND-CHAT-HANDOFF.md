@@ -914,3 +914,10 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Three-repeat results: engineering 18/23 usable (8 stable, 10 unstable); MekongPhon eval 81/100 usable (68 stable, 13 unstable); 19/100 eval inputs returned no output; strict all-repeat source-attested concordance 2/100, at least-one-repeat 9/100. Not accuracy; gold=0.
 - Missing `weights9.bin.zlib` warning persists; causal relation unknown. Keep as optional research comparator only; production promotion rejected.
 - Full run evidence and config/input hashes: `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md`.
+
+
+## Goruut nondeterminism root-cause finding — Lao
+
+- Across the latest artifact, all 10/10 unstable engineering inputs and all 13/13 unstable MekongPhon-eval inputs carried Goruut's RandomizationWordsCount / RandomizationWordsChoices metadata. Metadata appeared on 11/23 engineering inputs and 17/100 eval inputs; not every ambiguous input changed across the three samples. The response metadata is therefore a direct upstream signal for the observed instability, not an inference from output differences alone.
+- Upstream pinned selector counts homographs and falls back to a random dictionary pronunciation when no preferred entry is selected; response counters are `RandomizationWordsCount` and `RandomizationWordsChoices`. See [selector source](https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/repo/services/parts_of_speech_selector_service.go#L168-L205).
+- Missing `weights9.bin.zlib` is a separate warning; causality is not established.
