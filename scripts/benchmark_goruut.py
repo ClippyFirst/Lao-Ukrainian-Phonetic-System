@@ -417,7 +417,8 @@ def build_report(
         "independent_gold_count": 0,
         "accuracy": None,
         "score_status": "NOT_SCORED_NO_INDEPENDENT_GOLD",
-        "normalization": "None. Raw HTTP response and phonetic tokens are preserved; no IPA normalization is performed.",
+        "normalization": "No IPA normalization. Source-coverage reconstruction uses NFC and ignores whitespace only; raw HTTP responses and phone strings are preserved.",
+        "source_coverage_contract": "A response is complete only when PrePunct + CleanWord + PostPunct reconstructs the input after NFC/whitespace removal, no letters/marks/numbers remain in PrePunct or PostPunct, and every phonetic word token is non-empty.",
         "interpretation": "A successful response demonstrates only that this pinned binary answered this probe. It does not validate the phonetic correctness, dialect, IPA convention, completeness, or suitability of the output.",
         "records": records,
     }
