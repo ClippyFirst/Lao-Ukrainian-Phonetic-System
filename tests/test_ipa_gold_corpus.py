@@ -125,6 +125,22 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("does not permit redistribution", run.stderr)
 
+    def test_shared_ipa_schema_is_referenced_by_annotation_and_adjudication(self):
+        schema_dir = ROOT / "schemas"
+        ipa_schema = json.loads((schema_dir / "ipa-gold-ipa.schema.json").read_text(encoding="utf-8"))
+        annotation = json.loads((schema_dir / "ipa-gold-annotation.schema.json").read_text(encoding="utf-8"))
+        adjudication = json.loads((schema_dir / "ipa-gold-adjudication.schema.json").read_text(encoding="utf-8"))
+        self.assertEqual(ipa_schema["additionalProperties"], False)
+        self.assertEqual(set(ipa_schema["required"]), {"value", "kind"})
+        self.assertEqual(set(ipa_schema["properties"]), {
+            "value", "kind", "syllable_boundaries", "tone", "vowel_length", "phonation"
+        })
+        self.assertEqual(annotation["properties"]["ipa"]["$ref"], "./ipa-gold-ipa.schema.json")
+        self.assertEqual(adjudication["properties"]["final_ipa"]["oneOf"][0]["$ref"],
+                         "./ipa-gold-ipa.schema.json")
+        self.assertNotIn("$defs", annotation)
+        self.assertNotIn("$defs", adjudication)
+
     def test_rejects_license_registry_missing_required_schema_flag(self):
         registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
         del registry["licenses"]["CC-BY-4.0"]["share_alike"]
@@ -191,7 +207,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertEqual(rows[1]["seed"], "first-seed")
 
     def test_json_schemas_are_valid_draft_2020_documents(self):
-        for name in ("record", "annotation", "adjudication", "split", "licenses"):
+        for name in ("record", "annotation", "adjudication", "split", "licenses", "ipa"):
             schema = json.loads((ROOT / "schemas" / f"ipa-gold-{name}.schema.json").read_text(encoding="utf-8"))
             self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
             self.assertEqual(schema["type"], "object")
