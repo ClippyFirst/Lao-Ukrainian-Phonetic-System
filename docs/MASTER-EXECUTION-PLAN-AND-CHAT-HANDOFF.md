@@ -1163,3 +1163,10 @@ The documentation-only playbook, corpus-guide and handoff changes at the precedi
 - **Evidence boundary:** Common Voice contains sentence-level recordings/transcripts, not IPA. The catalog does not establish Vientiane dialect, speaker profile or citation-form pronunciations. Use it only for supplementary contextual audio/candidate discovery until metadata is inspected. For the lexical G2P gold, prioritize consented citation-form recordings from confirmed Vientiane speakers.
 - The existing MekongPhon decision is unchanged: candidate external comparator only, not admitted gold. No external labels or audio were imported.
 - `LAO-GOLD-001` remains `BLOCKED`; 0 independent gold rows, accuracy `null`. Next acceptance step: inspect the v27.0 manifest, confirm profile coverage, then freeze 30 attested lexemes and a citation-form recording protocol with recruited experts.
+
+
+## Common Voice v27.0 exact manifest audit — 2026-11-01
+
+Inspected the official release manifest: https://github.com/common-voice/cv-dataset/blob/main/datasets/scripted-speech/cv-corpus-27.0-2026-09-11.json. Lao: 223 clips; 193 validated; 16 contributor IDs; 0.35 validated hours (0.40 total). No named accent/variant metadata; contributor gender metadata is 88.79% male and 11.21% unspecified. Manifest locale checksum: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260b6`.
+
+**Decision:** useful only as a small contextual-audio/process-pilot candidate. It cannot establish Vientiane profile or balanced speaker coverage and is not IPA gold. Use only if specialist approves the profile and 30 suitable validated tokens exist; otherwise prioritize controlled citation-form recordings. No audio/labels imported; gold remains 0, accuracy null.
