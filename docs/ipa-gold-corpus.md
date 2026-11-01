@@ -130,3 +130,8 @@ The JSONL files are the archival source of truth. The annotation and adjudicatio
 ### Operational independence limitation
 
 The validator proves structural separation only: two distinct annotator IDs and a different adjudicator ID. It cannot prove that annotators were blinded to each other's work, that they are qualified for the named language/variety/IPA convention, that no cross-talk occurred, or that the adjudicator is an independent expert. Those claims require a controlled external annotation process, qualification records, separate assignment/review access and auditable adjudication. Until that process supplies evidence, structural validation must not be described as proof of expert-independent gold.
+
+
+### Shared typed IPA schema
+
+The typed IPA result is defined once in schemas/ipa-gold-ipa.schema.json and referenced by both independent annotation and adjudication schemas through a local JSON Schema $ref. The shared object requires value + kind (PHONEMIC, PHONETIC_BROAD or PHONETIC_NARROW), rejects unknown properties, and preserves optional syllable-boundary, tone, vowel-length and phonation metadata. This prevents annotation and adjudication IPA contracts from drifting apart.
