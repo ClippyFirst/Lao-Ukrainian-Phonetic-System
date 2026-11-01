@@ -79,3 +79,10 @@ Existing numeric thresholds (100 train / 25 dev / 25 test) are minimum engineeri
 - Yanagimura (2013), Contextual Tonal Variations in Vientiane Lao: https://so03.tci-thaijo.org/index.php/mekongjournal/article/view/6739
 - EURPhon, Lao Vientiane: https://eurphon.info/languages/html?lang_id=214
 - EURPhon, Lao Luang Prabang: https://eurphon.info/languages/html?lang_id=467
+
+
+## MekongPhon repository inspection — 2026-11-01
+
+The upstream repository is https://github.com/byu-matrix-lab/MekongPhon. Its README describes data/ as lexicons, OPUS download scripts, sampled sentences and train/eval splits. pipeline/README.md describes: SEAlang frequency lists → IPA scraping via scrape.py → minor lexicon post-processing (including Lao tone-mark conversion) → OPUS sentence download → lexicon split → trie-based word lookup to convert sentences, filtering sentences containing out-of-lexicon tokens. This is an important provenance clue: sentence IPA is composed from a scraped word lexicon, not necessarily independently transcribed sentence-level phonetic gold.
+
+The repository root LICENSE path was not present when inspected. No dataset-specific redistribution license has therefore been verified. The paper's claim that pairs are aligned and verified and the proceedings' CC BY-NC-4.0 license do not substitute for the dataset license, per-entry source provenance, or a description of human verification. Do not import or redistribute any MekongPhon records yet. First inspect the exact lexicon files, scraping source/terms, correction protocol, variety and tone conventions, split construction, and data permissions; contact maintainers if these remain ambiguous. The public model cards' Apache-2.0 model license must not be assumed to license training data.
