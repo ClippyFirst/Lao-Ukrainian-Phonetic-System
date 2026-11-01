@@ -843,3 +843,12 @@ PR #74 exact-head workflow [41190577692](https://github.com/ClippyFirst/Lao-Ukra
 - Exact post-merge main workflow [41246317109](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41246317109) passed on the merge commit. The prior main implementation head `2ae2971c2526cba57504e294f37caf64c964c3f6` had already passed [41243897060](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41243897060).
 - Last verified Pages deployment remains [41228752306](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41228752306) for `550d1d63b31965e68b40f30cd5099601ab203ec8`; PR #90 and the intervening updates are documentation-only and do not change the published runtime artifact.
 - This closes the exact-main engineering verification checkpoint, not the linguistic research gates. Independent IPA/Ukrainian gold remains absent; exhaustive source-unit coverage and specialist review remain open.
+
+
+## Whole-message mixed-script regression — 2026-11-01
+
+- PR [#92](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/92) merged as `9c5e8b3b6cbbfbea6d7914141cf34abca7107cdc`.
+- Added a full-message CLDR romanization case containing Lao, a real tab, ASCII identifier/digits, CRLF, Lao native numerals, punctuation, Khmer-script passthrough and emoji.
+- Exact expected output preserves all non-Lao text and separators. Native Lao numerals remain visible and the result is correctly marked PARTIAL rather than silently claiming full coverage.
+- Exact PR-head verification [41289891336](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41289891336) passed: repository audit, Python suite, optional G2P harness syntax/CLI validation, browser suite, canonical data regeneration/reproducibility and built-page/relative-asset checks.
+- This is an orthographic source-preservation regression, not IPA gold or pronunciation accuracy evidence.
