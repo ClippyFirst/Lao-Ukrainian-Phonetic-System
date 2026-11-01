@@ -276,3 +276,11 @@ test("CLDR Lao-Latin preserves Lao numerals, ASCII numbers, mixed Latin text and
  assert.equal(result.output,"kha ໒໐໒໖, ABC-42!");
  assert.equal(result.status,"PARTIAL","Lao numerals remain visible rather than being guessed or discarded");
 });
+
+
+test("full Lao mixed-script multiline text preserves separators, native numerals and foreign text",()=>{
+ const input="ຂາ\tABC-42\r\n໑໒໓, ខ្មែរ 😀!";
+ const result=romanizeLao(input);
+ assert.equal(result.output,"kha\tABC-42\r\n໑໒໓, ខ្មែរ 😀!");
+ assert.equal(result.status,"PARTIAL");
+});
