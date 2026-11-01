@@ -66,3 +66,37 @@ Erickson's §2.4 (pp. 137–138) adopts six tones from Hoshino & Marcus (1981) a
 | Other stop codas | four tones | Erickson's reference framework |
 
 This is valuable tone × rhyme evidence, but it is not evidence that central Vientiane has six tones. The two systems must be represented as distinct source analyses until dialect, informant and transcription conventions are reconciled. Erickson's synchronic unit-phoneme argument for labialized consonants (§3, pp. 138–139) is stronger than its tentative historical CuV → CʷV derivation (§5.1 and conclusion, pp. 142–143).
+
+
+## 7. Full-text extraction from Ueda (1994): rhyme classes and tone distribution
+
+The full J-STAGE PDF is now inspected. The study's field sample is one 46-year-old woman born and raised in Haysok, central Vientiane (p. 96, note 3). The paper describes a detailed speaker-specific system; it is not a multi-speaker population survey.
+
+Ueda distinguishes two rhyme classes:
+
+| Class | Definition | Members |
+|---|---|---|
+| 平韻 (plain rhyme) | open rhyme or sonorant/glide coda | no coda, /m,n,ŋ,j,w/ |
+| 促韻 (checked rhyme) | stop/glottal coda | /p,t,k,ʔ/ |
+
+The phonotactic restrictions are explicit: a short vowel normally requires a coda; only long vowels and diphthongs can form open syllables; front vowels do not occur with coda /j/; back vowels do not occur with coda /w/ (pp. 96, 104–105). This is more informative than treating all nine finals as one undifferentiated coda set.
+
+### Five-tone base inventory and rhyme-conditioned distribution
+
+| Rhyme type | Vowel quantity | Contrastive tone categories in Ueda's basic system | Source contours |
+|---|---|---|---|
+| Plain rhyme | long vowel/diphthong or short vowel + sonorant coda | all five | [24], [34], [33], [21], [52] |
+| Checked rhyme | long vowel/diphthong + stop/glottal coda | low-falling and high-falling only | [21], [52] |
+| Checked rhyme | short vowel + stop/glottal coda | high-rising and mid-level only | [34], [33] |
+
+The five basic tones are full rising [24], high rising [34], mid level [33], low falling [21] and full falling [52] (pp. 106–108). Ueda explicitly states that not all five tones contrast in every syllable type (pp. 106–107).
+
+### Restricted sixth-tone analysis and connected-speech variation
+
+Ueda reports variability between five- and six-tone descriptions. The putative sixth low-level [22] category is restricted to a subset of onsets and overlaps substantially with the full-rising category; it does not create a robust sixth contrast across the lexicon. In non-final/connected contexts, [24], [23] and [22] may vary, with [22] more common in some positions; isolated words more often show [24] (pp. 106–110). Preserve the five-tone base plus a typed context-conditioned surface variant; do not hard-code six contrastive tones.
+
+### Orthographic C+w sequences are not automatically labialized onsets
+
+Ueda §2.3 (pp. 100–101) explicitly says spoken Vientiane has no phonological consonant clusters, despite written consonant-letter sequences. In the examined examples, written C-w sequences may correspond to a rhyme glide /-ua-/ or to deletion of /w/. This directly differs from Erickson's unit-labialized-phoneme analysis. Keep these source analyses separate until variety, lexeme and orthographic pattern are reconciled.
+
+**Source locator:** Ueda (1994), [full J-STAGE PDF](https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_pdf), especially pp. 96, 100–108, 110–112. The three-diphthong inventory's middle symbol remains OCR-uncertain and has not been guessed.
