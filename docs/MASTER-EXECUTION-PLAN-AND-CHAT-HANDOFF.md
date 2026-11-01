@@ -1059,3 +1059,24 @@ The rights registry does not itself grant permission. Each real source still nee
 
 - [LAO tone–rhyme evidence matrix](docs/audits/current/LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md): source-derived central Vientiane baseline, explicit unknown tone × rhyme cells, unit-labialization evidence and unresolved Ukrainian target mapping.
 - The matrix does not create gold IPA or assert a full tone-mark × coda rule table.
+
+
+## 2026-11-01 implementation and verification closeout
+
+- Starting main SHA: 6f607d7ab4d432fd8491a5fcee32186e4269fc32 (main remains unchanged).
+- Implementation branch: feat/ipa-gold-corpus-20261101-review.
+- Comprehensive PR: [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98); PR-head implementation checkpoint SHA: 3c7050e1589018e2bdacd512b363d83d1905ea6e.
+- PR CI: [verify](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41337403690) SUCCESS — 134 Python tests; Node/browser suites 50 + 23 + 27 + 7 passed; independent-corpus validation, evidence audit, generated-data reproducibility and production build passed.
+- This branch includes the previous documentation-only PR #97 in full; #97 was closed as superseded after its content was verified in #98. No branch was deleted.
+- Existing feature branch feat/independent-ipa-gold-corpus-20261101 was left untouched because its history is substantially broader; the narrower review branch is the PR source.
+- No local checkout was available; all verification claims above are GitHub Actions evidence, not local command runs.
+
+### Final task ledger
+
+- Corpus schemas/runtime validator, license registry, frozen group-safe splits and typed benchmark: DONE_VERIFIED (implementation and CI only).
+- Actual independent expert annotations and adjudicated gold: BLOCKED — no qualified annotators or adjudicated source dataset supplied; gold.tsv remains header-only, gold count 0, accuracy null.
+- Tone × rhyme acoustic coverage and labialized-onset Ukrainian mapping: PARTIAL/BLOCKED — see the Lao evidence matrix; Ueda is one-speaker evidence and conflicts analytically with Erickson on C+w/labialization.
+- Release gate: PARTIAL — count, rights, adjudication and split checks exist and fail closed on empty gold; project owner must require the gate in repository rulesets/release procedure, and feature-coverage thresholds require an expert-approved matrix.
+- Manual UI/accessibility review: TODO.
+
+**Readiness:** research infrastructure is substantially improved; the language system remains a research prototype, not production/release-ready.
