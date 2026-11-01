@@ -208,6 +208,27 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("unknown properties", run.stderr)
 
+    def test_assign_splits_rejects_duplicate_record_ids(self):
+        self.records.append(dict(self.records[0]))
+        self.write_jsonl("records", self.records)
+        run = self.run_cli("assign-splits", "--output", self.root / "generated.jsonl", expected=1)
+        self.assertIn("duplicate record_id", run.stderr)
+
+    def test_assign_splits_rejects_empty_lexeme_group_id(self):
+        self.records[0]["lexeme_group_id"] = " "
+        self.write_jsonl("records", self.records)
+        run = self.run_cli("assign-splits", "--output", self.root / "generated.jsonl", expected=1)
+        self.assertIn("lexeme_group_id", run.stderr)
+
+    def test_assign_splits_rejects_inconsistent_group_versions(self):
+        self.records.append(dict(self.records[0], record_id="r2",
+                                 orthography={"text":"second", "normalized":"second"}))
+        self.splits.append({"record_id":"r2", "group_id":"lemma-1", "split":"train",
+                            "seed":"test-seed", "version":"v2"})
+        self.write_all()
+        run = self.run_cli("assign-splits", "--output", self.root / "generated.jsonl", expected=1)
+        self.assertIn("inconsistent frozen split metadata", run.stderr)
+
     def test_empty_gold_is_not_release_ready(self):
         self.annotations = []
         self.adjudications = []
