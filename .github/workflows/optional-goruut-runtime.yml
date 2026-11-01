@@ -24,6 +24,12 @@ jobs:
           ref: b224bde02151f8f86d0fe260804e4ca743bda620
           path: goruut
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: byu-matrix-lab/MekongPhon
+          ref: f80f6c1840c4818b51e05f2e00cded4701a5b662
+          path: mekongphon
+          persist-credentials: false
       - uses: actions/setup-go@v5
         with:
           go-version: "1.23.x"
@@ -56,7 +62,17 @@ jobs:
             --runtime-version "$(go version)" \
             --language Lao \
             --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
-            --output artifacts/goruut-lao-raw-output.json
+            --output artifacts/goruut-lao-engineering-raw-output.json
+          python scripts/benchmark_goruut.py \
+            --input mekongphon/data/splits/lao_eval.csv \
+            --input-format csv \
+            --text-column orth \
+            --expected-column pron_with_tones \
+            --config-file goruut/configs/config.json \
+            --runtime-version "$(go version)" \
+            --language Lao \
+            --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
+            --output artifacts/goruut-lao-mekongphon-source-attested.json
       - name: Upload raw output and server log
         if: always()
         uses: actions/upload-artifact@v4
