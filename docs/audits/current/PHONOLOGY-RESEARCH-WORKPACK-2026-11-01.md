@@ -64,3 +64,19 @@ See the source-grounded [Lao tone–rhyme evidence matrix](LAO-TONE-RHYME-EVIDEN
 The SEA-language archive PDF filename contains “2001”, but its bibliographic publication is Erickson (1996), *Papers from the Sixth Annual Meeting of the Southeast Asian Linguistics Society*, pp. 135–148. The source's own §2.4 adopts a six-tone description from Hoshino & Marcus (1981) / Morev et al. (1979): all six tones may occur in open syllables; glottal-stop codas occur only with short vowels and two tones; other stop codas occur with four tones. This is a distinct source framework from Ueda's five-tone central Vientiane description and must remain a separate profile/analysis column.
 
 Erickson's synchronic argument that labialized consonants are unit phonemes is explicit (§3, pp. 138–139). The proposed historical derivation from earlier CuV sequences is explicitly tentative in §5.1 and the conclusion (pp. 142–143); do not treat that diachronic hypothesis as established fact.
+
+
+### Full-text Ueda (1994) extraction — tone/rhyme audit
+
+The full J-STAGE PDF confirms more than the abstract. Ueda's sample is one 46-year-old woman born and raised in Haysok, central Vientiane (p. 96), so the description is a high-value speaker-specific baseline, not a multi-speaker population consensus.
+
+Ueda separates plain rhymes (open or sonorant/glide-final: no coda, /m,n,ŋ,j,w/) from checked rhymes (/p,t,k,ʔ/). Short vowels normally require a coda; only long vowels/diphthongs form open syllables. Front vowels do not occur with /j/ coda and back vowels do not occur with /w/ coda (pp. 96, 104–105).
+
+The basic five-tone system is fully conditioned by rhyme type:
+- Plain rhymes: all five tones.
+- Long checked rhymes: only low-falling [21] and high-falling [52].
+- Short checked rhymes: only high-rising [34] and mid-level [33].
+
+The five basic contours are full-rising [24], high-rising [34], mid-level [33], low-falling [21] and full-falling [52] (pp. 106–108). Ueda also documents restricted five-/six-tone variability: a low-level [22] realization is limited to a subset of onsets and overlaps substantially with full-rising; connected/non-final contexts may show [24], [23] or [22] (pp. 106–110). This is not evidence for a robust six-way lexical contrast.
+
+Ueda §2.3 (pp. 100–101) explicitly rejects phonological consonant clusters in spoken Vientiane: written C-w sequences can surface as a rhyme /-ua-/ or lose /w/. This conflicts with Erickson's unit-labialized-phoneme analysis and must remain profile/lexeme-conditioned. Do not automatically map a written C-w sequence to /Cʷ/ or Ukrainian «кв».
