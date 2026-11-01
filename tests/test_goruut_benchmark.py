@@ -276,3 +276,22 @@ def test_source_coverage_flags_empty_phonetic_word_inside_nonempty_response():
     assert coverage["source_reconstruction_matches_input"] is True
     assert coverage["source_coverage_complete"] is False
     assert coverage["empty_phonetic_word_indices"] == [0]
+
+
+def test_source_attested_match_is_rejected_when_response_only_covers_a_suffix(tmp_path):
+    raw = '{"Words":[{"CleanWord":"ទ","PrePunct":"បេះបិ","PostPunct":"","Phonetic":"t"}]}'
+    with patch.object(MODULE, "request_raw_response", side_effect=[raw, raw, raw]):
+        record = MODULE.run_probe(
+            "http://127.0.0.1:18080", "KhmerCentral", "បេះបិទ", 1.0, 1, repeat_count=3,
+        )
+    fixture = tmp_path / "source.csv"
+    fixture.write_text("orth,ipa\\nបេះបិទ,t\\n", encoding="utf-8")
+    inputs = MODULE.load_inputs(fixture, input_format="csv", text_column="orth", expected_column="ipa")
+    report = MODULE.build_report(
+        inputs, [record], language="Khmer", engine_commit="test",
+        input_path=fixture, input_sha256="sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config", runtime_version="go test",
+    )
+    assert record["source_coverage_status"] == "PARTIAL"
+    assert report["source_attested_diagnostic"]["exact_matches"] == 0
+    assert report["source_attested_diagnostic"]["any_repeat_exact_matches"] == 0
