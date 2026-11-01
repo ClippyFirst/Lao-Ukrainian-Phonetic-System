@@ -36,7 +36,7 @@ Each annotation has a distinct annotation ID and annotator ID, confidence, uncer
 - `PHONETIC_BROAD`;
 - `PHONETIC_NARROW`.
 
-The IPA object preserves its literal value plus syllable boundaries, tone, vowel length and phonation where applicable. These fields are not collapsed into a single untyped string. The validator requires NFC and refuses to silently rewrite the IPA.
+The IPA object preserves its literal value plus syllable boundaries, tone, vowel length and phonation where applicable. These fields are not collapsed into a single untyped string. The validator requires NFC and refuses to silently rewrite the IPA. All annotations for one record, and the adjudicated final result, must use the same `kind`; differences in phonemic vs broad/narrow phonetic representation must be resolved by selecting the corpus convention before annotation, not treated as a pronunciation disagreement.
 
 ### Double annotation and adjudication
 
