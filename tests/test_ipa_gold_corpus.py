@@ -104,6 +104,12 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("UNRESOLVED must not contain final_ipa", run.stderr)
 
+    def test_rejects_split_assignment_that_does_not_match_frozen_seed(self):
+        self.splits[0]["split"] = "test"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("does not match deterministic hash", run.stderr)
+
     def test_rejects_split_leakage_for_same_lexeme_group(self):
         self.records.append(dict(self.records[0], record_id="r2", orthography={"text": "ກາໆ", "normalized": "ກາໆ"}))
         self.splits.append({"record_id": "r2", "group_id": "lemma-1", "split": "test", "seed": "test-seed", "version": "v1"})
