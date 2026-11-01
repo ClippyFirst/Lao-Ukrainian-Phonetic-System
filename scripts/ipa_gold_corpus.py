@@ -197,6 +197,8 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
         if source["redistributable"] and not license_info["redistributable"]:
             raise ValueError(f"record {ident}: license {license_id!r} does not permit redistribution")
         rights_status = source["rights_status"]
+        if rights_status == "OPEN" and not source["redistributable"]:
+            raise ValueError(f"record {ident}: OPEN rights require source.redistributable=true")
         if rights_status == "OPEN" and (not license_info["redistributable"] or basis not in ("LICENSE", "DIRECT_PERMISSION", "PUBLIC_DOMAIN")):
             raise ValueError(f"record {ident}: OPEN rights require a redistributable license and verified rights evidence")
         if rights_status == "PROJECT_CREATED" and (license_id != "PROJECT-CREATED" or basis != "PROJECT_CREATED"):
