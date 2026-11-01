@@ -139,3 +139,24 @@ def test_notation_diagnostic_preserves_tone_length_aspiration_and_tie_bars():
     assert key("/taː˥/") != key("ta˥")
     assert key("/ta˥/") != key("ta˩")
     assert key("/t͡ɕi/") != key("tɕi")
+
+
+def test_stable_three_repeat_source_match_remains_non_gold(tmp_path):
+    raw = '{"Words":[{"Linguistic":"word","Phonetic":"kʰaː"}]}'
+    with patch.object(MODULE, "request_raw_response", side_effect=[raw, raw, raw]):
+        record = MODULE.run_probe(
+            "http://127.0.0.1:18080", "Lao", "word", 1.0, 1, repeat_count=3,
+        )
+    fixture = tmp_path / "source.csv"
+    fixture.write_text("orth,ipa\\nword,kʰaː\\n", encoding="utf-8")
+    report = MODULE.build_report(
+        [{"text": "word", "source_attested_ipa": "kʰaː"}], [record],
+        language="Lao", engine_commit="test", input_path=fixture,
+        input_sha256="sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config", runtime_version="go test",
+    )
+    assert record["reproducible"] is True
+    assert report["source_attested_diagnostic"]["exact_matches"] == 1
+    assert report["source_attested_diagnostic"]["notation_normalized_matches"] == 1
+    assert report["accuracy"] is None
+    assert report["independent_gold_count"] == 0
