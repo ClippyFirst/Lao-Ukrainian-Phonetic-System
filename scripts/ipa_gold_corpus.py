@@ -22,6 +22,7 @@ SPLITS = ("train", "dev", "test")
 IPA_KINDS = ("PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW")
 ADJUDICATED_DECISIONS = ("AGREEMENT", "RESOLVED")
 RIGHTS = ("OPEN", "PROJECT_CREATED", "RESTRICTED", "UNKNOWN")
+SPLIT_PROPERTIES = {"record_id", "group_id", "split", "seed", "version"}
 GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator")
 
 
@@ -276,7 +277,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     split_meta_by_group: dict[str, tuple[str, str]] = {}
     for row in splits:
         ident = require_text(row.get("record_id"), "split.record_id")
-        reject_unknown_properties(row, {"record_id", "group_id", "split", "seed", "version"}, f"split {ident}")
+        reject_unknown_properties(row, SPLIT_PROPERTIES, f"split {ident}")
         if ident not in record_by_id:
             raise ValueError(f"split references unknown record_id: {ident}")
         if ident in split_by_record:
@@ -344,6 +345,7 @@ def command_assign(args: argparse.Namespace) -> int:
     existing_by_id: dict[str, dict[str, Any]] = {}
     for row in existing:
         ident = require_text(row.get("record_id"), "split.record_id")
+        reject_unknown_properties(row, SPLIT_PROPERTIES, f"split {ident}")
         if ident not in record_by_id:
             raise ValueError(f"split references unknown record_id: {ident}")
         group = require_text(row.get("group_id"), f"split {ident}.group_id")
