@@ -345,5 +345,35 @@ class IpaGoldCorpusTests(unittest.TestCase):
                     run = self.run_cli("gate", option, value, expected=1)
                     self.assertIn("release gate minimums must be positive integers", run.stderr)
 
+
+    def test_rejects_unknown_nested_record_properties(self):
+        for path, key in (
+            ("orthography", "unexpected"),
+            ("profile", "unexpected"),
+            ("source", "unexpected"),
+            ("rights_evidence", "unexpected"),
+        ):
+            with self.subTest(path=path):
+                if path == "rights_evidence":
+                    self.records[0]["source"]["rights_evidence"][key] = "must-not-be-ignored"
+                else:
+                    self.records[0][path][key] = "must-not-be-ignored"
+                self.write_all()
+                run = self.run_cli("validate", expected=1)
+                self.assertIn("unknown properties", run.stderr)
+                if path == "rights_evidence":
+                    del self.records[0]["source"]["rights_evidence"][key]
+                else:
+                    del self.records[0][path][key]
+
+    def test_record_schema_closes_all_nested_contract_objects(self):
+        schema = json.loads((ROOT / "schemas" / "ipa-gold-record.schema.json").read_text(encoding="utf-8"))
+        properties = schema["properties"]
+        for name in ("orthography", "profile", "source"):
+            with self.subTest(object=name):
+                self.assertIs(properties[name].get("additionalProperties"), False)
+        rights = properties["source"]["properties"]["rights_evidence"]
+        self.assertIs(rights.get("additionalProperties"), False)
+
 if __name__ == "__main__":
     unittest.main()
