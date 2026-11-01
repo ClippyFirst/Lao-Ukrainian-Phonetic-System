@@ -126,3 +126,15 @@ The final 100-row MekongPhon diagnostic produced 81 responses and 19 no-output c
 The 23 engineering probes produced 18 responses (13 complete-coverage, 5 partial-coverage) and 5 no-output cases. Of the 18 returned outputs, 12 were stable and 6 unstable; 11 inputs carried randomization metadata and all 6 unstable inputs were flagged. The `weights9.bin.zlib` warning persists; its causal relationship to output failures is unproven.
 
 **Disposition:** the exact-head code and optional experiment are verified; Goruut remains rejected for production. The benchmark harness/source-coverage gate is implemented and CI-tested. Expert-adjudicated Lao IPA gold, dialect-scoped accuracy, root-cause investigation of the model warning and phonetic remediation remain PARTIAL/BLOCKED.
+
+
+## Latest exact-head rerun after handoff update — 2026-11-01
+
+A fresh run on final PR #96 head `64766c5fa713b2c163a1d8ce787ee072d45c0100` re-executed the pinned runtime after documentation changes. The new artifact is authoritative for this head and supersedes the earlier 9/100 any-repeat and 6/18 unstable counts in the preceding handoff addendum:
+
+- Runtime [41324653309](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41324653309), artifact [13091041338](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41324653309/artifacts/13091041338), ZIP SHA-256 `9ecae015a35a20c61733211cafbcf7143ab2a7b96a4160cba7f6a06eae56af63`; downloaded hash matches GitHub digest.
+- MekongPhon 100 rows: 81 responses / 19 no output; 47 complete / 34 partial / 19 unknown; 68 stable / 13 unstable; 17 inputs and 51 repeat responses carried randomization metadata; all 13 unstable inputs carried it. Strict all-repeat source-attested concordance 3/100; at least-one-repeat concordance 10/100. Accuracy remains null, independent gold=0.
+- Engineering 23 probes: 18 responses / 5 no output; 13 complete / 5 partial / 5 unknown; 11 stable / 7 unstable; 11 inputs carried randomization metadata across 33 responses; all 7 unstable inputs were flagged.
+- Separate optional lao2ipa comparison [41324653409](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41324653409), artifact [13090422512](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41324653409/artifacts/13090422512), ZIP SHA-256 `fc69e5e8fa137ac8e705c5c921d8a626f51a42552a5ceefedb26e2777a2f5630`: 37 engineering cases, 0 exact implementation matches, 31 tone-suffix-only differences, 2 diphthong offglide differences and 4 segmental/vowel-sequence differences; no runtime errors. The project matched its own engineering fixture 37/37, which is not gold. Accuracy remains null.
+
+The variation in repeat-level counts across fresh runs is itself material evidence of Goruut's randomized homograph fallback. Do not select or rank a production engine from these concordance/implementation-agreement diagnostics.
