@@ -1,0 +1,64 @@
+name: Optional Goruut Lao runtime probe
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/benchmark_goruut.py"
+      - "tests/test_goruut_benchmark.py"
+      - "tests/fixtures/goruut-probes.txt"
+      - ".github/workflows/optional-goruut-runtime.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  raw-output:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: neurlang/goruut
+          ref: b224bde02151f8f86d0fe260804e4ca743bda620
+          path: goruut
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23.x"
+          cache-dependency-path: goruut/go.sum
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Configure the exact built-in language under test
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("goruut/configs/config.json")
+          config = json.loads(path.read_text(encoding="utf-8"))
+          config["BuiltinDictLanguages"] = ["Lao"]
+          path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Build pinned Goruut source
+        working-directory: goruut
+        run: go build -trimpath -o ../goruut-bin ./cmd/goruut
+      - name: Start server and capture raw responses
+        run: |
+          mkdir -p artifacts
+          ./goruut-bin -configfile goruut/configs/config.json > artifacts/goruut-server.log 2>&1 &
+          echo $! > artifacts/goruut.pid
+          python scripts/benchmark_goruut.py \
+            --input tests/fixtures/goruut-probes.txt \
+            --language Lao \
+            --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
+            --output artifacts/goruut-lao-raw-output.json
+      - name: Upload raw output and server log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goruut-lao-raw-output
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
