@@ -1120,3 +1120,13 @@ The rights registry does not itself grant permission. Each real source still nee
 - GREEN implementation: a redistributable license must explicitly set `commercial_use: true` and boolean `attribution_required` + `share_alike`; the JSON Schema now encodes the same conditional rule. Code/schema commit: `9d3cae33d742f86b9b9e741669da892504ef3dee`.
 - Exact-head verification: [PR verify 41340903259](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340903259) SUCCESS and [push verify 41340897734](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41340897734) SUCCESS — 140 Python tests; browser/Node suites, evidence/data audit, generated-data reproducibility and production build passed. Optional external G2P and Goruut diagnostics also passed.
 - This is a conservative product-corpus eligibility rule, not a legal opinion about all uses of these licenses. Each real source still needs human rights review. No IPA gold rows were added; independent gold remains zero and accuracy remains null.
+
+
+## Release-gate threshold validation — 2026-11-01
+
+- Status: `DONE_VERIFIED`.
+- Review found that the CLI accepted zero/negative `--min-train`, `--min-dev` and `--min-test` thresholds. That could let an operator weaken a release gate below a meaningful non-empty split requirement.
+- RED evidence: the six invalid threshold cases (0 and -1 for each split) failed as expected on test-only commit `5e34cf8cbce93ba1cc1bdc82b2de260c88b403de` ([run 41341504442](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341504442)).
+- GREEN implementation: all three minimums must be positive integers. Invalid threshold configuration is added to the gate's aggregated findings rather than raised before corpus checks, preserving diagnostics for other blockers. Final code commit: `44c9de1804f9de47a72f297aa5ed544d90d3629e`.
+- Exact-head verification: [PR verify 41341723054](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341723054) SUCCESS and [push verify 41341719433](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41341719433) SUCCESS — 141 Python tests; browser/Node suites, evidence/data audit, generated-data reproducibility and production build passed.
+- The configured release-gate defaults remain train=100, dev=25, test=25. No gold rows or IPA labels were added; independent gold remains zero and accuracy remains null.
