@@ -147,3 +147,10 @@ Additional optional lao2ipa 1.0.0 run on the 37-case engineering fixture: 0/37 e
 ### Latest pinned Goruut run — exact PR head
 
 PR #96 exact head `bca9d4a802be0e873bef34618da78bd73cd6eb79` built and ran successfully: [runtime workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41310804516), artifact SHA-256 `025e5444d0a096ca07c39cbf9297ef4229275937ff487d38548fd3a551269612`. Three repeats produced 18/23 usable engineering outputs (8 stable, 10 unstable) and 81/100 usable MekongPhon outputs (68 stable, 13 unstable). Strict all-repeat source-attested concordance was 2/100; at least one repeat matched 9/100. 19/100 MekongPhon rows had no output. This is not accuracy; independent gold=0. A missing `weights9.bin.zlib` warning remains unexplained. See `docs/audits/current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md` for full evidence and checksums. Do not promote Goruut.
+
+
+### Goruut dictionary ambiguity and instability
+
+Across the latest artifact, all 10/10 unstable engineering inputs and all 13/13 unstable MekongPhon-eval inputs carried Goruut's RandomizationWordsCount / RandomizationWordsChoices metadata. Metadata appeared on 11/23 engineering inputs and 17/100 eval inputs; not every ambiguous input changed across the three samples. The response metadata is therefore a direct upstream signal for the observed instability, not an inference from output differences alone.
+
+Pinned upstream code counts dictionary homographs and falls back to a random dictionary pronunciation when no preferred entry is selected; it exposes this through `RandomizationWordsCount` / `RandomizationWordsChoices`. See the exact [selector code](https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/repo/services/parts_of_speech_selector_service.go#L168-L205) and [response counter propagation](https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/usecases/phonemize_usecase.go#L84-L85). Treat flagged outputs as ambiguous; the missing `weights9.bin.zlib` warning is a separate unresolved issue.
