@@ -125,6 +125,30 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("does not permit redistribution", run.stderr)
 
+    def test_rejects_license_registry_missing_required_schema_flag(self):
+        registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
+        del registry["licenses"]["CC-BY-4.0"]["share_alike"]
+        license_path = self.root / "licenses.json"
+        license_path.write_text(json.dumps(registry), encoding="utf-8")
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("share_alike", run.stderr)
+
+    def test_rejects_empty_license_registry(self):
+        registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
+        registry["licenses"] = {}
+        license_path = self.root / "licenses.json"
+        license_path.write_text(json.dumps(registry), encoding="utf-8")
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("at least one license", run.stderr)
+
+    def test_rejects_invalid_license_uri(self):
+        registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
+        registry["licenses"]["CC-BY-4.0"]["url"] = "not-a-uri"
+        license_path = self.root / "licenses.json"
+        license_path.write_text(json.dumps(registry), encoding="utf-8")
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("valid URI", run.stderr)
+
     def test_rejects_unregistered_license(self):
         self.records[0]["source"]["license_id"] = "MADE-UP-LICENSE"
         self.write_all()
