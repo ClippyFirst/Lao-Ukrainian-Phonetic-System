@@ -27,7 +27,9 @@ class IpaGoldCorpusTests(unittest.TestCase):
             "lexeme_group_id": "lemma-1",
             "profile": {"id": "standard-lao", "variety": "Vientiane-oriented Standard Lao"},
             "source": {"source_id": "src-1", "citation": "Test source", "locator": "p. 1",
-                       "rights_status": "OPEN", "redistributable": True, "license_id": "CC-BY-4.0"}
+                       "rights_status": "OPEN", "redistributable": True, "license_id": "CC-BY-4.0",
+                       "rights_evidence": {"basis": "LICENSE", "locator": "https://creativecommons.org/licenses/by/4.0/",
+                                           "verified_by": "curator-1", "verified_at": "2026-11-01"}}
         }]
         self.annotations = [
             {"annotation_id": "a1", "record_id": "r1", "annotator_id": "ling-1",
@@ -116,6 +118,18 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.write_all()
         run = self.run_cli("validate", expected=1)
         self.assertIn("lexeme_group_id crosses splits", run.stderr)
+
+    def test_rejects_license_that_does_not_allow_redistribution(self):
+        self.records[0]["source"]["license_id"] = "CC-BY-NC-SA-4.0"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("does not permit redistribution", run.stderr)
+
+    def test_rejects_unregistered_license(self):
+        self.records[0]["source"]["license_id"] = "MADE-UP-LICENSE"
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("unregistered license_id", run.stderr)
 
     def test_rejects_non_redistributable_source_in_release_gate(self):
         self.records[0]["source"].update({"rights_status": "RESTRICTED", "redistributable": False})
