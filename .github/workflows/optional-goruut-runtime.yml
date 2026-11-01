@@ -49,8 +49,11 @@ jobs:
           mkdir -p artifacts
           ./goruut-bin -configfile goruut/configs/config.json > artifacts/goruut-server.log 2>&1 &
           echo $! > artifacts/goruut.pid
+          go version | tee artifacts/go-version.txt
           python scripts/benchmark_goruut.py \
             --input tests/fixtures/goruut-probes.txt \
+            --config-file goruut/configs/config.json \
+            --runtime-version "$(go version)" \
             --language Lao \
             --engine-commit b224bde02151f8f86d0fe260804e4ca743bda620 \
             --output artifacts/goruut-lao-raw-output.json
