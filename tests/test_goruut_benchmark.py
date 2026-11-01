@@ -82,7 +82,7 @@ def test_source_attested_concordance_is_not_gold_or_accuracy(tmp_path):
     inputs = MODULE.load_inputs(fixture, input_format="csv", text_column="orth", expected_column="ipa")
     records = [{
         "input": "word", "status": "OK", "raw_response": "{}",
-        "phonetic_tokens": ["kʰaː"], "error": None,
+        "phonetic_tokens": ["kʰaː"], "source_coverage_complete": True, "error": None,
     }]
     report = MODULE.build_report(
         inputs, records, language="Lao", engine_commit="test",
