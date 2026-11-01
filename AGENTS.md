@@ -65,7 +65,7 @@ Inspect the built `dist/` output and relative asset paths when the web build cha
 These are methodological references, not runtime dependencies. The project adopts selected practices, not wholesale copies of external instructions.
 
 - [obra/superpowers](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b): skill-triggered workflow, explicit plans, test-first implementation, root-cause debugging, review, and evidence before completion.
-- [mattpocock/skills](https://github.com/mattpocock/skills/tree/a496f5513d4a4cf889bc48e189e579f4b0bdf6aa): deep modules and clear interfaces, test seams, behavior-focused tests, and source-backed research.
+- [mattpocock/skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d): deep modules and clear interfaces, test seams, behavior-focused tests, and source-backed research.
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846): smallest complete diff, reuse before invention, review of connected code rather than diff alone, and explicit deferred-work accounting.
 
 When these references conflict with this file, the existing project requirements, or the user's explicit instructions, follow the project requirements and user instructions. Do not import or install these repositories as project dependencies merely to follow their methods.
