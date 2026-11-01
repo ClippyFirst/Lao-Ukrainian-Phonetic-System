@@ -201,3 +201,65 @@ def test_report_counts_randomized_inputs_without_scoring_accuracy(tmp_path):
     assert report["randomized_repetition_count"] == 1
     assert report["unstable_randomized_input_count"] == 0
     assert report["accuracy"] is None
+
+
+def test_source_coverage_flags_letters_left_in_punctuation_fields():
+    payload = {
+        "Words": [{
+            "CleanWord": "ទ", "PrePunct": "បេះបិ", "PostPunct": "", "Phonetic": "t",
+        }]
+    }
+    coverage = MODULE.analyze_source_coverage(payload, "បេះបិទ")
+    assert coverage["source_reconstruction_matches_input"] is True
+    assert coverage["source_coverage_complete"] is False
+    assert coverage["unphonemized_source_fragments"] == [
+        {"word_index": 0, "field": "PrePunct", "text": "បេះបិ"}
+    ]
+
+
+def test_source_coverage_detects_silently_dropped_source_characters():
+    payload = {
+        "Words": [{
+            "CleanWord": "ກິ", "PrePunct": "", "PostPunct": "", "Phonetic": "ki",
+        }]
+    }
+    coverage = MODULE.analyze_source_coverage(payload, "ເກິ")
+    assert coverage["source_reconstruction_matches_input"] is False
+    assert coverage["source_coverage_complete"] is False
+
+
+def test_source_coverage_accepts_punctuation_but_not_unphonemized_letters():
+    payload = {
+        "Words": [{
+            "CleanWord": "ကေ", "PrePunct": "", "PostPunct": "၊။", "Phonetic": "ke",
+        }]
+    }
+    coverage = MODULE.analyze_source_coverage(payload, "ကေ၊။")
+    assert coverage["source_reconstruction_matches_input"] is True
+    assert coverage["source_coverage_complete"] is True
+    assert coverage["unphonemized_source_fragments"] == []
+
+
+def test_probe_and_report_separate_complete_from_partial_source_coverage(tmp_path):
+    partial = '{"Words":[{"CleanWord":"ទ","PrePunct":"បេះបិ","PostPunct":"","Phonetic":"t"}]}'
+    with patch.object(MODULE, "request_raw_response", side_effect=[partial, partial, partial]):
+        record = MODULE.run_probe(
+            "http://127.0.0.1:18080", "KhmerCentral", "បេះបិទ", 1.0, 1, repeat_count=3,
+        )
+    assert record["source_coverage_status"] == "PARTIAL"
+    assert record["source_coverage_complete"] is False
+    assert record["unphonemized_source_fragments"] == [
+        {"word_index": 0, "field": "PrePunct", "text": "បេះបិ"}
+    ]
+    fixture = tmp_path / "probes.txt"
+    fixture.write_text("បេះបិទ\\n", encoding="utf-8")
+    report = MODULE.build_report(
+        ["បេះបិទ"], [record], language="Khmer", engine_commit="test",
+        input_path=fixture, input_sha256="sha", base_url="http://127.0.0.1:18080",
+        config_path=fixture, config_sha256="config", runtime_version="go test",
+    )
+    assert report["source_coverage_complete_outputs"] == 0
+    assert report["source_coverage_partial_outputs"] == 1
+    assert report["source_coverage_unknown_outputs"] == 0
+    assert report["unphonemized_source_fragment_count"] == 1
+    assert report["accuracy"] is None
