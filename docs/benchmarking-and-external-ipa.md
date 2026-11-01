@@ -84,3 +84,20 @@ This decomposition helps distinguish tone-mark disagreement from remaining segme
 - `exact_match_rate` is strict string equality after the declared Unicode normalization and is comparable only when the same IPA profile/conventions are used. Tone, length, stress, syllable boundaries, tie bars and other IPA distinctions are not silently removed.
 - `character_error_rate` is Levenshtein distance over Unicode code points, not a phoneme/segment error rate. IPA affricates, combining diacritics, length marks and tone symbols can occupy multiple code points; interpret this field as a string-distance diagnostic only.
 - A valid score still requires a non-empty independently adjudicated gold set with source locator and profile. Smoke output, engineering fixtures, source-attested but unadjudicated entries, and inter-engine agreement are not accuracy.
+
+
+## Goruut comparator — upstream verified, execution pending (2026-11-01)
+
+**Disposition: ADD AS AN OPTIONAL RAW-OUTPUT COMPARATOR; NOT APPROVED AS A PRODUCTION PHONOLOGY PROVIDER.**
+
+- Upstream repository: https://github.com/neurlang/goruut
+- Pinned upstream source commit inspected: `b224bde02151f8f86d0fe260804e4ca743bda620` (2026-10-02; pin this commit rather than `@latest`).
+- Upstream README explicitly lists **Lao** among supported languages and describes an IPA phone set, word-level tokens, punctuation preservation and tonal phones. It explicitly says syllable tokens are not provided, tie bars are not supported, and numbers/dates are unsupported and should be written as words.
+- The upstream source-code repository contains an MIT license. This verifies the code license only; the license and provenance of each embedded dictionary, model, training corpus and generated language asset have not yet been audited. Do not redistribute those assets or treat the MIT code license as clearing them.
+- Upstream requires Go 1.22 or newer. A language listed in the README is evidence of advertised availability, not proof of correct Lao tone, vowel length, offglides, dialect or IPA conventions.
+
+**Benchmark treatment:** run only in a disposable optional CI job; preserve raw response, errors, exact upstream commit, language identifier, Go version, corpus hash and output artifact. Keep raw output separate from any IPA normalization. Do not synthesize syllable boundaries or tie bars, strip tone, or convert the output to target Ukrainian without an explicit reviewed mapping. The lack of syllable tokens and tie-bar support must be reported as representational limitations, not silently repaired. The engine's unsupported number/date handling requires separate normalization probes; never feed unexpanded numerals and assume valid pronunciation.
+
+**Acceptance before promotion:** (1) successful pinned execution on the same source-located Lao inputs as existing comparators; (2) inspect exact raw output and error handling; (3) audit licenses/provenance for the Lao dictionary/model assets; (4) review tone, vowel length, offglide, syllable segmentation and dialect conventions against independent expert-adjudicated IPA; (5) score only held-out ADJUDICATED gold. Current independent gold count remains 0, so no accuracy or engine ranking is available.
+
+Upstream evidence: https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/README.md ; https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/LICENSE ; https://github.com/neurlang/goruut/blob/b224bde02151f8f86d0fe260804e4ca743bda620/go.mod
