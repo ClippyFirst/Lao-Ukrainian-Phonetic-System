@@ -23,12 +23,12 @@
       "url": "https://creativecommons.org/licenses/by-sa/4.0/"
     },
     "PROJECT-CREATED": {
-      "redistributable": true,
-      "commercial_use": true,
-      "attribution_required": true,
-      "share_alike": false,
+      "redistributable": false,
+      "commercial_use": null,
+      "attribution_required": null,
+      "share_alike": null,
       "url": null,
-      "note": "Only with documented contributor permission and project ownership evidence."
+      "note": "Not redistributable until the owner approves a corpus license and documented contributor permissions."
     },
     "CC-BY-NC-SA-4.0": {
       "redistributable": false,
