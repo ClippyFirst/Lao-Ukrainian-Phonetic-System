@@ -113,6 +113,14 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("final_ipa", run.stderr)
 
+    def test_accepts_unresolved_case_with_explicit_null_final_ipa(self):
+        self.adjudications[0].update({"decision": "UNRESOLVED", "final_ipa": None,
+                                      "rationale": "No supported resolution."})
+        self.write_all()
+        report = json.loads(self.run_cli("validate").stdout)
+        self.assertEqual(report["unresolved_records"], 1)
+        self.assertEqual(report["adjudicated_records"], 0)
+
     def test_rejects_split_assignment_that_does_not_match_frozen_seed(self):
         self.splits[0]["split"] = "test"
         self.write_all()
