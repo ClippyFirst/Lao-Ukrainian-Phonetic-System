@@ -1461,3 +1461,9 @@ Superpowers remains pinned to its verified v7.0.1 release commit `2ce8aa15d05bd5
 - Exact current review-branch head verification [41530149054](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41530149054) passed all listed checks. It does not constitute a live browser session.
 - Direct live-site access from this execution environment was blocked by DNS resolution failure for `clippyfirst.github.io`; do not interpret this as a confirmed site outage. The successful GitHub-hosted Pages smoke test is the available deployment evidence.
 - **TODO:** add a browser-driven test that loads the built site, enters representative Lao input, asserts Ukrainian/IPA result panels and clear/method-switch behavior, then retain the post-deploy HTTP smoke. Acceptance: exact-head CI passes and the browser test asserts rendered DOM output rather than only engine return values.
+
+## Browser interaction verification — 2026-11-02
+
+- **DONE_VERIFIED (automated browser path):** Added pinned Playwright Chromium coverage for real built-site interactions: `ຂາ` renders Ukrainian `к'а` and IPA `kʰaː`; malformed mixed-script input is withheld; clear restores the empty state; phonetic and romanization modes remain distinct. Exact-head CI [41532309461](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41532309461) passed, including the Chromium UI step.
+- **PARTIAL:** this verifies the production build in headless Chromium, not the currently deployed public URL from an external user network. Existing Pages deployment smoke checks fetch published HTML and runtime assets; manual mobile, keyboard and assistive-technology QA remains open.
+- **TODO:** execute the same browser interaction suite against the deployed Pages URL and record mobile/screen-reader results. Do not treat this as linguistic gold or accuracy evidence.
