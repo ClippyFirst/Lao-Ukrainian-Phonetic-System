@@ -276,3 +276,10 @@ The independent IPA gold-corpus implementation and Lao evidence matrix are in [P
 ## CI action runtime audit — 2026-11-01
 
 All five workflows now use the Node.js 24-compatible current major action releases. Exact-head verification passed: [verify 41339601530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601530), [external G2P 41339601524](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601524), and [Goruut 41339601526](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41339601526). This is CI maintenance evidence only; it does not establish linguistic accuracy or expert gold.
+
+
+## Pull-request and branch reconciliation — 2026-11-03
+
+- Legacy PR #97 is **closed without merge**; its documentation-only completion-register content was superseded and reconciled into merged PR #98 and the current register. Its branch remains preserved; no cherry-pick or branch deletion was needed.
+- Current research PR [#100](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/100) remains open and mergeable, based on current main with zero behind commits. Its code was unchanged by this source-evidence pass; only handoff, completion register and external-corpus triage documents were updated.
+- No PR was merged or released during this pass.
