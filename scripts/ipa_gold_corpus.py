@@ -247,6 +247,8 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     for row in adjudications:
         ident = require_text(row.get("record_id"), "adjudication.record_id")
         reject_unknown_properties(row, {"record_id", "adjudicator_id", "annotation_ids", "decision", "final_ipa", "rationale", "adjudicated_at"}, f"adjudication {ident}")
+        if "final_ipa" not in row:
+            raise ValueError(f"adjudication {ident}: final_ipa property is required; use null for UNRESOLVED")
         if ident not in record_by_id:
             raise ValueError(f"adjudication references unknown record_id: {ident}")
         if ident in adjudication_by_record:
