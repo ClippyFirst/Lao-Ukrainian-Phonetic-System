@@ -253,3 +253,6 @@ Comparator concordance is not accuracy. See the dated benchmark review in the ca
 
 
 | BENCH-BYU-LAO-001 | PARTIAL | Inspected MekongPhon at `f80f6c1840c4818b51e05f2e00cded4701a5b662`: lexical split 6,219 train / 100 eval, 0 orthographic overlap; SEAlang `kerr72` source path and tone normalization inspected. BYU tonal model card declares Apache-2.0 weights, while MekongPhon repository license metadata is null. | Pin exact model/tokenizer revisions and weight hashes; establish corpus/lexicon rights; confirm Vientiane careful-citation IPA compatibility; run the 100 lexical OOV cases as external diagnostics only; independently adjudicate discrepancies. Not gold and not accuracy. |
+
+
+**Clarification to BENCH-BYU-LAO-001:** the included `data/splits/lao_train.csv` / `lao_eval.csv` files are lexicon partitions, not demonstrated model-training manifests. MekongPhon `data/README.md` misdescribes the inspected files as OPUS sentence splits; `pipeline/convert_lao.py` references different train/full-lexicon paths. Exact checkpoint-to-split linkage is unverified. Keep the 100 items as a candidate diagnostic, not a validated model holdout.
