@@ -1,7 +1,7 @@
 # Lao linguistic completion register — 2026-11-01
 
-**Baseline:** `main` `6f607d7ab4d432fd8491a5fcee32186e4269fc32`.
-**Latest exact-main engineering evidence:** verify [41326457758](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41326457758) succeeded.
+**Baseline:** `main` `33ac5615b13fec717ce59ee55229b9d11f04893d`.
+**Latest exact-main engineering evidence:** verify [41418528760](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41418528760) and Pages/deployed smoke [41417298476](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41417298476) succeeded.
 **Scope:** continue the existing master handoff; this register does not replace it.
 
 ## Evidence-based task ledger
