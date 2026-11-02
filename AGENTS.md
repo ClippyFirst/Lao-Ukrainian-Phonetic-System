@@ -81,7 +81,7 @@ When these references conflict with this file, the existing project requirements
 The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:
 
 - Superpowers 7.0.1: `obra/superpowers@2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. At GREEN, verify the project suite, not only the narrow test that first went red.
-- mattpocock/skills current main: `d1478fcb140db0b93c0c8df17bcfd311844749d0` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
+- mattpocock/skills release v1.3.2: `d1478fcb140db0b93c0c8df17bcfd311844749d0`; current main snapshot: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
 - Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
 
 These references guide the method; project-specific linguistic, provenance, privacy, rights, and fail-closed requirements remain authoritative.
