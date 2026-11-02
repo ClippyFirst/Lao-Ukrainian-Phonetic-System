@@ -61,3 +61,17 @@ All comparisons are explicitly `NOT_SCORED_NO_INDEPENDENT_GOLD`. The 37-case `la
 ## Upstream Goruut asset inventory follow-up — 2026-11-02
 
 The warning for `weights9.bin.zlib` was checked against the exact Goruut source snapshot used in the optional probes (`b224bde02151f8f86d0fe260804e4ca743bda620`). The upstream Git tree has no such file in the language-specific dictionary directories: `dicts/lao/`, `dicts/khmer/central/`, and `dicts/burmese/`. Each directory does contain earlier model assets (including the `weights7` and `weights8` files). The warning therefore reflects an asset absent from this pinned upstream snapshot, not a failed checkout of a file that exists in the repository. The probe still completed and returned raw outputs. The impact of this absent asset on ranking, coverage, or accuracy is not quantified; treat it as a model-bundle limitation and do not create substitute weights or infer a quality delta without upstream implementation evidence and a valid gold set.
+
+
+## Additional published sequence-to-sequence baselines — 2026-11-02
+
+The BYU MATRIX Lab publishes two separate 33.6M-parameter Lao-to-IPA checkpoints trained from MekongPhon:
+
+- [`byumatrixlab/lao-ipa-tonal`](https://huggingface.co/byumatrixlab/lao-ipa-tonal) explicitly includes tone markers (model card reports best eval loss 0.5318 at checkpoint 4000, approximately six epochs).
+- [`byumatrixlab/lao-ipa-nontonal`](https://huggingface.co/byumatrixlab/lao-ipa-nontonal) explicitly excludes tone markers (model card reports best eval loss 0.7419 at checkpoint 4000, approximately six epochs).
+
+Both use a BERT encoder–decoder with separate character-level Lao and IPA tokenizers and a maximum sequence length of 128. The non-tonal checkpoint is structurally unsuitable as a complete comparator for a Vientiane Lao target that requires lexical tone. The tonal checkpoint is a priority comparator, but its presence of tone marks does not prove that its tone categories, contours, vowel quantity, coda conditioning, dialect, or IPA convention match this project's profile. The two reported evaluation losses are not comparable accuracy scores and are not transferred to this project.
+
+The model cards point to MekongPhon as the training-data/code source. Before a reproducible run, pin each Hugging Face model revision and weight checksum, inspect the dataset split and profile, run identical inputs through both checkpoints, and report tone-bearing and segmental errors separately. Preserve raw outputs; do not use either model as gold.
+
+**Assessment:** tonal checkpoint = PRIORITY BASELINE / NOT YET VERIFIED; non-tonal checkpoint = useful ablation only / INCOMPLETE FOR TONAL IPA. Neither changes the independent-gold count (0) or empirical accuracy (null).
