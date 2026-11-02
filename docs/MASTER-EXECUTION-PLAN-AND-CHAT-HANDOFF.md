@@ -1306,3 +1306,12 @@ These are raw-output concordance/coverage diagnostics, not accuracy measurements
 Goruut was fetched from the upstream source snapshot `b224bde` during the hosted probe, not pinned to a release tag; the lao2ipa comparator was pinned to 1.0.0.
 
 The detailed research audit is authoritative for engine versions, benchmark limitations, and measured diagnostic values. Do not describe the Goruut run as release-pinned; it used the captured upstream source revision stated above.
+
+
+## Verification checkpoint for the 2026-11-02 external-engine audit
+
+Research audit and completion register are now updated. Last register commit before this handoff update: `0955f7d8ed580c671a620fea6fa0798655e74a40`.
+
+Core verification and both external comparator workflows passed on the same code state before the final register-only documentation commit: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41409303714 (verify), 41409303313 (lao2ipa diagnostic), 41409303333 (Goruut raw-output).
+
+The commits after those workflow runs changed only research-audit / handoff / completion-register documentation, not executable code. Do not treat hosted diagnostic jobs as gold evaluation: all independent gold counts remain zero. The current review branch remains ahead of `main` and has not been merged.
