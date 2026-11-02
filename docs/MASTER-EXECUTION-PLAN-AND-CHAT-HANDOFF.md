@@ -1299,3 +1299,10 @@ Detailed methods, benchmark context, limitations and per-feature acceptance requ
 Lao: lao2ipa 1.0.0, 37 engineering cases, 0/37 external fixture matches, 31 tone-suffix-only + 6 segmental/offglide mismatches; Goruut 100 source-attested rows, 4/100 exact matches, 81 outputs, 19 failures, 47 complete/34 partial/19 unknown coverage, 14 unstable engineering outputs. No independent gold; accuracy=null. Runs: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41409083914 and https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41409083978.
 
 These are raw-output concordance/coverage diagnostics, not accuracy measurements. All independent gold counts remain zero and accuracy remains null. The missing `weights9.bin.zlib` diagnostic in Goruut's logs is recorded for investigation. Declared language support is not accepted as proof of adequate coverage. No gold labels or production rules were changed based on these runs.
+
+
+## Benchmark provenance correction — 2026-11-02
+
+Goruut was fetched from the upstream source snapshot `b224bde` during the hosted probe, not pinned to a release tag; the lao2ipa comparator was pinned to 1.0.0.
+
+The detailed research audit is authoritative for engine versions, benchmark limitations, and measured diagnostic values. Do not describe the Goruut run as release-pinned; it used the captured upstream source revision stated above.
