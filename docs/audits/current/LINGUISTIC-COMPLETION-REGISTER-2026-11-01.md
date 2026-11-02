@@ -207,3 +207,12 @@ The previous TODO wording suggesting that this repository can simply recover or 
 ## Main publication reconciliation — 2026-11-02
 
 Supersedes earlier handoff statements that the review branch was still ahead of `main` and unmerged: PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) was merged into `main` as `ed36e7030df4ec8c1b70b50fdcfd6e47e5770d52`; this was the repository's current `main` tip at reconciliation. Exact-head engineering workflows on the PR head passed: verify [41413902679](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902679), Goruut [41413902653](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902653), and lao2ipa [41413902805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902805). The Pages workflow is configured to deploy from `main`; the public site and post-merge deployment run could not be independently inspected from this session, so deployment status remains **BLOCKED (external verification/network access)**, not claimed successful. No UI/runtime files were changed by this PR. Independent expert-adjudicated gold remains 0 and accuracy remains null; the project is still a research prototype.
+
+
+## Quality/profile review update — 2026-11-02
+
+- Current main: `33ac5615b13fec717ce59ee55229b9d11f04893d`; exact-main verify [41418528760](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41418528760) and Pages [41417298476](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41417298476) SUCCESS.
+- Overall judgement: PARTIAL research prototype; no empirical IPA or Ukrainian accuracy is available (independent gold=0, accuracy=null).
+- External diagnostics: Goruut 100-row coverage/stability figures and lao2ipa 37-case mismatch taxonomy are diagnostic only; they do not establish accuracy or select a production winner.
+- Tone convention, expert adjudication, six non-tone mismatch reviews, MekongPhon rights/profile/split verification, upstream weights9 asset blocker, and manual accessibility QA remain open.
+
