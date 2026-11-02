@@ -1261,3 +1261,12 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 - [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) completed SUCCESS on this exact commit; full verify workflow.
 - Optional diagnostic runs [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) also completed SUCCESS. These diagnostics are not accuracy evidence.
 - The current branch has one subsequent documentation-only evidence-register commit; its exact-head CI is recorded in the final session report. No engine, linguistic rules, IPA labels, gold records, datasets, or runtime dependencies were changed.
+
+
+## Adjudication schema/runtime parity correction — 2026-11-02
+
+- Found a real contract mismatch: `schemas/ipa-gold-adjudication.schema.json` requires `final_ipa` (nullable), but the Python validator used `row.get("final_ipa")` and therefore accepted an omitted key for `UNRESOLVED`.
+- Test-first evidence: test-only commit `2750382302a6f769be951f96587b04502d9900c6` failed as intended on exact-head PR CI [41407007210](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407007210); the runtime returned success for a malformed adjudication and the new regression failed.
+- Fix: `7c0e758776262c8415116d6a404626d061642657` now rejects a missing `final_ipa` property for every decision; unresolved cases must explicitly provide `null`. Exact-head PR CI [41407108435](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407108435) SUCCESS. 145 Python unittest tests; browser engine tests, generated-data reproducibility, evidence audit and production build passed.
+- Optional diagnostic runs: [41407108369](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407108369), [41407108418](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407108418) — SUCCESS.
+- This is validator/schema parity only. No linguistic rules, IPA labels, gold records or source datasets changed; independent expert gold remains 0 and accuracy remains null.
