@@ -1278,3 +1278,15 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 - Exact-head PR CI [41407386614](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407386614) SUCCESS. 146 Python unittest tests; browser engine tests, generated-data reproducibility, repository evidence audit and production build passed.
 - Optional diagnostic runs: [41407386667](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407386667), [41407387018](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407387018) — SUCCESS.
 - No linguistic rules, IPA labels, corpus records, datasets or empirical metrics changed. Independent expert gold remains 0; accuracy remains null.
+
+
+## External G2P benchmark and engine coverage audit — 2026-11-02
+
+A source-backed audit was added at [docs/research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md). It separates declared engine language support from verified phonological coverage, records language-specific external benchmark resources, defines a reproducible held-out evaluation protocol, and explicitly does not claim a score for this repository. No external engine output was promoted to IPA gold.
+
+Current key findings:
+- Epitran and Goruut both declare this language, but both remain comparators only; their public support lists do not establish complete project-profile coverage.
+- The audit records engine-specific limitations and the phonological feature inventory that must be evaluated.
+- The next step is a pinned, same-input, held-out benchmark with independent expert references and feature-specific metrics; exact model/dataset versions and provenance must be recorded before execution.
+
+No runtime engine benchmark was run in this documentation update. Hosted CI verifies repository engineering, not linguistic correctness or benchmark accuracy.
