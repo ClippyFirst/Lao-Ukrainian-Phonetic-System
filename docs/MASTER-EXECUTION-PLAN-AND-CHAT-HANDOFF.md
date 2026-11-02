@@ -1371,3 +1371,12 @@ This is a documentation audit based on current source registries, evidence matri
 - Next genuine blockers: qualified Lao phonetic annotators and adjudicator; independent rights-cleared gold; expert review of tone contours and six non-tone lao2ipa differences; compatible tonal MekongPhon evaluation; upstream Goruut weights9 asset/fallback clarification; manual accessibility QA.
 - PR remains open and mergeable; no prior user branch was deleted or rewritten. PR #98 is already merged into main.
 
+
+
+## Pilot profile decision — 2026-11-02
+
+**Selected annotation target:** contemporary central Vientiane Lao, careful citation-form speech. Project-local profile ID: `lao-vientiane-careful-citation-v1`.
+
+This is a bounded target for the first pilot, not a claim that all Lao varieties share one tone inventory or that the current engine fully implements this profile. Ueda (1994) explicitly describes the central Vientiane dialect, including short/long vowel contrasts, diphthongs, final consonants and five tones; Enfield (2007) is the documented reference basis for the repository's Vientiane-oriented scope. Preserve the source's note that regional Lao tone systems vary. Keep Luang Prabang and other varieties out of the same pilot score.
+
+Issue [#99](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/99) now records this profile decision as complete. The IPA convention sheet, annotator/adjudicator recruitment, blind intake, rights-cleared 30-item selection and independent adjudication remain open. Gold remains 0; accuracy remains null. References: https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_article ; https://eurphon.info/languages/html?lang_id=214.
