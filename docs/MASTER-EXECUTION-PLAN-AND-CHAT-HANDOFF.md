@@ -1270,3 +1270,11 @@ The subsequent documentation-only handoff/register state at commit `072713627185
 - Fix: `7c0e758776262c8415116d6a404626d061642657` now rejects a missing `final_ipa` property for every decision; unresolved cases must explicitly provide `null`. Exact-head PR CI [41407108435](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407108435) SUCCESS. 145 Python unittest tests; browser engine tests, generated-data reproducibility, evidence audit and production build passed.
 - Optional diagnostic runs: [41407108369](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407108369), [41407108418](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407108418) — SUCCESS.
 - This is validator/schema parity only. No linguistic rules, IPA labels, gold records or source datasets changed; independent expert gold remains 0 and accuracy remains null.
+
+
+## Unresolved adjudication positive-path verification — 2026-11-02
+
+- Added explicit positive-path coverage proving that `UNRESOLVED` with a present `final_ipa: null` remains valid; omitted `final_ipa` is rejected by the new runtime guard. Test commit `dbbac42d4a4879d0bf340027037a3edba60063d2`.
+- Exact-head PR CI [41407386614](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407386614) SUCCESS. 146 Python unittest tests; browser engine tests, generated-data reproducibility, repository evidence audit and production build passed.
+- Optional diagnostic runs: [41407386667](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407386667), [41407387018](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407387018) — SUCCESS.
+- No linguistic rules, IPA labels, corpus records, datasets or empirical metrics changed. Independent expert gold remains 0; accuracy remains null.
