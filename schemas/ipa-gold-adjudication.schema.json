@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "adjudicator_id",
+    "annotation_ids",
+    "decision",
+    "final_ipa",
+    "rationale",
+    "adjudicated_at"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adjudicator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annotation_ids": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision": {
+      "enum": [
+        "AGREEMENT",
+        "RESOLVED",
+        "UNRESOLVED"
+      ]
+    },
+    "final_ipa": {
+      "oneOf": [
+        {
+          "$ref": "./ipa-gold-ipa.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adjudicated_at": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

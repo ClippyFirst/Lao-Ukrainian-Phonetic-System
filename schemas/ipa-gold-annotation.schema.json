@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "annotation_id",
+    "record_id",
+    "annotator_id",
+    "ipa",
+    "confidence",
+    "uncertainty",
+    "notes",
+    "annotated_at"
+  ],
+  "properties": {
+    "annotation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annotator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ipa": {
+      "$ref": "./ipa-gold-ipa.schema.json"
+    },
+    "confidence": {
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW",
+        "UNSET"
+      ]
+    },
+    "uncertainty": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "annotated_at": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

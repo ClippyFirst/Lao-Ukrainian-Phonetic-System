@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shared typed IPA result",
+  "description": "Canonical IPA object reused by independent annotations and adjudicated final results. The value string follows the selected transcription convention; optional fields preserve typed syllable and prosodic metadata.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "value",
+    "kind"
+  ],
+  "properties": {
+    "value": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "kind": {
+      "enum": [
+        "PHONEMIC",
+        "PHONETIC_BROAD",
+        "PHONETIC_NARROW"
+      ]
+    },
+    "syllable_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "tone": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "vowel_length": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "phonation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

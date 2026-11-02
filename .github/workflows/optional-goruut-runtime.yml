@@ -17,24 +17,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
         with:
           repository: neurlang/goruut
           ref: b224bde02151f8f86d0fe260804e4ca743bda620
           path: goruut
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: byu-matrix-lab/MekongPhon
           ref: f80f6c1840c4818b51e05f2e00cded4701a5b662
           path: mekongphon
           persist-credentials: false
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: "1.23.x"
           cache-dependency-path: goruut/go.sum
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Configure the exact built-in language under test
@@ -79,7 +79,7 @@ jobs:
             --output artifacts/goruut-lao-mekongphon-source-attested.json
       - name: Upload raw output and server log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: goruut-lao-raw-output
           path: artifacts/
