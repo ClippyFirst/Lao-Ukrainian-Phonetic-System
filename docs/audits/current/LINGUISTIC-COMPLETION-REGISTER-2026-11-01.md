@@ -282,3 +282,9 @@ This is an engineering-state recheck only. Independent expert-adjudicated IPA go
 ## Public website verification — 2026-11-02
 
 Lao: DONE_VERIFIED — current-main Pages build/deploy smoke passed (run 41417298476); exact review-head engineering CI passed (41531138983). PARTIAL — output transformation is covered by Node engine regression tests, but the deployed UI has no browser-driven input/result assertion. BLOCKED — direct live-site access from this runner failed at DNS resolution; this is not evidence of a site outage. TODO — add Playwright DOM assertions for input → UA/IPA output, clear and mode switching, plus a post-deploy browser smoke. See master handoff for evidence and acceptance criteria.
+
+## Browser interaction verification — 2026-11-02
+
+- **DONE_VERIFIED (automated browser path):** Added pinned Playwright Chromium coverage for real built-site interactions: `ຂາ` renders Ukrainian `к'а` and IPA `kʰaː`; malformed mixed-script input is withheld; clear restores the empty state; phonetic and romanization modes remain distinct. Exact-head CI [41532309461](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41532309461) passed, including the Chromium UI step.
+- **PARTIAL:** this verifies the production build in headless Chromium, not the currently deployed public URL from an external user network. Existing Pages deployment smoke checks fetch published HTML and runtime assets; manual mobile, keyboard and assistive-technology QA remains open.
+- **TODO:** execute the same browser interaction suite against the deployed Pages URL and record mobile/screen-reader results. Do not treat this as linguistic gold or accuracy evidence.
