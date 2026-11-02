@@ -250,3 +250,6 @@ The three references are used as methods, not runtime dependencies: Superpowers 
 | BENCH-REVIEW-001 | PARTIAL (existing diagnostic evidence reviewed) | Reviewed fixtures, corpus files, gold lifecycle files, benchmark harnesses and external raw-output reports. Exact-head engineering CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41469198646 SUCCESS. | Independent expert gold remains 0; resolve profile/convention, rights, held-out split and double-annotation/adjudication blockers before accuracy scoring. |
 
 Comparator concordance is not accuracy. See the dated benchmark review in the canonical master handoff for language-specific results and acceptance criteria.
+
+
+| BENCH-BYU-LAO-001 | PARTIAL | Inspected MekongPhon at `f80f6c1840c4818b51e05f2e00cded4701a5b662`: lexical split 6,219 train / 100 eval, 0 orthographic overlap; SEAlang `kerr72` source path and tone normalization inspected. BYU tonal model card declares Apache-2.0 weights, while MekongPhon repository license metadata is null. | Pin exact model/tokenizer revisions and weight hashes; establish corpus/lexicon rights; confirm Vientiane careful-citation IPA compatibility; run the 100 lexical OOV cases as external diagnostics only; independently adjudicate discrepancies. Not gold and not accuracy. |
