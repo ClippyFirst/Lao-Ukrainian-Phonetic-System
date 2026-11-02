@@ -299,3 +299,13 @@ Lao: DONE_VERIFIED — current-main Pages build/deploy smoke passed (run 4141729
 | ID | Status | Evidence | Remaining acceptance |
 |---|---|---|---|
 | LAO-UI-001 | PARTIAL | Exact PR-head verification [41533067192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41533067192) SUCCESS; four Chromium tests exercise visible `ຂາ` → `kʰaː` → `к'а`, mixed-script withholding, clear/reset and mode separation against the built site. | Verify the public Pages URL after deployment and complete manual keyboard, screen-reader and mobile QA. This is UI engineering evidence, not phonetic accuracy. |
+
+
+## New source-level evidence — Vientiane Lao profile (2026-11-03)
+
+| ID | Status | New evidence | Acceptance / limitation |
+|---|---|---|---|
+| LAO-PROFILE-SOURCE-001 | PARTIAL | Full-text review of Ueda (1994), DOI [10.11435/GENGO1939.1994.106_95](https://doi.org/10.11435/GENGO1939.1994.106_95): one Haysok/Vientiane informant; 20 initial consonants; nine short/long vowel-quality pairs; three diphthongs; nine finals; five-tone basic analysis with a qualified variable sixth-tone discussion. | Use as a source-specific provisional profile, not a population norm or complete orthography-to-IPA mapping. Obtain additional speaker-level/primary evidence and adjudicated lexical items. |
+| LAO-GOLD-PILOT-001 | BLOCKED | No new gold annotations created. The 1994 article is descriptive single-informant evidence, not a licensed, independently double-annotated project benchmark. | Freeze profile and IPA convention; select sourced lexical contrasts; two independent qualified annotators and separate adjudicator; record alternatives/uncertainty, source locators and rights. Gold remains 0; accuracy null. |
+
+The Ukrainian transcription-method comparator Musiichuk (2022), DOI [10.36059/978-966-397-283-1-64](https://doi.org/10.36059/978-966-397-283-1-64), informs the design decision process only; Vietnamese mappings are explicitly not adopted. No runtime rule, IPA label, or benchmark score changed in this research pass.
