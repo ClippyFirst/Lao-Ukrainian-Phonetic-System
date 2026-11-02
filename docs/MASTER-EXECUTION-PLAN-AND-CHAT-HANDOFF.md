@@ -1400,3 +1400,19 @@ Issue [#99](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/
 The map traces core.analyze through parser, phonology and IPA-first target adaptation; the optional romanization route remains separate.
 
 **Scope note:** this batch changes agent navigation and engineering workflow only. It does not add IPA labels, import external corpora, alter runtime behavior, or change the current empirical accuracy status. Continue from the existing language-specific blockers in the completion register.
+
+
+## Benchmark and corpus review — 2026-11-02
+
+**Status: PARTIAL / evidence reviewed; independent accuracy remains NOT_MEASURED.**
+
+- Engineering fixtures and goruut-probes.txt are parser/structural regression probes, not lexical IPA gold.
+- All four independent gold JSONL files are empty; gold.tsv is header-only. Independent adjudicated gold = 0.
+- benchmark_ipa.py gates scoring on ADJUDICATED, non-empty IPA, source, profile and typed IPA kind; missing predictions remain misses. CER is Unicode code-point edit distance, not phonetic feature error.
+- lao2ipa 1.0.0: 37 engineering fixtures; project matched its own fixture 37/37; external matched 0/37; strict inter-engine agreement 0/37. Heuristic groups: 31 tone suffix, 2 offglide convention, 4 segmental/vowel-sequence. Tone-stripped 31/37 is diagnostic only; tone is contrastive.
+- Goruut pinned b224bde: one exact-head 100-row repeated run yielded 81 outputs, 19 missing, 68 stable, 13 unstable, 2/100 strict source-attested matches across all repeats. A separate run reported 4/100; do not conflate run denominators. Upstream response metadata identifies random homograph selection in unstable cases. weights9.bin.zlib is absent from pinned tree; its causal impact is unproven.
+- MekongPhon is a priority comparator, not gold: project license metadata is null, sentence IPA is lexicon-generated, the 100-row eval is not independently adjudicated, and profile/IPA/tone compatibility remains unresolved. BYU lao-ipa-tonal is a priority baseline not yet executed; non-tonal checkpoint is only an ablation.
+
+**Interpretation:** fixture pass verifies regression consistency, not pronunciation. Prioritize tone convention/contours, diphthong offglides and four segmental cases. Do not promote Goruut or lao2ipa or tune phonology merely to maximize agreement.
+
+**Next acceptance:** pin and inspect BYU tonal model/dataset/split/license; obtain expert Vientiane adjudication of tone and segmental cases; complete blind pilot; populate gold only after rights and independent annotation/adjudication. Exact-head CI https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41469198646 SUCCESS; this is engineering verification only.
