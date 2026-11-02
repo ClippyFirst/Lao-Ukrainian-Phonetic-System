@@ -241,3 +241,12 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 | ENG-METHODS-001 | DONE_VERIFIED (repository-context integration) | Added GLOSSARY.md, docs/agents/issue-tracker.md and docs/agents/codebase-map.md; linked them from AGENTS.md; refreshed exact upstream method pins. Exact-head CI before handoff closeout: [41468921762](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41468921762) SUCCESS. | Re-check these maps whenever entry points, data ownership or test commands change. This task does not establish linguistic accuracy or independent gold. |
 
 The three references are used as methods, not runtime dependencies: Superpowers for explicit scoped execution and verification; Matt Pocock Skills for domain vocabulary, clear interfaces, source-backed research and two-axis review; Ponytail for real-flow mapping, minimal complete changes and residual-risk reporting. No production code or linguistic labels were changed by this task.
+
+
+## Benchmark and corpus review — 2026-11-02
+
+| ID | Status | Evidence | Remaining acceptance |
+|---|---|---|---|
+| BENCH-REVIEW-001 | PARTIAL (existing diagnostic evidence reviewed) | Reviewed fixtures, corpus files, gold lifecycle files, benchmark harnesses and external raw-output reports. Exact-head engineering CI: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41469198646 SUCCESS. | Independent expert gold remains 0; resolve profile/convention, rights, held-out split and double-annotation/adjudication blockers before accuracy scoring. |
+
+Comparator concordance is not accuracy. See the dated benchmark review in the canonical master handoff for language-specific results and acceptance criteria.
