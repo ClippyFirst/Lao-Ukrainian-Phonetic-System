@@ -277,3 +277,8 @@ Comparator concordance is not accuracy. See the dated benchmark review in the ca
 | Local clean checkout | BLOCKED: `git clone` could not resolve `github.com`; no local test execution claimed |
 
 This is an engineering-state recheck only. Independent expert-adjudicated IPA gold remains 0; empirical pronunciation accuracy remains null. Existing linguistic, source-rights, held-out-split, human-adjudication and manual accessibility acceptance criteria remain unchanged. No linguistic labels or runtime rules were altered by this checkpoint.
+
+
+## Public website verification — 2026-11-02
+
+Lao: DONE_VERIFIED — current-main Pages build/deploy smoke passed (run 41417298476); exact review-head engineering CI passed (41531138983). PARTIAL — output transformation is covered by Node engine regression tests, but the deployed UI has no browser-driven input/result assertion. BLOCKED — direct live-site access from this runner failed at DNS resolution; this is not evidence of a site outage. TODO — add Playwright DOM assertions for input → UA/IPA output, clear and mode switching, plus a post-deploy browser smoke. See master handoff for evidence and acceptance criteria.
