@@ -13,7 +13,7 @@
 | LAO-LAB-001 | PARTIAL | Labialized onsets are structurally represented but lack justified Ukrainian correspondences. | Expert-reviewed IPA inventory and target policy; otherwise remain IPA-only/unsupported, never guessed. |
 | LAO-ROM-001 | PARTIAL | CLDR/BGN-derived crosswalk is provisional and does not cover every source structure; BGN `ຫຣ` remains unsupported. | Source-located full inventory, context rules, round-trip/ambiguity tests and explicit non-reversibility; separate from phonetic mode. |
 | LAO-G2P-001 | DONE_VERIFIED (diagnostic harness only) | Goruut remains unsuitable for production. | Do not promote on comparator concordance; any new claim requires independent gold and repeatable full coverage. |
-| LAO-UI-001 | TODO | Manual visual, keyboard, assistive-technology and mobile QA is not established by CI. | Recorded test matrix and results on deployed site. |
+| LAO-UI-001 | PARTIAL | Exact-head Playwright Chromium tests now cover visible IPA/Ukrainian output, mixed-script withholding, clear/reset and separation of phonetic vs romanization modes (4/4). Manual visual, keyboard, assistive-technology, mobile and external public-URL interaction QA remain open. | Run the browser suite against the deployed Pages URL; record human keyboard, screen-reader and mobile results. |
 | LAO-REL-001 | PARTIAL | Production readiness blocked by gold, dialect adjudication and external asset rights if bundled. | All release gates in README/limitations met; no external asset shipped without rights clearance. |
 
 ## Current diagnostic evidence
@@ -292,3 +292,10 @@ Lao: DONE_VERIFIED — current-main Pages build/deploy smoke passed (run 4141729
 ## Exact-head browser test result — 2026-11-02
 
 - Exact final UI gate: [41532837406](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41532837406) SUCCESS on the documentation-updated branch head. The four Chromium browser tests passed, including visible Ukrainian/IPA output, malformed mixed-script withholding, clear/reset and mode separation.
+
+
+## Browser interaction verification — 2026-11-03
+
+| ID | Status | Evidence | Remaining acceptance |
+|---|---|---|---|
+| LAO-UI-001 | PARTIAL | Exact PR-head verification [41533067192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41533067192) SUCCESS; four Chromium tests exercise visible `ຂາ` → `kʰaː` → `к'а`, mixed-script withholding, clear/reset and mode separation against the built site. | Verify the public Pages URL after deployment and complete manual keyboard, screen-reader and mobile QA. This is UI engineering evidence, not phonetic accuracy. |
