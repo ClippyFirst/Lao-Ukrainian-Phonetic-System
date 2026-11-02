@@ -1431,3 +1431,8 @@ A direct inspection of BYU MATRIX Lab's public [MekongPhon repository](https://g
 **Status:** BYU lexical split and source path are now inspected, but baseline evaluation remains **PARTIAL/BLOCKED** on exact model revision, corpus rights, target-profile/IPA convention compatibility and a reproducible inference environment. Do not import the lexicon into production or score it as independent gold. Next acceptance: pin model + tokenizer revisions and hashes; establish dataset rights; run the 100 held-out lexical forms as a clearly labelled external diagnostic; obtain expert review of tone/segment differences before any rule change.
 
 Sources: [MekongPhon paper](https://lrec.elra.info/lrec2026-main-129); [MekongPhon source](https://github.com/byu-matrix-lab/MekongPhon/tree/f80f6c1840c4818b51e05f2e00cded4701a5b662); [tonal model card](https://huggingface.co/byumatrixlab/lao-ipa-tonal).
+
+
+### MekongPhon split linkage clarification
+
+The 6,219/100 CSVs above are inspectable lexicon partitions, but they are **not yet proven to be the exact train/evaluation files used to produce the published model checkpoint**. The upstream `data/README.md` describes `data/splits/` as converted OPUS sentence splits, whereas the inspected files are lexical rows with `orth, pron_no_tones, pron_with_tones` columns. The upstream conversion script `pipeline/convert_lao.py` instead expects `../data/lao_train_cleaned.csv` for training and `../data/lao_ipa_cleaned.csv` (the full lexicon) for sentence evaluation. Therefore, zero overlap between the included lexical partitions is verified, but their linkage to the model's actual training run is **unverified**. Treat them as a candidate external lexical OOV probe only; do not call them the model's held-out test set.
