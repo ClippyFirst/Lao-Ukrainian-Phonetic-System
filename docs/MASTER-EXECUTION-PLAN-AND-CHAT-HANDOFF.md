@@ -1,36 +1,10 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
-**Current checkpoint:** 2026-11-02  
-**Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
-**Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
-**Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
-**Branch comparison at this checkpoint:** 98 commits ahead of main, 0 behind.
-**Exact-head methodology verification:** [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) SUCCESS; optional diagnostics [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) SUCCESS.
-**Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
+**Current checkpoint:** 2026-11-02 (reconciled after latest main publication)  
+**Default branch:** `main` at `33ac5615b13fec717ce59ee55229b9d11f04893d`  
+**Current main verification:** [verify 41418528760](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41418528760) SUCCESS; Pages deployment [41417298476](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41417298476) SUCCESS.  
+**Previous checkpoint:** `6f607d7ab4d432fd8491a5fcee32186e4269fc32` and branch/PR details below are historical and superseded by the merged main state.
 
-## Current task ledger and next blocker
-
-- **DONE_VERIFIED (engineering):** independent IPA corpus schemas, runtime validation, deterministic split/rights gates, source/evidence documentation, and exact-head automated engineering checks are present on the active branch. This is not linguistic validation.
-- **PARTIAL:** source-language phonology, IPA conventions, and Ukrainian target adaptation remain bounded by the language-specific evidence matrices and unresolved cases.
-- **BLOCKED:** the 30-lexeme blind pilot cannot start until the target variety/profile and IPA convention are approved, two qualified independent annotators and a separate adjudicator are confirmed, rights-cleared source packets are prepared, and the blind intake dry-run passes.
-- **TODO:** manual deployed-site visual, keyboard, assistive-technology, and mobile QA.
-- **Next actionable human milestone:** resolve the recruitment and convention checklist in [issue #99](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/99) and follow [the controlled acquisition protocol](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/feat/ipa-gold-corpus-20261101-review/docs/ipa-gold-collection-playbook.md).
-
-No local checkout was available for this checkpoint; do not interpret hosted CI as local test execution, expert adjudication, visual QA, or release approval. Preserve the fail-closed pipeline and do not create IPA/gold labels from model output or unsupported spelling inference.
-
-
-
-## Methodology source refresh — 2026-11-02
-
-The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:
-
-- Superpowers 7.0.1: `obra/superpowers@2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. At GREEN, verify the project suite, not only the narrow test that first went red.
-- mattpocock/skills current main: `d1478fcb140db0b93c0c8df17bcfd311844749d0` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
-- Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
-
-These references guide the method; project-specific linguistic, provenance, privacy, rights, and fail-closed requirements remain authoritative.
-
-**Methodology refresh commit:** `748b84d7c2af7e26191e5d1e12bf875800148a13` on the active review branch. **Exact-head verification:** [PR verify 41356347659](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347659) and [push verify 41356342591](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356342591) SUCCESS; 144 Python tests, Node/browser suites 50 + 23 + 27 + 7; [Goruut 41356347649](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347649) and [external G2P 41356347662](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41356347662) SUCCESS.
 
 ## Historical records
 
@@ -1341,3 +1315,37 @@ A follow-up source search found published BYU MATRIX Lab Hugging Face checkpoint
 ## Main publication reconciliation — 2026-11-02
 
 Supersedes earlier handoff statements that the review branch was still ahead of `main` and unmerged: PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) was merged into `main` as `ed36e7030df4ec8c1b70b50fdcfd6e47e5770d52`; this was the repository's current `main` tip at reconciliation. Exact-head engineering workflows on the PR head passed: verify [41413902679](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902679), Goruut [41413902653](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902653), and lao2ipa [41413902805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902805). The Pages workflow is configured to deploy from `main`; the public site and post-merge deployment run could not be independently inspected from this session, so deployment status remains **BLOCKED (external verification/network access)**, not claimed successful. No UI/runtime files were changed by this PR. Independent expert-adjudicated gold remains 0 and accuracy remains null; the project is still a research prototype.
+
+
+## Independent Lao quality review — 2026-11-02
+
+**Overall judgement: PARTIAL research prototype; not yet demonstrated as a high-accuracy Lao → Ukrainian phonetic transcriber.**
+
+### What is already strong
+- Separate Python and browser implementations, shared structural fixtures, strict malformed-input withholding, mixed-script/source-preservation tests, and reproducible generated web data.
+- Explicit Vientiane-oriented tone/rhyme evidence matrix and source-aware Ukrainian target layer.
+- Independent IPA corpus schemas, typed IPA-kind handling, split/leakage checks, and rights eligibility gates are implemented and verified as engineering mechanisms.
+- Latest main is `33ac5615b13fec717ce59ee55229b9d11f04893d`; exact-main verify run 41418528760 and Pages deployment 41417298476 completed SUCCESS. The comprehensive corpus/matrix PR #98 is merged; stale statements in the earlier checkpoint saying it remained open are superseded.
+
+### Quality limitations that materially affect pronunciation
+- **No independent expert gold:** the gold corpus remains empty/header-only; word-level IPA and Ukrainian accuracy are **not measured**.
+- **Tone is not validated:** Lao tone is contrastive. Tone-suffix differences in external comparisons cannot be dismissed as cosmetic. The source convention, contour representation and interactions with rhyme/coda need expert adjudication.
+- **Goruut is diagnostic only:** the latest 100-row report records 81 outputs / 19 none; 47 complete / 34 partial / 19 unknown; 68 stable / 13 unstable; 17 randomized inputs; strict all-repeat source-attested matches 3/100 and any-repeat matches 9/100. These are output/coverage/stability diagnostics, not accuracy. The missing `weights9.bin.zlib` is absent in the pinned upstream language bundle and is an upstream blocker, not a project-owned file.
+- **lao2ipa comparison:** 0/37 exact implementation matches; 31 tone-suffix-only, 2 offglide-convention, and 4 segmental/vowel-sequence differences. The six non-tone differences and tone disagreements require source-located Lao expert review; 0/37 is not a gold accuracy score.
+- **MekongPhon transformer:** tonal and non-tonal model candidates are identified, but a profile-compatible, immutable, rights-reviewed, held-out comparison has not been run. Non-tonal output is not a complete tonal comparator.
+- **Remaining structural limits:** unspaced segmentation, initial clusters, certain tone-class and Pali/Sanskrit cases, and context-dependent syllable realization remain incomplete.
+- **Manual UX/accessibility:** hosted CI and Pages success do not establish keyboard, screen-reader, mobile/touch or visual usability.
+
+### Task ledger
+| Area | Status | Acceptance still required |
+|---|---|---|
+| Structural parser and source integrity | DONE_VERIFIED (engineering scope only) | Continue adversarial regression as new cases emerge |
+| Tone/rhyme and phonetic IPA | PARTIAL | Expert-approved Vientiane convention; source-located minimal pairs and independent adjudication |
+| Ukrainian target adaptation | PARTIAL | Expert review of segmental mismatches and target-language naturalness; no mapping from unverified G2P output |
+| External G2P evaluation | DONE_VERIFIED (diagnostic harness), PARTIAL (quality conclusion) | Run pinned tonal MekongPhon and Goruut only when license/profile/asset conditions are satisfied; compare on held-out gold |
+| Gold corpus and empirical accuracy | BLOCKED | Qualified independent annotators/adjudicator, rights-cleared audio/source packets, blind pilot and frozen held-out split |
+| Release readiness | BLOCKED | Gold, phonology, rights and manual QA gates all pass |
+
+**Recommendation:** retain the Vientiane-oriented scope as a bounded reference profile, keep the current fail-closed behavior, and prioritize human review of the six non-tone lao2ipa mismatches plus tone convention. Do not select a new production G2P engine on current evidence.
+
+This is a documentation audit based on current source registries, evidence matrices and recorded diagnostic artifacts. Local test commands were not run in this session because outbound GitHub access from the execution container was unavailable; the latest hosted main verification above is the engineering evidence, not a linguistic correctness claim.
