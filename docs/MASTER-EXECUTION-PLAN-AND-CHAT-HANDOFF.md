@@ -6,6 +6,16 @@
 **Previous checkpoint:** `6f607d7ab4d432fd8491a5fcee32186e4269fc32` and branch/PR details below are historical and superseded by the merged main state.
 
 
+## Current task ledger and next blocker
+
+- **DONE_VERIFIED (engineering):** structural parsing/source-preservation contracts, Python/browser regressions, generated-data reproducibility, data/evidence audit, independent IPA corpus schemas and rights/split validator mechanisms; latest main verify and Pages deployment succeeded.
+- **PARTIAL:** Vientiane-oriented tone/rhyme realization, phonetic IPA convention, multisyllabic segmentation edge cases and Ukrainian target correspondences still need source-located expert review.
+- **BLOCKED:** independent expert-adjudicated Lao IPA gold remains 0; accuracy is null. Production G2P selection is also blocked by the lack of held-out gold and asset/rights/profile verification.
+- **TODO:** manual deployed-site keyboard, screen-reader, mobile and touch QA; inspect six non-tone lao2ipa mismatches and all tone disagreements with a qualified reviewer.
+- **Next blocker:** qualified Lao IPA annotation/adjudication and source-level tone/segment review. Keep external-engine output diagnostic only.
+
+
+
 ## Historical records
 
 The dated entries below are retained as audit history. When a historical status or SHA conflicts with this current checkpoint, the active branch ref, completion register, and exact-head workflow run above are authoritative.
