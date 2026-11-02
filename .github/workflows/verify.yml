@@ -28,12 +28,18 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
+      - name: Install browser-test dependencies
+        run: npm install --no-audit --no-fund
       - name: Browser engine tests
         run: npm test
       - name: Build and regenerate canonical browser data
         run: npm run build
       - name: Verify generated data is committed and reproducible
         run: git diff --exit-code -- web/data.js
+      - name: Run real Chromium UI tests against the built site
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:browser
       - name: Verify built pages and relative assets
         run: |
           test -s dist/index.html
