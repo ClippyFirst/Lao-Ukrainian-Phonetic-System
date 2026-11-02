@@ -1467,3 +1467,7 @@ Superpowers remains pinned to its verified v7.0.1 release commit `2ce8aa15d05bd5
 - **DONE_VERIFIED (automated browser path):** Added pinned Playwright Chromium coverage for real built-site interactions: `ຂາ` renders Ukrainian `к'а` and IPA `kʰaː`; malformed mixed-script input is withheld; clear restores the empty state; phonetic and romanization modes remain distinct. Exact-head CI [41532309461](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41532309461) passed, including the Chromium UI step.
 - **PARTIAL:** this verifies the production build in headless Chromium, not the currently deployed public URL from an external user network. Existing Pages deployment smoke checks fetch published HTML and runtime assets; manual mobile, keyboard and assistive-technology QA remains open.
 - **TODO:** execute the same browser interaction suite against the deployed Pages URL and record mobile/screen-reader results. Do not treat this as linguistic gold or accuracy evidence.
+
+## Exact-head browser test result — 2026-11-02
+
+- Exact final UI gate: [41532837406](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41532837406) SUCCESS on the documentation-updated branch head. The four Chromium browser tests passed, including visible Ukrainian/IPA output, malformed mixed-script withholding, clear/reset and mode separation.
