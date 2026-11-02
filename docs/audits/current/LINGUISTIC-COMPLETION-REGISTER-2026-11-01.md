@@ -232,3 +232,12 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 | ID | Status | Decision / evidence | Remaining acceptance |
 |---|---|---|---|
 | LAO-PROFILE-001 | DONE_VERIFIED (pilot-scope decision only) | Contemporary central Vientiane Lao, careful citation forms; project-local ID `lao-vientiane-careful-citation-v1`. Ueda (1994) describes central Vientiane; Enfield (2007) supports the documented Vientiane-oriented reference scope. Issue #99 and canonical handoff updated. | Approve IPA convention; recruit two annotators + independent adjudicator; curate rights-cleared 30-item sample; blind dry-run and adjudicate. No claim of runtime completeness or linguistic accuracy. |
+
+
+## Engineering-method integration — 2026-11-02
+
+| ID | Status | Evidence | Remaining acceptance |
+|---|---|---|---|
+| ENG-METHODS-001 | DONE_VERIFIED (repository-context integration) | Added GLOSSARY.md, docs/agents/issue-tracker.md and docs/agents/codebase-map.md; linked them from AGENTS.md; refreshed exact upstream method pins. Exact-head CI before handoff closeout: [41468921762](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41468921762) SUCCESS. | Re-check these maps whenever entry points, data ownership or test commands change. This task does not establish linguistic accuracy or independent gold. |
+
+The three references are used as methods, not runtime dependencies: Superpowers for explicit scoped execution and verification; Matt Pocock Skills for domain vocabulary, clear interfaces, source-backed research and two-axis review; Ponytail for real-flow mapping, minimal complete changes and residual-risk reporting. No production code or linguistic labels were changed by this task.
