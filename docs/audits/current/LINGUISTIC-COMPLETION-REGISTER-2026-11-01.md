@@ -256,3 +256,10 @@ Comparator concordance is not accuracy. See the dated benchmark review in the ca
 
 
 **Clarification to BENCH-BYU-LAO-001:** the included `data/splits/lao_train.csv` / `lao_eval.csv` files are lexicon partitions, not demonstrated model-training manifests. MekongPhon `data/README.md` misdescribes the inspected files as OPUS sentence splits; `pipeline/convert_lao.py` references different train/full-lexicon paths. Exact checkpoint-to-split linkage is unverified. Keep the 100 items as a candidate diagnostic, not a validated model holdout.
+
+
+## Upstream methodology pin reconciliation — 2026-11-02
+
+| ID | Status | Evidence | Acceptance / limitation |
+|---|---|---|---|
+| ENG-METHOD-PIN-002 | DONE_VERIFIED (documentation provenance correction) | Corrected `AGENTS.md` and the canonical handoff to distinguish `mattpocock/skills` release v1.3.2 (`d1478fcb140db0b93c0c8df17bcfd311844749d0`) from the latest inspected `main` snapshot (`4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, 2026-10-31). The newer main commit adds the `software-factory` glossary/design skill; no unrelated factory workflow was imported. | Methodology metadata only. No runtime, linguistic rules, corpus, license grants or accuracy metrics changed. Recheck upstream pins when methodology sources are intentionally refreshed. |
