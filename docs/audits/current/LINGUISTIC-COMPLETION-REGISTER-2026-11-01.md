@@ -309,3 +309,13 @@ Lao: DONE_VERIFIED — current-main Pages build/deploy smoke passed (run 4141729
 | LAO-GOLD-PILOT-001 | BLOCKED | No new gold annotations created. The 1994 article is descriptive single-informant evidence, not a licensed, independently double-annotated project benchmark. | Freeze profile and IPA convention; select sourced lexical contrasts; two independent qualified annotators and separate adjudicator; record alternatives/uncertainty, source locators and rights. Gold remains 0; accuracy null. |
 
 The Ukrainian transcription-method comparator Musiichuk (2022), DOI [10.36059/978-966-397-283-1-64](https://doi.org/10.36059/978-966-397-283-1-64), informs the design decision process only; Vietnamese mappings are explicitly not adopted. No runtime rule, IPA label, or benchmark score changed in this research pass.
+
+
+## Follow-up corpus lead and annotation acceptance — 2026-11-03
+
+| ID | Status | Evidence update | Acceptance / limitation |
+|---|---|---|---|
+| LAO-MEKONGPHON-2026-001 | BLOCKED | Shurtz et al. (2026), [MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer](https://doi.org/10.63317/4bb9rvdshu4z), is a new relevant corpus lead; paper PDF/release metadata unavailable in this pass. | Verify item-level IPA convention, dialect/speaker metadata, source provenance, splits and redistribution license from primary artifacts before use. Do not treat title or model concordance as gold evidence. |
+| LAO-GOLD-AGREEMENT-001 | TODO | Cucchiarini (1996), DOI [10.3109/02699209608985167](https://doi.org/10.3109/02699209608985167); Oller & Ramsdell (2006), DOI [10.1044/1092-4388(2006/100)]. | Pilot reports exact normalized and alignment-aware feature-weighted agreement; separate tone, vowel length, coda, syllable/foot boundary, alternatives and adjudication rates. Raw percent agreement is supplementary. |
+
+No gold annotations or runtime changes resulted. Independent gold remains 0; accuracy null.
