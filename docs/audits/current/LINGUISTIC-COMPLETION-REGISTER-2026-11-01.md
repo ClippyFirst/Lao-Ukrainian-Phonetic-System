@@ -213,6 +213,6 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 
 - Current main: `33ac5615b13fec717ce59ee55229b9d11f04893d`; exact-main verify [41418528760](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41418528760) and Pages [41417298476](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41417298476) SUCCESS.
 - Overall judgement: PARTIAL research prototype; no empirical IPA or Ukrainian accuracy is available (independent gold=0, accuracy=null).
-- External diagnostics: Goruut 100-row coverage/stability figures and lao2ipa 37-case mismatch taxonomy are diagnostic only; they do not establish accuracy or select a production winner.
+- External diagnostics: Goruut latest 100-row raw-output diagnostic (run 41409083978): 81 outputs / 19 none, 47 complete / 34 partial / 19 unknown, 14 unstable, 4/100 source-attested exact matches; a previous three-repeat artifact reported 3/100 all-repeat and 9/100 any-repeat matches. lao2ipa 37-case mismatch taxonomy is diagnostic only. None of these figures is accuracy or selects a production winner.
 - Tone convention, expert adjudication, six non-tone mismatch reviews, MekongPhon rights/profile/split verification, upstream weights9 asset blocker, and manual accessibility QA remain open.
 
