@@ -1380,3 +1380,23 @@ This is a documentation audit based on current source registries, evidence matri
 This is a bounded target for the first pilot, not a claim that all Lao varieties share one tone inventory or that the current engine fully implements this profile. Ueda (1994) explicitly describes the central Vientiane dialect, including short/long vowel contrasts, diphthongs, final consonants and five tones; Enfield (2007) is the documented reference basis for the repository's Vientiane-oriented scope. Preserve the source's note that regional Lao tone systems vary. Keep Luang Prabang and other varieties out of the same pilot score.
 
 Issue [#99](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/99) now records this profile decision as complete. The IPA convention sheet, annotator/adjudicator recruitment, blind intake, rights-cleared 30-item selection and independent adjudication remain open. Gold remains 0; accuracy remains null. References: https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_article ; https://eurphon.info/languages/html?lang_id=214.
+
+
+## Engineering-method application — 2026-11-02
+
+**Status: DONE_VERIFIED (repository-context integration and exact-head engineering CI only).** Applied the three requested engineering references in this repository without importing external runtime dependencies or duplicating their skill trees.
+
+- **Superpowers:** scoped the task, checked the relevant entry points and acceptance constraints, and used evidence-gated verification. No production behavior was changed in this batch, so no artificial test-only change or TDD cycle was introduced.
+- **Matt Pocock Skills:** added the repository-specific domain glossary and GitHub issue-tracker configuration so downstream research, interface design and code-review work has stable project vocabulary and tracker instructions.
+- **Ponytail:** added a source-verified codebase map that follows the real execution/data flow, identifies high-risk seams and lists the actual verification commands. No speculative abstraction or dependency was added.
+- **Agent entry point:** AGENTS.md links all three context documents and refreshes upstream method pins to Superpowers 2ce8aa1, mattpocock/skills 4ae2317, and Ponytail 96608e0.
+
+**Files:** GLOSSARY.md; docs/agents/issue-tracker.md; docs/agents/codebase-map.md; AGENTS.md.
+
+**Context-file commits:** glossary 0c7153d959d551ed679f619d65311c693c41848d; issue tracker 690f5ce713581b4d96ec14a1697cfb45125a4878; codebase map c6c8a688f41a37a600e86f047bb7a27965672300; AGENTS 5d7625b63f2f36bf22e7c7fe24a5c21199792ef5.
+
+**Exact-head verification for the context-file head:** [workflow 41468921762](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41468921762) — SUCCESS. This verifies repository CI, not linguistic accuracy, independent IPA gold, expert review or manual accessibility.
+
+The map traces core.analyze through parser, phonology and IPA-first target adaptation; the optional romanization route remains separate.
+
+**Scope note:** this batch changes agent navigation and engineering workflow only. It does not add IPA labels, import external corpora, alter runtime behavior, or change the current empirical accuracy status. Continue from the existing language-specific blockers in the completion register.
