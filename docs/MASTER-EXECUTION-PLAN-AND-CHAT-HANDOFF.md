@@ -1488,3 +1488,10 @@ A targeted full-text review in the Undermind workspace and a parallel Consensus 
 - A Ukrainian methodological comparator, Musiichuk (2022), [Узгодження практичної транскрипції в’єтнамської мови з українським правописом](https://doi.org/10.36059/978-966-397-283-1-64), is relevant only for the decision framework (source contrasts, Ukrainian orthographic constraints, recoverability vs euphony); its Vietnamese mappings are not transferable to Lao.
 
 Research and implementation remain PARTIAL/BLOCKED at the linguistic evidence gate. A next pilot still requires a frozen Vientiane IPA convention, lexeme selection from documented sources, two independent qualified annotators, separate adjudication, and rights-cleared records. Do not populate IPA gold from Ueda's illustrative examples or from another G2P engine.
+
+
+## Follow-up: corpus lead and annotation agreement — 2026-11-03
+
+Shurtz et al. (2026), [MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer](https://doi.org/10.63317/4bb9rvdshu4z), surfaced as a relevant new resource lead. The PDF and inspectable release metadata were unavailable in this pass; item provenance, dialect/speaker splits, IPA convention compatibility and redistribution rights are therefore unverified. The title does not establish production suitability. Keep the corpus/model comparison BLOCKED pending primary-paper, dataset-card and exact-artifact review.
+
+For the planned 30-lexeme expert pilot, report exact normalized agreement and alignment-aware feature-weighted agreement, not raw symbol percentage alone. Cucchiarini (1996), [Assessing transcription agreement](https://doi.org/10.3109/02699209608985167), details why raw agreement is inadequate; Oller & Ramsdell (2006), [A weighted reliability measure for phonetic transcription](https://doi.org/10.1044/1092-4388(2006/100)), motivates feature-weighted assessment. Report tone, vowel length, coda, syllable/foot boundaries, alternatives and adjudication rates separately. No new IPA labels or runtime rules were introduced.
