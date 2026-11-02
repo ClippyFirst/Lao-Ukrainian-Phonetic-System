@@ -184,3 +184,9 @@ The validator now requires the `final_ipa` key to be present for every adjudicat
 ### Unresolved adjudication explicit-null positive-path coverage — 2026-11-02
 
 The regression suite now also proves the valid complementary case: `decision=UNRESOLVED` with an explicitly present `final_ipa: null` is accepted and remains excluded from adjudicated gold. Test commit `dbbac42d4a4879d0bf340027037a3edba60063d2`; exact-head PR CI [41407386614](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407386614) SUCCESS. 146 Python unittest tests; browser engine tests, generated-data reproducibility, repository evidence audit and production build passed. Optional diagnostics: [41407386667](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407386667), [41407387018](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41407387018) SUCCESS. This does not create IPA labels or change the gold count (still 0) or accuracy (still null).
+
+## External G2P engine coverage audit — 2026-11-02
+
+- **PARTIAL (DONE_VERIFIED diagnostic execution):** `lao2ipa==1.0.0` ran 37 engineering fixtures: 0/37 external fixture matches; 31 tone-only heuristic differences and 6 segmental/offglide differences. Goruut source snapshot `b224bde` ran 100 source-attested cases: 4/100 exact matches, 19 failed outputs, 14 unstable engineering outputs, 47 complete / 34 partial / 19 unknown coverage. See `docs/research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md` and Actions runs 41409083914 / 41409083978.
+- **NOT SCORED:** independent expert-adjudicated IPA gold remains 0; no accuracy score is valid. Tone-stripped agreement is not an accuracy metric.
+- **TODO:** inspect six non-tone Lao2IPA mismatches and all tone disagreements with qualified Lao reviewers; recover/fix Goruut missing `weights9.bin.zlib`; benchmark MekongPhon Lao model on a profile-compatible held-out set.
