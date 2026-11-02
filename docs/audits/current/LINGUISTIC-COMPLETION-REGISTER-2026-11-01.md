@@ -225,3 +225,10 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Immediately preceding exact-head verification: [41458000116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41458000116) SUCCESS — 146 Python tests, browser suites 50 + 23 + 27 + 7, data/evidence audit, generated-data reproducibility and built-page checks.
 - The remaining work is evidence-limited, not a CI failure: independent expert IPA gold=0; tone and segmental disagreements need qualified Lao review; Goruut is not a production candidate; MekongPhon tonal-model comparison remains unverified.
 - PR #100 is open and mergeable. This register update is documentation-only and is intended to trigger a fresh exact-head verification.
+
+
+## Pilot profile decision — 2026-11-02
+
+| ID | Status | Decision / evidence | Remaining acceptance |
+|---|---|---|---|
+| LAO-PROFILE-001 | DONE_VERIFIED (pilot-scope decision only) | Contemporary central Vientiane Lao, careful citation forms; project-local ID `lao-vientiane-careful-citation-v1`. Ueda (1994) describes central Vientiane; Enfield (2007) supports the documented Vientiane-oriented reference scope. Issue #99 and canonical handoff updated. | Approve IPA convention; recruit two annotators + independent adjudicator; curate rights-cleared 30-item sample; blind dry-run and adjudicate. No claim of runtime completeness or linguistic accuracy. |
