@@ -1,24 +1,23 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
-## Current continuation checkpoint — 2026-11-03
+## Current repository state — 2026-11-03
 
-- Dedicated fix branch: `fix/ipa-gold-split-manifest-coherence-20261103`; final documented branch head before this handoff refresh `f49eb17623da4e8e5f6f59b25db9002e6d2834dd`; PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) is open against `main`, 8 commits ahead / 0 behind, mergeable.
-- Fixed a reproducibility gap in the IPA gold split lifecycle: all rows in one manifest now share one frozen seed/version, and extending an existing manifest preserves that identity. Conflicting explicit overrides are rejected; redesigns require a separate versioned manifest.
-- RED evidence (tests-only change): [41612954045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41612954045) failed on the three intended regression behaviors. GREEN evidence: [41613340163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41613340163) SUCCESS — 149 Python tests plus the repository workflow's remaining checks.
-- Linguistic gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. This fix improves split reproducibility only.
-- Second RED/GREEN cycle also preserves CLI strictness: empty explicit `--seed`/`--version` values were shown to be silently defaulted by the first fix, regression tests failed on the test-only commit 41615374874, and exact-head GREEN 41615556868 passed after changing default resolution to distinguish `None` from an empty string.
-- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) was merged; see the post-merge checkpoint below. No release published.
+- **Default branch:** `main` at `300141942bd3053120ea3b75600f31686f0034ae`.
+- **Open pull requests:** none at the time of this checkpoint; all relevant integration PRs are merged or explicitly superseded/closed.
+- **Integrated engineering and research changes:** manifest-wide split identity; MekongPhon source-scope/citation update; four Playwright built-site browser regressions; CI/Pages browser gates; glossary, codebase map and agent guidance.
+- **Exact-main verification:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; built-site browser [41647974181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974181) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
+- **Research boundary:** independent expert-adjudicated IPA gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. Passing engineering/browser/deployment checks is not evidence of phonetic accuracy.
+
+## Current task ledger and blockers
+
+- **DONE_VERIFIED:** manifest-wide split identity is enforced; the default branch has current CI evidence; source citations and evidence scope have been reconciled; project agent guidance is in place.
+- **PARTIAL:** source-language phonology, IPA conventions, and Ukrainian target adaptation remain bounded by language-specific evidence and unresolved cases. Any external benchmark remains diagnostic until rights, profile and IPA conventions are independently validated.
+- **BLOCKED:** independent gold collection requires an approved profile and IPA convention, two qualified independent annotators, a separate adjudicator, blinded intake and source-specific rights clearance.
+- **TODO:** complete manual visual, keyboard, screen-reader, responsive and mobile QA on the deployed site; automated browser smoke is not a substitute.
+
+## Historical checkpoints (retained for audit; superseded by the current state above)
 
 
-**Current checkpoint:** 2026-11-03 (split-manifest fix merged)  
-**Default branch:** `main` at `ccb6ba44d9448858091306d606a7bba50f19a5de`  
-**Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
-**Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
-**Branch comparison at this checkpoint:** 98 commits ahead of main, 0 behind.
-**Exact-head methodology verification:** [verify 41358587062](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587062) SUCCESS; optional diagnostics [41358587063](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587063) and [41358587151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41358587151) SUCCESS.
-**Research status:** research prototype only; independent expert-adjudicated IPA gold = **0**; `data/benchmark/gold.tsv` is header-only; empirical accuracy = **null**.
-
-## Current task ledger and next blocker
 
 - **DONE_VERIFIED (engineering):** independent IPA corpus schemas, runtime validation, deterministic split/rights gates, source/evidence documentation, and exact-head automated engineering checks are present on the active branch. This is not linguistic validation.
 - **PARTIAL:** source-language phonology, IPA conventions, and Ukrainian target adaptation remain bounded by the language-specific evidence matrices and unresolved cases.
