@@ -454,7 +454,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         output = self.root / "gold.tsv"
         self.run_cli("export-gold", "--output", output)
         with output.open("r", encoding="utf-8", newline="") as handle:
-            rows = list(csv.DictReader(handle, delimiter="\\t"))
+            rows = list(csv.DictReader(handle, delimiter="\t"))
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["split"], "train")
 
