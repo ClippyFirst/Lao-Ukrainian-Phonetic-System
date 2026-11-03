@@ -1,9 +1,38 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
+## Continuation update — strict JSON constants (2026-11-03)
+
+- **JSON-INPUT-003 — DONE_VERIFIED:** JSONL corpus records and the license registry now reject JavaScript-only constants `NaN`, `Infinity`, and `-Infinity` through the JSON decoder's `parse_constant` hook. Diagnostics retain file and line context.
+- **Regression coverage:** invalid constants in a corpus JSONL row and in `licenses.json`.
+- **Test-first RED:** [41692621208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41692621208) — exactly the two new regression tests failed before the parser change.
+- **Implementation-head CI:** [41694083975](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41694083975) SUCCESS — 166 Python tests; 4 built-site browser tests.
+- **Scope boundary:** this enforces RFC-compliant JSON syntax only; no corpus labels, license permissions, or gold records were changed.
+
+## Continuation update — duplicate JSON keys in license registry (2026-11-03)
+
+- **JSONL-INPUT-002 — DONE_VERIFIED:** the standalone `data/benchmark/licenses.json` registry is now parsed with the same duplicate-key rejection as JSONL corpus files. Duplicate top-level `licenses` and nested `redistributable` keys fail with path-qualified diagnostics; this prevents last-key-wins ambiguity in redistribution decisions.
+- **Regression coverage:** duplicate top-level and nested license-registry JSON keys. Test-first RED: [41690095702](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41690095702); exact implementation-head CI: [41690255691](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41690255691) SUCCESS — 164 Python tests; 4 built-site browser tests.
+- **Scope boundary:** no license grant is inferred or changed, and no source records or IPA labels are added. Existing rights evidence requirements remain in force.
+
+## Continuation update — duplicate JSON object-key rejection (2026-11-03)
+
+- **JSONL-INPUT-001 — DONE_VERIFIED:** `scripts/ipa_gold_corpus.py` now rejects duplicate JSON object member names at every nesting level. The parser reports the source path and line number instead of allowing Python's default decoder to silently retain only the last value.
+- **Regression coverage:** duplicate top-level `record_id` and nested `orthography.text` keys, using otherwise valid corpus records.
+- **Test-first RED:** 41687363405.
+- **Exact implementation-head verification:** 41687689017 SUCCESS — 162 Python tests; 4 built-site browser tests.
+- **Scope boundary:** this protects annotation/provenance/profile/split input integrity; no linguistic labels, source data, schemas, or gold rows were added or changed. Independent adjudicated gold remains 0; empirical accuracy remains null.
+
+## Continuation update — strict benchmark TSV validation (2026-11-03)
+
+- **Implementation commit:** `832ca08431ddca0f081234fcd02fbc5e0b92053f` on `fix/heldout-ipa-benchmark-20261103` (PR #113; subsequent documentation commits follow it).
+- **DONE_VERIFIED (input integrity):** `read_tsv()` now rejects duplicate column names, blank header names, and nonblank rows with missing or extra fields. Physically blank lines remain ignored; values are not silently padded, truncated, or rewritten.
+- **Regression coverage:** duplicate gold and prediction headers, extra gold fields, and short prediction rows. Test-first RED: [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused GREEN after implementation: [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910).
+- **Scope boundary:** this is TSV/input-integrity hardening only. It does not add IPA labels, change linguistic rules, or establish empirical accuracy. Independent adjudicated gold remains 0 and accuracy remains null.
+
 ## Current repository state — 2026-11-03
 
-- **Default branch:** `main` at `300141942bd3053120ea3b75600f31686f0034ae`.
-- **Open pull requests:** none at the time of this checkpoint; all relevant integration PRs are merged or explicitly superseded/closed.
+- **Default branch:** [`main`](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/tree/main); PR base snapshot: `7743513495beb1f9c222e6ff14151eb21657fa45` (the live branch may advance independently).
+- **Open pull requests at this checkpoint:** #113 (`fix/heldout-ipa-benchmark-20261103`) carries the benchmark integrity correction; documentation-only PR #112 was subsequently superseded by the handoff/register reconciliation on this branch.
 - **Integrated engineering and research changes:** manifest-wide split identity; MekongPhon source-scope/citation update; four Playwright built-site browser regressions; CI/Pages browser gates; glossary, codebase map and agent guidance.
 - **Exact-main verification:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; built-site browser [41647974181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974181) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
 - **Research boundary:** independent expert-adjudicated IPA gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. Passing engineering/browser/deployment checks is not evidence of phonetic accuracy.
@@ -1401,3 +1430,34 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - `mattpocock/skills` current `main` is `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; the latest commit adds a software-factory glossary and example runs. The immutable release reference remains v1.3.2 at `d1478fcb140db0b93c0c8df17bcfd311844749d0`; distinguish release pin from current-main snapshot.
 - `DietrichGebert/ponytail` current `main` is `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`, release v5.3.3 at `7801d061243d7b753bad0e0b3c057cd250b11755`. The post-pin upstream change inspected is a README/product-list addition, not a methodology change.
 - No upstream skill files were copied into product/runtime code. These are traceable method references only.
+
+## Continuation — held-out IPA benchmark correction (2026-11-03)
+
+- Base `main`: `7743513495beb1f9c222e6ff14151eb21657fa45`; work branch: `fix/heldout-ipa-benchmark-20261103`.
+- Finding: the frozen split manifest existed, but the gold TSV export discarded split identity and the scorer included all adjudicated rows. This could allow train/dev examples into a purported independent evaluation.
+- Implemented: export now requires a frozen assignment and emits `split`; the gold TSV header includes the field; benchmark validation requires a valid split, defaults to `test`, and supports explicit `--split train|dev|all` for non-held-out diagnostics. Reports identify the selected split and distinguish all adjudicated rows from the scored denominator.
+- Exact code/test-head verification: [verify run 41651864836](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41651864836) SUCCESS on `7d2c37f8ceb9dd77aea2d40a8340a919d66c5b33`, including Python, browser engine, generated-data reproducibility, built-site Chromium and relative-asset checks.
+- **IPA-BENCH-SPLIT-001 — DONE_VERIFIED (engineering contract).** Independent expert-adjudicated gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. No phonetic labels were added.
+- Still blocked: two qualified independent annotators, a separate adjudicator, approved IPA convention, controlled blind intake and source-specific rights evidence. Manual visual/keyboard/screen-reader/mobile QA remains TODO.
+
+**Final review:** self-review performed against the complete branch diff and matching implementation across all three repositories (no subagent reviewer is available). The split/export/scoring contract, fail-closed paths, report denominator, tests and docs were inspected; no Critical/Important defect was identified. PR remains open for owner review; no shared-branch merge was performed.
+
+## Frozen split manifest provenance — 2026-11-03
+
+The export and benchmark now preserve and validate the complete frozen split identity, not only the bucket name: `split`, `split_seed`, and `split_version`. Every adjudicated row must carry non-empty seed/version metadata, and the benchmark rejects a TSV that mixes manifest identities. The report exposes the manifest seed/version and selected scoring split. This makes the evaluated test partition traceable to one exact manifest; it does not create linguistic gold or change the current zero-row accuracy status.
+
+
+## Empty prediction dataset guard — 2026-11-03
+
+A further benchmark review found that a header-only prediction TSV exited successfully and emitted a report with no engine entries. This could be mistaken for a completed evaluation even though no engine had been evaluated. Added a regression test and a fail-closed CLI guard requiring at least one prediction row. The guard runs after gold/split-manifest validation so existing malformed-manifest diagnostics remain specific. This does not change the treatment of missing rows within a named engine: those remain in its denominator. Exact-head verification: RED: [41655160456](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655160456). Final exact-head verify: [41655452782](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655452782) SUCCESS. The benchmark guard is DONE_VERIFIED as an engineering input-integrity check; no gold rows or accuracy claims were added.
+
+
+## Continuation — whitespace-only benchmark identifiers (2026-11-03)
+
+A code review found that truthiness-only identifier checks accepted whitespace-only gold IDs, prediction IDs and engine names. Such values could create visually empty keys and make malformed prediction rows look like a named engine. Validation now rejects identifiers whose trimmed value is empty while preserving non-empty identifiers verbatim for exact matching. Regression tests cover each field separately.
+
+- Test-first RED for whitespace-only gold IDs: [workflow run 41660752360](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41660752360) FAILED on the new regression as expected.
+- Test-first RED for prediction engine/ID fields: [workflow run 41662058993](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662058993).
+- Final exact-code-head verification: [workflow run 41662219515](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662219515) SUCCESS; 159 Python tests and 4 built-site browser tests passed.
+- Verified implementation commit: `dd8a06b30cfb17a8cb51d33cc902eca44385bc70`; exact-code-head CI [workflow run 41662219515](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662219515) SUCCESS.
+- **IPA-BENCH-IDENTIFIERS-001 — DONE_VERIFIED (engineering input-integrity guard).** No linguistic labels, gold records or accuracy claims were added.

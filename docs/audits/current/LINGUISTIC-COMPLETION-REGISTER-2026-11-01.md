@@ -1,10 +1,34 @@
 # Lao linguistic completion register — 2026-11-01
 
-**Baseline:** `main` `300141942bd3053120ea3b75600f31686f0034ae`.
+**Baseline code commit:** `7743513495beb1f9c222e6ff14151eb21657fa45` (PR base snapshot; subsequent benchmark and handoff changes are on the review branch).
 **Latest exact-main evidence:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
-**Open pull requests:** none at this checkpoint.
+**Open pull requests at this checkpoint:** implementation PR #113. Documentation-only PR #112 was subsequently closed as superseded after its equivalent handoff/register correction was ported into the implementation branch.
 **Latest exact-main engineering evidence:** verify [41326457758](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41326457758) succeeded.
 **Scope:** continue the existing master handoff; this register does not replace it.
+
+## Engineering integrity continuation — 2026-11-03
+
+- **TSV-INPUT-001 — DONE_VERIFIED:** benchmark TSV ingestion now rejects duplicate/blank headers and nonblank rows with extra or missing fields; blank physical lines are ignored. Regression cases cover gold/prediction duplicate headers, extra gold cells, and truncated prediction rows.
+- **Evidence:** test-first RED [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused implementation GREEN [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910); implementation commit `832ca08431ddca0f081234fcd02fbc5e0b92053f`.
+- **Acceptance boundary:** input shape is validated before scoring. This does not create adjudicated IPA data or alter language accuracy status (gold 0; accuracy null).
+
+## Strict JSON syntax — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| JSON-INPUT-003 | DONE_VERIFIED | Reject `NaN`, `Infinity`, and `-Infinity` in JSONL and license registry inputs. RED 41692621208; implementation CI 41694083975 SUCCESS (166 Python tests; 4 built-site browser tests). | Reject non-standard JSON constants before corpus or rights validation; no linguistic labels or license terms changed. |
+
+## License registry JSON integrity — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| JSONL-INPUT-002 | DONE_VERIFIED | Duplicate top-level and nested keys in `licenses.json` rejected. RED 41690095702; implementation CI 41690255691 SUCCESS (164 Python tests; 4 built-site browser tests). | Rights registry cannot silently apply last-key-wins semantics; no license permission is inferred or broadened. |
+
+## JSONL input integrity — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| JSONL-INPUT-001 | DONE_VERIFIED | Duplicate top-level and nested JSON object keys are rejected. RED 41687363405; exact implementation-head CI 41687689017 SUCCESS (162 Python tests; 4 built-site browser tests). | Prevent silent last-key-wins corruption before corpus schema/provenance validation. No linguistic data or accuracy claims added. |
 
 ## Evidence-based task ledger
 
@@ -268,3 +292,29 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 **Status: DONE_VERIFIED (reference audit).** Superpowers v7.0.1 current main: `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; mattpocock/skills v1.3.2 release: `d1478fcb140db0b93c0c8df17bcfd311844749d0`, current main snapshot: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; Ponytail v5.3.3 release: `7801d061243d7b753bad0e0b3c057cd250b11755`, current main: `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` (README-only post-pin change).
 
 - Release pins and current-main snapshots are distinguished. No third-party runtime or skill files imported.
+
+## 2026-11-03 — held-out benchmark split enforcement
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| IPA-BENCH-SPLIT-001 | DONE_VERIFIED (engineering contract) | Export preserves the frozen group-safe split; scorer defaults to test and requires explicit selection for train/dev/all. Exact-head verify [41651864836](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41651864836) SUCCESS on `7d2c37f8ceb9dd77aea2d40a8340a919d66c5b33`. This fixes the evaluation boundary, not linguistic gold. |
+
+Independent gold remains 0 and accuracy remains null. No data labels were fabricated. The split-aware benchmark documentation is in `docs/benchmarking-and-external-ipa.md`.
+
+## Frozen split manifest provenance — 2026-11-03
+
+The export and benchmark now preserve and validate the complete frozen split identity, not only the bucket name: `split`, `split_seed`, and `split_version`. Every adjudicated row must carry non-empty seed/version metadata, and the benchmark rejects a TSV that mixes manifest identities. The report exposes the manifest seed/version and selected scoring split. This makes the evaluated test partition traceable to one exact manifest; it does not create linguistic gold or change the current zero-row accuracy status.
+
+
+## 2026-11-03 — empty benchmark prediction input
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| IPA-BENCH-EMPTY-PREDICTIONS-001 | DONE_VERIFIED (engineering guard) | Header-only prediction TSV previously exited 0 and produced an empty `engines` object. Test-first regression failed on all three language repositories; the scorer now rejects an empty prediction dataset after checking gold and frozen split provenance. Missing individual predictions within a named engine remain denominator-counted. RED: [41655160456](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655160456). Final exact-head verify: [41655452782](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655452782) SUCCESS. |
+
+
+## 2026-11-03 — benchmark identifier validation
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| IPA-BENCH-IDENTIFIERS-001 | DONE_VERIFIED (engineering guard) | Reject whitespace-only gold IDs, prediction IDs and engine names while preserving non-empty identifiers exactly. Test-first RED: gold-ID run 41660752360; prediction-ID/engine run 41662058993. Final exact-code-head CI: 41662219515 SUCCESS (159 Python tests and 4 built-site browser tests passed).  No linguistic labels or accuracy claims were added. |

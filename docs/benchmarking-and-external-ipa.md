@@ -12,8 +12,9 @@ External engines are comparators or optional upstream IPA providers only. Preser
 
 The standard-library-only harness is scripts/benchmark_ipa.py. It reads tab-separated files:
 
-- Gold columns: id, text, gold_ipa, gold_status, profile, source_id.
-- Prediction columns: id, engine, raw_output, ipa, status, version.
+- Gold required columns: id, text, gold_ipa, gold_status, profile, source_id, ipa_kind, split, split_seed, split_version (source-rights metadata columns may also be present).
+- Prediction required columns: id, engine, raw_output, ipa, status, version, ipa_kind.
+- The TSV reader rejects duplicate or blank header names and rejects any nonblank data row whose field count differs from its header; physically blank lines are ignored.
 
 Run from the repository root:
 
@@ -42,7 +43,7 @@ These are research leads, not verified availability claims. Before executing a c
 
 ## Current evidence status
 
-- Harness baseline: executed successfully in prior main CI. The current PR adds fail-closed validation requiring every ADJUDICATED row to have non-empty IPA, source_id and profile; regression tests must pass on the final head.
+- Harness baseline: hosted CI verifies the strict input parser, held-out split provenance and fail-closed gold gates. On the 2026-11-03 continuation, test-first RED is recorded in [run 41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused GREEN verification after the parser correction is [run 41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910). These are engineering checks, not linguistic accuracy evidence.
 - Adjudicated language-specific gold rows: not yet established by this document.
 - Candidate engine availability, version, licenses, and language-specific output quality: unverified until recorded as run evidence.
 - Release status: research prototype; no accuracy claim is authorized by this registry.
@@ -213,3 +214,24 @@ Normal CI validates corpus structure while allowing an empty research corpus. Th
 
 
 The rights layer is executable: `data/benchmark/licenses.json` is the allowlist, each record must carry `rights_evidence` (basis, locator, verifier pseudonym and date), and unknown or non-redistributable license IDs are rejected. Exported gold rows retain `license_id` and `rights_evidence_locator`; benchmark reports carry those fields forward. The allowlist is not a substitute for source-by-source legal verification.
+
+
+## Frozen held-out split enforcement — 2026-11-03
+
+The benchmark/export boundary now carries the frozen corpus split end to end. `ipa_gold_corpus.py export-gold` writes the assigned `train`/`dev`/`test` value into each exported row and fails if an adjudicated record has no frozen assignment. `benchmark_ipa.py` requires a valid split on every adjudicated gold row and scores `test` by default. Use `--split train` or `--split dev` only for explicitly scoped development diagnostics; `--split all` is an explicit non-held-out diagnostic and must not be reported as independent evaluation. Reports record the selected split and the total adjudicated-row count separately from the scored denominator.
+
+The checked-in header-only `data/benchmark/gold.tsv` schema now includes the `split` column. This does not add any gold records: the independent adjudicated corpus remains empty and empirical accuracy remains `null`. Existing external/source-attested diagnostics remain outside the gold denominator.
+
+## Frozen split manifest provenance — 2026-11-03
+
+The export and benchmark now preserve and validate the complete frozen split identity, not only the bucket name: `split`, `split_seed`, and `split_version`. Every adjudicated row must carry non-empty seed/version metadata, and the benchmark rejects a TSV that mixes manifest identities. The report exposes the manifest seed/version and selected scoring split. This makes the evaluated test partition traceable to one exact manifest; it does not create linguistic gold or change the current zero-row accuracy status.
+
+
+### Empty prediction input guard
+
+The benchmark rejects a prediction TSV with a header but no data rows. Without this guard, the CLI could exit successfully and write a report with an empty `engines` object, which is not an evaluation of any engine. A non-empty prediction set is required to identify at least one engine; missing individual predictions within a declared engine remain in that engine's denominator as before.
+
+
+### Identifier input validation
+
+Gold IDs and prediction IDs, as well as prediction engine names, must contain at least one non-whitespace character. Whitespace-only values are rejected before scoring so they cannot create blank-looking keys or engine entries. The check does not rewrite non-empty identifiers; matching remains exact and provenance-preserving. Regression coverage exercises whitespace-only gold IDs, prediction IDs and engine names.

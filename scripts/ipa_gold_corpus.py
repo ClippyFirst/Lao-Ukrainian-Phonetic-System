@@ -23,7 +23,43 @@ IPA_KINDS = ("PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW")
 ADJUDICATED_DECISIONS = ("AGREEMENT", "RESOLVED")
 RIGHTS = ("OPEN", "PROJECT_CREATED", "RESTRICTED", "UNKNOWN")
 SPLIT_PROPERTIES = {"record_id", "group_id", "split", "seed", "version"}
-GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator")
+GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator", "split", "split_seed", "split_version")
+
+
+class DuplicateJSONKeyError(ValueError):
+    """Raised when a JSON object contains a repeated member name."""
+
+
+class InvalidJSONConstantError(ValueError):
+    """Raised when input uses JavaScript constants that are not valid JSON."""
+
+
+def _reject_nonstandard_json_constant(value: str) -> Any:
+    raise InvalidJSONConstantError(f"non-standard JSON constant {value}")
+
+
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise DuplicateJSONKeyError(f"duplicate JSON object key {key!r}")
+        value[key] = item
+    return value
+
+
+def read_json_document(path: Path, label: str) -> Any:
+    try:
+        return json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_unique_json_object,
+            parse_constant=_reject_nonstandard_json_constant,
+        )
+    except DuplicateJSONKeyError as exc:
+        raise ValueError(f"{path}: {label}: {exc}") from exc
+    except InvalidJSONConstantError as exc:
+        raise ValueError(f"{path}: {label}: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{path}: invalid {label}: {exc.msg}") from exc
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -35,7 +71,15 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
             if not raw.strip():
                 continue
             try:
-                value = json.loads(raw)
+                value = json.loads(
+                    raw,
+                    object_pairs_hook=_unique_json_object,
+                    parse_constant=_reject_nonstandard_json_constant,
+                )
+            except DuplicateJSONKeyError as exc:
+                raise ValueError(f"{path}:{line_no}: {exc}") from exc
+            except InvalidJSONConstantError as exc:
+                raise ValueError(f"{path}:{line_no}: {exc}") from exc
             except json.JSONDecodeError as exc:
                 raise ValueError(f"{path}:{line_no}: invalid JSON: {exc.msg}") from exc
             if not isinstance(value, dict):
@@ -103,10 +147,7 @@ def validate_ipa(value: Any, label: str) -> dict[str, Any]:
 
 def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     records = read_jsonl(args.records)
-    try:
-        license_document = json.loads(args.licenses.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"{args.licenses}: invalid license registry JSON: {exc.msg}") from exc
+    license_document = read_json_document(args.licenses, "license registry JSON")
     if not isinstance(license_document, dict):
         raise ValueError(f"{args.licenses}: license registry must be an object")
     reject_unknown_properties(license_document, {"schema_version", "licenses"}, "license registry")
@@ -422,6 +463,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
     for ident, adjudication in sorted(data["adjudicated"].items()):
         record = data["records"][ident]
         source = record["source"]
+        assignment = data["splits"].get(ident)
+        if assignment is None:
+            raise ValueError(f"adjudicated record {ident} has no frozen split assignment")
         if source["rights_status"] not in ("OPEN", "PROJECT_CREATED") or not source["redistributable"]:
             continue
         ipa = adjudication["final_ipa"]
@@ -431,6 +475,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
             "source_id": source["source_id"], "ipa_kind": ipa["kind"],
             "license_id": source["license_id"],
             "rights_evidence_locator": source["rights_evidence"]["locator"],
+            "split": assignment["split"],
+            "split_seed": assignment["seed"],
+            "split_version": assignment["version"],
         })
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as handle:

@@ -156,6 +156,26 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertNotIn("$defs", annotation)
         self.assertNotIn("$defs", adjudication)
 
+    def test_license_registry_rejects_duplicate_top_level_json_keys(self):
+        license_path = self.root / "duplicate-licenses.json"
+        license_path.write_text(
+            '{"schema_version":"1.0","licenses":{},"licenses":{}}',
+            encoding="utf-8",
+        )
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("duplicate JSON object key 'licenses'", run.stderr)
+
+    def test_license_registry_rejects_duplicate_nested_json_keys(self):
+        license_path = self.root / "duplicate-license-field.json"
+        license_path.write_text(
+            '{"schema_version":"1.0","licenses":{"CC-BY-4.0":'
+            '{"redistributable":true,"redistributable":false,'
+            '"commercial_use":true,"attribution_required":true,"share_alike":false}}}',
+            encoding="utf-8",
+        )
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("duplicate JSON object key 'redistributable'", run.stderr)
+
     def test_rejects_license_registry_missing_required_schema_flag(self):
         registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
         del registry["licenses"]["CC-BY-4.0"]["share_alike"]
@@ -273,6 +293,42 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.write_all()
         run = self.run_cli("validate", expected=1)
         self.assertIn("unknown properties", run.stderr)
+
+    def test_read_jsonl_rejects_nonstandard_json_constants(self):
+        for constant in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(constant=constant):
+                row = json.dumps(self.records[0], ensure_ascii=False)
+                row = row[:-1] + ', "extra": ' + constant + '}'
+                self.paths["records"].write_text(row + chr(10), encoding="utf-8")
+                run = self.run_cli("validate", expected=1)
+                self.assertIn(f"non-standard JSON constant {constant}", run.stderr)
+
+    def test_license_registry_rejects_nonstandard_json_constants(self):
+        license_path = self.root / "nonstandard-constant.json"
+        for constant in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(constant=constant):
+                license_path.write_text(
+                    '{"schema_version":' + constant + ',"licenses":{}}',
+                    encoding="utf-8",
+                )
+                run = self.run_cli("validate", "--licenses", license_path, expected=1)
+                self.assertIn(f"non-standard JSON constant {constant}", run.stderr)
+
+    def test_read_jsonl_rejects_duplicate_top_level_json_keys(self):
+        row = json.dumps(self.records[0], ensure_ascii=False)
+        row = row.replace('"record_id": "r1"', '"record_id": "r2", "record_id": "r1"', 1)
+        self.paths["records"].write_text(row + chr(10), encoding="utf-8")
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("duplicate JSON object key 'record_id'", run.stderr)
+
+    def test_read_jsonl_rejects_duplicate_nested_json_keys(self):
+        row = json.dumps(self.records[0], ensure_ascii=False)
+        original_text = json.dumps(self.records[0]["orthography"]["text"], ensure_ascii=False)
+        row = row.replace('"text": ' + original_text,
+                          '"text": "duplicate", "text": ' + original_text, 1)
+        self.paths["records"].write_text(row + chr(10), encoding="utf-8")
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("duplicate JSON object key 'text'", run.stderr)
 
     def test_assign_splits_rejects_duplicate_record_ids(self):
         self.records.append(dict(self.records[0]))
@@ -449,6 +505,16 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("assign-splits", "--version", "",
                            "--output", self.root / "empty-version.jsonl", expected=1)
         self.assertIn("--version must be a non-empty string", run.stderr)
+
+    def test_exported_gold_preserves_frozen_split(self):
+        output = self.root / "gold.tsv"
+        self.run_cli("export-gold", "--output", output)
+        with output.open("r", encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle, delimiter="\t"))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["split"], "train")
+        self.assertEqual(rows[0]["split_seed"], "test-seed")
+        self.assertEqual(rows[0]["split_version"], "v1")
 
 
 if __name__ == "__main__":

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Evidence-gated IPA benchmark; standard library only.
 
-Gold TSV: id, text, gold_ipa, gold_status, profile, source_id
-Prediction TSV: id, engine, raw_output, ipa, status, version
+Gold TSV required columns: id, text, gold_ipa, gold_status, profile, source_id, ipa_kind, split, split_seed, split_version.
+Prediction TSV required columns: id, engine, raw_output, ipa, status, version, ipa_kind.
+The reader rejects duplicate/blank headers and rows whose field count differs from the header; physically blank lines are ignored.
 Only ADJUDICATED, non-empty gold IPA rows enter the denominator.
 """
 from __future__ import annotations
@@ -10,18 +11,41 @@ import argparse, csv, json, unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind"]
+GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "split", "split_seed", "split_version"]
 PRED_FIELDS = ["id", "engine", "raw_output", "ipa", "status", "version", "ipa_kind"]
 IPA_KINDS = {"PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW"}
 
 def read_tsv(path: Path, required: list[str]) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f, delimiter="\t")
-        missing = set(required) - set(reader.fieldnames or [])
+        reader = csv.reader(f, delimiter="\t", strict=True)
+        try:
+            fieldnames = next(reader)
+        except StopIteration:
+            raise ValueError(f"{path}: missing TSV header") from None
+        if not fieldnames or any(not name.strip() for name in fieldnames):
+            raise ValueError(f"{path}: TSV header names must be non-empty")
+        seen = set()
+        duplicates = set()
+        for name in fieldnames:
+            if name in seen:
+                duplicates.add(name)
+            seen.add(name)
+        if duplicates:
+            raise ValueError(f"{path}: duplicate column names: {', '.join(sorted(duplicates))}")
+        missing = set(required) - set(fieldnames)
         if missing:
             raise ValueError(f"{path}: missing columns: {', '.join(sorted(missing))}")
-        rows = list(reader)
-    return [{k: (v or "") for k, v in row.items()} for row in rows]
+        rows = []
+        for line_number, values in enumerate(reader, start=2):
+            # Ignore physically blank lines, but never silently truncate or pad a data row.
+            if not values:
+                continue
+            if len(values) != len(fieldnames):
+                raise ValueError(
+                    f"{path}:{line_number}: expected {len(fieldnames)} fields, found {len(values)}"
+                )
+            rows.append(dict(zip(fieldnames, values)))
+        return rows
 
 def norm(s: str) -> str:
     return unicodedata.normalize("NFC", s.strip())
@@ -41,12 +65,14 @@ def main() -> int:
     ap.add_argument("--gold", type=Path, required=True)
     ap.add_argument("--predictions", type=Path, required=True)
     ap.add_argument("--output", type=Path, default=Path("benchmark-report.json"))
+    ap.add_argument("--split", choices=("test", "train", "dev", "all"), default="test",
+                    help="score only this frozen split; use 'all' only for an explicitly non-held-out diagnostic")
     args = ap.parse_args()
     gold_rows = read_tsv(args.gold, GOLD_FIELDS)
     pred_rows = read_tsv(args.predictions, PRED_FIELDS)
     gold = {}
     for row in gold_rows:
-        if not row["id"] or row["id"] in gold:
+        if not row["id"].strip() or row["id"] in gold:
             raise ValueError(f"gold IDs must be non-empty and unique: {row['id']!r}")
         gold[row["id"]] = row
     # An ADJUDICATED label must be auditable. Fail closed instead of silently
@@ -61,12 +87,27 @@ def main() -> int:
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires profile")
             if row["ipa_kind"].strip() not in IPA_KINDS:
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires valid ipa_kind")
-    eligible = {k: v for k, v in gold.items()
-                if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
+            if row["split"].strip() not in {"train", "dev", "test"}:
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires valid split (train, dev or test)")
+            if not row["split_seed"].strip():
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires non-empty split_seed")
+            if not row["split_version"].strip():
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires non-empty split_version")
+    eligible_all = {k: v for k, v in gold.items()
+                     if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
+    eligible = {k: v for k, v in eligible_all.items()
+                if args.split == "all" or v["split"].strip() == args.split}
+    manifest_identities = {(row["split_seed"].strip(), row["split_version"].strip())
+                           for row in gold_rows if row["gold_status"] == "ADJUDICATED"}
+    if len(manifest_identities) > 1:
+        raise ValueError("adjudicated gold rows must use one frozen split manifest (split_seed/split_version)")
+    manifest_seed, manifest_version = next(iter(manifest_identities), (None, None))
+    if not pred_rows:
+        raise ValueError("prediction file must contain at least one row for an engine")
     predictions = defaultdict(dict)
     unknown_ids = []
     for row in pred_rows:
-        if not row["engine"] or not row["id"]:
+        if not row["engine"].strip() or not row["id"].strip():
             raise ValueError("prediction engine and id must be non-empty")
         engine = row["engine"]
         if row["id"] in predictions[engine]:
@@ -77,14 +118,18 @@ def main() -> int:
     report = {
         "schema_version": "1.0",
         "method": {
-            "gold_gate": "gold_status == ADJUDICATED and non-empty gold_ipa",
+            "gold_gate": "gold_status == ADJUDICATED and non-empty gold_ipa and selected frozen split",
+            "split_policy": "test is the default; train/dev/all require explicit selection",
+            "manifest_policy": "all adjudicated rows must share one frozen split_seed/split_version identity",
             "normalization": "Unicode NFC plus outer whitespace trim only",
             "exact_match": "strict full-string IPA match; tone, length and syllable separators remain significant",
             "cer": "Levenshtein over Unicode code points only for rows with matching IPA representation kind; not articulatory/feature-weighted",
             "missing_predictions": "every eligible gold row is in each engine's denominator; absent/empty IPA counts as a missing prediction and incurs reference-length edit cost",
             "accuracy_claim": "descriptive only for the supplied adjudicated rows; no generalization claim",
         },
-        "gold": {"rows_total": len(gold), "rows_adjudicated": len(eligible),
+        "gold": {"rows_total": len(gold), "rows_adjudicated_total": len(eligible_all),
+                 "rows_adjudicated": len(eligible), "split": args.split,
+                 "split_seed": manifest_seed, "split_version": manifest_version,
                  "accuracy_status": "MEASURED_ON_ADJUDICATED_SUBSET" if eligible else "NOT_MEASURED"},
         "unknown_prediction_ids": unknown_ids,
         "engines": {},
@@ -99,7 +144,8 @@ def main() -> int:
             prediction_kind = pred.get("ipa_kind", "").strip() if pred else ""
             ipa_kind_mismatch = bool(p and prediction_kind != gold_kind)
             rows.append({
-                "id": ident, "profile": g["profile"],
+                "id": ident, "profile": g["profile"], "split": g["split"],
+                "split_seed": g["split_seed"], "split_version": g["split_version"],
                 "exact_match": bool(p) and p == ref and not ipa_kind_mismatch,
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
