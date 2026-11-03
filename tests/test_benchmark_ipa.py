@@ -69,11 +69,11 @@ class BenchmarkIpaTests(unittest.TestCase):
         stderr = self.run_benchmark([non_gold], [prediction], expected_returncode=1)
         self.assertIn("gold IDs must be non-empty and unique", stderr)
 
-        whitespace_engine = dict(prediction, engine=" \\t ")
+        whitespace_engine = dict(prediction, engine=" \t ")
         stderr = self.run_benchmark([], [whitespace_engine], expected_returncode=1)
         self.assertIn("prediction engine and id must be non-empty", stderr)
 
-        whitespace_id = dict(prediction, id=" \\t ")
+        whitespace_id = dict(prediction, id=" \t ")
         stderr = self.run_benchmark([], [whitespace_id], expected_returncode=1)
         self.assertIn("prediction engine and id must be non-empty", stderr)
 
