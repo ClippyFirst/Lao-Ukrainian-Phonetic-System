@@ -121,10 +121,6 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertEqual(summary["independent_gold_count"], 0)
         self.assertIsNone(summary["accuracy"])
 
-if __name__ == "__main__":
-    unittest.main()
-
-
     def test_sha256_file_is_stable_and_matches_standard_digest(self):
         import hashlib
         import tempfile
@@ -140,8 +136,8 @@ if __name__ == "__main__":
         with tempfile.TemporaryDirectory() as tmp:
             fixture = Path(tmp) / "fixture.json"
             script = Path(tmp) / "harness.py"
-            fixture.write_text('{"cases": []}\\n', encoding="utf-8")
-            script.write_text('print("run")\\n', encoding="utf-8")
+            fixture.write_text('{"cases": []}\n', encoding="utf-8")
+            script.write_text('print("run")\n', encoding="utf-8")
             provenance = build_provenance(
                 fixture_path=fixture,
                 script_path=script,
@@ -164,7 +160,11 @@ if __name__ == "__main__":
 
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "report.json"
-            output.write_text('{"diagnostic": true}\\n', encoding="utf-8")
+            output.write_text('{"diagnostic": true}\n', encoding="utf-8")
             sidecar = write_checksum_sidecar(output)
             self.assertEqual(sidecar.read_text(encoding="ascii"),
-                             f"{hashlib.sha256(output.read_bytes()).hexdigest()}  report.json\\n")
+                             f"{hashlib.sha256(output.read_bytes()).hexdigest()}  report.json\n")
+
+
+if __name__ == "__main__":
+    unittest.main()
