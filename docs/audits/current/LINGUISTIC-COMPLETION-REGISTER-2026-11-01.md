@@ -280,3 +280,10 @@ Independent gold remains 0 and accuracy remains null. No data labels were fabric
 ## Frozen split manifest provenance — 2026-11-03
 
 The export and benchmark now preserve and validate the complete frozen split identity, not only the bucket name: `split`, `split_seed`, and `split_version`. Every adjudicated row must carry non-empty seed/version metadata, and the benchmark rejects a TSV that mixes manifest identities. The report exposes the manifest seed/version and selected scoring split. This makes the evaluated test partition traceable to one exact manifest; it does not create linguistic gold or change the current zero-row accuracy status.
+
+
+## 2026-11-03 — empty benchmark prediction input
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| IPA-BENCH-EMPTY-PREDICTIONS-001 | DONE_VERIFIED (engineering guard) | Header-only prediction TSV previously exited 0 and produced an empty `engines` object. Test-first regression failed on all three language repositories; the scorer now rejects an empty prediction dataset after checking gold and frozen split provenance. Missing individual predictions within a named engine remain denominator-counted. Final exact-head CI evidence is pending at the time of this entry. |
