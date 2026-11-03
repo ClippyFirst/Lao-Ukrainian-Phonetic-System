@@ -78,6 +78,8 @@ def main() -> int:
     if len(manifest_identities) > 1:
         raise ValueError("adjudicated gold rows must use one frozen split manifest (split_seed/split_version)")
     manifest_seed, manifest_version = next(iter(manifest_identities), (None, None))
+    if not pred_rows:
+        raise ValueError("prediction file must contain at least one row for an engine")
     predictions = defaultdict(dict)
     unknown_ids = []
     for row in pred_rows:
