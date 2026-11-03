@@ -1469,3 +1469,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Tracked as [issue #116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116).
 - **LAO-PY-BROWSER-SEGMENTATION-001 — PARTIAL / contract decision required.** Acceptance: explicitly decide whether the APIs share segmentation semantics, add shared fixtures for isolated/unspaced/space-delimited/ZWSP/punctuation/malformed inputs, compare source reconstruction and statuses, then either implement parity or document the deliberate API boundary.
 - No phonology, IPA, or Ukrainian mapping rules were changed. No gold labels or accuracy claims were added.
+
+
+## Resolution — Python/browser Lao segmentation contract (2026-11-03)
+
+- **LAO-PY-BROWSER-SEGMENTATION-001 — DONE_VERIFIED (contract clarification).** The Python package is intentionally syllable-oriented; the browser instrument additionally performs conservative within-token syllable segmentation for phrase input. Neither behavior claims lexical word segmentation, and the two runtime outputs are not a parity oracle for unspaced multi-syllable text.
+- Public contract documented in [README.md — Runtime segmentation contract](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/main/README.md#runtime-segmentation-contract).
+- Tracking issue [#116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116) closed as completed after documentation was merged in [PR #117](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/117), merge commit `2750153bd49e11c3c74ac2cc515acc750f90fae0`.
+- Exact PR-head verification: [41716613666](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41716613666) SUCCESS — repository data/evidence audit, Python tests, browser engine tests, canonical browser-data regeneration/drift, real Chromium built-site tests, and built-page/relative-asset checks.
+- No production parser, phonology, IPA, or Ukrainian mapping rule changed. Phrase segmentation remains a browser convenience and is not a solved lexical segmentation problem. Future changes to either runtime contract require runtime-specific regression coverage and an update to the public contract.
