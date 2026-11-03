@@ -294,6 +294,22 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("unknown properties", run.stderr)
 
+    def test_read_jsonl_rejects_nonstandard_json_constants(self):
+        row = json.dumps(self.records[0], ensure_ascii=False)
+        row = row[:-1] + ', "extra": NaN}'
+        self.paths["records"].write_text(row + chr(10), encoding="utf-8")
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("non-standard JSON constant NaN", run.stderr)
+
+    def test_license_registry_rejects_nonstandard_json_constants(self):
+        license_path = self.root / "nonstandard-constant.json"
+        license_path.write_text(
+            '{"schema_version":NaN,"licenses":{}}',
+            encoding="utf-8",
+        )
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("non-standard JSON constant NaN", run.stderr)
+
     def test_read_jsonl_rejects_duplicate_top_level_json_keys(self):
         row = json.dumps(self.records[0], ensure_ascii=False)
         row = row.replace('"record_id": "r1"', '"record_id": "r2", "record_id": "r1"', 1)
