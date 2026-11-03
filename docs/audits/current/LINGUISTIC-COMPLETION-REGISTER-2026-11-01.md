@@ -346,3 +346,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 - These are leads only: no one has been contacted or recruited; no IPA convention has been approved; no rights have been granted; no IPA labels were generated.
 - The 30-item pilot remains BLOCKED until the acceptance conditions in the playbook are met. Candidate lexicon entries, phonetic respellings, model outputs, orthographic transcripts and source descriptions are not gold IPA.
 - The next external action is to contact a qualified prospective reviewer and request nominations for two independent annotators plus a separate adjudicator; separately complete item-level rights review and blind-intake dry run.
+
+
+## Lao external G2P reproducibility — 2026-11-03
+
+| ID | Status | Evidence / remaining acceptance | Boundary |
+|---|---|---|---|
+| LAO-G2P-REPRO-001 | PARTIAL pending exact-head CI | Harness now records fixture/script SHA-256, Python runtime/platform, GitHub source revision when present, and pinned lao2ipa version; report checksum sidecar and 90-day Actions artifact are implemented. Reproduction command is documented. | Reproducibility hardening only. Does not adjudicate any mismatch, provide a source-attested independent test sample, or create IPA gold. |
