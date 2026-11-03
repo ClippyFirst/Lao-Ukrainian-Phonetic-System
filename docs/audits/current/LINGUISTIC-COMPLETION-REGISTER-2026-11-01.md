@@ -12,6 +12,12 @@
 - **Evidence:** test-first RED [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused implementation GREEN [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910); implementation commit `832ca08431ddca0f081234fcd02fbc5e0b92053f`.
 - **Acceptance boundary:** input shape is validated before scoring. This does not create adjudicated IPA data or alter language accuracy status (gold 0; accuracy null).
 
+## Strict JSON syntax — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| JSON-INPUT-003 | DONE_VERIFIED | Reject `NaN`, `Infinity`, and `-Infinity` in JSONL and license registry inputs. RED 41692621208; implementation CI 41693061265 SUCCESS (166 Python tests; 4 built-site browser tests). | Reject non-standard JSON constants before corpus or rights validation; no linguistic labels or license terms changed. |
+
 ## License registry JSON integrity — 2026-11-03
 
 | ID | Status | Evidence | Acceptance boundary |
