@@ -1383,3 +1383,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - CI now runs the browser tests against the production build; the Pages workflow runs them before deployment and smoke-tests deployed runtime assets. Browser test dependency is pinned to `@playwright/test 1.63.0`; no package-lock is present, so npm's transitive dependency resolution remains less strictly frozen than a lockfile-based `npm ci` workflow.
 - Added project glossary, codebase map and issue-tracker guidance for agents; updated AGENTS.md to route future work through the canonical handoff and verified maps.
 - This is UI/engineering coverage, not manual visual/accessibility QA or phonetic accuracy. Independent gold remains 0 and accuracy remains `null`. This clean port requires exact-head CI before merge.
+
+
+## Upstream methodology reference refresh — 2026-11-03
+
+- `obra/superpowers` current `main` remains `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`, release v7.0.1. The current upstream change set includes explicit safety around refusing to delete worktrees with untracked work, evidence re-reading rather than test reruns, bounded/event-driven waits, and more explicit review/finish accounting. Project AGENTS.md retains the relevant scoped principles; the external repository is not a runtime dependency.
+- `mattpocock/skills` current `main` is `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; the latest commit adds a software-factory glossary and example runs. The release reference remains v1.3.2 at `d1478fcb140db0b93c0c8df17bcfd311844749d0`; distinguish the immutable release pin from the current-main snapshot.
+- `DietrichGebert/ponytail` current `main` is `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`, release v5.3.3. The post-pin change inspected is a README product/logo addition, not a methodology change; the method reference remains the v5.3.3 release commit `7801d061243d7b753bad0e0b3c057cd250b11755`.
+- No upstream skill files were copied into product/runtime code. These are traceable method references only.
