@@ -229,3 +229,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101), final documentation head `b008b824fb5c95861f4e3d8766c8307515df0c02`; code/test checkpoint `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44` (the three subsequent commits are docs-only).
 - Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
 - No linguistic gold rows were added; independent gold remains 0 and empirical accuracy remains `null`.
+
+
+## Source and benchmark citation reconciliation — 2026-11-03
+
+**Status: PARTIAL pending exact-head verification of the clean port.** Added the MekongPhon source-registry record and author–year benchmark citation. The reported 367,000 Lao pairs and under-2% held-out CER are explicitly attributed to the paper; dialect/IPA compatibility and separate corpus redistribution rights remain unverified. No pronunciation labels or data imported.
+
+- Original source/citation PR [#102](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/102) exact-head workflow [41639339241](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41639339241) succeeded. The clean port is a separate change and must pass its own CI.
+- No external pronunciation labels or dataset records were imported; source rights remain individually scoped; independent gold remains 0 and empirical accuracy remains `null`.
