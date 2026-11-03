@@ -1,5 +1,13 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
+## Bibliography and source-registry checkpoint — 2026-11-03
+
+- Dedicated documentation branch: `docs/source-citation-audit-20261103`; source-backed benchmark citation and registry corrections are recorded in the completion register.
+- Added the MekongPhon (Shurtz, Richardson & Richardson, 2026) record to the Lao source registry and converted the benchmark citation to author–year form. The reported 367,000 Lao pairs and under-2% held-out CER are explicitly attributed to the paper; profile compatibility and corpus redistribution rights remain unverified.
+- Academic Writing Toolkit: four BibTeX records structurally validated with 0 issues; British-English check returned 0 issues for all three benchmark audit documents after the Khmer spelling correction. Its citation-audit parser did not reliably parse the repositories' CSV/JSON source registries, so no false 'citation clean' claim is made; citations and metadata were checked directly against the primary ACL Anthology/LREC records and full text where available.
+- No external pronunciation labels or data imported; independent gold remains 0, accuracy remains `null`; no license permission inferred from article/model licenses.
+
+
 **Current checkpoint:** 2026-11-02  
 **Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
 **Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
