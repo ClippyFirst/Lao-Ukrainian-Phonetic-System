@@ -2,7 +2,7 @@
 
 **Baseline code commit:** `7743513495beb1f9c222e6ff14151eb21657fa45` (PR base snapshot; subsequent benchmark and handoff changes are on the review branch).
 **Latest exact-main evidence:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
-**Open pull requests at this checkpoint:** implementation PR #113; documentation-only PR #112 is superseded by the equivalent handoff/register correction on the implementation branch.
+**Open pull requests at this checkpoint:** implementation PR #113. Documentation-only PR #112 was subsequently closed as superseded after its equivalent handoff/register correction was ported into the implementation branch.
 **Latest exact-main engineering evidence:** verify [41326457758](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41326457758) succeeded.
 **Scope:** continue the existing master handoff; this register does not replace it.
 
