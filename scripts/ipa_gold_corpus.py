@@ -23,7 +23,7 @@ IPA_KINDS = ("PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW")
 ADJUDICATED_DECISIONS = ("AGREEMENT", "RESOLVED")
 RIGHTS = ("OPEN", "PROJECT_CREATED", "RESTRICTED", "UNKNOWN")
 SPLIT_PROPERTIES = {"record_id", "group_id", "split", "seed", "version"}
-GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator")
+GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator", "split")
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -422,6 +422,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
     for ident, adjudication in sorted(data["adjudicated"].items()):
         record = data["records"][ident]
         source = record["source"]
+        assignment = data["splits"].get(ident)
+        if assignment is None:
+            raise ValueError(f"adjudicated record {ident} has no frozen split assignment")
         if source["rights_status"] not in ("OPEN", "PROJECT_CREATED") or not source["redistributable"]:
             continue
         ipa = adjudication["final_ipa"]
@@ -431,6 +434,7 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
             "source_id": source["source_id"], "ipa_kind": ipa["kind"],
             "license_id": source["license_id"],
             "rights_evidence_locator": source["rights_evidence"]["locator"],
+            "split": assignment["split"],
         })
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as handle:
