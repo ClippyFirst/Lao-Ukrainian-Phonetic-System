@@ -33,6 +33,16 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def write_checksum_sidecar(path: Path) -> Path:
+    """Write a conventional SHA-256 sidecar for a completed report."""
+    sidecar = Path(str(path) + ".sha256")
+    sidecar.write_text(
+        f"{sha256_file(path)}  {path.name}\\n",
+        encoding="ascii",
+    )
+    return sidecar
+
+
 def build_provenance(
     *, fixture_path: Path, script_path: Path,
     external_name: str, external_version: str,
@@ -214,7 +224,7 @@ def main() -> int:
         external_version=external_version,
     )
     report = {
-        'schema_version': 5,
+        'schema_version': 6,
         'purpose': 'Comparative diagnostic only; neither implementation nor the engineering fixture is an independent gold standard.',
         'independent_gold_count': 0, 'accuracy': None, 'score_status': 'NOT_SCORED_NO_INDEPENDENT_GOLD',
         'fixture_path': str(args.fixture.relative_to(ROOT)) if args.fixture.is_relative_to(ROOT) else str(args.fixture),
