@@ -10,7 +10,7 @@ import argparse, csv, json, unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "split"]
+GOLD_FIELDS = ["id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "split", "split_seed", "split_version"]
 PRED_FIELDS = ["id", "engine", "raw_output", "ipa", "status", "version", "ipa_kind"]
 IPA_KINDS = {"PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW"}
 
@@ -65,10 +65,19 @@ def main() -> int:
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires valid ipa_kind")
             if row["split"].strip() not in {"train", "dev", "test"}:
                 raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires valid split (train, dev or test)")
+            if not row["split_seed"].strip():
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires non-empty split_seed")
+            if not row["split_version"].strip():
+                raise ValueError(f"ADJUDICATED gold row {row['id']!r} requires non-empty split_version")
     eligible_all = {k: v for k, v in gold.items()
                      if v["gold_status"] == "ADJUDICATED" and norm(v["gold_ipa"])}
     eligible = {k: v for k, v in eligible_all.items()
                 if args.split == "all" or v["split"].strip() == args.split}
+    manifest_identities = {(row["split_seed"].strip(), row["split_version"].strip())
+                           for row in gold_rows if row["gold_status"] == "ADJUDICATED"}
+    if len(manifest_identities) > 1:
+        raise ValueError("adjudicated gold rows must use one frozen split manifest (split_seed/split_version)")
+    manifest_seed, manifest_version = next(iter(manifest_identities), (None, None))
     predictions = defaultdict(dict)
     unknown_ids = []
     for row in pred_rows:
@@ -85,6 +94,7 @@ def main() -> int:
         "method": {
             "gold_gate": "gold_status == ADJUDICATED and non-empty gold_ipa and selected frozen split",
             "split_policy": "test is the default; train/dev/all require explicit selection",
+            "manifest_policy": "all adjudicated rows must share one frozen split_seed/split_version identity",
             "normalization": "Unicode NFC plus outer whitespace trim only",
             "exact_match": "strict full-string IPA match; tone, length and syllable separators remain significant",
             "cer": "Levenshtein over Unicode code points only for rows with matching IPA representation kind; not articulatory/feature-weighted",
@@ -93,6 +103,7 @@ def main() -> int:
         },
         "gold": {"rows_total": len(gold), "rows_adjudicated_total": len(eligible_all),
                  "rows_adjudicated": len(eligible), "split": args.split,
+                 "split_seed": manifest_seed, "split_version": manifest_version,
                  "accuracy_status": "MEASURED_ON_ADJUDICATED_SUBSET" if eligible else "NOT_MEASURED"},
         "unknown_prediction_ids": unknown_ids,
         "engines": {},
@@ -108,6 +119,7 @@ def main() -> int:
             ipa_kind_mismatch = bool(p and prediction_kind != gold_kind)
             rows.append({
                 "id": ident, "profile": g["profile"], "split": g["split"],
+                "split_seed": g["split_seed"], "split_version": g["split_version"],
                 "exact_match": bool(p) and p == ref and not ipa_kind_mismatch,
                 "missing_prediction": not bool(p),
                 "prediction_row_present": pred is not None,
