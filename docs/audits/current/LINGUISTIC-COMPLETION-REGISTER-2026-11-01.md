@@ -268,3 +268,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 **Status: DONE_VERIFIED (reference audit).** Superpowers v7.0.1 current main: `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; mattpocock/skills v1.3.2 release: `d1478fcb140db0b93c0c8df17bcfd311844749d0`, current main snapshot: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; Ponytail v5.3.3 release: `7801d061243d7b753bad0e0b3c057cd250b11755`, current main: `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` (README-only post-pin change).
 
 - Release pins and current-main snapshots are distinguished. No third-party runtime or skill files imported.
+
+## 2026-11-03 — held-out benchmark split enforcement
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| IPA-BENCH-SPLIT-001 | DONE_VERIFIED (engineering contract) | Export preserves the frozen group-safe split; scorer defaults to test and requires explicit selection for train/dev/all. Exact-head verify [41651864836](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41651864836) SUCCESS on `7d2c37f8ceb9dd77aea2d40a8340a919d66c5b33`. This fixes the evaluation boundary, not linguistic gold. |
+
+Independent gold remains 0 and accuracy remains null. No data labels were fabricated. The split-aware benchmark documentation is in `docs/benchmarking-and-external-ipa.md`.
