@@ -83,7 +83,7 @@ def main() -> int:
     predictions = defaultdict(dict)
     unknown_ids = []
     for row in pred_rows:
-        if not row["engine"] or not row["id"]:
+        if not row["engine"].strip() or not row["id"].strip():
             raise ValueError("prediction engine and id must be non-empty")
         engine = row["engine"]
         if row["id"] in predictions[engine]:
