@@ -37,7 +37,7 @@ def write_checksum_sidecar(path: Path) -> Path:
     """Write a conventional SHA-256 sidecar for a completed report."""
     sidecar = Path(str(path) + ".sha256")
     sidecar.write_text(
-        f"{sha256_file(path)}  {path.name}\\n",
+        f"{sha256_file(path)}  {path.name}\n",
         encoding="ascii",
     )
     return sidecar
