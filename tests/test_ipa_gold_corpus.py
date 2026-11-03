@@ -422,6 +422,20 @@ class IpaGoldCorpusTests(unittest.TestCase):
 
 
 
+    def test_assign_splits_allows_new_versioned_manifest_from_empty_input(self):
+        new_splits = self.root / "new-splits.jsonl"
+        new_splits.write_text("", encoding="utf-8")
+        output = self.root / "splits-v2.jsonl"
+        run = self.run_cli("assign-splits", "--splits", new_splits,
+                           "--seed", "second-seed", "--version", "v2",
+                           "--output", output)
+        rows = [json.loads(line) for line in output.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(len(rows), len(self.records))
+        self.assertTrue(all(row["seed"] == "second-seed" for row in rows))
+        self.assertTrue(all(row["version"] == "v2" for row in rows))
+        self.assertEqual(json.loads(run.stdout)["seed"], "second-seed")
+
+
     def test_assign_splits_rejects_empty_seed(self):
         self.splits = []
         self.write_all()
