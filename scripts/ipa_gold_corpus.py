@@ -23,7 +23,7 @@ IPA_KINDS = ("PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW")
 ADJUDICATED_DECISIONS = ("AGREEMENT", "RESOLVED")
 RIGHTS = ("OPEN", "PROJECT_CREATED", "RESTRICTED", "UNKNOWN")
 SPLIT_PROPERTIES = {"record_id", "group_id", "split", "seed", "version"}
-GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator", "split")
+GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator", "split", "split_seed", "split_version")
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -435,6 +435,8 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
             "license_id": source["license_id"],
             "rights_evidence_locator": source["rights_evidence"]["locator"],
             "split": assignment["split"],
+            "split_seed": assignment["seed"],
+            "split_version": assignment["version"],
         })
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as handle:
