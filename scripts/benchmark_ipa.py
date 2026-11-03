@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Evidence-gated IPA benchmark; standard library only.
 
-Gold TSV: id, text, gold_ipa, gold_status, profile, source_id
-Prediction TSV: id, engine, raw_output, ipa, status, version
+Gold TSV required columns: id, text, gold_ipa, gold_status, profile, source_id, ipa_kind, split, split_seed, split_version.
+Prediction TSV required columns: id, engine, raw_output, ipa, status, version, ipa_kind.
+The reader rejects duplicate/blank headers and rows whose field count differs from the header; physically blank lines are ignored.
 Only ADJUDICATED, non-empty gold IPA rows enter the denominator.
 """
 from __future__ import annotations
