@@ -421,5 +421,21 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertIn("existing manifest is frozen", run.stderr)
 
 
+
+    def test_assign_splits_rejects_empty_seed(self):
+        self.splits = []
+        self.write_all()
+        run = self.run_cli("assign-splits", "--seed", "",
+                           "--output", self.root / "empty-seed.jsonl", expected=1)
+        self.assertIn("--seed must be a non-empty string", run.stderr)
+
+    def test_assign_splits_rejects_empty_version(self):
+        self.splits = []
+        self.write_all()
+        run = self.run_cli("assign-splits", "--version", "",
+                           "--output", self.root / "empty-version.jsonl", expected=1)
+        self.assertIn("--version must be a non-empty string", run.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()
