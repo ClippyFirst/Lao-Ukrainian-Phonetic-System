@@ -2,8 +2,8 @@
 
 ## Current repository state — 2026-11-03
 
-- **Default branch:** `main` at `300141942bd3053120ea3b75600f31686f0034ae`.
-- **Open pull requests:** none at the time of this checkpoint; all relevant integration PRs are merged or explicitly superseded/closed.
+- **Default branch:** [`main`](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/tree/main); PR base snapshot: `7743513495beb1f9c222e6ff14151eb21657fa45` (the live branch may advance independently).
+- **Open pull requests at this checkpoint:** #113 (`fix/heldout-ipa-benchmark-20261103`) carries the benchmark integrity correction; documentation-only PR #112 was subsequently superseded by the handoff/register reconciliation on this branch.
 - **Integrated engineering and research changes:** manifest-wide split identity; MekongPhon source-scope/citation update; four Playwright built-site browser regressions; CI/Pages browser gates; glossary, codebase map and agent guidance.
 - **Exact-main verification:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; built-site browser [41647974181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974181) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
 - **Research boundary:** independent expert-adjudicated IPA gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. Passing engineering/browser/deployment checks is not evidence of phonetic accuracy.
