@@ -457,6 +457,8 @@ class IpaGoldCorpusTests(unittest.TestCase):
             rows = list(csv.DictReader(handle, delimiter="\t"))
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["split"], "train")
+        self.assertEqual(rows[0]["split_seed"], "test-seed")
+        self.assertEqual(rows[0]["split_version"], "v1")
 
 
 if __name__ == "__main__":
