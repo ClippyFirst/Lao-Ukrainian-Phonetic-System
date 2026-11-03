@@ -26,6 +26,19 @@ SPLIT_PROPERTIES = {"record_id", "group_id", "split", "seed", "version"}
 GOLD_FIELDS = ("id", "text", "gold_ipa", "gold_status", "profile", "source_id", "ipa_kind", "license_id", "rights_evidence_locator", "split", "split_seed", "split_version")
 
 
+class DuplicateJSONKeyError(ValueError):
+    """Raised when a JSON object contains a repeated member name."""
+
+
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise DuplicateJSONKeyError(f"duplicate JSON object key {key!r}")
+        value[key] = item
+    return value
+
+
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise ValueError(f"required corpus file does not exist: {path}")
@@ -35,7 +48,9 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
             if not raw.strip():
                 continue
             try:
-                value = json.loads(raw)
+                value = json.loads(raw, object_pairs_hook=_unique_json_object)
+            except DuplicateJSONKeyError as exc:
+                raise ValueError(f"{path}:{line_no}: {exc}") from exc
             except json.JSONDecodeError as exc:
                 raise ValueError(f"{path}:{line_no}: invalid JSON: {exc.msg}") from exc
             if not isinstance(value, dict):
