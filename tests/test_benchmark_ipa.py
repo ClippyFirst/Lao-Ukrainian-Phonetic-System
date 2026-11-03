@@ -81,8 +81,8 @@ class BenchmarkIpaTests(unittest.TestCase):
         base = {"id": "ok", "engine": "candidate", "raw_output": "x", "ipa": "x",
                 "status": "ok", "version": "1", "ipa_kind": ""}
         cases = [
-            (dict(base, engine=" \\t "), "whitespace engine"),
-            (dict(base, id=" \\t "), "whitespace id"),
+            (dict(base, engine=" \t "), "whitespace engine"),
+            (dict(base, id=" \t "), "whitespace id"),
         ]
         for prediction, label in cases:
             with self.subTest(identifier=label):
