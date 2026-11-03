@@ -110,9 +110,16 @@ class BenchmarkIpaTests(unittest.TestCase):
              "profile": "standard", "source_id": f"src#{ident}", "ipa_kind": "PHONEMIC", "split": split}
             for ident, split in (("train-item", "train"), ("dev-item", "dev"), ("test-item", "test"))
         ]
-        report = self.run_benchmark(gold, [], selected_split="all")
+        pred = [
+            {"id": ident, "engine": "candidate", "raw_output": "k", "ipa": "k",
+             "status": "ok", "version": "1", "ipa_kind": "PHONEMIC"}
+            for ident, _ in (("train-item", "train"), ("dev-item", "dev"), ("test-item", "test"))
+        ]
+        report = self.run_benchmark(gold, pred, selected_split="all")
         self.assertEqual(report["gold"]["split"], "all")
-        self.assertEqual(report["engines"], {})
+        self.assertEqual(report["engines"]["candidate"]["n_adjudicated_gold_rows"], 3)
+        self.assertEqual({row["id"] for row in report["engines"]["candidate"]["rows"]},
+                         {"train-item", "dev-item", "test-item"})
 
     def test_missing_prediction_row_remains_in_denominator(self):
         gold = [
