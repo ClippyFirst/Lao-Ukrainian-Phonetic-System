@@ -352,4 +352,14 @@ The export and benchmark now preserve and validate the complete frozen split ide
 
 | ID | Status | Evidence / remaining acceptance | Boundary |
 |---|---|---|---|
-| LAO-G2P-REPRO-001 | PARTIAL pending exact-head CI | Harness now records fixture/script SHA-256, Python runtime/platform, GitHub source revision when present, and pinned lao2ipa version; report checksum sidecar and 90-day Actions artifact are implemented. Reproduction command is documented. | Reproducibility hardening only. Does not adjudicate any mismatch, provide a source-attested independent test sample, or create IPA gold. |
+| LAO-G2P-REPRO-001 | DONE_VERIFIED | PR #120 merged as `943eb3264448dd376f5a7c1670fa136fb0214f7a`; exact PR-head and post-merge `main` verification passed (41723349565, 41723526240). Pinned comparator run 41723525916 passed and uploaded JSON + SHA-256 sidecar. Harness records fixture/script SHA-256, Python runtime/platform, source revision and pinned lao2ipa version; reproduction command is documented. | Reproducibility hardening only. Does not adjudicate any mismatch, provide a source-attested independent test sample, or create IPA gold. |
+
+
+## Post-merge verification — Lao G2P reproducibility — 2026-11-03
+
+- PR #120 merged as `943eb3264448dd376f5a7c1670fa136fb0214f7a`.
+- Exact PR-head verification [41723349565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723349565) SUCCESS.
+- Exact post-merge `main` verification [41723526240](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723526240) SUCCESS.
+- Exact post-merge pinned `lao2ipa==1.0.0` diagnostic [41723525916](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723525916) SUCCESS; JSON + SHA-256 sidecar artifact exists with expiry 2027-02-01.
+- `LAO-G2P-REPRO-001` is **DONE_VERIFIED** for provenance, version pin enforcement, report checksum generation and hosted artifact publication.
+- Parent issue #9 remains **PARTIAL**: the independent rights-cleared sample and qualified review of 31 tone, 2 offglide and 4 segmental/vowel-sequence disagreements remain outstanding. Independent IPA gold=0; accuracy=null.
