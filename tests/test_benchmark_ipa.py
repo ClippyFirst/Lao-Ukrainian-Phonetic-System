@@ -62,7 +62,7 @@ class BenchmarkIpaTests(unittest.TestCase):
                 self.assertIn(expected_message, stderr)
 
     def test_rejects_whitespace_only_gold_and_prediction_identifiers(self):
-        non_gold = {"id": " \\t ", "text": "x", "gold_ipa": "", "gold_status": "PROJECT_PROBE_NOT_GOLD",
+        non_gold = {"id": " \t ", "text": "x", "gold_ipa": "", "gold_status": "PROJECT_PROBE_NOT_GOLD",
                     "profile": "", "source_id": "", "split": "train"}
         prediction = {"id": "ok", "engine": "candidate", "raw_output": "x", "ipa": "x",
                       "status": "ok", "version": "1", "ipa_kind": ""}
