@@ -22,8 +22,12 @@ class BenchmarkIpaTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             td = Path(td)
             gold, pred, output = td / "gold.tsv", td / "pred.tsv", td / "report.json"
+            for row in gold_rows:
+                row.setdefault("split_seed", "frozen-test-seed")
+                row.setdefault("split_version", "v1")
             write_tsv(gold, ["id", "text", "gold_ipa", "gold_status", "profile", "source_id",
-                             "ipa_kind", "license_id", "rights_evidence_locator", "split"], gold_rows)
+                             "ipa_kind", "license_id", "rights_evidence_locator", "split",
+                             "split_seed", "split_version"], gold_rows)
             write_tsv(pred, ["id", "engine", "raw_output", "ipa", "status", "version", "ipa_kind"], pred_rows)
             run = subprocess.run(
                 [sys.executable, str(SCRIPT), "--gold", str(gold), "--predictions", str(pred),
@@ -47,6 +51,8 @@ class BenchmarkIpaTests(unittest.TestCase):
             ({"ipa_kind": "UNSPECIFIED"}, "requires valid ipa_kind"),
             ({"split": ""}, "requires valid split"),
             ({"split": "holdout"}, "requires valid split"),
+            ({"split_seed": ""}, "requires non-empty split_seed"),
+            ({"split_version": ""}, "requires non-empty split_version"),
         ]
         for changes, expected_message in cases:
             with self.subTest(changes=changes):
@@ -120,6 +126,18 @@ class BenchmarkIpaTests(unittest.TestCase):
         self.assertEqual(report["engines"]["candidate"]["n_adjudicated_gold_rows"], 3)
         self.assertEqual({row["id"] for row in report["engines"]["candidate"]["rows"]},
                          {"train-item", "dev-item", "test-item"})
+
+    def test_rejects_mixed_frozen_split_manifests(self):
+        gold = [
+            {"id": "a", "text": "x", "gold_ipa": "k", "gold_status": "ADJUDICATED",
+             "profile": "standard", "source_id": "src#a", "ipa_kind": "PHONEMIC", "split": "test",
+             "split_seed": "seed-a", "split_version": "v1"},
+            {"id": "b", "text": "y", "gold_ipa": "p", "gold_status": "ADJUDICATED",
+             "profile": "standard", "source_id": "src#b", "ipa_kind": "PHONEMIC", "split": "test",
+             "split_seed": "seed-b", "split_version": "v1"},
+        ]
+        stderr = self.run_benchmark(gold, [], expected_returncode=1)
+        self.assertIn("one frozen split manifest", stderr)
 
     def test_missing_prediction_row_remains_in_denominator(self):
         gold = [
