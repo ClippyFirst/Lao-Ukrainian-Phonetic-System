@@ -12,8 +12,9 @@ External engines are comparators or optional upstream IPA providers only. Preser
 
 The standard-library-only harness is scripts/benchmark_ipa.py. It reads tab-separated files:
 
-- Gold columns: id, text, gold_ipa, gold_status, profile, source_id.
-- Prediction columns: id, engine, raw_output, ipa, status, version.
+- Gold required columns: id, text, gold_ipa, gold_status, profile, source_id, ipa_kind, split, split_seed, split_version (source-rights metadata columns may also be present).
+- Prediction required columns: id, engine, raw_output, ipa, status, version, ipa_kind.
+- The TSV reader rejects duplicate or blank header names and rejects any nonblank data row whose field count differs from its header; physically blank lines are ignored.
 
 Run from the repository root:
 
@@ -42,7 +43,7 @@ These are research leads, not verified availability claims. Before executing a c
 
 ## Current evidence status
 
-- Harness baseline: executed successfully in prior main CI. The current PR adds fail-closed validation requiring every ADJUDICATED row to have non-empty IPA, source_id and profile; regression tests must pass on the final head.
+- Harness baseline: hosted CI verifies the strict input parser, held-out split provenance and fail-closed gold gates. On the 2026-11-03 continuation, test-first RED is recorded in [run 41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused GREEN verification after the parser correction is [run 41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910). These are engineering checks, not linguistic accuracy evidence.
 - Adjudicated language-specific gold rows: not yet established by this document.
 - Candidate engine availability, version, licenses, and language-specific output quality: unverified until recorded as run evidence.
 - Release status: research prototype; no accuracy claim is authorized by this registry.
