@@ -14,6 +14,7 @@ build_summary = HARNESS["build_summary"]
 classify_mismatch = HARNESS["classify_mismatch"]
 strip_tone_symbols_diagnostic = HARNESS["strip_tone_symbols_diagnostic"]
 sha256_file = HARNESS["sha256_file"]
+write_checksum_sidecar = HARNESS["write_checksum_sidecar"]
 build_provenance = HARNESS["build_provenance"]
 
 
@@ -164,8 +165,6 @@ if __name__ == "__main__":
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "report.json"
             output.write_text('{"diagnostic": true}\\n', encoding="utf-8")
-            digest = sha256_file(output)
-            sidecar = Path(str(output) + ".sha256")
-            sidecar.write_text(f"{digest}  {output.name}\\n", encoding="ascii")
+            sidecar = write_checksum_sidecar(output)
             self.assertEqual(sidecar.read_text(encoding="ascii"),
                              f"{hashlib.sha256(output.read_bytes()).hexdigest()}  report.json\\n")
