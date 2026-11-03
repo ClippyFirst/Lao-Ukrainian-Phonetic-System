@@ -48,7 +48,7 @@ Preserve `Lao orthography → structural analysis → Lao phonology → typed IP
 | IPA-GOLD-DOUBLE-ANNOTATION-001 | PARTIAL | Two distinct annotators enforced; blind intake requires external controlled collection |
 | IPA-GOLD-ADJUDICATION-001 | PARTIAL | Agreement/resolved/unresolved logic and feature-complete IPA comparison; no real adjudicated rows |
 | IPA-GOLD-RIGHTS-001 | DONE_VERIFIED (mechanism) | Allowlisted licenses, required rights evidence and rejection of unregistered/non-redistributable licenses; source-by-source legal review still required |
-| IPA-GOLD-SPLIT-001 | DONE_VERIFIED | Deterministic hash-based, frozen lexeme-group split and leakage checks |
+| IPA-GOLD-SPLIT-001 | PARTIAL (global manifest identity fix ported; exact-head CI pending) | Deterministic hash-based group split; global seed/version consistency and frozen extension behavior implemented with regression tests; current continuation branch still awaiting exact-head verification. |
 | IPA-GOLD-EXPORT-001 | DONE_VERIFIED | Rights-filtered typed IPA export retaining source/license/evidence locators |
 | IPA-TYPED-BENCHMARK-001 | DONE_VERIFIED | Different or missing IPA kind cannot count as an exact match |
 | IPA-GOLD-RELEASE-GATE-001 | PARTIAL | Numeric tag/manual gate checks 100/25/25 adjudicated train/dev/test, rights and frozen splits; it does not calculate language-specific contrast coverage. Owner must require the check in release rulesets/procedure and obtain separate expert sign-off on a versioned feature-coverage matrix. |
@@ -358,3 +358,7 @@ The targeted citation correction is documentation-only. Current code verificatio
 |---|---|---|---|
 | LAO-IPA-GOLD-MANIFEST-IDENTITY-001 | PARTIAL (verified implementation in open PR #101; not merged) | Integrate the manifest-wide frozen `(seed, version)` invariant into main without duplicating the existing PR. | Merge/reconcile PR #101; exact-main CI passes; mixed identities and conflicting/empty overrides fail; existing manifest identity is preserved. |
 | LAO-EXTERNAL-G2P-SOURCE-REGISTRY-001 | PARTIAL (structured record in open PR #102; not merged) | Integrate the MekongPhon source registry and external benchmark note. | Source metadata matches LREC primary record; dataset rights/profile limitations remain explicit; no paper-reported score is treated as local accuracy. |
+
+## IPA-GOLD-SPLIT-MANIFEST-IDENTITY-001 — 2026-11-03 (ported to continuation branch)
+
+**Status: PARTIAL pending exact-head CI.** The standalone split fix is now ported into the broad continuation branch. The validator rejects mixed seed/version identities across distinct lexeme groups; split generation inherits the existing manifest-wide identity and rejects conflicting explicit overrides; empty explicit seed/version arguments are rejected. Regression tests cover mixed seeds, mixed versions, conflicting overrides, and empty values. This is an engineering reproducibility improvement only; no linguistic labels or split data were added. Gold remains 0 and accuracy remains null.
