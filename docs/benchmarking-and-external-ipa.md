@@ -213,3 +213,10 @@ Normal CI validates corpus structure while allowing an empty research corpus. Th
 
 
 The rights layer is executable: `data/benchmark/licenses.json` is the allowlist, each record must carry `rights_evidence` (basis, locator, verifier pseudonym and date), and unknown or non-redistributable license IDs are rejected. Exported gold rows retain `license_id` and `rights_evidence_locator`; benchmark reports carry those fields forward. The allowlist is not a substitute for source-by-source legal verification.
+
+
+## Frozen held-out split enforcement — 2026-11-03
+
+The benchmark/export boundary now carries the frozen corpus split end to end. `ipa_gold_corpus.py export-gold` writes the assigned `train`/`dev`/`test` value into each exported row and fails if an adjudicated record has no frozen assignment. `benchmark_ipa.py` requires a valid split on every adjudicated gold row and scores `test` by default. Use `--split train` or `--split dev` only for explicitly scoped development diagnostics; `--split all` is an explicit non-held-out diagnostic and must not be reported as independent evaluation. Reports record the selected split and the total adjudicated-row count separately from the scored denominator.
+
+The checked-in header-only `data/benchmark/gold.tsv` schema now includes the `split` column. This does not add any gold records: the independent adjudicated corpus remains empty and empirical accuracy remains `null`. Existing external/source-attested diagnostics remain outside the gold denominator.
