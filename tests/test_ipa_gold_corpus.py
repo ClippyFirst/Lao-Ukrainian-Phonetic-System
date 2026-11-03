@@ -156,6 +156,26 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertNotIn("$defs", annotation)
         self.assertNotIn("$defs", adjudication)
 
+    def test_license_registry_rejects_duplicate_top_level_json_keys(self):
+        license_path = self.root / "duplicate-licenses.json"
+        license_path.write_text(
+            '{"schema_version":"1.0","licenses":{},"licenses":{}}',
+            encoding="utf-8",
+        )
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("duplicate JSON object key 'licenses'", run.stderr)
+
+    def test_license_registry_rejects_duplicate_nested_json_keys(self):
+        license_path = self.root / "duplicate-license-field.json"
+        license_path.write_text(
+            '{"schema_version":"1.0","licenses":{"CC-BY-4.0":'
+            '{"redistributable":true,"redistributable":false,'
+            '"commercial_use":true,"attribution_required":true,"share_alike":false}}}',
+            encoding="utf-8",
+        )
+        run = self.run_cli("validate", "--licenses", license_path, expected=1)
+        self.assertIn("duplicate JSON object key 'redistributable'", run.stderr)
+
     def test_rejects_license_registry_missing_required_schema_flag(self):
         registry = json.loads((ROOT / "data" / "benchmark" / "licenses.json").read_text(encoding="utf-8"))
         del registry["licenses"]["CC-BY-4.0"]["share_alike"]
