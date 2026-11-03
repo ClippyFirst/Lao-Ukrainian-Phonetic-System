@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import importlib.metadata
 import json
+import os
 import platform
 import re
 import sys
@@ -54,6 +55,7 @@ def build_provenance(
         "python_version": sys.version,
         "python_implementation": platform.python_implementation(),
         "platform": platform.platform(),
+        "source_revision": os.environ.get("GITHUB_SHA", "not-provided"),
         "external_package": {"name": external_name, "version": external_version},
         "unicode_normalization": "NFC",
     }
@@ -238,8 +240,10 @@ def main() -> int:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    checksum_path = write_checksum_sidecar(args.output)
     print(json.dumps(report['summary'], ensure_ascii=False, indent=2))
     print(f'Report written to: {args.output}')
+    print(f'Report SHA-256 sidecar written to: {checksum_path}')
     print('Review fixture disagreements and every cross-implementation mismatch.')
     return 2 if summary['runtime_errors'] else 0
 
