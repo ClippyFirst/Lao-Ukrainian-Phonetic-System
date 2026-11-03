@@ -1,5 +1,15 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
+## Current continuation checkpoint — 2026-11-03
+
+- Dedicated fix branch: `fix/ipa-gold-split-manifest-coherence-20261103`; final documented branch head before this handoff refresh `f49eb17623da4e8e5f6f59b25db9002e6d2834dd`; PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) is open against `main`, 8 commits ahead / 0 behind, mergeable.
+- Fixed a reproducibility gap in the IPA gold split lifecycle: all rows in one manifest now share one frozen seed/version, and extending an existing manifest preserves that identity. Conflicting explicit overrides are rejected; redesigns require a separate versioned manifest.
+- RED evidence (tests-only change): [41612954045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41612954045) failed on the three intended regression behaviors. GREEN evidence: [41613340163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41613340163) SUCCESS — 149 Python tests plus the repository workflow's remaining checks.
+- Linguistic gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. This fix improves split reproducibility only.
+- Second RED/GREEN cycle also preserves CLI strictness: empty explicit `--seed`/`--version` values were shown to be silently defaulted by the first fix, regression tests failed on the test-only commit 41615374874, and exact-head GREEN 41615556868 passed after changing default resolution to distinguish `None` from an empty string.
+- No PR merged and no release published in this continuation.
+
+
 **Current checkpoint:** 2026-11-02  
 **Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
 **Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
@@ -1341,3 +1351,11 @@ A follow-up source search found published BYU MATRIX Lab Hugging Face checkpoint
 ## Main publication reconciliation — 2026-11-02
 
 Supersedes earlier handoff statements that the review branch was still ahead of `main` and unmerged: PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) was merged into `main` as `ed36e7030df4ec8c1b70b50fdcfd6e47e5770d52`; this was the repository's current `main` tip at reconciliation. Exact-head engineering workflows on the PR head passed: verify [41413902679](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902679), Goruut [41413902653](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902653), and lao2ipa [41413902805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902805). The Pages workflow is configured to deploy from `main`; the public site and post-merge deployment run could not be independently inspected from this session, so deployment status remains **BLOCKED (external verification/network access)**, not claimed successful. No UI/runtime files were changed by this PR. Independent expert-adjudicated gold remains 0 and accuracy remains null; the project is still a research prototype.
+
+
+## Split-manifest continuation update — 2026-11-03
+
+- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) remains open and mergeable, 18 commits ahead / 0 behind current main. The last verified code/test checkpoint was `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`; all commits after that checkpoint change only documentation. Read the PR page for its live documentation head; no merge performed.
+- Added a regression test for creating a new, independent split manifest using a new empty JSONL `--splits` input and explicit new seed/version. Updated `docs/ipa-gold-corpus.md` to state that a new `--output` alone does not reset the existing input manifest.
+- Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
+- Linguistic gold remains 0; gold export remains header-only; empirical accuracy remains `null`. This is split lifecycle/reproducibility engineering, not phonetic validation.

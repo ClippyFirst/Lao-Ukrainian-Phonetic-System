@@ -64,6 +64,20 @@ python scripts/ipa_gold_corpus.py validate --language LANGUAGE
 
 The assignment uses SHA-256 of the fixed seed and `lexeme_group_id`, with an 80/10/10 train/dev/test target. Existing assignments are preserved when new records are added. All records in one lexical group must remain in one split. Never change the seed or rewrite the frozen manifest after model development begins; create a new versioned corpus release if a split redesign is scientifically necessary.
 
+**Manifest-wide freeze invariant:** every row in one `splits.jsonl` must share the same `(seed, version)` pair, including rows for different lexeme groups. `validate` rejects a mixed manifest. When extending an existing manifest, `assign-splits` inherits its frozen seed/version for new groups; explicitly supplying a different seed or version is rejected. Empty explicit `--seed` or `--version` values are rejected rather than silently replaced by defaults. A scientifically justified redesign must start a separate manifest, not pass a new seed/version while reading the frozen manifest. **Important CLI detail:** changing only `--output` does not reset the input manifest; the generator still reads `--splits` and rejects identity overrides when that input contains rows. To create a new split identity, create a distinct empty JSONL input file and pass it to `--splits`, then write to a distinct `--output` path. For example:
+
+```sh
+: > data/benchmark/splits-v2.empty.jsonl
+python scripts/ipa_gold_corpus.py assign-splits \
+  --records data/benchmark/records.jsonl \
+  --splits data/benchmark/splits-v2.empty.jsonl \
+  --seed clippyfirst-ipa-gold-v2 \
+  --version v2 \
+  --output data/benchmark/splits-v2.jsonl
+```
+
+This makes the reset explicit and leaves the original frozen manifest untouched.
+
 This initial manifest prevents lexical-item leakage. It is not yet a speaker-held-out acoustic evaluation protocol. If the research question requires generalization to unseen speakers, create a separate speaker-disjoint evaluation manifest rather than claiming the lexical split tests speaker generalization.
 
 ## Commands

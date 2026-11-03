@@ -289,6 +289,7 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     split_by_record: dict[str, dict[str, Any]] = {}
     split_by_group: dict[str, str] = {}
     split_meta_by_group: dict[str, tuple[str, str]] = {}
+    manifest_identity: tuple[str, str] | None = None
     for row in splits:
         ident = require_text(row.get("record_id"), "split.record_id")
         reject_unknown_properties(row, SPLIT_PROPERTIES, f"split {ident}")
@@ -304,6 +305,11 @@ def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
             raise ValueError(f"split {ident}: split must be train, dev or test")
         seed = require_text(row.get("seed"), f"split {ident}.seed")
         version = require_text(row.get("version"), f"split {ident}.version")
+        identity = (seed, version)
+        if manifest_identity is None:
+            manifest_identity = identity
+        elif manifest_identity != identity:
+            raise ValueError("split manifest must use one frozen seed/version across all lexeme groups")
         if group in split_by_group and split_by_group[group] != split:
             raise ValueError(f"lexeme_group_id crosses splits: {group}")
         if group in split_meta_by_group and split_meta_by_group[group] != (seed, version):
@@ -343,8 +349,6 @@ def group_split(group_id: str, seed: str) -> str:
 
 
 def command_assign(args: argparse.Namespace) -> int:
-    seed = require_text(args.seed, "--seed")
-    version = require_text(args.version, "--version")
     records = read_jsonl(args.records)
     existing = read_jsonl(args.splits)
     record_by_id: dict[str, dict[str, Any]] = {}
@@ -357,6 +361,7 @@ def command_assign(args: argparse.Namespace) -> int:
 
     existing_by_group: dict[str, dict[str, Any]] = {}
     existing_by_id: dict[str, dict[str, Any]] = {}
+    manifest_identity: tuple[str, str] | None = None
     for row in existing:
         ident = require_text(row.get("record_id"), "split.record_id")
         reject_unknown_properties(row, SPLIT_PROPERTIES, f"split {ident}")
@@ -369,6 +374,11 @@ def command_assign(args: argparse.Namespace) -> int:
             raise ValueError(f"split {ident}: invalid split")
         row_seed = require_text(row.get("seed"), f"split {ident}.seed")
         row_version = require_text(row.get("version"), f"split {ident}.version")
+        identity = (row_seed, row_version)
+        if manifest_identity is None:
+            manifest_identity = identity
+        elif manifest_identity != identity:
+            raise ValueError("existing manifest must use one frozen seed/version across all lexeme groups")
         if row["split"] != group_split(group, row_seed):
             raise ValueError(f"split {ident} does not match deterministic hash for its seed")
         assignment = {"split": row["split"], "seed": row_seed, "version": row_version}
@@ -379,6 +389,17 @@ def command_assign(args: argparse.Namespace) -> int:
             raise ValueError(f"duplicate split assignment for record_id: {ident}")
         existing_by_group[group] = assignment
         existing_by_id[ident] = assignment
+
+    if manifest_identity is not None:
+        frozen_seed, frozen_version = manifest_identity
+        if args.seed is not None and args.seed != frozen_seed:
+            raise ValueError("existing manifest is frozen; use a new versioned manifest path to change its seed")
+        if args.version is not None and args.version != frozen_version:
+            raise ValueError("existing manifest is frozen; use a new versioned manifest path to change its version")
+        seed, version = manifest_identity
+    else:
+        seed = require_text(args.seed if args.seed is not None else "clippyfirst-ipa-gold-v1", "--seed")
+        version = require_text(args.version if args.version is not None else "v1", "--version")
 
     output = []
     for ident, record in sorted(record_by_id.items()):
@@ -474,8 +495,8 @@ def build_parser() -> argparse.ArgumentParser:
     assign = sub.add_parser("assign-splits", help="assign deterministic group-safe splits; preserves existing assignments")
     assign.add_argument("--records", type=Path, default=Path("data/benchmark/records.jsonl"))
     assign.add_argument("--splits", type=Path, default=Path("data/benchmark/splits.jsonl"))
-    assign.add_argument("--seed", default="clippyfirst-ipa-gold-v1")
-    assign.add_argument("--version", default="v1")
+    assign.add_argument("--seed")
+    assign.add_argument("--version")
     assign.add_argument("--output", type=Path, default=Path("data/benchmark/splits.jsonl"))
     return parser
 
