@@ -16,12 +16,35 @@ IPA_KINDS = {"PHONEMIC", "PHONETIC_BROAD", "PHONETIC_NARROW"}
 
 def read_tsv(path: Path, required: list[str]) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f, delimiter="\t")
-        missing = set(required) - set(reader.fieldnames or [])
+        reader = csv.reader(f, delimiter="\t", strict=True)
+        try:
+            fieldnames = next(reader)
+        except StopIteration:
+            raise ValueError(f"{path}: missing TSV header") from None
+        if not fieldnames or any(not name.strip() for name in fieldnames):
+            raise ValueError(f"{path}: TSV header names must be non-empty")
+        seen = set()
+        duplicates = set()
+        for name in fieldnames:
+            if name in seen:
+                duplicates.add(name)
+            seen.add(name)
+        if duplicates:
+            raise ValueError(f"{path}: duplicate column names: {', '.join(sorted(duplicates))}")
+        missing = set(required) - set(fieldnames)
         if missing:
             raise ValueError(f"{path}: missing columns: {', '.join(sorted(missing))}")
-        rows = list(reader)
-    return [{k: (v or "") for k, v in row.items()} for row in rows]
+        rows = []
+        for line_number, values in enumerate(reader, start=2):
+            # Ignore physically blank lines, but never silently truncate or pad a data row.
+            if not values:
+                continue
+            if len(values) != len(fieldnames):
+                raise ValueError(
+                    f"{path}:{line_number}: expected {len(fieldnames)} fields, found {len(values)}"
+                )
+            rows.append(dict(zip(fieldnames, values)))
+        return rows
 
 def norm(s: str) -> str:
     return unicodedata.normalize("NFC", s.strip())
