@@ -1421,3 +1421,13 @@ The export and benchmark now preserve and validate the complete frozen split ide
 ## Empty prediction dataset guard — 2026-11-03
 
 A further benchmark review found that a header-only prediction TSV exited successfully and emitted a report with no engine entries. This could be mistaken for a completed evaluation even though no engine had been evaluated. Added a regression test and a fail-closed CLI guard requiring at least one prediction row. The guard runs after gold/split-manifest validation so existing malformed-manifest diagnostics remain specific. This does not change the treatment of missing rows within a named engine: those remain in its denominator. Exact-head verification: RED: [41655160456](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655160456). Final exact-head verify: [41655452782](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655452782) SUCCESS. The benchmark guard is DONE_VERIFIED as an engineering input-integrity check; no gold rows or accuracy claims were added.
+
+
+## Continuation — whitespace-only benchmark identifiers (2026-11-03)
+
+A code review found that truthiness-only identifier checks accepted whitespace-only gold IDs, prediction IDs and engine names. Such values could create visually empty keys and make malformed prediction rows look like a named engine. Validation now rejects identifiers whose trimmed value is empty while preserving non-empty identifiers verbatim for exact matching. Regression tests cover each field separately.
+
+- Test-first RED for whitespace-only gold IDs: [Lao 41660752360](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41660752360), [Burmese 41660752360](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41660752360), [Khmer 41660752360](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41660752360).
+- Test-first RED for prediction engine/ID fields: [workflow run 41662058993](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662058993).
+- Final exact-code-head verification: [workflow run 41662219515](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662219515) SUCCESS; 159 Python tests and 4 built-site browser tests passed.
+- **IPA-BENCH-IDENTIFIERS-001 — DONE_VERIFIED (engineering input-integrity guard).** No linguistic labels, gold records or accuracy claims were added.
