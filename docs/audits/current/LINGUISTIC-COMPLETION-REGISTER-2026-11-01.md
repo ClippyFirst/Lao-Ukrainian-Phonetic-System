@@ -16,7 +16,7 @@
 
 | ID | Status | Evidence | Acceptance boundary |
 |---|---|---|---|
-| JSON-INPUT-003 | DONE_VERIFIED | Reject `NaN`, `Infinity`, and `-Infinity` in JSONL and license registry inputs. RED 41692621208; implementation CI 41693061265 SUCCESS (166 Python tests; 4 built-site browser tests). | Reject non-standard JSON constants before corpus or rights validation; no linguistic labels or license terms changed. |
+| JSON-INPUT-003 | DONE_VERIFIED | Reject `NaN`, `Infinity`, and `-Infinity` in JSONL and license registry inputs. RED 41692621208; implementation CI 41694083975 SUCCESS (166 Python tests; 4 built-site browser tests). | Reject non-standard JSON constants before corpus or rights validation; no linguistic labels or license terms changed. |
 
 ## License registry JSON integrity — 2026-11-03
 
