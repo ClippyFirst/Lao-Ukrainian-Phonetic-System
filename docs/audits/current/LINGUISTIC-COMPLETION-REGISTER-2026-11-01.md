@@ -12,6 +12,12 @@
 - **Evidence:** test-first RED [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused implementation GREEN [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910); implementation commit `832ca08431ddca0f081234fcd02fbc5e0b92053f`.
 - **Acceptance boundary:** input shape is validated before scoring. This does not create adjudicated IPA data or alter language accuracy status (gold 0; accuracy null).
 
+## License registry JSON integrity — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| JSONL-INPUT-002 | DONE_VERIFIED | Duplicate top-level and nested keys in `licenses.json` rejected. RED 41690095702; implementation CI 41690255691 SUCCESS (164 Python tests; 4 built-site browser tests). | Rights registry cannot silently apply last-key-wins semantics; no license permission is inferred or broadened. |
+
 ## JSONL input integrity — 2026-11-03
 
 | ID | Status | Evidence | Acceptance boundary |
