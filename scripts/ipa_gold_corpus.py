@@ -39,6 +39,15 @@ def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return value
 
 
+def read_json_document(path: Path, label: str) -> Any:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_json_object)
+    except DuplicateJSONKeyError as exc:
+        raise ValueError(f"{path}: {label}: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{path}: invalid {label}: {exc.msg}") from exc
+
+
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise ValueError(f"required corpus file does not exist: {path}")
@@ -118,10 +127,7 @@ def validate_ipa(value: Any, label: str) -> dict[str, Any]:
 
 def validate_corpus(args: argparse.Namespace) -> dict[str, Any]:
     records = read_jsonl(args.records)
-    try:
-        license_document = json.loads(args.licenses.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"{args.licenses}: invalid license registry JSON: {exc.msg}") from exc
+    license_document = read_json_document(args.licenses, "license registry JSON")
     if not isinstance(license_document, dict):
         raise ValueError(f"{args.licenses}: license registry must be an object")
     reject_unknown_properties(license_document, {"schema_version", "licenses"}, "license registry")
