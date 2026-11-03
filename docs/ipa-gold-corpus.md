@@ -86,7 +86,7 @@ Check release-gold readiness:
 python scripts/ipa_gold_corpus.py gate --language LANGUAGE --min-train 100 --min-dev 25 --min-test 25
 ```
 
-The initial gate policy requires at least 100 adjudicated train items, 25 dev items and 25 test items, all with frozen splits and redistributable source rights. These are project release thresholds, not a universal statistical sufficiency claim. The corpus must also cover the phonological contrasts relevant to the language-specific research profile; row counts alone are not enough.
+The initial gate policy requires at least 100 adjudicated train items, 25 dev items and 25 test items, all with frozen splits and redistributable source rights. These are project release thresholds, not a universal statistical sufficiency claim. The corpus must also cover the phonological contrasts relevant to the language-specific research profile; row counts alone are not enough. The current CLI gate checks counts, adjudication, frozen split consistency and rights; it does **not** compute feature/contrast coverage. A language specialist must separately review and sign off a versioned coverage matrix before release. Do not interpret a green numeric gate as proof that tone, onset, vowel, coda, register, syllable or style contrasts are represented.
 
 ## Benchmark semantics
 
