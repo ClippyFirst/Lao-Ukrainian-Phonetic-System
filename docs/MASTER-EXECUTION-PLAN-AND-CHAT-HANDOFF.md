@@ -1416,3 +1416,8 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 ## Frozen split manifest provenance — 2026-11-03
 
 The export and benchmark now preserve and validate the complete frozen split identity, not only the bucket name: `split`, `split_seed`, and `split_version`. Every adjudicated row must carry non-empty seed/version metadata, and the benchmark rejects a TSV that mixes manifest identities. The report exposes the manifest seed/version and selected scoring split. This makes the evaluated test partition traceable to one exact manifest; it does not create linguistic gold or change the current zero-row accuracy status.
+
+
+## Empty prediction dataset guard — 2026-11-03
+
+A further benchmark review found that a header-only prediction TSV exited successfully and emitted a report with no engine entries. This could be mistaken for a completed evaluation even though no engine had been evaluated. Added a regression test and a fail-closed CLI guard requiring at least one prediction row. The guard runs after gold/split-manifest validation so existing malformed-manifest diagnostics remain specific. This does not change the treatment of missing rows within a named engine: those remain in its denominator. Exact-head CI evidence is recorded in the completion register once all repository workflows finish.
