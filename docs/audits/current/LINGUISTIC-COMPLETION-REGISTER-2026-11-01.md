@@ -1,6 +1,6 @@
 # Lao linguistic completion register — 2026-11-01
 
-**Current main commit:** `c50fc9133f8e7f55b520ac7229c86df2f9b10356` (benchmark integrity PR #113 squash-merged).
+**Benchmark implementation merge:** `c50fc9133f8e7f55b520ac7229c86df2f9b10356` (PR #113). **Handoff/register reconciliation merge:** `44b475698c6532b202e06a14622ba57927843176` (PR #114).
 **Latest post-merge exact-main evidence:** [engineering verification](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41707491721) SUCCESS.
 **Open pull requests:** none at this checkpoint.
 **Research boundary:** Independent expert-adjudicated Lao IPA gold remains 0; `data/benchmark/gold.tsv` is header-only; empirical accuracy remains null.
