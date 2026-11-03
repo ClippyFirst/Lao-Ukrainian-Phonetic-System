@@ -450,6 +450,14 @@ class IpaGoldCorpusTests(unittest.TestCase):
                            "--output", self.root / "empty-version.jsonl", expected=1)
         self.assertIn("--version must be a non-empty string", run.stderr)
 
+    def test_exported_gold_preserves_frozen_split(self):
+        output = self.root / "gold.tsv"
+        self.run_cli("export-gold", "--output", output)
+        with output.open("r", encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle, delimiter="\\t"))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["split"], "train")
+
 
 if __name__ == "__main__":
     unittest.main()
