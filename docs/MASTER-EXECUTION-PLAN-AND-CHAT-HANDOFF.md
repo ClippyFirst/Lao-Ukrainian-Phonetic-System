@@ -1461,3 +1461,11 @@ A code review found that truthiness-only identifier checks accepted whitespace-o
 - Final exact-code-head verification: [workflow run 41662219515](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662219515) SUCCESS; 159 Python tests and 4 built-site browser tests passed.
 - Verified implementation commit: `dd8a06b30cfb17a8cb51d33cc902eca44385bc70`; exact-code-head CI [workflow run 41662219515](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41662219515) SUCCESS.
 - **IPA-BENCH-IDENTIFIERS-001 — DONE_VERIFIED (engineering input-integrity guard).** No linguistic labels, gold records or accuracy claims were added.
+
+## Continuation review — Python/browser Lao segmentation contract (2026-11-03)
+
+A cross-runtime review identified a concrete difference that must not be papered over as parity: Python `segment_syllables` splits only at whitespace/U+200B, while browser `analyzeWord` performs dynamic longest-fully-parsed segmentation inside each whitespace-delimited token and preserves selected ASCII passthrough characters. The Python public API is documented as syllable-oriented, so this is not yet proven to be a defect; it is an unresolved contract boundary.
+
+- Tracked as [issue #116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116).
+- **LAO-PY-BROWSER-SEGMENTATION-001 — PARTIAL / contract decision required.** Acceptance: explicitly decide whether the APIs share segmentation semantics, add shared fixtures for isolated/unspaced/space-delimited/ZWSP/punctuation/malformed inputs, compare source reconstruction and statuses, then either implement parity or document the deliberate API boundary.
+- No phonology, IPA, or Ukrainian mapping rules were changed. No gold labels or accuracy claims were added.
