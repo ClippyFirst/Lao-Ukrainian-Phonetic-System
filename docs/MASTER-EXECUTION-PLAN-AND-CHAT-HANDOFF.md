@@ -1,5 +1,11 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
+## Continuation update — duplicate JSON keys in license registry (2026-11-03)
+
+- **JSONL-INPUT-002 — DONE_VERIFIED:** the standalone `data/benchmark/licenses.json` registry is now parsed with the same duplicate-key rejection as JSONL corpus files. Duplicate top-level `licenses` and nested `redistributable` keys fail with path-qualified diagnostics; this prevents last-key-wins ambiguity in redistribution decisions.
+- **Regression coverage:** duplicate top-level and nested license-registry JSON keys. Test-first RED: [41690095702](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41690095702); exact implementation-head CI: [41690255691](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41690255691) SUCCESS — 164 Python tests; 4 built-site browser tests.
+- **Scope boundary:** no license grant is inferred or changed, and no source records or IPA labels are added. Existing rights evidence requirements remain in force.
+
 ## Continuation update — duplicate JSON object-key rejection (2026-11-03)
 
 - **JSONL-INPUT-001 — DONE_VERIFIED:** `scripts/ipa_gold_corpus.py` now rejects duplicate JSON object member names at every nesting level. The parser reports the source path and line number instead of allowing Python's default decoder to silently retain only the last value.
