@@ -15,7 +15,7 @@
 - IPA is typed as phonemic, broad phonetic or narrow phonetic; never silently normalize tone, length, boundaries or phonation away.
 - Two distinct annotators and a third adjudicator are required for an adjudicated record.
 - Source provenance and redistribution rights are mandatory; restricted material must not enter the public gold export.
-- Split by lexeme group with deterministic hashing and frozen assignments; prevent train/dev/test leakage.
+- Split by lexeme group with deterministic hashing and frozen assignments; enforce one manifest-wide seed/version across all groups; preserve that identity when extending the manifest; prevent train/dev/test leakage.
 - Existing benchmark scorer remains the scoring implementation; no synthetic data enters the real corpus.
 - External G2P outputs remain candidate predictions, never gold.
 
@@ -35,3 +35,5 @@
 - Release gate cannot pass without minimum adjudicated train/dev/test coverage, two annotators, separate adjudicator, source rights and frozen splits.
 - The automated gate validates numeric counts, rights and split mechanics only. Language-specific phonological contrast coverage requires a separately versioned expert-reviewed matrix and explicit human sign-off; do not claim that the CLI validates it.
 - All existing repository tests/build checks remain green.
+
+- Every row in one split manifest shares exactly one (seed, version) pair; mixed identities fail validation and split assignment; extending an existing manifest inherits its frozen identity.
