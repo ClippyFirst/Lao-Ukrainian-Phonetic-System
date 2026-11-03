@@ -31,8 +31,7 @@
 
 ## Current repository state — 2026-11-03 (post-merge)
 
-- **Default branch:** `main` at `c50fc9133f8e7f55b520ac7229c86df2f9b10356`.
-- **Open pull requests:** none. Benchmark integrity PR [#113](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/113) was squash-merged into this exact main head.
+- **Mainline integration:** benchmark implementation PR #113 was squash-merged as `c50fc9133f8e7f55b520ac7229c86df2f9b10356`; the handoff/register reconciliation PR #114 was squash-merged as `44b475698c6532b202e06a14622ba57927843176`. No open PRs remained at this checkpoint.
 - **Held-out benchmark contract:** gold export preserves `split`, `split_seed`, and `split_version`; adjudicated records without a frozen split fail closed; the scorer defaults to `test`; train/dev/all require explicit diagnostic selection; mixed manifest identities and empty prediction files are rejected.
 - **Input integrity:** benchmark TSV headers/row widths, whitespace-only identifiers, duplicate JSON object keys, and non-standard JSON constants are rejected with regression coverage.
 - **Post-merge exact-main verification:** The required `verify` workflow passed on the exact post-merge `main` head. It ran the repository data/evidence audit, Python tests, browser-engine tests, canonical web-data regeneration and drift checks, real Chromium tests against the built site, and built-page/relative-asset checks. [workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41707491721).
