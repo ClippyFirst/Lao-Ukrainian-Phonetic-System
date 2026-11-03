@@ -6,11 +6,11 @@ This is a source-backed research audit, not an accuracy claim for this repositor
 
 ## Relevant benchmark evidence
 
-### MekongPhon (LREC 2026)
+### MekongPhon (Shurtz et al., 2026)
 
-Shurtz, Richardson & Richardson, “MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer”, LREC 2026, pp. 1650–1658, DOI 10.63317/4bb9rvdshu4z.
+Shurtz, A., Richardson, C., & Richardson, S. D. (2026). “MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer.” *Proceedings of LREC 2026*, 1650–1658. https://doi.org/10.63317/4bb9rvdshu4z.
 
-The paper abstract reports 367,000 Lao orthographic–IPA pairs and a Transformer result below 2% character error rate on held-out test sets. It also reports that linguistically informed Lao/Khmer transliteration tools outperform Epitran by 6–71 CER points, trading some accuracy for speed. The abstract does not establish that the benchmark's Lao variety, IPA convention, segmentation policy, or tone annotation exactly matches this repository's Vientiane-oriented target profile. Treat the result as a strong external baseline, not as a transferable score.
+The paper abstract reports 367,000 Lao orthographic–IPA pairs and a Transformer result below 2% character error rate on held-out test sets (Shurtz et al., 2026). It also reports that linguistically informed Lao/Khmer transliteration tools outperform Epitran by 6–71 CER points, trading some accuracy for speed. The abstract does not establish that the benchmark's Lao variety, IPA convention, segmentation policy, or tone annotation exactly matches this repository's Vientiane-oriented target profile. Treat the result as a strong external baseline, not as a transferable score.
 
 Reference: https://aclanthology.org/2026.lrec-1.129/
 
