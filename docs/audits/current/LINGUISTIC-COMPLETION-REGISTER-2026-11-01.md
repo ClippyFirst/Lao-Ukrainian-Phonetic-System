@@ -51,7 +51,7 @@ Preserve `Lao orthography → structural analysis → Lao phonology → typed IP
 | IPA-GOLD-SPLIT-001 | DONE_VERIFIED | Deterministic hash-based, frozen lexeme-group split and leakage checks |
 | IPA-GOLD-EXPORT-001 | DONE_VERIFIED | Rights-filtered typed IPA export retaining source/license/evidence locators |
 | IPA-TYPED-BENCHMARK-001 | DONE_VERIFIED | Different or missing IPA kind cannot count as an exact match |
-| IPA-GOLD-RELEASE-GATE-001 | PARTIAL | Tag/manual workflow requires 100/25/25 adjudicated train/dev/test; owner must require the check in release rulesets/procedure |
+| IPA-GOLD-RELEASE-GATE-001 | PARTIAL | Numeric tag/manual gate checks 100/25/25 adjudicated train/dev/test, rights and frozen splits; it does not calculate language-specific contrast coverage. Owner must require the check in release rulesets/procedure and obtain separate expert sign-off on a versioned feature-coverage matrix. |
 
 **Current gold:** zero independent expert-adjudicated records; `gold.tsv` remains header-only; accuracy=null. The new schemas, fixtures and source-attested literature are not gold labels. No phonetic data was invented.
 
