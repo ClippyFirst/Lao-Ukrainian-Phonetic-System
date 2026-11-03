@@ -5,7 +5,7 @@
 - **JSON-INPUT-003 — DONE_VERIFIED:** JSONL corpus records and the license registry now reject JavaScript-only constants `NaN`, `Infinity`, and `-Infinity` through the JSON decoder's `parse_constant` hook. Diagnostics retain file and line context.
 - **Regression coverage:** invalid constants in a corpus JSONL row and in `licenses.json`.
 - **Test-first RED:** [41692621208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41692621208) — exactly the two new regression tests failed before the parser change.
-- **Implementation-head CI:** [41693061265](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41693061265) SUCCESS — 166 Python tests; 4 built-site browser tests.
+- **Implementation-head CI:** [41694083975](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41694083975) SUCCESS — 166 Python tests; 4 built-site browser tests.
 - **Scope boundary:** this enforces RFC-compliant JSON syntax only; no corpus labels, license permissions, or gold records were changed.
 
 ## Continuation update — duplicate JSON keys in license registry (2026-11-03)
