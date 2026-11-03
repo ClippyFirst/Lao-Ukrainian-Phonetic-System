@@ -141,6 +141,12 @@ class BenchmarkIpaTests(unittest.TestCase):
         stderr = self.run_benchmark(gold, [], expected_returncode=1)
         self.assertIn("one frozen split manifest", stderr)
 
+    def test_rejects_empty_prediction_file_instead_of_reporting_empty_engine_set(self):
+        gold = [{"id": "a", "text": "x", "gold_ipa": "k", "gold_status": "ADJUDICATED",
+                 "profile": "standard", "source_id": "src#1", "ipa_kind": "PHONEMIC", "split": "test"}]
+        stderr = self.run_benchmark(gold, [], expected_returncode=1)
+        self.assertIn("prediction file must contain at least one row", stderr)
+
     def test_missing_prediction_row_remains_in_denominator(self):
         gold = [
             {"id": "a", "text": "x", "gold_ipa": "k", "gold_status": "ADJUDICATED",
