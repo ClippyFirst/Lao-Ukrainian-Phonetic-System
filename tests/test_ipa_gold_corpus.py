@@ -274,6 +274,19 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("unknown properties", run.stderr)
 
+    def test_read_jsonl_rejects_duplicate_top_level_json_keys(self):
+        self.paths["records"].write_text('{"record_id":"r1","record_id":"r2"}\\n', encoding="utf-8")
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("duplicate JSON object key 'record_id'", run.stderr)
+
+    def test_read_jsonl_rejects_duplicate_nested_json_keys(self):
+        self.paths["records"].write_text(
+            '{"record_id":"r1","language":"test","orthography":{"text":"x","text":"y"}}\\n',
+            encoding="utf-8",
+        )
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("duplicate JSON object key 'text'", run.stderr)
+
     def test_assign_splits_rejects_duplicate_record_ids(self):
         self.records.append(dict(self.records[0]))
         self.write_jsonl("records", self.records)
