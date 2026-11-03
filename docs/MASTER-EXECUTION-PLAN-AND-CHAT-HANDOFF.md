@@ -2,7 +2,7 @@
 
 ## Current repository state — 2026-11-03
 
-- **Default branch:** `main` at `300141942bd3053120ea3b75600f31686f0034ae`.
+- **Default branch:** [`main`](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/tree/main) (live repository ref; use the linked branch for the current head SHA).
 - **Open pull requests:** none at the time of this checkpoint; all relevant integration PRs are merged or explicitly superseded/closed.
 - **Integrated engineering and research changes:** manifest-wide split identity; MekongPhon source-scope/citation update; four Playwright built-site browser regressions; CI/Pages browser gates; glossary, codebase map and agent guidance.
 - **Exact-main verification:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; built-site browser [41647974181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974181) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
