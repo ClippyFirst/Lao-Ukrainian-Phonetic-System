@@ -1359,3 +1359,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Added a regression test for creating a new, independent split manifest using a new empty JSONL `--splits` input and explicit new seed/version. Updated `docs/ipa-gold-corpus.md` to state that a new `--output` alone does not reset the existing input manifest.
 - Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
 - Linguistic gold remains 0; gold export remains header-only; empirical accuracy remains `null`. This is split lifecycle/reproducibility engineering, not phonetic validation.
+
+
+## Source and benchmark citation reconciliation — 2026-11-03
+
+- Ported the reviewed source-registry and benchmark-reference changes from prior PR [#102](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/102) onto current `main` in a clean documentation branch; the original branch is not rewritten.
+- Added the MekongPhon source-registry record and author–year benchmark citation. The reported 367,000 Lao pairs and under-2% held-out CER are explicitly attributed to the paper; dialect/IPA compatibility and separate corpus redistribution rights remain unverified. No pronunciation labels or data imported.
+- Prior exact-head CI: [41639339241](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41639339241) SUCCESS. This validates the original PR head; this port requires its own exact-head CI before merge.
+- This is bibliographic/source-scope work only. It does not add pronunciation labels, does not resolve source redistribution rights, and does not change independent IPA gold (0) or empirical accuracy (`null`).
