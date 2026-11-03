@@ -7,8 +7,11 @@ This is a comparative diagnostic, not a gold-standard accuracy evaluation.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.metadata
 import json
+import os
+import platform
 import re
 import sys
 import unicodedata
@@ -21,6 +24,42 @@ DEFAULT_FIXTURE = ROOT / 'tests' / 'fixtures' / 'vowel_precedence_cases.json'
 DEFAULT_OUTPUT = ROOT / 'artifacts' / 'external-g2p-comparison.json'
 _TONE_SUFFIX = re.compile(r'(?:˧˥|˩˧|˧˩|˥˩|˩˥|˧|˥|˩)$')
 _LENGTH_MARK = '\u02d0'  # IPA length mark; used only for diagnostic categorization.
+
+def sha256_file(path: Path) -> str:
+    """Return the SHA-256 digest of a file without modifying its bytes."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_checksum_sidecar(path: Path) -> Path:
+    """Write a conventional SHA-256 sidecar for a completed report."""
+    sidecar = Path(str(path) + ".sha256")
+    sidecar.write_text(
+        f"{sha256_file(path)}  {path.name}\n",
+        encoding="ascii",
+    )
+    return sidecar
+
+
+def build_provenance(
+    *, fixture_path: Path, script_path: Path,
+    external_name: str, external_version: str,
+) -> dict[str, str | dict[str, str]]:
+    """Capture immutable input identities and the runtime used for this diagnostic."""
+    return {
+        "fixture_sha256": sha256_file(fixture_path),
+        "harness_sha256": sha256_file(script_path),
+        "python_version": sys.version,
+        "python_implementation": platform.python_implementation(),
+        "platform": platform.platform(),
+        "source_revision": os.environ.get("GITHUB_SHA", "not-provided"),
+        "external_package": {"name": external_name, "version": external_version},
+        "unicode_normalization": "NFC",
+    }
+
 
 def nfc(value: str | None) -> str | None:
     """Normalize Unicode canonically without deleting IPA marks or separators."""
@@ -172,15 +211,28 @@ def main() -> int:
         external_version = importlib.metadata.version('lao2ipa')
     except importlib.metadata.PackageNotFoundError:
         external_version = 'unknown'
+    if external_version != "1.0.0":
+        print(
+            f"Unsupported lao2ipa version {external_version!r}; expected pinned 1.0.0.",
+            file=sys.stderr,
+        )
+        return 2
     expected_count = sum(row.get('fixture_expected_ipa') is not None for row in results)
     summary = build_summary(results, expected_count)
+    provenance = build_provenance(
+        fixture_path=args.fixture,
+        script_path=Path(__file__).resolve(),
+        external_name="lao2ipa",
+        external_version=external_version,
+    )
     report = {
-        'schema_version': 5,
+        'schema_version': 6,
         'purpose': 'Comparative diagnostic only; neither implementation nor the engineering fixture is an independent gold standard.',
         'independent_gold_count': 0, 'accuracy': None, 'score_status': 'NOT_SCORED_NO_INDEPENDENT_GOLD',
         'fixture_path': str(args.fixture.relative_to(ROOT)) if args.fixture.is_relative_to(ROOT) else str(args.fixture),
         'fixture_schema_version': fixture.get('schema_version'), 'fixture_purpose': fixture.get('purpose'),
         'unicode_normalization': 'NFC only; no IPA marks, tone marks, length marks, or separators are removed from raw outputs.',
+        'provenance': provenance,
         'diagnostic_classifier': 'Heuristic string-difference labels only; no phonological error is adjudicated by this classifier.',
         'project': {'name': 'Lao-Ukrainian-Phonetic-System', 'ipa_source': 'lao_ukrainian.core.analyze(...).syllables[].phonemic_ipa', 'tone_handling': 'project default'},
         'external': {'name': 'lao2ipa', 'version': external_version, 'source': 'https://github.com/byu-matrix-lab/lao2ipa', 'license': 'Apache-2.0', 'output': 'ipa', 'tone_handling': 'external package default'},
@@ -188,8 +240,10 @@ def main() -> int:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    checksum_path = write_checksum_sidecar(args.output)
     print(json.dumps(report['summary'], ensure_ascii=False, indent=2))
     print(f'Report written to: {args.output}')
+    print(f'Report SHA-256 sidecar written to: {checksum_path}')
     print('Review fixture disagreements and every cross-implementation mismatch.')
     return 2 if summary['runtime_errors'] else 0
 

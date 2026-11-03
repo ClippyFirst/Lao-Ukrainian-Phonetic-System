@@ -13,6 +13,9 @@ nfc = HARNESS["nfc"]
 build_summary = HARNESS["build_summary"]
 classify_mismatch = HARNESS["classify_mismatch"]
 strip_tone_symbols_diagnostic = HARNESS["strip_tone_symbols_diagnostic"]
+sha256_file = HARNESS["sha256_file"]
+write_checksum_sidecar = HARNESS["write_checksum_sidecar"]
+build_provenance = HARNESS["build_provenance"]
 
 
 class ExternalG2PHarnessTests(unittest.TestCase):
@@ -117,6 +120,51 @@ class ExternalG2PHarnessTests(unittest.TestCase):
         self.assertEqual(summary["non_tone_or_format_mismatches_requiring_review"], 1)
         self.assertEqual(summary["independent_gold_count"], 0)
         self.assertIsNone(summary["accuracy"])
+
+    def test_sha256_file_is_stable_and_matches_standard_digest(self):
+        import hashlib
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "fixture.txt"
+            path.write_bytes(b"source\n")
+            self.assertEqual(sha256_file(path), hashlib.sha256(b"source\n").hexdigest())
+
+    def test_provenance_pins_inputs_runtime_and_external_distribution(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / "fixture.json"
+            script = Path(tmp) / "harness.py"
+            fixture.write_text('{"cases": []}\n', encoding="utf-8")
+            script.write_text('print("run")\n', encoding="utf-8")
+            provenance = build_provenance(
+                fixture_path=fixture,
+                script_path=script,
+                external_name="lao2ipa",
+                external_version="1.0.0",
+            )
+            self.assertEqual(provenance["external_package"], {
+                "name": "lao2ipa", "version": "1.0.0"
+            })
+            self.assertEqual(len(provenance["fixture_sha256"]), 64)
+            self.assertEqual(len(provenance["harness_sha256"]), 64)
+            self.assertTrue(provenance["python_version"])
+            self.assertTrue(provenance["python_implementation"])
+            self.assertTrue(provenance["platform"])
+            self.assertEqual(provenance["unicode_normalization"], "NFC")
+
+    def test_report_writer_creates_checksum_sidecar(self):
+        import hashlib
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "report.json"
+            output.write_text('{"diagnostic": true}\n', encoding="utf-8")
+            sidecar = write_checksum_sidecar(output)
+            self.assertEqual(sidecar.read_text(encoding="ascii"),
+                             f"{hashlib.sha256(output.read_bytes()).hexdigest()}  report.json\n")
+
 
 if __name__ == "__main__":
     unittest.main()
