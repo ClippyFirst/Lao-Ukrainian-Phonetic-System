@@ -1486,3 +1486,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 - These are leads only: no one has been contacted or recruited; no IPA convention has been approved; no rights have been granted; no IPA labels were generated.
 - The 30-item pilot remains BLOCKED until the acceptance conditions in the playbook are met. Candidate lexicon entries, phonetic respellings, model outputs, orthographic transcripts and source descriptions are not gold IPA.
 - The next external action is to contact a qualified prospective reviewer and request nominations for two independent annotators plus a separate adjudicator; separately complete item-level rights review and blind-intake dry run.
+
+
+## Continuation update — Lao external G2P provenance and artifact integrity (2026-11-03)
+
+- **LAO-G2P-REPRO-001 — implementation in progress pending exact-head CI:** the optional `lao2ipa==1.0.0` diagnostic now captures SHA-256 identities for its fixture and harness, Python version/implementation/platform, optional GitHub source revision, and exact external package version. It refuses a different `lao2ipa` version.
+- The JSON report emits a sibling `.sha256` sidecar. The optional Actions workflow uploads both with 90-day retention. This is integrity evidence, not a signature or permanent archival guarantee.
+- Reproduction command and interpretation limits are documented in `docs/research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md`.
+- **Scope boundary:** still an engineering-fixture comparator. It does not resolve the 31 tone-convention, 2 offglide, or 4 segmental/vowel-sequence disagreements; independent gold remains 0 and accuracy remains null. Do not tune production to maximize comparator agreement.
