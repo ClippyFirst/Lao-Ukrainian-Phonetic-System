@@ -39,7 +39,7 @@ Lao tone is lexically contrastive; tonal contours also vary with tonal context. 
 
 ## Candidate external reference: MekongPhon
 
-MekongPhon (LREC 2026) reports 367,000 Lao and 1.3 million Khmer orthography–IPA pairs: https://lrec.elra.info/lrec2026-main-129 (DOI https://doi.org/10.63317/4bb9rvdshu4z). It is a **candidate external reference**, not admitted gold. Before importing or using entries as validation evidence, verify the dataset download/repository and exact version/checksum; dataset-specific license and redistribution/derivative rights; Lao variety; source lexicon; normalization and IPA convention; what “verified” means; source locators; duplicate/variant policy; and overlap with our development sources.
+Shurtz et al. (2026), MekongPhon reports 367,000 Lao and 1.3 million Khmer orthography–IPA pairs: https://lrec.elra.info/lrec2026-main-129 (DOI https://doi.org/10.63317/4bb9rvdshu4z). It is a **candidate external reference**, not admitted gold. Before importing or using entries as validation evidence, verify the dataset download/repository and exact version/checksum; dataset-specific license and redistribution/derivative rights; Lao variety; source lexicon; normalization and IPA convention; what “verified” means; source locators; duplicate/variant policy; and overlap with our development sources.
 
 The LREC proceedings' CC BY-NC-4.0 license does not establish the dataset's own license. Until the checks above are complete, classify MekongPhon as candidate / rights_unverified / methodology_unverified. Do not populate records.jsonl or gold.tsv from it.
 
@@ -114,3 +114,10 @@ The official Common Voice release manifest has now been inspected: [`cv-corpus-2
 - Manifest locale checksum field: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260b6`. Manifest file blob SHA: `e401c4a8e923cad5c8baacb6120c095b1e1bd561`.
 
 This is a small, demographically narrow sample with **no dialect evidence**. It is not a sound basis for asserting Vientiane coverage or a balanced lexical benchmark. It may support a 30-token process pilot only if the actual validated transcripts contain 30 suitable lexemes and a specialist explicitly approves the contextual profile. It does not replace controlled citation-form elicitation.
+
+
+## MekongPhon artifact-level update — 2026-11-03
+
+The [BYU MATRIX Lab repository](https://github.com/byu-matrix-lab/MekongPhon) has now been inspected at tree SHA f80f6c1840c4818b51e05f2e00cded4701a5b662. The tracked Lao word lexicon contains 6,319 rows (6,316 unique orthographies); data/splits contains 6,219 train and 100 eval rows, with three duplicate spellings in train and no train/eval orthographic overlap. The scraper uses SEAlang source kerr72 and takes the first matching entry. The repository has no tracked LICENSE file.
+
+The checked-in splitter writes *_train_cleaned.csv / *_eval_cleaned.csv, while convert_lao.py refers to different paths absent from the tracked tree and uses the full lexicon as its evaluation mapping. OPUS sentence corpora are downloaded externally and not tracked. The public repository therefore does not demonstrate that its 100-word lexeme holdout produced the paper's held-out CER. The LREC proceedings are CC BY-NC 4.0, but this does not establish the separate corpus license. The [tonal](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tonal](https://huggingface.co/byumatrixlab/lao-ipa-nontonal) model cards declare Apache-2.0 for model artifacts; training-data/source rights and Vientiane-profile compatibility remain unresolved. MekongPhon remains a candidate external baseline, never gold, until exact data rights, profile, IPA convention, source provenance and evaluation manifest are verified.
