@@ -1,7 +1,9 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
-**Current checkpoint:** 2026-11-02 (reconciled after latest main publication)  
+**Current checkpoint:** 2026-11-03 (source and citation reconciliation)  
 **Default branch:** `main` at `33ac5615b13fec717ce59ee55229b9d11f04893d`  
+**Current review PR:** [#100](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/100), branch `research/lao-quality-review-20261102`; documentation checkpoint based on `099641d02a3b869c1d71466bd799e0b137d492d7`.  
+**Latest exact code-head verification:** [verify 41605468171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41605468171) SUCCESS on code head `361e3c48a8216a3add5074bc0096cf545713fe18`; later commits in this documentation checkpoint change no runtime code.  
 **Current main verification:** [verify 41418528760](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41418528760) SUCCESS; Pages deployment [41417298476](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41417298476) SUCCESS.  
 **Previous checkpoint:** `6f607d7ab4d432fd8491a5fcee32186e4269fc32` and branch/PR details below are historical and superseded by the merged main state.
 
@@ -1523,3 +1525,10 @@ The CLI release gate enforces independent double annotation/adjudication, rights
 - Source registry now includes the exact Common Voice v27.0 manifest (223 clips, 193 validated, 16 contributors, 0.35 validated hours; no named accent/variant metadata) and MekongPhon artifact/split/license findings. No corpus rows were imported.
 - Gold files remain empty: 0 records, 0 annotations, 0 adjudications, 0 splits. Accuracy remains null.
 - Changes in this continuation are documentation/evidence only. No runtime phonology, IPA labels, schema or generated artifacts changed. Next blockers: expert annotation/adjudication, source/data rights, manual deployed UI/accessibility QA and owner review/merge.
+
+
+## Citation/source reconciliation — 2026-11-03
+
+- In the controlled IPA playbook, the corpus paper is now cited consistently as **Shurtz et al. (2026)** rather than the ambiguous venue-only label “MekongPhon (LREC 2026)”. Its bibliographic entry already includes the exact paper and DOI. This does not change the candidate-only disposition: the external corpus-specific license, source provenance and profile compatibility remain unverified; no rows were imported.
+- Citation metadata was checked against the LREC proceedings record (DOI 10.63317/4bb9rvdshu4z) and the project source registry. A full repository-wide citation audit remains open; this is a targeted correction, not blanket validation.
+- The review branch remains open and unmerged. Independent expert-adjudicated gold remains 0; accuracy remains null.
