@@ -33,4 +33,5 @@
 - The real corpus remains empty until expert work supplies admissible records.
 - Validation reports NOT_READY rather than zero accuracy when no adjudicated rows exist.
 - Release gate cannot pass without minimum adjudicated train/dev/test coverage, two annotators, separate adjudicator, source rights and frozen splits.
+- The automated gate validates numeric counts, rights and split mechanics only. Language-specific phonological contrast coverage requires a separately versioned expert-reviewed matrix and explicit human sign-off; do not claim that the CLI validates it.
 - All existing repository tests/build checks remain green.
