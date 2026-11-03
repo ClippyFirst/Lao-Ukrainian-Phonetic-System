@@ -48,7 +48,7 @@ def main() -> int:
     pred_rows = read_tsv(args.predictions, PRED_FIELDS)
     gold = {}
     for row in gold_rows:
-        if not row["id"].strip() or row["id"] in gold:
+        if not row["id"] or row["id"] in gold:
             raise ValueError(f"gold IDs must be non-empty and unique: {row['id']!r}")
         gold[row["id"]] = row
     # An ADJUDICATED label must be auditable. Fail closed instead of silently
@@ -83,7 +83,7 @@ def main() -> int:
     predictions = defaultdict(dict)
     unknown_ids = []
     for row in pred_rows:
-        if not row["engine"].strip() or not row["id"].strip():
+        if not row["engine"] or not row["id"]:
             raise ValueError("prediction engine and id must be non-empty")
         engine = row["engine"]
         if row["id"] in predictions[engine]:
