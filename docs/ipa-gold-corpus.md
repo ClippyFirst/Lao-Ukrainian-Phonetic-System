@@ -64,6 +64,8 @@ python scripts/ipa_gold_corpus.py validate --language LANGUAGE
 
 The assignment uses SHA-256 of the fixed seed and `lexeme_group_id`, with an 80/10/10 train/dev/test target. Existing assignments are preserved when new records are added. All records in one lexical group must remain in one split. Never change the seed or rewrite the frozen manifest after model development begins; create a new versioned corpus release if a split redesign is scientifically necessary.
 
+**Manifest-wide freeze invariant:** every row in one `splits.jsonl` must share the same `(seed, version)` pair, including rows for different lexeme groups. `validate` rejects a mixed manifest. When extending an existing manifest, `assign-splits` inherits its frozen seed/version for new groups; explicitly supplying a different seed or version is rejected. A scientifically justified redesign must write a separate versioned manifest (for example, a new `--output` path) rather than mixing identities in the existing manifest.
+
 This initial manifest prevents lexical-item leakage. It is not yet a speaker-held-out acoustic evaluation protocol. If the research question requires generalization to unseen speakers, create a separate speaker-disjoint evaluation manifest rather than claiming the lexical split tests speaker generalization.
 
 ## Commands
