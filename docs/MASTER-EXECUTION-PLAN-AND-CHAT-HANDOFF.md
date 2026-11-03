@@ -1478,3 +1478,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Tracking issue [#116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116) closed as completed after documentation was merged in [PR #117](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/117), merge commit `2750153bd49e11c3c74ac2cc515acc750f90fae0`.
 - Exact PR-head verification: [41716613666](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41716613666) SUCCESS — repository data/evidence audit, Python tests, browser engine tests, canonical browser-data regeneration/drift, real Chromium built-site tests, and built-page/relative-asset checks.
 - No production parser, phonology, IPA, or Ukrainian mapping rule changed. Phrase segmentation remains a browser convenience and is not a solved lexical segmentation problem. Future changes to either runtime contract require runtime-specific regression coverage and an update to the public contract.
+
+
+## Research unblock checkpoint — 2026-11-03
+
+- Prospective language-specific expert/researcher leads and additional candidate resources are recorded in docs/ipa-gold-collection-playbook.md with primary-source links and explicit limits.
+- These are leads only: no one has been contacted or recruited; no IPA convention has been approved; no rights have been granted; no IPA labels were generated.
+- The 30-item pilot remains BLOCKED until the acceptance conditions in the playbook are met. Candidate lexicon entries, phonetic respellings, model outputs, orthographic transcripts and source descriptions are not gold IPA.
+- The next external action is to contact a qualified prospective reviewer and request nominations for two independent annotators plus a separate adjudicator; separately complete item-level rights review and blind-intake dry run.
