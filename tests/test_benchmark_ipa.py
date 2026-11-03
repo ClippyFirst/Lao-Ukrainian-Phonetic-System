@@ -105,6 +105,8 @@ class BenchmarkIpaTests(unittest.TestCase):
         report = self.run_benchmark(gold, pred)
         metrics = report["engines"]["candidate"]
         self.assertEqual(report["gold"]["split"], "test")
+        self.assertEqual(report["gold"]["split_seed"], "frozen-test-seed")
+        self.assertEqual(report["gold"]["split_version"], "v1")
         self.assertEqual(report["gold"]["rows_adjudicated_total"], 3)
         self.assertEqual(metrics["n_adjudicated_gold_rows"], 1)
         self.assertEqual(metrics["exact_matches"], 1)
