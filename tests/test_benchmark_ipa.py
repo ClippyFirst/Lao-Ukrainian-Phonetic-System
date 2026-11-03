@@ -77,6 +77,18 @@ class BenchmarkIpaTests(unittest.TestCase):
         stderr = self.run_benchmark([], [whitespace_id], expected_returncode=1)
         self.assertIn("prediction engine and id must be non-empty", stderr)
 
+    def test_rejects_whitespace_only_prediction_engine_and_id(self):
+        base = {"id": "ok", "engine": "candidate", "raw_output": "x", "ipa": "x",
+                "status": "ok", "version": "1", "ipa_kind": ""}
+        cases = [
+            (dict(base, engine=" \\t "), "whitespace engine"),
+            (dict(base, id=" \\t "), "whitespace id"),
+        ]
+        for prediction, label in cases:
+            with self.subTest(identifier=label):
+                stderr = self.run_benchmark([], [prediction], expected_returncode=1)
+                self.assertIn("prediction engine and id must be non-empty", stderr)
+
     def test_empty_gold_does_not_report_accuracy(self):
         report = self.run_benchmark([], [
             {"id": "x", "engine": "candidate", "raw_output": "raw", "ipa": "a", "status": "ok", "version": "1"}
