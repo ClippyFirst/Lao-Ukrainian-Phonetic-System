@@ -227,7 +227,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
                                  orthography={"text": "ກາໆ", "normalized": "ກາໆ"}))
         self.write_jsonl("records", self.records)
         extended = self.root / "extended.jsonl"
-        self.run_cli("assign-splits", "--seed", "second-seed", "--output", extended)
+        self.run_cli("assign-splits", "--output", extended)
         rows = [json.loads(line) for line in extended.read_text(encoding="utf-8").splitlines()]
         self.assertEqual(rows[0]["split"], rows[1]["split"])
         self.assertEqual(rows[1]["seed"], "first-seed")
@@ -389,6 +389,37 @@ class IpaGoldCorpusTests(unittest.TestCase):
                 self.assertIs(properties[name].get("additionalProperties"), False)
         rights = properties["source"]["properties"]["rights_evidence"]
         self.assertIs(rights.get("additionalProperties"), False)
+
+
+    def test_rejects_mixed_split_seeds_across_distinct_lexeme_groups(self):
+        second = dict(self.records[0], record_id="r2", lexeme_group_id="lemma-2",
+                      orthography={"text": "second", "normalized": "second"})
+        self.records.append(second)
+        self.splits.append({"record_id": "r2", "group_id": "lemma-2", "split": "train",
+                            "seed": "seed-b", "version": "v1"})
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("one frozen seed/version", run.stderr)
+
+    def test_rejects_mixed_split_versions_across_distinct_lexeme_groups(self):
+        second = dict(self.records[0], record_id="r2", lexeme_group_id="lemma-2",
+                      orthography={"text": "second", "normalized": "second"})
+        self.records.append(second)
+        self.splits.append({"record_id": "r2", "group_id": "lemma-2", "split": "train",
+                            "seed": "test-seed", "version": "v2"})
+        self.write_all()
+        run = self.run_cli("validate", expected=1)
+        self.assertIn("one frozen seed/version", run.stderr)
+
+    def test_assign_splits_rejects_new_seed_for_existing_frozen_manifest(self):
+        second = dict(self.records[0], record_id="r2", lexeme_group_id="lemma-2",
+                      orthography={"text": "second", "normalized": "second"})
+        self.records.append(second)
+        self.write_jsonl("records", self.records)
+        run = self.run_cli("assign-splits", "--seed", "new-seed",
+                           "--output", self.root / "extended.jsonl", expected=1)
+        self.assertIn("existing manifest is frozen", run.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
