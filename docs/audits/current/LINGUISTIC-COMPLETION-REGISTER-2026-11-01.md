@@ -229,3 +229,8 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101), final documentation head `b008b824fb5c95861f4e3d8766c8307515df0c02`; code/test checkpoint `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44` (the three subsequent commits are docs-only).
 - Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
 - No linguistic gold rows were added; independent gold remains 0 and empirical accuracy remains `null`.
+
+
+## Split-manifest integration checkpoint — 2026-11-03
+
+**Lao PR #101: DONE_VERIFIED on main.** Merged as `ccb6ba44d9448858091306d606a7bba50f19a5de`. The global manifest identity invariant and separate-manifest creation acceptance are now in the default branch. Exact-main workflow [41643375975](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41643375975) succeeded. No gold rows were added; adjudicated gold remains 0 and empirical accuracy remains `null`.
