@@ -293,7 +293,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
                             "seed":"test-seed", "version":"v2"})
         self.write_all()
         run = self.run_cli("assign-splits", "--output", self.root / "generated.jsonl", expected=1)
-        self.assertIn("inconsistent frozen split metadata", run.stderr)
+        self.assertIn("one frozen seed/version", run.stderr)
 
     def test_empty_gold_is_not_release_ready(self):
         self.annotations = []
