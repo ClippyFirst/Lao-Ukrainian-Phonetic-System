@@ -218,3 +218,5 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Exact-head CI: [41613340163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41613340163) SUCCESS — 149 Python tests; the full repository workflow also completed successfully.
 - New invariant: a single manifest has one `(seed, version)` pair globally; existing manifests retain that identity when extended; explicit conflicting overrides fail closed. A new corpus split design requires a separate versioned manifest.
 - This is an engineering reproducibility fix only. It creates no linguistic labels and does not change gold count (0) or accuracy (`null`).
+
+- Follow-up strictness regression: explicit empty `--seed` and `--version` must fail instead of falling through to defaults. Tests-only CI failed on both behaviours (41615374874); the corrected conditional default resolution passed exact-head CI 41615556868.
