@@ -226,6 +226,6 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 
 **Status: DONE_VERIFIED on the dedicated PR branch; merge to main remains pending.** Added an acceptance test proving a genuinely new seed/version can be used when the caller supplies a separate empty JSONL input via `--splits`, while the existing frozen manifest remains untouched. Corrected the operator instructions: changing only `--output` does not reset the input manifest; the new-manifest workflow must use a new empty `--splits` file and a distinct `--output` file.
 
-- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101), exact head `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`.
+- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101), final documentation head `b008b824fb5c95861f4e3d8766c8307515df0c02`; code/test checkpoint `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44` (the three subsequent commits are docs-only).
 - Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
 - No linguistic gold rows were added; independent gold remains 0 and empirical accuracy remains `null`.
