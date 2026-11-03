@@ -12,6 +12,12 @@
 - **Evidence:** test-first RED [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused implementation GREEN [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910); implementation commit `832ca08431ddca0f081234fcd02fbc5e0b92053f`.
 - **Acceptance boundary:** input shape is validated before scoring. This does not create adjudicated IPA data or alter language accuracy status (gold 0; accuracy null).
 
+## JSONL input integrity — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| JSONL-INPUT-001 | DONE_VERIFIED | Duplicate top-level and nested JSON object keys are rejected. RED 41687363405; exact implementation-head CI 41687689017 SUCCESS (162 Python tests; 4 built-site browser tests). | Prevent silent last-key-wins corruption before corpus schema/provenance validation. No linguistic data or accuracy claims added. |
+
 ## Evidence-based task ledger
 
 | ID | Status | Work remaining | Acceptance |
