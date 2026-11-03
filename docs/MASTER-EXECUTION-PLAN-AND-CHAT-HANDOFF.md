@@ -1516,3 +1516,10 @@ BYU model cards are available for [Lao tonal IPA](https://huggingface.co/byumatr
 ## Automated IPA-gold gate limitation — 2026-11-03
 
 The CLI release gate enforces independent double annotation/adjudication, rights-cleared export, deterministic group splits and numeric 100/25/25 thresholds. It does not calculate language-specific phonological contrast coverage. A separate versioned coverage matrix and expert sign-off remain mandatory before any language benchmark release. A green numeric gate alone is not sufficient.
+## Final continuation closeout — 2026-11-03
+
+- Final pre-closeout branch head: `d2af6aaff5a5f167da6e577f9b4aeaa7c9556b29`; PR #100 remains open, mergeable, 57 ahead / 0 behind `main` (`33ac5615b13fec717ce59ee55229b9d11f04893d`).
+- Exact-head workflow [41604927356](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41604927356) succeeded: 146 Python tests, 4 Chromium tests, IPA-gold structure check, evidence audit, G2P harness syntax/CLI, build, generated-data reproducibility and built-page/asset checks.
+- Source registry now includes the exact Common Voice v27.0 manifest (223 clips, 193 validated, 16 contributors, 0.35 validated hours; no named accent/variant metadata) and MekongPhon artifact/split/license findings. No corpus rows were imported.
+- Gold files remain empty: 0 records, 0 annotations, 0 adjudications, 0 splits. Accuracy remains null.
+- Changes in this continuation are documentation/evidence only. No runtime phonology, IPA labels, schema or generated artifacts changed. Next blockers: expert annotation/adjudication, source/data rights, manual deployed UI/accessibility QA and owner review/merge.
