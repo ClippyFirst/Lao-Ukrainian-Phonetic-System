@@ -1349,3 +1349,11 @@ A follow-up source search found published BYU MATRIX Lab Hugging Face checkpoint
 ## Main publication reconciliation — 2026-11-02
 
 Supersedes earlier handoff statements that the review branch was still ahead of `main` and unmerged: PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) was merged into `main` as `ed36e7030df4ec8c1b70b50fdcfd6e47e5770d52`; this was the repository's current `main` tip at reconciliation. Exact-head engineering workflows on the PR head passed: verify [41413902679](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902679), Goruut [41413902653](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902653), and lao2ipa [41413902805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902805). The Pages workflow is configured to deploy from `main`; the public site and post-merge deployment run could not be independently inspected from this session, so deployment status remains **BLOCKED (external verification/network access)**, not claimed successful. No UI/runtime files were changed by this PR. Independent expert-adjudicated gold remains 0 and accuracy remains null; the project is still a research prototype.
+
+
+## Academic Writing Toolkit verification scope — 2026-11-03
+
+- Offline BibTeX validator: 4 entries, 0 structural issues. Its response contained empty `verified`, `metadata_checks`, and `online_sources` arrays; therefore this is a structural check only, not independent online metadata verification.
+- APA citation audit: 0 issues; British-English check: 0 issues; paragraph-logic warning is only the standalone Reference URL line.
+- Primary bibliographic metadata was separately checked against the ACL Anthology/LREC proceedings and publisher or institutional records. Tool citation parsing is not treated as an authority over compound surnames, two-letter surnames, or full reference-list entries; no unsupported citation-clean claim is made.
+- No pronunciation labels, external corpus rows, or model artifacts were imported as gold.
