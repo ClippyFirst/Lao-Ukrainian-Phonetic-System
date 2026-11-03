@@ -331,3 +331,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | Task | Status | Evidence / acceptance |
 |---|---|---|
 | LAO-PY-BROWSER-SEGMENTATION-001 | PARTIAL / contract decision required | Python splits only at whitespace/U+200B; browser dynamically segments unspaced tokens. The Python API is documented as syllable-oriented, so this is a verified behavioral difference but not yet a confirmed defect. Tracked in [issue #116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116). Acceptance: decide shared-vs-distinct API contract, add shared fixtures and cross-runtime tests, then implement parity or document the intentional boundary. No IPA/gold/accuracy claims. |
+
+
+## 2026-11-03 — Lao Python/browser segmentation contract
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| LAO-PY-BROWSER-SEGMENTATION-001 | DONE_VERIFIED (contract clarification) | Python API is intentionally syllable-oriented; browser adds conservative within-token syllable segmentation for phrase input. Documented the deliberate boundary and explicitly disclaimed lexical word segmentation and cross-runtime parity for unspaced multi-syllable input in [README](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/main/README.md#runtime-segmentation-contract). Issue [#116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116) closed; docs PR [#117](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/117) merged as `2750153bd49e11c3c74ac2cc515acc750f90fae0`. Exact PR-head CI [41716613666](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41716613666) SUCCESS, including Python, browser-engine, generated-data drift, Chromium UI and built-page/asset checks. No parser/phonology rules changed; unspaced phrase segmentation remains browser-only and lexical segmentation remains out of scope. |
