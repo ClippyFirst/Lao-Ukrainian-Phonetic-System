@@ -242,3 +242,12 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 
 - This clean port is based on the latest main after the split-manifest integration; superseded PR #102 is not used as a merge candidate.
 - No pronunciation labels or corpus records imported; rights remain source-specific; independent gold remains 0 and accuracy remains `null`.
+
+
+## LAO-UI-001 — built-site browser regression coverage — 2026-11-03
+
+**Status: PARTIAL pending exact-head CI and manual QA.** Added Playwright tests for visible IPA/Ukrainian output, mixed-script fail-closed behavior, clear/reset and romanization/IPA-first separation; CI and Pages build workflows now run them against the built site.
+
+- Browser test dependency is pinned to `@playwright/test 1.63.0`, but no lockfile is committed; transitive dependency reproducibility remains a follow-up improvement.
+- Manual visual, keyboard, screen-reader and mobile QA remain TODO. Automated browser success cannot substitute for those checks.
+- No linguistic rules or gold labels changed; adjudicated IPA gold remains 0 and accuracy remains `null`.
