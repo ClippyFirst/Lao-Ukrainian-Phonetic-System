@@ -61,6 +61,22 @@ class BenchmarkIpaTests(unittest.TestCase):
                 stderr = self.run_benchmark([row], [], expected_returncode=1)
                 self.assertIn(expected_message, stderr)
 
+    def test_rejects_whitespace_only_gold_and_prediction_identifiers(self):
+        non_gold = {"id": " \\t ", "text": "x", "gold_ipa": "", "gold_status": "PROJECT_PROBE_NOT_GOLD",
+                    "profile": "", "source_id": "", "split": "train"}
+        prediction = {"id": "ok", "engine": "candidate", "raw_output": "x", "ipa": "x",
+                      "status": "ok", "version": "1", "ipa_kind": ""}
+        stderr = self.run_benchmark([non_gold], [prediction], expected_returncode=1)
+        self.assertIn("gold IDs must be non-empty and unique", stderr)
+
+        whitespace_engine = dict(prediction, engine=" \\t ")
+        stderr = self.run_benchmark([], [whitespace_engine], expected_returncode=1)
+        self.assertIn("prediction engine and id must be non-empty", stderr)
+
+        whitespace_id = dict(prediction, id=" \\t ")
+        stderr = self.run_benchmark([], [whitespace_id], expected_returncode=1)
+        self.assertIn("prediction engine and id must be non-empty", stderr)
+
     def test_empty_gold_does_not_report_accuracy(self):
         report = self.run_benchmark([], [
             {"id": "x", "engine": "candidate", "raw_output": "raw", "ipa": "a", "status": "ok", "version": "1"}
