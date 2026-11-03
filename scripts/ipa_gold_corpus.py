@@ -398,8 +398,8 @@ def command_assign(args: argparse.Namespace) -> int:
             raise ValueError("existing manifest is frozen; use a new versioned manifest path to change its version")
         seed, version = manifest_identity
     else:
-        seed = require_text(args.seed or "clippyfirst-ipa-gold-v1", "--seed")
-        version = require_text(args.version or "v1", "--version")
+        seed = require_text(args.seed if args.seed is not None else "clippyfirst-ipa-gold-v1", "--seed")
+        version = require_text(args.version if args.version is not None else "v1", "--version")
 
     output = []
     for ident, record in sorted(record_by_id.items()):
