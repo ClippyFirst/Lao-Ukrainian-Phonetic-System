@@ -277,7 +277,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
     def test_read_jsonl_rejects_duplicate_top_level_json_keys(self):
         row = json.dumps(self.records[0], ensure_ascii=False)
         row = row.replace('"record_id": "r1"', '"record_id": "r2", "record_id": "r1"', 1)
-        self.paths["records"].write_text(row + "\\n", encoding="utf-8")
+        self.paths["records"].write_text(row + chr(10), encoding="utf-8")
         run = self.run_cli("validate", expected=1)
         self.assertIn("duplicate JSON object key 'record_id'", run.stderr)
 
@@ -286,7 +286,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         original_text = json.dumps(self.records[0]["orthography"]["text"], ensure_ascii=False)
         row = row.replace('"text": ' + original_text,
                           '"text": "duplicate", "text": ' + original_text, 1)
-        self.paths["records"].write_text(row + "\\n", encoding="utf-8")
+        self.paths["records"].write_text(row + chr(10), encoding="utf-8")
         run = self.run_cli("validate", expected=1)
         self.assertIn("duplicate JSON object key 'text'", run.stderr)
 
