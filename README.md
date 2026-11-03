@@ -118,3 +118,14 @@ The research registry records external pronunciation engines, IPA dictionaries, 
 ## Independent IPA gold corpus
 
 The project uses a provenance-backed, double-annotated IPA gold workflow. See [the corpus protocol](docs/ipa-gold-corpus.md) and [the language-specific phonology research workpack](docs/audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md). The corpus is currently empty by design; no phonetic accuracy claim is available until expert adjudication is complete.
+
+
+## Runtime segmentation contract
+
+The Python package and browser instrument intentionally expose different input contracts; their results must not be treated as interchangeable for unspaced multi-syllable input:
+
+- **Python API:** syllable-oriented. It analyzes each whitespace-delimited or U+200B-delimited unit as one orthographic syllable candidate. It does not infer boundaries inside an unspaced Lao run. A caller that needs phrase-level results must supply explicit boundaries; this is not lexical word segmentation.
+- **Browser instrument:** phrase-input oriented. Within each whitespace-delimited token, it attempts conservative dynamic segmentation into fully parsed syllable candidates. This is a UI convenience, not a lexical word segmenter; it retains unresolved material and withholds unsupported phonetic output rather than guessing. Explicit whitespace remains a boundary between input fragments.
+- **Boundary differences:** browser validation and Python normalization/parsing are separate runtime paths. In particular, do not assume U+200B, punctuation, mixed-script passthrough, malformed fragments, or aggregate status behave identically across them. Consumers must select the documented runtime contract and must not compare the two outputs as a parity oracle.
+
+The Python API's syllable-level behavior is deliberate, not a claim that Lao spaces mark lexical words. The browser's within-token segmentation is a conservative presentation feature, not evidence that the project solves Lao lexical word segmentation. Shared phonological and IPA-to-Ukrainian rules should remain aligned where both runtimes support the same complete syllable, but phrase segmentation is not a parity requirement. Changes to either contract require runtime-specific regression tests and an explicit update to this section.
