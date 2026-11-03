@@ -251,3 +251,10 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Browser test dependency is pinned to `@playwright/test 1.63.0`, but no lockfile is committed; transitive dependency reproducibility remains a follow-up improvement.
 - Manual visual, keyboard, screen-reader and mobile QA remain TODO. Automated browser success cannot substitute for those checks.
 - No linguistic rules or gold labels changed; adjudicated IPA gold remains 0 and accuracy remains `null`.
+
+
+## LAO-METHOD-REFRESH-001 — upstream methodology snapshots — 2026-11-03
+
+**Status: DONE_VERIFIED (reference audit).** Superpowers v7.0.1 current main: `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; mattpocock/skills v1.3.2 release: `d1478fcb140db0b93c0c8df17bcfd311844749d0`, current main snapshot: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; Ponytail v5.3.3 release: `7801d061243d7b753bad0e0b3c057cd250b11755`, current main: `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` (README-only post-pin change).
+
+- Release pins and current-main snapshots are distinguished. No third-party runtime or skill files imported.
