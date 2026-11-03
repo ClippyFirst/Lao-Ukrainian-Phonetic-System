@@ -1494,3 +1494,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 - The JSON report emits a sibling `.sha256` sidecar. The optional Actions workflow uploads both with 90-day retention. This is integrity evidence, not a signature or permanent archival guarantee.
 - Reproduction command and interpretation limits are documented in `docs/research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md`.
 - **Scope boundary:** still an engineering-fixture comparator. It does not resolve the 31 tone-convention, 2 offglide, or 4 segmental/vowel-sequence disagreements; independent gold remains 0 and accuracy remains null. Do not tune production to maximize comparator agreement.
+
+
+## Post-merge verification — Lao G2P reproducibility — 2026-11-03
+
+- PR #120 merged as `943eb3264448dd376f5a7c1670fa136fb0214f7a`.
+- Exact PR-head verification [41723349565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723349565) SUCCESS.
+- Exact post-merge `main` verification [41723526240](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723526240) SUCCESS.
+- Exact post-merge pinned `lao2ipa==1.0.0` diagnostic [41723525916](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723525916) SUCCESS; JSON + SHA-256 sidecar artifact exists with expiry 2027-02-01.
+- `LAO-G2P-REPRO-001` is **DONE_VERIFIED** for provenance, version pin enforcement, report checksum generation and hosted artifact publication.
+- Parent issue #9 remains **PARTIAL**: the independent rights-cleared sample and qualified review of 31 tone, 2 offglide and 4 segmental/vowel-sequence disagreements remain outstanding. Independent IPA gold=0; accuracy=null.
