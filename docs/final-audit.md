@@ -283,3 +283,7 @@ All five workflows now use the Node.js 24-compatible current major action releas
 - Legacy PR #97 is **closed without merge**; its documentation-only completion-register content was superseded and reconciled into merged PR #98 and the current register. Its branch remains preserved; no cherry-pick or branch deletion was needed.
 - Current research PR [#100](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/100) remains open and mergeable, based on current main with zero behind commits. Its code was unchanged by this source-evidence pass; only handoff, completion register and external-corpus triage documents were updated.
 - No PR was merged or released during this pass.
+
+## Parallel PR reconciliation — 2026-11-03
+
+- PR #101 is the separate, verified implementation of the manifest-wide split seed/version invariant (exact-head verify 41615750913); PR #102 is the separate source-registry/G2P citation update (verify 41615147342). Both are open, mergeable and zero commits behind main. They touch different runtime files from #100; their handoff/register documentation overlaps and should be reconciled deliberately. Neither was merged during this pass.
