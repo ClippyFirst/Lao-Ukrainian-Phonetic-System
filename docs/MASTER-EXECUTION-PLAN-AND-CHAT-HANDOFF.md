@@ -1351,3 +1351,11 @@ A follow-up source search found published BYU MATRIX Lab Hugging Face checkpoint
 ## Main publication reconciliation — 2026-11-02
 
 Supersedes earlier handoff statements that the review branch was still ahead of `main` and unmerged: PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) was merged into `main` as `ed36e7030df4ec8c1b70b50fdcfd6e47e5770d52`; this was the repository's current `main` tip at reconciliation. Exact-head engineering workflows on the PR head passed: verify [41413902679](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902679), Goruut [41413902653](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902653), and lao2ipa [41413902805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902805). The Pages workflow is configured to deploy from `main`; the public site and post-merge deployment run could not be independently inspected from this session, so deployment status remains **BLOCKED (external verification/network access)**, not claimed successful. No UI/runtime files were changed by this PR. Independent expert-adjudicated gold remains 0 and accuracy remains null; the project is still a research prototype.
+
+
+## Split-manifest continuation update — 2026-11-03
+
+- Current PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) head: `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`; 16 commits ahead / 0 behind current main; GitHub reports mergeable. No merge performed.
+- Added a regression test for creating a new, independent split manifest using a new empty JSONL `--splits` input and explicit new seed/version. Updated `docs/ipa-gold-corpus.md` to state that a new `--output` alone does not reset the existing input manifest.
+- Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
+- Linguistic gold remains 0; gold export remains header-only; empirical accuracy remains `null`. This is split lifecycle/reproducibility engineering, not phonetic validation.
