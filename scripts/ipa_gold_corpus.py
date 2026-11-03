@@ -49,7 +49,11 @@ def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 
 def read_json_document(path: Path, label: str) -> Any:
     try:
-        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_json_object, parse_constant=_reject_nonstandard_json_constant)
+        return json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_unique_json_object,
+            parse_constant=_reject_nonstandard_json_constant,
+        )
     except DuplicateJSONKeyError as exc:
         raise ValueError(f"{path}: {label}: {exc}") from exc
     except InvalidJSONConstantError as exc:
@@ -67,7 +71,11 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
             if not raw.strip():
                 continue
             try:
-                value = json.loads(raw, object_pairs_hook=_unique_json_object, parse_constant=_reject_nonstandard_json_constant)
+                value = json.loads(
+                    raw,
+                    object_pairs_hook=_unique_json_object,
+                    parse_constant=_reject_nonstandard_json_constant,
+                )
             except DuplicateJSONKeyError as exc:
                 raise ValueError(f"{path}:{line_no}: {exc}") from exc
             except InvalidJSONConstantError as exc:
