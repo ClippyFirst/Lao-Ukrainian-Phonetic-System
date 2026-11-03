@@ -29,20 +29,21 @@
 - **Regression coverage:** duplicate gold and prediction headers, extra gold fields, and short prediction rows. Test-first RED: [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused GREEN after implementation: [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910).
 - **Scope boundary:** this is TSV/input-integrity hardening only. It does not add IPA labels, change linguistic rules, or establish empirical accuracy. Independent adjudicated gold remains 0 and accuracy remains null.
 
-## Current repository state — 2026-11-03
+## Current repository state — 2026-11-03 (post-merge)
 
-- **Default branch:** [`main`](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/tree/main); PR base snapshot: `7743513495beb1f9c222e6ff14151eb21657fa45` (the live branch may advance independently).
-- **Open pull requests at this checkpoint:** #113 (`fix/heldout-ipa-benchmark-20261103`) carries the benchmark integrity correction; documentation-only PR #112 was subsequently superseded by the handoff/register reconciliation on this branch.
-- **Integrated engineering and research changes:** manifest-wide split identity; MekongPhon source-scope/citation update; four Playwright built-site browser regressions; CI/Pages browser gates; glossary, codebase map and agent guidance.
-- **Exact-main verification:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; built-site browser [41647974181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974181) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
-- **Research boundary:** independent expert-adjudicated IPA gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. Passing engineering/browser/deployment checks is not evidence of phonetic accuracy.
+- **Default branch:** `main` at `c50fc9133f8e7f55b520ac7229c86df2f9b10356`.
+- **Open pull requests:** none. Benchmark integrity PR [#113](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/113) was squash-merged into this exact main head.
+- **Held-out benchmark contract:** gold export preserves `split`, `split_seed`, and `split_version`; adjudicated records without a frozen split fail closed; the scorer defaults to `test`; train/dev/all require explicit diagnostic selection; mixed manifest identities and empty prediction files are rejected.
+- **Input integrity:** benchmark TSV headers/row widths, whitespace-only identifiers, duplicate JSON object keys, and non-standard JSON constants are rejected with regression coverage.
+- **Post-merge exact-main verification:** The required `verify` workflow passed on the exact post-merge `main` head. It ran the repository data/evidence audit, Python tests, browser-engine tests, canonical web-data regeneration and drift checks, real Chromium tests against the built site, and built-page/relative-asset checks. [workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41707491721).
+- **Research boundary:** Independent expert-adjudicated Lao IPA gold remains 0; `data/benchmark/gold.tsv` is header-only; empirical accuracy remains null. Engineering, browser and deployment checks do not establish pronunciation accuracy.
 
 ## Current task ledger and blockers
 
-- **DONE_VERIFIED:** manifest-wide split identity is enforced; the default branch has current CI evidence; source citations and evidence scope have been reconciled; project agent guidance is in place.
-- **PARTIAL:** source-language phonology, IPA conventions, and Ukrainian target adaptation remain bounded by language-specific evidence and unresolved cases. Any external benchmark remains diagnostic until rights, profile and IPA conventions are independently validated.
-- **BLOCKED:** independent gold collection requires an approved profile and IPA convention, two qualified independent annotators, a separate adjudicator, blinded intake and source-specific rights clearance.
-- **TODO:** complete manual visual, keyboard, screen-reader, responsive and mobile QA on the deployed site; automated browser smoke is not a substitute.
+- **DONE_VERIFIED:** deterministic manifest-wide split identity; export/scorer held-out split integrity; strict TSV and JSON input validation; post-merge exact-main engineering verification.
+- **PARTIAL:** Lao tone/rhyme interactions, automatic unspaced multi-syllable segmentation, restricted clusters, Pali/Sanskrit and remaining evidence-limited structures still require scoped linguistic evidence and shared Python/browser fixtures.
+- **BLOCKED:** Approve the dialect/profile and IPA convention; recruit two qualified independent annotators and a separate adjudicator; prepare rights-cleared source/audio packets and controlled blind intake.
+- **TODO:** Manual visual, keyboard, screen-reader, responsive and mobile QA on the deployed site remains TODO.
 
 ## Historical checkpoints (retained for audit; superseded by the current state above)
 
