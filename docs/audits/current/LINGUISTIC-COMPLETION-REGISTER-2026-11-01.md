@@ -325,3 +325,9 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | Task | Status | Evidence / acceptance |
 |---|---|---|
 | IPA-BENCH-IDENTIFIERS-001 | DONE_VERIFIED (engineering guard) | Reject whitespace-only gold IDs, prediction IDs and engine names while preserving non-empty identifiers exactly. Test-first RED: gold-ID run 41660752360; prediction-ID/engine run 41662058993. Final exact-code-head CI: 41662219515 SUCCESS (159 Python tests and 4 built-site browser tests passed).  No linguistic labels or accuracy claims were added. |
+
+## 2026-11-03 — Lao Python/browser segmentation contract review
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| LAO-PY-BROWSER-SEGMENTATION-001 | PARTIAL / contract decision required | Python splits only at whitespace/U+200B; browser dynamically segments unspaced tokens. The Python API is documented as syllable-oriented, so this is a verified behavioral difference but not yet a confirmed defect. Tracked in [issue #116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116). Acceptance: decide shared-vs-distinct API contract, add shared fixtures and cross-runtime tests, then implement parity or document the intentional boundary. No IPA/gold/accuracy claims. |
