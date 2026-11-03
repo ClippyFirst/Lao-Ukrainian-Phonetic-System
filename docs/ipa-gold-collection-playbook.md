@@ -39,7 +39,7 @@ Lao tone is lexically contrastive; tonal contours also vary with tonal context. 
 
 ## Candidate external reference: MekongPhon
 
-MekongPhon (LREC 2026) reports 367,000 Lao and 1.3 million Khmer orthography–IPA pairs: https://lrec.elra.info/lrec2026-main-129 (DOI https://doi.org/10.63317/4bb9rvdshu4z). It is a **candidate external reference**, not admitted gold. Before importing or using entries as validation evidence, verify the dataset download/repository and exact version/checksum; dataset-specific license and redistribution/derivative rights; Lao variety; source lexicon; normalization and IPA convention; what “verified” means; source locators; duplicate/variant policy; and overlap with our development sources.
+Shurtz et al. (2026), MekongPhon reports 367,000 Lao and 1.3 million Khmer orthography–IPA pairs: https://lrec.elra.info/lrec2026-main-129 (DOI https://doi.org/10.63317/4bb9rvdshu4z). It is a **candidate external reference**, not admitted gold. Before importing or using entries as validation evidence, verify the dataset download/repository and exact version/checksum; dataset-specific license and redistribution/derivative rights; Lao variety; source lexicon; normalization and IPA convention; what “verified” means; source locators; duplicate/variant policy; and overlap with our development sources.
 
 The LREC proceedings' CC BY-NC-4.0 license does not establish the dataset's own license. Until the checks above are complete, classify MekongPhon as candidate / rights_unverified / methodology_unverified. Do not populate records.jsonl or gold.tsv from it.
 
