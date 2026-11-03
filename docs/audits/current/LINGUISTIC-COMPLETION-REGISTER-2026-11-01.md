@@ -1,3 +1,5 @@
+# Lao linguistic completion register — 2026-11-01
+
 **Current main commit:** `c50fc9133f8e7f55b520ac7229c86df2f9b10356` (benchmark integrity PR #113 squash-merged).
 **Latest post-merge exact-main evidence:** [engineering verification](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41707491721) SUCCESS.
 **Open pull requests:** none at this checkpoint.
