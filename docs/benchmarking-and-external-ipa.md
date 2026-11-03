@@ -224,3 +224,8 @@ The checked-in header-only `data/benchmark/gold.tsv` schema now includes the `sp
 ## Frozen split manifest provenance — 2026-11-03
 
 The export and benchmark now preserve and validate the complete frozen split identity, not only the bucket name: `split`, `split_seed`, and `split_version`. Every adjudicated row must carry non-empty seed/version metadata, and the benchmark rejects a TSV that mixes manifest identities. The report exposes the manifest seed/version and selected scoring split. This makes the evaluated test partition traceable to one exact manifest; it does not create linguistic gold or change the current zero-row accuracy status.
+
+
+### Empty prediction input guard
+
+The benchmark rejects a prediction TSV with a header but no data rows. Without this guard, the CLI could exit successfully and write a report with an empty `engines` object, which is not an evaluation of any engine. A non-empty prediction set is required to identify at least one engine; missing individual predictions within a declared engine remain in that engine's denominator as before.
