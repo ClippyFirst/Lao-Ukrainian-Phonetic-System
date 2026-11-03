@@ -42,6 +42,8 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: lao-external-g2p-comparison
-          path: artifacts/external-g2p-comparison.json
+          path: |
+            artifacts/external-g2p-comparison.json
+            artifacts/external-g2p-comparison.json.sha256
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90
