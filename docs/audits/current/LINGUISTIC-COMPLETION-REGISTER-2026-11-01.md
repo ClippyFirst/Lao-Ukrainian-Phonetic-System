@@ -338,3 +338,11 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | Task | Status | Evidence / acceptance |
 |---|---|---|
 | LAO-PY-BROWSER-SEGMENTATION-001 | DONE_VERIFIED (contract clarification) | Python API is intentionally syllable-oriented; browser adds conservative within-token syllable segmentation for phrase input. Documented the deliberate boundary and explicitly disclaimed lexical word segmentation and cross-runtime parity for unspaced multi-syllable input in [README](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/main/README.md#runtime-segmentation-contract). Issue [#116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116) closed; docs PR [#117](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/117) merged as `2750153bd49e11c3c74ac2cc515acc750f90fae0`. Exact PR-head CI [41716613666](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41716613666) SUCCESS, including Python, browser-engine, generated-data drift, Chromium UI and built-page/asset checks. No parser/phonology rules changed; unspaced phrase segmentation remains browser-only and lexical segmentation remains out of scope. |
+
+
+## Research unblock checkpoint — 2026-11-03
+
+- Prospective language-specific expert/researcher leads and additional candidate resources are recorded in docs/ipa-gold-collection-playbook.md with primary-source links and explicit limits.
+- These are leads only: no one has been contacted or recruited; no IPA convention has been approved; no rights have been granted; no IPA labels were generated.
+- The 30-item pilot remains BLOCKED until the acceptance conditions in the playbook are met. Candidate lexicon entries, phonetic respellings, model outputs, orthographic transcripts and source descriptions are not gold IPA.
+- The next external action is to contact a qualified prospective reviewer and request nominations for two independent annotators plus a separate adjudicator; separately complete item-level rights review and blind-intake dry run.

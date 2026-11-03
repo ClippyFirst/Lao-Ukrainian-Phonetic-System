@@ -121,3 +121,29 @@ This is a small, demographically narrow sample with **no dialect evidence**. It 
 The [BYU MATRIX Lab repository](https://github.com/byu-matrix-lab/MekongPhon) has now been inspected at tree SHA f80f6c1840c4818b51e05f2e00cded4701a5b662. The tracked Lao word lexicon contains 6,319 rows (6,316 unique orthographies); data/splits contains 6,219 train and 100 eval rows, with three duplicate spellings in train and no train/eval orthographic overlap. The scraper uses SEAlang source kerr72 and takes the first matching entry. The repository has no tracked LICENSE file.
 
 The checked-in splitter writes *_train_cleaned.csv / *_eval_cleaned.csv, while convert_lao.py refers to different paths absent from the tracked tree and uses the full lexicon as its evaluation mapping. OPUS sentence corpora are downloaded externally and not tracked. The public repository therefore does not demonstrate that its 100-word lexeme holdout produced the paper's held-out CER. The LREC proceedings are CC BY-NC 4.0, but this does not establish the separate corpus license. The [tonal](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tonal](https://huggingface.co/byumatrixlab/lao-ipa-nontonal) model cards declare Apache-2.0 for model artifacts; training-data/source rights and Vientiane-profile compatibility remain unresolved. MekongPhon remains a candidate external baseline, never gold, until exact data rights, profile, IPA convention, source provenance and evaluation manifest are verified.
+
+
+## Recruitment and source leads — reviewed 2026-11-03
+
+These are prospective leads only. No person has been contacted, consented, recruited, or approved as an annotator/adjudicator. Do not assign roles based solely on publication history.
+
+### Prospective linguistic reviewers
+
+- Varisa Osatananda (Thammasat University): the official faculty profile lists phonetics, sociophonetics, pronunciation teaching, and Lao tonal phonology as expertise, and lists a PhD dissertation on Vientiane Lao tone. This is a strong prospective reviewer lead for the tone/IPA convention and annotation protocol, not evidence of availability or current Vientiane speaker competence. Official profile: https://arts.tu.ac.th/th/teacherlarts/cmukv6z2j001ypm61fy3u49n0
+- Reiko Ueda (Tokyo University of Foreign Studies): author of the directly relevant central Vientiane phonology and phonetic description (1994). This is a primary-source/expert-review lead; current availability and willingness are unknown. Publication: https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_article
+- Yu Yanagimura (Tokyo University of Foreign Studies): author of an acoustic study of all 25 bitonal sequences in Vientiane Lao, documenting carryover and anticipatory contextual tonal effects. Potential reviewer for citation-vs-contextual tone policy; not a substitute for two independent lexical annotators. https://so03.tci-thaijo.org/index.php/mekongjournal/article/view/6739
+
+### Source and rights position
+
+- Common Voice Scripted Speech 27.0 remains a small contextual audio lead (193 validated Lao clips, 16 contributor IDs, 0.35 validated hours; no accent classification). It does not establish Vientiane variety or citation-form coverage.
+- MekongPhon remains a non-gold external comparator: the paper reports 367k Lao pairs, but dataset-specific licensing, provenance, dialect, IPA convention and evaluation construction remain unverified. Proceedings licensing is not dataset licensing.
+- The Lao UKC Lexicon lists 1,642 words and declares CC BY-NC-SA; its provenance includes Wiktionary and other resources, and it is not an IPA/audio gold corpus. It is not a suitable source for redistributable commercial gold without separate permission and item-level provenance: https://datascientiafoundation.github.io/LiveLanguage/datasets/lao-ukc-lexicon-/
+
+### Immediate unblock sequence
+
+1. Invite one prospective senior reviewer to review a draft, not pre-approved, versioned convention sheet.
+2. Ask that reviewer to nominate two independent native-speaker annotators and a separate adjudicator; verify qualifications and conflicts separately.
+3. In parallel, curate a 30-item candidate-only list from a source whose rights and exact locators are verified. Do not place candidate words in gold files.
+4. Obtain explicit item-level permission/rights evidence and run a private blind-intake dry run before any annotation.
+
+Status remains BLOCKED for pilot execution: these public leads do not constitute recruitment, approval, rights clearance, or gold labels.
