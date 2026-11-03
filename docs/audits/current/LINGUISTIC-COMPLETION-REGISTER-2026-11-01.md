@@ -251,3 +251,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Browser test dependency is pinned to `@playwright/test 1.63.0`, but no lockfile is committed; transitive dependency reproducibility remains a follow-up improvement.
 - Manual visual, keyboard, screen-reader and mobile QA remain TODO. Automated browser success cannot substitute for those checks.
 - No linguistic rules or gold labels changed; adjudicated IPA gold remains 0 and accuracy remains `null`.
+
+
+## Continuation status sync — 2026-11-03
+
+- Current main: `ecd61a110a4ca8b25535570e0baab79c0e567436`; exact-main checks: verify 41647974181 SUCCESS; Pages 41647974321 SUCCESS.
+- PR #100 is closed without merge; its browser/quality portions have been ported to main. No open PRs were returned by the current open-PR query.
+- Engineering improvements on main are verified at the stated commit; this does not promote linguistic validation or manual accessibility tasks to DONE.
+- IPA gold remains 0; empirical accuracy remains null. Annotation staffing, convention approval, rights clearance, blind intake and adjudication remain BLOCKED on external human/evidence dependencies.

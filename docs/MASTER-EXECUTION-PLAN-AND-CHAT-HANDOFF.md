@@ -1383,3 +1383,14 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - CI now runs the browser tests against the production build; the Pages workflow runs them before deployment and smoke-tests deployed runtime assets. Browser test dependency is pinned to `@playwright/test 1.63.0`; no package-lock is present, so npm's transitive dependency resolution remains less strictly frozen than a lockfile-based `npm ci` workflow.
 - Added project glossary, codebase map and issue-tracker guidance for agents; updated AGENTS.md to route future work through the canonical handoff and verified maps.
 - This is UI/engineering coverage, not manual visual/accessibility QA or phonetic accuracy. Independent gold remains 0 and accuracy remains `null`. This clean port requires exact-head CI before merge.
+
+
+## Current repository continuation checkpoint — 2026-11-03
+
+- Verified default branch `main` at `ecd61a110a4ca8b25535570e0baab79c0e567436`.
+- Latest exact-main CI: verify 41647974181 SUCCESS; Pages 41647974321 SUCCESS.
+- PR reconciliation: PR #100 is closed without merge; its browser/quality portions have been ported to main. No open PRs were returned by the current open-PR query.
+- Current engineering state: The latest main includes manifest-wide split identity, source-citation reconciliation, four Playwright Chromium built-site tests, CI and Pages browser gates, and agent context files. `@playwright/test` is pinned but there is no package lock; transitive npm dependency resolution remains less reproducible than `npm ci`.
+- Linguistic evidence boundary: 0 independent adjudicated IPA records; gold.tsv header-only; empirical accuracy null. CI and deterministic fixtures verify engineering behavior only; they do not establish pronunciation accuracy.
+- Human/research blockers remain: approve the versioned IPA convention; recruit two qualified independent annotators and a separate adjudicator; establish blinded intake; verify source-specific data rights; collect and adjudicate a profile-specific pilot; complete deployed-site manual keyboard, screen-reader, responsive and mobile QA.
+- No gold labels, source-derived IPA guesses, phonological rules, or benchmark scores were created in this checkpoint.
