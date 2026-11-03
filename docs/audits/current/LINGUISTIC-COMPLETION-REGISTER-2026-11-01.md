@@ -259,3 +259,10 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - PR #100 is closed without merge; its browser/quality portions have been ported to main. No open PRs were returned by the current open-PR query.
 - Engineering improvements on main are verified at the stated commit; this does not promote linguistic validation or manual accessibility tasks to DONE.
 - IPA gold remains 0; empirical accuracy remains null. Annotation staffing, convention approval, rights clearance, blind intake and adjudication remain BLOCKED on external human/evidence dependencies.
+
+
+## LAO-METHOD-REFRESH-003 — current upstream snapshots — 2026-11-03
+
+**Status: DONE_VERIFIED (reference audit).** Rechecked Superpowers v7.0.1 current main `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`; Matt Pocock Skills v1.3.2 release `d1478fcb140db0b93c0c8df17bcfd311844749d0` and current main `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; Ponytail v5.3.3 release `7801d061243d7b753bad0e0b3c057cd250b11755` and current main `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` (README-only post-pin change).
+
+- No upstream skill files or runtime dependencies imported.
