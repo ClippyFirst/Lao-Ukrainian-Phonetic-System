@@ -330,3 +330,9 @@ No gold annotations or runtime changes resulted. Independent gold remains 0; acc
 | LAO-MEKONGPHON-MODEL-001 | PARTIAL | [Tonal](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tonal](https://huggingface.co/byumatrixlab/lao-ipa-nontonal) HF model cards declare Apache-2.0 model licenses. | Model artifact license does not clear training corpus or SEAlang source rights. Candidate external baseline only; verify profile and IPA convention, pin immutable model revision, then compare against independent gold. |
 
 Accuracy remains null; independent adjudicated gold remains 0. The paper's reported CER is not ClippyFirst accuracy.
+
+## External source reproducibility correction — 2026-11-03
+
+- MekongPhon's public Lao split is recorded as 6,219 train / 100 eval with zero orthographic overlap, but the repository's converter path and split filenames do not align and evaluation mapping points to the full lexicon. Therefore the public tree does not independently demonstrate that its 100-item holdout generated the paper's reported held-out CER.
+- The repository has no tracked dataset LICENSE; Apache-2.0 on the two Hugging Face model cards applies to the model artifacts, not automatically to scraped lexicon/OPUS training data. MekongPhon remains candidate-only, rights/profile/methodology unverified, and is not gold.
+- Common Voice v27.0 Lao has 193 validated clips from 16 contributor IDs (0.35 validated hours), with no accent/variant metadata. It is an audio lead only, not evidence of Vientiane coverage or a suitable citation-form lexical gold set.
