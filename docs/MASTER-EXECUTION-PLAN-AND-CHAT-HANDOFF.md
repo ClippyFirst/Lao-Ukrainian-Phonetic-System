@@ -7,11 +7,11 @@
 - RED evidence (tests-only change): [41612954045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41612954045) failed on the three intended regression behaviors. GREEN evidence: [41613340163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41613340163) SUCCESS — 149 Python tests plus the repository workflow's remaining checks.
 - Linguistic gold remains 0; `gold.tsv` remains header-only; empirical accuracy remains `null`. This fix improves split reproducibility only.
 - Second RED/GREEN cycle also preserves CLI strictness: empty explicit `--seed`/`--version` values were shown to be silently defaulted by the first fix, regression tests failed on the test-only commit 41615374874, and exact-head GREEN 41615556868 passed after changing default resolution to distinguish `None` from an empty string.
-- No PR merged and no release published in this continuation.
+- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) was merged; see the post-merge checkpoint below. No release published.
 
 
-**Current checkpoint:** 2026-11-02  
-**Default branch:** `main` at `6f607d7ab4d432fd8491a5fcee32186e4269fc32`  
+**Current checkpoint:** 2026-11-03 (split-manifest fix merged)  
+**Default branch:** `main` at `ccb6ba44d9448858091306d606a7bba50f19a5de`  
 **Verified implementation checkpoint before methodology documentation update:** `d964db76a4228f2a7f84138ef69cbe1ae8cb7086` on `feat/ipa-gold-corpus-20261101-review`
 **Open implementation PR:** [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98)  
 **Branch comparison at this checkpoint:** 98 commits ahead of main, 0 behind.
@@ -1355,7 +1355,16 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 
 ## Split-manifest continuation update — 2026-11-03
 
-- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) remains open and mergeable, 18 commits ahead / 0 behind current main. The last verified code/test checkpoint was `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`; all commits after that checkpoint change only documentation. Read the PR page for its live documentation head; no merge performed.
+- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) was merged into current `main`; see the post-merge checkpoint below.
 - Added a regression test for creating a new, independent split manifest using a new empty JSONL `--splits` input and explicit new seed/version. Updated `docs/ipa-gold-corpus.md` to state that a new `--output` alone does not reset the existing input manifest.
 - Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
 - Linguistic gold remains 0; gold export remains header-only; empirical accuracy remains `null`. This is split lifecycle/reproducibility engineering, not phonetic validation.
+
+
+## Manifest-wide split identity integration — 2026-11-03
+
+- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) merged by squash into `main` as `ccb6ba44d9448858091306d606a7bba50f19a5de`.
+- The change enforces one manifest-wide `(seed, version)` pair across all lexeme groups, preserves the frozen identity when extending a manifest, rejects conflicting explicit overrides and empty explicit CLI values, and requires a distinct empty input manifest for a genuinely new split identity.
+- Exact-main push verification: [41643375975](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41643375975) SUCCESS. All steps passed: gold corpus validation, evidence/data audit, Python tests, optional external-G2P CLI checks, browser engine tests, deterministic browser-data regeneration, drift check and built-page asset checks.
+- This is a reproducibility/engineering correction, not a linguistic accuracy result. Independent adjudicated IPA gold remains 0; accuracy remains `null`.
+- The previously open documentation PRs [#102](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/102) and quality-audit PR [#100](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/100) now each lag current `main` by one commit; they require reconciliation and fresh exact-head checks. Their prior CI successes do not constitute post-merge verification.
