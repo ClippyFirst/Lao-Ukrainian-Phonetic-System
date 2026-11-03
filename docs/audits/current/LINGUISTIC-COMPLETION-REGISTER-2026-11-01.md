@@ -1,10 +1,15 @@
-# Lao linguistic completion register — 2026-11-01
-
-**Baseline code commit:** `7743513495beb1f9c222e6ff14151eb21657fa45` (PR base snapshot; subsequent benchmark and handoff changes are on the review branch).
-**Latest exact-main evidence:** verify [41649936775](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41649936775) SUCCESS; Pages/deployed smoke [41647974321](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41647974321) SUCCESS.
-**Open pull requests at this checkpoint:** implementation PR #113. Documentation-only PR #112 was subsequently closed as superseded after its equivalent handoff/register correction was ported into the implementation branch.
-**Latest exact-main engineering evidence:** verify [41326457758](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41326457758) succeeded.
+**Current main commit:** `c50fc9133f8e7f55b520ac7229c86df2f9b10356` (benchmark integrity PR #113 squash-merged).
+**Latest post-merge exact-main evidence:** [engineering verification](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41707491721) SUCCESS.
+**Open pull requests:** none at this checkpoint.
+**Research boundary:** Independent expert-adjudicated Lao IPA gold remains 0; `data/benchmark/gold.tsv` is header-only; empirical accuracy remains null.
 **Scope:** continue the existing master handoff; this register does not replace it.
+
+## Held-out IPA benchmark integrity — 2026-11-03
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| IPA-BENCH-HELDOUT-001 | DONE_VERIFIED | PR #113 merged as `c50fc9133f8e7f55b520ac7229c86df2f9b10356`; exact-main verification [workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41707491721) SUCCESS. Export preserves split bucket and frozen manifest seed/version; scoring defaults to held-out test; explicit all-split mode is marked diagnostic; malformed/mixed split metadata and empty predictions fail closed. | Engineering evaluation integrity only. Independent expert-adjudicated Lao IPA gold remains 0; `data/benchmark/gold.tsv` is header-only; empirical accuracy remains null. No gold rows, IPA labels or accuracy claims were fabricated. |
+
 
 ## Engineering integrity continuation — 2026-11-03
 
