@@ -207,3 +207,11 @@ The previous TODO wording suggesting that this repository can simply recover or 
 ## Main publication reconciliation — 2026-11-02
 
 Supersedes earlier handoff statements that the review branch was still ahead of `main` and unmerged: PR [#98](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/98) was merged into `main` as `ed36e7030df4ec8c1b70b50fdcfd6e47e5770d52`; this was the repository's current `main` tip at reconciliation. Exact-head engineering workflows on the PR head passed: verify [41413902679](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902679), Goruut [41413902653](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902653), and lao2ipa [41413902805](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41413902805). The Pages workflow is configured to deploy from `main`; the public site and post-merge deployment run could not be independently inspected from this session, so deployment status remains **BLOCKED (external verification/network access)**, not claimed successful. No UI/runtime files were changed by this PR. Independent expert-adjudicated gold remains 0 and accuracy remains null; the project is still a research prototype.
+
+
+## External G2P bibliography reconciliation — 2026-11-03
+
+**Status: DONE_VERIFIED (bibliographic/source-registry correction; not linguistic validation).** Added the MekongPhon (Shurtz, Richardson & Richardson, 2026) record to the Lao source registry and converted the benchmark citation to author–year form. The reported 367,000 Lao pairs and under-2% held-out CER are explicitly attributed to the paper; profile compatibility and corpus redistribution rights remain unverified.
+
+- Four benchmark BibTeX records (MekongPhon 2026, Myanmar dictionary G2P 2016, Burmese LREC 2020, Khmer G2P 2019) passed the Academic Writing Toolkit's structural BibTeX check with 0 issues. Primary metadata was checked against ACL Anthology / LREC Proceedings; the Khmer 2019 paper's title/authors/volume/pages/DOI and conflicting WER values were cross-checked against the available full text.
+- No external corpus, dictionary, pronunciation label or model was imported. Rights clearance remains source-specific; independent gold remains 0 and empirical accuracy remains `null`.
