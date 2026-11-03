@@ -336,3 +336,12 @@ Accuracy remains null; independent adjudicated gold remains 0. The paper's repor
 - MekongPhon's public Lao split is recorded as 6,219 train / 100 eval with zero orthographic overlap, but the repository's converter path and split filenames do not align and evaluation mapping points to the full lexicon. Therefore the public tree does not independently demonstrate that its 100-item holdout generated the paper's reported held-out CER.
 - The repository has no tracked dataset LICENSE; Apache-2.0 on the two Hugging Face model cards applies to the model artifacts, not automatically to scraped lexicon/OPUS training data. MekongPhon remains candidate-only, rights/profile/methodology unverified, and is not gold.
 - Common Voice v27.0 Lao has 193 validated clips from 16 contributor IDs (0.35 validated hours), with no accent/variant metadata. It is an audio lead only, not evidence of Vientiane coverage or a suitable citation-form lexical gold set.
+
+
+## Citation metadata reconciliation — 2026-11-03
+
+| ID | Status | Work remaining | Acceptance |
+|---|---|---|---|
+| LAO-CITE-001 | PARTIAL | Targeted MekongPhon in-text citation normalized to Shurtz et al. (2026); broader source-to-claim and repository-wide citation completeness remains unaudited. | Every cited claim maps to a complete, source-verified record; source scope, profile, data rights and paper-vs-repository evidence are distinguished. |
+
+The targeted citation correction is documentation-only. Current code verification remains run [41605468171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41605468171) on `361e3c48a8216a3add5074bc0096cf545713fe18`; later documentation commits did not change code. Independent gold remains 0; accuracy null.
