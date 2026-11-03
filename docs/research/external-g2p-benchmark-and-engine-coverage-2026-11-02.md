@@ -75,3 +75,31 @@ Both use a BERT encoder–decoder with separate character-level Lao and IPA toke
 The model cards point to MekongPhon as the training-data/code source. Before a reproducible run, pin each Hugging Face model revision and weight checksum, inspect the dataset split and profile, run identical inputs through both checkpoints, and report tone-bearing and segmental errors separately. Preserve raw outputs; do not use either model as gold.
 
 **Assessment:** tonal checkpoint = PRIORITY BASELINE / NOT YET VERIFIED; non-tonal checkpoint = useful ablation only / INCOMPLETE FOR TONAL IPA. Neither changes the independent-gold count (0) or empirical accuracy (null).
+
+
+## Reproducibility and artifact integrity hardening — 2026-11-03
+
+The pinned `lao2ipa==1.0.0` diagnostic harness now records:
+- SHA-256 of the exact fixture JSON and comparator script;
+- Python version, implementation and platform;
+- GitHub Actions source revision when available;
+- exact external distribution name/version;
+- explicit NFC normalization policy.
+
+The report remains a comparative engineering diagnostic: independent gold stays 0 and accuracy stays null. The harness rejects an installed `lao2ipa` version other than 1.0.0 rather than silently producing a result under a different comparator.
+
+Each JSON report now has a conventional adjacent `.sha256` sidecar. The optional workflow uploads both files as one GitHub Actions artifact with 90-day retention. The sidecar detects accidental or post-run alteration; it is not a cryptographic signature and the hosted artifact is not a permanent archival guarantee.
+
+Reproduce from a clean checkout with Python 3.12:
+
+```sh
+python -m pip install --upgrade pip
+python -m pip install -e .
+python -m pip install lao2ipa==1.0.0
+python scripts/compare_external_g2p.py --output artifacts/external-g2p-comparison.json
+sha256sum -c artifacts/external-g2p-comparison.json.sha256
+```
+
+The report's `provenance.fixture_sha256` and `provenance.harness_sha256` identify the exact comparison inputs. The sidecar identifies the completed report bytes. The optional GitHub Actions artifact is retained for 90 days; download and archive it in a separately controlled evidence store if long-term preservation is required.
+
+This improves repeatability and tamper detection only. It does not resolve the 37-case disagreement, validate either engine, add an independently sourced sample, or create expert-adjudicated IPA gold.
