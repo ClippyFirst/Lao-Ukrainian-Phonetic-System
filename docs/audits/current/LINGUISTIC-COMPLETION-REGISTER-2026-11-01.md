@@ -234,3 +234,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 ## Split-manifest integration checkpoint — 2026-11-03
 
 **Lao PR #101: DONE_VERIFIED on main.** Merged as `ccb6ba44d9448858091306d606a7bba50f19a5de`. The global manifest identity invariant and separate-manifest creation acceptance are now in the default branch. Exact-main workflow [41643375975](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41643375975) succeeded. No gold rows were added; adjudicated gold remains 0 and empirical accuracy remains `null`.
+
+
+## Source-citation reconciliation — 2026-11-03
+
+**Status: PARTIAL pending exact-head verification.** MekongPhon is added to the Lao source registry and author–year citation. Its 367,000 Lao pairs and under-2% held-out CER are attributed to the paper; dialect/IPA compatibility and corpus redistribution rights remain unresolved.
+
+- This clean port is based on the latest main after the split-manifest integration; superseded PR #102 is not used as a merge candidate.
+- No pronunciation labels or corpus records imported; rights remain source-specific; independent gold remains 0 and accuracy remains `null`.

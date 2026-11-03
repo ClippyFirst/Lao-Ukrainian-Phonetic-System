@@ -1368,3 +1368,10 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Exact-main push verification: [41643375975](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41643375975) SUCCESS. All steps passed: gold corpus validation, evidence/data audit, Python tests, optional external-G2P CLI checks, browser engine tests, deterministic browser-data regeneration, drift check and built-page asset checks.
 - This is a reproducibility/engineering correction, not a linguistic accuracy result. Independent adjudicated IPA gold remains 0; accuracy remains `null`.
 - The previously open documentation PRs [#102](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/102) and quality-audit PR [#100](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/100) now each lag current `main` by one commit; they require reconciliation and fresh exact-head checks. Their prior CI successes do not constitute post-merge verification.
+
+
+## Source-citation port on latest main — 2026-11-03
+
+- Reconciles the relevant research/source changes from superseded PR #102 onto the current default branch after the split-manifest and handoff integrations.
+- MekongPhon is added to the Lao source registry and author–year citation. Its 367,000 Lao pairs and under-2% held-out CER are attributed to the paper; dialect/IPA compatibility and corpus redistribution rights remain unresolved.
+- Earlier source/citation PR exact-head CI succeeded, but this new branch requires its own exact-head checks. No external labels or model outputs were imported; independent IPA gold remains 0 and accuracy remains `null`.
