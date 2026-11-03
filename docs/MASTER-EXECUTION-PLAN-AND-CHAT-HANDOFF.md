@@ -1394,3 +1394,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Linguistic evidence boundary: 0 independent adjudicated IPA records; gold.tsv header-only; empirical accuracy null. CI and deterministic fixtures verify engineering behavior only; they do not establish pronunciation accuracy.
 - Human/research blockers remain: approve the versioned IPA convention; recruit two qualified independent annotators and a separate adjudicator; establish blinded intake; verify source-specific data rights; collect and adjudicate a profile-specific pilot; complete deployed-site manual keyboard, screen-reader, responsive and mobile QA.
 - No gold labels, source-derived IPA guesses, phonological rules, or benchmark scores were created in this checkpoint.
+
+
+## Upstream methodology reference refresh — 2026-11-03
+
+- `obra/superpowers` current `main` remains `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`, release v7.0.1. The inspected upstream guidance reinforces protecting untracked work, re-reading evidence rather than treating reruns as proof, bounded waits and explicit review/finish accounting. Apply relevant practices; do not import the external repository as a runtime dependency.
+- `mattpocock/skills` current `main` is `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; the latest commit adds a software-factory glossary and example runs. The immutable release reference remains v1.3.2 at `d1478fcb140db0b93c0c8df17bcfd311844749d0`; distinguish release pin from current-main snapshot.
+- `DietrichGebert/ponytail` current `main` is `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`, release v5.3.3 at `7801d061243d7b753bad0e0b3c057cd250b11755`. The post-pin upstream change inspected is a README/product-list addition, not a methodology change.
+- No upstream skill files were copied into product/runtime code. These are traceable method references only.
