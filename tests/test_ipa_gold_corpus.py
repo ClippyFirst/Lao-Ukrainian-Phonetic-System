@@ -295,20 +295,24 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertIn("unknown properties", run.stderr)
 
     def test_read_jsonl_rejects_nonstandard_json_constants(self):
-        row = json.dumps(self.records[0], ensure_ascii=False)
-        row = row[:-1] + ', "extra": NaN}'
-        self.paths["records"].write_text(row + chr(10), encoding="utf-8")
-        run = self.run_cli("validate", expected=1)
-        self.assertIn("non-standard JSON constant NaN", run.stderr)
+        for constant in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(constant=constant):
+                row = json.dumps(self.records[0], ensure_ascii=False)
+                row = row[:-1] + ', "extra": ' + constant + '}'
+                self.paths["records"].write_text(row + chr(10), encoding="utf-8")
+                run = self.run_cli("validate", expected=1)
+                self.assertIn(f"non-standard JSON constant {constant}", run.stderr)
 
     def test_license_registry_rejects_nonstandard_json_constants(self):
         license_path = self.root / "nonstandard-constant.json"
-        license_path.write_text(
-            '{"schema_version":NaN,"licenses":{}}',
-            encoding="utf-8",
-        )
-        run = self.run_cli("validate", "--licenses", license_path, expected=1)
-        self.assertIn("non-standard JSON constant NaN", run.stderr)
+        for constant in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(constant=constant):
+                license_path.write_text(
+                    '{"schema_version":' + constant + ',"licenses":{}}',
+                    encoding="utf-8",
+                )
+                run = self.run_cli("validate", "--licenses", license_path, expected=1)
+                self.assertIn(f"non-standard JSON constant {constant}", run.stderr)
 
     def test_read_jsonl_rejects_duplicate_top_level_json_keys(self):
         row = json.dumps(self.records[0], ensure_ascii=False)
