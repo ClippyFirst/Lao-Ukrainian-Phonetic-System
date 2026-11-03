@@ -229,3 +229,8 @@ The export and benchmark now preserve and validate the complete frozen split ide
 ### Empty prediction input guard
 
 The benchmark rejects a prediction TSV with a header but no data rows. Without this guard, the CLI could exit successfully and write a report with an empty `engines` object, which is not an evaluation of any engine. A non-empty prediction set is required to identify at least one engine; missing individual predictions within a declared engine remain in that engine's denominator as before.
+
+
+### Identifier input validation
+
+Gold IDs and prediction IDs, as well as prediction engine names, must contain at least one non-whitespace character. Whitespace-only values are rejected before scoring so they cannot create blank-looking keys or engine entries. The check does not rewrite non-empty identifiers; matching remains exact and provenance-preserving. Regression coverage exercises whitespace-only gold IDs, prediction IDs and engine names.
