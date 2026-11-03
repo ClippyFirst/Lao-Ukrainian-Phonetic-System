@@ -220,3 +220,12 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - This is an engineering reproducibility fix only. It creates no linguistic labels and does not change gold count (0) or accuracy (`null`).
 
 - Follow-up strictness regression: explicit empty `--seed` and `--version` must fail instead of falling through to defaults. Tests-only CI failed on both behaviours (41615374874); the corrected conditional default resolution passed exact-head CI 41615556868.
+
+
+## Separate-manifest creation acceptance — 2026-11-03
+
+**Status: DONE_VERIFIED on the dedicated PR branch; merge to main remains pending.** Added an acceptance test proving a genuinely new seed/version can be used when the caller supplies a separate empty JSONL input via `--splits`, while the existing frozen manifest remains untouched. Corrected the operator instructions: changing only `--output` does not reset the input manifest; the new-manifest workflow must use a new empty `--splits` file and a distinct `--output` file.
+
+- PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101), exact head `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`.
+- Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
+- No linguistic gold rows were added; independent gold remains 0 and empirical accuracy remains `null`.
