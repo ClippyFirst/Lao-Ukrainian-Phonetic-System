@@ -287,3 +287,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
 | IPA-BENCH-EMPTY-PREDICTIONS-001 | DONE_VERIFIED (engineering guard) | Header-only prediction TSV previously exited 0 and produced an empty `engines` object. Test-first regression failed on all three language repositories; the scorer now rejects an empty prediction dataset after checking gold and frozen split provenance. Missing individual predictions within a named engine remain denominator-counted. RED: [41655160456](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655160456). Final exact-head verify: [41655452782](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41655452782) SUCCESS. |
+
+
+## 2026-11-03 — benchmark identifier validation
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| IPA-BENCH-IDENTIFIERS-001 | DONE_VERIFIED (engineering guard) | Reject whitespace-only gold IDs, prediction IDs and engine names while preserving non-empty identifiers exactly. Test-first RED: gold-ID run 41660752360; prediction-ID/engine run 41662058993. Final exact-code-head CI: 41662219515 SUCCESS (159 Python tests and 4 built-site browser tests passed).  No linguistic labels or accuracy claims were added. |
