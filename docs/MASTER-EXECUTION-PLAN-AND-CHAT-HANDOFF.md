@@ -1,5 +1,12 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
+## Continuation update — strict benchmark TSV validation (2026-11-03)
+
+- **Implementation commit:** `832ca08431ddca0f081234fcd02fbc5e0b92053f` on `fix/heldout-ipa-benchmark-20261103` (PR #113; subsequent documentation commits follow it).
+- **DONE_VERIFIED (input integrity):** `read_tsv()` now rejects duplicate column names, blank header names, and nonblank rows with missing or extra fields. Physically blank lines remain ignored; values are not silently padded, truncated, or rewritten.
+- **Regression coverage:** duplicate gold and prediction headers, extra gold fields, and short prediction rows. Test-first RED: [41665707581](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665707581); focused GREEN after implementation: [41665849910](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41665849910).
+- **Scope boundary:** this is TSV/input-integrity hardening only. It does not add IPA labels, change linguistic rules, or establish empirical accuracy. Independent adjudicated gold remains 0 and accuracy remains null.
+
 ## Current repository state — 2026-11-03
 
 - **Default branch:** [`main`](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/tree/main); PR base snapshot: `7743513495beb1f9c222e6ff14151eb21657fa45` (the live branch may advance independently).
