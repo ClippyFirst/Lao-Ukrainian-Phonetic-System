@@ -1375,3 +1375,11 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 - Reconciles the relevant research/source changes from superseded PR #102 onto the current default branch after the split-manifest and handoff integrations.
 - MekongPhon is added to the Lao source registry and author–year citation. Its 367,000 Lao pairs and under-2% held-out CER are attributed to the paper; dialect/IPA compatibility and corpus redistribution rights remain unresolved.
 - Earlier source/citation PR exact-head CI succeeded, but this new branch requires its own exact-head checks. No external labels or model outputs were imported; independent IPA gold remains 0 and accuracy remains `null`.
+
+
+## Built-site browser regression coverage — 2026-11-03
+
+- Ported the UI/browser quality portion of prior PR #100 onto current main without re-copying its already-merged manifest-wide split implementation. Added four Playwright Chromium checks for visible IPA/Ukrainian output, mixed-script fail-closed behavior, clear/reset, and explicit separation of romanization from IPA-first mode.
+- CI now runs the browser tests against the production build; the Pages workflow runs them before deployment and smoke-tests deployed runtime assets. Browser test dependency is pinned to `@playwright/test 1.63.0`; no package-lock is present, so npm's transitive dependency resolution remains less strictly frozen than a lockfile-based `npm ci` workflow.
+- Added project glossary, codebase map and issue-tracker guidance for agents; updated AGENTS.md to route future work through the canonical handoff and verified maps.
+- This is UI/engineering coverage, not manual visual/accessibility QA or phonetic accuracy. Independent gold remains 0 and accuracy remains `null`. This clean port requires exact-head CI before merge.
