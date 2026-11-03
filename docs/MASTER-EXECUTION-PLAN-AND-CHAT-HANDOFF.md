@@ -1355,7 +1355,7 @@ Supersedes earlier handoff statements that the review branch was still ahead of 
 
 ## Split-manifest continuation update — 2026-11-03
 
-- Current PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) head: `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`; 16 commits ahead / 0 behind current main; GitHub reports mergeable. No merge performed.
+- Final PR [#101](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/101) documentation head: `b008b824fb5c95861f4e3d8766c8307515df0c02`; 18 commits ahead / 0 behind current main; GitHub reports mergeable. The last code/test checkpoint was `e8ab5545d554b09d3c3ba742d7b5aa58aafbdb44`; the three commits after it change only documentation. No merge performed.
 - Added a regression test for creating a new, independent split manifest using a new empty JSONL `--splits` input and explicit new seed/version. Updated `docs/ipa-gold-corpus.md` to state that a new `--output` alone does not reset the existing input manifest.
 - Exact-head CI [41638528514](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41638528514) SUCCESS — 152 unittest tests; exact-head workflow success.
 - Linguistic gold remains 0; gold export remains header-only; empirical accuracy remains `null`. This is split lifecycle/reproducibility engineering, not phonetic validation.
