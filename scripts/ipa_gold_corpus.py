@@ -30,6 +30,14 @@ class DuplicateJSONKeyError(ValueError):
     """Raised when a JSON object contains a repeated member name."""
 
 
+class InvalidJSONConstantError(ValueError):
+    """Raised when input uses JavaScript constants that are not valid JSON."""
+
+
+def _reject_nonstandard_json_constant(value: str) -> Any:
+    raise InvalidJSONConstantError(f"non-standard JSON constant {value}")
+
+
 def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     value: dict[str, Any] = {}
     for key, item in pairs:
@@ -41,8 +49,10 @@ def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 
 def read_json_document(path: Path, label: str) -> Any:
     try:
-        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_json_object)
+        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_json_object, parse_constant=_reject_nonstandard_json_constant)
     except DuplicateJSONKeyError as exc:
+        raise ValueError(f"{path}: {label}: {exc}") from exc
+    except InvalidJSONConstantError as exc:
         raise ValueError(f"{path}: {label}: {exc}") from exc
     except json.JSONDecodeError as exc:
         raise ValueError(f"{path}: invalid {label}: {exc.msg}") from exc
@@ -57,8 +67,10 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
             if not raw.strip():
                 continue
             try:
-                value = json.loads(raw, object_pairs_hook=_unique_json_object)
+                value = json.loads(raw, object_pairs_hook=_unique_json_object, parse_constant=_reject_nonstandard_json_constant)
             except DuplicateJSONKeyError as exc:
+                raise ValueError(f"{path}:{line_no}: {exc}") from exc
+            except InvalidJSONConstantError as exc:
                 raise ValueError(f"{path}:{line_no}: {exc}") from exc
             except json.JSONDecodeError as exc:
                 raise ValueError(f"{path}:{line_no}: invalid JSON: {exc.msg}") from exc
