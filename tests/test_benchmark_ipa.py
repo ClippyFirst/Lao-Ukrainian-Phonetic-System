@@ -238,5 +238,47 @@ class BenchmarkIpaTests(unittest.TestCase):
         self.assertEqual(metrics["codepoint_cer"], 1.0)
 
 
+    def test_rejects_duplicate_headers_and_malformed_tsv_row_widths(self):
+        gold_header = ("id\\ttext\\tgold_ipa\\tgold_status\\tprofile\\tsource_id\\tipa_kind"
+                       "\\tlicense_id\\trights_evidence_locator\\tsplit\\tsplit_seed\\tsplit_version")
+        gold_row = "a\\tx\\tk\\tADJUDICATED\\tstandard\\tsrc#a\\tPHONEMIC\\t\\t\\ttest\\tseed\\tv1"
+        pred_header = "id\\tengine\\traw_output\\tipa\\tstatus\\tversion\\tipa_kind"
+        pred_row = "a\\tcandidate\\tk\\tk\\tok\\t1\\tPHONEMIC"
+
+        def assert_rejected(gold_text, pred_text, expected):
+            with tempfile.TemporaryDirectory() as td:
+                td = Path(td)
+                gold, pred = td / "gold.tsv", td / "pred.tsv"
+                gold.write_text(gold_text, encoding="utf-8")
+                pred.write_text(pred_text, encoding="utf-8")
+                run = subprocess.run(
+                    [sys.executable, str(SCRIPT), "--gold", str(gold), "--predictions", str(pred),
+                     "--output", str(td / "report.json")],
+                    cwd=ROOT, text=True, capture_output=True, check=False,
+                )
+                self.assertNotEqual(run.returncode, 0, msg=run.stdout)
+                self.assertIn(expected, run.stderr)
+
+        cases = [
+            ("duplicate gold header",
+             gold_header.replace("id\\t", "id\\tid\\t", 1) + "\\n" + gold_row.replace("a\\t", "a\\ta\\t", 1),
+             pred_header + "\\n" + pred_row, "duplicate column names"),
+            ("duplicate prediction header",
+             gold_header + "\\n" + gold_row,
+             pred_header.replace("id\\t", "id\\tid\\t", 1) + "\\n" + pred_row.replace("a\\t", "a\\ta\\t", 1),
+             "duplicate column names"),
+            ("extra gold field",
+             gold_header + "\\n" + gold_row + "\\textra",
+             pred_header + "\\n" + pred_row, "expected 12 fields, found 13"),
+            ("short prediction row",
+             gold_header + "\\n" + gold_row,
+             pred_header + "\\n" + "\\t".join(pred_row.split("\\t")[:-1]),
+             "expected 7 fields, found 6"),
+        ]
+        for label, gold_text, pred_text, expected in cases:
+            with self.subTest(case=label):
+                assert_rejected(gold_text + "\\n", pred_text + "\\n", expected)
+
+
 if __name__ == "__main__":
     unittest.main()
