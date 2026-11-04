@@ -1629,3 +1629,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - The update only improves recruitment evidence and dialect-profile sourcing. No recruitment, IPA labels, gold data or production phonology changed.
 - No local checkout or local tests were available; these results refer only to the hosted GitHub Actions runs linked above.
 - The human pilot remains blocked on actual invitations/consent, approved versioned IPA convention, two qualified independent target-variety annotators, separate adjudicator, curator, item-level rights and secure blind intake.
+
+
+## Agent completion-methodology update — 2026-11-04
+
+- Added the missing Unlazy completion-gate discipline to `AGENTS.md`, pinned to upstream `Leonxlnx/unlazy@16671491f6679ad9378f52604d3bc2415b4120c7`. The update adopts observable acceptance items, evidence-bound manual gates, exact-final-commit re-verification, scoped task decomposition and explicit non-successful handoff for blockers.
+- Kept the existing master handoff/status vocabulary and GitHub Actions as canonical. No second ledger framework, Unlazy checker/hooks, runtime dependency, or linguistic behavior was introduced.
+- Also retained the existing Superpowers, Matt Pocock and Ponytail methodology references. Their use is constrained by project-specific IPA, source-rights, privacy and fail-closed requirements.
+- Documentation PR: #130. Exact-head CI evidence: 41876101735. The Chromium built-site UI stage is still running at handoff time; this PR remains unmerged until the exact-head workflow completes successfully.
+- This is an engineering-process improvement only. It does not resolve the external blockers: expert recruitment and approved IPA conventions, independent adjudicated gold, item-level redistribution rights, and controlled blind annotation intake. No people were contacted and no IPA labels or corpus data were added.
