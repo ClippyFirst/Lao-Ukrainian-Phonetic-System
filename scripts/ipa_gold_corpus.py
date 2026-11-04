@@ -497,6 +497,27 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
     adjudicated = data["adjudicated"]
     if not adjudicated:
         problems.append("no independently adjudicated IPA records")
+    else:
+        # A benchmark release is profile-specific: do not combine varieties,
+        # regions or registers under one score. Speaker/audio IDs are per-item
+        # provenance and intentionally excluded from the profile signature.
+        profile_signatures = {
+            (
+                data["records"][ident]["profile"]["id"],
+                data["records"][ident]["profile"]["variety"],
+                data["records"][ident]["profile"].get("region"),
+                data["records"][ident]["profile"].get("register"),
+            )
+            for ident in adjudicated
+        }
+        if len(profile_signatures) != 1:
+            problems.append(
+                "adjudicated records must use one pronunciation profile "
+                "(id, variety, region and register)"
+            )
+        ipa_kinds = {row["final_ipa"]["kind"] for row in adjudicated.values()}
+        if len(ipa_kinds) != 1:
+            problems.append("adjudicated records must use one IPA kind across the release corpus")
     counts = {split: 0 for split in SPLITS}
     for ident in adjudicated:
         record = data["records"][ident]
