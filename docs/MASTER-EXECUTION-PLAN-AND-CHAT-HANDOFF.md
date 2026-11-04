@@ -1,4 +1,12 @@
-# Master execution plan and chat handoff — Lao → Ukrainian
+# Master execution plan and chat handoff
+
+## Lao Common Voice audio rights checkpoint — 2026-11-04
+
+- Added `SRC-CV-LAO-27` to the evidence source registry for Mozilla Common Voice 27.0 Lao: https://mozilladatacollective.com/datasets/cmu5odnv300xnmh070xkxthxo.
+- The provider declares CC0-1.0, but its dataset-specific terms prohibit speaker identification and re-hosting/re-sharing. Release metrics: 223 clips / 0.40h total, 193 validated / 0.35h, 16 speakers, 11,071 text sentences. Accent is unreported/blank for the small disclosed subset; no specific Vientiane profile is established.
+- **LAO-CV27-AUDIO-001 — PARTIAL.** Candidate provider-hosted audio for specialist screening only. Do not mirror the files. Acceptance: approve target profile, select exact clip/time spans, preserve transcript provenance, and complete blind double IPA annotation plus adjudication. The source does not change independent gold=0 or accuracy=null.
+
+ — Lao → Ukrainian
 
 ## External reference evidence review — MekongPhon (2026-11-04)
 
