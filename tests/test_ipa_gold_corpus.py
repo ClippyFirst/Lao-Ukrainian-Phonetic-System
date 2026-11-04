@@ -283,9 +283,16 @@ class IpaGoldCorpusTests(unittest.TestCase):
             "qualified_independent_annotators_and_separate_adjudicator",
             "controlled_blind_annotation_and_adjudication",
             "expert_approved_phonological_contrast_coverage",
+            "independent_corpus_curator",
             "independently_verified_source_rights_and_license_permissions",
         ])
         self.assertNotIn("release_ready", report)
+
+    def test_release_gate_requires_minimum_distinct_lexeme_groups(self):
+        self.add_second_adjudicated_record()
+        run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
+                           "--min-test", "1", expected=1)
+        self.assertIn("3 adjudicated lexeme groups; requires 30", run.stderr)
 
     def test_rejects_non_redistributable_source_in_release_gate(self):
         self.records[0]["source"].update({"rights_status": "RESTRICTED", "redistributable": False})
