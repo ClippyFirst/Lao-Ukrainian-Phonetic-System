@@ -1540,7 +1540,7 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Preserved evidence boundary: Common Voice is provider-hosted candidate audio only (223 clips; 193 validated; 0.35 validated hours; 16 contributors; no accent evidence establishing Vientiane). No audio is mirrored and no IPA labels were added. MekongPhon remains a dictionary-seeded comparator with unresolved dataset rights, not independent sentence IPA gold.
 - Task ledger: source provenance registrations and post-merge documentation **DONE_VERIFIED**; independent adjudicated Lao IPA gold **BLOCKED** (0 records; gold export header-only; accuracy null); two independent qualified annotators, separate adjudicator, approved Vientiane profile/IPA convention, item-level rights and blind-intake dry run **BLOCKED**; manual keyboard/screen-reader/mobile QA **TODO**.
 - No runtime phonology or Ukrainian mapping changes were made in the latest source-evidence merges. Do not promote G2P outputs, historical dictionary IPA, or Common Voice transcripts to gold.
-- This checkpoint is documentation-only; local tests were not run in this connector session. Hosted CI evidence above is tied to the exact PR head, not a claim of fresh local verification.
+- The initial checkpoint commit was documentation-only; a subsequent test-only change now uses Lao script and a neutral test profile in the IPA-corpus fixtures. Hosted CI results for the final head are recorded separately; local tests were not run in this connector session. Hosted CI evidence above is tied to the exact PR head, not a claim of fresh local verification.
 
 
 ## Hosted verification update — 2026-11-04
@@ -1548,3 +1548,10 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Draft PR #126 exact head `27398808d438e96bbf29b34ab94ab3244fe23157`: Verify run [41844565721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41844565721) **SUCCESS**.
 - The completed job reports success for independent IPA gold corpus structure validation, repository data/evidence audit, Python tests, optional external-G2P harness syntax/CLI, browser engine tests, canonical browser-data build/regeneration and reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks.
 - This verifies the docs-only PR head and the repository's current CI contract. It does not establish phonological accuracy or create missing IPA gold; the evidence and expert-review blockers above remain unchanged.
+
+
+## Test-fixture correction — 2026-11-04
+
+- Review found that the shared IPA-corpus validator test file used Lao orthography and a Lao-specific profile description even in the Khmer and Burmese repositories. This did not affect production validation, but made the fixtures misleading and weakened language-specific test coverage.
+- The test fixtures now use the repository's script (Lao / Khmer / Myanmar), neutral `test-<language>` profile identifiers and `Test fixture (<language>)` variety labels. A regression test asserts the fixture characters fall within the corresponding Unicode block and that profile metadata matches the repository language.
+- This is a test-harness correction only. It does not validate language phonology, IPA correctness, or script-specific parser behavior; the production validator still intentionally validates corpus structure rather than imposing a single script restriction on all orthographic records.
