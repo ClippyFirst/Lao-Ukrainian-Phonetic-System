@@ -1,3 +1,9 @@
+## Methodology source refresh — 2026-11-04
+
+- Rechecked the four upstream methodology repositories. Unlazy remains at `16671491f6679ad9378f52604d3bc2415b4120c7`; mattpocock/skills remains at `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`; Ponytail remains at `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`.
+- Superpowers advanced from v7.0.1 to v7.0.2 at `22f0b463e7a5e579904dd6211a520321035526f7`. Reviewed the one-commit release delta. Adopted only the directly relevant process improvements: full-suite verification at GREEN and intent-first design with fewer, outcome-changing questions. Did not import harness plugins, helper scripts, SDD runtime, or platform integrations.
+- The upstream brainstorming skill also requires explicit design approval before implementation in its default path; that approval ceremony is not adopted when a user has already explicitly authorized autonomous execution. Project-specific linguistic, provenance, rights and fail-closed rules remain controlling.
+
 # Agent instructions
 
 This file is the project-specific entry point for coding agents. It complements, rather than replaces, the canonical project documents.
@@ -25,6 +31,10 @@ This file is the project-specific entry point for coding agents. It complements,
 - Review beyond the diff: callers, input/output contracts, edge cases, data flow, generated artifacts, Python/browser parity, accessibility, and expected deployment behavior.
 - Do not add dependencies unless a concrete requirement cannot be met by existing code, the standard library, or the platform. Explain the need and maintenance cost before adding one.
 - Record intentional limitations with an explicit status and revisit trigger. Do not turn a known unsupported case into a guessed result.
+
+
+- For new or ambiguous work, establish the intended outcome, audience, why and observable success criteria before designing; inspect existing project context first. Ask only questions whose answers would materially change the deliverable. Do not add process or intermediate-approval gates when the user has explicitly authorized autonomous one-pass execution.
+- At GREEN, run the repository's full project test command even if the task named only a focused test file. Report every failure observed; a focused passing test is not a green project suite.
 
 ## Linguistic and data invariants
 
@@ -70,7 +80,7 @@ Inspect the built `dist/` output and relative asset paths when the web build cha
 
 These are methodological references, not runtime dependencies. The project adopts selected practices, not wholesale copies of external instructions.
 
-- [obra/superpowers](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b): skill-triggered workflow, explicit plans, test-first implementation, root-cause debugging, review, and evidence before completion.
+- [obra/superpowers](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7): skill-triggered workflow, explicit plans, test-first implementation, root-cause debugging, review, and evidence before completion.
 - [mattpocock/skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d): deep modules and clear interfaces, test seams, behavior-focused tests, and source-backed research.
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846): Ponytail current main: trace the real code path and data flow, map entry points and expected load before repository-level audit, review beyond the diff, preserve trust-boundary validation/data-loss handling/accessibility, test branching/parser/security logic, and report skipped checks and residual risk.
 
@@ -80,7 +90,7 @@ When these references conflict with this file, the existing project requirements
 
 The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:
 
-- Superpowers 7.0.1: `obra/superpowers@2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. At GREEN, verify the project suite, not only the narrow test that first went red.
+- Superpowers 7.0.2: `obra/superpowers@22f0b463e7a5e579904dd6211a520321035526f7` — explicit plans, true RED/GREEN TDD, systematic debugging, code review, and verification-before-completion. Selected v7.0.2 refinements adopted here: run the repository's full test command at GREEN even when the task names one test file; establish intended outcome/audience/why before designing ambiguous new work; ask only questions that can change the deliverable. Do not impose intermediate approval gates when the user has explicitly authorized one-pass execution.
 - mattpocock/skills release v1.3.2: `d1478fcb140db0b93c0c8df17bcfd311844749d0`; current main snapshot: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` — composable skills, source-backed research, test-first implementation, and two-axis review (spec compliance separately from repository standards).
 - Ponytail 5.3.3: `7801d061243d7b753bad0e0b3c057cd250b11755` — codebase/data-flow audit, connected-code review, minimal complete changes, and explicit preservation of security, data integrity, and accessibility.
 
