@@ -1,3 +1,12 @@
+## Post-merge verification checkpoint — 2026-11-04
+
+- Verified current `main` head: `5e8e9136b619f4aebf5d1ef1dd45f432506b3033`. The documentation-only checkpoint PR has been merged: #132; its squash merge is this exact `main` head. A compare against `main` returned identical (0 ahead / 0 behind).
+- Exact PR-head CI completed successfully before merge: verify run 41879491187 (data/evidence audit, Python tests, browser engine tests, generated browser data reproducibility, Chromium UI tests, built-page assets).
+- This was a documentation-only change to the canonical handoff. No runtime code, linguistic rule, IPA label, corpus row, license grant, source artifact or generated output changed. PR-head checks are recorded as such; no separate post-merge push workflow result was surfaced by the available Actions query.
+- Linguistic acceptance gates are unchanged: independent expert-adjudicated IPA gold remains 0, `data/benchmark/gold.tsv` remains header-only, and empirical accuracy remains null. The target profile is confirmed; expert convention approval, independent annotators/adjudicator, curator, blind intake and rights-cleared source items remain outstanding.
+
+---
+
 ## Exact mainline checkpoint after methodology-gate adoption — 2026-11-04
 
 - Verified `main` head: `7e6937dbe5c1e0a8e8f838a026cf62420bb48aba`. The two methodology/completion-gate PRs for this repository are merged; there are no open PRs at this checkpoint. No implementation, linguistic registry, source record, benchmark label, or generated artifact was changed by those PRs.
