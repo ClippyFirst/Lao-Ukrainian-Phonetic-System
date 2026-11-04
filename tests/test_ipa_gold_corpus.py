@@ -214,6 +214,69 @@ class IpaGoldCorpusTests(unittest.TestCase):
         run = self.run_cli("validate", expected=1)
         self.assertIn("unregistered license_id", run.stderr)
 
+
+    def add_second_adjudicated_record(self, profile_variant=None, ipa_kind="PHONEMIC"):
+        second = json.loads(json.dumps(self.records[0]))
+        second["record_id"] = "r2"
+        second["lexeme_group_id"] = "group-dev-26"
+        if profile_variant is not None:
+            second["profile"]["variety"] = profile_variant
+        third = json.loads(json.dumps(self.records[0]))
+        third["record_id"] = "r3"
+        third["lexeme_group_id"] = "group-test-0"
+        self.records.extend([second, third])
+        for record_id, first_annotation, second_annotation, adjudicator, kind in (
+            ("r2", "a3", "a4", "ling-6", ipa_kind),
+            ("r3", "a5", "a6", "ling-9", "PHONEMIC"),
+        ):
+            value = ipa("ka", kind)
+            self.annotations.extend([
+                {"annotation_id": first_annotation, "record_id": record_id,
+                 "annotator_id": f"{record_id}-annotator-a", "ipa": value,
+                 "confidence": "HIGH", "uncertainty": [], "notes": "",
+                 "annotated_at": "2026-11-01"},
+                {"annotation_id": second_annotation, "record_id": record_id,
+                 "annotator_id": f"{record_id}-annotator-b",
+                 "ipa": json.loads(json.dumps(value)), "confidence": "HIGH",
+                 "uncertainty": [], "notes": "", "annotated_at": "2026-11-01"}
+            ])
+            self.adjudications.append({
+                "record_id": record_id, "adjudicator_id": adjudicator,
+                "annotation_ids": [first_annotation, second_annotation],
+                "decision": "AGREEMENT", "final_ipa": json.loads(json.dumps(value)),
+                "rationale": "Both independent annotations agree.",
+                "adjudicated_at": "2026-11-01"
+            })
+        self.splits.extend([
+            {"record_id": "r2", "group_id": "group-dev-26", "split": "dev",
+             "seed": "test-seed", "version": "v1"},
+            {"record_id": "r3", "group_id": "group-test-0", "split": "test",
+             "seed": "test-seed", "version": "v1"}
+        ])
+        self.write_all()
+
+    def test_release_gate_rejects_mixed_pronunciation_profiles(self):
+        self.add_second_adjudicated_record(profile_variant="Different variety")
+        run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
+                           "--min-test", "1", expected=1)
+        self.assertIn("one pronunciation profile", run.stderr)
+
+    def test_release_gate_rejects_mixed_ipa_kinds(self):
+        self.add_second_adjudicated_record(ipa_kind="PHONETIC_BROAD")
+        run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
+                           "--min-test", "1", expected=1)
+        self.assertIn("one IPA kind", run.stderr)
+
+    def test_release_gate_allows_per_record_speaker_and_audio_ids(self):
+        self.add_second_adjudicated_record()
+        for index, record in enumerate(self.records):
+            record["profile"]["speaker_id"] = f"speaker-{index}"
+            record["profile"]["audio_id"] = f"audio-{index}"
+        self.write_all()
+        run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
+                           "--min-test", "1", expected=0)
+        self.assertTrue(json.loads(run.stdout)["release_ready"])
+
     def test_rejects_non_redistributable_source_in_release_gate(self):
         self.records[0]["source"].update({"rights_status": "RESTRICTED", "redistributable": False})
         self.write_all()
