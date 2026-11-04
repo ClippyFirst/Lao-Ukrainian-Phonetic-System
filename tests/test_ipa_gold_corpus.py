@@ -275,7 +275,16 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.write_all()
         run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
                            "--min-test", "1", expected=0)
-        self.assertTrue(json.loads(run.stdout)["release_ready"])
+        report = json.loads(run.stdout)
+        self.assertTrue(report["engineering_gate_passed"])
+        self.assertEqual(report["linguistic_release_readiness"], "NOT_ESTABLISHED")
+        self.assertEqual(report["external_acceptance_gates_not_evaluated"], [
+            "versioned_expert_approved_ipa_convention",
+            "qualified_independent_annotators_and_separate_adjudicator",
+            "controlled_blind_annotation_and_adjudication",
+            "expert_approved_phonological_contrast_coverage",
+        ])
+        self.assertNotIn("release_ready", report)
 
     def test_rejects_non_redistributable_source_in_release_gate(self):
         self.records[0]["source"].update({"rights_status": "RESTRICTED", "redistributable": False})
