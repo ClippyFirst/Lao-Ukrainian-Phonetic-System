@@ -1,5 +1,13 @@
 # Master execution plan and chat handoff
 
+## Verified mainline checkpoint — Lao Common Voice source (2026-11-04)
+
+- Current main before this documentation checkpoint: `90ddc42537dad2292fc0a4b5614fc58f6a1ebba5` (PR #124). No open PRs; open research issues #99 (human IPA pilot) and #9 (independent G2P baseline review) remain.
+- PR #124 registers `SRC-CV-LAO-27` and updates the triage, completion register and handoff. PR-head verify [41800307823](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41800307823) and post-merge main verify [41800496434](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41800496434) SUCCESS.
+- Provider record: CC0-1.0, 223 clips / 0.40h, 193 validated / 0.35h, 16 speakers; accent data absent/blank for the small disclosed subset. The provider forbids speaker identification and re-hosting/re-sharing. It does not establish Vientiane speech.
+- Independent gold remains 0; accuracy remains null. Human acceptance for issue #99 remains convention sheet, two independent annotators, third adjudicator, curator, blind intake, 30 source-located lexeme groups and item-level rights/profile review. Issue #9 still requires qualified review of 31 tone, 2 offglide and 4 segmental/vowel-sequence disagreements; 37 fixtures are not gold.
+
+
 ## Lao Common Voice audio rights checkpoint — 2026-11-04
 
 - Added `SRC-CV-LAO-27` to the evidence source registry for Mozilla Common Voice 27.0 Lao: https://mozilladatacollective.com/datasets/cmu5odnv300xnmh070xkxthxo.
