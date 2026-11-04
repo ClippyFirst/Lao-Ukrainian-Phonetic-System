@@ -390,3 +390,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | ID | Status | Evidence | Acceptance boundary |
 |---|---|---|---|
 | LAO-IPA-GOLD-FIXTURE-001 | DONE_VERIFIED | PR [#126](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/126) merged as `3aee5de82cf7719a184d92a938e1ada3ffa73442`; exact-main Verify [41847832541](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41847832541) SUCCESS. | Test fixture now uses Lao script and neutral test profile; regression asserts Lao Unicode-block and matching profile metadata. This validates test-fixture integrity only, not phonological rules or IPA accuracy. Gold remains 0; accuracy null. |
+
+
+## LDC Babel Lao source triage — 2026-11-04
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-LDC-BABEL-AUDIO-001 | DONE_VERIFIED (source identified and scoped; access blocked pending agreement) | LDC2017S08 catalog, DOI 10.35111/bq21-kf58; approximately 207h of Vientiane-region conversational and scripted telephone speech with transcripts; 8kHz A-law SPHERE and 48kHz/24-bit PCM WAV. Source registered as `SRC-LDC-BABEL-LAO-2017`. | Strong candidate for a Vientiane audio pilot, but not IPA gold. Obtain suitable LDC membership/non-member license and fee, inspect the package manifest, separate scripted vs conversational material, and complete blind double annotation/adjudication before any benchmark use. |
