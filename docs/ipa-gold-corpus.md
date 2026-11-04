@@ -94,13 +94,13 @@ Export only `AGREEMENT` or `RESOLVED` records whose source is marked redistribut
 python scripts/ipa_gold_corpus.py export-gold --language LANGUAGE
 ```
 
-Check release-gold readiness:
+Check machine-verifiable corpus engineering prerequisites (not linguistic release approval):
 
 ```bash
-python scripts/ipa_gold_corpus.py gate --language LANGUAGE --min-train 100 --min-dev 25 --min-test 25
+python scripts/ipa_gold_corpus.py gate --language LANGUAGE --min-train 100 --min-dev 25 --min-test 25 --min-lexeme-groups 30
 ```
 
-The initial gate policy requires at least 100 adjudicated train items, 25 dev items and 25 test items, all with frozen splits and redistributable source rights. These are project release thresholds, not a universal statistical sufficiency claim. The corpus must also cover the phonological contrasts relevant to the language-specific research profile; row counts alone are not enough.
+The engineering gate requires at least 100 adjudicated train records, 25 dev records and 25 test records, all with frozen splits and redistributable source metadata, plus at least 30 distinct adjudicated lexeme groups across the corpus. Repeated records from one group count once toward this group minimum. These are project engineering thresholds, not a universal statistical sufficiency claim. Passing them does not establish linguistic release readiness: expert-approved IPA convention, qualified independent annotators and adjudicator, controlled blind intake, independent curator, independent source-rights verification, and language-specific contrast coverage remain external acceptance requirements.
 
 ## Benchmark semantics
 
@@ -111,7 +111,7 @@ The existing code-point CER remains a string-distance diagnostic, not a phonetic
 ## CI and release policy
 
 - Normal CI runs structural validation. An empty corpus is valid as a research state and reports `NOT_READY_NO_ADJUDICATED_GOLD`.
-- `.github/workflows/ipa-gold-release-gate.yml` runs on version tags and manual dispatch. It fails closed until the adjudicated, redistributable, split gold thresholds are met.
+- `.github/workflows/ipa-gold-release-gate.yml` runs on version tags and manual dispatch as the **IPA gold engineering-data gate**. It checks machine-verifiable corpus prerequisites only; it is not linguistic release approval.
 - This workflow does not change repository rulesets or branch protection. Repository owners must require the release-gate check in their release/tag procedure; the workflow runs after a tag is pushed and cannot itself prevent a person with permission from creating a tag.
 - Passing this gold-data gate does not, by itself, establish that a language engine or Ukrainian adapter is accurate or production-ready. Feature-stratified phonological evaluation and a separately approved product-quality threshold remain required.
 
@@ -163,7 +163,7 @@ A license entry marked `redistributable: true` is eligible for this product corp
 
 ### Release-gate threshold requirements
 
-The release gate requires positive integer minimums for train, dev and test. Zero and negative thresholds are invalid; invalid configuration is reported alongside other corpus/rights blockers rather than hiding them. Defaults remain 100 train, 25 dev and 25 test records.
+The engineering gate requires positive integer minimums for train, dev, test and distinct lexeme groups. Zero and negative thresholds are invalid; invalid configuration is reported alongside other corpus/rights blockers rather than hiding them. Defaults remain 100 train, 25 dev, 25 test records and 30 distinct adjudicated lexeme groups.
 
 
 ## Controlled collection protocol — 2026-11-01
@@ -182,4 +182,4 @@ No candidate source may be copied into the gold files until its exact data terms
 
 Before reporting the corpus threshold/rights gate as passed, the CLI now requires every adjudicated record in the release corpus to share one pronunciation-profile signature: `profile.id`, `variety`, `region`, and `register`. Per-record `speaker_id` and `audio_id` are intentionally excluded because they identify the recording/source item, not a different target variety. The gate also requires one IPA kind across all adjudicated records. This prevents a single score from silently mixing varieties, registers, or phonemic/broad/narrow conventions.
 
-These checks do **not** replace approval of the profile and convention sheet, independent annotator/adjudicator qualification, blind-intake evidence, or the language-specific contrast-coverage report required by the collection playbook. In particular, the CLI does not infer whether the corpus covers all relevant tonal, vowel, onset, medial, coda, series, stress, or prosodic contrasts. Benchmark readiness still requires a specialist-reviewed coverage report and held-out test discipline.
+These checks do **not** replace approval of the profile and convention sheet, independent annotator/adjudicator qualification, independent corpus curation, blind-intake evidence, independent source-rights verification, or the language-specific contrast-coverage report required by the collection playbook. In particular, the CLI does not infer whether the corpus covers all relevant tonal, vowel, onset, medial, coda, series, stress, or prosodic contrasts. Benchmark readiness still requires a specialist-reviewed coverage report and held-out test discipline.
