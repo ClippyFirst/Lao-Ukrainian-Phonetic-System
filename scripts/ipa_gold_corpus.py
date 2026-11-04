@@ -490,11 +490,19 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
 
 
 def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
-    minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test}
+    minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test, "lexeme_groups": args.min_lexeme_groups}
     problems = []
     if any(value <= 0 for value in minimums.values()):
         problems.append("release gate minimums must be positive integers")
     adjudicated = data["adjudicated"]
+    adjudicated_lexeme_groups = {
+        data["records"][ident]["lexeme_group_id"] for ident in adjudicated
+    }
+    if len(adjudicated_lexeme_groups) < args.min_lexeme_groups:
+        problems.append(
+            f"{len(adjudicated_lexeme_groups)} adjudicated lexeme groups; "
+            f"requires {args.min_lexeme_groups}"
+        )
     if not adjudicated:
         problems.append("no independently adjudicated IPA records")
     else:
@@ -545,8 +553,10 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
             "independently_verified_source_rights_and_license_permissions",
         ],
         "adjudicated_records": len(adjudicated),
+        "adjudicated_lexeme_groups": len(adjudicated_lexeme_groups),
         "counts_by_split": counts,
         "minimums": minimums,
+        "minimum_lexeme_groups": args.min_lexeme_groups,
     }))
     return 0
 
@@ -572,6 +582,7 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--min-train", type=int, default=100)
     gate.add_argument("--min-dev", type=int, default=25)
     gate.add_argument("--min-test", type=int, default=25)
+    gate.add_argument("--min-lexeme-groups", type=int, default=30)
     assign = sub.add_parser("assign-splits", help="assign deterministic group-safe splits; preserves existing assignments")
     assign.add_argument("--records", type=Path, default=Path("data/benchmark/records.jsonl"))
     assign.add_argument("--splits", type=Path, default=Path("data/benchmark/splits.jsonl"))
