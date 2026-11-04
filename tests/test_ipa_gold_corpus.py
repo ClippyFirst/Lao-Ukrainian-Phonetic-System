@@ -267,6 +267,16 @@ class IpaGoldCorpusTests(unittest.TestCase):
                            "--min-test", "1", expected=1)
         self.assertIn("one IPA kind", run.stderr)
 
+    def test_release_gate_allows_per_record_speaker_and_audio_ids(self):
+        self.add_second_adjudicated_record()
+        for index, record in enumerate(self.records):
+            record["profile"]["speaker_id"] = f"speaker-{index}"
+            record["profile"]["audio_id"] = f"audio-{index}"
+        self.write_all()
+        run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
+                           "--min-test", "1", expected=0)
+        self.assertTrue(json.loads(run.stdout)["release_ready"])
+
     def test_rejects_non_redistributable_source_in_release_gate(self):
         self.records[0]["source"].update({"rights_status": "RESTRICTED", "redistributable": False})
         self.write_all()
