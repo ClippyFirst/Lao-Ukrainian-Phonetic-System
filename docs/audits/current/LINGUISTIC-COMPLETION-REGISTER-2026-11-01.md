@@ -376,3 +376,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | ID | Status | Evidence | Acceptance boundary |
 |---|---|---|---|
 | LAO-CV27-AUDIO-001 | PARTIAL (audio lead; target-profile fit unverified) | Provider record declares CC0-1.0 but prohibits speaker identification and re-hosting/re-sharing; 223 clips, 193 validated, 0.35h validated, 16 speakers, accent value absent/mostly unspecified. Source added as SRC-CV-LAO-27. | Use provider-hosted audio only; do not mirror. A Lao specialist must screen individual clips for target variety and citation-form suitability and assign exact clip/time locators before double IPA annotation. Not gold. |
+
+
+## Post-merge checkpoint — Common Voice 27.0 Lao (2026-11-04)
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-CV27-AUDIO-001 | DONE_VERIFIED (source registration and rights boundary); pilot use remains PARTIAL/BLOCKED | PR #124 merged as `90ddc42537dad2292fc0a4b5614fc58f6a1ebba5`; PR-head verification [41800307823](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41800307823) SUCCESS; post-merge main verification [41800496434](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41800496434) SUCCESS. | CC0-1.0 but no speaker identification or re-hosting/re-sharing. 223 clips/0.40h, 193 validated/0.35h, 16 speakers; accent unreported. Specialist must approve target profile and exact clip/time spans. No gold labels. |
