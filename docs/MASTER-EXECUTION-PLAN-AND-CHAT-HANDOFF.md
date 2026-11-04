@@ -1581,3 +1581,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - New test `tests/test_source_registry.py` verifies LDC2017S08 is correctly recorded as a Vientiane-region 207-hour audio/transcript resource, with an LDC agreement gate and no IPA labels.
 - No corpus was downloaded and no fee or agreement was initiated. The source remains a candidate for a specialist annotation pilot, not project gold.
 - Independent adjudicated Lao IPA gold remains 0; empirical accuracy remains null. No local tests were run; hosted CI was used.
+
+
+## IPA gold release-gate profile consistency — 2026-11-04
+
+- Found a concrete gap in the shared `scripts/ipa_gold_corpus.py`: the release gate checked adjudicated-record counts, frozen splits and source redistribution rights, but did not enforce the playbooks' one-target-profile / one-IPA-convention requirement. A mixed-variety or mixed-kind corpus could therefore pass the numeric/rights gate and be scored as one benchmark.
+- Added regression tests first for mixed profile and mixed IPA kind in each of the three repositories. The first Lao test run failed on both new cases as expected; after adjusting the fixture to populate all three deterministic split buckets, the regression remained targeted. The Khmer and Burmese test runs are being verified on their final code heads.
+- Added shared gate checks: one signature across adjudicated records (`profile.id`, `variety`, `region`, `register`) and exactly one adjudicated IPA kind. Per-record speaker/audio IDs are deliberately excluded from target-profile identity.
+- Updated the corpus documentation and completion register. The checks do not replace approved convention sheets, human reviewer qualifications, blind annotation evidence, or language-specific contrast-coverage reports. The gate still does not calculate contrast coverage from free-text phonological metadata.
+- No IPA labels, pronunciation rules, Ukrainian mappings, source data, or benchmark scores were added. Independent adjudicated gold remains 0 in all three projects.
