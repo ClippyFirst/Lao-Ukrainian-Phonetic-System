@@ -72,3 +72,26 @@ The official release manifest `cv-corpus-27.0-2026-09-11.json` records 223 Lao c
 The exact Mozilla Data Collective record is https://mozilladatacollective.com/datasets/cmu5odnv300xnmh070xkxthxo. It declares **CC0-1.0**, but its dataset-specific forbidden-use terms still prohibit attempts to identify speakers and prohibit re-hosting/re-sharing. It describes 223 clips / 0.40h, of which 193 clips / 0.35h are validated, from 16 speakers; the source text pool contains 11,071 sentences. Only 48 clips from four speakers have an accent entry, but the accent value is blank; gender and age are incomplete. The release metadata does not establish Vientiane or any other specific Lao variety.
 
 **Disposition: candidate external audio for specialist screening, not gold and not an unrestricted mirrorable corpus.** Use the provider-hosted data and opaque clip IDs/locators; do not copy audio into this repository, re-host it, or attempt speaker identification. A specialist must determine whether any clip fits the chosen Vientiane citation-form profile. The very small 0.35h validated subset and unknown variety make this inadequate as a stand-alone language-wide benchmark. The 2026-11-03 manifest audit remains the canonical count/hash record; this update adds the provider's current licensing/usage terms.
+
+
+## Candidate: IARPA Babel Lao Language Pack (LDC2017S08) — 2026-11-04
+
+**Disposition: high-value, profile-aligned Vientiane audio/transcript corpus; access and agreement required; NOT IPA gold.**
+
+- Official catalog: https://catalog.ldc.upenn.edu/LDC2017S08
+- DOI: https://doi.org/10.35111/bq21-kf58
+- The LDC catalog describes approximately **207 hours** of Lao conversational and scripted telephone speech collected in 2013 with corresponding UTF-8 transcripts. It explicitly identifies the speech as representing the **Vientiane dialect region**.
+- Audio is available in 8 kHz 8-bit A-law SPHERE and 48 kHz 24-bit PCM WAV formats. The documentation describes a roughly equal gender distribution and ages 16–60, with recordings across phones and varied environments.
+- The catalog lists separate for-profit, non-member and not-for-profit license agreements and directs users to LDC subscription/licensing instructions; the applicable fee is shown after login. Portions are © 2015 U.S. Government; the catalog says the U.S. Government acquired the data from Appen and Appen assigned copyright to the U.S. Government.
+- The transcripts are orthographic/romanized, not IPA. The corpus is telephone speech and includes both conversational and scripted material, so it is not a citation-form dictionary and must not be treated as uniform careful speech.
+
+**Why this is useful:** unlike the small Common Voice Lao set, the catalog explicitly states Vientiane-region speech and provides substantial audio plus transcripts. If the project can lawfully obtain access, it is a stronger candidate for a controlled Vientiane speaker/audio pilot and human IPA annotation.
+
+**Acceptance before use:**
+1. Confirm whether the owner has LDC membership or a suitable non-member agreement and obtain the exact license terms before download.
+2. Preserve LDC catalog number, DOI, package version, manifest, checksums, speaker IDs as anonymized source IDs, transcript IDs and exact audio time spans.
+3. Separate scripted and conversational conditions; the project's citation-form benchmark should use only specialist-approved scripted/careful tokens, with conversational speech retained as a separate register.
+4. Have qualified Lao phoneticians perform two independent blind IPA annotations and separate adjudication; preserve tone, vowel length, offglides and uncertainty.
+5. Do not redistribute the corpus or derived materials unless the signed LDC agreement permits it.
+
+The source is now registered as `SRC-LDC-BABEL-LAO-2017`. This is a source discovery/access lead only: no audio or transcript data were copied, independent adjudicated Lao IPA gold remains 0, and accuracy remains null.
