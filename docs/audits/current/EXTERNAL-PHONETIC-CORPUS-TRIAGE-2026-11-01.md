@@ -65,3 +65,10 @@ The [Lao tonal](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tona
 ## Common Voice v27.0 Lao manifest audit — 2026-11-03
 
 The official release manifest `cv-corpus-27.0-2026-09-11.json` records 223 Lao clips, 193 validated clips, 16 contributor IDs, 0.35 validated hours (0.40 total). The Lao locale has no accent/variant metadata; gender/age fields are incomplete and skewed. Manifest checksum: `3fe87d019e65ac7e97806390698804bb60dec02444cba372706739dd8fb260c6`; manifest Git blob SHA: `e401c4a8e923cad5c8baacb6120c095b1e1bd561`. This is a small scripted-sentence audio lead, not IPA-labelled data, not a citation-form lexicon, and not evidence of Vientiane variety. It can be used only after a Lao specialist approves the target profile and individual clips/lexemes are manually verified; otherwise recruit controlled citation-form speakers.
+
+
+## Common Voice 27.0 Lao — rights and intake audit (2026-11-04)
+
+The exact Mozilla Data Collective record is https://mozilladatacollective.com/datasets/cmu5odnv300xnmh070xkxthxo. It declares **CC0-1.0**, but its dataset-specific forbidden-use terms still prohibit attempts to identify speakers and prohibit re-hosting/re-sharing. It describes 223 clips / 0.40h, of which 193 clips / 0.35h are validated, from 16 speakers; the source text pool contains 11,071 sentences. Only 48 clips from four speakers have an accent entry, but the accent value is blank; gender and age are incomplete. The release metadata does not establish Vientiane or any other specific Lao variety.
+
+**Disposition: candidate external audio for specialist screening, not gold and not an unrestricted mirrorable corpus.** Use the provider-hosted data and opaque clip IDs/locators; do not copy audio into this repository, re-host it, or attempt speaker identification. A specialist must determine whether any clip fits the chosen Vientiane citation-form profile. The very small 0.35h validated subset and unknown variety make this inadequate as a stand-alone language-wide benchmark. The 2026-11-03 manifest audit remains the canonical count/hash record; this update adds the provider's current licensing/usage terms.
