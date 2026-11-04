@@ -176,3 +176,10 @@ The following external resources are **candidates only**, not admitted gold:
 - Khmer Acoustic Model reports a 29,204-entry IPA dictionary and states dictionary data are CC BY-SA 4.0, distinct from MIT code/model: https://github.com/chemvatho/Khmer-acoustic-model. Verify per-entry provenance, target variety, transcription convention, exact version, and rights before import.
 
 No candidate source may be copied into the gold files until its exact data terms and provenance are verified. Keep source corpus, independently submitted annotations, adjudications, and engine predictions as separate evidence classes.
+
+
+## Release-gate corpus identity checks — 2026-11-04
+
+Before reporting the corpus threshold/rights gate as passed, the CLI now requires every adjudicated record in the release corpus to share one pronunciation-profile signature: `profile.id`, `variety`, `region`, and `register`. Per-record `speaker_id` and `audio_id` are intentionally excluded because they identify the recording/source item, not a different target variety. The gate also requires one IPA kind across all adjudicated records. This prevents a single score from silently mixing varieties, registers, or phonemic/broad/narrow conventions.
+
+These checks do **not** replace approval of the profile and convention sheet, independent annotator/adjudicator qualification, blind-intake evidence, or the language-specific contrast-coverage report required by the collection playbook. In particular, the CLI does not infer whether the corpus covers all relevant tonal, vowel, onset, medial, coda, series, stress, or prosodic contrasts. Benchmark readiness still requires a specialist-reviewed coverage report and held-out test discipline.
