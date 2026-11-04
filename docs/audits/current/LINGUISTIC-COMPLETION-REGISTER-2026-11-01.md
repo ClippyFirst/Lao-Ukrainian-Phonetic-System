@@ -1,3 +1,9 @@
+## MekongPhon evidence review — 2026-11-04
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-MEKONGPHON-001 | PARTIAL (candidate secondary source; rights unresolved) | LREC 2026 paper and PDF; seed lexicon from historical dictionary IPA; two-author 500-entry sample review (97.2% Lao / 99.2% Khmer); sentence expansion by longest-match-first lookup over OPUS; repository snapshot f80f6c1840c4818b51e05f2e00cded4701a5b662 has no declared license/root LICENSE. | May be used for source-located lexical triage only after profile/convention checks. Not independent sentence-level gold; do not import into gold.tsv. Item-level source and derivative rights must be resolved before redistribution. |
+
 # Lao linguistic completion register — 2026-11-01
 
 **Benchmark implementation merge:** `c50fc9133f8e7f55b520ac7229c86df2f9b10356` (PR #113). **Handoff/register reconciliation merge:** `44b475698c6532b202e06a14622ba57927843176` (PR #114).
