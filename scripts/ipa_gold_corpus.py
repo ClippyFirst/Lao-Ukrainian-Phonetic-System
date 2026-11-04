@@ -490,9 +490,9 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
 
 
 def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
-    minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test, "lexeme_groups": args.min_lexeme_groups}
+    minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test}
     problems = []
-    if any(value <= 0 for value in minimums.values()):
+    if any(value <= 0 for value in minimums.values()) or args.min_lexeme_groups <= 0:
         problems.append("release gate minimums must be positive integers")
     adjudicated = data["adjudicated"]
     adjudicated_lexeme_groups = {
@@ -550,6 +550,7 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
             "qualified_independent_annotators_and_separate_adjudicator",
             "controlled_blind_annotation_and_adjudication",
             "expert_approved_phonological_contrast_coverage",
+            "independent_corpus_curator",
             "independently_verified_source_rights_and_license_permissions",
         ],
         "adjudicated_records": len(adjudicated),
