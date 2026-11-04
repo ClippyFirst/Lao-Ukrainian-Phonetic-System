@@ -274,7 +274,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
             record["profile"]["audio_id"] = f"audio-{index}"
         self.write_all()
         run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
-                           "--min-test", "1", expected=0)
+                           "--min-test", "1", "--min-lexeme-groups", "3", expected=0)
         report = json.loads(run.stdout)
         self.assertTrue(report["engineering_gate_passed"])
         self.assertEqual(report["linguistic_release_readiness"], "NOT_ASSESSED_BY_THIS_COMMAND")
@@ -498,7 +498,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertEqual(condition["then"]["properties"]["share_alike"]["type"], "boolean")
 
     def test_release_gate_requires_positive_minimums_for_every_split(self):
-        for option in ("--min-train", "--min-dev", "--min-test"):
+        for option in ("--min-train", "--min-dev", "--min-test", "--min-lexeme-groups"):
             for value in ("0", "-1"):
                 with self.subTest(option=option, value=value):
                     run = self.run_cli("gate", option, value, expected=1)
