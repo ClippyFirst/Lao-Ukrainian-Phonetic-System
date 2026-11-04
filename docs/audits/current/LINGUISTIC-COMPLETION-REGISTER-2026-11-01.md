@@ -369,3 +369,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 - Exact post-merge pinned `lao2ipa==1.0.0` diagnostic [41723525916](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723525916) SUCCESS; JSON + SHA-256 sidecar artifact exists with expiry 2027-02-01.
 - `LAO-G2P-REPRO-001` is **DONE_VERIFIED** for provenance, version pin enforcement, report checksum generation and hosted artifact publication.
 - Parent issue #9 remains **PARTIAL**: the independent rights-cleared sample and qualified review of 31 tone, 2 offglide and 4 segmental/vowel-sequence disagreements remain outstanding. Independent IPA gold=0; accuracy=null.
+
+
+## Common Voice 27.0 Lao rights/profile checkpoint — 2026-11-04
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-CV27-AUDIO-001 | PARTIAL (audio lead; target-profile fit unverified) | Provider record declares CC0-1.0 but prohibits speaker identification and re-hosting/re-sharing; 223 clips, 193 validated, 0.35h validated, 16 speakers, accent value absent/mostly unspecified. Source added as SRC-CV-LAO-27. | Use provider-hosted audio only; do not mirror. A Lao specialist must screen individual clips for target variety and citation-form suitability and assign exact clip/time locators before double IPA annotation. Not gold. |
