@@ -576,14 +576,22 @@ def build_parser() -> argparse.ArgumentParser:
     add_paths(validate)
     validate.add_argument("--report", type=Path)
     for name in ("export-gold", "gate"):
-        command = sub.add_parser(name)
+        help_text = (
+            "export adjudicated IPA gold"
+            if name == "export-gold"
+            else "check machine-verifiable corpus engineering prerequisites; does not assess linguistic release readiness"
+        )
+        command = sub.add_parser(name, help=help_text, description=help_text)
         add_paths(command)
         command.add_argument("--output", type=Path, default=Path("data/benchmark/gold.tsv") if name == "export-gold" else None)
     gate = sub.choices["gate"]
     gate.add_argument("--min-train", type=int, default=100)
     gate.add_argument("--min-dev", type=int, default=25)
     gate.add_argument("--min-test", type=int, default=25)
-    gate.add_argument("--min-lexeme-groups", type=int, default=30)
+    gate.add_argument(
+        "--min-lexeme-groups", type=int, default=30,
+        help="minimum distinct adjudicated lexeme groups (default: 30)",
+    )
     assign = sub.add_parser("assign-splits", help="assign deterministic group-safe splits; preserves existing assignments")
     assign.add_argument("--records", type=Path, default=Path("data/benchmark/records.jsonl"))
     assign.add_argument("--splits", type=Path, default=Path("data/benchmark/splits.jsonl"))
