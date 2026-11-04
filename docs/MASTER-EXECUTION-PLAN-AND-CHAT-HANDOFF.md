@@ -1,3 +1,12 @@
+## Engineering gate terminology correction — 2026-11-04
+
+- The shared IPA corpus CLI previously emitted `release_ready: true` after checking only machine-verifiable corpus engineering conditions (adjudicated rows, frozen split minimums, one target-profile signature, one IPA kind and redistributable source rights). It did not evaluate expert approval of the IPA convention, annotator/adjudicator qualifications, blind intake or expert-approved phonological contrast coverage.
+- Corrected the success payload in `scripts/ipa_gold_corpus.py`: it now reports `engineering_gate_passed: true`, `linguistic_release_readiness: "NOT_ESTABLISHED"`, and enumerates the external acceptance gates this command does not evaluate. It no longer emits the misleading `release_ready` key.
+- Updated `tests/test_ipa_gold_corpus.py` to assert the exact machine-readable distinction and ensure `release_ready` is absent. This is a reporting/acceptance-boundary correction, not new phonological evidence or expert sign-off.
+- Exact-head hosted CI is not yet verified for this branch; no local checkout or local tests were available in this connector session.
+
+---
+
 ## Corrected exact-main checkpoint — 2026-11-04
 
 - Verified current `main` head: `9162cedbec8868a511c8c0cd522f0f4332770f64`. This is the squash-merge commit for documentation-only PR #133; the preceding checkpoint PR #132 merged as `5e8e9136b619f4aebf5d1ef1dd45f432506b3033` and is an ancestor, not the current branch head.
