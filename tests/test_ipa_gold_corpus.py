@@ -277,12 +277,13 @@ class IpaGoldCorpusTests(unittest.TestCase):
                            "--min-test", "1", expected=0)
         report = json.loads(run.stdout)
         self.assertTrue(report["engineering_gate_passed"])
-        self.assertEqual(report["linguistic_release_readiness"], "NOT_ESTABLISHED")
+        self.assertEqual(report["linguistic_release_readiness"], "NOT_ASSESSED_BY_THIS_COMMAND")
         self.assertEqual(report["external_acceptance_gates_not_evaluated"], [
             "versioned_expert_approved_ipa_convention",
             "qualified_independent_annotators_and_separate_adjudicator",
             "controlled_blind_annotation_and_adjudication",
             "expert_approved_phonological_contrast_coverage",
+            "independently_verified_source_rights_and_license_permissions",
         ])
         self.assertNotIn("release_ready", report)
 
