@@ -534,8 +534,19 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
             problems.append(f"{split} has {counts[split]} adjudicated records; requires {minimum}")
     if problems:
         raise ValueError("release gate failed: " + "; ".join(problems))
-    print(json.dumps({"release_ready": True, "adjudicated_records": len(adjudicated),
-                      "counts_by_split": counts, "minimums": minimums}))
+    print(json.dumps({
+        "engineering_gate_passed": True,
+        "linguistic_release_readiness": "NOT_ESTABLISHED",
+        "external_acceptance_gates_not_evaluated": [
+            "versioned_expert_approved_ipa_convention",
+            "qualified_independent_annotators_and_separate_adjudicator",
+            "controlled_blind_annotation_and_adjudication",
+            "expert_approved_phonological_contrast_coverage",
+        ],
+        "adjudicated_records": len(adjudicated),
+        "counts_by_split": counts,
+        "minimums": minimums,
+    }))
     return 0
 
 
