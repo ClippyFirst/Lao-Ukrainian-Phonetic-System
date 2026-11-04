@@ -1572,3 +1572,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - This is the strongest new Vientiane-aligned audio lead found in this pass, but access depends on a suitable LDC agreement and it contains no IPA. Scripted/careful and conversational tokens must remain separate. It is not a citation-form lexical gold corpus.
 - No audio/transcripts were copied. No LDC access agreement or payment was initiated. Acceptance still requires lawful access, package checksum/manifest, profile screening, two independent expert IPA annotations and separate adjudication.
 - Independent adjudicated Lao IPA gold remains 0; accuracy remains null. Hosted CI pending; no local test execution was available in this connector session.
+
+
+## Final Lao LDC Babel source PR verification — 2026-11-04
+
+- PR #127 head at verification: `5a147b3291857d160b6990868142db33ec50ddf4`.
+- Hosted Verify [41851017541](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41851017541) **SUCCESS**. Inspected steps: independent IPA-gold corpus structure, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, browser-engine tests, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks all completed successfully.
+- New test `tests/test_source_registry.py` verifies LDC2017S08 is correctly recorded as a Vientiane-region 207-hour audio/transcript resource, with an LDC agreement gate and no IPA labels.
+- No corpus was downloaded and no fee or agreement was initiated. The source remains a candidate for a specialist annotation pilot, not project gold.
+- Independent adjudicated Lao IPA gold remains 0; empirical accuracy remains null. No local tests were run; hosted CI was used.
