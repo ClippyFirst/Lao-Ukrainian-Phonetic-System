@@ -536,12 +536,13 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
         raise ValueError("release gate failed: " + "; ".join(problems))
     print(json.dumps({
         "engineering_gate_passed": True,
-        "linguistic_release_readiness": "NOT_ESTABLISHED",
+        "linguistic_release_readiness": "NOT_ASSESSED_BY_THIS_COMMAND",
         "external_acceptance_gates_not_evaluated": [
             "versioned_expert_approved_ipa_convention",
             "qualified_independent_annotators_and_separate_adjudicator",
             "controlled_blind_annotation_and_adjudication",
             "expert_approved_phonological_contrast_coverage",
+            "independently_verified_source_rights_and_license_permissions",
         ],
         "adjudicated_records": len(adjudicated),
         "counts_by_split": counts,
