@@ -221,25 +221,38 @@ class IpaGoldCorpusTests(unittest.TestCase):
         second["lexeme_group_id"] = "group-dev-26"
         if profile_variant is not None:
             second["profile"]["variety"] = profile_variant
-        self.records.append(second)
-        second_ipa = ipa("ka", ipa_kind)
-        self.annotations.extend([
-            {"annotation_id": "a3", "record_id": "r2", "annotator_id": "ling-4",
-             "ipa": second_ipa, "confidence": "HIGH", "uncertainty": [], "notes": "",
-             "annotated_at": "2026-11-01"},
-            {"annotation_id": "a4", "record_id": "r2", "annotator_id": "ling-5",
-             "ipa": json.loads(json.dumps(second_ipa)), "confidence": "HIGH",
-             "uncertainty": [], "notes": "", "annotated_at": "2026-11-01"}
+        third = json.loads(json.dumps(self.records[0]))
+        third["record_id"] = "r3"
+        third["lexeme_group_id"] = "group-test-0"
+        self.records.extend([second, third])
+        for record_id, first_annotation, second_annotation, adjudicator, kind in (
+            ("r2", "a3", "a4", "ling-6", ipa_kind),
+            ("r3", "a5", "a6", "ling-9", "PHONEMIC"),
+        ):
+            value = ipa("ka", kind)
+            self.annotations.extend([
+                {"annotation_id": first_annotation, "record_id": record_id,
+                 "annotator_id": f"{record_id}-annotator-a", "ipa": value,
+                 "confidence": "HIGH", "uncertainty": [], "notes": "",
+                 "annotated_at": "2026-11-01"},
+                {"annotation_id": second_annotation, "record_id": record_id,
+                 "annotator_id": f"{record_id}-annotator-b",
+                 "ipa": json.loads(json.dumps(value)), "confidence": "HIGH",
+                 "uncertainty": [], "notes": "", "annotated_at": "2026-11-01"}
+            ])
+            self.adjudications.append({
+                "record_id": record_id, "adjudicator_id": adjudicator,
+                "annotation_ids": [first_annotation, second_annotation],
+                "decision": "AGREEMENT", "final_ipa": json.loads(json.dumps(value)),
+                "rationale": "Both independent annotations agree.",
+                "adjudicated_at": "2026-11-01"
+            })
+        self.splits.extend([
+            {"record_id": "r2", "group_id": "group-dev-26", "split": "dev",
+             "seed": "test-seed", "version": "v1"},
+            {"record_id": "r3", "group_id": "group-test-0", "split": "test",
+             "seed": "test-seed", "version": "v1"}
         ])
-        self.adjudications.append({
-            "record_id": "r2", "adjudicator_id": "ling-6",
-            "annotation_ids": ["a3", "a4"], "decision": "AGREEMENT",
-            "final_ipa": json.loads(json.dumps(second_ipa)),
-            "rationale": "Both independent annotations agree.",
-            "adjudicated_at": "2026-11-01"
-        })
-        self.splits.append({"record_id": "r2", "group_id": "group-dev-26",
-                            "split": "dev", "seed": "test-seed", "version": "v1"})
         self.write_all()
 
     def test_release_gate_rejects_mixed_pronunciation_profiles(self):
