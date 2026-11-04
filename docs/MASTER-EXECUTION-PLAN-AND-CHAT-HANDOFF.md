@@ -1530,3 +1530,35 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Exact post-merge pinned `lao2ipa==1.0.0` diagnostic [41723525916](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41723525916) SUCCESS; JSON + SHA-256 sidecar artifact exists with expiry 2027-02-01.
 - `LAO-G2P-REPRO-001` is **DONE_VERIFIED** for provenance, version pin enforcement, report checksum generation and hosted artifact publication.
 - Parent issue #9 remains **PARTIAL**: the independent rights-cleared sample and qualified review of 31 tone, 2 offglide and 4 segmental/vowel-sequence disagreements remain outstanding. Independent IPA gold=0; accuracy=null.
+
+
+## One-pass continuation checkpoint — 2026-11-04
+
+- Current default branch: `main`; verified head `f667e64e1c165d53a536cfb082595b619b660fe7` (latest commit after PR #125).
+- Open PR query on 2026-11-04 returned none. Latest relevant merges: #121–#125. #121–#123 reconcile MekongPhon provenance, corpus scale and the dictionary-seeded/non-gold evaluation boundary; #124 registers Common Voice 27 Lao rights/profile limitations; #125 records the post-merge evidence.
+- Exact implementation/research PR-head verification: PR #124 exact-head verify 41800307823 SUCCESS. PR #125 is a documentation-only reconciliation. The current main combined-status endpoint returned no status entries; do not reinterpret that empty response as a failed or successful main push run.
+- Preserved evidence boundary: Common Voice is provider-hosted candidate audio only (223 clips; 193 validated; 0.35 validated hours; 16 contributors; no accent evidence establishing Vientiane). No audio is mirrored and no IPA labels were added. MekongPhon remains a dictionary-seeded comparator with unresolved dataset rights, not independent sentence IPA gold.
+- Task ledger: source provenance registrations and post-merge documentation **DONE_VERIFIED**; independent adjudicated Lao IPA gold **BLOCKED** (0 records; gold export header-only; accuracy null); two independent qualified annotators, separate adjudicator, approved Vientiane profile/IPA convention, item-level rights and blind-intake dry run **BLOCKED**; manual keyboard/screen-reader/mobile QA **TODO**.
+- No runtime phonology or Ukrainian mapping changes were made in the latest source-evidence merges. Do not promote G2P outputs, historical dictionary IPA, or Common Voice transcripts to gold.
+- The initial checkpoint commit was documentation-only; a subsequent test-only change now uses Lao script and a neutral test profile in the IPA-corpus fixtures. Hosted CI results for the final head are recorded separately; local tests were not run in this connector session. Hosted CI evidence above is tied to the exact PR head, not a claim of fresh local verification.
+
+
+## Hosted verification update — 2026-11-04
+
+- Draft PR #126 exact head `27398808d438e96bbf29b34ab94ab3244fe23157`: Verify run [41844565721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41844565721) **SUCCESS**.
+- The completed job reports success for independent IPA gold corpus structure validation, repository data/evidence audit, Python tests, optional external-G2P harness syntax/CLI, browser engine tests, canonical browser-data build/regeneration and reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks.
+- This verifies the docs-only PR head and the repository's current CI contract. It does not establish phonological accuracy or create missing IPA gold; the evidence and expert-review blockers above remain unchanged.
+
+
+## Test-fixture correction — 2026-11-04
+
+- Review found that the shared IPA-corpus validator test file used Lao orthography and a Lao-specific profile description even in the Khmer and Burmese repositories. This did not affect production validation, but made the fixtures misleading and weakened language-specific test coverage.
+- The test fixtures now use the repository's script (Lao / Khmer / Myanmar), neutral `test-<language>` profile identifiers and `Test fixture (<language>)` variety labels. A regression test asserts the fixture characters fall within the corresponding Unicode block and that profile metadata matches the repository language.
+- This is a test-harness correction only. It does not validate language phonology, IPA correctness, or script-specific parser behavior; the production validator still intentionally validates corpus structure rather than imposing a single script restriction on all orthographic records.
+
+
+## Final test-fixture PR verification — 2026-11-04
+
+- Test and handoff changes were present at head `fd05d22a76426286bc941b09fd69320bbf6ea910` when the following hosted checks completed: Verify [41847133670](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41847133670) **SUCCESS**.
+- The successful checks include the language-specific IPA-corpus fixture regression, repository data validation, language-specific Python test suite, web build/reproducibility checks and Chromium browser checks where configured.
+- Exact job steps were inspected; every reported step completed with `success`. These are engineering/structural checks, not a linguistic accuracy benchmark. No local tests were run in this connector session.
