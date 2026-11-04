@@ -26,7 +26,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
             "record_id": "r1", "language": LANGUAGE,
             "orthography": {"text": "ກາ", "normalized": "ກາ"},
             "lexeme_group_id": "lemma-1",
-            "profile": {"id": "test-lao", "variety": "Vientiane-oriented Standard Lao"},
+            "profile": {"id": "test-lao", "variety": "Test fixture (lao)"},
             "source": {"source_id": "src-1", "citation": "Test source", "locator": "p. 1",
                        "rights_status": "OPEN", "redistributable": True, "license_id": "CC-BY-4.0",
                        "rights_evidence": {"basis": "LICENSE", "locator": "https://creativecommons.org/licenses/by/4.0/",
@@ -52,6 +52,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         sample = self.records[0]["orthography"]["text"]
         self.assertTrue(all(start <= ord(char) <= end for char in sample))
         self.assertEqual(self.records[0]["profile"]["id"], f"test-{LANGUAGE}")
+        self.assertEqual(self.records[0]["profile"]["variety"], f"Test fixture ({LANGUAGE})")
 
     def tearDown(self):
         self.tmp.cleanup()
