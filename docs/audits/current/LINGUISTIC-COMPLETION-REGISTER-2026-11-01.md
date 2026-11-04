@@ -404,3 +404,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | ID | Status | Evidence | Acceptance boundary |
 |---|---|---|---|
 | IPA-GOLD-RELEASE-PROFILE-001 | DONE_VERIFIED (engineering guard) | Shared `scripts/ipa_gold_corpus.py` now rejects adjudicated corpora that mix target-profile identity (`id`, `variety`, `region`, `register`) or IPA kinds. New regression tests cover both failures. PR #128 merged as `9f7a55ca41bd86e4c97dd25528224ac23ad425ec`; exact PR-head CI [41870105701](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41870105701) SUCCESS; post-merge CI [41870506853](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41870506853) SUCCESS. | Does not prove profile approval, annotator qualifications, blindness, linguistic contrast coverage, or IPA accuracy. A specialist-reviewed language-specific coverage report remains required before benchmark readiness. |
+
+
+## Expert recruitment lead revalidation — 2026-11-04
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-IPA-GOLD-RECRUITMENT-LEADS-001 | PARTIAL | The current Thammasat profile verifies Varisa Osatananda's phonetics/sociophonetics/Lao tonal phonology expertise and Vientiane Lao dissertation; LDC LSP_203 confirms Vientiane vs Northern dialect pronunciation/tone differences. These strengthen reviewer shortlist/profile scope only; no contact, consent or recruitment. | No candidate has been contacted, consented, recruited or approved. Close only after two independent qualified target-variety annotators, separate adjudicator, non-annotating curator, conflict checks, secure blind intake and written role/terms confirmation are documented. |

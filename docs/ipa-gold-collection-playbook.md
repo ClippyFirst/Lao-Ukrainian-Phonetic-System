@@ -149,3 +149,14 @@ These are prospective leads only. No person has been contacted, consented, recru
 4. Obtain explicit item-level permission/rights evidence and run a private blind-intake dry run before any annotation.
 
 Status remains BLOCKED for pilot execution: these public leads do not constitute recruitment, approval, rights clearance, or gold labels.
+
+
+## Expert-lead revalidation and dialect-specific source note — 2026-11-04
+
+The existing Varisa Osatananda / Reiko Ueda / Yu Yanagimura leads remain the best directly relevant prospective reviewers found for the central Vientiane target. A new official LDC Language Specific Peculiarities document for the Babel Lao pack reinforces why the target profile must remain narrow: it describes marked pronunciation, tone and vocabulary differences among Lao dialects and specifically distinguishes Vientiane from Northern Lao tonal structures and pitch contours. This is a profile-control source, not a new IPA convention or permission to reuse LDC data: https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf
+
+- Varisa Osatananda: the current official Thammasat faculty page explicitly lists phonetics, sociophonetics and Lao tonal phonology and identifies her PhD dissertation as *Tone in Vientiane Lao* (1997). This is a strong candidate for a paid/voluntary convention review, but availability, target-variety speaker competence and willingness are not established. Official profile: https://arts.tu.ac.th/th/teacherlarts/cmukv6z2j001ypm61fy3u49n0
+- Reiko Ueda: the 1994 central Vientiane description remains a directly relevant primary source; current institutional affiliation is stated in the paper, but current availability and willingness are unknown. https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_article
+- Yu Yanagimura: the published acoustic study of Vientiane Lao bitonal sequences remains relevant to the project's careful citation-form vs contextual-tone policy; do not infer that this author can recruit or adjudicate native-speaker annotators.
+
+**Recruitment status:** no one has been contacted or recruited. These are research leads only. Next concrete action requires the project owner/curator to send an invitation and confirm role, qualifications, compensation/terms, conflicts, confidentiality and availability. At least two independent target-variety speakers and a separate adjudicator are still required.
