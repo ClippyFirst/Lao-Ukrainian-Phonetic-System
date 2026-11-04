@@ -1562,3 +1562,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Test and handoff changes were present at head `fd05d22a76426286bc941b09fd69320bbf6ea910` when the following hosted checks completed: Verify [41847133670](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41847133670) **SUCCESS**.
 - The successful checks include the language-specific IPA-corpus fixture regression, repository data validation, language-specific Python test suite, web build/reproducibility checks and Chromium browser checks where configured.
 - Exact job steps were inspected; every reported step completed with `success`. These are engineering/structural checks, not a linguistic accuracy benchmark. No local tests were run in this connector session.
+
+
+## LDC Babel Vientiane Lao source research — 2026-11-04
+
+- Created `research/lao-babel-corpus-source-audit-20261104` from current main `1be17bc4922b197f8826ecb02ae7ae2c3f2eb56b`.
+- Rechecked official LDC catalog item LDC2017S08 / DOI `10.35111/bq21-kf58`: approximately 207 hours of Vientiane-region Lao telephone speech from 2013 with orthographic transcripts, both scripted and conversational; 8 kHz A-law SPHERE and 48 kHz/24-bit PCM WAV. The catalog lists separate for-profit, non-member and not-for-profit agreements; fees require login. The U.S. Government acquired the data from Appen and holds copyright in portions.
+- Registered `SRC-LDC-BABEL-LAO-2017`, added source triage and completion-register task `LAO-LDC-BABEL-AUDIO-001`.
+- This is the strongest new Vientiane-aligned audio lead found in this pass, but access depends on a suitable LDC agreement and it contains no IPA. Scripted/careful and conversational tokens must remain separate. It is not a citation-form lexical gold corpus.
+- No audio/transcripts were copied. No LDC access agreement or payment was initiated. Acceptance still requires lawful access, package checksum/manifest, profile screening, two independent expert IPA annotations and separate adjudication.
+- Independent adjudicated Lao IPA gold remains 0; accuracy remains null. Hosted CI pending; no local test execution was available in this connector session.
