@@ -1,11 +1,23 @@
-## Post-merge verification checkpoint — 2026-11-04
+## Engineering gate and corpus-coverage corrections — 2026-11-04
 
-- Verified current `main` head: `5e8e9136b619f4aebf5d1ef1dd45f432506b3033`. The documentation-only checkpoint PR has been merged: #132; its squash merge is this exact `main` head. A compare against `main` returned identical (0 ahead / 0 behind).
-- Exact PR-head CI completed successfully before merge: verify run 41879491187 (data/evidence audit, Python tests, browser engine tests, generated browser data reproducibility, Chromium UI tests, built-page assets).
-- This was a documentation-only change to the canonical handoff. No runtime code, linguistic rule, IPA label, corpus row, license grant, source artifact or generated output changed. PR-head checks are recorded as such; no separate post-merge push workflow result was surfaced by the available Actions query.
-- Linguistic acceptance gates are unchanged: independent expert-adjudicated IPA gold remains 0, `data/benchmark/gold.tsv` remains header-only, and empirical accuracy remains null. The target profile is confirmed; expert convention approval, independent annotators/adjudicator, curator, blind intake and rights-cleared source items remain outstanding.
+- The shared IPA corpus CLI previously emitted `release_ready: true` after checking only machine-verifiable corpus engineering conditions (adjudicated rows, frozen split minimums, one target-profile signature, one IPA kind and recorded redistributable source rights). It did not evaluate expert approval of the IPA convention, annotator/adjudicator qualifications, blind intake or expert-approved phonological contrast coverage.
+- The success payload now reports `engineering_gate_passed: true` and `linguistic_release_readiness: "NOT_ASSESSED_BY_THIS_COMMAND"`. It lists six external acceptance gates not evaluated by this command: versioned expert-approved IPA convention; qualified independent annotators and separate adjudicator; controlled blind annotation/adjudication; expert-approved contrast coverage; independent corpus curator; and independent source-rights/license verification. It no longer emits `release_ready`.
+- The engineering gate now separately requires at least **30 distinct adjudicated lexeme groups** by default, in addition to train/dev/test record minima. It reports both the number of distinct adjudicated groups and the configured minimum; repeated records within a single group cannot inflate the group-coverage count. Tests may lower the minimum explicitly for small synthetic fixtures.
+- The tag/manual workflow is now named `IPA gold engineering-data gate`, and its minimum-count step explicitly says it is not linguistic release approval.
+- Test-first evidence: regression-only commits produced expected Python-test failures on the old implementation (RED runs 41885511739, 41886222931, 41887097911). The final implementation on code-bearing commit `0110a74cd0b752638292f2d37767ccfbe4956b82` has exact-head hosted evidence: 41887413370; additional push workflow: 41887404350. Exact-head verify passed: Python tests, repository data/evidence audit, browser engine tests, generated-data reproducibility, Chromium UI tests, and built-page asset checks.
+- Updated `tests/test_ipa_gold_corpus.py` to assert the exact status, six unevaluated gates, absence of the old `release_ready` key, distinct lexeme-group minimums, and positive group minimum validation. No IPA labels, phonological rules, corpus rows, source permissions or generated pronunciation data changed.
+- No local checkout or local test execution was available in this connector session; all verification evidence listed here is from hosted GitHub Actions.
+
+## Post-merge handoff audit — 2026-11-04
+
+- The base `main` SHA for this implementation branch was `9162cedbec8868a511c8c0cd522f0f4332770f64`. This is an immutable branch-base fact, not a claim that it remains the live `main` head after this implementation PR is merged.
+- Previous documentation checkpoint PR #133 had exact head `ca38541b51abd05fa3a6d9d069282a7a95c2397b`. Its diff was manually inspected; no CI status/workflow evidence surfaced for that PR head, so its CI remains **NOT VERIFIED**.
+- The duplicate follow-up PR #134 was closed unmerged. The replacement implementation PR is #135; it includes the validator, regression tests, workflow-label correction, agent guidance and this handoff update. The branch's code-bearing implementation commit is `e45fea62bebc687f17513089971cbe33b2035f02`; GitHub PR metadata is the source of the eventual merge SHA.
+- The exact-head workflow evidence and any still-running steps are recorded in the engineering-gate section above. This document intentionally records immutable branch-base history rather than a self-referential live-main SHA.
+- Independent expert-adjudicated IPA gold remains 0; `data/benchmark/gold.tsv` remains header-only; empirical accuracy remains null. The profile confirmation does not substitute for expert convention approval, independent annotators/adjudicator, curator, blind intake, contrast coverage or independently verified source rights.
 
 ---
+
 
 ## Exact mainline checkpoint after methodology-gate adoption — 2026-11-04
 

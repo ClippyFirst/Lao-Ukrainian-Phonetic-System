@@ -492,9 +492,17 @@ def export_gold(args: argparse.Namespace, data: dict[str, Any]) -> int:
 def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
     minimums = {"train": args.min_train, "dev": args.min_dev, "test": args.min_test}
     problems = []
-    if any(value <= 0 for value in minimums.values()):
+    if any(value <= 0 for value in minimums.values()) or args.min_lexeme_groups <= 0:
         problems.append("release gate minimums must be positive integers")
     adjudicated = data["adjudicated"]
+    adjudicated_lexeme_groups = {
+        data["records"][ident]["lexeme_group_id"] for ident in adjudicated
+    }
+    if len(adjudicated_lexeme_groups) < args.min_lexeme_groups:
+        problems.append(
+            f"{len(adjudicated_lexeme_groups)} adjudicated lexeme groups; "
+            f"requires {args.min_lexeme_groups}"
+        )
     if not adjudicated:
         problems.append("no independently adjudicated IPA records")
     else:
@@ -534,8 +542,23 @@ def release_gate(args: argparse.Namespace, data: dict[str, Any]) -> int:
             problems.append(f"{split} has {counts[split]} adjudicated records; requires {minimum}")
     if problems:
         raise ValueError("release gate failed: " + "; ".join(problems))
-    print(json.dumps({"release_ready": True, "adjudicated_records": len(adjudicated),
-                      "counts_by_split": counts, "minimums": minimums}))
+    print(json.dumps({
+        "engineering_gate_passed": True,
+        "linguistic_release_readiness": "NOT_ASSESSED_BY_THIS_COMMAND",
+        "external_acceptance_gates_not_evaluated": [
+            "versioned_expert_approved_ipa_convention",
+            "qualified_independent_annotators_and_separate_adjudicator",
+            "controlled_blind_annotation_and_adjudication",
+            "expert_approved_phonological_contrast_coverage",
+            "independent_corpus_curator",
+            "independently_verified_source_rights_and_license_permissions",
+        ],
+        "adjudicated_records": len(adjudicated),
+        "adjudicated_lexeme_groups": len(adjudicated_lexeme_groups),
+        "counts_by_split": counts,
+        "minimums": minimums,
+        "minimum_lexeme_groups": args.min_lexeme_groups,
+    }))
     return 0
 
 
@@ -553,13 +576,22 @@ def build_parser() -> argparse.ArgumentParser:
     add_paths(validate)
     validate.add_argument("--report", type=Path)
     for name in ("export-gold", "gate"):
-        command = sub.add_parser(name)
+        help_text = (
+            "export adjudicated IPA gold"
+            if name == "export-gold"
+            else "check machine-verifiable corpus engineering prerequisites; does not assess linguistic release readiness"
+        )
+        command = sub.add_parser(name, help=help_text, description=help_text)
         add_paths(command)
         command.add_argument("--output", type=Path, default=Path("data/benchmark/gold.tsv") if name == "export-gold" else None)
     gate = sub.choices["gate"]
     gate.add_argument("--min-train", type=int, default=100)
     gate.add_argument("--min-dev", type=int, default=25)
     gate.add_argument("--min-test", type=int, default=25)
+    gate.add_argument(
+        "--min-lexeme-groups", type=int, default=30,
+        help="minimum distinct adjudicated lexeme groups (default: 30)",
+    )
     assign = sub.add_parser("assign-splits", help="assign deterministic group-safe splits; preserves existing assignments")
     assign.add_argument("--records", type=Path, default=Path("data/benchmark/records.jsonl"))
     assign.add_argument("--splits", type=Path, default=Path("data/benchmark/splits.jsonl"))

@@ -274,8 +274,27 @@ class IpaGoldCorpusTests(unittest.TestCase):
             record["profile"]["audio_id"] = f"audio-{index}"
         self.write_all()
         run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
-                           "--min-test", "1", expected=0)
-        self.assertTrue(json.loads(run.stdout)["release_ready"])
+                           "--min-test", "1", "--min-lexeme-groups", "3", expected=0)
+        report = json.loads(run.stdout)
+        self.assertTrue(report["engineering_gate_passed"])
+        self.assertEqual(report["linguistic_release_readiness"], "NOT_ASSESSED_BY_THIS_COMMAND")
+        self.assertEqual(report["adjudicated_lexeme_groups"], 3)
+        self.assertEqual(report["minimum_lexeme_groups"], 3)
+        self.assertEqual(report["external_acceptance_gates_not_evaluated"], [
+            "versioned_expert_approved_ipa_convention",
+            "qualified_independent_annotators_and_separate_adjudicator",
+            "controlled_blind_annotation_and_adjudication",
+            "expert_approved_phonological_contrast_coverage",
+            "independent_corpus_curator",
+            "independently_verified_source_rights_and_license_permissions",
+        ])
+        self.assertNotIn("release_ready", report)
+
+    def test_release_gate_requires_minimum_distinct_lexeme_groups(self):
+        self.add_second_adjudicated_record()
+        run = self.run_cli("gate", "--min-train", "1", "--min-dev", "1",
+                           "--min-test", "1", expected=1)
+        self.assertIn("3 adjudicated lexeme groups; requires 30", run.stderr)
 
     def test_rejects_non_redistributable_source_in_release_gate(self):
         self.records[0]["source"].update({"rights_status": "RESTRICTED", "redistributable": False})
@@ -481,7 +500,7 @@ class IpaGoldCorpusTests(unittest.TestCase):
         self.assertEqual(condition["then"]["properties"]["share_alike"]["type"], "boolean")
 
     def test_release_gate_requires_positive_minimums_for_every_split(self):
-        for option in ("--min-train", "--min-dev", "--min-test"):
+        for option in ("--min-train", "--min-dev", "--min-test", "--min-lexeme-groups"):
             for value in ("0", "-1"):
                 with self.subTest(option=option, value=value):
                     run = self.run_cli("gate", option, value, expected=1)
