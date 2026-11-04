@@ -116,3 +116,17 @@ Before accepting a new adversarial fixture, review whether its expected result i
 ## Methodology application — 2026-11-02
 
 The repository now keeps its own domain glossary, GitHub issue-tracker instructions and source-verified codebase map under version control. Use these as context for the composable engineering skills; do not install external repositories as runtime dependencies or duplicate their whole skill trees. Apply Superpowers for scoped plans, RED/GREEN TDD and verification; apply Matt Pocock's codebase-design, research and two-axis review principles; apply Ponytail's real-flow audit, minimal complete change and residual-risk reporting. Linguistic evidence, corpus rights and fail-closed contracts always take precedence.
+
+
+## Completion gates and task decomposition — 2026-11-04
+
+The project also adopts selected completion-discipline practices from [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy/tree/16671491f6679ad9378f52604d3bc2415b4120c7), reviewed at upstream commit `16671491f6679ad9378f52604d3bc2415b4120c7` (source reports 2.1.0; the inspected main snapshot is pinned here for reproducibility). This is a methodology reference, not an installed tool or runtime dependency.
+
+- Before a substantial change, turn each acceptance-changing requirement into an observable ledger item. Reuse the canonical master handoff and existing completion register; do not create a competing task ledger.
+- A runnable acceptance item names the exact command or hosted workflow, the expected result, and the evidence location. A manual item names the reviewer/evidence required and remains open until that evidence exists.
+- Decompose only along real dependency and file-ownership boundaries. Do not parallelize overlapping writes or invent agent handles, branches, test results, or review evidence. Keep checks sequential unless independence and isolation are demonstrated.
+- Re-run the relevant checks on the exact final commit, including checks previously marked complete when their inputs or dependencies changed. A previous green run is not evidence for a later tree.
+- Distinguish implementation success from terminal handoff: an external blocker may be precisely documented, but it must never be represented as a successful acceptance gate.
+- Review every command and script before execution. A declared command is not safe merely because it appears in a ledger; it runs with the available environment and permissions.
+
+The existing repository status vocabulary remains authoritative: `DONE_VERIFIED`, `PARTIAL`, `TODO`, `BLOCKED`, and `DEFERRED`. Do not copy Unlazy's checker, hooks, approval store, or orchestration runtime into this project without a demonstrated need; the current GitHub Actions, canonical handoff and test infrastructure remain the source of execution evidence.
