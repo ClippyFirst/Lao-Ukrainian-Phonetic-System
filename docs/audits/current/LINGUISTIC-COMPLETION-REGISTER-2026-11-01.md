@@ -383,3 +383,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | ID | Status | Evidence | Acceptance boundary |
 |---|---|---|---|
 | LAO-CV27-AUDIO-001 | DONE_VERIFIED (source registration and rights boundary); pilot use remains PARTIAL/BLOCKED | PR #124 merged as `90ddc42537dad2292fc0a4b5614fc58f6a1ebba5`; PR-head verification [41800307823](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41800307823) SUCCESS; post-merge main verification [41800496434](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41800496434) SUCCESS. | CC0-1.0 but no speaker identification or re-hosting/re-sharing. 223 clips/0.40h, 193 validated/0.35h, 16 speakers; accent unreported. Specialist must approve target profile and exact clip/time spans. No gold labels. |
+
+
+## Language-specific IPA test fixtures — 2026-11-04
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-IPA-GOLD-FIXTURE-001 | DONE_VERIFIED | PR [#126](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/126) merged as `3aee5de82cf7719a184d92a938e1ada3ffa73442`; exact-main Verify [41847832541](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41847832541) SUCCESS. | Test fixture now uses Lao script and neutral test profile; regression asserts Lao Unicode-block and matching profile metadata. This validates test-fixture integrity only, not phonological rules or IPA accuracy. Gold remains 0; accuracy null. |
