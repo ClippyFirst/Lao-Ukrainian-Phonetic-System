@@ -1541,3 +1541,10 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Task ledger: source provenance registrations and post-merge documentation **DONE_VERIFIED**; independent adjudicated Lao IPA gold **BLOCKED** (0 records; gold export header-only; accuracy null); two independent qualified annotators, separate adjudicator, approved Vientiane profile/IPA convention, item-level rights and blind-intake dry run **BLOCKED**; manual keyboard/screen-reader/mobile QA **TODO**.
 - No runtime phonology or Ukrainian mapping changes were made in the latest source-evidence merges. Do not promote G2P outputs, historical dictionary IPA, or Common Voice transcripts to gold.
 - This checkpoint is documentation-only; local tests were not run in this connector session. Hosted CI evidence above is tied to the exact PR head, not a claim of fresh local verification.
+
+
+## Hosted verification update — 2026-11-04
+
+- Draft PR #126 exact head `27398808d438e96bbf29b34ab94ab3244fe23157`: Verify run [41844565721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41844565721) **SUCCESS**.
+- The completed job reports success for independent IPA gold corpus structure validation, repository data/evidence audit, Python tests, optional external-G2P harness syntax/CLI, browser engine tests, canonical browser-data build/regeneration and reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks.
+- This verifies the docs-only PR head and the repository's current CI contract. It does not establish phonological accuracy or create missing IPA gold; the evidence and expert-review blockers above remain unchanged.
