@@ -1,5 +1,15 @@
 # Master execution plan and chat handoff — Lao → Ukrainian
 
+## External reference evidence review — MekongPhon (2026-11-04)
+
+- Reviewed the LREC 2026 paper, PDF methodology sections, public MekongPhon repository README/data/pipeline code, and the current repository snapshot.
+- The seed lexicon is derived from historical dictionary IPA (Kerr 1972 for Lao; Headley 1977 for Khmer). The paper reports a two-author qualitative review of 500 seed entries: 97.2% Lao and 99.2% Khmer; the authors disclose that both reviewers are proficient second-language speakers, not native speakers.
+- The sentence-level corpus is expanded by longest-match-first lexicon lookup over OPUS text, so it is not an independently transcribed sentence-level gold set. Its held-out evaluation is dictionary-seeded and must not be conflated with our blind adjudicated gold.
+- The GitHub repository snapshot f80f6c1840c4818b51e05f2e00cded4701a5b662 declares no repository license and contains no root LICENSE. The paper's SEALang “Creative Commons open license” wording does not specify a license version. Rights remain UNKNOWN for redistribution/derivative use pending item-level verification.
+- Disposition: retain as a candidate secondary lexical reference and optional external diagnostic; do not import into data/benchmark/records.jsonl or gold.tsv as independent gold. The existing human annotation/adjudication gate remains open.
+- Primary evidence: https://aclanthology.org/2026.lrec-1.129.pdf; https://github.com/byu-matrix-lab/MekongPhon/tree/f80f6c1840c4818b51e05f2e00cded4701a5b662.
+
+
 ## Continuation update — strict JSON constants (2026-11-03)
 
 - **JSON-INPUT-003 — DONE_VERIFIED:** JSONL corpus records and the license registry now reject JavaScript-only constants `NaN`, `Infinity`, and `-Infinity` through the JSON decoder's `parse_constant` hook. Diagnostics retain file and line context.
