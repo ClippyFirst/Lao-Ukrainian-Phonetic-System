@@ -129,7 +129,6 @@ def _segment_word(word: str, registry: dict) -> list[str]:
             "AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY",
             "LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL",
         }
-        or warning.startswith("SHORT_VOWEL_REQUIRES_CODA:")
         or warning.startswith("UNCONSUMED_BEFORE_ONSET:")
         for warning in warnings
     ):
@@ -186,13 +185,19 @@ def _segment_word(word: str, registry: dict) -> list[str]:
     # syllable, retain the whole orthographic unit rather than dropping it.
     if any(part in TONE_MARKS for part in parts):
         return [word]
-    # Do not reinterpret an unconsumed Lao-block grapheme as a new syllable.
-    # This preserves the parser's fail-closed contract for malformed endings
-    # such as a legal onset character left without its own vowel structure.
+    # A2 short vowels may be legal inside a closed syllable even when the
+    # whole word's first-pass parse cannot see that coda. Validate the coda
+    # on each candidate syllable; if DP leaves a core Lao consonant or vowel
+    # sign stranded, keep the original token unresolved.
+    vowel_graphemes = set("ະາຽຳເແໂໃໄວອຍ") | VOWEL_COMBINING_MARKS
     if any(
-        len(part) == 1
-        and part in registry["consonants"]
-        and registry["consonants"][part].get("status") in {"core", "analysis-dependent"}
+        len(part) == 1 and (
+            part in vowel_graphemes
+            or (
+                part in registry["consonants"]
+                and registry["consonants"][part].get("status") in {"core", "analysis-dependent"}
+            )
+        )
         for part in parts
     ):
         return [word]
