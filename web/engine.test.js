@@ -438,3 +438,33 @@ test("long Lao greeting sentence preserves every non-whitespace source unit", ()
   assert.equal(result.syllables.map((unit) => unit.surface).join(""), sentence.replace(/\s/gu, ""));
   assert.ok(result.output.length > 0);
 });
+
+
+test("browser Ukrainian adaptation consumes a typed IPA result", () => {
+  const result = analyze("ຂາ");
+  const syllable = result.syllables[0];
+  assert.equal(syllable.phoneticResult.phonemicIpa, "kʰaː");
+  assert.deepEqual(syllable.phoneticResult.syllableBoundaries, [0, 2]);
+  assert.deepEqual(syllable.phoneticResult.segments.map((segment) => segment.ipa), ["kʰ", "aː"]);
+  assert.equal(syllable.phoneticResult.vowelLength, "long");
+  assert.equal(syllable.phoneticResult.toneCategory, "low-rising");
+  assert.equal(syllable.phoneticResult.status, "SUPPORTED");
+  assert.equal(syllable.ukrainian, "к'а");
+});
+
+test("browser IPA adapter withholds uncertain phonetic results", () => {
+  const result = analyze("ຣະ");
+  const syllable = result.syllables[0];
+  assert.equal(syllable.ipa, "la");
+  assert.equal(syllable.phoneticResult.status, "UNCERTAIN");
+  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.status, "ANALYSIS DEPENDENT");
+});
+
+test("browser IPA adapter withholds incomplete IPA rather than adapting a prefix", () => {
+  const result = analyze("ກາລ");
+  const syllable = result.syllables[0];
+  assert.equal(syllable.phoneticResult, undefined);
+  assert.equal(syllable.ipa, null);
+  assert.equal(syllable.ukrainian, null);
+});
