@@ -332,18 +332,9 @@ function isStructurallyComplete(s) {
 
 function analyzeWord(word) {
   const chars = [...word];
-  // A malformed tone-mark position belongs to the whole orthographic unit;
-  // do not let dynamic segmentation salvage a plausible-looking substring.
-  const cleanForMarkOrder = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
-  const markOrderError = toneMarkOrderError(chars, cleanForMarkOrder, findOnset(cleanForMarkOrder));
-  if (markOrderError) {
-    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
-  }
-  // Prevent dynamic segmentation from salvaging a valid-looking syllable
-  // when adjacent tone marks make the original orthographic unit malformed.
-  if (chars.some((ch, i) => TONE_MARK_SET.has(ch) && TONE_MARK_SET.has(chars[i + 1]))) {
-    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: ["MULTIPLE_TONE_MARKS: phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
-  }
+  // Tone-mark placement and multiplicity are syllable-local properties.
+  // Candidate syllables validate their own marks below; a mark that cannot be
+  // consumed by any complete candidate keeps the whole token unresolved.
   // Do not let dynamic segmentation rescue a malformed prefix by dropping
   // characters before the first Lao onset (e.g. xເເກ -> x + ເເ + ເກ).
   // A token may have at most one recognized preposed vowel before its first
@@ -433,6 +424,12 @@ function analyzeWord(word) {
     }
   }
   const parts = best[0].parts;
+  // Do not let an unattached or malformed tone mark disappear as a fallback
+  // fragment. Multiple marks in different syllables are valid; multiple or
+  // misplaced marks within one syllable remain visible as one unresolved unit.
+  if (parts.some((part) => TONE_MARK_SET.has(part.surface))) {
+    return [wholeCandidate];
+  }
   // An isolated Lao-block grapheme is not an independently parsed syllable.
   // Do not adapt a valid prefix and strand a known Lao consonant as if it were
   // an unrelated foreign-script unit. Truly unsupported foreign material
