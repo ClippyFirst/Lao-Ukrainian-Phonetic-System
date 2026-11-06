@@ -98,6 +98,11 @@ def load_project():
             "segmental": segmental,
             "tonal": tonal,
             "status": analysis.status,
+            "warnings": [
+                warning
+                for item in syllables
+                for warning in item.warnings
+            ],
             "segmental_seconds": segmental_elapsed,
             "tonal_seconds": 0.0,
         }
@@ -229,6 +234,9 @@ def main() -> int:
         segmental_durations: list[float] = []
         tonal_durations: list[float] = []
         errors = 0
+        warning_counts: dict[str, int] = {}
+        segmental_withheld = 0
+        tonal_withheld = 0
 
         for source in sources:
             try:
@@ -236,6 +244,9 @@ def main() -> int:
                 segmental = nfc(str(output["segmental"]))
                 tonal = nfc(str(output["tonal"]))
                 status = str(output["status"])
+                for warning in output.get("warnings", []):
+                    warning_code = str(warning).split(":", 1)[0]
+                    warning_counts[warning_code] = warning_counts.get(warning_code, 0) + 1
                 segmental_durations.append(float(output["segmental_seconds"]))
                 tonal_durations.append(float(output["tonal_seconds"]))
             except Exception as exc:
@@ -247,6 +258,8 @@ def main() -> int:
                 errors += 1
             segmental_outputs.append(segmental)
             tonal_outputs.append(tonal)
+            segmental_withheld += not bool(segmental)
+            tonal_withheld += not bool(tonal)
             statuses[status] = statuses.get(status, 0) + 1
 
         segmental_metrics = score(segmental_references, segmental_outputs)
@@ -257,6 +270,9 @@ def main() -> int:
             "tonal_vs_pron_with_tones": tonal_metrics,
             "runtime_errors": errors,
             "status_counts": statuses,
+            "segmental_withheld_items": segmental_withheld,
+            "tonal_withheld_items": tonal_withheld,
+            "warning_counts": dict(sorted(warning_counts.items())),
             "segmental_mean_latency_ms": round(statistics.mean(segmental_durations) * 1000, 3),
             "tonal_mean_latency_ms": round(statistics.mean(tonal_durations) * 1000, 3),
             "segmental_throughput_items_per_second": (
