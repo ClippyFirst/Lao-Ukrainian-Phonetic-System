@@ -20,8 +20,8 @@ Canonical Lao CSV registries in data/lao/ are the source of truth. scripts/gener
           |
           v
     web/engine.js -----> web/app.js -----> index.html
-                               |
-                               +----------> system.html (separate static page)
+
+    system.html is an independent static methodology page.
 
 The Python package is a separate runtime implementation:
 
