@@ -241,13 +241,13 @@ function analyzeToken(surface) {
   if (markOrderError) {
     return { surface, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ipa: null, ukrainian: null, tone: null };
   }
-  if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."] };
+  if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."], ipa: null, ukrainian: null, tone: null, toneContour: null };
 
   const { onsetKey, onsetIndex, onsetLength, onsetClass } = found;
   const onset = CONSONANTS[onsetKey];
   const before = clean.slice(0, onsetIndex);
   const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
-  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before] };
+  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before], ipa: null, ukrainian: null, tone: null, toneContour: null };
 
   let selectedLength = onsetLength;
   let onsetForm = found.onsetForm;
@@ -280,7 +280,7 @@ function analyzeToken(surface) {
     }
   }
 
-  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null };
+  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null, tone: null, toneContour: null };
   const matched = candidate.matched;
   const coda = candidate.coda;
   const warnings = [...candidate.warnings];
