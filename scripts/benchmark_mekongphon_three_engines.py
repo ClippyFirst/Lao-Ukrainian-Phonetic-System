@@ -438,7 +438,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "2.0",
+        "schema_version": "3.0",
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
             "url": DATA_URL,
@@ -454,6 +454,9 @@ def main() -> int:
             "normalization": "Unicode NFC and outer whitespace trim only",
             "segmental_comparison": "phonemic segments and vowel length against pron_no_tones",
             "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
+            "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
+            "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
+            "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
             "chrf++": "SacreBLEU CHRF with word_order=2, corpus-level",
             "exact_match": "strict full-string IPA comparison",
@@ -462,7 +465,7 @@ def main() -> int:
             "latency": "per-item inference; model loading excluded; CPU runner, sequential items",
             "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. It cannot be compared numerically with the paper's sentence-level Table 4.",
             "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is not independently re-adjudicated gold for this project.",
-            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and therefore mixed output contracts. Schema 2.0 separates segmental and tonal scoring; do not interpret old and new CER values as directly comparable.",
+            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 additionally reports covered-subset metrics, isolated tone-symbol metrics, and tone-category metrics; do not compare CER across schema versions without accounting for their different reference contracts.",
         },
         "environment": {
             "python": sys.version,
