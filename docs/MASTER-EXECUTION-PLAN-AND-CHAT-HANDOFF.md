@@ -1721,3 +1721,9 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Added Python and browser regression tests for typed-only input, segment/boundary metadata, tone/length preservation, uncertainty abstention, unresolved-tone handling and unsupported IPA. Extended `schemas/analysis.schema.json` for the nested typed result and added `docs/ipa-to-ukrainian-adapter.md`.
 - Implementation checkpoint before this handoff append: `fc81a67d63d85a3fd26d5e51e48be63f82a0c3cc`. Exact-head CI for the final documentation commit remains the acceptance gate; no test is marked passed until that run completes.
 - Research limits remain unchanged: independent adjudicated Lao IPA gold is 0; this architectural refactor does not establish empirical phonetic or Ukrainian-adaptation accuracy. Manual accessibility/device QA and independent expert validation remain open.
+
+### IPA-tokenizer separation correction — 2026-11-07
+
+- A follow-up review identified that the first typed-result implementation tokenized IPA using the Ukrainian correspondence registry. That would have coupled source IPA segmentation to target orthographic preferences.
+- Corrected this before acceptance: `phonetic_result.py` and the browser now tokenize against a dedicated source-side IPA inventory. The target adapter separately applies longest-match correspondence rules to the concatenated typed segments. Thus /ʃ/ + /t͡ʃ/ remains two IPA segments while the target's exact ordered sequence may render as щ.
+- Added Python and browser regression coverage. The correspondence CSV remains unchanged. This correction is included in the current implementation; exact-head CI is still required before DONE_VERIFIED.
