@@ -216,6 +216,20 @@ def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     }
 
 
+def extract_tone_suffix(segmental: str, tonal: str) -> str | None:
+    """Extract inserted tone symbols when the segmental string is an exact subsequence."""
+    if not tonal:
+        return ""
+    index = 0
+    tone_symbols: list[str] = []
+    for char in tonal:
+        if index < len(segmental) and char == segmental[index]:
+            index += 1
+        else:
+            tone_symbols.append(char)
+    return "".join(tone_symbols) if index == len(segmental) else None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -291,10 +305,29 @@ def main() -> int:
 
         segmental_metrics = score(segmental_references, segmental_outputs)
         tonal_metrics = score(tonal_references, tonal_outputs)
+        tone_references: list[str] = []
+        tone_predictions: list[str] = []
+        tone_alignment_failures = 0
+        for ref_segmental, ref_tonal, pred_segmental, pred_tonal in zip(
+            segmental_references, tonal_references, segmental_outputs, tonal_outputs
+        ):
+            if pred_segmental != ref_segmental:
+                continue
+            ref_tone = extract_tone_suffix(ref_segmental, ref_tonal)
+            pred_tone = extract_tone_suffix(pred_segmental, pred_tonal)
+            if ref_tone is None or pred_tone is None:
+                tone_alignment_failures += 1
+                continue
+            tone_references.append(ref_tone)
+            tone_predictions.append(pred_tone)
+        tone_only_metrics = score(tone_references, tone_predictions)
         results[name] = {
             "version_or_revision": version,
             "segmental_vs_pron_no_tones": segmental_metrics,
             "tonal_vs_pron_with_tones": tonal_metrics,
+            "tone_only_on_segmental_exact_subset": tone_only_metrics,
+            "segmental_exact_subset_n": len(tone_references),
+            "tone_only_alignment_failures": tone_alignment_failures,
             "runtime_errors": errors,
             "status_counts": statuses,
             "segmental_withheld_items": segmental_withheld,
