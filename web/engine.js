@@ -438,7 +438,7 @@ function analyzeWord(word) {
   // an unrelated foreign-script unit. Truly unsupported foreign material
   // remains visible beside valid neighbouring syllables.
   if (parts.some((part) => [...part.surface].length === 1 &&
-      part.surface.codePointAt(0) >= 0x0E80 && part.surface.codePointAt(0) <= 0x0EFF)) {
+      ["core", "analysis-dependent"].includes(CONSONANTS[part.surface]?.[2]))) {
     return [wholeCandidate];
   }
   return parts;
