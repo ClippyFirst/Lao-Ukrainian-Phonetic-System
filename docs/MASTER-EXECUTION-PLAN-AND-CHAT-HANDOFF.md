@@ -1727,3 +1727,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 - A follow-up review identified that the first typed-result implementation tokenized IPA using the Ukrainian correspondence registry. That would have coupled source IPA segmentation to target orthographic preferences.
 - Corrected this before acceptance: `phonetic_result.py` and the browser now tokenize against a dedicated source-side IPA inventory. The target adapter separately applies longest-match correspondence rules to the concatenated typed segments. Thus /ʃ/ + /t͡ʃ/ remains two IPA segments while the target's exact ordered sequence may render as щ.
 - Added Python and browser regression coverage. The correspondence CSV remains unchanged. This correction is included in the current implementation; exact-head CI is still required before DONE_VERIFIED.
+
+
+## Exact implementation checkpoint and verification state — 2026-11-07
+
+- Latest code-bearing checkpoint: `9279e59fd6cfc7aee6c7350d4a9992a8e958ad86`.
+- The final tokenizer review confirmed that source IPA tokenization uses its own IPA inventory; target-specific longest matching occurs only after the typed result crosses the adapter boundary.
+- Current implementation state: **PARTIAL pending exact-head verification**. The source, adapter, browser implementation, regression tests, and schema are committed. The GitHub connector exposed no workflow-run record or status checks for this push-triggered mainline commit. The available Actions-run listing only returns pull-request-triggered runs; the separate web-scrape fallback could not run because the connected Firecrawl account had exhausted its credits. This is not evidence that CI failed or passed; the exact-head result is **NOT VERIFIED**.
+- Required acceptance commands remain those in `.github/workflows/verify.yml`: corpus validation, `scripts/audit.py`, Python unittest discovery, optional external-G2P harness syntax/CLI, `npm test`, `npm run build`, generated-data diff check, Playwright Chromium tests, and built-site/asset assertions.
+- No benchmark was run. No phonological correspondence CSV, gold label, external source, licensing record, or romanization path was changed.
+- Do not promote this task to DONE_VERIFIED until the exact current main SHA has a successful Verify run. Independent Lao IPA gold remains 0; this is an architecture correction, not linguistic certification.
