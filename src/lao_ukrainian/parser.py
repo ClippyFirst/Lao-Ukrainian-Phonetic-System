@@ -182,7 +182,16 @@ def _segment_word(word: str, registry: dict) -> list[str]:
 
     result = best[0]
     assert result is not None
-    return result[1]
+    parts = result[1]
+    # Do not reinterpret an unconsumed Lao-block grapheme as a new syllable.
+    # This preserves the parser's fail-closed contract for malformed endings
+    # such as a legal onset character left without its own vowel structure.
+    if any(
+        len(part) == 1 and 0x0E80 <= ord(part) <= 0x0EFF
+        for part in parts
+    ):
+        return [word]
+    return parts
 
 def _strip_tone_marks(surface: str) -> str:
     return "".join(ch for ch in surface if ch not in TONE_MARKS)
