@@ -191,18 +191,28 @@ def load_neural():
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     import sacrebleu
 
-    edits = sum(levenshtein(ref, pred) for ref, pred in zip(references, predictions))
-    chars = sum(len(ref) for ref in references)
-    exact = sum(ref == pred for ref, pred in zip(references, predictions))
-    chrf = sacrebleu.metrics.CHRF(word_order=2).corpus_score(predictions, [references])
+    def metrics(refs: list[str], preds: list[str]) -> dict[str, object]:
+        edits = sum(levenshtein(ref, pred) for ref, pred in zip(refs, preds))
+        chars = sum(len(ref) for ref in refs)
+        exact = sum(ref == pred for ref, pred in zip(refs, preds))
+        chrf = sacrebleu.metrics.CHRF(word_order=2).corpus_score(preds, [refs])
+        return {
+            "n": len(refs),
+            "exact_matches": exact,
+            "exact_match_rate": exact / len(refs) if refs else None,
+            "cer": edits / chars if chars else None,
+            "chrf++": chrf.score,
+        }
+
+    covered = [(ref, pred) for ref, pred in zip(references, predictions) if pred]
     return {
-        "n": len(references),
-        "exact_matches": exact,
-        "exact_match_rate": exact / len(references),
-        "cer": edits / chars if chars else None,
-        "chrf++": chrf.score,
-        "coverage": sum(bool(pred) for pred in predictions) / len(predictions),
-        "missing_or_withheld": sum(not bool(pred) for pred in predictions),
+        **metrics(references, predictions),
+        "coverage": len(covered) / len(references) if references else 0.0,
+        "missing_or_withheld": len(references) - len(covered),
+        "covered_subset": metrics(
+            [pair[0] for pair in covered],
+            [pair[1] for pair in covered],
+        ),
     }
 
 
