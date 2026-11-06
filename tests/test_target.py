@@ -36,6 +36,9 @@ class TestTarget(unittest.TestCase):
         self.assertEqual(adapt("ŋaː"), "нга")
 
     def test_ukrainian_shcha_sequence_is_not_split_into_sh_and_ch(self):
+        result = phonetic_result_from_ipa("ʃt͡ʃa")
+        self.assertEqual([segment.ipa for segment in result.segments], ["ʃ", "t͡ʃ", "a"])
+        self.assertEqual(adapt_phonetic_result(result), "ща")
         self.assertEqual(adapt("ʃt͡ʃa"), "ща")
         self.assertEqual(adapt("ʃa"), "ша")
         self.assertEqual(adapt("t͡ʃa"), "ча")
