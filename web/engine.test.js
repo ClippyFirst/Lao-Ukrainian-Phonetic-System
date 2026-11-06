@@ -449,6 +449,8 @@ test("browser Ukrainian adaptation consumes a typed IPA result", () => {
   assert.equal(syllable.phoneticResult.vowelLength, "long");
   assert.equal(syllable.phoneticResult.toneCategory, "low-rising");
   assert.equal(syllable.phoneticResult.status, "SUPPORTED");
+  assert.equal(syllable.phoneticResult.broadSurfaceIpa, null);
+  assert.equal(syllable.phoneticResult.externalIpa, null);
   assert.equal(syllable.ukrainian, "к'а");
 });
 
@@ -464,7 +466,7 @@ test("browser IPA adapter withholds uncertain phonetic results", () => {
 test("browser IPA adapter withholds incomplete IPA rather than adapting a prefix", () => {
   const result = analyze("ກາລ");
   const syllable = result.syllables[0];
-  assert.equal(syllable.phoneticResult, undefined);
+  assert.equal(syllable.phoneticResult.status, "UNSUPPORTED");
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, null);
 });
