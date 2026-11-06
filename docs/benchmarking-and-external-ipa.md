@@ -235,3 +235,18 @@ The benchmark rejects a prediction TSV with a header but no data rows. Without t
 ### Identifier input validation
 
 Gold IDs and prediction IDs, as well as prediction engine names, must contain at least one non-whitespace character. Whitespace-only values are rejected before scoring so they cannot create blank-looking keys or engine entries. The check does not rewrite non-empty identifiers; matching remains exact and provenance-preserving. Regression coverage exercises whitespace-only gold IDs, prediction IDs and engine names.
+
+
+## Three-engine MekongPhon held-out word benchmark — 2026-11-07
+
+A hosted, exact-head comparison was run for the ClippyFirst rule engine, `lao2ipa==1.0.0`, and the BYU MATRIX Lab `byumatrixlab/lao-ipa-tonal` model on the same 100 held-out Lao seed-lexicon entries.
+
+| Engine | CER ↓ | chrF++ ↑ | Exact match | Coverage |
+|---|---:|---:|---:|---:|
+| MekongPhon Neural | **8.29%** | **84.98** | **74/100** | 100% |
+| Lao2IPA 1.0.0 | 11.97% | 73.85 | 56/100 | 100% |
+| ClippyFirst | 81.47% | 8.43 | 2/100 | 46% |
+
+The run and methodology are documented in [the dated benchmark report](research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md). Exact-head hosted run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) succeeded; the aggregate artifact is [available for 90 days](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950/artifacts/13545467628).
+
+This is a 100-word lexical holdout, not the paper's 13,442-sentence test and not independently re-adjudicated gold for this project. Do not compare the word-level CER directly to the paper's Table 4. The result selects MekongPhon Neural as the strongest measured candidate on this specific split; Lao2IPA is substantially faster; ClippyFirst has low coverage and high error and needs targeted parser/phonology investigation. No production default or linguistic registry was changed. Independent project gold remains absent.
