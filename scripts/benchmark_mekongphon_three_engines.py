@@ -392,6 +392,8 @@ def main() -> int:
                 "segmental_coverage": result["segmental_vs_pron_no_tones"]["coverage"],
                 "tonal_cer": result["tonal_vs_pron_with_tones"]["cer"],
                 "tonal_coverage": result["tonal_vs_pron_with_tones"]["coverage"],
+                "tone_only_cer_on_segmental_exact": result["tone_only_on_segmental_exact_subset"]["cer"],
+                "tone_only_coverage": result["tone_only_on_segmental_exact_subset"]["coverage"],
                 "runtime_errors": result["runtime_errors"],
             }
             for name, result in results.items()
