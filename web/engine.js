@@ -350,6 +350,8 @@ function analyzeWord(word) {
         warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + prefix],
         ukrainian: null,
         ipa: null,
+        tone: null,
+        toneContour: null,
       }];
     }
   }
@@ -367,6 +369,8 @@ function analyzeWord(word) {
       warnings: ["ເ◌ຽ is not an established preposed IA spelling; phonetic output withheld."],
       ukrainian: null,
       ipa: null,
+      tone: null,
+      toneContour: null,
     }];
   }
 
