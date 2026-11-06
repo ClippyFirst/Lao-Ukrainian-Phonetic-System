@@ -22,6 +22,8 @@ The optional romanization route remains separate. It does not call this adapter 
 
 ## Typed result
 
+The IPA segment tokenizer uses a source-side IPA inventory independent of the Ukrainian correspondence table. The target adapter then performs its own longest-match pass over the concatenated typed segments; this permits an orthographic target unit such as /ʃt͡ʃ/ → щ without making it one source IPA phoneme.
+
 The Python `PhoneticResult` and browser `phoneticResult` carry:
 
 | Field | Meaning |
