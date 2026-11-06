@@ -69,6 +69,126 @@
             "items": {
               "type": "string"
             }
+          },
+          "phonetic_result": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "phonemic_ipa",
+              "segments",
+              "syllable_boundaries",
+              "vowel_length",
+              "tone_category",
+              "tone_contour_ipa",
+              "status",
+              "provenance",
+              "uncertainty",
+              "broad_surface_ipa",
+              "external_ipa"
+            ],
+            "properties": {
+              "phonemic_ipa": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "broad_surface_ipa": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "external_ipa": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "segments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "ipa",
+                    "kind",
+                    "provenance",
+                    "certainty"
+                  ],
+                  "properties": {
+                    "ipa": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": [
+                        "vowel",
+                        "consonant",
+                        "unknown"
+                      ]
+                    },
+                    "provenance": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "certainty": {
+                      "enum": [
+                        "SUPPORTED",
+                        "UNCERTAIN",
+                        "UNSUPPORTED"
+                      ]
+                    }
+                  }
+                }
+              },
+              "syllable_boundaries": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "vowel_length": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "tone_category": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "tone_contour_ipa": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "SUPPORTED",
+                  "UNCERTAIN",
+                  "UNSUPPORTED"
+                ]
+              },
+              "provenance": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "uncertainty": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
