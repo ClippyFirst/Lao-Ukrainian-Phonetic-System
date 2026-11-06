@@ -83,10 +83,11 @@ def load_project():
             item.phonetic_result.tone_contour_ipa
             for item in syllables
         )
-        segmental = (
-            nfc("".join(item.phonetic_result.phonemic_ipa for item in syllables))
-            if segmental_complete else ""
-        )
+        segmental_parts = [
+            item.phonetic_result.phonemic_ipa if item.phonetic_result else ""
+            for item in syllables
+        ]
+        segmental = nfc("".join(segmental_parts)) if segmental_complete else ""
         tonal = (
             nfc("".join(
                 item.phonetic_result.phonemic_ipa + item.phonetic_result.tone_contour_ipa
@@ -94,16 +95,13 @@ def load_project():
             ))
             if tonal_complete else ""
         )
-        mekong_complete = segmental_complete and all(
-            item.phonetic_result.tone_category in MEKONG_CATEGORY_TO_CONTOUR
+        tone_categories = [
+            item.phonetic_result.tone_category if item.phonetic_result else None
             for item in syllables
-        )
+        ]
+        mekong_complete = segmental_complete and all(tone_categories)
         mekong_tonal = (
-            nfc("".join(
-                item.phonetic_result.phonemic_ipa
-                + MEKONG_CATEGORY_TO_CONTOUR[item.phonetic_result.tone_category]
-                for item in syllables
-            ))
+            render_mekong_tonal(segmental_parts, [str(value) for value in tone_categories])
             if mekong_complete else ""
         )
         return {
