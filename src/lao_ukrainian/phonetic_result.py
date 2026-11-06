@@ -4,7 +4,7 @@ from .model import PhoneticResult, PhoneticSegment
 # Multi-character phonemes and long vowels are single segment tokens; vowel
 # sequences remain separate segments and can be combined by the target adapter.
 IPA_SYMBOLS = (
-    "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕ", "dʑ",
+    "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕ", "dʑ", "ɲ",
     "kʰ", "pʰ", "tʰ", "nʲ", "lʲ", "rʲ", "tʲ", "dʲ",
     "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː",
     "k", "p", "t", "d", "b", "ŋ", "ɲ", "m", "n", "s", "f",
