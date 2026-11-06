@@ -86,17 +86,47 @@ function toneFor(cls, syllableType, length, mark) {
     : { name: null, contour: null, status: "ANALYSIS DEPENDENT", ruleId: "TONE-NOT-ESTABLISHED-FOR-COMBINATION" };
 }
 
-function mapIpa(ipa) {
+function createPhoneticResult(ipa, metadata = {}) {
+  const base = {
+    phonemicIpa: ipa || null,
+    segments: [],
+    syllableBoundaries: [0],
+    vowelLength: metadata.vowelLength || null,
+    toneCategory: metadata.toneCategory || null,
+    toneContourIpa: metadata.toneContourIpa || null,
+    status: ipa ? (metadata.status || "SUPPORTED") : "UNSUPPORTED",
+    provenance: [...(metadata.provenance || [])],
+    uncertainty: [...(metadata.uncertainty || [])],
+  };
+  if (!ipa) return base;
   const keys = sortedIpa();
-  let out = "";
   let i = 0;
   while (i < ipa.length) {
     const key = keys.find((candidate) => ipa.startsWith(candidate, i));
-    if (!key) return null;
-    out += CORRESPONDENCES[key];
+    if (!key) {
+      return { ...base, status: "UNSUPPORTED",
+        uncertainty: [...base.uncertainty, "Unsupported IPA at offset " + i] };
+    }
+    const kind = /^[aeiouɯɤɛɔəɪʊ]/u.test(key) ? "vowel" : "consonant";
+    base.segments.push({ ipa: key, kind, provenance: base.provenance, certainty: "SUPPORTED" });
     i += key.length;
   }
-  return out;
+  base.syllableBoundaries = [0, base.segments.length];
+  return base;
+}
+
+function adaptPhoneticResult(result) {
+  if (!result || typeof result !== "object" || !Array.isArray(result.segments)) {
+    throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
+  }
+  if (result.status !== "SUPPORTED" || result.segments.length === 0) return null;
+  let output = "";
+  for (const segment of result.segments) {
+    if (!segment || typeof segment.ipa !== "string" ||
+        !Object.hasOwn(CORRESPONDENCES, segment.ipa)) return null;
+    output += CORRESPONDENCES[segment.ipa];
+  }
+  return output;
 }
 
 function validateInput(text) {
@@ -232,7 +262,19 @@ function analyzeToken(surface) {
   const codaIpa = coda ? CODAS[coda] : "";
   const onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
   const ipa = structuralWarning ? null : onsetIpa + matched.v[2] + codaIpa;
-  const ukrainian = ipa ? mapIpa(ipa) : null;
+  const adapterStatus = ipa && !structuralWarning && resolvedTone.status === "ESTABLISHED" &&
+    onset[2] === "core" && warnings.length === 0
+    ? "SUPPORTED" : ipa ? "UNCERTAIN" : "UNSUPPORTED";
+  const phoneticResult = createPhoneticResult(ipa, {
+    vowelLength: matched.v[3],
+    toneCategory: resolvedTone.name,
+    toneContourIpa: resolvedTone.contour,
+    status: adapterStatus,
+    provenance: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0],
+      "SYLLABLE:" + syllableType, resolvedTone.ruleId || "TONE:UNRESOLVED"],
+    uncertainty: warnings,
+  });
+  const ukrainian = adaptPhoneticResult(phoneticResult);
 
   if (onsetForm !== onsetKey && !onsetIpaOverride) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
   if (onsetIpaOverride) warnings.push("ONSET-LABIALIZED:" + onsetForm);
@@ -240,10 +282,10 @@ function analyzeToken(surface) {
   if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
-  const status = structuralWarning || (ipa && !ukrainian) ? "EVIDENCE LIMITED"
-    : ukrainian && resolvedTone.status === "ESTABLISHED" && onset[2] === "core" ? "ESTABLISHED" : "ANALYSIS DEPENDENT";
+  const status = structuralWarning || phoneticResult.status === "UNSUPPORTED" ? "EVIDENCE LIMITED"
+    : phoneticResult.status === "UNCERTAIN" ? "ANALYSIS DEPENDENT" : "ESTABLISHED";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
-    coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, status,
+    coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
       "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
