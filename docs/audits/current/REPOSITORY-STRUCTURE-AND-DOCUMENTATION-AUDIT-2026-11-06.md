@@ -106,3 +106,13 @@ The previous audit identified that the repository described an IPA-first pipelin
 - Added Python/browser regressions, expanded the analysis JSON schema, and documented the contract in `docs/ipa-to-ukrainian-adapter.md`.
 
 The implementation checkpoint before this audit addendum is `fc81a67d63d85a3fd26d5e51e48be63f82a0c3cc`. The exact final documentation-head Verify run must pass before this work is classified DONE_VERIFIED. No local test execution or benchmark is claimed. Independent IPA gold remains empty; this is an engineering boundary correction, not linguistic certification.
+
+## Typed IPA adapter follow-up — verification gate — 2026-11-07
+
+**Implementation status: PARTIAL pending exact-head CI.**
+
+The code-bearing checkpoint is `9279e59fd6cfc7aee6c7350d4a9992a8e958ad86`. The previous raw-string path has been replaced by a typed Python/browser boundary. Source IPA tokenization now uses an independent IPA inventory; the Ukrainian adapter applies target-specific longest matching over typed segments. Tone uncertainty remains distinct from segmental IPA support. Tests and the analysis JSON schema were expanded.
+
+The current connector session did not expose the push-triggered mainline Actions run for this SHA (the available workflow-run endpoint is PR-only). The web-scrape fallback was unavailable due exhausted connected-account credits. Therefore exact-head CI is **NOT VERIFIED**, not passed and not failed. Acceptance requires the complete Verify workflow on the final current main SHA. No local test run or benchmark is claimed.
+
+Linguistic acceptance remains separately blocked by the empty independent IPA gold corpus and lack of independent expert validation.
