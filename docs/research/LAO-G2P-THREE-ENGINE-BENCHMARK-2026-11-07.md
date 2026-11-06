@@ -63,3 +63,14 @@ ClippyFirst returned a complete `OK` analysis for 46 items and `PARTIAL` for 54.
 ## Readiness judgement
 
 The comparative benchmark itself is reproducible and **DONE_VERIFIED**. The ClippyFirst engine remains a **research prototype, not accuracy-validated or release-ready**. MekongPhon Neural is the best-performing candidate on this 100-word test; Lao2IPA is the fastest practical deterministic comparator. No default replacement is authorized by this evidence alone.
+
+
+
+## Exact PR-head verification follow-up
+
+The full repository Verify workflow was triggered by PR #137 on exact head `a4216332341c977661de5a238be8df244e76b357`: [run 42305484657](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305484657) **FAILURE**. Python tests and earlier workflow steps completed; the Browser engine tests step failed with the same three regressions already observed on main:
+- `modern Lao ຣ defaults to l but remains analysis-dependent`: expected `la`, actual `null`;
+- `browser IPA adapter withholds uncertain phonetic results`: expected `la`, actual `null`;
+- `browser IPA adapter withholds incomplete IPA rather than adapting a prefix`: expected `UNSUPPORTED`, actual `SUPPORTED`.
+
+The benchmark-specific workflow [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) remains **SUCCESS**. The PR is left open and unmerged; the three browser failures are a separate implementation blocker and were not masked or changed as part of this benchmark.
