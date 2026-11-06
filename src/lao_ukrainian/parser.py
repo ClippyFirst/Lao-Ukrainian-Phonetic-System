@@ -126,11 +126,9 @@ def _segment_word(word: str, registry: dict) -> list[str]:
     # orthographic units.
     if any(
         warning in {
-            "MULTIPLE_TONE_MARKS",
             "AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY",
             "LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL",
         }
-        or warning.startswith("MALFORMED_TONE_MARK_")
         or warning.startswith("SHORT_VOWEL_REQUIRES_CODA:")
         or warning.startswith("UNCONSUMED_BEFORE_ONSET:")
         for warning in warnings
@@ -183,6 +181,11 @@ def _segment_word(word: str, registry: dict) -> list[str]:
     result = best[0]
     assert result is not None
     parts = result[1]
+    # Tone marks are validated by each candidate syllable, not by the whole
+    # space-delimited word. If a mark cannot be consumed by a complete
+    # syllable, retain the whole orthographic unit rather than dropping it.
+    if any(part in TONE_MARKS for part in parts):
+        return [word]
     # Do not reinterpret an unconsumed Lao-block grapheme as a new syllable.
     # This preserves the parser's fail-closed contract for malformed endings
     # such as a legal onset character left without its own vowel structure.
