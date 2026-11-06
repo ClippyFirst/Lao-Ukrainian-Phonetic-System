@@ -324,7 +324,9 @@ function analyzeToken(surface) {
 }
 
 function isStructurallyComplete(s) {
-  return Boolean(s.ipa && s.ukrainian) &&
+  // Syllable segmentation is a source-phonology concern. Do not make it
+  // depend on whether the separate Ukrainian target adapter has a mapping.
+  return Boolean(s.ipa) &&
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
@@ -381,6 +383,12 @@ function analyzeWord(word) {
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
   const wholeCandidate = analyzeToken(word);
+  // Keep a fully parsed but analysis-dependent source reading intact. The
+  // target adapter may withhold Ukrainian output without invalidating the
+  // source-side IPA parse (e.g. modern/loan-dependent ຣ).
+  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN") {
+    return [wholeCandidate];
+  }
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
     return [wholeCandidate];
   }
@@ -424,7 +432,16 @@ function analyzeWord(word) {
       }
     }
   }
-  return best[0].parts;
+  const parts = best[0].parts;
+  // An isolated Lao-block grapheme is not an independently parsed syllable.
+  // Do not adapt a valid prefix and strand a known Lao consonant as if it were
+  // an unrelated foreign-script unit. Truly unsupported foreign material
+  // remains visible beside valid neighbouring syllables.
+  if (parts.some((part) => [...part.surface].length === 1 &&
+      part.surface.codePointAt(0) >= 0x0E80 && part.surface.codePointAt(0) <= 0x0EFF)) {
+    return [wholeCandidate];
+  }
+  return parts;
 }
 
 export function analyze(text) {
