@@ -104,7 +104,7 @@ Same 100-entry held-out lexicon, same dataset revision and SHA-256 as above. Seg
 | Lao2IPA tonal IPA | CER 11.97% | 56/100 | 100% |
 | MekongPhon Neural tonal IPA | CER 8.29% | 74/100 | 100% |
 
-On the 97 words for which ClippyFirst returns segmental IPA, its segmental CER (7.89%) is lower than Lao2IPA's full-set CER (8.97%). On the same 97 covered words, the benchmark-convention tonal CER is 10.67%, also lower than Lao2IPA's full-set 11.97%. These are covered-subset comparisons, not a claim that ClippyFirst wins on the complete test: full-denominator ClippyFirst CER remains higher because it withholds three items.
+On the exact same 97 words for which both engines return output, ClippyFirst is close to Lao2IPA but does not yet beat it: segmental CER 7.89% vs 7.72%, and benchmark-convention tonal CER 10.67% vs 10.42%. Exact matches are 64/97 vs 68/97 segmentally and 52/97 vs 56/97 tonally. Full-denominator ClippyFirst CER is higher still because it withholds three items.
 
 Tone-category comparison is restricted to segmental-exact items and to reference tone suffixes that can be parsed by the documented MekongPhon contour mapping:
 
@@ -118,7 +118,7 @@ The raw Ueda-contour score and the benchmark-convention score answer different q
 
 ### Reproducibility and limitations
 
-- Successful benchmark workflow: [run 42309241958](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309241958); aggregate-only artifact [13547403094](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309241958/artifacts/13547403094), SHA-256 `fb9ff14dc2e61808ae2a5d76e89cfecd38f78939b316cd9ca19e3f0879fa5e4a`.
+- Successful benchmark workflow with cross-engine shared-subset scoring: [run 42309545197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197); aggregate-only artifact [13547168327](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197/artifacts/13547168327), SHA-256 `8267e0cf28b2bd9722a35c233efc76e3b379d47b133198c5603c48edada3e5a6`.
 - Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`; dataset SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`.
 - Neural models were resolved and recorded by exact revision: `byumatrixlab/lao-ipa-nontonal` at `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`; `byumatrixlab/lao-ipa-tonal` at `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`.
 - Runtime errors: zero for all three engines. ClippyFirst statuses: 95 `OK`, 5 `PARTIAL`; 97% non-empty IPA coverage.
@@ -127,4 +127,16 @@ The raw Ueda-contour score and the benchmark-convention score answer different q
 - The upstream MekongPhon repository snapshot used here exposes no repository-root LICENSE file. The dataset is fetched only at workflow runtime; no source rows, references or per-item predictions are committed or included in the artifact. Dataset reuse/redistribution rights remain unverified and must be cleared before any corpus redistribution or training use.
 - The 100-word lexicon is not the paper's 13,442-sentence test set and is not independently re-adjudicated project gold. The project still has zero independently adjudicated IPA gold records. No production default was switched to a neural model or external dependency.
 
-**Current conclusion:** ClippyFirst is now competitive with the best measured deterministic baseline on the words it can fully parse, and its covered-subset segmental and benchmark-normalized tonal CER are slightly better than Lao2IPA. It is not yet the best complete rule engine: three items remain withheld, its tone-category error rate is higher than Lao2IPA's, and the neural MekongPhon model remains the strongest system on this split.
+**Current conclusion:** ClippyFirst is now close to Lao2IPA on the identical 97-item covered subset, but remains slightly behind it on both segmental and benchmark-normalized tonal CER. It is not yet the best complete rule engine: three items remain withheld, its tone-category error rate is higher than Lao2IPA's, and the neural MekongPhon model remains the strongest system on this split.
+### Identical-subset comparison
+
+The schema 3.0 report stores cross-engine shared-coverage metrics so a 97-item ClippyFirst subset is compared with the same 97 items from each baseline, rather than comparing 97 covered items against a 100-item baseline:
+
+| Metric on the shared 97 items | ClippyFirst | Lao2IPA | MekongPhon Neural |
+|---|---:|---:|---:|
+| Segmental CER | 7.89% | 7.72% | 5.79% |
+| Segmental exact | 64/97 | 68/97 | 81/97 |
+| Mekong-convention tonal CER | 10.67% | 10.42% | 6.30% |
+| Mekong-convention tonal exact | 52/97 | 56/97 | 73/97 |
+
+This removes the denominator mismatch in the earlier covered-subset observation. ClippyFirst is within 0.17 percentage points of Lao2IPA segmentally and 0.25 points tonally on identical items, but is not yet ahead.
