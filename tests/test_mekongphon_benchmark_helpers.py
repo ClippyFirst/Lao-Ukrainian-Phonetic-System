@@ -5,6 +5,7 @@ import unittest
 from scripts.benchmark_mekongphon_three_engines import (
     extract_tone_suffix,
     parse_mekong_tone_categories,
+    render_mekong_tonal,
 )
 
 
@@ -22,6 +23,14 @@ class MekongPhonBenchmarkHelperTests(unittest.TestCase):
             parse_mekong_tone_categories(suffix),
             ["low-rising", "high-rising", "high-mid", "low-falling", "high-falling"],
         )
+
+    def test_typed_categories_can_be_rendered_in_benchmark_notation(self):
+        self.assertEqual(
+            render_mekong_tonal("kaː", ["low-rising", "high-mid"]),
+            "kaː˩˧˧",
+        )
+        self.assertEqual(render_mekong_tonal("kaː", ["unknown"]), "")
+        self.assertEqual(render_mekong_tonal("", ["low-rising"]), "")
 
     def test_unknown_contour_sequence_is_not_guessed(self):
         self.assertIsNone(parse_mekong_tone_categories("˩˥"))
