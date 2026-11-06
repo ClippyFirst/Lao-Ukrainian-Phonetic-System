@@ -114,6 +114,18 @@ def load_project():
                 for item in syllables
                 for warning in item.warnings
             ],
+            "partial_parse_shapes": [
+                {
+                    "onset": item.onset or "",
+                    "vowel": item.vowel or "",
+                    "coda": item.coda or "",
+                    "tone_mark": item.tone_mark or "",
+                    "syllable_type": item.syllable_type or "",
+                    "rules": item.rules,
+                }
+                for item in syllables
+                if item.status != "OK"
+            ],
             "tone_categories": tone_categories,
             "segmental_seconds": segmental_elapsed,
             "tonal_seconds": 0.0,
@@ -342,6 +354,7 @@ def main() -> int:
         tonal_durations: list[float] = []
         errors = 0
         warning_counts: dict[str, int] = {}
+        partial_shape_counts: dict[str, int] = {}
         segmental_withheld = 0
         tonal_withheld = 0
         engine_tone_categories: list[list[str] | None] = []
@@ -364,6 +377,16 @@ def main() -> int:
                     if raw_mekong_tonal is not None else tonal
                 )
                 mekong_convention_tonal_outputs.append(nfc(mekong_tonal))
+                for shape in output.get("partial_parse_shapes", []):
+                    shape_key = "|".join([
+                        str(shape.get("onset", "")),
+                        str(shape.get("vowel", "")),
+                        str(shape.get("coda", "")),
+                        str(shape.get("tone_mark", "")),
+                        str(shape.get("syllable_type", "")),
+                        ",".join(str(rule) for rule in shape.get("rules", [])),
+                    ])
+                    partial_shape_counts[shape_key] = partial_shape_counts.get(shape_key, 0) + 1
                 for warning in output.get("warnings", []):
                     warning = str(warning)
                     warning_code, _, detail = warning.partition(":")
@@ -470,6 +493,7 @@ def main() -> int:
             "segmental_withheld_items": segmental_withheld,
             "tonal_withheld_items": tonal_withheld,
             "warning_counts": dict(sorted(warning_counts.items())),
+            "partial_parse_shape_counts": dict(sorted(partial_shape_counts.items())),
             "segmental_mean_latency_ms": round(statistics.mean(segmental_durations) * 1000, 3),
             "tonal_mean_latency_ms": round(statistics.mean(tonal_durations) * 1000, 3),
             "segmental_throughput_items_per_second": (
