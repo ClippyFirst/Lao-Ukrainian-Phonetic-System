@@ -126,6 +126,12 @@ test("shared Lao tone-mark storage-order fixture", () => {
   }
 });
 
+test("short A2 syllable coda is validated before the next syllable", () => {
+  const result = analyze("ກັນກາ");
+  assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກັນ|ກາ");
+  assert.equal(result.syllables.every((s) => s.ipa), true);
+});
+
 test("tone marks are validated per syllable inside an unspaced word", () => {
   const result = analyze("ກ່າຂ່າ");
   assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກ່າ|ຂ່າ");
