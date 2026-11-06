@@ -5,7 +5,7 @@
 - `normalize.py` — NFC normalization and mixed-script validation.
 - `parser.py` — Lao graphemic syllable parsing and structural vowel recognition.
 - `phonology.py` — live/dead classification, tone lookup and phonemic IPA construction.
-- `phonetic_result.py` — typed `PhoneticResult` boundary: IPA segments, syllable offsets, length, tone, provenance and uncertainty.
+- `phonetic_result.py` — typed `PhoneticResult` boundary: source-inventory IPA tokenization, syllable offsets, length, tone, provenance and uncertainty; tokenization is independent of target correspondence keys.
 - `target.py` — typed-result-only IPA-to-Ukrainian adapter and candidate ranking.
 - `core.py` — public analysis orchestration.
 - `model.py` — serializable analysis dataclasses.
