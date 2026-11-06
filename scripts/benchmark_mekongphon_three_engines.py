@@ -271,7 +271,8 @@ def main() -> int:
                             shape = "contains-vowel-material"
                         else:
                             shape = "other-multigrapheme"
-                        warning_code = f"{warning_code}:{shape}"
+                        first_name = unicodedata.name(tail[0], "UNKNOWN").replace(" ", "_")
+                        warning_code = f"{warning_code}:{shape}:first={first_name}:length={len(tail)}"
                     warning_counts[warning_code] = warning_counts.get(warning_code, 0) + 1
                 segmental_durations.append(float(output["segmental_seconds"]))
                 tonal_durations.append(float(output["tonal_seconds"]))
