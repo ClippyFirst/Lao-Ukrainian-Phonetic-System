@@ -1,7 +1,8 @@
 from .normalize import normalize_lao, validate_unicode
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
-from .target import rank_ukrainian_candidates, practical_from_ipa, phonetic_result_from_ipa
+from .target import rank_ukrainian_candidates, practical_from_ipa
+from .phonetic_result import from_phonology
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 
@@ -82,7 +83,7 @@ def analyze(text: str) -> Analysis:
             and onset_status == "core" and not local_warnings
             else "UNCERTAIN" if ipa else "UNSUPPORTED"
         )
-        phonetic_result = phonetic_result_from_ipa(
+        phonetic_result = from_phonology(
             ipa,
             vowel_length=parsed.get("vowel", {}).get("length") if parsed.get("vowel") else None,
             tone=tone,
