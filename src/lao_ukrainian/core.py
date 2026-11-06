@@ -1,7 +1,7 @@
 from .normalize import normalize_lao, validate_unicode
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
-from .target import rank_ukrainian_candidates, practical_from_ipa
+from .target import rank_ukrainian_candidates, practical_from_ipa, phonetic_result_from_ipa
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 
@@ -75,29 +75,47 @@ def analyze(text: str) -> Analysis:
             rules = [*rules, "PHON-IPA-WITHHELD-MALFORMED-TONE-MARK-ORDER",
                      "PHON-TONE-WITHHELD-MALFORMED-TONE-MARK-ORDER"]
 
-        candidates = []
-        if ipa:
-            for value, score, why in rank_ukrainian_candidates(ipa):
-                candidates.append(Candidate(value, score, [why]))
-
-        practical = practical_from_ipa(ipa) if ipa else None
+        onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
+        phonetic_status = (
+            "SUPPORTED"
+            if ipa and tone_status in ESTABLISHED_TONE_STATUSES
+            and onset_status == "core" and not local_warnings
+            else "UNCERTAIN" if ipa else "UNSUPPORTED"
+        )
+        phonetic_result = phonetic_result_from_ipa(
+            ipa,
+            vowel_length=parsed.get("vowel", {}).get("length") if parsed.get("vowel") else None,
+            tone=tone,
+            tone_contour=next(
+                (row["contour"] for row in registry["tone_rules"]
+                 if tone is not None and row["rule_id"] in rules),
+                None,
+            ),
+            status=phonetic_status,
+            provenance=tuple(rules),
+            uncertainty=tuple(local_warnings),
+        )
+        candidates = [
+            Candidate(value, score, [why])
+            for value, score, why in rank_ukrainian_candidates(phonetic_result)
+        ]
+        practical = practical_from_ipa(phonetic_result)
         syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"))
         consonant_class = parsed.get("onset_class")
         if consonant_class is None and parsed.get("onset"):
             consonant_class = registry["consonants"].get(parsed["onset"], {}).get("class")
 
-        onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
         status = (
             "ESTABLISHED"
             if ipa and practical and tone_status in ESTABLISHED_TONE_STATUSES and onset_status in {"core", "analysis-dependent"}
             else tone_status
         )
-        if onset_status == "analysis-dependent" and ipa and practical and tone_status in ESTABLISHED_TONE_STATUSES:
+        if onset_status == "analysis-dependent" and ipa and tone_status in ESTABLISHED_TONE_STATUSES:
             status = "ANALYSIS DEPENDENT"
             analysis_warnings.append(f"ONSET-ANALYSIS-DEPENDENT:{parsed.get('onset')}")
 
         if practical is None and ipa:
-            status = "EVIDENCE LIMITED"
+            status = "ANALYSIS DEPENDENT" if phonetic_result.status == "UNCERTAIN" else "EVIDENCE LIMITED"
         if structural_uncertainty or multiple_tone_marks or malformed_tone_mark_order:
             status = "EVIDENCE LIMITED"
 
@@ -128,6 +146,7 @@ def analyze(text: str) -> Analysis:
                 rules,
                 local_warnings,
                 tone_contour=tone_contour,
+                phonetic_result=phonetic_result,
             )
         )
 
