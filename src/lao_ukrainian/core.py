@@ -79,8 +79,7 @@ def analyze(text: str) -> Analysis:
         onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
         phonetic_status = (
             "SUPPORTED"
-            if ipa and tone_status in ESTABLISHED_TONE_STATUSES
-            and onset_status == "core" and not local_warnings
+            if ipa and onset_status == "core" and not local_warnings
             else "UNCERTAIN" if ipa else "UNSUPPORTED"
         )
         phonetic_result = from_phonology(
@@ -94,7 +93,7 @@ def analyze(text: str) -> Analysis:
             ),
             status=phonetic_status,
             provenance=tuple(rules),
-            uncertainty=tuple(local_warnings),
+            uncertainty=tuple(local_warnings) + (() if tone_status in ESTABLISHED_TONE_STATUSES else ("TONE-UNRESOLVED",)),
         )
         candidates = [
             Candidate(value, score, [why])
