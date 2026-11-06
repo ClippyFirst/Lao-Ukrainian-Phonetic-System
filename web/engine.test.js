@@ -470,3 +470,14 @@ test("browser IPA adapter withholds incomplete IPA rather than adapting a prefix
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, null);
 });
+
+
+test("browser retains Ukrainian adaptation when only tone is unresolved", () => {
+  const syllable = analyze("ຂັ່ບ").syllables[0];
+  assert.equal(syllable.ipa, "kʰap");
+  assert.equal(syllable.phoneticResult.status, "SUPPORTED");
+  assert.equal(syllable.phoneticResult.toneCategory, null);
+  assert.ok(syllable.phoneticResult.uncertainty.includes("TONE-UNRESOLVED"));
+  assert.equal(syllable.ukrainian, "к'ап");
+  assert.equal(syllable.status, "ANALYSIS DEPENDENT");
+});
