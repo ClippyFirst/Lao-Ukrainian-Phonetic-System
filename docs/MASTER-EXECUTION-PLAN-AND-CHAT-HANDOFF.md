@@ -1756,3 +1756,8 @@ A cross-runtime review identified a concrete difference that must not be papered
 - PR #137 exact head `a4216332341c977661de5a238be8df244e76b357`: Verify run [42305484657](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305484657) **FAILURE**. Python tests and earlier steps completed; browser engine tests failed in 3 cases: modern `ຣ` expected `la` but returned null; uncertain IPA adapter expected `la` but returned null; incomplete IPA adapter expected `UNSUPPORTED` but returned `SUPPORTED`.
 - These match the failures already seen on main at [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593). They are not caused by the new benchmark script, and were not modified in this scoped benchmark change.
 - Benchmark-specific run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) remains **SUCCESS**. PR #137 remains open and unmerged pending resolution of the separate browser-engine regressions.
+
+
+## Final PR-head verification — 2026-11-07
+
+- Current PR #137 head `1658ec5e9a70848530a5e074d3be8728eb77ecd2`: Verify run [42305592423](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305592423) **FAILURE**, Browser engine tests only. The same 3 failures remain: modern `ຣ` returns null instead of `la`; uncertain IPA adapter returns null instead of `la`; incomplete IPA adapter returns `SUPPORTED` instead of `UNSUPPORTED`. The benchmark-specific workflow remains **SUCCESS**. PR #137 is open and unmerged.

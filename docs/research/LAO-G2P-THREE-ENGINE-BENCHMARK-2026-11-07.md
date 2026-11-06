@@ -74,3 +74,8 @@ The full repository Verify workflow was triggered by PR #137 on exact head `a421
 - `browser IPA adapter withholds incomplete IPA rather than adapting a prefix`: expected `UNSUPPORTED`, actual `SUPPORTED`.
 
 The benchmark-specific workflow [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) remains **SUCCESS**. The PR is left open and unmerged; the three browser failures are a separate implementation blocker and were not masked or changed as part of this benchmark.
+
+
+## Final PR-head check
+
+After the documentation reconciliation, the current PR head `1658ec5e9a70848530a5e074d3be8728eb77ecd2` was checked by Verify run [42305592423](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305592423): **FAILURE**, again only at Browser engine tests, with the same three cases (modern `ຣ` returns null instead of `la`; uncertain IPA adapter returns null instead of `la`; incomplete IPA adapter returns `SUPPORTED` instead of `UNSUPPORTED`). Benchmark-specific run 42305096950 remains successful. This PR remains unmerged.
