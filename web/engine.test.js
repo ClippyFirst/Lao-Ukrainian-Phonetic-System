@@ -481,3 +481,10 @@ test("browser retains Ukrainian adaptation when only tone is unresolved", () => 
   assert.equal(syllable.ukrainian, "к'ап");
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
+
+
+test("browser IPA tokenization is independent of target sequence matching", () => {
+  const syllable = analyze("ຂາ").syllables[0];
+  assert.deepEqual(syllable.phoneticResult.segments.map((segment) => segment.ipa), ["kʰ", "aː"]);
+  assert.equal(syllable.ukrainian, "к'а");
+});
