@@ -333,6 +333,7 @@ def main() -> int:
     }
 
     results: dict[str, object] = {}
+    engine_predictions: dict[str, dict[str, list[str]]] = {}
     for name, (predict, version) in engines.items():
         segmental_outputs: list[str] = []
         tonal_outputs: list[str] = []
@@ -449,6 +450,11 @@ def main() -> int:
         tone_category_metrics = token_error_rate(
             tone_category_references, tone_category_predictions
         )
+        engine_predictions[name] = {
+            "segmental": segmental_outputs,
+            "tonal": tonal_outputs,
+            "mekong_tonal": mekong_convention_tonal_outputs,
+        }
         results[name] = {
             "version_or_revision": version,
             "segmental_vs_pron_no_tones": segmental_metrics,
@@ -476,8 +482,42 @@ def main() -> int:
             ),
         }
 
+    shared_comparisons: dict[str, object] = {}
+    clippy = engine_predictions["clippyfirst_rule_engine"]
+    for comparator in ("lao2ipa", "mekongphon_neural"):
+        baseline = engine_predictions[comparator]
+        shared_segmental_indices = [
+            i for i in range(len(sources))
+            if clippy["segmental"][i] and baseline["segmental"][i]
+        ]
+        shared_tonal_indices = [
+            i for i in range(len(sources))
+            if clippy["mekong_tonal"][i] and baseline["tonal"][i]
+        ]
+        shared_comparisons[comparator] = {
+            "segmental_shared_n": len(shared_segmental_indices),
+            "clippyfirst_segmental": score(
+                [segmental_references[i] for i in shared_segmental_indices],
+                [clippy["segmental"][i] for i in shared_segmental_indices],
+            ),
+            "comparator_segmental": score(
+                [segmental_references[i] for i in shared_segmental_indices],
+                [baseline["segmental"][i] for i in shared_segmental_indices],
+            ),
+            "tonal_shared_n": len(shared_tonal_indices),
+            "clippyfirst_mekong_convention_tonal": score(
+                [tonal_references[i] for i in shared_tonal_indices],
+                [clippy["mekong_tonal"][i] for i in shared_tonal_indices],
+            ),
+            "comparator_tonal": score(
+                [tonal_references[i] for i in shared_tonal_indices],
+                [baseline["tonal"][i] for i in shared_tonal_indices],
+            ),
+        }
+
     report = {
         "schema_version": "3.0",
+        "cross_engine_shared_coverage": shared_comparisons,
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
             "url": DATA_URL,
