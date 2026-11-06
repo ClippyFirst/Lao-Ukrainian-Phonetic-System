@@ -344,10 +344,16 @@ function analyzeWord(word) {
     const prefix = chars.slice(0, firstOnsetIndex).join("");
     const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
     if (!allowedPreposed.has(prefix)) {
+      const prefixWarnings = [
+        ...(chars.slice(0, firstOnsetIndex).some((ch) => TONE_MARK_SET.has(ch))
+          ? ["MALFORMED_TONE_MARK_POSITION: tone mark precedes the syllable onset."]
+          : []),
+        "Непідтримуваний фрагмент перед початковим приголосним: " + prefix,
+      ];
       return [{
         surface: word,
         status: "EVIDENCE LIMITED",
-        warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + prefix],
+        warnings: prefixWarnings,
         ukrainian: null,
         ipa: null,
         tone: null,
