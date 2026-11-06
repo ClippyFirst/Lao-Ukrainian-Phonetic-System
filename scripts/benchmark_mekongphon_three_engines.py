@@ -230,6 +230,9 @@ MEKONG_CONTOUR_TO_CATEGORY = {
     "˧˩": "low-falling",
     "˥˨": "high-falling",
 }
+MEKONG_CATEGORY_TO_CONTOUR = {
+    category: contour for contour, category in MEKONG_CONTOUR_TO_CATEGORY.items()
+}
 
 
 def parse_mekong_tone_categories(suffix: str) -> list[str] | None:
@@ -317,6 +320,7 @@ def main() -> int:
         segmental_withheld = 0
         tonal_withheld = 0
         engine_tone_categories: list[list[str] | None] = []
+        mekong_convention_tonal_outputs: list[str] = []
 
         for source in sources:
             try:
@@ -329,6 +333,19 @@ def main() -> int:
                     [str(value) for value in raw_categories]
                     if raw_categories is not None else None
                 )
+                if raw_categories is not None:
+                    mekong_tonal = (
+                        segmental + "".join(
+                            MEKONG_CATEGORY_TO_CONTOUR[str(value)]
+                            for value in raw_categories
+                        )
+                        if segmental and all(raw_categories)
+                        and all(str(value) in MEKONG_CATEGORY_TO_CONTOUR for value in raw_categories)
+                        else ""
+                    )
+                else:
+                    mekong_tonal = tonal
+                mekong_convention_tonal_outputs.append(nfc(mekong_tonal))
                 for warning in output.get("warnings", []):
                     warning = str(warning)
                     warning_code, _, detail = warning.partition(":")
@@ -359,6 +376,7 @@ def main() -> int:
                 tonal_durations.append(0.0)
                 errors += 1
                 engine_tone_categories.append(None)
+                mekong_convention_tonal_outputs.append("")
             segmental_outputs.append(segmental)
             tonal_outputs.append(tonal)
             segmental_withheld += not bool(segmental)
@@ -367,6 +385,9 @@ def main() -> int:
 
         segmental_metrics = score(segmental_references, segmental_outputs)
         tonal_metrics = score(tonal_references, tonal_outputs)
+        mekong_convention_tonal_metrics = score(
+            tonal_references, mekong_convention_tonal_outputs
+        )
         tone_references: list[str] = []
         tone_predictions: list[str] = []
         tone_alignment_failures = 0
@@ -415,6 +436,7 @@ def main() -> int:
             "version_or_revision": version,
             "segmental_vs_pron_no_tones": segmental_metrics,
             "tonal_vs_pron_with_tones": tonal_metrics,
+            "tonal_mekong_convention_vs_pron_with_tones": mekong_convention_tonal_metrics,
             "tone_only_on_segmental_exact_subset": tone_only_metrics,
             "tone_category_on_segmental_exact_subset": tone_category_metrics,
             "segmental_exact_subset_n": len(tone_references),
@@ -487,6 +509,7 @@ def main() -> int:
                 "segmental_coverage": result["segmental_vs_pron_no_tones"]["coverage"],
                 "tonal_cer": result["tonal_vs_pron_with_tones"]["cer"],
                 "tonal_coverage": result["tonal_vs_pron_with_tones"]["coverage"],
+                "tonal_mekong_convention_cer": result["tonal_mekong_convention_vs_pron_with_tones"]["cer"],
                 "tone_only_cer_on_segmental_exact": result["tone_only_on_segmental_exact_subset"]["cer"],
                 "tone_only_coverage": result["tone_only_on_segmental_exact_subset"]["coverage"],
                 "tone_category_error_rate": result["tone_category_on_segmental_exact_subset"]["category_error_rate"],
