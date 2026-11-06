@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Run a three-engine Lao G2P comparison on MekongPhon held-out lexicon entries.
+"""Compare Lao G2P engines on the MekongPhon held-out lexicon.
 
-The upstream 100-entry lexicon holdout is downloaded at runtime and is not
-committed or included in the report. This is a word-level diagnostic, not the
-paper's 13,442-sentence test and not a replacement for independent adjudication.
+Segmental IPA and tonal IPA are scored separately. This matters because
+ClippyFirst preserves tone contours as typed metadata rather than appending
+them to its segmental phonemic_ipa string.
 """
 from __future__ import annotations
 
@@ -25,8 +25,8 @@ DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
 )
-MODEL_ID = "byumatrixlab/lao-ipa-tonal"
-MODEL_REVISION = "main"
+TONAL_MODEL_ID = "byumatrixlab/lao-ipa-tonal"
+SEGMENTAL_MODEL_ID = "byumatrixlab/lao-ipa-nontonal"
 
 
 def nfc(value: str) -> str:
@@ -48,7 +48,7 @@ def levenshtein(a: str, b: str) -> int:
 
 
 def load_dataset() -> tuple[list[dict[str, str]], str]:
-    request = urllib.request.Request(DATA_URL, headers={"User-Agent": "LaoG2P-benchmark/1.0"})
+    request = urllib.request.Request(DATA_URL, headers={"User-Agent": "LaoG2P-benchmark/2.0"})
     with urllib.request.urlopen(request, timeout=60) as response:
         payload = response.read()
     digest = hashlib.sha256(payload).hexdigest()
@@ -58,8 +58,9 @@ def load_dataset() -> tuple[list[dict[str, str]], str]:
         raise ValueError("MekongPhon held-out CSV is empty or has an unexpected schema")
     if len(rows) != 100:
         raise ValueError(f"Expected the published 100-entry lexicon holdout, received {len(rows)}")
-    if any(not row["orth"].strip() or not row["pron_with_tones"].strip() for row in rows):
-        raise ValueError("Held-out set contains an empty orthographic form or tonal reference")
+    if any(not row["orth"].strip() or not row["pron_no_tones"].strip()
+           or not row["pron_with_tones"].strip() for row in rows):
+        raise ValueError("Held-out set contains an empty source or IPA reference")
     if len({row["orth"] for row in rows}) != len(rows):
         raise ValueError("Held-out set contains duplicate orthographic forms")
     return rows, digest
@@ -68,12 +69,38 @@ def load_dataset() -> tuple[list[dict[str, str]], str]:
 def load_project():
     from lao_ukrainian.core import analyze
 
-    def predict(text: str) -> tuple[str, str]:
+    def predict(text: str) -> dict[str, str | float]:
+        started = time.perf_counter()
         analysis = analyze(text)
-        values = [syllable.phonemic_ipa for syllable in analysis.syllables]
-        if not values or any(value is None for value in values):
-            return "", analysis.status
-        return nfc("".join(values)), analysis.status
+        segmental_elapsed = time.perf_counter() - started
+
+        syllables = analysis.syllables
+        segmental_complete = bool(syllables) and all(
+            item.phonetic_result and item.phonetic_result.phonemic_ipa
+            for item in syllables
+        )
+        tonal_complete = segmental_complete and all(
+            item.phonetic_result.tone_contour_ipa
+            for item in syllables
+        )
+        segmental = (
+            nfc("".join(item.phonetic_result.phonemic_ipa for item in syllables))
+            if segmental_complete else ""
+        )
+        tonal = (
+            nfc("".join(
+                item.phonetic_result.phonemic_ipa + item.phonetic_result.tone_contour_ipa
+                for item in syllables
+            ))
+            if tonal_complete else ""
+        )
+        return {
+            "segmental": segmental,
+            "tonal": tonal,
+            "status": analysis.status,
+            "segmental_seconds": segmental_elapsed,
+            "tonal_seconds": 0.0,
+        }
 
     return predict
 
@@ -81,11 +108,22 @@ def load_project():
 def load_lao2ipa():
     from lao2ipa import transliterate
 
-    def predict(text: str) -> tuple[str, str]:
-        value = transliterate(text, output="ipa")
-        if not isinstance(value, str):
-            raise TypeError(f"lao2ipa returned {type(value).__name__}, expected str")
-        return nfc(value), "RETURNED"
+    def predict(text: str) -> dict[str, str | float]:
+        started = time.perf_counter()
+        segmental = transliterate(text, output="ipa", ignore_tones=True)
+        segmental_elapsed = time.perf_counter() - started
+        started = time.perf_counter()
+        tonal = transliterate(text, output="ipa", ignore_tones=False)
+        tonal_elapsed = time.perf_counter() - started
+        if not isinstance(segmental, str) or not isinstance(tonal, str):
+            raise TypeError("lao2ipa must return strings for both output modes")
+        return {
+            "segmental": nfc(segmental),
+            "tonal": nfc(tonal),
+            "status": "RETURNED",
+            "segmental_seconds": segmental_elapsed,
+            "tonal_seconds": tonal_elapsed,
+        }
 
     return predict
 
@@ -96,25 +134,53 @@ def load_neural():
     from huggingface_hub import model_info
 
     torch.set_num_threads(min(2, os.cpu_count() or 1))
-    info = model_info(MODEL_ID, revision=MODEL_REVISION)
-    model = EncoderDecoderModel.from_pretrained(MODEL_ID, revision=info.sha)
-    encoder = AutoTokenizer.from_pretrained(
-        MODEL_ID, subfolder="encoder_tokenizer", revision=info.sha
-    )
-    decoder = AutoTokenizer.from_pretrained(
-        MODEL_ID, subfolder="decoder_tokenizer", revision=info.sha
-    )
-    model.eval()
 
-    def predict(text: str) -> tuple[str, str]:
-        inputs = encoder(text, return_tensors="pt", truncation=True, max_length=128)
-        with torch.inference_mode():
-            output_ids = model.generate(
-                **inputs, max_length=128, num_beams=5, early_stopping=True
-            )
-        return nfc(decoder.decode(output_ids[0], skip_special_tokens=True)), "RETURNED"
+    def load_one(model_id: str):
+        info = model_info(model_id)
+        revision = info.sha
+        model = EncoderDecoderModel.from_pretrained(model_id, revision=revision)
+        encoder = AutoTokenizer.from_pretrained(
+            model_id, subfolder="encoder_tokenizer", revision=revision
+        )
+        decoder = AutoTokenizer.from_pretrained(
+            model_id, subfolder="decoder_tokenizer", revision=revision
+        )
+        model.eval()
 
-    return predict, info.sha
+        def generate(text: str) -> str:
+            inputs = encoder(text, return_tensors="pt", truncation=True, max_length=128)
+            with torch.inference_mode():
+                output_ids = model.generate(
+                    **inputs, max_length=128, num_beams=5, early_stopping=True
+                )
+            return nfc(decoder.decode(output_ids[0], skip_special_tokens=True))
+
+        return generate, revision
+
+    tonal_generate, tonal_revision = load_one(TONAL_MODEL_ID)
+    segmental_generate, segmental_revision = load_one(SEGMENTAL_MODEL_ID)
+
+    def predict(text: str) -> dict[str, str | float]:
+        started = time.perf_counter()
+        segmental = segmental_generate(text)
+        segmental_elapsed = time.perf_counter() - started
+        started = time.perf_counter()
+        tonal = tonal_generate(text)
+        tonal_elapsed = time.perf_counter() - started
+        return {
+            "segmental": segmental,
+            "tonal": tonal,
+            "status": "RETURNED",
+            "segmental_seconds": segmental_elapsed,
+            "tonal_seconds": tonal_elapsed,
+        }
+
+    return predict, {
+        "segmental_model": SEGMENTAL_MODEL_ID,
+        "segmental_revision": segmental_revision,
+        "tonal_model": TONAL_MODEL_ID,
+        "tonal_revision": tonal_revision,
+    }
 
 
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
@@ -122,11 +188,12 @@ def score(references: list[str], predictions: list[str]) -> dict[str, object]:
 
     edits = sum(levenshtein(ref, pred) for ref, pred in zip(references, predictions))
     chars = sum(len(ref) for ref in references)
+    exact = sum(ref == pred for ref, pred in zip(references, predictions))
     chrf = sacrebleu.metrics.CHRF(word_order=2).corpus_score(predictions, [references])
     return {
         "n": len(references),
-        "exact_matches": sum(ref == pred for ref, pred in zip(references, predictions)),
-        "exact_match_rate": sum(ref == pred for ref, pred in zip(references, predictions)) / len(references),
+        "exact_matches": exact,
+        "exact_match_rate": exact / len(references),
         "cer": edits / chars if chars else None,
         "chrf++": chrf.score,
         "coverage": sum(bool(pred) for pred in predictions) / len(predictions),
@@ -136,70 +203,98 @@ def score(references: list[str], predictions: list[str]) -> dict[str, object]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=Path("artifacts/mekongphon-100-word-benchmark.json"))
+    parser.add_argument(
+        "--output", type=Path,
+        default=Path("artifacts/mekongphon-100-word-benchmark.json"),
+    )
     args = parser.parse_args()
+
     rows, dataset_sha = load_dataset()
     sources = [nfc(row["orth"]) for row in rows]
-    references = [nfc(row["pron_with_tones"]) for row in rows]
+    segmental_references = [nfc(row["pron_no_tones"]) for row in rows]
+    tonal_references = [nfc(row["pron_with_tones"]) for row in rows]
 
-    project_predict = load_project()
-    lao2ipa_predict = load_lao2ipa()
-    neural_predict, neural_revision = load_neural()
-
+    neural_predict, neural_provenance = load_neural()
     engines = {
-        "clippyfirst_rule_engine": (project_predict, "repository source"),
-        "lao2ipa": (lao2ipa_predict, importlib.metadata.version("lao2ipa")),
-        "mekongphon_neural": (neural_predict, neural_revision),
+        "clippyfirst_rule_engine": (load_project(), "repository source"),
+        "lao2ipa": (load_lao2ipa(), importlib.metadata.version("lao2ipa")),
+        "mekongphon_neural": (neural_predict, neural_provenance),
     }
+
     results: dict[str, object] = {}
     for name, (predict, version) in engines.items():
-        outputs: list[str] = []
+        segmental_outputs: list[str] = []
+        tonal_outputs: list[str] = []
         statuses: dict[str, int] = {}
-        durations: list[float] = []
+        segmental_durations: list[float] = []
+        tonal_durations: list[float] = []
         errors = 0
+
         for source in sources:
-            started = time.perf_counter()
             try:
-                output, status = predict(source)
+                output = predict(source)
+                segmental = nfc(str(output["segmental"]))
+                tonal = nfc(str(output["tonal"]))
+                status = str(output["status"])
+                segmental_durations.append(float(output["segmental_seconds"]))
+                tonal_durations.append(float(output["tonal_seconds"]))
             except Exception as exc:
-                output, status = "", f"ERROR:{type(exc).__name__}"
+                segmental = ""
+                tonal = ""
+                status = f"ERROR:{type(exc).__name__}"
+                segmental_durations.append(0.0)
+                tonal_durations.append(0.0)
                 errors += 1
-            durations.append(time.perf_counter() - started)
-            outputs.append(nfc(output))
+            segmental_outputs.append(segmental)
+            tonal_outputs.append(tonal)
             statuses[status] = statuses.get(status, 0) + 1
-        summary = score(references, outputs)
-        summary.update({
+
+        segmental_metrics = score(segmental_references, segmental_outputs)
+        tonal_metrics = score(tonal_references, tonal_outputs)
+        results[name] = {
             "version_or_revision": version,
+            "segmental_vs_pron_no_tones": segmental_metrics,
+            "tonal_vs_pron_with_tones": tonal_metrics,
             "runtime_errors": errors,
             "status_counts": statuses,
-            "total_inference_seconds": round(sum(durations), 4),
-            "mean_latency_ms": round(statistics.mean(durations) * 1000, 3),
-            "p95_latency_ms": round(sorted(durations)[max(0, int(0.95 * len(durations)) - 1)] * 1000, 3),
-            "throughput_items_per_second": round(len(durations) / sum(durations), 3) if sum(durations) else None,
-        })
-        results[name] = summary
+            "segmental_mean_latency_ms": round(statistics.mean(segmental_durations) * 1000, 3),
+            "tonal_mean_latency_ms": round(statistics.mean(tonal_durations) * 1000, 3),
+            "segmental_throughput_items_per_second": (
+                round(len(segmental_durations) / sum(segmental_durations), 3)
+                if sum(segmental_durations) else None
+            ),
+            "tonal_throughput_items_per_second": (
+                round(len(tonal_durations) / sum(tonal_durations), 3)
+                if sum(tonal_durations) else None
+            ),
+        }
 
     report = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
             "url": DATA_URL,
             "source_revision": "f80f6c1840c4818b51e05f2e00cded4701a5b662",
             "sha256": dataset_sha,
             "n": len(rows),
-            "reference_column": "pron_with_tones",
+            "segmental_reference_column": "pron_no_tones",
+            "tonal_reference_column": "pron_with_tones",
             "profile": "Lao, Vientiane tone convention as described in MekongPhon",
             "redistribution": "No source rows, references or per-item predictions are included in this report.",
         },
         "method": {
             "normalization": "Unicode NFC and outer whitespace trim only",
+            "segmental_comparison": "phonemic segments and vowel length against pron_no_tones",
+            "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
             "chrf++": "SacreBLEU CHRF with word_order=2, corpus-level",
-            "exact_match": "strict full-string IPA comparison; tone and length marks retained",
+            "exact_match": "strict full-string IPA comparison",
             "missing_output": "empty output remains in the denominator and incurs full reference deletion cost",
-            "latency": "per-item inference only; model/package loading excluded; CPU runner, sequential items",
-            "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. It measures isolated lexical generalization and cannot be compared numerically with the paper's sentence-level Table 4.",
-            "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is therefore a published reference set, not independently re-adjudicated gold for this project.",
+            "clippyfirst_tone_contract": "tone contour is stored separately in typed PhoneticResult metadata; tonal score composes it after each syllable's segmental IPA",
+            "latency": "per-item inference; model loading excluded; CPU runner, sequential items",
+            "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. It cannot be compared numerically with the paper's sentence-level Table 4.",
+            "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is not independently re-adjudicated gold for this project.",
+            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and therefore mixed output contracts. Schema 2.0 separates segmental and tonal scoring; do not interpret old and new CER values as directly comparable.",
         },
         "environment": {
             "python": sys.version,
@@ -216,10 +311,13 @@ def main() -> int:
         "benchmark": report["benchmark"],
         "dataset_sha256": dataset_sha,
         "engines": {
-            name: {key: result[key] for key in (
-                "n", "cer", "chrf++", "exact_match_rate", "coverage",
-                "runtime_errors", "mean_latency_ms", "throughput_items_per_second"
-            )}
+            name: {
+                "segmental_cer": result["segmental_vs_pron_no_tones"]["cer"],
+                "segmental_coverage": result["segmental_vs_pron_no_tones"]["coverage"],
+                "tonal_cer": result["tonal_vs_pron_with_tones"]["cer"],
+                "tonal_coverage": result["tonal_vs_pron_with_tones"]["coverage"],
+                "runtime_errors": result["runtime_errors"],
+            }
             for name, result in results.items()
         },
         "report": str(args.output),
