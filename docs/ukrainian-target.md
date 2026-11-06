@@ -10,6 +10,10 @@ not:
 
 **Lao → Russian Cyrillic → Ukrainian Cyrillic**.
 
+## Executable adapter boundary
+
+The Python and browser target adapters consume only the typed `PhoneticResult`, not raw Lao text or source parser fields. They accept only `SUPPORTED` results with a complete registered IPA segment sequence; uncertain and unsupported results are withheld. The result retains tone, vowel quantity, syllable boundaries, provenance and uncertainty separately from practical spelling. See [the typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md).
+
 ## Shared Ukrainian practical conventions
 
 These are project-wide target-language decisions applied only after source phonology has produced IPA or an explicitly typed phonetic result. They are not direct source-grapheme substitutions and do not claim to be a new official Ukrainian standard.
