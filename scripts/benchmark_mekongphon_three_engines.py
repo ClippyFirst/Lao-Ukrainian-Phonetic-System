@@ -255,7 +255,23 @@ def main() -> int:
                 tonal = nfc(str(output["tonal"]))
                 status = str(output["status"])
                 for warning in output.get("warnings", []):
-                    warning_code = str(warning).split(":", 1)[0]
+                    warning = str(warning)
+                    warning_code, _, detail = warning.partition(":")
+                    if warning_code == "SHORT_VOWEL_REQUIRES_CODA":
+                        warning_code = f"{warning_code}:{detail}"
+                    elif warning_code == "UNCONSUMED_AFTER_VOWEL":
+                        tail = detail
+                        if any(ch in "່້໊໋" for ch in tail):
+                            shape = "contains-tone-mark"
+                        elif tail.startswith(("ເ", "ແ", "ໂ", "ໃ", "ໄ")):
+                            shape = "starts-preposed-vowel"
+                        elif len(tail) == 1:
+                            shape = "single-grapheme"
+                        elif any(ch in "ະັາິີຶືຸູົຽໍຳວອຍ" for ch in tail):
+                            shape = "contains-vowel-material"
+                        else:
+                            shape = "other-multigrapheme"
+                        warning_code = f"{warning_code}:{shape}"
                     warning_counts[warning_code] = warning_counts.get(warning_code, 0) + 1
                 segmental_durations.append(float(output["segmental_seconds"]))
                 tonal_durations.append(float(output["tonal_seconds"]))
