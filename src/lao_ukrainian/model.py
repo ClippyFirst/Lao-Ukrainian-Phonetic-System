@@ -25,6 +25,7 @@ class PhoneticResult:
     status: str = "SUPPORTED"
     provenance: tuple[str, ...] = ()
     uncertainty: tuple[str, ...] = ()
+    broad_surface_ipa: str | None = None
 
 
 @dataclass
