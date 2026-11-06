@@ -87,7 +87,7 @@ function toneFor(cls, syllableType, length, mark) {
 }
 
 const IPA_SYMBOLS = [
-  "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕ", "dʑ",
+  "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕ", "dʑ", "ɲ",
   "kʰ", "pʰ", "tʰ", "nʲ", "lʲ", "rʲ", "tʲ", "dʲ",
   "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː",
   "k", "p", "t", "d", "b", "ŋ", "ɲ", "m", "n", "s", "f",
