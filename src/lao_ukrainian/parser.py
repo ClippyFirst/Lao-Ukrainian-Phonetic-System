@@ -108,7 +108,7 @@ def segment_syllables(text: str) -> list[str]:
     never discards unparsed code points; unsupported material remains visible.
     """
     registry = load_registry()
-    words = text.replace("\\u200b", " ").split()
+    words = text.replace("\u200b", " ").split()
     return [part for word in words for part in _segment_word(word, registry)]
 
 
