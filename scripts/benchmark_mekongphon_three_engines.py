@@ -103,6 +103,10 @@ def load_project():
                 for item in syllables
                 for warning in item.warnings
             ],
+            "tone_categories": [
+                item.phonetic_result.tone if item.phonetic_result else None
+                for item in syllables
+            ],
             "segmental_seconds": segmental_elapsed,
             "tonal_seconds": 0.0,
         }
@@ -216,6 +220,54 @@ def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     }
 
 
+MEKONG_CONTOUR_TO_CATEGORY = {
+    "˩˧": "low-rising",
+    "˧˥": "high-rising",
+    "˧": "high-mid",
+    "˧˩": "low-falling",
+    "˥˨": "high-falling",
+}
+
+
+def parse_mekong_tone_categories(suffix: str) -> list[str] | None:
+    """Parse the explicit MekongPhon rule-baseline contour convention."""
+    if not suffix:
+        return []
+    contours = sorted(MEKONG_CONTOUR_TO_CATEGORY, key=len, reverse=True)
+    categories: list[str] = []
+    index = 0
+    while index < len(suffix):
+        match = next((value for value in contours if suffix.startswith(value, index)), None)
+        if match is None:
+            return None
+        categories.append(MEKONG_CONTOUR_TO_CATEGORY[match])
+        index += len(match)
+    return categories
+
+
+def token_error_rate(references: list[list[str]], predictions: list[list[str]]) -> dict[str, object]:
+    def distance(a: list[str], b: list[str]) -> int:
+        previous = list(range(len(b) + 1))
+        for i, left in enumerate(a, 1):
+            current = [i]
+            for j, right in enumerate(b, 1):
+                current.append(min(current[-1] + 1, previous[j] + 1, previous[j - 1] + (left != right)))
+            previous = current
+        return previous[-1]
+
+    edits = sum(distance(ref, pred) for ref, pred in zip(references, predictions))
+    total = sum(len(ref) for ref in references)
+    exact = sum(ref == pred for ref, pred in zip(references, predictions))
+    return {
+        "n": len(references),
+        "exact_matches": exact,
+        "exact_match_rate": exact / len(references) if references else None,
+        "category_error_rate": edits / total if total else None,
+        "coverage": sum(bool(pred) for pred in predictions) / len(predictions) if predictions else 0.0,
+        "reference_categories": total,
+    }
+
+
 def extract_tone_suffix(segmental: str, tonal: str) -> str | None:
     """Extract inserted tone symbols when the segmental string is an exact subsequence."""
     if not tonal:
@@ -261,6 +313,7 @@ def main() -> int:
         warning_counts: dict[str, int] = {}
         segmental_withheld = 0
         tonal_withheld = 0
+        engine_tone_categories: list[list[str] | None] = []
 
         for source in sources:
             try:
@@ -268,6 +321,11 @@ def main() -> int:
                 segmental = nfc(str(output["segmental"]))
                 tonal = nfc(str(output["tonal"]))
                 status = str(output["status"])
+                raw_categories = output.get("tone_categories")
+                engine_tone_categories.append(
+                    [str(value) for value in raw_categories]
+                    if raw_categories is not None else None
+                )
                 for warning in output.get("warnings", []):
                     warning = str(warning)
                     warning_code, _, detail = warning.partition(":")
@@ -297,6 +355,7 @@ def main() -> int:
                 segmental_durations.append(0.0)
                 tonal_durations.append(0.0)
                 errors += 1
+                engine_tone_categories.append(None)
             segmental_outputs.append(segmental)
             tonal_outputs.append(tonal)
             segmental_withheld += not bool(segmental)
@@ -321,13 +380,43 @@ def main() -> int:
             tone_references.append(ref_tone)
             tone_predictions.append(pred_tone)
         tone_only_metrics = score(tone_references, tone_predictions)
+        tone_category_references: list[list[str]] = []
+        tone_category_predictions: list[list[str]] = []
+        tone_category_alignment_failures = 0
+        for index, (ref_segmental, ref_tonal, pred_segmental, pred_tonal) in enumerate(zip(
+            segmental_references, tonal_references, segmental_outputs, tonal_outputs
+        )):
+            if pred_segmental != ref_segmental:
+                continue
+            ref_suffix = extract_tone_suffix(ref_segmental, ref_tonal)
+            ref_categories = parse_mekong_tone_categories(ref_suffix or "")
+            if ref_suffix is None or not ref_categories:
+                tone_category_alignment_failures += 1
+                continue
+            raw_categories = engine_tone_categories[index]
+            if raw_categories is not None:
+                pred_categories = raw_categories if all(raw_categories) else []
+            else:
+                pred_suffix = extract_tone_suffix(pred_segmental, pred_tonal)
+                parsed_categories = parse_mekong_tone_categories(pred_suffix or "")
+                if pred_suffix is None or parsed_categories is None:
+                    tone_category_alignment_failures += 1
+                    continue
+                pred_categories = parsed_categories
+            tone_category_references.append(ref_categories)
+            tone_category_predictions.append(pred_categories)
+        tone_category_metrics = token_error_rate(
+            tone_category_references, tone_category_predictions
+        )
         results[name] = {
             "version_or_revision": version,
             "segmental_vs_pron_no_tones": segmental_metrics,
             "tonal_vs_pron_with_tones": tonal_metrics,
             "tone_only_on_segmental_exact_subset": tone_only_metrics,
+            "tone_category_on_segmental_exact_subset": tone_category_metrics,
             "segmental_exact_subset_n": len(tone_references),
             "tone_only_alignment_failures": tone_alignment_failures,
+            "tone_category_alignment_failures": tone_category_alignment_failures,
             "runtime_errors": errors,
             "status_counts": statuses,
             "segmental_withheld_items": segmental_withheld,
@@ -394,6 +483,8 @@ def main() -> int:
                 "tonal_coverage": result["tonal_vs_pron_with_tones"]["coverage"],
                 "tone_only_cer_on_segmental_exact": result["tone_only_on_segmental_exact_subset"]["cer"],
                 "tone_only_coverage": result["tone_only_on_segmental_exact_subset"]["coverage"],
+                "tone_category_error_rate": result["tone_category_on_segmental_exact_subset"]["category_error_rate"],
+                "tone_category_exact": result["tone_category_on_segmental_exact_subset"]["exact_match_rate"],
                 "runtime_errors": result["runtime_errors"],
             }
             for name, result in results.items()
