@@ -34,6 +34,20 @@ class MultisyllableSegmentationTests(unittest.TestCase):
         self.assertTrue(any(item.phonemic_ipa is None for item in result.syllables))
         self.assertEqual(result.status, "PARTIAL")
 
+    def test_stranded_registered_onset_does_not_receive_a_prefix_pronunciation(self):
+        source = "ກາລ"
+        self.assertEqual(segment_syllables(source), [source])
+        syllable = analyze(source).syllables[0]
+        self.assertIsNone(syllable.phonemic_ipa)
+        self.assertEqual(syllable.status, "EVIDENCE LIMITED")
+
+    def test_non_core_lao_character_remains_visible_beside_a_valid_syllable(self):
+        result = analyze("ຄົນຆ")
+        self.assertEqual([item.surface for item in result.syllables], ["ຄົນ", "ຆ"])
+        self.assertIsNotNone(result.syllables[0].phonemic_ipa)
+        self.assertIsNone(result.syllables[1].phonemic_ipa)
+        self.assertEqual(result.status, "PARTIAL")
+
     def test_multiple_tone_marks_are_not_rescued_by_segmentation(self):
         source = "ກ່້າ"
         self.assertEqual(segment_syllables(source), [source])
