@@ -237,16 +237,35 @@ The benchmark rejects a prediction TSV with a header but no data rows. Without t
 Gold IDs and prediction IDs, as well as prediction engine names, must contain at least one non-whitespace character. Whitespace-only values are rejected before scoring so they cannot create blank-looking keys or engine entries. The check does not rewrite non-empty identifiers; matching remains exact and provenance-preserving. Regression coverage exercises whitespace-only gold IDs, prediction IDs and engine names.
 
 
-## Three-engine MekongPhon held-out word benchmark — 2026-11-07
+## MekongPhon-based Lao G2P comparison and deterministic engine improvements — 2026-11-07
 
-A hosted, exact-head comparison was run for the ClippyFirst rule engine, `lao2ipa==1.0.0`, and the BYU MATRIX Lab `byumatrixlab/lao-ipa-tonal` model on the same 100 held-out Lao seed-lexicon entries.
+Schema 3.0 compares ClippyFirst, `lao2ipa==1.0.0`, and BYU MATRIX Lab's tonal and non-tonal MekongPhon models on the same 100-entry held-out Lao seed lexicon. Segmental scoring uses `pron_no_tones`; tonal scoring uses `pron_with_tones`. The report also separates tone-symbol accuracy from tone-category accuracy and includes identical-subset comparisons.
 
-| Engine | CER ↓ | chrF++ ↑ | Exact match | Coverage |
-|---|---:|---:|---:|---:|
-| MekongPhon Neural | **8.29%** | **84.98** | **74/100** | 100% |
-| Lao2IPA 1.0.0 | 11.97% | 73.85 | 56/100 | 100% |
-| ClippyFirst | 81.47% | 8.43 | 2/100 | 46% |
+| Engine / output | CER ↓ | Exact | Coverage |
+|---|---:|---:|---:|
+| MekongPhon Neural — segmental | 6.64% | 82/100 | 100% |
+| MekongPhon Neural — tonal | 8.29% | 74/100 | 100% |
+| Lao2IPA — segmental | 8.97% | 68/100 | 100% |
+| Lao2IPA — tonal | 11.97% | 56/100 | 100% |
+| ClippyFirst — segmental | 12.79% | 64/100 | 97% |
+| ClippyFirst — Ueda production contours | 27.16% | 19/100 | 97% |
+| ClippyFirst — Mekong contour convention, evaluation only | 15.19% | 52/100 | 97% |
 
-The run and methodology are documented in [the dated benchmark report](research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md). Exact-head hosted run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) succeeded; the aggregate artifact is [available for 90 days](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950/artifacts/13545467628).
+On the identical 97-item subset covered by both ClippyFirst and Lao2IPA:
 
-This is a 100-word lexical holdout, not the paper's 13,442-sentence test and not independently re-adjudicated gold for this project. Do not compare the word-level CER directly to the paper's Table 4. The result selects MekongPhon Neural as the strongest measured candidate on this specific split; Lao2IPA is substantially faster; ClippyFirst has low coverage and high error and needs targeted parser/phonology investigation. No production default or linguistic registry was changed. Independent project gold remains absent.
+| Metric | ClippyFirst | Lao2IPA | MekongPhon Neural |
+|---|---:|---:|---:|
+| Segmental CER | 7.89% | 7.72% | 5.79% |
+| Segmental exact | 64/97 | 68/97 | 81/97 |
+| Tonal CER in Mekong convention | 10.67% | 10.42% | 6.30% |
+| Tonal exact in Mekong convention | 52/97 | 56/97 | 73/97 |
+
+ClippyFirst is now close to Lao2IPA on supported words, but remains slightly behind it on the same subset and has three withheld cases. Its tone-category exact rate is 83.33% (50/60 evaluable segmental-exact items), compared with 87.50% for Lao2IPA and 95.65% for MekongPhon Neural. The raw Ueda production-contour CER is not directly comparable to the corpus convention; the Mekong-convention conversion is benchmark-only and does not change production IPA.
+
+Implementation changes include deterministic dynamic-programming syllabification, per-syllable tone-mark validation, local A2 coda validation, source-IPA-first browser segmentation, and source-grounded Ueda numeric-to-IPA tone-contour conversion. No neural weights or neural runtime dependency were added to ClippyFirst.
+
+Successful schema 3.0 run: [42309545197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197). Aggregate-only artifact [13547168327](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197/artifacts/13547168327), SHA-256 `8267e0cf28b2bd9722a35c233efc76e3b379d47b133198c5603c48edada3e5a6`. Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. Neural model revisions are recorded in the report.
+
+The earlier schema 1.0 ClippyFirst score of 81.47% CER and 46% coverage is historical and **not a valid apples-to-apples comparison**: it compared segmental-only IPA with a tonal reference. Do not use it as the current ClippyFirst score.
+
+This is a 100-word lexical holdout, not the paper's 13,442-sentence test and not independently re-adjudicated project gold. The upstream MekongPhon repository snapshot exposes no repository-root LICENSE; no dataset rows or per-item predictions are redistributed, and dataset reuse/redistribution rights remain unverified. Independent project gold remains absent. The neural system is the best measured system on this split; Lao2IPA remains the strongest complete deterministic baseline; ClippyFirst is close but not yet best overall.
