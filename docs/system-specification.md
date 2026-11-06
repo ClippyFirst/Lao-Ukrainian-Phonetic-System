@@ -33,7 +33,7 @@ Tone is a separate field. The Vientiane reference model has five tones. Tone is 
 
 ## Ukrainian output
 
-The executable target boundary is a typed `PhoneticResult`; the Ukrainian adapter consumes only its registered IPA segments and metadata. `UNCERTAIN` and `UNSUPPORTED` results are withheld rather than mapped from Lao spelling or partial IPA. The current Lao engine does not claim an independent broad-surface IPA layer. See [the adapter contract](ipa-to-ukrainian-adapter.md).
+The executable target boundary is a typed `PhoneticResult`; the Ukrainian adapter consumes only its registered IPA segments and metadata. `UNCERTAIN` segmental readings and `UNSUPPORTED` IPA are withheld rather than mapped from Lao spelling or partial IPA. Tone uncertainty is independent: when segmental IPA is supported, the Ukrainian form may be produced while tone remains unresolved in metadata. The current Lao engine does not claim an independent broad-surface IPA layer. See [the adapter contract](ipa-to-ukrainian-adapter.md).
 
 
 
