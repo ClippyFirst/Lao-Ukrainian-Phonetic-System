@@ -1685,3 +1685,25 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Linguistic gates remain unchanged: independent adjudicated IPA gold is 0; accuracy remains null; expert recruitment, approved profile/convention, two independent annotators, separate adjudicator, item-level rights and blind intake remain external blockers. The target adapter intentionally withholds unsupported IPA mappings rather than guessing.
 - No runtime phonology, Ukrainian mappings, canonical linguistic data, gold labels, benchmark predictions, external datasets, licenses, repository settings or deployment configuration were changed. No benchmark was run.
 - This checkpoint supersedes the stale 2026-11-04 handoff note that still described the PR #130 Chromium check as pending; exact current-main evidence is recorded above.
+
+
+## Exact-head verification — documentation and repository audit — 2026-11-06
+
+- Documentation implementation checkpoint: commit `b96aa19f740c2e8fe3d7678faed02d7e21356a1e`.
+- Exact-head GitHub Actions Verify run [42299492015](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42299492015): **SUCCESS** on that SHA.
+- Passed workflow steps: IPA-gold corpus structure validation; repository data/evidence audit; Python unittest suite; optional external-G2P harness syntax and CLI; browser engine/romanization tests; canonical browser-data generation; generated-data reproducibility check; Playwright Chromium tests against the built site; and built-page/relative-asset/accessibility-hook checks.
+- Commands executed by that hosted workflow:
+  - `python scripts/ipa_gold_corpus.py validate --language lao`
+  - `python scripts/audit.py`
+  - `PYTHONPATH=src python -m unittest discover -s tests -v`
+  - `python -m py_compile scripts/compare_external_g2p.py`
+  - `PYTHONPATH=src python scripts/compare_external_g2p.py --help`
+  - `npm install --no-audit --no-fund`
+  - `npm test`
+  - `npm run build`
+  - `git diff --exit-code -- web/data.js`
+  - `npx playwright install --with-deps chromium`
+  - `npm run test:browser`
+  - The workflow's final built-file and relative-path assertions.
+- All commands above ran in GitHub Actions. No local checkout/test run is claimed. No benchmark was run. The current docs/audit commit records this verification checkpoint; the subsequent commit that appends this record must also pass exact-head Verify.
+- Documentation tasks DOC-001 through DOC-006 are **DONE_VERIFIED** for the verified implementation checkpoint. Remaining blockers and TODOs are unchanged: branch protection owner action, npm lockfile/clean-install reproducibility, manual assistive-technology/mobile QA, and independent expert IPA gold/target review.
