@@ -222,7 +222,7 @@ test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
 
 test("matched tone rule exposes its contour", () => {
   assert.equal(analyze("ຂາ").syllables[0].tone, "low-rising");
-  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˩˥");
+  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˨˦");
 });
 
 test("shared tone contour and structural withholding fixture", () => {
