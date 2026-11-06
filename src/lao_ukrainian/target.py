@@ -1,6 +1,6 @@
 from .data import load_registry
 from .model import PhoneticResult
-from .phonetic_result import from_phonology
+from .phonetic_result import from_phonology, from_phonology as phonetic_result_from_ipa
 
 
 def adapt_phonetic_result(result: PhoneticResult) -> str | None:
