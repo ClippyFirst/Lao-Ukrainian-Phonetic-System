@@ -114,10 +114,7 @@ def load_project():
                 for item in syllables
                 for warning in item.warnings
             ],
-            "tone_categories": [
-                item.phonetic_result.tone_category if item.phonetic_result else None
-                for item in syllables
-            ],
+            "tone_categories": tone_categories,
             "segmental_seconds": segmental_elapsed,
             "tonal_seconds": 0.0,
         }
