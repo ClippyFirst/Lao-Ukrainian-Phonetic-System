@@ -199,13 +199,16 @@ def score(references: list[str], predictions: list[str]) -> dict[str, object]:
         edits = sum(levenshtein(ref, pred) for ref, pred in zip(refs, preds))
         chars = sum(len(ref) for ref in refs)
         exact = sum(ref == pred for ref, pred in zip(refs, preds))
-        chrf = sacrebleu.metrics.CHRF(word_order=2).corpus_score(preds, [refs])
+        chrf = (
+            sacrebleu.metrics.CHRF(word_order=2).corpus_score(preds, [refs]).score
+            if refs else None
+        )
         return {
             "n": len(refs),
             "exact_matches": exact,
             "exact_match_rate": exact / len(refs) if refs else None,
             "cer": edits / chars if chars else None,
-            "chrf++": chrf.score,
+            "chrf++": chrf,
         }
 
     covered = [(ref, pred) for ref, pred in zip(references, predictions) if pred]
@@ -486,6 +489,8 @@ def main() -> int:
                 "tone_category_error_rate": result["tone_category_on_segmental_exact_subset"]["category_error_rate"],
                 "tone_category_exact": result["tone_category_on_segmental_exact_subset"]["exact_match_rate"],
                 "runtime_errors": result["runtime_errors"],
+                "status_counts": result["status_counts"],
+                "warning_counts": result["warning_counts"],
             }
             for name, result in results.items()
         },
