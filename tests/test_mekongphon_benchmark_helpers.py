@@ -26,11 +26,11 @@ class MekongPhonBenchmarkHelperTests(unittest.TestCase):
 
     def test_typed_categories_can_be_rendered_in_benchmark_notation(self):
         self.assertEqual(
-            render_mekong_tonal("kaː", ["low-rising", "high-mid"]),
-            "kaː˩˧˧",
+            render_mekong_tonal(["kaː", "pa"], ["low-rising", "high-mid"]),
+            "kaː˩˧pa˧",
         )
-        self.assertEqual(render_mekong_tonal("kaː", ["unknown"]), "")
-        self.assertEqual(render_mekong_tonal("", ["low-rising"]), "")
+        self.assertEqual(render_mekong_tonal(["kaː"], ["unknown"]), "")
+        self.assertEqual(render_mekong_tonal([], ["low-rising"]), "")
 
     def test_unknown_contour_sequence_is_not_guessed(self):
         self.assertIsNone(parse_mekong_tone_categories("˩˥"))
