@@ -125,3 +125,34 @@ class TestCore(unittest.TestCase):
         self.assertTrue(
             any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings)
         )
+
+    def test_analysis_exposes_typed_ipa_result_as_the_adapter_boundary(self):
+        syllable = analyze("ຂາ").syllables[0]
+        result = syllable.phonetic_result
+        self.assertIsNotNone(result)
+        self.assertEqual(result.phonemic_ipa, "kʰaː")
+        self.assertIsNone(result.broad_surface_ipa)
+        self.assertIsNone(result.external_ipa)
+        self.assertEqual([segment.ipa for segment in result.segments], ["kʰ", "aː"])
+        self.assertEqual(result.syllable_boundaries, (0, 2))
+        self.assertEqual(result.vowel_length, "long")
+        self.assertEqual(result.tone_category, "low-rising")
+        self.assertEqual(result.tone_contour_ipa, "˩˥")
+        self.assertEqual(result.status, "SUPPORTED")
+        self.assertEqual(syllable.practical_ukrainian, "к'а")
+
+    def test_analysis_dependent_segmental_ipa_is_not_promoted_to_ukrainian_output(self):
+        syllable = analyze("ຣະ").syllables[0]
+        self.assertEqual(syllable.phonemic_ipa, "la")
+        self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
+        self.assertIsNone(syllable.practical_ukrainian)
+        self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
+
+    def test_segmental_ipa_remains_adaptable_when_tone_is_unresolved(self):
+        syllable = analyze("ຂັ່ບ").syllables[0]
+        self.assertEqual(syllable.phonemic_ipa, "kʰap")
+        self.assertEqual(syllable.phonetic_result.status, "SUPPORTED")
+        self.assertIsNone(syllable.phonetic_result.tone_category)
+        self.assertIn("TONE-UNRESOLVED", syllable.phonetic_result.uncertainty)
+        self.assertEqual(syllable.practical_ukrainian, "к'ап")
+        self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
