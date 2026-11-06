@@ -94,9 +94,22 @@ def load_project():
             ))
             if tonal_complete else ""
         )
+        mekong_complete = segmental_complete and all(
+            item.phonetic_result.tone_category in MEKONG_CATEGORY_TO_CONTOUR
+            for item in syllables
+        )
+        mekong_tonal = (
+            nfc("".join(
+                item.phonetic_result.phonemic_ipa
+                + MEKONG_CATEGORY_TO_CONTOUR[item.phonetic_result.tone_category]
+                for item in syllables
+            ))
+            if mekong_complete else ""
+        )
         return {
             "segmental": segmental,
             "tonal": tonal,
+            "mekong_tonal": mekong_tonal,
             "status": analysis.status,
             "warnings": [
                 warning
@@ -235,11 +248,20 @@ MEKONG_CATEGORY_TO_CONTOUR = {
 }
 
 
-def render_mekong_tonal(segmental: str, categories: list[str] | None) -> str:
-    """Render typed tone categories in the benchmark's contour convention only."""
-    if not segmental or not categories or not all(value in MEKONG_CATEGORY_TO_CONTOUR for value in categories):
+def render_mekong_tonal(syllable_segmentals: list[str], categories: list[str] | None) -> str:
+    """Interleave each syllable's segments and tone in benchmark notation."""
+    if (
+        not syllable_segmentals
+        or categories is None
+        or len(syllable_segmentals) != len(categories)
+        or not all(syllable_segmentals)
+        or not all(value in MEKONG_CATEGORY_TO_CONTOUR for value in categories)
+    ):
         return ""
-    return nfc(segmental + "".join(MEKONG_CATEGORY_TO_CONTOUR[value] for value in categories))
+    return nfc("".join(
+        segmental + MEKONG_CATEGORY_TO_CONTOUR[category]
+        for segmental, category in zip(syllable_segmentals, categories)
+    ))
 
 
 def parse_mekong_tone_categories(suffix: str) -> list[str] | None:
@@ -340,12 +362,11 @@ def main() -> int:
                     [str(value) for value in raw_categories]
                     if raw_categories is not None else None
                 )
-                if raw_categories is not None:
-                    mekong_tonal = render_mekong_tonal(
-                        segmental, [str(value) for value in raw_categories]
-                    )
-                else:
-                    mekong_tonal = tonal
+                raw_mekong_tonal = output.get("mekong_tonal")
+                mekong_tonal = (
+                    nfc(str(raw_mekong_tonal))
+                    if raw_mekong_tonal is not None else tonal
+                )
                 mekong_convention_tonal_outputs.append(nfc(mekong_tonal))
                 for warning in output.get("warnings", []):
                     warning = str(warning)
