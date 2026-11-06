@@ -77,7 +77,7 @@ These references are methods, not dependencies. The repository's linguistic, sou
 
 - Baseline hosted Verify: [41889580331](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41889580331) SUCCESS on starting commit 915db62c710bedcbbec6ac01c73cb9312ae9a03d.
 - This connector session did not provide a local repository checkout or a local Python/Node execution environment. No local test, benchmark, clean-install, package-lock generation or deployed manual QA is claimed.
-- The documentation-only changes are required to pass a new exact-head Verify workflow before they can be marked DONE_VERIFIED.
+- Exact-head Verify is the acceptance gate for the documentation changes. Read its result against the precise commit SHA shown in the workflow; the earlier baseline success is not a substitute for final-head verification.
 - The external human-review, licensing and manual UI gates remain outside what repository CI can prove.
 
 ## Final readiness judgement
