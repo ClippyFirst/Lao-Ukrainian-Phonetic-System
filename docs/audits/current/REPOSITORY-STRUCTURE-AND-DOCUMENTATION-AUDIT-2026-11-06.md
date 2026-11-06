@@ -92,3 +92,17 @@ A local-path scan was performed across the repository Markdown inventory. It fou
 ## Exact-head verification result
 
 The documentation and link-correction implementation checkpoint `b96aa19f740c2e8fe3d7678faed02d7e21356a1e` passed exact-head Verify [42299492015](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42299492015) with conclusion **SUCCESS**. All configured workflow steps passed, including corpus validation, repository audit, Python tests, optional G2P CLI validation, browser tests, generated-data reproducibility, Chromium built-site tests and built-page/relative-asset checks. This is hosted engineering verification, not a local test run or linguistic validation. The master handoff records the exact commands and evidence.
+
+
+## Follow-up implementation — typed IPA → Ukrainian boundary — 2026-11-07
+
+The previous audit identified that the repository described an IPA-first pipeline but its implementation passed an ordinary IPA string directly to the target mapper. This was a real architectural gap, not a missing correspondence table.
+
+**Resolution implemented on `main`:**
+- Added a typed `PhoneticResult`/`PhoneticSegment` boundary and dedicated `phonetic_result.py` constructor.
+- Python and browser target adapters now consume typed IPA segments only; the Python adapter rejects raw strings. Both preserve segment offsets, tone/contour, vowel length, provenance and uncertainty.
+- `UNCERTAIN` segmental IPA and `UNSUPPORTED`/incomplete IPA are withheld. An unresolved tone alone remains separate metadata and does not suppress an otherwise supported segmental Ukrainian form.
+- Preserved the canonical Ukrainian correspondence CSV and the optional romanization route unchanged.
+- Added Python/browser regressions, expanded the analysis JSON schema, and documented the contract in `docs/ipa-to-ukrainian-adapter.md`.
+
+The implementation checkpoint before this audit addendum is `fc81a67d63d85a3fd26d5e51e48be63f82a0c3cc`. The exact final documentation-head Verify run must pass before this work is classified DONE_VERIFIED. No local test execution or benchmark is claimed. Independent IPA gold remains empty; this is an engineering boundary correction, not linguistic certification.
