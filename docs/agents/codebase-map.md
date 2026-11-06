@@ -7,6 +7,8 @@
 - Python package API: src/lao_ukrainian/__init__.py exports analyze, normalization, parsing, phonology and target helpers.
 - CLI: src/lao_ukrainian/cli.py calls core.analyze(text) and renders a text or JSON result.
 - Browser instrument: index.html / web/engine.js; canonical CSV registries are mirrored into web/data.js by scripts/generate_web_data.py.
+- Static build: scripts/build_web.py copies index.html, system.html, and web/ into dist/; this repository does not use Vite or a bundler.
+- Browser UI orchestration: web/app.js; optional romanization route: web/romanization.js and web/romanization-syllable-engine.js.
 
 ## Primary phonetic flow
 

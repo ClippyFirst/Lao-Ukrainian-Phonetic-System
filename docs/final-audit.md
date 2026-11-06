@@ -1,5 +1,7 @@
 # Final scientific audit
 
+> **Historical audit record.** This document preserves the findings and scope of an earlier scientific audit; it is not the current repository-state report. Some implementation details and completion status have since changed. For the 2026-11-06 repository/documentation audit and current engineering checkpoint, see [the current audit index](audits/README.md) and [the 2026-11-06 audit](audits/current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md). The canonical live task ledger remains [the master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+
 ## Reconstructed state
 
 The repository is now one coherent Lao → Ukrainian research project. The active architecture contains implementation, canonical Lao registries, a canonical Ukrainian correspondence registry, comparative evidence, provenance data, tests, and explicit research documentation.

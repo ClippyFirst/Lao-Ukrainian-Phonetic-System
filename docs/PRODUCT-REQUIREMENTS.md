@@ -63,7 +63,7 @@ The design follows the Chinese project's functional, data-first philosophy while
 
 ## 6. Technical requirements
 
-- Static Vite frontend.
+- Static, framework-free frontend using two HTML entry pages and native browser ES modules; the current repository does not use Vite or a bundler. The custom build copies the public pages/runtime into dist/.
 - Deterministic client-side conversion for the documented web subset.
 - Linguistic rules kept in a dedicated module, not scattered through UI code.
 - Stable analysis object shape suitable for later connection to the Python core/API.

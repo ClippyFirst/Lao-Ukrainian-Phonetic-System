@@ -37,3 +37,7 @@ The phonetic engine remains the default. The second method uses an independent r
 ## Ukrainian IPA target sequence handling
 
 The canonical IPA correspondence registry is shared by the Python target adapter and generated browser engine. Longest-match selection maps the exact Ukrainian sequence /ʃt͡ʃ/ to щ before considering the shorter /ʃ/ → ш and /t͡ʃ/ → ч entries. This does not merge arbitrary consonants: the exact ordered sequence is a documented target orthographic unit. The remaining distinctions /h, ɦ/ → г, /ɡ/ → ґ, /x/ → х, /d͡ʒ/ → дж, /d͡z/ → дз and /t͡s/ → ц are preserved in the same canonical table.
+
+## Static web build clarification — 2026-11-06
+
+The current web implementation is framework-free: index.html and system.html load native ES modules from web/. scripts/generate_web_data.py writes the canonical CSV mirror web/data.js; scripts/build_web.py copies both pages and the runtime into dist/. There is no Vite dependency or bundler in package.json. Node tooling is used for tests and Playwright, not for bundling the application. See [web architecture](web-architecture.md).

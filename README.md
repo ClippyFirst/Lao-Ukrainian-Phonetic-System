@@ -57,30 +57,30 @@ The core model covers modern Lao consonant classes, source vowel quantity, major
 
 Known limitations remain explicit: automatic segmentation of unspaced multi-syllable text, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
 
-## Reproducibility
+## Quick start and verification
 
-Run the test suite with:
+**Requirements:** Python 3.10 or newer; Node.js 22.14 or newer for browser test/build commands.
 
-    PYTHONPATH=src python -m unittest discover -s tests -v
+Run the complete configured engineering checks from the repository root (commands are shown in the contribution guide).
 
-For an installed package:
+- Validate IPA corpus structure: python scripts/ipa_gold_corpus.py validate --language lao
+- Validate canonical data/evidence: python scripts/audit.py
+- Run Python tests: PYTHONPATH=src python -m unittest discover -s tests -v
+- Install Node test dependencies: npm install --no-audit --no-fund
+- Run Node/browser-engine suites: npm test
+- Build the static site: npm run build
+- Check generated-data drift: git diff --exit-code -- web/data.js
+- Run built-site browser tests: npm run test:browser
 
-    pip install -e .
-    lao-ua "ຂາ"
-    lao-ua "ໄກ່" --json
+The browser tests require Playwright Chromium. In a fresh environment, install it with npx playwright install --with-deps chromium.
+
+For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json.
+
+The web build regenerates the checked-in browser data mirror and copies the two static pages plus the web runtime into dist/. This is a small custom Python build, not a Vite/Webpack bundling pipeline. See [web architecture](docs/web-architecture.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Documentation
 
-- docs/methodology.md
-- docs/system-specification.md
-- docs/comparative-cyrillic.md
-- docs/decision-log.md
-- docs/implementation.md
-- docs/limitations.md
-- docs/validation.md
-- docs/sources-and-evidence.md
-- docs/ukrainian-target.md
-- docs/unicode.md
+Start at the [documentation index](docs/README.md). It identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
 ## Web service
 

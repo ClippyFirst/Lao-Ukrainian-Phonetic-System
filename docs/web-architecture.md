@@ -1,42 +1,64 @@
 # Web architecture
 
-The static service has exactly two public pages: `index.html` and `system.html`. Vite builds both pages into `dist/` with relative asset URLs so the site works at the GitHub Pages project path as well as at a custom domain.
+## Runtime shape
 
-## Data flow
+The public service has exactly two HTML entry pages: index.html (the converter) and system.html (the author's methodology page). The browser runtime uses native ES modules in web/; there is no Vite, Webpack, or other frontend bundler in the current implementation.
 
-Canonical CSV registries in `data/lao/` remain the source of truth. `scripts/generate_web_data.py` deterministically produces `web/data.js`, a checked-in browser artifact. The browser engine imports that artifact; it does not maintain a second hand-authored linguistic registry.
+scripts/build_web.py creates dist/ by copying the two HTML pages and the web/ directory. The build is intentionally small and preserves relative asset paths for the GitHub Pages project URL. package.json provides Node test scripts and the pinned Playwright test dependency; it is not a frontend bundler configuration.
 
-```
-canonical CSV
-  ↓
-generate_web_data.py
-  ↓
-web/data.js
-  ↓
-web/engine.js
-  ↓
-web/app.js
-```
+## Canonical data flow
 
-No runtime network request is required for conversion.
+Canonical Lao CSV registries in data/lao/ are the source of truth. scripts/generate_web_data.py deterministically produces the checked-in browser mirror web/data.js. Do not edit that generated file by hand.
 
-## Research boundary
+    data/lao/*.csv
+          |
+          v
+    scripts/generate_web_data.py
+          |
+          v
+    web/data.js
+          |
+          v
+    web/engine.js -----> web/app.js -----> index.html
+                               |
+                               +----------> system.html (separate static page)
 
-The browser engine is deliberately conservative. It exposes IPA, structural features, tone status and warnings. It must not silently turn unresolved linguistic cases into authoritative-looking output.
+The Python package is a separate runtime implementation:
 
-The current static MVP still treats whitespace as the reliable segmentation boundary. Full lexical/unspaced segmentation belongs to the research core and future corpus-backed releases.
+    CLI / Python API
+          |
+          v
+    src/lao_ukrainian/core.py
+          |
+          +--> normalize.py
+          +--> parser.py
+          +--> phonology.py
+          +--> target.py
+          +--> model.py / data.py
+
+The browser engine and Python package share canonical linguistic data and regression fixtures where applicable, but they are separately maintained implementations. Cross-runtime parity is tested only for explicitly shared contracts; the documented phrase-segmentation behavior is not identical.
+
+## Phonetic and romanization routes
+
+- **Phonetic (default):** Lao orthography → structural parsing → phonology → IPA → Ukrainian target adapter.
+- **By romanization (optional):** Lao orthography → provisional CLDR/BGN-oriented romanization → source-aware romanized syllable parser → Ukrainian orthographic output.
+
+The second route is lower-information, does not reconstruct tone, and is not a fallback when the IPA route is unresolved. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode).
 
 ## Deployment
 
-The deploy workflow builds only the two public HTML pages and the local `web/` runtime into `dist/`, then uploads that directory to GitHub Pages. Asset and navigation URLs are relative so project-site paths work. Before the first deployment, a repository administrator must enable Pages in **Settings → Pages → Build and deployment → Source: GitHub Actions**. The workflow's `GITHUB_TOKEN` cannot create the Pages site for this repository; once enabled, rerun the deploy workflow or push a relevant change.
+The Pages workflow builds the two public pages and local web/ runtime into dist/, uploads that directory, deploys it, and smoke-tests the deployed HTML and runtime assets. Asset and navigation URLs are relative so the project site works under the repository path. The workflow requires Pages to be enabled in repository settings with GitHub Actions as the source; repository settings are not changed by code commits.
 
-## Release checks
+## Verification
 
-1. Validate canonical data and Python tests.
-2. Regenerate `web/data.js`.
-3. Run `npm test`.
-4. Run `npm run build` (or `npm run check:release`).
-5. Perform browser/manual checks for input, example, clear, copy, navigation, keyboard focus, responsive layout and uncertainty states.
-6. Inspect the generated diff and ensure no duplicate hand-maintained linguistic registry was introduced.
+The configured CI sequence is:
 
-The project intentionally does not publish empirical accuracy percentages without a versioned expert gold corpus.
+1. Validate the independent IPA-gold corpus structure.
+2. Run the repository data/evidence audit and Python unittest suite.
+3. Validate the optional external-G2P harness CLI.
+4. Run browser engine and romanization tests.
+5. Regenerate browser data and require a clean generated-data diff.
+6. Build the static site.
+7. Run Playwright/Chromium tests against the built site and inspect required assets/accessibility hooks.
+
+For matching local commands and prerequisites, see [CONTRIBUTING.md](../CONTRIBUTING.md). Manual keyboard, screen-reader, mobile and visual QA remains a separate acceptance item. A green engineering suite does not establish expert phonetic accuracy or linguistic release readiness.
