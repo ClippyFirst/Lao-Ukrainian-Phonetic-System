@@ -4,8 +4,9 @@
 
 - `normalize.py` — NFC normalization and mixed-script validation.
 - `parser.py` — Lao graphemic syllable parsing and structural vowel recognition.
-- `phonology.py` — live/dead classification, tone lookup and IPA construction.
-- `target.py` — IPA-to-Ukrainian correspondence layer.
+- `phonology.py` — live/dead classification, tone lookup and phonemic IPA construction.
+- `phonetic_result.py` — typed `PhoneticResult` boundary: IPA segments, syllable offsets, length, tone, provenance and uncertainty.
+- `target.py` — typed-result-only IPA-to-Ukrainian adapter and candidate ranking.
 - `core.py` — public analysis orchestration.
 - `model.py` — serializable analysis dataclasses.
 - `data.py` — registry loading.
@@ -32,7 +33,9 @@ Unknown Unicode, unknown vowel structures, and unsupported phonological combinat
 - `web/romanization-ukrainian.js` — compatibility export for the syllable engine; it no longer contains a letter-by-letter mapping.
 - `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
 
-The phonetic engine remains the default. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
+The phonetic engine remains the default. Its Ukrainian output is produced only from the typed `PhoneticResult`; uncertain or unsupported results are withheld. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
+
+See [the typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md) for the executable boundary, status semantics and verification.
 
 ## Ukrainian IPA target sequence handling
 
