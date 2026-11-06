@@ -1707,3 +1707,17 @@ A cross-runtime review identified a concrete difference that must not be papered
   - The workflow's final built-file and relative-path assertions.
 - All commands above ran in GitHub Actions. No local checkout/test run is claimed. No benchmark was run. The current docs/audit commit records this verification checkpoint; the subsequent commit that appends this record must also pass exact-head Verify.
 - Documentation tasks DOC-001 through DOC-006 are **DONE_VERIFIED** for the verified implementation checkpoint. Remaining blockers and TODOs are unchanged: branch protection owner action, npm lockfile/clean-install reproducibility, manual assistive-technology/mobile QA, and independent expert IPA gold/target review.
+
+
+## Typed IPA → Ukrainian adapter implementation — 2026-11-07
+
+- Starting mainline checkpoint: `b8a349e46c06a8c08604efd2312be2a6082bc575`. Work was performed directly on the explicitly requested `main` branch; no other branch or PR was created.
+- Reconciled the current implementation with the Thai repository's executable `PhoneticResult` boundary and the Korean repository's IPA-first target-layer separation.
+- Implemented a typed `PhoneticResult` and `PhoneticSegment` contract in the Lao Python package, with phonemic IPA, segment sequence, syllable offsets, vowel quantity, tone category/contour, provenance, uncertainty, and explicitly separate currently-null broad-surface/external IPA slots.
+- Added `src/lao_ukrainian/phonetic_result.py` as the dedicated result-construction boundary. `target.py` now accepts only a typed result for Ukrainian adaptation and candidate ranking; passing a raw IPA string raises `TypeError`. The adapter reads only typed IPA segments and the canonical Ukrainian correspondence registry.
+- Rewired `core.py` so it constructs the typed IPA result after phonological analysis and obtains practical Ukrainian output only through the typed adapter. The browser engine now constructs the equivalent typed result and uses its own typed-result-only adapter; the former raw-string `mapIpa` path was removed.
+- Important status distinction: `SUPPORTED` describes complete segmental IPA, not full certainty about every suprasegmental feature. An unresolved tone remains null and is recorded as `TONE-UNRESOLVED`, but does not block a supported segmental Ukrainian adaptation. Uncertain segmental readings and unsupported/incomplete IPA are withheld.
+- Preserved the canonical `data/lao/ukrainian_correspondences.csv` mapping decisions and the separate, lower-information romanization route. No phonological registry, external dataset, license, gold label or benchmark result was changed. No benchmark was run.
+- Added Python and browser regression tests for typed-only input, segment/boundary metadata, tone/length preservation, uncertainty abstention, unresolved-tone handling and unsupported IPA. Extended `schemas/analysis.schema.json` for the nested typed result and added `docs/ipa-to-ukrainian-adapter.md`.
+- Implementation checkpoint before this handoff append: `fc81a67d63d85a3fd26d5e51e48be63f82a0c3cc`. Exact-head CI for the final documentation commit remains the acceptance gate; no test is marked passed until that run completes.
+- Research limits remain unchanged: independent adjudicated Lao IPA gold is 0; this architectural refactor does not establish empirical phonetic or Ukrainian-adaptation accuracy. Manual accessibility/device QA and independent expert validation remain open.
