@@ -126,6 +126,12 @@ test("shared Lao tone-mark storage-order fixture", () => {
   }
 });
 
+test("tone marks are validated per syllable inside an unspaced word", () => {
+  const result = analyze("ກ່າຂ່າ");
+  assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກ່າ|ຂ່າ");
+  assert.equal(result.syllables.every((s) => s.ipa), true);
+});
+
 test("multiple adjacent tone marks withhold the entire malformed token", () => {
   const r = analyze("ກ່້າ");
   assert.equal(r.status, "PARTIAL");
