@@ -9,13 +9,19 @@ def adapt_phonetic_result(result: PhoneticResult) -> str | None:
         raise TypeError("Ukrainian adaptation requires a PhoneticResult")
     if result.status != "SUPPORTED" or not result.segments:
         return None
+    if any(segment.certainty != "SUPPORTED" for segment in result.segments):
+        return None
     registry = load_registry()["correspondences"]
+    ipa = "".join(segment.ipa for segment in result.segments)
+    keys = sorted(registry, key=len, reverse=True)
     output: list[str] = []
-    for segment in result.segments:
-        row = registry.get(segment.ipa)
-        if row is None:
+    index = 0
+    while index < len(ipa):
+        match = next((key for key in keys if ipa.startswith(key, index)), None)
+        if match is None:
             return None
-        output.append(row["candidates"].split("|")[0])
+        output.append(registry[match]["candidates"].split("|")[0])
+        index += len(match)
     return "".join(output)
 
 
