@@ -48,6 +48,13 @@ class MultisyllableSegmentationTests(unittest.TestCase):
         self.assertIsNone(result.syllables[1].phonemic_ipa)
         self.assertEqual(result.status, "PARTIAL")
 
+    def test_tone_marks_are_validated_per_syllable_within_a_word(self):
+        source = "ກ່າຂ່າ"
+        self.assertEqual(segment_syllables(source), ["ກ່າ", "ຂ່າ"])
+        result = analyze(source)
+        self.assertEqual([item.surface for item in result.syllables], ["ກ່າ", "ຂ່າ"])
+        self.assertTrue(all(item.phonemic_ipa for item in result.syllables))
+
     def test_multiple_tone_marks_are_not_rescued_by_segmentation(self):
         source = "ກ່້າ"
         self.assertEqual(segment_syllables(source), [source])
