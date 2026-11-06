@@ -26,6 +26,7 @@ class PhoneticResult:
     provenance: tuple[str, ...] = ()
     uncertainty: tuple[str, ...] = ()
     broad_surface_ipa: str | None = None
+    external_ipa: str | None = None
 
 
 @dataclass
