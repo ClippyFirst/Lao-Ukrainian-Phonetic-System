@@ -235,6 +235,13 @@ MEKONG_CATEGORY_TO_CONTOUR = {
 }
 
 
+def render_mekong_tonal(segmental: str, categories: list[str] | None) -> str:
+    """Render typed tone categories in the benchmark's contour convention only."""
+    if not segmental or not categories or not all(value in MEKONG_CATEGORY_TO_CONTOUR for value in categories):
+        return ""
+    return nfc(segmental + "".join(MEKONG_CATEGORY_TO_CONTOUR[value] for value in categories))
+
+
 def parse_mekong_tone_categories(suffix: str) -> list[str] | None:
     """Parse the explicit MekongPhon rule-baseline contour convention."""
     if not suffix:
@@ -334,14 +341,8 @@ def main() -> int:
                     if raw_categories is not None else None
                 )
                 if raw_categories is not None:
-                    mekong_tonal = (
-                        segmental + "".join(
-                            MEKONG_CATEGORY_TO_CONTOUR[str(value)]
-                            for value in raw_categories
-                        )
-                        if segmental and all(raw_categories)
-                        and all(str(value) in MEKONG_CATEGORY_TO_CONTOUR for value in raw_categories)
-                        else ""
+                    mekong_tonal = render_mekong_tonal(
+                        segmental, [str(value) for value in raw_categories]
                     )
                 else:
                     mekong_tonal = tonal
