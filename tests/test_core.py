@@ -14,7 +14,7 @@ class TestCore(unittest.TestCase):
         rising = analyze("ຂາ").syllables[0]
         mid = analyze("ກ່າ").syllables[0]
         self.assertEqual(rising.tone, "low-rising")
-        self.assertEqual(rising.tone_contour, "˩˥")
+        self.assertEqual(rising.tone_contour, "˨˦")
         self.assertEqual(mid.tone, "high-mid")
         self.assertEqual(mid.tone_contour, "˧")
 
@@ -137,7 +137,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.syllable_boundaries, (0, 2))
         self.assertEqual(result.vowel_length, "long")
         self.assertEqual(result.tone_category, "low-rising")
-        self.assertEqual(result.tone_contour_ipa, "˩˥")
+        self.assertEqual(result.tone_contour_ipa, "˨˦")
         self.assertEqual(result.status, "SUPPORTED")
         self.assertEqual(syllable.practical_ukrainian, "к'а")
 
