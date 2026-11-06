@@ -1168,7 +1168,7 @@ The following current statuses supersede older checkpoint rows above where they 
 
 `data/benchmark/records.jsonl`, `annotations.jsonl`, `adjudications.jsonl`, and `splits.jsonl` are empty templates. `gold.tsv` is header-only; independent expert gold=0 and accuracy=null. Ueda (1994) supports a five-category central Vientiane model with phonemic vowel length and nine finals, but does not substitute for lexical expert gold or acoustic speaker coverage. No IPA labels were added.
 
-See [IPA gold protocol](docs/ipa-gold-corpus.md) and [Lao phonology research workpack](docs/audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md).
+See [IPA gold protocol](ipa-gold-corpus.md) and [Lao phonology research workpack](audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md).
 
 ### Additional rights and export controls
 
@@ -1191,7 +1191,7 @@ The rights registry does not itself grant permission. Each real source still nee
 
 ### Research artifact — Lao
 
-- [LAO tone–rhyme evidence matrix](docs/audits/current/LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md): source-derived central Vientiane baseline, explicit unknown tone × rhyme cells, unit-labialization evidence and unresolved Ukrainian target mapping.
+- [LAO tone–rhyme evidence matrix](audits/current/LAO-TONE-RHYME-EVIDENCE-MATRIX-2026-11-01.md): source-derived central Vientiane baseline, explicit unknown tone × rhyme cells, unit-labialization evidence and unresolved Ukrainian target mapping.
 - The matrix does not create gold IPA or assert a full tone-mark × coda rule table.
 
 

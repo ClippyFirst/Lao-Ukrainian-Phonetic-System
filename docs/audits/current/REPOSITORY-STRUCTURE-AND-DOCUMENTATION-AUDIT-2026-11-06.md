@@ -73,6 +73,10 @@ The main phonetic path is Lao orthography → structural parser → source phono
 
 These references are methods, not dependencies. The repository's linguistic, source-rights, privacy and fail-closed requirements remain authoritative.
 
+## Documentation-link integrity
+
+A local-path scan was performed across the repository Markdown inventory. It found three broken relative links in the master handoff (IPA gold protocol, phonology workpack and tone–rhyme matrix); all three were corrected to paths relative to the handoff's docs/ directory. External URLs and heading-anchor existence were not exhaustively validated.
+
 ## Verification evidence and limits
 
 - Baseline hosted Verify: [41889580331](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41889580331) SUCCESS on starting commit 915db62c710bedcbbec6ac01c73cb9312ae9a03d.
