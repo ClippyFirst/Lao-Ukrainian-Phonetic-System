@@ -34,6 +34,13 @@ class MultisyllableSegmentationTests(unittest.TestCase):
         self.assertTrue(any(item.phonemic_ipa is None for item in result.syllables))
         self.assertEqual(result.status, "PARTIAL")
 
+    def test_short_a_closed_syllable_is_checked_locally_before_next_syllable(self):
+        source = "ກັນກາ"
+        self.assertEqual(segment_syllables(source), ["ກັນ", "ກາ"])
+        result = analyze(source)
+        self.assertEqual([item.surface for item in result.syllables], ["ກັນ", "ກາ"])
+        self.assertTrue(all(item.phonemic_ipa for item in result.syllables))
+
     def test_stranded_registered_onset_does_not_receive_a_prefix_pronunciation(self):
         source = "ກາລ"
         self.assertEqual(segment_syllables(source), [source])
