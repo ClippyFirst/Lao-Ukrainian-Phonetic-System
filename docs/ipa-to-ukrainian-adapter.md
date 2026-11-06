@@ -43,8 +43,9 @@ The current Lao engine produces phonemic IPA only. The surface and external fiel
 ## Adapter contract
 
 - Python `adapt_phonetic_result(PhoneticResult)` and browser `adaptPhoneticResult(result)` accept a typed result, not a string or Lao input.
+- `SUPPORTED` means the segmental phonemic IPA is complete and mappable; it does not imply that every suprasegmental feature is resolved.
 - Only `SUPPORTED` results with a complete sequence of registered IPA segments can produce Ukrainian output.
-- `UNCERTAIN` and `UNSUPPORTED` results are withheld. A plausible IPA prefix must never be rendered as if it represented the complete source syllable.
+- `UNCERTAIN` segmental readings and `UNSUPPORTED` IPA are withheld. An unresolved tone alone is recorded in `uncertainty` while a supported segmental result may still be adapted. A plausible IPA prefix must never be rendered as if it represented the complete source syllable.
 - The adapter reads only typed IPA segments and the canonical `data/lao/ukrainian_correspondences.csv` mirror. It does not inspect Lao source graphemes or source vowel/coda identifiers.
 - Longest-match segmentation is performed before adaptation, preserving exact registered sequences such as /ʃt͡ʃ/ → щ.
 - Tone and vowel quantity remain visible in metadata. Their neutralization in practical Ukrainian spelling is an explicit target policy, not silent loss at the interface.
