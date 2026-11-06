@@ -480,6 +480,7 @@ def main() -> int:
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
             "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
+            "mekong_convention_conversion": "For comparison only, ClippyFirst tone categories are re-rendered with the MekongPhon rule-baseline contour notation; this does not change production IPA or tone rules",
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
             "chrf++": "SacreBLEU CHRF with word_order=2, corpus-level",
             "exact_match": "strict full-string IPA comparison",
