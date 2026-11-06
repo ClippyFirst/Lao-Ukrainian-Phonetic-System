@@ -12,7 +12,7 @@ not:
 
 ## Executable adapter boundary
 
-The Python and browser target adapters consume only the typed `PhoneticResult`, not raw Lao text or source parser fields. They accept only `SUPPORTED` results with a complete registered IPA segment sequence; uncertain and unsupported results are withheld. The result retains tone, vowel quantity, syllable boundaries, provenance and uncertainty separately from practical spelling. See [the typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md).
+The Python and browser target adapters consume only the typed `PhoneticResult`, not raw Lao text or source parser fields. They accept only `SUPPORTED` results with a complete registered IPA segment sequence; uncertain segmental readings and unsupported IPA are withheld. A tone that is unresolved does not block a supported segmental adaptation; it remains explicitly null/uncertain in the result metadata. The result retains tone, vowel quantity, syllable boundaries, provenance and uncertainty separately from practical spelling. See [the typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md).
 
 ## Shared Ukrainian practical conventions
 
