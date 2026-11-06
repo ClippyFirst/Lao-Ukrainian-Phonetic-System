@@ -13,7 +13,9 @@ The active model is contemporary Standard Lao with a Vientiane-oriented phonolog
 5. Coda and live/dead classification.
 6. Vientiane tone determination.
 7. Phonemic IPA representation.
-8. Ukrainian practical rendering.
+8. Typed `PhoneticResult` adapter boundary.
+9. Ukrainian adaptation from that typed IPA result.
+10. Practical Ukrainian orthography.
 
 The Russian, Serbian and Bulgarian layers are comparative controls. They are never hidden intermediate representations.
 
@@ -30,6 +32,10 @@ The current registry represents the modern consonant classes High, Middle and Lo
 Tone is a separate field. The Vientiane reference model has five tones. Tone is derived from consonant class, live/dead syllable type, vowel quantity where relevant, and written tone mark. Exact phonetic contours are analysis-dependent across descriptions and are therefore not treated as universally fixed surface measurements.
 
 ## Ukrainian output
+
+The executable target boundary is a typed `PhoneticResult`; the Ukrainian adapter consumes only its registered IPA segments and metadata. `UNCERTAIN` and `UNSUPPORTED` results are withheld rather than mapped from Lao spelling or partial IPA. The current Lao engine does not claim an independent broad-surface IPA layer. See [the adapter contract](ipa-to-ukrainian-adapter.md).
+
+
 
 The practical layer deliberately neutralizes several source-language distinctions that Ukrainian orthography does not naturally preserve:
 
