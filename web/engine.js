@@ -393,8 +393,7 @@ function analyzeWord(word) {
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
     return [wholeCandidate];
   }
-  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
-      w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
+  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
       w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||
       w.startsWith("ONSET-LABIALIZED:"))) {
     return [wholeCandidate];
@@ -440,12 +439,13 @@ function analyzeWord(word) {
   if (parts.some((part) => TONE_MARK_SET.has(part.surface))) {
     return [wholeCandidate];
   }
-  // An isolated Lao-block grapheme is not an independently parsed syllable.
-  // Do not adapt a valid prefix and strand a known Lao consonant as if it were
-  // an unrelated foreign-script unit. Truly unsupported foreign material
-  // remains visible beside valid neighbouring syllables.
+  // A2 short vowels can be valid inside a closed syllable. Check their coda
+  // within each candidate, and withhold only if DP strands a recognized Lao
+  // consonant or vowel sign as an independent fallback fragment.
+  const vowelGraphemes = new Set([...VOWEL_COMBINING_MARKS, "ະ", "າ", "ຽ", "ຳ", "ເ", "ແ", "ໂ", "ໃ", "ໄ", "ວ", "ອ", "ຍ"]);
   if (parts.some((part) => [...part.surface].length === 1 &&
-      ["core", "analysis-dependent"].includes(CONSONANTS[part.surface]?.[2]))) {
+      (vowelGraphemes.has(part.surface) ||
+       ["core", "analysis-dependent"].includes(CONSONANTS[part.surface]?.[2])))) {
     return [wholeCandidate];
   }
   return parts;
