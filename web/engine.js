@@ -264,7 +264,7 @@ function analyzeToken(surface) {
   const codaIpa = coda ? CODAS[coda] : "";
   const onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
   const ipa = structuralWarning ? null : onsetIpa + matched.v[2] + codaIpa;
-  const adapterStatus = ipa && !structuralWarning && resolvedTone.status === "ESTABLISHED" &&
+  const adapterStatus = ipa && !structuralWarning &&
     onset[2] === "core" && warnings.length === 0
     ? "SUPPORTED" : ipa ? "UNCERTAIN" : "UNSUPPORTED";
   const phoneticResult = createPhoneticResult(ipa, {
@@ -274,7 +274,7 @@ function analyzeToken(surface) {
     status: adapterStatus,
     provenance: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0],
       "SYLLABLE:" + syllableType, resolvedTone.ruleId || "TONE:UNRESOLVED"],
-    uncertainty: warnings,
+    uncertainty: [...warnings, ...(resolvedTone.status === "ESTABLISHED" ? [] : ["TONE-UNRESOLVED"])],
   });
   const ukrainian = adaptPhoneticResult(phoneticResult);
 
@@ -285,7 +285,8 @@ function analyzeToken(surface) {
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
   const status = structuralWarning || phoneticResult.status === "UNSUPPORTED" ? "EVIDENCE LIMITED"
-    : phoneticResult.status === "UNCERTAIN" ? "ANALYSIS DEPENDENT" : "ESTABLISHED";
+    : phoneticResult.status === "UNCERTAIN" || resolvedTone.status !== "ESTABLISHED"
+      ? "ANALYSIS DEPENDENT" : "ESTABLISHED";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
     coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
