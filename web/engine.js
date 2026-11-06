@@ -86,6 +86,19 @@ function toneFor(cls, syllableType, length, mark) {
     : { name: null, contour: null, status: "ANALYSIS DEPENDENT", ruleId: "TONE-NOT-ESTABLISHED-FOR-COMBINATION" };
 }
 
+const IPA_SYMBOLS = [
+  "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕ", "dʑ",
+  "kʰ", "pʰ", "tʰ", "nʲ", "lʲ", "rʲ", "tʲ", "dʲ",
+  "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː",
+  "k", "p", "t", "d", "b", "ŋ", "ɲ", "m", "n", "s", "f",
+  "h", "ɡ", "g", "x", "ɦ", "r", "l", "j", "ʋ", "w", "ʔ",
+  "ʃ", "ʒ", "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
+];
+const IPA_VOWELS = new Set([
+  "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː",
+  "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
+]);
+
 function createPhoneticResult(ipa, metadata = {}) {
   const base = {
     phonemicIpa: ipa || null,
@@ -101,19 +114,30 @@ function createPhoneticResult(ipa, metadata = {}) {
     uncertainty: [...(metadata.uncertainty || [])],
   };
   if (!ipa) return base;
-  const keys = sortedIpa();
+  const symbols = [...IPA_SYMBOLS].sort((left, right) => right.length - left.length);
   let i = 0;
+  let unsupported = false;
   while (i < ipa.length) {
-    const key = keys.find((candidate) => ipa.startsWith(candidate, i));
-    if (!key) {
-      return { ...base, status: "UNSUPPORTED",
-        uncertainty: [...base.uncertainty, "Unsupported IPA at offset " + i] };
+    const symbol = symbols.find((candidate) => ipa.startsWith(candidate, i));
+    if (!symbol) {
+      unsupported = true;
+      base.segments.push({ ipa: ipa[i], kind: "unknown", provenance: base.provenance, certainty: "UNSUPPORTED" });
+      i += 1;
+      continue;
     }
-    const kind = /^[aeiouɯɤɛɔəɪʊ]/u.test(key) ? "vowel" : "consonant";
-    base.segments.push({ ipa: key, kind, provenance: base.provenance, certainty: "SUPPORTED" });
-    i += key.length;
+    base.segments.push({
+      ipa: symbol,
+      kind: IPA_VOWELS.has(symbol) ? "vowel" : "consonant",
+      provenance: base.provenance,
+      certainty: "SUPPORTED",
+    });
+    i += symbol.length;
   }
   base.syllableBoundaries = [0, base.segments.length];
+  if (unsupported) {
+    base.status = "UNSUPPORTED";
+    base.uncertainty.push("UNSUPPORTED-IPA-SEGMENT");
+  }
   return base;
 }
 
@@ -121,12 +145,17 @@ function adaptPhoneticResult(result) {
   if (!result || typeof result !== "object" || !Array.isArray(result.segments)) {
     throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
   }
-  if (result.status !== "SUPPORTED" || result.segments.length === 0) return null;
+  if (result.status !== "SUPPORTED" || result.segments.length === 0 ||
+      result.segments.some((segment) => segment?.certainty !== "SUPPORTED")) return null;
+  const ipa = result.segments.map((segment) => segment.ipa).join("");
+  const keys = sortedIpa();
   let output = "";
-  for (const segment of result.segments) {
-    if (!segment || typeof segment.ipa !== "string" ||
-        !Object.hasOwn(CORRESPONDENCES, segment.ipa)) return null;
-    output += CORRESPONDENCES[segment.ipa];
+  let i = 0;
+  while (i < ipa.length) {
+    const key = keys.find((candidate) => ipa.startsWith(candidate, i));
+    if (!key) return null;
+    output += CORRESPONDENCES[key];
+    i += key.length;
   }
   return output;
 }
