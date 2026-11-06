@@ -187,7 +187,9 @@ def _segment_word(word: str, registry: dict) -> list[str]:
     # This preserves the parser's fail-closed contract for malformed endings
     # such as a legal onset character left without its own vowel structure.
     if any(
-        len(part) == 1 and 0x0E80 <= ord(part) <= 0x0EFF
+        len(part) == 1
+        and part in registry["consonants"]
+        and registry["consonants"][part].get("status") in {"core", "analysis-dependent"}
         for part in parts
     ):
         return [word]
