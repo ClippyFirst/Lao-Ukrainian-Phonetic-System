@@ -89,6 +89,8 @@ function toneFor(cls, syllableType, length, mark) {
 function createPhoneticResult(ipa, metadata = {}) {
   const base = {
     phonemicIpa: ipa || null,
+    broadSurfaceIpa: null,
+    externalIpa: null,
     segments: [],
     syllableBoundaries: [0],
     vowelLength: metadata.vowelLength || null,
