@@ -1764,3 +1764,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Rechecked the official LREC proceedings record. It explicitly states that LREC proceedings are licensed CC BY-NC 4.0 and that the paper's abstract describes the data, code and pretrained models as publicly released for future research.
 - This strengthens the availability evidence but does not identify a dataset-specific license for the separately hosted MekongPhon repository or settle the rights of scraped dictionary, OPUS-derived, or other component data. The proceedings license is not silently treated as the corpus license.
 - Updated both the dedicated rights review and repository-wide audit to state this distinction explicitly. The decision remains **BLOCKED** for copying, redistribution and derivative corpus publication until dataset-specific permission is documented.
+
+
+## Exact-head Verify blocker — repository audit PR #138 — 2026-11-07
+
+- Latest inspected audit PR head before this append: `fa5d027165ff06ac8add8babaabbeb975e0033e7`; Verify [42365990689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42365990689) completed **FAILURE**.
+- Passed: independent IPA-gold corpus structure validation and repository data/evidence audit. Failed: Browser engine tests. The log identifies three failures: modern Lao ຣ remains analysis-dependent; browser adapter withholds uncertain phonetic results; browser adapter withholds incomplete IPA rather than adapting a prefix.
+- This is not a failure in the documentation changes. The same browser suite passes on the existing PR #137 exact head `bab117a064f0aee3b685922fe0f0738df7048b12` (Verify [42358772788](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358772788)); PR #137 includes the relevant browser-engine corrections.
+- Do not duplicate or merge PR #137 blindly. The audit branch remains based on main and must be retested after the owner/reviewer decides how to land the existing engine correction. The documentation and rights review remain **PARTIAL pending a green exact-head Verify**.
+- Repository branch-protection endpoint returned 403 (resource not accessible by integration) in this pass; branch-protection state is therefore not freshly re-verified here. The prior audit's owner-action note remains a historical finding, not a new current assertion.
