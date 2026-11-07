@@ -81,6 +81,17 @@ def load_project():
 
         syllables = analysis.syllables
         vowel_by_id = {row["id"]: row for row in load_registry()["vowels"]}
+
+        def major_weighted(item) -> bool:
+            return bool(
+                item.coda
+                or (
+                    item.phonetic_result is not None
+                    and item.phonetic_result.vowel_length == "long"
+                )
+                or vowel_by_id.get(item.vowel or "", {}).get("nucleus_type") == "diphthong"
+            )
+
         segmental_complete = bool(syllables) and all(
             item.phonetic_result and item.phonetic_result.phonemic_ipa
             for item in syllables
@@ -122,15 +133,6 @@ def load_project():
             ],
             "partial_parse_shapes": [
                 {
-                    "candidate_minor_open_a_shape": bool(
-                        index == 0
-                        and item.vowel == "A"
-                        and item.phonetic_result is not None
-                        and item.phonetic_result.vowel_length == "short"
-                        and not item.coda
-                        and not item.tone_mark
-                        and item.phonetic_result.status == "SUPPORTED"
-                    ),
                     "onset": item.onset or "",
                     "vowel": item.vowel or "",
                     "coda": item.coda or "",
@@ -153,6 +155,9 @@ def load_project():
                     # A candidate minor syllable is only a diagnostic hint:
                     # Enfield's C0V0 slot permits short /a, i, u/ with no coda.
                     # It is not promoted to a production tone rule here.
+                    "following_major_weighted": bool(
+                        index + 1 < len(syllables) and major_weighted(syllables[index + 1])
+                    ),
                     "candidate_minor_shape": bool(
                         index == 0
                         and item.vowel in {"A", "I", "U"}
@@ -160,17 +165,22 @@ def load_project():
                         and item.phonetic_result.vowel_length == "short"
                         and not item.coda
                         and not item.tone_mark
-                        and item.phonetic_result is not None
+                        and not item.warnings
                         and item.phonetic_result.status == "SUPPORTED"
                         and index + 1 < len(syllables)
-                        and (
-                            syllables[index + 1].coda is not None
-                            or (
-                                syllables[index + 1].phonetic_result is not None
-                                and syllables[index + 1].phonetic_result.vowel_length == "long"
-                            )
-                            or vowel_by_id.get(syllables[index + 1].vowel or "", {}).get("nucleus_type") == "diphthong"
-                        )
+                        and major_weighted(syllables[index + 1])
+                    ),
+                    "candidate_minor_open_a_shape": bool(
+                        index == 0
+                        and item.vowel == "A"
+                        and item.phonetic_result is not None
+                        and item.phonetic_result.vowel_length == "short"
+                        and not item.coda
+                        and not item.tone_mark
+                        and not item.warnings
+                        and item.phonetic_result.status == "SUPPORTED"
+                        and index + 1 < len(syllables)
+                        and major_weighted(syllables[index + 1])
                     ),
                     "onset": item.onset or "",
                     "consonant_class": item.consonant_class or "",
@@ -683,6 +693,8 @@ def main() -> int:
                     f"rule={context.get('tone_rule_id', '')}",
                     f"position={context.get('word_position', '')}",
                     f"candidate_minor={context.get('candidate_minor_shape', False)}",
+                    f"candidate_minor_open_a={context.get('candidate_minor_open_a_shape', False)}",
+                    f"following_major_weighted={context.get('following_major_weighted', False)}",
                     f"status={context.get('analysis_status', '')}",
                 ])
                 tone_unresolved_contexts[context_key] = tone_unresolved_contexts.get(context_key, 0) + 1
