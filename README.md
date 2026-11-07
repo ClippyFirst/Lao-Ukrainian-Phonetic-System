@@ -1,6 +1,7 @@
 # Lao → Ukrainian Phonetic-Graphemic Correspondence System
 
 - [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
+- [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — українські відповідники приголосних, голосних, дифтонгів і позиційних IPA-реалізацій.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
@@ -48,6 +49,8 @@ Important current project decisions include:
 - Lao /h/ and IPA /ɦ/ both map to Ukrainian г but remain distinct source values; /ɡ/ → ґ; genuine /x/ → х. The /h/ → г choice is a project-specific practical approximation, not a claim of phonetic identity;
 - in the romanization method, Lao onset spelling, source vowel ID and supported coda are checked against CLDR romanization before Ukrainian output; `kh/th/ph` map as aspirated `к'/т'/п'`, independent /h/ from ຫ/ຮ maps to `г`, and supported silent-hoa spellings map their underlying sonorant without inserting an `h` sound;
 - /ŋ/ → нг;
+- /ʋ/ та /w/ → в у початковій і кінцевій позиції; /aw/ → ав;
+- складопочатковий /j/ перед голосною адаптується українськими йотованими літерами (я, є, ї, йо, ю), тоді як медіальний/кінцевий /j/ → й;
 - /tɕ/ → ч; /t͡s/ → ц; /d͡z/ → дз; /t͡ʃ/ → ч; /d͡ʒ/ → дж; /ʃ/ → ш; /ʒ/ → ж;
 - the exact Ukrainian sequence /ʃt͡ʃ/ → щ is matched as a target orthographic unit; isolated /ʃ/ and /t͡ʃ/ remain ш and ч;
 - /ɯ/ → и;
