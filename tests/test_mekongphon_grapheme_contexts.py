@@ -2,6 +2,7 @@ import unittest
 from scripts.analyze_mekongphon_grapheme_contexts import align_tokens, grapheme_units, structural_components, tokenize_ipa
 from lao_ukrainian.data import load_registry
 from lao_ukrainian.parser import parse_syllable
+from lao_ukrainian.phonetic_result import from_phonology
 
 class GraphemeContextTests(unittest.TestCase):
     def test_ipa_inventory_keeps_affricates_and_long_vowels(self):
@@ -9,6 +10,12 @@ class GraphemeContextTests(unittest.TestCase):
         mapping, edits, insertions = align_tokens(["t͡ɕ", "aː"], ["t͡ɕ", "ɔː"])
         self.assertEqual(mapping, {0:"t͡ɕ", 1:"ɔː"})
         self.assertEqual((edits, insertions), (1,0))
+
+    def test_long_schwa_is_a_single_typed_ipa_vowel(self):
+        result = from_phonology("əː")
+        self.assertEqual([segment.ipa for segment in result.segments], ["əː"])
+        self.assertEqual(result.segments[0].kind, "vowel")
+        self.assertEqual(result.status, "SUPPORTED")
 
     def test_combining_marks_remain_attached_to_base_grapheme(self):
         self.assertEqual(grapheme_units("ກັນ"), [("ກັ",0,2),("ນ",2,3)])
