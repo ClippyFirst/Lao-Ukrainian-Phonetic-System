@@ -164,12 +164,14 @@ def analyze_rows(rows, registry):
                     if role != "tone_mark" and role != "high_class_modifier":
                         context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,actual)]+=1
                     if role=="tone_mark": tone[(unit,pos,onset_class,stype,vowel.get("id",""),st["coda"] or "open")]+=1
-    rule_groups=Counter()
-    for key,count in context_sound.items():
-        rule_groups[key[:-1]] += count
+    outcome_groups={}
+    for full_key,count in context_sound.items():
+        group_key=full_key[:-1]
+        outcome_groups.setdefault(group_key,Counter())[full_key[-1]] += count
     distributions=[]
-    for key,total in rule_groups.items():
-        outcomes=[{"ipa":ipa,"count":count} for (*prefix,ipa),count in context_sound.items() if tuple(prefix)==key]
+    for key,outcome_counts in outcome_groups.items():
+        total=sum(outcome_counts.values())
+        outcomes=[{"ipa":ipa,"count":count} for ipa,count in outcome_counts.items()]
         outcomes.sort(key=lambda item:(-item["count"],item["ipa"]))
         distributions.append({
             "grapheme":key[0],"role":key[1],"syllable_position_in_word":key[2],
