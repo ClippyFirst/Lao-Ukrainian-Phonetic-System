@@ -161,7 +161,8 @@ def analyze_rows(rows, registry):
                     nxt=graphemes[gi+1][0] if gi+1<len(graphemes) else "$"
                     sound[(unit,role,pos,pattern,actual,scope)]+=1
                     contexts[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope)]+=1
-                    context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,actual)]+=1
+                    if role != "tone_mark" and role != "high_class_modifier":
+                        context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,actual)]+=1
                     if role=="tone_mark": tone[(unit,pos,onset_class,stype,vowel.get("id",""),st["coda"] or "open")]+=1
     rule_groups=Counter()
     for key,count in context_sound.items():
