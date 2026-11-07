@@ -1,6 +1,9 @@
-import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES } from "./data.js";
+import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES, SPECIAL_TONE_RULES } from "./data.js";
 
 const TONE_MARK_SET = new Set(Object.keys(TONE_MARKS));
+const POTENTIAL_MINOR_TONE_RULE = SPECIAL_TONE_RULES.find(
+  ([ruleId]) => ruleId === POTENTIAL_MINOR_TONE_RULE[0]
+);
 const HIGH_DIGRAPHS = new Map([
   ["ຫງ", "ງ"], ["ຫຍ", "ຍ"], ["ຫນ", "ນ"], ["ຫມ", "ມ"],
   ["ຫລ", "ລ"], ["ຫຼ", "ລ"], ["ຫວ", "ວ"],
@@ -461,19 +464,19 @@ function analyzeWord(word) {
     following.nucleusType === "diphthong" ||
     (following.coda && following.coda !== "—")
   );
-  if (first && followingMajorWeighted &&
+  if (POTENTIAL_MINOR_TONE_RULE?.[4] === "analysis-dependent" && first && followingMajorWeighted &&
       first.vowelId === "A" && first.length === "short" &&
       first.coda === "—" && !first.toneMark && first.ipa &&
       first.phoneticResult?.status === "SUPPORTED") {
     first.tone = null;
     first.toneContour = null;
-    first.toneStatus = "ANALYSIS DEPENDENT";
+    first.toneStatus = POTENTIAL_MINOR_TONE_RULE[4].toUpperCase().replaceAll("-", " ");
     first.status = "ANALYSIS DEPENDENT";
     first.rules = (first.rules || []).filter((rule) =>
       !rule.startsWith("TONE-RULE:") && !rule.startsWith("TONE:")
     );
     first.rules.push(
-      "TONE-RULE:VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+      "TONE-RULE:" + POTENTIAL_MINOR_TONE_RULE[0],
       "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"
     );
     first.phoneticResult.toneCategory = null;
@@ -483,7 +486,7 @@ function analyzeWord(word) {
         ...(first.phoneticResult.provenance || []).filter((rule) =>
           !rule.startsWith("VNT-") && !rule.startsWith("TONE:")
         ),
-        "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+        POTENTIAL_MINOR_TONE_RULE[0],
         "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED",
       ])
     ];
