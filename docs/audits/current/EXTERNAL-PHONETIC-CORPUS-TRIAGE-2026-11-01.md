@@ -34,7 +34,7 @@ The pinned train file has raw SHA-256 `2d0f68989009620980ced3386f11a640e61674043
 1. Use the pinned public corpus for research, error analysis and rule discovery; cite Shurtz et al. (2026) and record the exact upstream revision and file hash.
 2. Use the 6,219-row train split only for development diagnostics. Keep the 100-row eval split separate for comparator reporting; do not tune on eval.
 3. Do not promote any MekongPhon row to independent ClippyFirst gold. The source lexicon and generated sentence references remain external reference material, not blind adjudication.
-4. Do not commit or re-host raw corpus rows, IPA references or per-item predictions. Obtain explicit component terms before mirroring, redistribution, sublicensing or commercial reuse.
+4. Do not commit or re-host raw corpus rows, IPA references or per-item predictions. The current diagnostic uses only the word-level seed-lexicon split, not OPUS-derived sentence pairs; SEAlang terms for that lexicon remain unverified. OPUS terms apply if the sentence-expanded corpus is used later. Obtain explicit component terms before mirroring, redistribution, sublicensing or commercial reuse.
 5. Keep tone, vowel length, syllable boundaries and uncertainty intact. Do not normalize away tonal distinctions to improve agreement.
 
 Current independent, project-owned, expert-adjudicated Lao gold remains 0. No MekongPhon/Goruut accuracy claim is added to this repository.
