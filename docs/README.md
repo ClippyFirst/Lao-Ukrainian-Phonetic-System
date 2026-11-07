@@ -57,6 +57,10 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [Issue tracker conventions](agents/issue-tracker.md)
 - [Superpowers corpus plan](superpowers/plans/2026-11-01-independent-ipa-gold-corpus.md)
 
+## Accessibility QA
+
+- [Manual accessibility QA protocol and results log](accessibility-manual-qa.md) — screen readers, keyboard-only operation, physical mobile devices, real browser zoom, high contrast and visual review.
+
 ## Source-of-truth and precedence
 
 When documents appear to conflict, use this order:

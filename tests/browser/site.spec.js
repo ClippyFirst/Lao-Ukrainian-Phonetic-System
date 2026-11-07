@@ -183,3 +183,55 @@ test("forced-colors and reduced-motion preferences retain visible focus and supp
   expect(reduced.active).toBe(true);
   expect(reduced.scrollBehavior).toBe("auto");
 });
+
+
+test("screen-reader roles expose the service controls and output state", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1, name: "Лаоське письмо. Українське читання." })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "ຂາ · простий склад" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "ເຂົ້າໜຽວ · складні форми" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
+  await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Фонетичний" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
+  await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
+  await expect(page.locator("#status")).toContainText("ГОТОВО");
+  await expect(page.locator("#copy")).toBeEnabled();
+  await expect(page.locator("#copy")).toHaveAccessibleName("Копіювати");
+  await expect(page.locator("#output")).toHaveAttribute("aria-atomic", "true");
+});
+
+test("analysis disclosure is operable by keyboard and exposes expanded state", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ");
+  const summary = page.getByRole("button", { name: /Поскладовий розбір/ });
+  await summary.focus();
+  await expect(summary).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(page.locator(".trace-disclosure").first()).toHaveAttribute("open", "");
+  await page.keyboard.press("Space");
+  await expect(page.locator(".trace-disclosure").first()).not.toHaveAttribute("open", "");
+});
+
+test("400-percent equivalent zoom reflows the service at a 320 CSS-pixel viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 1000 });
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ");
+  await page.addStyleTag({ content: "html { zoom: 4; }" });
+  await expect(page.locator("#output")).toHaveText("к'а");
+  const layout = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    document: document.documentElement.scrollWidth,
+    input: document.querySelector("#lao-input").getBoundingClientRect(),
+    output: document.querySelector("#output").getBoundingClientRect(),
+    buttons: [...document.querySelectorAll("button")].filter((button) => !button.disabled)
+      .map((button) => button.getBoundingClientRect())
+  }));
+  expect(layout.document).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.input.width).toBeGreaterThan(0);
+  expect(layout.output.width).toBeGreaterThan(0);
+  expect(layout.input.right).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.output.right).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.buttons.every((rect) => rect.width > 0 && rect.right <= layout.viewport)).toBe(true);
+});

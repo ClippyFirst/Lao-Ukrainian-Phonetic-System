@@ -2159,3 +2159,14 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Added browser regression coverage for programmatic accessible names of interactive controls, methodology-page landmark/heading and keyboard skip navigation, forced-colors focus visibility, and reduced-motion behavior. Added forced-colors CSS rules for visible focus, link affordance and key surface borders.
 - Exact-head CI for these latest changes is pending. Do not mark this new test batch verified until its push run completes successfully.
 - UI-001 remains PARTIAL until manual NVDA/JAWS/VoiceOver/TalkBack, keyboard-only walkthrough on the deployed service, physical mobile touch-device testing, actual 200%/400% browser zoom and human visual review are recorded with device/browser/AT versions and findings. Automated Chromium emulation is not represented as those manual checks.
+
+
+## Accessibility and dependency verification update — 2026-11-08
+
+- Current branch head: `ed5120b7365f0759935f10742ccf5d3c316b7274`; PR #143 remains open and mergeable against unchanged `main` (`f40c1128302486b3589da9b16bae198ef3ad1d81`).
+- Exact-head Verify [42418959070 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42418959070) and push Verify [42418955201 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42418955201): 262 Python tests, 126 Node tests, 13 Chromium tests. CI executed `npm ci --no-audit --no-fund`, `npm test`, build/generated-data checks and `npm run test:browser`.
+- DEP-001 (lockfile + clean CI install with npm ci) — DONE_VERIFIED.
+- LIC-001 (MekongPhon rights) — DONE_VERIFIED on owner confirmation; no legal blocker remains in this task ledger.
+- Added `docs/accessibility-manual-qa.md` with explicit NVDA, VoiceOver, TalkBack, keyboard, physical mobile, actual browser zoom, forced-colors and visual review protocols. Its results log deliberately remains NOT RUN where a human/device session has not been performed.
+- Added further Chromium coverage for screen-reader role/name exposure, keyboard-operable disclosure controls, and 400%-equivalent reflow. These are automated emulation/regression checks, not evidence of real assistive-technology sessions or physical devices. Await exact-head CI before marking this latest batch verified.
+- UI-001 remains PARTIAL until SR-01–SR-04, the deployed keyboard walkthrough, physical-device checks, actual browser zoom at 200%/400%, and human visual/contrast review are recorded in `docs/accessibility-manual-qa.md`.
