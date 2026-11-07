@@ -2045,3 +2045,12 @@ The complete registry-threading change was exercised on the hosted CI runner:
 
 The selected branch remains an **engineering-verified research prototype**, not a linguistically release-ready or publication-ready system. The independent IPA gold corpus is empty, tone adjudication remains incomplete, MekongPhon dataset/source rights remain unresolved, and manual accessibility QA is outstanding. The current audit is linked from `docs/audits/README.md`; this handoff remains the single canonical execution ledger.
 
+
+
+### Documentation patch commit and final-head gate — 2026-11-07
+
+- The repository-wide audit and documentation corrections were committed to the existing branch `improve/rule-engine-error-analysis-20261107`; no new branch was created and `main` remains untouched.
+- Final documentation commit at this checkpoint: `d4f08fb6626136e699f05df40f1c7a3e84ad122b`. It includes the AGENTS.md reference refresh; preceding commits in this documentation batch are listed in the current repository-wide audit.
+- The available commit-workflow lookup returned no workflow run for this final documentation commit. The last verified full Verify remains run 42384603376 on earlier code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; it does **not** verify the later documentation commits.
+- **DOC-012–016 remain PARTIAL** until the full Verify workflow passes on the exact final documentation head. No local test, clean install or manual accessibility result is claimed.
+- Next engineering action: run/re-run the repository's full `verify` workflow against `d4f08fb6626136e699f05df40f1c7a3e84ad122b`; if the workflow is not automatically triggered for this connector-created commit, a maintainer with Actions permissions must dispatch it. The remaining substantive blockers are independent expert IPA gold (0 records), qualified Vientiane tone adjudication, component-level MekongPhon dataset/source rights, npm lockfile reproducibility and manual UI/accessibility QA.
