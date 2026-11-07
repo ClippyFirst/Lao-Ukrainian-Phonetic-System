@@ -20,6 +20,8 @@ def main():
     ap.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     ap.add_argument("--num-beams", type=int, default=4)
     args = ap.parse_args()
+    if args.segment_unspaced and args.engine != "rules":
+        ap.error("--segment-unspaced is available only with --engine rules")
 
     if args.engine == "rules":
         result = analyze(args.text, infer_unspaced=args.segment_unspaced)
