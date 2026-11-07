@@ -83,6 +83,16 @@ The optional romanization route is a distinct, lower-information orthographic me
 - Keep the root MIT LICENSE scoped to ClippyFirst's own code and documentation. It does not grant rights to third-party datasets, model weights, dictionaries, fonts or external assets.
 - Do not vendor the five user-supplied methodology/design repositories as runtime dependencies. Their relevant practices are already represented in local engineering instructions; the project-specific linguistic and rights constraints take precedence.
 
+## UI/UX and accessibility audit
+
+Reviewed the two static pages, browser UI orchestration, stylesheet, layout tests and the local design-system contract against the web-specific accessibility guidance from UI UX Pro Max.
+
+- Positive: document language and Lao language tags, labelled navigation, skip links, visible 3px focus outline, explicit input label, live/status announcements, pressed-state semantics for the method switch, labelled/keyboard-focusable methodology tables, responsive breakpoints, and reduced-motion handling are present.
+- Core text/color pairings were calculated from the current CSS palette: ink on paper 15.99:1; muted on paper 5.14:1; red on paper 5.16:1; blue on paper 12.82:1; white on blue 13.97:1; IPA text on white 8.79:1. These sampled pairings exceed WCAG AA 4.5:1 for normal text; this is not an exhaustive audit of every state or component.
+- Found a documented-contract mismatch: compact copy/mini controls were 36–40px high despite the local design system's 44px minimum. Added a regression test (observed RED) and raised .copy, .mini-button/.button and .copy-button to 44px.
+- Found that npm test used chained commands and stopped after the first failing suite, hiding later suite results. Changed it to one Node test-runner invocation over all four suites. The resulting run reports all 113 tests, rather than short-circuiting after web/engine.test.js.
+- Manual keyboard-only, screen-reader, zoom/text-scaling, real-device touch and deployed-site accessibility checks remain TODO; automated source checks do not substitute for them.
+
 ## Rights and research findings
 
 ### MekongPhon
@@ -123,8 +133,10 @@ The optional romanization route is a distinct, lower-information orthographic me
 | LAO-PHON-001 | PARTIAL | Tone/rhyme, segmentation, clusters, loanword and dialect-sensitive questions remain | Source-located primary evidence and qualified expert adjudication; unsupported cases stay withheld |
 | LAO-TARGET-001 | PARTIAL | Some IPA sequences have no justified Ukrainian target correspondence | Expert-reviewed IPA-to-Ukrainian rationale and regression coverage; no guessed mapping |
 | LAO-ROM-001 | PARTIAL | BGN/PCGN and CLDR crosswalk remains provisional and structurally bounded | Full source-located inventory, ambiguity/round-trip tests and explicit non-reversibility |
-| LAO-UI-001 | TODO | Automated Chromium coverage exists; no human device/screen-reader acceptance matrix found | Manual keyboard-only, screen-reader, mobile and visual QA on the deployed site |
+| LAO-UI-001 | TODO | Automated Chromium coverage exists; source audit found semantic labels/live regions/focus styles and sampled contrast pass, but no human device/screen-reader acceptance matrix | Manual keyboard-only, screen-reader, zoom/text-scaling, mobile and visual QA on the deployed site |
 | ENG-CI-001 | PARTIAL / dependency on PR #137 | Exact-head Verify on the audit branch fails only at Browser engine tests: three existing cases fail (modern Lao ຣ analysis-dependent reading; withholding uncertain IPA; withholding incomplete IPA). The same test suite passes on PR #137 head bab117a064f0aee3b685922fe0f0738df7048b12, whose diff includes the relevant browser-engine corrections. | Review and merge the existing PR #137 or independently port its minimal reviewed fixes to main; then rerun Verify on the updated base and this audit PR. Do not copy the whole PR or claim the documentation-only change caused these failures. |
+| ENG-TEST-001 | PARTIAL pending exact-head Verify | npm test short-circuited after the first suite; later suites were not executed when engine tests failed. | Changed npm test to run all four Node suites in one invocation; confirm final exact-head output and preserve full failure visibility. |
+| UI-TARGET-001 | PARTIAL pending exact-head Verify | Compact copy/mini buttons were 36–40px despite the documented 44px target. | Updated all compact action controls to 44px and added a web-layout regression test; exact-head CI pending. |
 | ENG-LOCK-001 | TODO | package.json pins Playwright but no npm lockfile is present; CI uses npm install | Generate lockfile in Node/npm-enabled clean checkout, migrate CI to npm ci, prove clean-install reproducibility |
 | ENG-BRANCH-001 | BLOCKED / owner action | GitHub branches API currently reports main protected=false; the branch-protection detail endpoint itself returned 403 to this integration | Repository owner enables an appropriate ruleset requiring review and Verify; do not change repository settings without authorization |
 
