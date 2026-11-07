@@ -52,12 +52,8 @@ def align_tokens(predicted, reference):
     return mapping,dp[n][m],insertions
 
 def grapheme_units(surface):
-    out=[]; i=0
-    while i<len(surface):
-        start=i; i+=1
-        while i<len(surface) and unicodedata.category(surface[i]) in {"Mn","Mc"}: i+=1
-        out.append((surface[start:i],start,i))
-    return out
+    """Expose each Lao code point separately, including combining vowel/tone signs."""
+    return [(char,index,index+1) for index,char in enumerate(surface)]
 
 def structural_components(surface, parsed, registry):
     tone_indices=[i for i,ch in enumerate(surface) if ch in TONE_MARKS]
