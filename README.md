@@ -32,7 +32,7 @@ ClippyFirst does **not** store word → IPA dictionary correspondences. It resol
 - tone is selected from consonant class, rhyme type, vowel length and tone mark;
 - only the resulting typed IPA is passed to the Ukrainian adapter.
 
-Thus the same Lao character can have different realizations by role: for example, \`ວ\` is /ʋ/ as an onset and /w/ as a coda; \`ດ\` is /d/ as an onset and /t/ as a coda. The vowel sign \`ເ\` likewise participates in short /e/ and long /eː/ structures depending on the complete spelling.
+Thus the same Lao character can have different realizations by role: for example, `ວ` is /ʋ/ as an onset and /w/ as a coda; `ດ` is /d/ as an onset and /t/ as a coda. The vowel sign `ເ` likewise participates in short /e/ and long /eː/ structures depending on the complete spelling.
 
 The pinned [MekongPhon grapheme-context study](docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) aggregates grapheme, position, neighbouring signs, onset class, vowel ID, rhyme and tone-mark environments. It reports engine IPA and reference-aligned IPA separately. It never turns dictionary words into production lookup rules, and its train references are not independent gold.
 
