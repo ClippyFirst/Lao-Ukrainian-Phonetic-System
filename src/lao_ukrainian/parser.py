@@ -5,6 +5,8 @@ Lao spaces separate phrases, not lexical words. A caller may therefore pass
 one syllable, a phrase with explicit spaces, or a ZWSP-delimited sequence.
 """
 
+import unicodedata
+
 from .data import load_registry
 
 TONE_MARKS = {"່": "mai_ek", "້": "mai_tho", "໊": "mai_ti", "໋": "mai_catawa"}
@@ -99,8 +101,66 @@ STRUCTURES = (
     ("short_o_around", "ເ", "າະ", "AW"),
 )
 
-def segment_syllables(text: str) -> list[str]:
-    return [x for x in text.replace("\u200b", " ").split() if x]
+def _orthographic_clusters(text: str) -> list[str]:
+    """Keep combining marks attached while exposing grapheme split points."""
+    clusters: list[str] = []
+    for char in text:
+        if clusters and unicodedata.category(char).startswith("M"):
+            clusters[-1] += char
+        else:
+            clusters.append(char)
+    return clusters
+
+
+def _is_complete_syllable(surface: str) -> bool:
+    parsed = parse_syllable(surface)
+    return bool(parsed.get("onset") and parsed.get("vowel") and not parsed.get("warnings"))
+
+
+def segment_unspaced_token(token: str) -> list[str] | None:
+    """Infer syllable boundaries only when a complete structural parse is unique.
+
+    This opt-in syllabifier is not lexical word segmentation. A token already
+    accepted as one complete syllable is never split. Ambiguous or malformed
+    input returns None so callers can retain the original token and fail closed.
+    """
+    clusters = _orthographic_clusters(token)
+    if not clusters:
+        return []
+    if _is_complete_syllable(token):
+        return [token]
+
+    # Dynamic programming over grapheme boundaries. Two paths are sufficient
+    # to prove ambiguity, avoiding exponential enumeration.
+    paths: list[list[tuple[str, ...]]] = [[] for _ in range(len(clusters) + 1)]
+    paths[len(clusters)] = [()]
+    for start in range(len(clusters) - 1, -1, -1):
+        candidates: list[tuple[str, ...]] = []
+        for end in range(start + 1, len(clusters) + 1):
+            part = "".join(clusters[start:end])
+            if not _is_complete_syllable(part):
+                continue
+            for suffix in paths[end]:
+                candidate = (part, *suffix)
+                if candidate not in candidates:
+                    candidates.append(candidate)
+                if len(candidates) >= 2:
+                    break
+            if len(candidates) >= 2:
+                break
+        paths[start] = candidates
+    return list(paths[0][0]) if len(paths[0]) == 1 else None
+
+
+def segment_syllables(text: str, *, infer_unspaced: bool = False) -> list[str]:
+    tokens = [x for x in text.replace("\\u200b", " ").split() if x]
+    if not infer_unspaced:
+        return tokens
+    output: list[str] = []
+    for token in tokens:
+        inferred = segment_unspaced_token(token)
+        output.extend(inferred if inferred is not None else [token])
+    return output
 
 def _strip_tone_marks(surface: str) -> str:
     return "".join(ch for ch in surface if ch not in TONE_MARKS)
