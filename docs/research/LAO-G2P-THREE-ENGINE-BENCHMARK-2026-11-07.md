@@ -227,3 +227,49 @@ For the tone-category diagnostic, restricted to segmental-exact items with align
 - **PARTIAL:** numerical comparison against the published seed-lexicon reference only; no independent expert gold.
 - **BLOCKED:** broad linguistic accuracy claims until dialect/IPA convention approval and independent expert double annotation/adjudication of a rights-cleared gold set.
 - **TODO:** review the three rule-engine withheld structures and the segmental/tone disagreements with a qualified Lao phonetics reviewer before changing deterministic rules.
+
+
+## Error-pattern analysis and deterministic-engine refinement — 2026-11-07
+
+This checkpoint follows the immutable neural inference run and adds aggregate-only edit diagnostics, syllable-position context, a conservative minor-syllable uncertainty flag, and canonical tied IPA for the Lao affricate /t͡ɕ/.
+
+- Exact-head benchmark workflow [42374547901 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901), code head `411c4e0b6f9bf2775585b65f09fd5c0531808d6d`.
+- Aggregate artifact [13575161811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901/artifacts/13575161811), SHA-256 `813073f4207d51d93ead737623b5bad744618d197caf20c95473fe60c787e42b`.
+- Same 100-word dataset, exact dataset SHA and immutable neural model revisions as the preceding section. No per-word inputs, references, or predictions were exported.
+
+### Updated metrics
+
+| Engine / output | CER ↓ | Exact | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst segmental IPA, canonical tied affricate | **11.46%** | **69/100** | 97% |
+| ClippyFirst segmental, optional tie-bar normalization diagnostic | 11.62% | 69/100 | 97% |
+| Lao2IPA segmental IPA | 8.97% | 68/100 | 100% |
+| MekongPhon non-tonal model | 6.64% | 82/100 | 100% |
+| ClippyFirst tonal IPA, native Ueda contour convention | 32.45% | 20/100 | 91% |
+| ClippyFirst tonal IPA, MekongPhon contour convention (evaluation-only) | 10.20% on shared 91 | 52/91 | 91 shared |
+| Lao2IPA tonal IPA | 11.97% overall; 10.86% on shared 91 | 53/91 on shared 91 | 100% |
+| MekongPhon tonal model | 8.29% overall; 6.75% on shared 91 | 68/91 on shared 91 | 100% |
+
+On the same **97 segmental items** covered by ClippyFirst, it now scores CER 6.49% and 69/97 exact, compared with Lao2IPA's 7.72% and 68/97 exact, and MekongPhon's 5.79% and 81/97 exact. Thus ClippyFirst is now slightly ahead of Lao2IPA on this shared segmental subset, but it still has lower full-set coverage and higher CER than the neural model.
+
+For tonal outputs on the same **91 items** where ClippyFirst supplied a complete tone sequence, its evaluation-only MekongPhon-convention CER is 10.20% (52/91 exact), versus Lao2IPA 10.86% (53/91) and MekongPhon neural 6.75% (68/91). Do not compare this shared-subset score with full-set CER without also reporting coverage.
+
+The tone-category diagnostic on segmental-exact items has 51/64 exact word-level sequences (79.69%) and a category error rate of 18.95% over 95 reference categories. Six initial short-open-/a/ shapes before a major-weighted syllable are flagged as possible minor syllables; three additional tone contexts remain unresolved for other evidence-limited reasons. The engine preserves segmental IPA but withholds the independent tone for these candidates. This is a precision/coverage decision, not a claimed accuracy gain against the dictionary reference.
+
+### What the error profile says
+
+- Canonicalizing Lao ຈ to tied affricate IPA `t͡ɕ` changed raw ClippyFirst segmental CER from 12.79% to 11.46% and exact matches from 64 to 69. The browser data mirror, Python registry, shared fixture, and target adapter were updated together. Untied `tɕ` remains accepted as an IPA adapter alias.
+- The most frequent remaining aligned code-point substitutions include `j→i` (6), `w→ʋ` (5), `ː→ə` (5), `a→ː` (5), and `o→w` (4). The `w→ʋ` discrepancy also occurs in Lao2IPA (6 cases), indicating a likely reference/transcription-convention issue rather than a ClippyFirst-only defect. Do not collapse initial /ʋ/ and coda /w/ or rewrite diphthongs/length from this aggregate alone.
+- The remaining five-tone matrix disagreements are concentrated in high-class live unmarked /oŋ, uːŋ/, low-class live /iː/ with mai ek, and high-class live unmarked /aː/. Their rule outputs match the source-scoped Vientiane matrix; the dictionary reference differs. No tone matrix retuning was made.
+- Two multigrapheme unconsumed tails, one standalone KHO SUNG tail, and one malformed tone-mark-order case remain fail-closed. They do not justify new onset/coda rules.
+
+### Linguistic basis and safety of the minor-syllable handling
+
+Ueda (1994, pp. 95–115) describes a restricted non-final open /a/ syllable as unstressed and tone-neutral in central Vientiane Lao. Enfield (2007, §3.1, pp. 33–34) models the minor syllable as initial C₀V₀, says it has no distinctive tone independent of the major syllable, and restricts V₀ to short /a, i, u/ with no length contrast. Because the orthographic shape alone cannot prove that a candidate is truly minor (and Enfield also restricts C₀), ClippyFirst does **not** assign a neutral tone. It flags only an initial unmarked short-open-/a/ candidate followed by a major-weighted syllable, preserves its segmental IPA, and marks tone as analysis-dependent. The special selector is separate from the five-tone matrix.
+
+### Interpretation and next steps
+
+- **DONE_VERIFIED:** aggregate error diagnostics, tie-bar canonicalization, source-backed minor-syllable uncertainty handling, and exact-head benchmark execution.
+- **PARTIAL:** ClippyFirst now edges Lao2IPA on the shared segmental subset and is close on shared tonal CER; full-set coverage and the neural benchmark remain better.
+- **BLOCKED:** broad accuracy claims remain blocked by the non-adjudicated dictionary reference and zero independent project IPA gold.
+- **TODO:** obtain a Lao phonetics review of the six minor-syllable candidates and remaining vowel/offglide disagreements; build a rights-cleared, independently adjudicated gold set before expanding rules.
