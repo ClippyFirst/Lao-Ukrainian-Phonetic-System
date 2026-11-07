@@ -4,6 +4,7 @@ from scripts.diagnose_mekongphon_train_split import (
     extract_tone_suffix,
     levenshtein,
     parse_tone_categories,
+    warning_code,
 )
 
 
@@ -22,6 +23,9 @@ class MekongPhonTrainDiagnosticTests(unittest.TestCase):
 
     def test_unknown_contour_fails_closed(self):
         self.assertIsNone(parse_tone_categories("˩˥"))
+
+    def test_warning_code_drops_source_derived_tail_payload(self):
+        self.assertEqual(warning_code("UNCONSUMED_AFTER_VOWEL:ມເປັນລະບຽບ"), "UNCONSUMED_AFTER_VOWEL")
 
     def test_levenshtein_handles_empty_and_unicode_strings(self):
         self.assertEqual(levenshtein("", "ກ"), 1)
