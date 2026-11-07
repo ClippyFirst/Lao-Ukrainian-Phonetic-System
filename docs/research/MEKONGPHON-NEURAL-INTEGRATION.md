@@ -57,16 +57,3 @@ The adapter tests are offline and do not download weights. They cover in-word to
 ## Hosted verification checkpoint
 
 On commit 2a9a54f4c3961d030e757d9d4e919c6d6f760f46, Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) reported the repository Python test step SUCCESS, which includes these offline adapter tests. The full workflow remains FAILURE because the browser engine step has the same three previously recorded regressions (modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding). Build, generated-data reproducibility and Chromium UI steps were skipped by the workflow dependency. Actual model downloads/inference against the two checkpoints remain unverified.
-
-
-## Independent rule-engine development informed by phonological structure
-
-MekongPhon is retained as an optional neural reference, not as a source-code or training-corpus dependency of the deterministic engine. The rule engine's independent path now has an opt-in orthographic syllabifier:
-
-- It operates on Unicode grapheme clusters and keeps combining marks attached to their base.
-- It runs the existing Lao structural parser over candidate spans and uses bounded dynamic programming to find complete syllable sequences.
-- It returns a segmentation only when exactly one complete path exists. Ambiguous and malformed tokens are not guessed; they remain unsplit and are processed by the existing fail-closed parser.
-- The default Python API remains syllable-oriented for backward compatibility. Enable phrase syllabification with `analyze(text, infer_unspaced=True)` or `lao-ua TEXT --segment-unspaced`.
-- This is an independently implemented structural algorithm. It does not reuse MekongPhon source code, scrape its lexicon, import OPUS/SEAlang training material, or rely on neural weights.
-
-The feature is supported by the documented Lao orthographic fact that spaces separate phrases rather than words and that vowel/consonant signs are structurally represented in the script. It is a segmentation improvement, not a claim of lexical word recognition or an accuracy result. See [W3C Lao Script Resources](https://www.w3.org/International/sealreq/lao/) and the existing orthography references in the evidence registry.
