@@ -96,7 +96,7 @@ test("shared Lao labialized onset cluster fixture", () => {
 
 test("medial ອ is long ɔ", () => {
   const r = analyze("ຈອກ");
-  assert.equal(r.syllables[0].ipa, "tɕɔːk");
+  assert.equal(r.syllables[0].ipa, "t͡ɕɔːk");
   assert.equal(r.output, "чок");
 });
 
