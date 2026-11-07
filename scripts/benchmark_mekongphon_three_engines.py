@@ -355,6 +355,7 @@ def main() -> int:
         errors = 0
         warning_counts: dict[str, int] = {}
         partial_shape_counts: dict[str, int] = {}
+        partial_warning_shape_counts: dict[str, int] = {}
         segmental_withheld = 0
         tonal_withheld = 0
         engine_tone_categories: list[list[str] | None] = []
@@ -394,6 +395,13 @@ def main() -> int:
                         warning_code = f"{warning_code}:{detail}"
                     elif warning_code == "UNCONSUMED_AFTER_VOWEL":
                         tail = detail
+                        tail_shape = " + ".join(
+                            unicodedata.name(char, "UNKNOWN-CODEPOINT")
+                            for char in tail
+                        )
+                        partial_warning_shape_counts[tail_shape] = (
+                            partial_warning_shape_counts.get(tail_shape, 0) + 1
+                        )
                         if any(ch in "່້໊໋" for ch in tail):
                             shape = "contains-tone-mark"
                         elif tail.startswith(("ເ", "ແ", "ໂ", "ໃ", "ໄ")):
@@ -494,6 +502,7 @@ def main() -> int:
             "tonal_withheld_items": tonal_withheld,
             "warning_counts": dict(sorted(warning_counts.items())),
             "partial_parse_shape_counts": dict(sorted(partial_shape_counts.items())),
+            "partial_warning_shape_counts": dict(sorted(partial_warning_shape_counts.items())),
             "segmental_mean_latency_ms": round(statistics.mean(segmental_durations) * 1000, 3),
             "tonal_mean_latency_ms": round(statistics.mean(tonal_durations) * 1000, 3),
             "segmental_throughput_items_per_second": (
