@@ -16,9 +16,9 @@ This guide describes the current repository contract. It complements [AGENTS.md]
 - Playwright Chromium for the built-site browser tests.
 - No frontend bundler is currently used. The site consists of two static HTML pages and native browser ES modules.
 
-Install the browser-test dependency and browser:
+Install the exact browser-test dependency graph from `package-lock.json`, then install Chromium:
 
-    npm install --no-audit --no-fund
+    npm ci --no-audit --no-fund
     npx playwright install --with-deps chromium
 
 ## Verification commands
