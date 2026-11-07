@@ -102,18 +102,6 @@ def tokenize_ipa(value: str) -> list[str]:
     return tokens
 
 
-def sequence_distance(a: list[str], b: list[str]) -> int:
-    previous = list(range(len(b) + 1))
-    for i, token_a in enumerate(a, 1):
-        current = [i]
-        for j, token_b in enumerate(b, 1):
-            current.append(min(
-                current[-1] + 1,
-                previous[j] + 1,
-                previous[j - 1] + (token_a != token_b),
-            ))
-        previous = current
-    return previous[-1]
 
 
 def alignment_error_profile(references: list[str], predictions: list[str], limit: int = 30) -> dict[str, object]:
@@ -124,6 +112,8 @@ def alignment_error_profile(references: list[str], predictions: list[str], limit
     reference_tokens_total = 0
     edit_total = 0
     unknown_fallbacks: Counter[str] = Counter()
+    from lao_ukrainian.phonetic_result import IPA_SYMBOLS
+    known_singletons = {symbol for symbol in IPA_SYMBOLS if len(symbol) == 1}
     for reference, prediction in zip(references, predictions):
         ref_tokens = tokenize_ipa(reference)
         pred_tokens = tokenize_ipa(prediction)
@@ -158,10 +148,7 @@ def alignment_error_profile(references: list[str], predictions: list[str], limit
                 insertions[pred_tokens[j - 1]] += 1
                 j -= 1
         for token in (*ref_tokens, *pred_tokens):
-            if len(token) == 1 and token not in {"a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
-                                                 "k", "p", "t", "d", "b", "ŋ", "m", "n", "s", "f",
-                                                 "h", "ɡ", "g", "x", "ɦ", "r", "l", "j", "ʋ", "w",
-                                                 "ʃ", "ʒ", "ʔ", "ɲ"}:
+            if len(token) == 1 and token not in known_singletons:
                 unknown_fallbacks[token] += 1
     return {
         "unit": "longest-match IPA_SYMBOLS inventory token; unknown code points fall back to one token",
