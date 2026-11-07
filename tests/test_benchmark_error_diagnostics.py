@@ -38,6 +38,17 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
     def test_unresolved_tone_categories_do_not_render_tonal_output(self):
         self.assertEqual(BENCHMARK.render_mekong_tonal(["kʰa"], [None]), "")
 
+    def test_project_predict_emits_minor_syllable_diagnostics_without_runtime_error(self):
+        predict = BENCHMARK.load_project()
+        result = predict("ຄະຄາ")
+        self.assertEqual(result["status"], "PARTIAL")
+        self.assertEqual(result["tone_categories"][0], None)
+        context = result["tone_contexts"][0]
+        self.assertTrue(context["candidate_minor_shape"])
+        self.assertTrue(context["candidate_minor_open_a_shape"])
+        self.assertTrue(context["following_major_weighted"])
+        self.assertEqual(context["analysis_status"], "analysis-dependent")
+
     def test_optional_affricate_tie_bars_are_secondary_allographs_only(self):
         self.assertEqual(BENCHMARK.remove_optional_ipa_tie_bars("t͡ɕa"), "tɕa")
         self.assertEqual(BENCHMARK.remove_optional_ipa_tie_bars("t͜ɕa"), "tɕa")
