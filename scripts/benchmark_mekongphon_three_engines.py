@@ -338,7 +338,7 @@ def alignment_error_profile(
 
 def remove_optional_ipa_tie_bars(value: str) -> str:
     """Remove only IPA affricate tie bars for a secondary allograph score."""
-    return nfc(value.replace("\\u0361", "").replace("\\u035c", ""))
+    return nfc(value.replace("\u0361", "").replace("\u035c", ""))
 
 
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
