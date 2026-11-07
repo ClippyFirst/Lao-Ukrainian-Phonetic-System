@@ -1753,3 +1753,17 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Linguistic readiness is unchanged: `data/benchmark/gold.tsv` is header-only; independent adjudicated IPA gold = 0; empirical accuracy remains unavailable. Expert phonetic adjudication, independent annotators/adjudicator, lawful item-level source access and manual accessibility QA remain external gates.
 - Repository governance: branch metadata showed `main` unprotected. This was recorded as an owner-action risk; no ruleset or repository setting was changed.
 - Scope discipline: preserve existing package/data/schema/test boundaries. No broad directory migration, duplicate task register, external skill dependency, third-party corpus copy, model weight vendoring, release or deployment change is authorized by this audit.
+
+
+## PR #143 exact-head Verify result — 2026-11-07
+
+- PR: [#143 — Audit repository structure, fix browser fail-closed segmentation, and update docs](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), targeting `main`.
+- Exact tested head at this checkpoint: `a7353b23b6b21678c9f8602247a26f694396d226`.
+- Verify run [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044): **SUCCESS**.
+- Completed stages: independent IPA corpus structural validation; repository data/evidence audit; **181 Python tests**; external-G2P harness syntax/CLI; **112 Node tests across all four suites**; static build and canonical browser-data generation; generated-data reproducibility; **4 Chromium UI tests**; built-page and relative-asset assertions.
+- The browser correction now preserves the analysis-dependent `ຣ` IPA result without sending it to Ukrainian adaptation and withholds the incomplete `ກາລ` unit rather than exposing a `ກາ` prefix. The two relevant regressions and the prior modern-`ຣ` regression pass in the exact-head run.
+- The single Node test-runner invocation ensures all four suites report even when one suite fails.
+- Audit, audit index, README and this handoff update were included in the successful exact-head run.
+- Engineering tasks ENG-001–003 and DOC-001–003 are **DONE_VERIFIED** for this head. Linguistic acceptance remains separate: independent IPA gold = 0 and empirical accuracy remains unavailable.
+- No merge, release, deployment setting change, branch-protection change or dataset redistribution was performed.
+- Any later commit changes the PR head and requires a fresh exact-head Verify. The successful run above is evidence for the exact SHA stated above, not a blanket guarantee for future changes.
