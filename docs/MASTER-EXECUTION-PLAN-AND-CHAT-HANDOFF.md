@@ -1953,3 +1953,15 @@ The browser now imports `SPECIAL_TONE_RULES` from generated `web/data.js`, produ
 - **TODO:** qualified reviewer to assess six candidates, onset restrictions and four tone contexts; investigate vowel/offglide patterns (`j=>i`, `ː=>ə`, `a=>ː`, `o=>w`) on a rights-cleared development set.
 - **BLOCKED:** independent IPA gold remains empty pending two qualified annotators and adjudication; MekongPhon upstream source/corpus rights remain UNKNOWN.
 - **DEFERRED:** merge, release and changing the default engine. PRs #137–#140 remain open and unmerged.
+
+
+## Registry-reuse performance checkpoint — 2026-11-07
+
+The Python analysis path now loads the linguistic registry once per `analyze()` call and passes it through dynamic segmentation and syllable parsing, including the following-syllable selector. This avoids re-reading the CSV registries for each token/syllable without changing the parsing or phonological rules.
+
+- Full Verify [42382964250 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382964250) on code head `8fa4966fc74da16247e73b8b3940c620e22b4faa`.
+- Schema 4.0 benchmark [42382960457 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457), artifact [13578092183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457/artifacts/13578092183), SHA-256 `8d25f1032805e7e38339449d658d9efc4167329f4ea25d82c4de26a7ad54b655`. Runtime errors: 0 for all three engines.
+- On the same hosted benchmark environment and 100-word set, ClippyFirst mean per-item latency changed from **14.207 ms** (run 42382431568, before registry reuse) to **4.724 ms** (run 42382960457, after registry reuse), approximately **66.7% lower**. Model loading is excluded. This is a single-run CI observation, not a multi-run performance guarantee.
+- Schema 4.0 accuracy/coverage results remained unchanged, as expected from a data-loading optimization.
+
+**Task status:** DONE_VERIFIED for registry reuse, functional regression suite, full browser/build checks and refreshed three-engine benchmark. Linguistic acceptance remains PARTIAL pending expert review of the six potential minor-syllable candidates and four dictionary-reference tone discrepancies. Independent project IPA gold remains 0; upstream MekongPhon data rights remain UNKNOWN.
