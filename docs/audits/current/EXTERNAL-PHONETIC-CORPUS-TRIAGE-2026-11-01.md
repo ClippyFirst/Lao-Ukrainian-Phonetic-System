@@ -19,7 +19,7 @@ The source code is MIT, but the corresponding `neurlang/dataset/lao/` lexicon ha
 
 ## Full train-split diagnostic and rule-baseline comparison — 2026-11-07
 
-The pinned train file has raw SHA-256 \`2d0f68989009620980ced3386f11a640e6167404308eeb6a79efc52bc8e40ee0\`. First complete run: [42386956616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42386956616); aggregate artifact SHA-256 \`1598ee5f23ea9bfdba6c4eacbb4f53cc377900565a91054d4b96c354c2dd24\`.
+The pinned train file has raw SHA-256 `2d0f68989009620980ced3386f11a640e6167404308eeb6a79efc52bc8e40ee0`. First complete run: [42386956616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42386956616); aggregate artifact SHA-256 `1598ee5f23ea9bfdba6c4eacbb4f53cc377900565a91054d4b96c354c2dd24`.
 
 - Segmental: 6,219 rows, 93.58% coverage, 3,885 exact matches (62.47% of the full denominator), full-denominator CER 16.70%.
 - Tone categories: 4,152/8,761 covered (47.39%); 132/4,152 category disagreements (3.18%) on the covered segmental-exact subset; 616 category-length mismatches and 133 reference-alignment failures.
