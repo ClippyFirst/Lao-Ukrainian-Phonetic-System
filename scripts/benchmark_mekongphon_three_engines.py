@@ -74,6 +74,7 @@ def load_dataset() -> tuple[list[dict[str, str]], str]:
 def load_project():
     from lao_ukrainian.core import analyze
     from lao_ukrainian.data import load_registry
+    from lao_ukrainian.data import load_registry
 
     def predict(text: str) -> dict[str, str | float]:
         started = time.perf_counter()
