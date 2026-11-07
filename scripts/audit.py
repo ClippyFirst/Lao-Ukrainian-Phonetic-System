@@ -39,8 +39,8 @@ def main():
     claim_ids={r["claim_id"] for r in claims}
     for row in special_tones:
         assert row["profile"] == "Vientiane", f"unknown special tone profile: {row['rule_id']}"
-        assert row["tone"] == "neutral" and not row["contour"], f"invalid neutral tone selector: {row['rule_id']}"
-        assert row["status"] == "well-supported", f"unsupported special tone status: {row['rule_id']}"
+        assert not row["tone"] and not row["contour"], f"invalid unresolved special tone selector: {row['rule_id']}"
+        assert row["status"] == "analysis-dependent", f"unsupported special tone status: {row['rule_id']}"
         assert row["evidence_id"] in claim_ids, f"unknown special tone claim: {row['rule_id']}"
     consonant_by_grapheme={r["grapheme"]: r for r in consonants}
     allowed_labialized_ipa={"tʷʰ", "tɕʷ", "kʷ", "kʷʰ", "ʔʷ", "sʷ", "ŋʷ", "lʷ"}
