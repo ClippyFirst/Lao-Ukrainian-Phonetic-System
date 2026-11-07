@@ -133,3 +133,53 @@ test("browser UI labels grapheme fallback as provisional and keeps accepted outp
   await expect(page.locator("#output")).not.toContainText("к'а");
   await expect(page.locator(".grapheme-preview")).toContainText("ລ");
 });
+
+
+test("every interactive control has a programmatic accessible name", async ({ page }) => {
+  await page.goto("/");
+  const unnamed = await page.locator("button, a, textarea, summary").evaluateAll((elements) =>
+    elements.filter((element) => {
+      const labelledBy = element.getAttribute("aria-labelledby");
+      const labelledByText = labelledBy
+        ? labelledBy.split(/\\s+/).map((id) => document.getElementById(id)?.textContent || "").join(" ").trim()
+        : "";
+      const label = element.labels ? Array.from(element.labels).map((node) => node.textContent || "").join(" ").trim() : "";
+      const name = element.getAttribute("aria-label") || labelledByText || label ||
+        element.getAttribute("title") || element.textContent?.trim() || "";
+      return !name;
+    }).map((element) => element.outerHTML)
+  );
+  expect(unnamed, "interactive elements without accessible names").toEqual([]);
+});
+
+test("methodology page exposes keyboard-accessible navigation and a named main landmark", async ({ page }) => {
+  await page.goto("/system.html");
+  await expect(page.getByRole("banner")).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Основна навігація" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Навігація методологією" })).toBeVisible();
+  await expect(page.getByRole("main")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Перейти до методології" })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#main$/);
+});
+
+test("forced-colors and reduced-motion preferences retain visible focus and suppress motion", async ({ page }) => {
+  await page.goto("/");
+  await page.emulateMedia({ forcedColors: "active" });
+  await page.keyboard.press("Tab");
+  const forced = await page.locator(".skip-link").evaluate((element) => ({
+    active: matchMedia("(forced-colors: active)").matches,
+    outlineStyle: getComputedStyle(element).outlineStyle
+  }));
+  expect(forced.active).toBe(true);
+  expect(forced.outlineStyle).not.toBe("none");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const reduced = await page.locator("html").evaluate((element) => ({
+    active: matchMedia("(prefers-reduced-motion: reduce)").matches,
+    scrollBehavior: getComputedStyle(element).scrollBehavior
+  }));
+  expect(reduced.active).toBe(true);
+  expect(reduced.scrollBehavior).toBe("auto");
+});

@@ -2149,3 +2149,13 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Exact-head Verify [42416565378 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416565378): 260 Python tests, 126 Node tests, 10 Chromium tests; npm ci, independent IPA gold schema validation, repository/evidence audit, build, generated-data reproducibility, browser tests and built-page/asset assertions passed.
 - DEP-001 (package-lock and npm ci) — DONE_VERIFIED. LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED for engineering implementation and automated verification. UI-001 remains PARTIAL because manual assistive-technology, physical-device and deployed-site checks are not performed by CI.
 - PRs #137–#142 remain open and untouched. PR #137–#140 implementation history is incorporated through the reviewed dependency stack; PR #141–#142 code was ported selectively while preserving the stricter C0 selector and branch-specific fixes.
+
+
+## Accessibility continuation — 2026-11-08
+
+- Starting checkpoint: branch head 074b2f5134878cd8b489af4d3257b28691807701; main remains f40c1128302486b3589da9b16bae198ef3ad1d81.
+- MekongPhon rights are owner-confirmed as fully resolved in the prior project conversation. LIC-001 remains DONE_VERIFIED (owner-confirmed), not blocked.
+- package-lock.json is committed and workflow uses npm ci --no-audit --no-fund. DEP-001 is DONE_VERIFIED.
+- Added browser regression coverage for programmatic accessible names of interactive controls, methodology-page landmark/heading and keyboard skip navigation, forced-colors focus visibility, and reduced-motion behavior. Added forced-colors CSS rules for visible focus, link affordance and key surface borders.
+- Exact-head CI for these latest changes is pending. Do not mark this new test batch verified until its push run completes successfully.
+- UI-001 remains PARTIAL until manual NVDA/JAWS/VoiceOver/TalkBack, keyboard-only walkthrough on the deployed service, physical mobile touch-device testing, actual 200%/400% browser zoom and human visual review are recorded with device/browser/AT versions and findings. Automated Chromium emulation is not represented as those manual checks.

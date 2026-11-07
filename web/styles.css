@@ -274,3 +274,20 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:20px max(24px
   font-size: 1.05em;
   font-weight: 700;
 }
+
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+  a {
+    text-decoration: underline;
+  }
+  button, .trace-panel, .result-card, .workbench {
+    border-color: ButtonText;
+  }
+  .skip-link {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

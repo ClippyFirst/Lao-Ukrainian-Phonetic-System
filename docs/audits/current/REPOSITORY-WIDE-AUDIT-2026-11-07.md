@@ -292,3 +292,11 @@ No release, merge, deployment change, repository-settings change, or third-party
 - Exact-head Verify [42416565378 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416565378): 260 Python tests, 126 Node tests, 10 Chromium tests; npm ci, independent IPA gold schema validation, repository/evidence audit, build, generated-data reproducibility, browser tests and built-page/asset assertions passed.
 - DEP-001 (package-lock and npm ci) — DONE_VERIFIED. LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED for engineering implementation and automated verification. UI-001 remains PARTIAL because manual assistive-technology, physical-device and deployed-site checks are not performed by CI.
 - PRs #137–#142 remain open and untouched. PR #137–#140 implementation history is incorporated through the reviewed dependency stack; PR #141–#142 code was ported selectively while preserving the stricter C0 selector and branch-specific fixes.
+
+
+## Accessibility continuation — 2026-11-08
+
+- The owner confirmed in the project conversation that MekongPhon rights are fully resolved. LIC-001 remains DONE_VERIFIED (owner-confirmed); it is not an active blocker and must not be re-opened as a legal uncertainty.
+- DEP-001 remains DONE_VERIFIED: package-lock.json exists and the workflow installs with npm ci --no-audit --no-fund. Latest exact branch head at this checkpoint is 074b2f5134878cd8b489af4d3257b28691807701; Verify [42417002151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42417002151) and train-split diagnostics [42416997715](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416997715) both succeeded.
+- UI-001 remains PARTIAL. Added automated assertions for accessible names on interactive elements, methodology-page landmark/heading structure and keyboard skip navigation, Windows forced-colors focus visibility, and reduced-motion behavior. Real screen-reader sessions, physical-device checks and deployed-site visual QA remain outstanding because this environment cannot truthfully claim those human tests were performed.
+- No audio was supplied or required for this UI task. No external linguistic accuracy claims are inferred from these accessibility checks.
