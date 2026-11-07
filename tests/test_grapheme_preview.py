@@ -1,5 +1,9 @@
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
+from unittest.mock import patch
 from lao_ukrainian import analyze
+from lao_ukrainian.cli import main
 
 
 class GraphemePreviewTests(unittest.TestCase):
@@ -36,6 +40,15 @@ class GraphemePreviewTests(unittest.TestCase):
 
     def test_complete_syllable_does_not_receive_fallback_preview(self):
         self.assertIsNone(analyze("ຂາ").syllables[0].grapheme_preview)
+
+    def test_text_cli_displays_provisional_preview_separately(self):
+        output = StringIO()
+        with patch("sys.argv", ["lao-ua", "ກາລ"]), redirect_stdout(output):
+            main()
+        rendered = output.getvalue()
+        self.assertIn("IPA=None", rendered)
+        self.assertIn("IPA preview=kaː [PROVISIONAL]", rendered)
+        self.assertIn("unresolved=ລ", rendered)
 
 
 if __name__ == "__main__":
