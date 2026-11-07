@@ -61,6 +61,24 @@ class TestCore(unittest.TestCase):
         self.assertEqual(len(result.syllables), 2)
         self.assertEqual(result.syllables[0].tone, "high-mid")
 
+    def test_potential_minor_selector_does_not_cross_explicit_space(self):
+        result = analyze("ຄະ ຄາ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(result.syllables[0].tone, "high-mid")
+        self.assertNotIn(
+            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+            result.syllables[0].rules,
+        )
+
+    def test_potential_minor_selector_does_not_override_uncertain_onset(self):
+        result = analyze("ຣະຄາ")
+        first = result.syllables[0]
+        self.assertEqual(first.phonetic_result.status, "UNCERTAIN")
+        self.assertNotIn(
+            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+            first.rules,
+        )
+
     def test_low_class_ng(self):
         s = analyze("ງາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "ŋaː")
