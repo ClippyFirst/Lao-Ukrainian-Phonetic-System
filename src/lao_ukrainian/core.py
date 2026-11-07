@@ -9,7 +9,7 @@ from .data import load_registry
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 
 
-def analyze(text: str) -> Analysis:
+def analyze(text: str, *, infer_unspaced: bool = False) -> Analysis:
     normalized = normalize_lao(text)
     warnings = validate_unicode(normalized)
     if warnings:
@@ -18,7 +18,7 @@ def analyze(text: str) -> Analysis:
     registry = load_registry()
     syllables = []
     analysis_warnings = []
-    for surface in segment_syllables(normalized):
+    for surface in segment_syllables(normalized, infer_unspaced=infer_unspaced):
         parsed = parse_syllable(surface)
         local_warnings = list(parsed.get("warnings", []))
         ipa, rules, tone_status, tone = phonologize(parsed)
