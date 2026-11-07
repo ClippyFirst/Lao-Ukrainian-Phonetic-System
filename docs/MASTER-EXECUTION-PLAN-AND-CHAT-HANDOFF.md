@@ -1838,3 +1838,14 @@ Remaining work:
 5. **DEFERRED — production merge/default switch:** PR #137 remains open and unmerged; do not merge or switch defaults without the owner's approval and the external linguistic acceptance gates.
 
 Commands/checks actually executed through hosted GitHub Actions: schema 3.0 three-engine benchmark; independent IPA gold corpus structure validation; repository data/evidence audit; Python tests; external-G2P harness syntax/CLI; browser engine tests; browser data generation and generated-data reproducibility; real Chromium UI tests; built-site and relative-asset checks. All recorded exact-head Verify runs cited above succeeded; final current head still requires its own completed run. No local checkout or local Python/Node test run is claimed.
+
+
+## Immutable MekongPhon inference benchmark checkpoint — 2026-11-07
+
+- **DONE_VERIFIED:** both neural models were loaded and executed from immutable Hub revisions on the same 100-entry MekongPhon held-out lexicon as ClippyFirst's deterministic rule engine. Exact revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`; non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`.
+- Exact-head benchmark workflow [42371584765](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765) SUCCESS; code head `cef976a2ecb4e0318ff91f8f1d928dbb4750749e); aggregate artifact [13574335831](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765/artifacts/13574335831), SHA-256 `e5bf7e5482f5d82fe0b3983696ac3f4e084a2f52cc01c85618c182bdbcf4dd2f`.
+- Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`, 100 entries, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. CPU PyTorch 2.6.0, Transformers 4.49.0, beam=5, max input 128 tokens, truncation disabled, no runtime errors.
+- Results: non-tonal MekongPhon CER 6.64%, 82/100 exact; tonal MekongPhon CER 8.29%, 74/100 exact. ClippyFirst segmental CER 12.79% (97% coverage); ClippyFirst tonal CER 15.19% only after evaluation-only rendering to the MekongPhon contour convention (97% coverage). On the same 97 covered words: ClippyFirst segmental CER 7.89% vs neural 5.79%; tonal 10.67% vs neural 6.30%.
+- Full methodology, metrics, and limitations: `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
+- Interpretation: neural models outperform ClippyFirst on this reference set; this is not independent gold and does not authorize replacing the deterministic default. Independent adjudicated gold remains 0. MekongPhon corpus/source-data rights remain unresolved; only aggregate metrics were published.
+- Next: specialist review of rule-engine withheld structures and disagreements; establish a rights-cleared, independently adjudicated Lao IPA set before broad accuracy claims.
