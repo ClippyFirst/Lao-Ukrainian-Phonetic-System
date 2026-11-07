@@ -180,8 +180,8 @@ Disposition: full corpus, scraped lexicons, upstream code, derivative corpus, re
 
 Evidence locators are recorded in `data/evidence/sources.csv` and the dedicated rights review.
 
-## Independent deterministic rule-engine extension — 2026-11-07
+## Rule-engine branch reconciliation — 2026-11-07
 
-An opt-in orthographic syllabifier was implemented independently of MekongPhon. It uses Unicode grapheme boundaries plus the existing structural Lao syllable parser, with bounded dynamic programming and a strict unique-path requirement. It preserves the default syllable-oriented API; callers explicitly enable it through `analyze(..., infer_unspaced=True)` or the CLI flag `--segment-unspaced`. Ambiguous/malformed input remains unsplit and is processed by existing fail-closed logic. The regression suite covers the Lao phrase `ສະບາຍດີ`, tone-mark attachment, zero-width-space boundaries, and preservation of the default API contract.
+The deterministic rule-engine improvements are already implemented on open PR #137 (`benchmark/mekongphon-three-engine`): DP syllabification of unspaced Lao, per-syllable tone-mark validation, local short-vowel/coda checks, unsupported-material preservation, typed IPA output and source-scoped Vientiane tone contour handling. The PR includes dedicated regression tests and a reproducible three-engine benchmark. It was inspected against main (78 commits ahead, 0 behind; 20 changed files).
 
-This is a source-independent project implementation; it does not copy MekongPhon code, lexicons or training examples. W3C Lao Script Resources was added to the source registry as orthographic background. Status remains PARTIAL until exact-head hosted CI executes the new tests and full release checks. The feature is not lexical word segmentation and does not establish empirical pronunciation accuracy.
+No duplicate syllabifier was retained in PR #138. That branch remains scoped to the optional neural provider and rights audit. PR #137 remains PARTIAL pending the three known browser failures documented in Verify run [42305592423](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305592423). The benchmark run is evidence for that frozen reference split only, not independent project gold or universal accuracy. Independent adjudicated IPA gold remains 0.
