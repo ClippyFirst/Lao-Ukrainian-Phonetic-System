@@ -1799,11 +1799,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 
 ## Exact-head acceptance — npm lockfile and automated accessibility — 2026-11-07
 
-- Final commit: `387c91de0ea5fd101edd2a1a4ed93ccdb6c40866` on `audit/repository-docs-structure-20261107`; PR #143 remains open and unmerged.
-- Exact-head Verify [42404831500](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404831500) **SUCCESS**. Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed all 3 locked packages. 181 Python tests passed; Node test command passed; 8 Chromium tests passed (4 existing + 3 new accessibility/responsive checks); static build, generated-data reproducibility and built-page/relative-asset checks passed.
+- Final commit: `ec3bd411920bb4530b3e23861dc5ce6f081a8f86` on `audit/repository-docs-structure-20261107`; PR #143 remains open and unmerged.
+- Exact-head Verify [42404921935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404921935) **SUCCESS**. Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed all 3 locked packages. 181 Python tests passed; Node test command passed; 8 Chromium tests passed (4 existing + 3 new accessibility/responsive checks); static build, generated-data reproducibility and built-page/relative-asset checks passed.
 - **DEP-001 — DONE_VERIFIED:** the committed `package-lock.json` is used by CI through `npm ci`; the clean hosted runner proves reproducible installation for the current Node test dependency graph.
 - **LAO-UI-001 — PARTIAL:** keyboard skip-link, keyboard focus traversal/method switch, accessible landmarks/control names/live regions, 320px (400%-equivalent), 390px mobile, 640px (200%-equivalent) and 768px tablet viewport checks, plus emulated mobile touch interaction are green. Real assistive technology and physical-device checks remain TODO; no claim of full manual accessibility conformance.
 - **LIC-001 — DONE_VERIFIED (owner-confirmed):** owner states MekongPhon rights were fully resolved in the prior project conversation; this supersedes earlier preliminary rights blocker notes. No new legal opinion is implied.
 - Intermediate CI failures before this exact head were caused by a test expectation that queried a result control before entering text; corrected test now passes on the exact head. Do not treat those superseded runs as current failures.
 
 - Extended the mobile browser suite with `isMobile`/`hasTouch` emulation at 390×844, tapping the quick-example and romanization selector. Responsive overflow checks now include 320px (400%-equivalent) in addition to 390px, 640px (200%-equivalent) and 768px. This is emulated touch/viewport coverage, not physical-device or actual browser zoom testing.
+
+- The final exact-head Verify on the branch tip at this checkpoint is [42404921935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404921935) **SUCCESS** on `ec3bd411920bb4530b3e23861dc5ce6f081a8f86`; this append only aligns the canonical audit/handoff with the completed exact-head result.
