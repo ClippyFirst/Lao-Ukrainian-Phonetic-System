@@ -18,6 +18,20 @@ class GraphemeContextTests(unittest.TestCase):
         self.assertEqual(result.segments[0].kind, "vowel")
         self.assertEqual(result.status, "SUPPORTED")
 
+    def test_lao_labialized_onsets_are_supported_ipa_segments(self):
+        for ipa in ("kʷʰ", "tʷʰ", "kʷ", "tɕʷ", "ʔʷ", "sʷ", "ŋʷ", "lʷ"):
+            with self.subTest(ipa=ipa):
+                result = from_phonology(ipa)
+                self.assertEqual(result.status, "SUPPORTED")
+                self.assertEqual([segment.ipa for segment in result.segments], [ipa])
+                self.assertEqual(result.segments[0].kind, "consonant")
+
+    def test_reduced_schwa_offglide_is_a_supported_vowel(self):
+        result = from_phonology("ə̯")
+        self.assertEqual(result.status, "SUPPORTED")
+        self.assertEqual(result.segments[0].ipa, "ə̯")
+        self.assertEqual(result.segments[0].kind, "vowel")
+
     def test_combining_marks_remain_attached_to_base_grapheme(self):
         self.assertEqual(grapheme_units("ກັນ"), [("ກັ",0,2),("ນ",2,3)])
 
