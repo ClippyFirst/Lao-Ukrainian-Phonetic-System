@@ -51,3 +51,8 @@ The model card describes the training data as MekongPhon. The dataset's componen
 ## Tests
 
 The adapter tests are offline and do not download weights. They cover terminal tone preservation, unknown-symbol rejection, internal tone fail-closed behavior, model revision provenance and the no-partial-Ukrainian-output contract. Actual model inference remains an opt-in smoke test because it requires PyTorch, Transformers, network access and a model download.
+
+
+## Hosted verification checkpoint
+
+On commit a5a159d075c0a2a3beb85e0dc40b45cd9d50ddc3, Verify run [42367488146](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367488146) reported the repository Python test step SUCCESS, which includes these offline adapter tests. The full workflow remains FAILURE because the browser engine step has the same three previously recorded regressions (modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding). Build, generated-data reproducibility and Chromium UI steps were skipped by the workflow dependency. Actual model downloads/inference against the two checkpoints remain unverified.

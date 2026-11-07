@@ -1843,3 +1843,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Added offline unit tests for tone preservation, unsupported IPA rejection, revision provenance and withheld target output. These tests have not yet run in hosted CI at this handoff point. Actual model download/inference remains an opt-in integration check.
 - Rights boundary: the two Hugging Face model cards declare Apache-2.0 for their respective model artifacts; this does not clear the MekongPhon training corpus, source dictionary or OPUS components. The exact dataset license remains UNKNOWN. The implementation uses the model artifacts only and does not redistribute data or weights.
 - Status: implementation PARTIAL pending exact-head Verify and a real pinned-revision inference smoke test on both checkpoints. Independent adjudicated IPA gold remains 0; model output is an optional comparator/provider, not project truth. See docs/research/MEKONGPHON-NEURAL-INTEGRATION.md.
+
+
+## MekongPhon adapter hosted verification update — 2026-11-07
+
+- Exact head: a5a159d075c0a2a3beb85e0dc40b45cd9d50ddc3. Verify run [42367488146](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367488146): corpus structure validation PASS; repository data/evidence audit PASS; Python tests PASS (including the new offline MekongPhon adapter tests); external-G2P harness syntax/CLI PASS.
+- Full Verify remains FAILURE at Browser engine tests. The same three main-based browser failures remain: modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped because of this dependency failure.
+- No real neural inference was run: the hosted Verify intentionally does not download Hugging Face model weights. Both tonal and non-tonal model smoke tests with immutable model revisions remain TODO. The model revision can be passed explicitly to the CLI; when the default upstream revision is used, output is marked MODEL-REVISION-NOT-IMMUTABLE.
+- Readiness: neural adapter implementation exists and its offline tests pass; integration remains PARTIAL pending real model execution and green full Verify. The default deterministic engine and main branch remain unchanged.

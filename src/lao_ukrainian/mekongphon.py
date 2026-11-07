@@ -12,6 +12,7 @@ from typing import Any
 
 from .normalize import normalize_lao, validate_unicode
 from .phonetic_result import from_external_ipa
+from .model import PhoneticResult
 from .target import adapt_phonetic_result
 
 MODEL_IDS = {
@@ -35,7 +36,7 @@ class MekongPhonResult:
     tonal: bool
     num_beams: int
     raw_ipa: str
-    phonetic_result: Any
+    phonetic_result: PhoneticResult
     ukrainian: str | None
     status: str
     warnings: tuple[str, ...] = ()
