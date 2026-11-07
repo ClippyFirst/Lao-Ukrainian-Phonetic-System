@@ -2163,3 +2163,11 @@ Implementation:
 - Branch \`feature/lao-ukrainian-practical-system-20261107\` is stacked on PR #140's current implementation head; do not merge PR #140 or this follow-up blindly. \`main\` remains untouched.
 
 Verification status: exact-head CI for this new code/test/documentation head is pending. The code/docs are PARTIAL until full Verify and browser suites pass. The new target table is a project decision, not an official Ukrainian standard; independent IPA gold remains 0. Source-attested /aw/ examples, expert Lao phonological review, Ukrainian phonetic/onomastic review and a source-backed traditional-name exception list remain acceptance work.
+
+
+### Practical transcription exact-head verification — 2026-11-07
+
+- Full Verify [42397887901 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42397887901) on code/test checkpoint \`798b3a1539a559e779c5aaecadfcee3bd0411631\`.
+- Passed: IPA gold schema validation, repository audit, 240 Python tests, 121 Node tests, generated browser-data reproducibility, static build, 4 real Chromium tests and built-page asset checks.
+- Initial run 42397809554 found a stale expected «кау» fixture; after changing it to «кав», the exact follow-up passed. No failure is concealed.
+- This is engineering verification only. Expert Ukrainian/Lao review, source-attested /aw/ cases, a sourced traditional-name exception list and independent IPA gold (currently 0) remain open.
