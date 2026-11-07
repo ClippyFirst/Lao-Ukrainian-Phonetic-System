@@ -130,7 +130,7 @@ lao-ua 'ສະບາຍດີ' --engine mekongphon-tonal --device cpu --json
 lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device cpu --json
 ```
 
-Both engines default to immutable model revisions recorded in [the integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result. MekongPhon project rights are owner-confirmed as resolved; independent adjudicated Lao IPA gold remains 0.
+Both engines default to immutable model revisions recorded in [the integration guide](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result. MekongPhon project rights are owner-confirmed as resolved; independent adjudicated Lao IPA gold remains 0.
 
 ## Status
 
