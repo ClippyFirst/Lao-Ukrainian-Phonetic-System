@@ -1773,3 +1773,14 @@ A cross-runtime review identified a concrete difference that must not be papered
 - This is not a failure in the documentation changes. The same browser suite passes on the existing PR #137 exact head `bab117a064f0aee3b685922fe0f0738df7048b12` (Verify [42358772788](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358772788)); PR #137 includes the relevant browser-engine corrections.
 - Do not duplicate or merge PR #137 blindly. The audit branch remains based on main and must be retested after the owner/reviewer decides how to land the existing engine correction. The documentation and rights review remain **PARTIAL pending a green exact-head Verify**.
 - Repository branch-protection endpoint returned 403 (resource not accessible by integration) in this pass; branch-protection state is therefore not freshly re-verified here. The prior audit's owner-action note remains a historical finding, not a new current assertion.
+
+
+## Full-paper and SEAlang rights-evidence refinement — 2026-11-07
+
+- Inspected the full LREC 2026 paper PDF and the upstream MekongPhon root/data/pipeline/model/training READMEs plus the complete upstream Git tree (no LICENSE/COPYING file anywhere in the tree).
+- The paper says all data, code and pretrained models are publicly released for future research and quotes SEAlang's homepage: “all results are freely available for re-use under the Creative Commons open license.” This is positive evidence of intended research availability, but the inspected wording does not identify a specific CC version or terms.
+- The paper's proceedings are separately CC BY-NC 4.0. That applies to the proceedings publication, not automatically to the dataset. The MekongPhon sentence corpus also expands the seed dictionary over NLLB, Paracrawl and OpenSubtitles text, so source-component permissions remain separate.
+- The paper reports two-author qualitative review of 500 entries; it describes the reviewers as highly proficient second-language speakers rather than native speakers and reports 14/500 Lao entries inaccurate. This is useful QC, not independent expert gold for ClippyFirst's Vientiane profile.
+- Updated the rights review and repository-wide audit with these qualifications. The disposition remains: **likely intended for research, but no sufficiently specific dataset license is identified to confirm the full scope of copying, processing, retention or redistribution**. No raw corpus was copied into ClippyFirst.
+- Also corrected the limitations page's Python/browser segmentation description, the duplicate D-010 decision identifier (second decision renumbered D-011), and added a current-status banner to the historical validation ledger.
+- The latest exact-head CI run must be checked against the final branch SHA after this append. The known browser failures remain tracked as ENG-CI-001; the corresponding corrections are already present in open PR #137.
