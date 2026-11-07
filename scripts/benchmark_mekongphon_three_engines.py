@@ -146,7 +146,10 @@ def load_project():
                     "candidate_minor_shape": bool(
                         index == 0
                         and item.vowel in {"A", "I", "U"}
+                        and item.phonetic_result is not None
+                        and item.phonetic_result.vowel_length == "short"
                         and not item.coda
+                        and not item.tone_mark
                     ),
                     "onset": item.onset or "",
                     "consonant_class": item.consonant_class or "",
