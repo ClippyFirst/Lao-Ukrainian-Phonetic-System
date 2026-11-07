@@ -76,6 +76,11 @@ class GraphemeContextTests(unittest.TestCase):
         self.assertEqual(coda["realizations"][0]["engine_ipa"], "w")
         self.assertEqual(coda["realizations"][0]["reference_ipa"], "w")
         self.assertEqual(coda["observations"], 1)
+        position_rules = result["grapheme_position_rules"]
+        onset_position = next(rule for rule in position_rules if rule["grapheme"] == "ວ" and rule["role"] == "onset_base")
+        coda_position = next(rule for rule in position_rules if rule["grapheme"] == "ວ" and rule["role"] == "coda")
+        self.assertEqual(onset_position["realizations"][0]["engine_ipa"], "ʋ")
+        self.assertEqual(coda_position["realizations"][0]["engine_ipa"], "w")
 
     def test_o_is_silent_vowel_carrier_or_part_of_o_vowel_by_structure(self):
         registry = load_registry()
