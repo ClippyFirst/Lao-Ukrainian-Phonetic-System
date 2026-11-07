@@ -13,7 +13,8 @@ class MekongPhonAdapterTests(unittest.TestCase):
         self.assertEqual(result.external_ipa, "kʰaː˩˥")
         self.assertEqual(result.phonemic_ipa, "kʰaː")
         self.assertEqual(result.tone_contour_ipa, "˩˥")
-        self.assertEqual([part.ipa for part in result.segments], ["kʰ", "aː"])
+        self.assertEqual([part.ipa for part in result.segments], ["kʰ", "aː", "˩", "˥"])
+        self.assertEqual([part.kind for part in result.segments], ["consonant", "vowel", "tone", "tone"])
         self.assertEqual(result.status, "SUPPORTED")
 
     def test_unknown_ipa_symbol_fails_closed(self):

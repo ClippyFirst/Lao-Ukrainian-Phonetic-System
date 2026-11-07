@@ -1859,3 +1859,9 @@ A cross-runtime review identified a concrete difference that must not be papered
 - The Ukrainian practical layer's current policy neutralizes tone. The target adapter now excludes only explicitly typed tone segments for external neural output while retaining the complete raw IPA and tone tokens in the inspectable result. Unknown phonemes and unsupported symbols still fail closed.
 - Added regression coverage that a tonal model output containing internal tone markers remains supported and that segmental IPA still reaches the existing IPA-to-Ukrainian adapter. This is a project policy boundary, not a claim that tone is non-contrastive in Lao.
 - Previous exact-head Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) on 2a9a54f4c3961d030e757d9d4e919c6d6f760f46: Python tests PASS, data/evidence audit PASS; full workflow FAILURE on the same three browser-engine cases. This new tone-token refinement is a subsequent commit and requires its own Verify run.
+
+
+## MekongPhon tone-token regression correction — 2026-11-07
+
+- Verify run [42367695448](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367695448) on aab30d74ce6e4e1a14ef4e1fdf21fecd02bff8ed: data/evidence checks PASS; Python tests FAILED on one stale assertion that still expected terminal tone letters to be removed from the segment list. The new intended contract preserves those letters as typed tone segments; the separate tests for internal tone preservation and Ukrainian segmental adaptation passed in that same run.
+- Corrected the stale assertion to expect the two tone segments and their kinds. No production code change was required for this test failure. This correction is awaiting exact-head Verify.
