@@ -82,7 +82,7 @@ test("methodology tables that scroll horizontally are keyboard-focusable and nam
 test("copy and quick-example controls meet the 44px minimum target size", () => {
   for (const selector of [".copy", ".mini-button,.button", ".copy-button"]) {
     const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const match = css.match(new RegExp(escaped + "\\{([^}]*)\\}"));
+    const match = css.match(new RegExp("(?:^|\n)" + escaped + "\{([^}]*)\}"));
     assert.ok(match, "missing CSS rule for " + selector);
     assert.match(match[1], /min-height:44px/, selector + " must meet the 44px target minimum");
   }
