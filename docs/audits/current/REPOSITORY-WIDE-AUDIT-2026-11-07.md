@@ -151,3 +151,17 @@ The repository already expresses these practices in `AGENTS.md`, `CONTRIBUTING.m
 **Research-ready as an engineering and evidence-management prototype; not linguistically release-ready or publication-ready.** The selected branch has a successful exact-head engineering workflow and reproducible aggregate benchmark, but independent expert gold, qualified tone adjudication, broader source-data rights and manual accessibility QA remain unresolved. A green engineering workflow is not a phonetic accuracy certificate.
 
 *Review date: 2026-11-07. This report describes the inspected branch state and is not a legal opinion or a linguistic certification.*
+
+
+## Documentation patch verification state
+
+The audit, README, validation note, audit index, handoff and agent-reference refresh were committed to the selected branch in the following sequence:
+
+- Audit document: `de423189a96eae9e696713caa8b459e78f624295`.
+- README: `a38a02c9bcf5ee90be4bce793190da4e4e92a77b`.
+- Validation guide: `77bee3257a962b819dbb5164badad38f419bc488`.
+- Audit index: `41ae3c036923d8bbfdeb5462c317b9e55d8ffd56`.
+- Master handoff: `16676040c0a0d8943faa4315e86008e5281c9237`.
+- Agent reference refresh / final documentation commit at the time of this checkpoint: `d4f08fb6626136e699f05df40f1c7a3e84ad122b`.
+
+The earlier green Verify run 42384603376 is exact-head evidence for code/test commit `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; it predates these documentation commits. No workflow run associated with final documentation commit `d4f08fb6626136e699f05df40f1c7a3e84ad122b` was returned by the available commit-workflow query. Therefore DOC-012–016 remain **PARTIAL pending exact-final-head Verify**. Do not report the earlier code/test run as verification of the documentation patch.
