@@ -11,7 +11,10 @@ ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 
 def analyze(text: str, *, infer_unspaced: bool = False) -> Analysis:
     normalized = normalize_lao(text)
-    warnings = validate_unicode(normalized)
+    # U+200B is accepted only in the explicit phrase/syllabification mode;
+    # the default input contract continues to reject invisible separators.
+    validation_text = normalized.replace("\u200b", " ") if infer_unspaced else normalized
+    warnings = validate_unicode(validation_text)
     if warnings:
         return Analysis(text, normalized, [], "INVALID", warnings)
 
