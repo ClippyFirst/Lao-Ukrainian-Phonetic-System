@@ -149,7 +149,9 @@ def analyze_rows(rows, registry):
                 for idx in range(start,end):
                     role,scope=role_for_index(idx,st,surface)
                     if role=="tone_mark": actual=""; pattern=surface[idx]
-                    elif role in {"onset_base","high_class_modifier","labialization_modifier"}:
+                    elif role=="high_class_modifier":
+                        actual=""; pattern=st["onset_form"]
+                    elif role in {"onset_base","labialization_modifier"}:
                         actual=observed.get("onset",""); pattern=st["onset_form"]
                     elif role=="coda": actual=observed.get("coda",""); pattern=st["coda"] or ""
                     else:
@@ -160,6 +162,23 @@ def analyze_rows(rows, registry):
                     sound[(unit,role,pos,pattern,actual,scope)]+=1
                     contexts[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope)]+=1
                     if role=="tone_mark": tone[(unit,pos,onset_class,stype,vowel.get("id",""),st["coda"] or "open")]+=1
+    rule_groups=Counter()
+    for (grapheme,role,pos,pattern,actual,scope),count in sound.items():
+        rule_groups[(grapheme,role,pos,pattern,scope)] += count
+    distributions={}
+    for key in rule_groups:
+        grapheme,role,pos,pattern,scope=key
+        outcomes=[{"ipa":ipa,"count":count} for (g,r,p,pat,ipa,sc),count in sound.items()
+                  if (g,r,p,pat,sc)==key]
+        outcomes.sort(key=lambda item:(-item["count"],item["ipa"]))
+        total=rule_groups[key]
+        distributions[key]={
+            "grapheme":grapheme,"role":role,"word_position":pos,
+            "orthographic_unit":pattern,"sound_scope":scope,"observations":total,
+            "realizations":[{**item,"share":item["count"]/total} for item in outcomes],
+            "consistency":outcomes[0]["count"]/total if outcomes else None,
+            "evidence_tier":"high-frequency" if total>=100 else "medium-frequency" if total>=30 else "low-frequency",
+        }
     return {
       "method":{"alignment":"Longest-match IPA inventory plus Levenshtein; deterministic backtrace",
         "unit":"parser-derived onset, joint vowel structure and coda",
@@ -174,6 +193,7 @@ def analyze_rows(rows, registry):
         "structural_word_exact_rate":exact/parsed_words if parsed_words else None,
         "reference_ipa_tokens":ref_total,"alignment_edits":edits_total,"alignment_insertions":insertions_total,
         "parser_warning_codes":dict(warnings.most_common())},
+      "candidate_contextual_rules":sorted(distributions.values(),key=lambda x:(-x["observations"],x["grapheme"],x["role"])),
       "grapheme_sound_contexts":[{"grapheme":k[0],"role":k[1],"word_position":k[2],"orthographic_unit":k[3],
         "observed_ipa_at_unit_scope":k[4],"sound_scope":k[5],"count":v} for k,v in sound.most_common(1500)],
       "grapheme_context_features":[{"grapheme":k[0],"role":k[1],"word_position":k[2],"previous_grapheme":k[3],
