@@ -516,6 +516,27 @@ test("browser retains Ukrainian adaptation when only tone is unresolved", () => 
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
+test("browser withholds tone for a supported potential initial minor open-A syllable", () => {
+  const result = analyze("ຄະຄາ");
+  const first = result.syllables[0];
+  assert.equal(first.ipa, "kʰa");
+  assert.equal(first.phoneticResult.status, "SUPPORTED");
+  assert.equal(first.phoneticResult.toneCategory, null);
+  assert.equal(first.toneContour, null);
+  assert.equal(first.ukrainian, "к'а");
+  assert.ok(first.rules.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+});
+
+test("browser does not apply potential minor selector across spaces or uncertain onsets", () => {
+  const spaced = analyze("ຄະ ຄາ");
+  assert.equal(spaced.syllables[0].tone, "high-mid");
+  assert.ok(!spaced.syllables[0].rules.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+
+  const uncertain = analyze("ຣະຄາ");
+  assert.equal(uncertain.syllables[0].phoneticResult.status, "UNCERTAIN");
+  assert.ok(!uncertain.syllables[0].rules.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+});
+
 
 test("browser IPA tokenization is independent of target sequence matching", () => {
   const syllable = analyze("ຂາ").syllables[0];
