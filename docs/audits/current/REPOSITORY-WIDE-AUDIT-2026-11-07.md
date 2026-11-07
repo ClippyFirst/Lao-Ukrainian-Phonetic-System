@@ -102,7 +102,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 - Common Voice Lao: provider record is CC0-1.0 but has dataset-specific no-speaker-identification and no-rehosting/re-sharing conditions; its limited validated subset and unspecified accent do not establish the Vientiane target profile.
 - LDC Babel Lao: substantial Vientiane-region audio/transcript candidate, but access and use require the applicable LDC agreement; transcripts are not IPA gold.
 - Goruut and other external G2P outputs remain diagnostic candidates; successful execution or agreement is not accuracy.
-- Keep the machine-readable UNKNOWN and RESTRICTED license semantics conservative. No license status should be broadened without source-specific evidence.
+- The source registry now has a dedicated SEAlang reuse-notice entry and a refined MekongPhon record. The machine-readable benchmark license registry remains UNKNOWN for the dataset; keep UNKNOWN and RESTRICTED semantics conservative and do not assign a guessed CC identifier.
 
 ## Task ledger
 
