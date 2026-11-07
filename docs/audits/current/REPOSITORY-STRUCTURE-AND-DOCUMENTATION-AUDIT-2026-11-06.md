@@ -139,3 +139,14 @@ PR #140 now requires a supported/core onset and a supported segmental IPA before
 Python/browser tests now cover the positive case, non-major following syllable, whitespace boundary and uncertain onset. README's runtime contract was corrected to describe the existing dynamic within-token segmentation in both runtimes (Python additionally treats U+200B as a boundary). Aggregate benchmark diagnostics distinguish broad C₀V₀ shapes from the narrower open-/a/ selector and include diphthong-bearing major syllables.
 
 **Status: PARTIAL pending exact-head full Verify.** Run [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) is queued for head `759091f28cc57a746df549ac573067af9be922ab`. Prior run [42375870451](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375870451) passed but predates this refinement. No local test run is claimed. Linguistic acceptance remains evidence-limited pending qualified Vientiane review; independent IPA gold remains empty.
+
+
+## Final schema 4.0 and selector checkpoint — 2026-11-07
+
+The Python and browser engines now use the same source-backed special-tone registry: Python reads `special_tone_rules.csv`; the browser receives the same rule via generated `SPECIAL_TONE_RULES` in `web/data.js`. The selector requires a supported/core onset and segmental IPA, an unmarked short open /a/, no local parse warnings, and a long-vowel/diphthong/coda-bearing following syllable in the same token. Segmental IPA and Ukrainian adaptation remain available while independent tone is withheld.
+
+The benchmark had been stringifying `None` as `"None"`, falsely treating unresolved tone as a category. Schema 4.0 preserves nulls, scores only known aligned categories, excludes unresolved values from the confusion matrix, and reports category coverage, unresolved counts and word-length mismatches separately. U+200B is rejected by both public APIs; README and regression tests now document that rather than implying it is a valid separator.
+
+**Verification:** full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937) on `d4ea4f692b9376fd1236c8eaf7d4ae41683f5201`; schema 4.0 three-engine benchmark [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`.
+
+**Status: DONE_VERIFIED for engineering and benchmark integrity; PARTIAL for linguistic acceptance.** Six possible minor-syllable candidates and four known tone discrepancies require qualified Vientiane review. Independent project IPA gold remains 0, and MekongPhon source/corpus rights remain UNKNOWN.
