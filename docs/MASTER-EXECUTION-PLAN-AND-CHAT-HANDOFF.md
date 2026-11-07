@@ -1997,3 +1997,51 @@ The complete registry-threading change was exercised on the hosted CI runner:
 - Benchmark accuracy/coverage remained unchanged: ClippyFirst segmental CER 11.46%, 69/100 exact, 97% coverage; on the same 97 covered items ClippyFirst 6.49% CER / 69 exact, Lao2IPA 7.72% / 68, MekongPhon neural 5.79% / 81. Tone-category scoring on the segmental-exact subset remains 79/95 known categories covered, 4 known-category errors among 79 covered (5.06%), with unresolved cases reported separately. These remain dictionary-reference diagnostics, not independent expert gold.
 
 **Task status:** DONE_VERIFIED for full-pipeline registry reuse and its regression tests; DONE_VERIFIED for refreshed pinned three-engine benchmark. Linguistic acceptance remains PARTIAL pending qualified Vientiane review. Independent project IPA gold remains 0; upstream MekongPhon corpus/source rights remain UNKNOWN.
+
+
+## Repository-wide documentation and branch reconciliation — 2026-11-07
+
+### Baseline and branch disposition
+
+- Inspected default `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`; it was not modified.
+- Continued on the existing `improve/rule-engine-error-analysis-20261107` branch, which compares 211 commits ahead and 0 behind `main`. Latest verified code/test checkpoint: `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`.
+- Open PRs at inspection: #137, #138, #139 and #140. #137 is the deterministic engine/benchmark base; #139 is stacked on #137; #140 is stacked on #139. #138 is a separate optional neural-provider/rights-review stack based on #137.
+- The #138 branch `audit/repository-documentation-and-mekongphon-rights-20261107` and #140 branch are diverged from the common `main` base (the #138 branch is 88 commits ahead of `main`; #140 is 211 ahead). They were not merged or copied wholesale. The #138 neural provider is not represented as implemented in the selected #140 branch.
+- Branch inventory at inspection: `main`, `benchmark/mekongphon-three-engine`, `benchmark/mekongphon-immutable-inference-20261107`, `improve/rule-engine-error-analysis-20261107`, and `audit/repository-documentation-and-mekongphon-rights-20261107`.
+
+### Documentation and structural corrections
+
+- Corrected README terminology: romanization is a separate lower-information orthographic method, never a fallback for unresolved IPA.
+- Corrected the README limitation: the parser can dynamically segment supported orthographic syllables within a token; lexical word segmentation remains unsupported.
+- Added a prominent current-verification warning to `docs/validation.md`, preserving historical test records without presenting old counts as current.
+- Updated `docs/audits/README.md` so the 2026-11-07 repository-wide audit is the current audit and the 2026-11-06 audit is retained as a historical checkpoint.
+- Added a direct current-audit link to the root README.
+- Added `docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md` with the architecture map, branch/PR reconciliation, evidence-backed task ledger, reference review and exact remaining blockers.
+- No broad directory migration, duplicate execution plan, second task ledger, new runtime dependency or framework was justified. Existing canonical data, code, tests and documentation boundaries were preserved.
+
+### Exact verification and benchmark evidence
+
+- Full Verify [42384603376 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) on code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; all configured workflow stages passed, including IPA corpus structure validation, repository/data audit, Python tests, external-G2P CLI, browser tests, build/data generation, generated-data reproducibility, Chromium UI tests and built-page/asset checks.
+- Three-engine benchmark [42384500017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017), artifact [13578308566](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017/artifacts/13578308566), SHA-256 `996844312d068145673af57da8e07be48cb241c31cb5be55ef295802a803a6bc`.
+- ClippyFirst mean per-item latency: 1.533 ms vs 4.724 ms in the preceding hosted run (67.5% lower; model loading excluded). This is a single-run observation, not a statistical guarantee. Accuracy/coverage were unchanged; results remain dictionary-reference diagnostics, not independent gold.
+- No local checkout, local test run, clean npm install, lockfile generation or manual accessibility QA is claimed.
+
+### Current task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Repository architecture and data ownership | DONE_VERIFIED | Existing canonical CSV → generated browser mirror, separate Python/browser runtimes, schemas, fixtures and docs retained. |
+| Full-pipeline registry reuse | DONE_VERIFIED | One-load regression guard and full Verify run 42384603376 passed. |
+| Immutable three-engine benchmark | DONE_VERIFIED (diagnostic only) | Run 42384500017 and aggregate artifact verified; no accuracy claim. |
+| README/runtime-contract reconciliation | PARTIAL pending final documentation-head Verify | Terminology and segmentation limitation corrected; require exact-head Verify after this documentation commit. |
+| Validation/audit index/handoff reconciliation | PARTIAL pending final documentation-head Verify | Current branch status surfaced; require exact-head Verify after this documentation commit. |
+| npm dependency reproducibility | TODO | `package-lock.json` is absent and CI uses `npm install`; generate lockfile in a Node/npm-enabled checkout, switch to `npm ci`, and verify clean install. |
+| Manual UI/accessibility QA | TODO | Requires human keyboard-only, screen-reader, zoom/text-scaling, mobile and deployed-site matrix. |
+| Independent IPA gold and empirical accuracy | BLOCKED | Independent adjudicated records remain 0; requires rights-cleared sample, fixed expert IPA convention, two qualified annotators and separate adjudicator. |
+| Minor-syllable tone and residual parser cases | PARTIAL | Six candidate tone cases and four reference-sensitive discrepancies need qualified Vientiane review; three parser tails and one malformed tone case remain fail-closed. |
+| MekongPhon dataset/source rights | BLOCKED for broader reuse | Model artifact license declarations do not grant rights to the corpus, source dictionary, upstream code or OPUS-derived material. Obtain component-specific terms before copying, retention, training or redistribution. |
+
+### Readiness
+
+The selected branch remains an **engineering-verified research prototype**, not a linguistically release-ready or publication-ready system. The independent IPA gold corpus is empty, tone adjudication remains incomplete, MekongPhon dataset/source rights remain unresolved, and manual accessibility QA is outstanding. The current audit is linked from `docs/audits/README.md`; this handoff remains the single canonical execution ledger.
+
