@@ -336,6 +336,11 @@ def alignment_error_profile(
     }
 
 
+def remove_optional_ipa_tie_bars(value: str) -> str:
+    """Remove only IPA affricate tie bars for a secondary allograph score."""
+    return nfc(value.replace("\\u0361", "").replace("\\u035c", ""))
+
+
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     import sacrebleu
 
@@ -655,6 +660,14 @@ def main() -> int:
             "segmental_edit_profile": alignment_error_profile(
                 segmental_references, segmental_outputs
             ),
+            "segmental_optional_tie_bar_normalized": score(
+                [remove_optional_ipa_tie_bars(value) for value in segmental_references],
+                [remove_optional_ipa_tie_bars(value) for value in segmental_outputs],
+            ),
+            "tonal_optional_tie_bar_normalized": score(
+                [remove_optional_ipa_tie_bars(value) for value in tonal_references],
+                [remove_optional_ipa_tie_bars(value) for value in tonal_outputs],
+            ),
             "tonal_vs_pron_with_tones": tonal_metrics,
             "tonal_mekong_convention_vs_pron_with_tones": mekong_convention_tonal_metrics,
             "tone_only_on_segmental_exact_subset": tone_only_metrics,
@@ -737,7 +750,7 @@ def main() -> int:
             "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
-            "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. No source words or complete predictions are retained in the artifact.",
+            "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. Secondary IPA scores remove only optional affricate tie bars U+0361/U+035C; raw scores remain primary. No source words or complete predictions are retained in the artifact.",
             "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
         "neutral_tone": "A non-final, unmarked, open short /a/ syllable inside one unspaced orthographic token is represented as tone-category neutral with no contour, following Ueda (1994); no neutral contour is invented.",
             "mekong_convention_conversion": "For comparison only, ClippyFirst tone categories are re-rendered with the MekongPhon rule-baseline contour notation; this does not change production IPA or tone rules",
@@ -768,6 +781,8 @@ def main() -> int:
         "engines": {
             name: {
                 "segmental_cer": result["segmental_vs_pron_no_tones"]["cer"],
+                "segmental_tie_bar_normalized_cer": result["segmental_optional_tie_bar_normalized"]["cer"],
+                "segmental_tie_bar_normalized_exact": result["segmental_optional_tie_bar_normalized"]["exact_matches"],
                 "segmental_coverage": result["segmental_vs_pron_no_tones"]["coverage"],
                 "tonal_cer": result["tonal_vs_pron_with_tones"]["cer"],
                 "tonal_coverage": result["tonal_vs_pron_with_tones"]["coverage"],
