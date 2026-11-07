@@ -116,3 +116,17 @@ The code-bearing checkpoint is `9279e59fd6cfc7aee6c7350d4a9992a8e958ad86`. The p
 The current connector session did not expose the push-triggered mainline Actions run for this SHA (the available workflow-run endpoint is PR-only). The web-scrape fallback was unavailable due exhausted connected-account credits. Therefore exact-head CI is **NOT VERIFIED**, not passed and not failed. Acceptance requires the complete Verify workflow on the final current main SHA. No local test run or benchmark is claimed.
 
 Linguistic acceptance remains separately blocked by the empty independent IPA gold corpus and lack of independent expert validation.
+
+## Rule-engine error analysis and integration checkpoint — 2026-11-07
+
+The immutable two-model inference experiment was followed by aggregate-only edit analysis and two narrowly scoped deterministic-engine refinements.
+
+**Implemented on the stacked follow-up branch / PR #140:**
+- Canonical IPA for Lao ຈ now uses tied affricate `t͡ɕ`; un-tied `tɕ` remains accepted by the IPA target adapter. Python and browser data mirrors and shared regression fixtures were updated together.
+- A separate special-tone registry flags an initial unmarked short-open-/a/ shape before a major-weighted syllable as a potential minor syllable. Segmental IPA remains available; independent tone is analysis-dependent and withheld. No neutral tone contour is invented.
+- Benchmark diagnostics now aggregate code-point edit substitutions/insertions/deletions, syllable position, tone-rule contexts and unresolved-tone contexts. Artifacts contain aggregate counts only, not source words or per-item predictions.
+- The existing five-tone Vientiane matrix was not retuned: observed tone disagreements remain consistent with the source-scoped matrix and differ from the dictionary reference.
+
+**Evidence:** benchmark [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901) SUCCESS; aggregate artifact [13575161811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901/artifacts/13575161811). On the shared 97 segmental items ClippyFirst now scores CER 6.49% / 69 exact, versus Lao2IPA 7.72% / 68 exact and MekongPhon neural 5.79% / 81 exact. Full ClippyFirst segmental coverage is 97%; tonal coverage is 91%. These remain dictionary-reference metrics, not independent linguistic gold.
+
+**Current disposition:** PARTIAL pending exact-head full Verify after browser IPA expectations and documentation updates. Independent expert IPA gold remains 0; the six candidate minor-syllable contexts require qualified Vientiane review. The three parser-tail structures and malformed tone-mark case remain fail-closed. MekongPhon corpus/source rights remain UNKNOWN.
