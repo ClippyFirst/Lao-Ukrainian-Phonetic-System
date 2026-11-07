@@ -11,3 +11,7 @@ def main():
     print(f"Input: {a.input}\nStatus: {a.status}")
     for s in a.syllables:
         print(f"{s.surface}: IPA={s.phonemic_ipa} → UA={s.practical_ukrainian} [{s.status}]")
+        if s.grapheme_preview is not None:
+            preview = s.grapheme_preview
+            unresolved = "".join(preview.unresolved_graphemes) or "none"
+            print(f"  IPA preview={preview.ipa_preview or '—'} [{preview.status}]; unresolved={unresolved}")
