@@ -307,3 +307,10 @@ Four remaining known ClippyFirst tone discrepancies are localized: two high-clas
 The leading segmental character-edit pairs are `j=>i` (6), `w=>ʋ` (5), `ː=>ə` (5), `a=>ː` (5), `o=>w` (4). The same `w=>ʋ` substitution occurs in Lao2IPA (6), so it may be a reference-convention difference. No global /w/↔/ʋ/ normalization was introduced.
 
 Exact benchmark run [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), aggregate artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`. Full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937).
+
+
+### Registry reuse and observed latency — 2026-11-07
+
+The Python analyzer now loads its linguistic registry once per input analysis and passes it through syllable segmentation/parsing, avoiding repeated CSV reads for every token and syllable. This is a performance-only change; the schema 4.0 accuracy and coverage metrics did not change.
+
+Full Verify [42382964250 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382964250) and benchmark [42382960457 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457), artifact [13578092183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457/artifacts/13578092183). Mean ClippyFirst per-item latency was 14.207 ms before and 4.724 ms after the change on the same hosted 100-word benchmark setup (model loading excluded). Treat this as a single-run observation, not a statistically established speedup.
