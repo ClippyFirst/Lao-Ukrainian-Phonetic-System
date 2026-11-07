@@ -239,3 +239,11 @@ Branch: \`feature/lao-ukrainian-practical-system-20261107\`, based on PR #140 he
 - Traditional Ukrainian exonyms and lexicalized names need a sourced exception registry; do not overwrite established forms with regular output.
 - Independent IPA gold remains 0; no new phonetic accuracy claim is made.
 - Qualified Ukrainian phonetic/onomastic review and qualified Lao source review remain outstanding.
+
+
+### Exact engineering verification — 2026-11-07
+
+- Full Verify [42397887901 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42397887901) on code/test checkpoint \`798b3a1539a559e779c5aaecadfcee3bd0411631\`.
+- Successful stages: independent IPA gold corpus schema gate; repository data/evidence audit; **240 Python tests**; optional external-G2P harness syntax/CLI; **121 Node tests** (64 + 23 + 27 + 7); canonical browser data generation and no-drift check; static build; **4 real Chromium tests**; built-page and relative-asset checks.
+- The first run [42397809554](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42397809554) failed one pre-existing expected-value fixture that still asserted /aw/ → «ау». The fixture was corrected to «ав», after which the exact follow-up run above passed. This confirms the intended output change is enforced consistently rather than hiding the regression.
+- CI validates software behavior and internal consistency, not expert linguistic correctness. The new practical table remains project policy; independent IPA gold remains 0, and the /h/, /ɯ/, /ɤ/ approximations and conventional-name exceptions require human review.
