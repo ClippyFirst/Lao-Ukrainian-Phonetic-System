@@ -1865,3 +1865,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 
 - Verify run [42367695448](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367695448) on aab30d74ce6e4e1a14ef4e1fdf21fecd02bff8ed: data/evidence checks PASS; Python tests FAILED on one stale assertion that still expected terminal tone letters to be removed from the segment list. The new intended contract preserves those letters as typed tone segments; the separate tests for internal tone preservation and Ukrainian segmental adaptation passed in that same run.
 - Corrected the stale assertion to expect the two tone segments and their kinds. No production code change was required for this test failure. This correction is awaiting exact-head Verify.
+
+
+## Exact-head MekongPhon adapter verification — 2026-11-07
+
+- Latest integration head: d9a38e115ef454713290c3ef64bd3e7ca76e9a90. Verify run [42367765630](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367765630): corpus structure validation PASS; repository data/evidence audit PASS; Python test suite PASS (187 tests, including all MekongPhon adapter tests); optional external-G2P harness syntax/CLI PASS.
+- Full Verify remains FAILURE at browser engine tests: 113 Node tests, 110 passed and 3 failed. The failures are the previously known browser-engine issues: modern Lao ຣ context-dependent reading, withholding uncertain IPA, and withholding incomplete IPA. The relevant fixes exist in the separate open PR #137; it remains unmerged. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped after the browser-test failure.
+- The new adapter-specific Python tests all passed, including in-word tone-token preservation and segmental IPA adaptation through the existing Ukrainian correspondence table. The earlier stale test expectation was corrected and the latest Python run is green.
+- Actual downloads and inference using the tonal and non-tonal Hugging Face checkpoints have NOT been run. Model-runtime smoke tests remain TODO; no accuracy claim is made. Main remains unchanged and PR #138 remains open/unmerged.
