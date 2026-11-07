@@ -54,6 +54,11 @@ class TestCore(unittest.TestCase):
     def test_monosyllabic_open_short_a_keeps_its_lexical_tone(self):
         self.assertEqual(analyze("ຄະ").syllables[0].tone, "high-mid")
 
+    def test_initial_open_short_a_without_major_weight_does_not_trigger_minor_candidate(self):
+        result = analyze("ຄະຄະ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(result.syllables[0].tone, "high-mid")
+
     def test_low_class_ng(self):
         s = analyze("ງາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "ŋaː")
