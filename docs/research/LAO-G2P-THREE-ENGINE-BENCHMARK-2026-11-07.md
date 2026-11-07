@@ -289,3 +289,21 @@ The production selector is intentionally narrower than the broad C₀V₀ diagno
 The browser implementation already requires supported segmental IPA; the Python implementation was tightened to the same gate. New regressions cover the candidate, non-major following syllable, explicit space and analysis-dependent onset. The benchmark now reports broad C₀V₀ shapes separately from the narrower open-/a/ selector and includes diphthong-weighted following syllables in its aggregate contexts. This is not evidence that every selected orthographic shape is lexically minor; a qualified Vientiane reviewer must review the six candidates before the selector can be considered linguistically accepted.
 
 Exact-head full Verify [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) is queued for `759091f28cc57a746df549ac573067af9be922ab`. Earlier success does not verify these latest changes.
+
+
+### Schema 4.0: missing-tone-aware category evaluation — 2026-11-07
+
+A review of the schema 3.0 artifact found that nullable ClippyFirst tone categories were converted to the literal string `"None"`. This inflated apparent category coverage and polluted the confusion matrix. Schema 4.0 preserves nulls, compares known syllable-aligned categories only, excludes unresolved tones from the confusion matrix, and reports category-level coverage, unresolved categories/words, complete-word rate and word-length mismatches separately.
+
+On the 64-word segmental-exact subset:
+- ClippyFirst: 79/95 categories covered (83.16%); 4 selector categories unresolved and 12 categories withheld by 8 word-length mismatches; 4 actual errors among 79 covered categories (5.06%); 51/64 exact words.
+- Lao2IPA: 81/93 categories covered (87.10%); 0 errors among covered categories; 8 word-length mismatches; 56/64 exact words.
+- MekongPhon neural: 105/105 categories covered; 3 errors among 105 (2.86%); 66/69 exact words.
+
+The six possible minor open-/a/ cases in the full 100-word sample are distributed across high (1), low (2) and middle (3) onset classes. Four occur in the segmental-exact tone subset. Their tones remain withheld, not replaced with a neutral contour.
+
+Four remaining known ClippyFirst tone discrepancies are localized: two high-class live unmarked /O, UU/ + coda ງ contexts (engine low-rising vs dictionary high-mid), one low-class live /II/ + mai-ek (engine high-mid vs dictionary low-falling), and one high-class live long /AA/ unmarked context (engine low-rising vs dictionary low-falling). These are not enough to retune the source-scoped Vientiane tone matrix without independent expert adjudication.
+
+The leading segmental character-edit pairs are `j=>i` (6), `w=>ʋ` (5), `ː=>ə` (5), `a=>ː` (5), `o=>w` (4). The same `w=>ʋ` substitution occurs in Lao2IPA (6), so it may be a reference-convention difference. No global /w/↔/ʋ/ normalization was introduced.
+
+Exact benchmark run [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), aggregate artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`. Full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937).
