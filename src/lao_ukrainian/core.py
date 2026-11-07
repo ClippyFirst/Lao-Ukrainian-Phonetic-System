@@ -5,6 +5,7 @@ from .target import rank_ukrainian_candidates, practical_from_ipa
 from .phonetic_result import from_phonology
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
+from .grapheme_preview import preview_from_graphemes
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 
@@ -179,6 +180,8 @@ def analyze(text: str) -> Analysis:
                  if tone is not None and row["rule_id"] in rules and row["contour"]),
                 None,
             )
+            # Diagnostic-only preview: never promoted to accepted IPA or Ukrainian output.
+            grapheme_preview = preview_from_graphemes(surface, parsed, registry) if ipa is None else None
             analysis_warnings.extend(local_warnings)
             syllables.append(
                 SyllableAnalysis(
@@ -198,6 +201,7 @@ def analyze(text: str) -> Analysis:
                     local_warnings,
                     tone_contour=tone_contour,
                     phonetic_result=phonetic_result,
+                    grapheme_preview=grapheme_preview,
                 )
             )
 

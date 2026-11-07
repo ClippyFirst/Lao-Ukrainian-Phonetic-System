@@ -448,3 +448,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | LAO-UA-TRADITION-001 | TODO | No authoritative Ukrainian Lao exonym/lexicalized-name exception registry exists. | Build only from sourced Ukrainian encyclopedias, atlases, official usage and expert review; preserve source and precedence per entry. |
 
 The regular transcription table does not override established Ukrainian forms. The Lao–Russian reference is a comparative source for table structure and historical practices, not authority for Ukrainian output. Independent ClippyFirst Lao IPA gold remains 0 and empirical accuracy remains null. The first Verify run 42397809554 exposed one stale expected fixture (`кау`); it was corrected to `кав` and the exact follow-up run 42397887901 passed.
+
+
+## Grapheme preview fallback — 2026-11-07
+
+| Task ID | Status | Evidence / acceptance |
+|---|---|---|
+| LAO-GRAPHEME-PREVIEW-001 | PARTIAL (implementation awaiting exact-head CI) | A separate provisional IPA preview reuses registered positional onset, onset-cluster, complete-vowel and legal-coda evidence when the full IPA path withholds output. It records per-grapheme roles, unresolved elements and a typed `PROVISIONAL` result; the Ukrainian adapter is not called. Tests cover malformed tone marks, unknown vowel structure, unconsumed tails, non-core Pali graphemes and the no-preview path for complete syllables. | Exact-head full Verify and data-audit integration must pass. Expand grapheme/role coverage from primary orthographic sources; do not guess unsupported standalone values. Expert Lao review and independent IPA gold remain separate acceptance gates. |
