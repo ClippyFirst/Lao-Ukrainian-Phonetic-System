@@ -1,5 +1,5 @@
 import unittest
-from scripts.analyze_mekongphon_grapheme_contexts import align_tokens, grapheme_units, structural_components, tokenize_ipa
+from scripts.analyze_mekongphon_grapheme_contexts import analyze_rows, align_tokens, grapheme_units, structural_components, tokenize_ipa
 from lao_ukrainian.data import load_registry
 from lao_ukrainian.parser import parse_syllable
 from lao_ukrainian.phonology import phonologize
@@ -45,6 +45,33 @@ class GraphemeContextTests(unittest.TestCase):
         self.assertEqual(long["vowel"]["ipa"], "eː")
         self.assertEqual(phonologize(short, registry)[0], "ke")
         self.assertEqual(phonologize(long, registry)[0], "keː")
+
+    def test_same_grapheme_gets_distinct_onset_and_coda_context_rules(self):
+        rows = [
+            {"orth": "ວາ", "pron_no_tones": "waː"},
+            {"orth": "ກາວ", "pron_no_tones": "kaːw"},
+            {"orth": "ວາ", "pron_no_tones": "waː"},
+        ]
+        result = analyze_rows(rows, load_registry())
+        rules = result["candidate_contextual_rules"]
+        onset = next(rule for rule in rules if rule["grapheme"] == "ວ" and rule["role"] == "onset_base")
+        coda = next(rule for rule in rules if rule["grapheme"] == "ວ" and rule["role"] == "coda")
+        self.assertEqual(onset["realizations"][0]["ipa"], "w")
+        self.assertEqual(onset["observations"], 2)
+        self.assertEqual(coda["realizations"][0]["ipa"], "w")
+        self.assertEqual(coda["observations"], 1)
+
+    def test_preposed_vowel_context_keeps_short_and_long_e_distinct(self):
+        rows = [
+            {"orth": "ເກະ", "pron_no_tones": "ke"},
+            {"orth": "ເກ", "pron_no_tones": "keː"},
+        ]
+        result = analyze_rows(rows, load_registry())
+        rules = [rule for rule in result["candidate_contextual_rules"]
+                 if rule["grapheme"] == "ເ" and rule["role"] == "preposed_vowel_sign"]
+        by_vowel = {rule["vowel_id"]: rule["realizations"][0]["ipa"] for rule in rules}
+        self.assertEqual(by_vowel["E"], "e")
+        self.assertEqual(by_vowel["EE"], "eː")
 
     def test_preposed_vowel_is_joint_structure(self):
         registry=load_registry(); surface="ເກ"; parsed=parse_syllable(surface,registry)
