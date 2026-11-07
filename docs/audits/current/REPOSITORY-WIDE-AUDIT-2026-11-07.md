@@ -204,3 +204,10 @@ Documentation content at `de69f329048cd7de5d8da5d183d0962bdcf26f18` passed exact
 - Research-use scope remains: authors' stated public release purpose supports research and rule discovery. Raw source rows are not committed or retained in artifacts; independent ClippyFirst gold remains 0. Broader redistribution, sublicensing and commercial reuse remain separately gated by component-specific terms.
 - The 399 parser-withheld rows, profile-sensitive IPA differences, independent gold, qualified Vientiane adjudication, npm lockfile/clean-install reproducibility and manual accessibility QA remain unresolved.
 
+
+## Final branch-head reconciliation — 2026-11-07
+
+- Branch head before this reconciliation: `98241b8e751bcf5004bf4e46313c7b5836337558`; PR #140 remains open; branch is 278 commits ahead of `main`, 0 behind. `main` is untouched.
+- Exact-head Verify [42391831295] is pending on that branch head. The last completed full Verify is [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133) on base contextual-analyzer code `16d267664beb25a9e26e9639aace42a2975582d1`.
+- The expanded position/broad-context output and aggregate-only tests are in code/test checkpoint `b376296947c93b1ab01a4a26bdd5afcfc2e756db`; diagnostic [42391252559] remains pending. Therefore MEKONG-GRAPHEME-002 stays PARTIAL.
+- Documentation report, README, index, audit and handoff are updated. No unverified run is represented as successful.
