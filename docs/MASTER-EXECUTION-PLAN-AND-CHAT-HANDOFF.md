@@ -2111,3 +2111,13 @@ The required engine contract is **Lao grapheme element + structural position + p
 - The initial adapter replacement omitted the public phonetic_result_from_ipa re-export and failed 12 Python imports. This was fixed before the successful 276bf run; the intermediate failure is not current.
 - Successful exact-head Verify 42414862794: 247 Python tests, 122 Node tests, 9 Chromium tests; npm ci, data/evidence audit, build, generated-data reproducibility and built-page checks all passed. This verifies the multi-syllable adapter and new tests before subsequent target-convention/browser changes.
 - Exact-head verification for target yodation, /w/ policy and 200% zoom must be recorded from the current branch tip after CI completes. Independent adjudicated IPA gold remains 0; linguistic accuracy is not inferred from software tests.
+
+
+## Grapheme-level provisional IPA preview integration — 2026-11-07
+
+- Ported PR #142's grapheme inventory and conservative preview backend onto the single continuation branch, preserving the stricter C0/minor-syllable selector already present in this branch. PR #142 remains open and untouched; main remains unchanged.
+- Added a Unicode 18 Lao-block inventory with 83 assigned code points, each linked to source and claim IDs and classified by scope/role/status. Unicode data establishes codepoint names/identity only; it does not license phonetic assignments.
+- Added typed GraphemeEvidence/GraphemePreview objects. Preview uses registered positional onset or onset-cluster IPA and only parser-confirmed complete vowel/coda structures; unresolved graphemes stay explicit. Tone is never inferred. Preview segments and result are PROVISIONAL and cannot pass the target adapter's SUPPORTED-only gate.
+- Added Python API/CLI fallback and tests for unconsumed suffixes, malformed tone marks, partial onset, Pali-only characters, complete-syllable no-fallback, and inventory coverage.
+- Corrected the fallback coda-role assignment to locate the actual coda grapheme rather than assuming the last code point (a trailing tone mark must not be mislabeled as a coda).
+- Browser UI still does not render this preview. Keep the feature PARTIAL until exact-head CI and browser integration/QA are complete.

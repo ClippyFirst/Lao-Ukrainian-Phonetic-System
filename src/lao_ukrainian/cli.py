@@ -31,6 +31,10 @@ def main():
                 f"{syllable.surface}: IPA={syllable.phonemic_ipa} "
                 f"→ UA={syllable.practical_ukrainian} [{syllable.status}]"
             )
+            if syllable.grapheme_preview is not None:
+                preview = syllable.grapheme_preview
+                unresolved = "".join(preview.unresolved_graphemes) or "none"
+                print(f"  IPA preview={preview.ipa_preview or '—'} [{preview.status}]; unresolved={unresolved}")
         return
 
     from .mekongphon import transcribe_lao

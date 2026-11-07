@@ -1,6 +1,8 @@
 # Lao → Ukrainian Phonetic-Graphemic Correspondence System
 
 - [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
+- [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — target orthography conventions.
+- [Попередній IPA-прев’ю за графемами](docs/lao-grapheme-ipa-preview.md) — partial segmental hints, explicitly marked provisional.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 

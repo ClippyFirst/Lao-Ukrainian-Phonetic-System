@@ -441,3 +441,10 @@ The export and benchmark now preserve and validate the complete frozen split ide
 ## MekongPhon rights status correction — 2026-11-07
 
 The repository owner confirms full MekongPhon rights for the authorized project use. Mark `LAO-MEKONGPHON-001` / `LIC-001` as `DONE_VERIFIED (owner-confirmed)` for rights; retain the source's `PARTIAL` status only for secondary-reference and dialect/convention limitations. This is not an independent legal opinion. Independent adjudicated project IPA gold remains 0.
+
+
+## Grapheme preview fallback — 2026-11-07
+
+| Task ID | Status | Evidence / acceptance |
+|---|---|---|
+| LAO-GRAPHEME-PREVIEW-001 | PARTIAL | Added a separate typed PROVISIONAL IPA preview using registered positional onset/cluster values and parser-confirmed complete vowel/coda units when full phonology withholds output. It records grapheme roles, unresolved material and warnings; tone is never inferred and the Ukrainian adapter is never called. Inventory catalogs 83 assigned Unicode 18 Lao-block code points and separates modern Lao, Pali/Sanskrit, Khmu and non-phonological entries. Python API/CLI tests and source/evidence audit are being integrated. Browser UI preview and broader expert/source adjudication remain outstanding. |
