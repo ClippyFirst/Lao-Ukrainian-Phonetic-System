@@ -84,13 +84,51 @@ def parse_tone_categories(suffix: str) -> list[str] | None:
     return categories
 
 
+def tokenize_ipa(value: str) -> list[str]:
+    """Longest-match tokenization using ClippyFirst's typed source-IPA inventory."""
+    from lao_ukrainian.phonetic_result import IPA_SYMBOLS
+
+    symbols = sorted(IPA_SYMBOLS, key=len, reverse=True)
+    tokens: list[str] = []
+    index = 0
+    while index < len(value):
+        match = next((symbol for symbol in symbols if value.startswith(symbol, index)), None)
+        if match is None:
+            tokens.append(value[index])
+            index += 1
+        else:
+            tokens.append(match)
+            index += len(match)
+    return tokens
+
+
+def sequence_distance(a: list[str], b: list[str]) -> int:
+    previous = list(range(len(b) + 1))
+    for i, token_a in enumerate(a, 1):
+        current = [i]
+        for j, token_b in enumerate(b, 1):
+            current.append(min(
+                current[-1] + 1,
+                previous[j] + 1,
+                previous[j - 1] + (token_a != token_b),
+            ))
+        previous = current
+    return previous[-1]
+
+
 def alignment_error_profile(references: list[str], predictions: list[str], limit: int = 30) -> dict[str, object]:
-    """Aggregate IPA code-point edits without retaining source words or predictions."""
+    """Aggregate IPA-inventory-token edits without retaining words or predictions."""
     substitutions: Counter[str] = Counter()
     deletions: Counter[str] = Counter()
     insertions: Counter[str] = Counter()
+    reference_tokens_total = 0
+    edit_total = 0
+    unknown_fallbacks: Counter[str] = Counter()
     for reference, prediction in zip(references, predictions):
-        n, m = len(reference), len(prediction)
+        ref_tokens = tokenize_ipa(reference)
+        pred_tokens = tokenize_ipa(prediction)
+        reference_tokens_total += len(ref_tokens)
+        n, m = len(ref_tokens), len(pred_tokens)
         dp = [[0] * (m + 1) for _ in range(n + 1)]
         for i in range(n + 1):
             dp[i][0] = i
@@ -101,34 +139,44 @@ def alignment_error_profile(references: list[str], predictions: list[str], limit
                 dp[i][j] = min(
                     dp[i - 1][j] + 1,
                     dp[i][j - 1] + 1,
-                    dp[i - 1][j - 1] + (reference[i - 1] != prediction[j - 1]),
+                    dp[i - 1][j - 1] + (ref_tokens[i - 1] != pred_tokens[j - 1]),
                 )
+        edit_total += dp[n][m]
         i, j = n, m
         while i or j:
-            if i and j and reference[i - 1] == prediction[j - 1] and dp[i][j] == dp[i - 1][j - 1]:
+            if i and j and ref_tokens[i - 1] == pred_tokens[j - 1] and dp[i][j] == dp[i - 1][j - 1]:
                 i -= 1
                 j -= 1
             elif i and j and dp[i][j] == dp[i - 1][j - 1] + 1:
-                substitutions[f"{reference[i - 1]}=>{prediction[j - 1]}"] += 1
+                substitutions[f"{ref_tokens[i - 1]}=>{pred_tokens[j - 1]}"] += 1
                 i -= 1
                 j -= 1
             elif i and dp[i][j] == dp[i - 1][j] + 1:
-                deletions[reference[i - 1]] += 1
+                deletions[ref_tokens[i - 1]] += 1
                 i -= 1
             else:
-                insertions[prediction[j - 1]] += 1
+                insertions[pred_tokens[j - 1]] += 1
                 j -= 1
+        for token in (*ref_tokens, *pred_tokens):
+            if len(token) == 1 and token not in {"a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
+                                                 "k", "p", "t", "d", "b", "ŋ", "m", "n", "s", "f",
+                                                 "h", "ɡ", "g", "x", "ɦ", "r", "l", "j", "ʋ", "w",
+                                                 "ʃ", "ʒ", "ʔ", "ɲ"}:
+                unknown_fallbacks[token] += 1
     return {
-        "unit": "Unicode code point (NFC), segmental IPA only",
+        "unit": "longest-match IPA_SYMBOLS inventory token; unknown code points fall back to one token",
         "alignment": "Levenshtein; tie-break priority: match, substitution, deletion, insertion",
+        "token_error_rate_full_denominator": edit_total / reference_tokens_total if reference_tokens_total else None,
+        "reference_tokens": reference_tokens_total,
+        "edit_distance": edit_total,
         "top_substitutions": [{"pair": key, "count": count} for key, count in substitutions.most_common(limit)],
         "top_deletions": [{"symbol": key, "count": count} for key, count in deletions.most_common(limit)],
         "top_insertions": [{"symbol": key, "count": count} for key, count in insertions.most_common(limit)],
         "total_substitutions": sum(substitutions.values()),
         "total_deletions": sum(deletions.values()),
         "total_insertions": sum(insertions.values()),
+        "unknown_fallback_tokens": dict(sorted(unknown_fallbacks.items())),
     }
-
 
 def load_dataset() -> tuple[list[dict[str, str]], str]:
     request = urllib.request.Request(DATA_URL, headers={"User-Agent": "ClippyFirst-research-diagnostic/1.0"})
