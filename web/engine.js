@@ -384,6 +384,23 @@ function analyzeWord(word) {
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
     return [wholeCandidate];
   }
+  // Preserve a complete but uncertain phonetic analysis as one orthographic
+  // unit. The phrase segmenter must not discard it merely because the
+  // Ukrainian adapter correctly withholds an uncertain onset (for example,
+  // modern Lao ຣ defaulting to /l/).
+  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status !== "SUPPORTED") {
+    return [wholeCandidate];
+  }
+  // A single trailing consonant that the coda registry does not support is
+  // unconsumed orthography, not a licence to salvage the preceding onset/vowel
+  // as a complete syllable (e.g. ກາລ). Keep the whole unit fail-closed.
+  const unconsumedWarning = (wholeCandidate.warnings || []).find((warning) =>
+    warning.startsWith("Невикористана частина структури складу: "));
+  const unconsumedTail = unconsumedWarning?.slice("Невикористана частина структури складу: ".length);
+  if (unconsumedTail && [...unconsumedTail].length === 1 &&
+      Object.hasOwn(CONSONANTS, unconsumedTail)) {
+    return [wholeCandidate];
+  }
   if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
       w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
       w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||

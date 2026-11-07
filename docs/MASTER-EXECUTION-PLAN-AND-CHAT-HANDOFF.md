@@ -1737,3 +1737,61 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Required acceptance commands remain those in `.github/workflows/verify.yml`: corpus validation, `scripts/audit.py`, Python unittest discovery, optional external-G2P harness syntax/CLI, `npm test`, `npm run build`, generated-data diff check, Playwright Chromium tests, and built-site/asset assertions.
 - No benchmark was run. No phonological correspondence CSV, gold label, external source, licensing record, or romanization path was changed.
 - Do not promote this task to DONE_VERIFIED until the exact current main SHA has a successful Verify run. Independent Lao IPA gold remains 0; this is an architecture correction, not linguistic certification.
+
+---
+
+## Repository-wide audit and one-branch continuation — 2026-11-07
+
+- User requested a comprehensive repository audit, accurate documentation and repository structure review, with the supplied engineering/design references evaluated as methods rather than copied wholesale. Work is isolated on `audit/repository-docs-structure-20261107`, created directly from `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`. No existing branch, PR, or `main` ref was modified.
+- Current audit: [REPOSITORY-WIDE-AUDIT-2026-11-07.md](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md). It distinguishes the actual `main` tree from unmerged PR stacks and does not claim that their features are available on `main`.
+- Repository metadata: default branch `main`; seven branches were visible at inspection (including `main` and the existing audit, benchmark, feature and improvement branches); open PRs #137–#142. PR #137 targets `main`; #138 is stacked on #137; #139–#142 form a separate dependent stack. No PR was merged, retargeted, closed, or force-pushed.
+- Baseline Verify run [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593) on `main` SHA `f40c1128302486b3589da9b16bae198ef3ad1d81`: **FAILURE**. IPA corpus structural validation, repository data/evidence audit, Python tests and external-G2P CLI checks passed; browser engine suite failed (52 passed, 3 failed), so build, generated-data drift, Chromium UI and built-page checks were skipped. The three failing cases were modern Lao `ຣ` analysis-dependent IPA retention and fail-closed handling of `ກາລ`; exact assertions and causes are recorded in the current audit.
+- Root cause: `analyzeWord()`'s phrase segmenter only retained candidates with an available Ukrainian result. It therefore discarded a valid but uncertain IPA analysis (e.g. `ຣະ` → provisional `/la/`) and split an orthographically incomplete unit with one unconsumed consonant into a valid-looking prefix plus residue.
+- Branch fix committed in `web/engine.js` at `0c808700e097b341fa53a522c4abd5a1c8abebc5`: preserve complete uncertain phonetic candidates as a single unit; withhold structurally incomplete units ending in a single unsupported consonant rather than salvaging the prefix. This is **PARTIAL pending exact-head Verify**; the pre-fix CI is the RED evidence, not a pass for the fix.
+- Documentation/build hygiene changes on this branch: move the Romanization matrix link below the README H1 into Documentation; change `npm test` to one Node test-runner invocation over all four suites so a failure in the first suite does not hide later-suite results; add the current audit to the audit index; append this handoff. The lockfile is still absent and is not fabricated in a connector-only environment.
+- Current branch acceptance: open a PR targeting `main`; require exact-head Verify. The final audit must record the resulting workflow run and whether all subsequent build/browser steps ran. Do not mark the browser fix DONE_VERIFIED before that evidence exists.
+- Linguistic readiness is unchanged: `data/benchmark/gold.tsv` is header-only; independent adjudicated IPA gold = 0; empirical accuracy remains unavailable. Expert phonetic adjudication, independent annotators/adjudicator, lawful item-level source access and manual accessibility QA remain external gates.
+- Repository governance: branch metadata showed `main` unprotected. This was recorded as an owner-action risk; no ruleset or repository setting was changed.
+- Scope discipline: preserve existing package/data/schema/test boundaries. No broad directory migration, duplicate task register, external skill dependency, third-party corpus copy, model weight vendoring, release or deployment change is authorized by this audit.
+
+
+## PR #143 exact-head Verify result — 2026-11-07
+
+- PR: [#143 — Audit repository structure, fix browser fail-closed segmentation, and update docs](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), targeting `main`.
+- Exact tested head at this checkpoint: `a7353b23b6b21678c9f8602247a26f694396d226`.
+- Verify run [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044): **SUCCESS**.
+- Completed stages: independent IPA corpus structural validation; repository data/evidence audit; **181 Python tests**; external-G2P harness syntax/CLI; **112 Node tests across all four suites**; static build and canonical browser-data generation; generated-data reproducibility; **4 Chromium UI tests**; built-page and relative-asset assertions.
+- The browser correction now preserves the analysis-dependent `ຣ` IPA result without sending it to Ukrainian adaptation and withholds the incomplete `ກາລ` unit rather than exposing a `ກາ` prefix. The two relevant regressions and the prior modern-`ຣ` regression pass in the exact-head run.
+- The single Node test-runner invocation ensures all four suites report even when one suite fails.
+- Audit, audit index, README and this handoff update were included in the successful exact-head run.
+- Engineering tasks ENG-001–003 and DOC-001–003 are **DONE_VERIFIED** for this head. Linguistic acceptance remains separate: independent IPA gold = 0 and empirical accuracy remains unavailable.
+- No merge, release, deployment setting change, branch-protection change or dataset redistribution was performed.
+- Any later commit changes the PR head and requires a fresh exact-head Verify. The successful run above is evidence for the exact SHA stated above, not a blanket guarantee for future changes.
+
+
+## Touch-target accessibility correction — 2026-11-07
+
+- The design system specifies a 44px minimum interactive target, but main had `.copy` at 38px, `.mini-button,.button` at 40px and `.copy-button` at 36px.
+- Test-first evidence: [Verify 42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) on test-only commit `d46a649ecf673a8b13ebf5815c7618e7f6d6e020` failed on the expected 38px `.copy` rule. The assertion was corrected to anchor the exact CSS selector before accepting this RED result.
+- CSS correction: commit `1f876316c5433d47256a049d3e91c2c41a0eab96` sets all three control selectors to 44px; a regression assertion covers each selector.
+- Status: **PARTIAL pending exact-head Verify**. The earlier full Verify success [42403357272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403357272) predates this accessibility patch and is not its acceptance evidence.
+- Manual keyboard-only, screen-reader, zoom and device QA remains TODO even after automated target-size assertions pass.
+
+
+## Final automated accessibility checkpoint — 2026-11-07
+
+- The 44px target-size regression test is now **DONE_VERIFIED** for the code-bearing commit `1f876316c5433d47256a049d3e91c2c41a0eab96`.
+- The test-first RED result is [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681); the exact PR-head Verify [42403639882](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403639882) completed **SUCCESS** on `620b015804bf9d8d103f7ecb1077e9115610bb22`.
+- Final recorded counts for that head: 181 Python tests, 113 Node tests (0 failures), and 4 Chromium UI tests; repository audit, corpus structure validation, external-G2P CLI, build, generated-data reproducibility and built-page/asset assertions all passed.
+- Automated target-size coverage now enforces 44px for `.copy`, `.mini-button,.button` and `.copy-button`. Manual keyboard-only, screen-reader, zoom and device QA remains **TODO**.
+- This does not change the linguistic release gate: independent adjudicated IPA gold remains 0 and empirical accuracy remains null.
+
+
+## Follow-up execution checkpoint — accessibility automation, npm lockfile, MekongPhon rights — 2026-11-07
+
+- **MekongPhon rights:** owner confirms that rights were fully resolved in the previous project conversation. This supersedes the earlier preliminary `BLOCKED` rights notes in the 2026-11-07 repository audit / PR #138 review for project task tracking. `LIC-001` is recorded as **DONE_VERIFIED (owner-confirmed)**. Do not re-open this as a blocker absent new contradictory evidence. This records the owner's confirmation and is not a new legal opinion.
+- **Browser accessibility automation — PARTIAL:** expanded `tests/browser/site.spec.js` to test the skip-link keyboard path into the Lao textarea, keyboard text entry and result, named landmarks and controls, live announcements, and no horizontal overflow at 390px, 768px and 640px. The last width approximates 200% zoom from a 1280px CSS viewport. Existing 44px target-size tests remain in place.
+- **Manual accessibility remains open:** real NVDA/JAWS/VoiceOver/TalkBack testing, physical mobile/touch-device interaction, browser zoom/text scaling at 200% and 400%, and human visual review of the deployed site were not possible in the connector-only environment. Keep `LAO-UI-001` **PARTIAL**, not DONE_VERIFIED. Acceptance requires environment/version, actual keyboard-only task completion, screen-reader announcement/focus order, reflow/no loss at zoom, touch-target and copy-flow results, defects and retest evidence.
+- **npm reproducibility — PARTIAL:** added root `package-lock.json` locking `@playwright/test@1.63.0`, `playwright@1.63.0` and `playwright-core@1.63.0`, including registry tarball URLs and SHA-512 integrity. Exact package metadata was checked against the npm registry. Verify workflow now runs `npm ci --no-audit --no-fund`; README and CONTRIBUTING install instructions also use `npm ci`.
+- **Local validation:** Node `v22.16.0`, npm `10.9.2`. An isolated scratch package with the same manifest/lock passed `npm install --package-lock-only --ignore-scripts --offline`. Actual `npm ci` could not be executed locally: external DNS/network access is unavailable and no npm package cache exists. The exact-head hosted Verify is the required acceptance test for the real clean install and new Playwright cases.
+- No dataset, model weights, IPA labels, or linguistic registries changed. No PR was merged, no release was published, and no repository settings were changed.

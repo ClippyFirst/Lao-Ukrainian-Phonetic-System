@@ -1,6 +1,5 @@
 # Lao → Ukrainian Phonetic-Graphemic Correspondence System
 
-- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
@@ -66,7 +65,7 @@ Run the complete configured engineering checks from the repository root (command
 - Validate IPA corpus structure: python scripts/ipa_gold_corpus.py validate --language lao
 - Validate canonical data/evidence: python scripts/audit.py
 - Run Python tests: PYTHONPATH=src python -m unittest discover -s tests -v
-- Install Node test dependencies: npm install --no-audit --no-fund
+- Install Node test dependencies: npm ci --no-audit --no-fund
 - Run Node/browser-engine suites: npm test
 - Build the static site: npm run build
 - Check generated-data drift: git diff --exit-code -- web/data.js
@@ -81,6 +80,8 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 ## Documentation
 
 Start at the [documentation index](docs/README.md). It identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+
+- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
 
 ## Web service
 
@@ -98,7 +99,7 @@ Release verification:
 
     python scripts/audit.py
     PYTHONPATH=src python -m unittest discover -s tests -v
-    npm install --no-audit --no-fund
+    npm ci --no-audit --no-fund
     npm test
     npm run build
 
