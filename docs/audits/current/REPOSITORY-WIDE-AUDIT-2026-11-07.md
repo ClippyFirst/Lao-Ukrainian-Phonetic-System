@@ -191,3 +191,13 @@ No duplicate syllabifier was retained in PR #138. That branch remains scoped to 
 - PR #138 is now intentionally stacked on PR #137's branch `benchmark/mekongphon-three-engine`, so the neural adapter is reviewed against the deterministic engine implementation rather than against the older mainline parser/browser engine.
 - Updated `.github/workflows/verify.yml` so `pull_request` events targeting either `main` or `benchmark/mekongphon-three-engine` run the full Verify workflow. Push-triggered Verify on the standalone PR #138 branch still reflects its own files only; its historical three browser failures are expected until the PR merge ref includes PR #137's code.
 - Acceptance for the stacked PR is the merge-ref Verify result on PR #138, not the head-only push run. PR #137's current exact-head Verify is already green (42358772788).
+
+## Final execution checkpoint — 2026-11-07
+
+- Starting main SHA: `f40c1128302486b3589da9b16bae198ef3ad1d81`; main unchanged.
+- PR #137 deterministic engine branch head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`: exact-head Verify [42370883565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370883565) SUCCESS across all stages. Engineering checks DONE_VERIFIED; linguistic release validation remains blocked by independent gold=0.
+- PR #138 neural adapter/rights branch head `e3d7fe473231ad9329ed92c3a16e46cda0475edc), stacked on PR #137. Its code-bearing Verify [42370743420](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370743420) passed Python and external-G2P syntax/CLI but failed browser tests (the three browser regressions absent from its standalone head); downstream build/UI steps skipped. The merge-ref Verify for the stacked PR has not been confirmed.
+- No model checkpoint download/inference smoke test was run; immutable model revisions remain TODO. Neural browser UI remains TODO. Full MekongPhon source data/code reuse remains UNKNOWN/BLOCKED pending component-specific rights; Apache-2.0 model artifacts are a separate permitted dependency.
+- Local clone attempt failed due DNS/network resolution for github.com; all reported tests are hosted Actions evidence.
+- PRs #137 and #138 remain open/unmerged; #138 is stacked on #137. No mainline changes, releases or merges were made.
+- Overall status: deterministic engine engineering-verified research prototype; neural integration PARTIAL pending actual inference and stacked CI; repository not release-ready.
