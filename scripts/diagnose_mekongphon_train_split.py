@@ -82,6 +82,52 @@ def parse_tone_categories(suffix: str) -> list[str] | None:
     return categories
 
 
+def alignment_error_profile(references: list[str], predictions: list[str], limit: int = 30) -> dict[str, object]:
+    """Aggregate IPA code-point edits without retaining source words or predictions."""
+    substitutions: Counter[str] = Counter()
+    deletions: Counter[str] = Counter()
+    insertions: Counter[str] = Counter()
+    for reference, prediction in zip(references, predictions):
+        n, m = len(reference), len(prediction)
+        dp = [[0] * (m + 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            dp[i][0] = i
+        for j in range(m + 1):
+            dp[0][j] = j
+        for i in range(1, n + 1):
+            for j in range(1, m + 1):
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + (reference[i - 1] != prediction[j - 1]),
+                )
+        i, j = n, m
+        while i or j:
+            if i and j and reference[i - 1] == prediction[j - 1] and dp[i][j] == dp[i - 1][j - 1]:
+                i -= 1
+                j -= 1
+            elif i and j and dp[i][j] == dp[i - 1][j - 1] + 1:
+                substitutions[f"{reference[i - 1]}=>{prediction[j - 1]}"] += 1
+                i -= 1
+                j -= 1
+            elif i and dp[i][j] == dp[i - 1][j] + 1:
+                deletions[reference[i - 1]] += 1
+                i -= 1
+            else:
+                insertions[prediction[j - 1]] += 1
+                j -= 1
+    return {
+        "unit": "Unicode code point (NFC), segmental IPA only",
+        "alignment": "Levenshtein; tie-break priority: match, substitution, deletion, insertion",
+        "top_substitutions": [{"pair": key, "count": count} for key, count in substitutions.most_common(limit)],
+        "top_deletions": [{"symbol": key, "count": count} for key, count in deletions.most_common(limit)],
+        "top_insertions": [{"symbol": key, "count": count} for key, count in insertions.most_common(limit)],
+        "total_substitutions": sum(substitutions.values()),
+        "total_deletions": sum(deletions.values()),
+        "total_insertions": sum(insertions.values()),
+    }
+
+
 def load_dataset() -> tuple[list[dict[str, str]], str]:
     request = urllib.request.Request(DATA_URL, headers={"User-Agent": "ClippyFirst-research-diagnostic/1.0"})
     with urllib.request.urlopen(request, timeout=60) as response:
@@ -164,7 +210,7 @@ def main() -> int:
         for item in syllables:
             for warning in item.warnings:
                 warning_counts[warning_code(str(warning))] += 1
-            if item.status != "OK":
+            if item.status != "ESTABLISHED":
                 shape = "|".join([
                     f"status={item.status}",
                     f"onset={item.onset or ''}",
@@ -257,11 +303,12 @@ def main() -> int:
             "exact_match_rate_full_denominator": segmental_exact / len(rows),
             "cer_full_denominator": edits / reference_chars if reference_chars else None,
             "reference_codepoints": reference_chars,
+            "edit_profile": alignment_error_profile(segmental_references, segmental_predictions),
             "mean_latency_ms": round(statistics.mean(segmental_durations) * 1000, 3),
             "throughput_items_per_second": round(len(segmental_durations) / sum(segmental_durations), 3) if sum(segmental_durations) else None,
         },
         "tone_categories": {
-            "reference_words_with_tonal_labels": total_tone_words,
+            "rows_with_tonal_reference": total_tone_words,
             "reference_categories": tone_reference_categories,
             "covered_categories_on_segmental_exact_words": tone_category_covered,
             "coverage": tone_category_covered / tone_reference_categories if tone_reference_categories else 0.0,
