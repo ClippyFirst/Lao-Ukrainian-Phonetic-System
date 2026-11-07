@@ -41,6 +41,13 @@ def analyze(text: str) -> Analysis:
                  if row["rule_id"] == "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"),
                 None,
             )
+            following = parse_syllable(group[1]) if len(group) > 1 else {}
+            following_vowel = following.get("vowel") or {}
+            following_major_weighted = (
+                following_vowel.get("length") == "long"
+                or following_vowel.get("nucleus_type") == "diphthong"
+                or following.get("coda") is not None
+            )
             potential_minor_open_a = (
                 syllable_index == 0
                 and len(group) > 1
@@ -48,6 +55,8 @@ def analyze(text: str) -> Analysis:
                 and parsed.get("coda") is None
                 and parsed.get("tone_mark") is None
                 and not local_warnings
+                and following_major_weighted
+                and not following.get("warnings")
             )
             if minor_rule and potential_minor_open_a:
                 rules = [
