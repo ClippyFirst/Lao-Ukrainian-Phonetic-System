@@ -35,26 +35,30 @@ def analyze(text: str) -> Analysis:
             # syllable in polysyllabic words as unstressed and tone-neutral.
             # Apply only to an unmarked short-A syllable with no coda and a
             # following syllable in the same unspaced orthographic token.
-            neutral_rule = next(
+            minor_rule = next(
                 (row for row in registry["special_tone_rules"]
-                 if row["rule_id"] == "VNT-NONFINAL-OPEN-A-NEUTRAL"),
+                 if row["rule_id"] == "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"),
                 None,
             )
-            nonfinal_open_a = (
-                syllable_index < len(group) - 1
+            potential_minor_open_a = (
+                syllable_index == 0
+                and len(group) > 1
                 and (parsed.get("vowel") or {}).get("id") == "A"
                 and parsed.get("coda") is None
                 and parsed.get("tone_mark") is None
                 and not local_warnings
             )
-            if neutral_rule and nonfinal_open_a:
+            if minor_rule and potential_minor_open_a:
                 rules = [
                     rule for rule in rules
                     if not rule.startswith("VNT-") and not rule.startswith("TONE:")
                 ]
-                tone = neutral_rule["tone"]
-                tone_status = neutral_rule["status"]
-                rules.extend([neutral_rule["rule_id"], f"TONE:{tone}"])
+                tone = None
+                tone_status = minor_rule["status"]
+                rules.extend([
+                    minor_rule["rule_id"],
+                    "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED",
+                ])
             if parsed.get("onset_ipa"):
                 rules = [*rules, f"ONSET-CLUSTER:{parsed.get('onset_form')}"]
 
