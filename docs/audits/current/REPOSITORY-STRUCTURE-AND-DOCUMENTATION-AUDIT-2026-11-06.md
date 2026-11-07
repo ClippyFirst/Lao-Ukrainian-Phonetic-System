@@ -171,3 +171,12 @@ Regression coverage:
 - A previous intermediate failure was a test expectation error (long open /aː/ is live, not dead); the expectation was corrected. No production phonology rule was changed by that correction.
 
 **Status: PARTIAL pending exact-head CI and refreshed three-engine benchmark.** Latest code/test checkpoint before this audit note: `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; full Verify [42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) and benchmark [42384500017](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017) were queued at the time of writing. No final performance claim is made until the refreshed benchmark artifact is inspected.
+
+
+### Verification addendum — full-pipeline registry reuse
+
+The new registry-threading implementation passed full Verify [42384505842](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384505842) on source head `89a08fae9feafa4739fc698e99adde709c978b66`. A dedicated end-to-end test then asserted exactly one registry load across a two-syllable `analyze()` call, with parser/phonology/target reloads patched to fail; full Verify [42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) passed on test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`.
+
+The refreshed three-engine benchmark [42384500017](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017) passed and produced aggregate artifact [13578308566](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017/artifacts/13578308566), SHA-256 `996844312d068145673af57da8e07be48cb241c31cb5be55ef295802a803a6bc`. ClippyFirst mean per-item latency was 1.533 ms versus 4.724 ms on the earlier hosted run, a 67.5% lower single-run observation with model loading excluded. Accuracy and coverage were unchanged. All three engines had zero runtime errors.
+
+**Status: DONE_VERIFIED** for registry threading, end-to-end reload guard, and refreshed benchmark. Linguistic acceptance remains PARTIAL pending qualified review of the six possible minor-syllable candidates and four dictionary-reference tone disagreements; independent IPA gold remains 0.
