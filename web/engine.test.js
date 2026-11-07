@@ -115,6 +115,8 @@ test("potential initial minor open-A tone is withheld in browser and segmental I
   assert.equal(first.toneContour, null);
   assert.equal(first.toneStatus, "ANALYSIS DEPENDENT");
   assert.ok(first.phoneticResult.uncertainty.includes("TONE-UNRESOLVED"));
+  assert.ok(first.phoneticResult.provenance.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+  assert.ok(first.phoneticResult.provenance.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
   assert.ok(first.rules.includes("TONE-RULE:VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
 });
 
@@ -122,7 +124,7 @@ test("minor-A candidate requires a major-weighted following syllable", () => {
   const result = analyze("ຄະຄະ");
   assert.equal(result.syllables.length, 2);
   assert.equal(result.syllables[0].tone, "high-mid");
-  assert.equal(result.syllables[0].toneStatus, undefined);
+  assert.equal(result.syllables[0].toneStatus, "ESTABLISHED");
 });
 
 test("shared Lao tone-mark storage-order fixture", () => {
