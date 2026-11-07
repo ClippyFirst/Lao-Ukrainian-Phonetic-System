@@ -32,8 +32,8 @@ class GraphemeContextTests(unittest.TestCase):
         self.assertEqual(result.segments[0].ipa, "ə̯")
         self.assertEqual(result.segments[0].kind, "vowel")
 
-    def test_combining_marks_remain_attached_to_base_grapheme(self):
-        self.assertEqual(grapheme_units("ກັນ"), [("ກັ",0,2),("ນ",2,3)])
+    def test_combining_vowel_sign_is_a_separate_source_grapheme_element(self):
+        self.assertEqual(grapheme_units("ກັນ"), [("ກ",0,1),("ັ",1,2),("ນ",2,3)])
 
     def test_same_grapheme_is_resolved_by_syllable_position(self):
         registry = load_registry()
