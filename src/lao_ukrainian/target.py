@@ -1,5 +1,6 @@
 from .data import load_registry
 from .model import PhoneticResult
+from .phonetic_result import from_phonology as phonetic_result_from_ipa
 
 # Project-specific Ukrainian orthography policy for a syllable-initial /j/.
 # A multi-vowel nucleus is deliberately not collapsed into a monophthongal
