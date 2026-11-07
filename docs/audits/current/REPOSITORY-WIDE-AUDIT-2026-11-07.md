@@ -72,6 +72,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 - The limitations page described only explicit-boundary parsing and did not explain the current split contract. It now distinguishes the syllable-oriented Python API from the browser's conservative within-token DP segmentation and explicitly states that neither is a validated lexical word segmenter.
 - The decision log reused identifier D-010 for two different decisions. The Ukrainian /ʃt͡ʃ/ → щ decision is now D-011; the earlier vowel/ligature decision retains D-010.
 - The validation history contained older test counts and workflow results near its top without a prominent current-status warning. It now directs readers to the canonical handoff and current audit for exact-head status.
+- The root README had a standalone leading bullet before its H1. The Romanization → Ukrainian matrix link was moved into the Documentation section; the document now begins with its title.
 
 ### Structural decisions
 
@@ -110,6 +111,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 | ARCH-001 | DONE_VERIFIED (existing architecture) | Canonical CSV registries, Python package, browser runtime, generated mirror, schemas and tests are separated | Preserve ownership boundaries; changes require regeneration and parity checks |
 | DOC-007 | PARTIAL pending exact-head CI | The limitations page did not accurately distinguish Python syllable input from browser phrase segmentation. | Updated the documented runtime contracts; exact-head Verify still required. |
 | DOC-008 | PARTIAL pending exact-head CI | The decision log reused D-010 for two distinct decisions. | Renumbered the later Ukrainian target-sequence decision to D-011; repository search found no D-010 cross-references. |
+| DOC-010 | PARTIAL pending exact-head CI | The root README began with a stray list item before its H1. | Moved the link into the Documentation section; exact-head Verify still required. |
 | DOC-009 | PARTIAL pending exact-head CI | The validation history's old test counts could be mistaken for current status. | Added a dated-history warning linking to the current master handoff and audit. |
 | DOC-001 | DONE_VERIFIED (prior checkpoint) | Root README, docs index, audit index, contributor guide and codebase map exist; prior exact-head Verify 42299492015 passed for that earlier checkpoint | New audit and rights docs must pass exact-head Verify before this checkpoint is DONE_VERIFIED |
 | IPA-ADAPTER-001 | PARTIAL pending exact-main evidence | Typed IPA result and typed-only adapters are present in current main handoff/code; exact main SHA f40c112... is not represented by a directly inspected exact-main Verify run in this audit | Exact-head Verify on the final PR head; linguistic correctness remains separate |
