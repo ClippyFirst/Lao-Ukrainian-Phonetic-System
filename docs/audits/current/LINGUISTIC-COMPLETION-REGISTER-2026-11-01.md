@@ -436,3 +436,15 @@ The export and benchmark now preserve and validate the complete frozen split ide
 | LAO-G2P-ERROR-PROFILE-001 | DONE_VERIFIED (aggregate diagnostics) | Benchmark reports code-point substitutions/deletions/insertions, syllable position, tone-rule contexts, and unresolved-tone contexts without retaining words or per-item predictions. Repeated `w→ʋ` discrepancies occur in both ClippyFirst and Lao2IPA, suggesting a transcription convention issue; vowel/offglide pairs remain unadjudicated. | Keep the artifact aggregate-only. Resolve phonetic disagreements on a rights-cleared development set and with expert review. |
 | LAO-G2P-PARSER-TAIL-001 | PARTIAL (fail-closed behavior preserved) | Two multigrapheme unconsumed tails, one standalone KHO SUNG tail, and one malformed tone-mark-order case remain withheld. | Require primary orthographic/phonotactic evidence or qualified reviewer analysis before adding a parser rule. |
 | LAO-IPA-GOLD-001 | BLOCKED (independent linguistic acceptance) | Independent project Lao IPA gold remains 0. The 100-word MekongPhon dictionary split is not independently re-adjudicated. | Rights-cleared Vientiane-profile source material, two independent qualified annotators, blind adjudication, adjudicator resolution, and coverage report. |
+
+
+## Lao–Ukrainian practical transcription system — 2026-11-07
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-UA-PRACTICAL-001 | PARTIAL (CI pending) | New canonical practical transcription reference; README/docs index/system page updated; onset/coda and vowel/diphthong tables; IPA-first policy preserved. | Exact-head full Verify and browser checks; then qualified Ukrainian and Lao expert review before linguistic acceptance. |
+| LAO-UA-W-001 | PARTIAL (CI pending) | Canonical /aw/ mapping corrected from «ау» to «ав»; generated browser data and derived CSV updated; Python/browser tests cover /aw/ and /aːw/. | Verify generated-data drift and both runtime tests; independently attest representative source /aw/ cases. |
+| LAO-UA-J-001 | PARTIAL (CI pending) | Python and browser adapters now render syllable-initial /j/ + vowel as Ukrainian йотовані letters; medial/coda /j/ remains «й»; synthetic and Lao-input regression tests added. | Exact-head Python/browser parity and expert review of practical spelling choices. |
+| LAO-UA-TRADITION-001 | TODO | No authoritative Ukrainian Lao exonym/lexicalized-name exception registry exists. | Build only from sourced Ukrainian encyclopedias, atlases, official usage and expert review; preserve source and precedence per entry. |
+
+The regular transcription table does not override established Ukrainian forms. The Lao–Russian reference is a comparative source for table structure and historical practices, not authority for Ukrainian output. Independent ClippyFirst Lao IPA gold remains 0 and empirical accuracy remains null.
