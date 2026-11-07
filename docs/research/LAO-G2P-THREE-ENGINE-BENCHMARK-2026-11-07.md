@@ -325,3 +325,13 @@ The repository owner confirms that the full MekongPhon rights question was resol
 Both immutable model checkpoints are now invoked through the production `MekongPhonEngine.predict_raw_ipa()` path; one full `transcribe()` smoke per model checks pinned revision, non-empty raw IPA retention, typed parsing and fail-closed Ukrainian adaptation. Hub resolution is checked against tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. Raw inference timing excludes typed IPA parsing and target adaptation.
 
 The optional IPA affricate tie-bar normalization is a notation-convention correction, not a phonological accuracy gain. The 100-word comparison was used to expose this allograph difference; it should not be described as an untouched test for that notational dimension. Other rule changes remain source-gated and are not justified by tuning on the 100-word eval split.
+
+
+## Latest exact production-adapter comparator run — 2026-11-07
+
+- Run [42416252986 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986), code checkpoint 5abb431598900e5545a3e73f07c97f2ab319dd4d; artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425), SHA-256 df3250e4b4e35e41d6a1c718221c0bab1e8e681a854fd30adec900309192376d. Dataset SHA-256 5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241.
+- ClippyFirst rules: segmental CER 11.46%, tie-bar-normalized exact matches 69/100, segmental coverage 97%; tonal CER 32.45%, tonal coverage 91%, tone-only CER 62.35%; aligned tone-category error 5.06%, category coverage 79/95 (83.16%), 12 unresolved words and 8 word-length mismatches; zero runtime errors.
+- Lao2IPA: segmental CER 8.97%, tie-bar-normalized exact matches 73/100, full segmental/tonal coverage; aligned tone-category error 0% among covered categories (81/93 covered).
+- MekongPhon neural: segmental CER 6.64%, tie-bar-normalized exact matches 82/100, full segmental/tonal coverage; tone-category error 2.86%, 105/105 categories covered.
+- These are 100-word dictionary-seeded comparator results, not independently adjudicated gold or unbiased population accuracy. The held-out list is not a tuning target. The rule engine's lower coverage and tone error remain visible; do not claim parity with the neural model or Lao2IPA.
+- The project /w/→в practical orthography policy does not alter the raw IPA comparator's w/ʋ distinction. No source phonology rule was retuned from this run.

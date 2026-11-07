@@ -2134,3 +2134,18 @@ The required engine contract is **Lao grapheme element + structural position + p
 - LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED (engineering implementation and automated verification). This does not establish pronunciation accuracy or expand the canonical phonological inventory. All preview hints remain sourced from existing registry entries and are explicitly provisional.
 - UI-001 — PARTIAL: automated keyboard navigation, landmarks/live regions, 320–768px reflow, touch emulation, 200% zoom emulation and preview announcement pass. Manual NVDA/VoiceOver/TalkBack testing, physical mobile devices, actual browser 200%/400% zoom and deployed-site QA remain TODO.
 - Independent adjudicated Lao IPA gold remains 0; no accuracy claim is made from the preview or software tests.
+
+
+## Latest aggregate train-split diagnostic — 2026-11-07
+
+- Run [42416253059 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416253059) on code checkpoint 5abb431598900e5545a3e73f07c97f2ab319dd4d.
+- 6,219 rows received; 5,820 fully structured; 399 skipped/withheld; 9,883 parsed syllables; 3,885 exact structural IPA strings (66.75% conditional on fully structured rows; 62.47% with full input denominator); 26,155 reference IPA tokens; 2,857 alignment edits, including 163 insertions.
+- This is a training-split development diagnostic, not an accuracy benchmark or independent gold. It must not be used to tune directly against held-out comparator results.
+
+
+## Final exact-head reconciliation — 2026-11-07
+
+- Final branch head: 55c49da69a3c49519c54cb0c15451fe66e7d7edb on audit/repository-docs-structure-20261107; PR #143 remains open and mergeable against main. main remains at f40c1128302486b3589da9b16bae198ef3ad1d81.
+- Exact-head Verify [42416565378 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416565378): 260 Python tests, 126 Node tests, 10 Chromium tests; npm ci, independent IPA gold schema validation, repository/evidence audit, build, generated-data reproducibility, browser tests and built-page/asset assertions passed.
+- DEP-001 (package-lock and npm ci) — DONE_VERIFIED. LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED for engineering implementation and automated verification. UI-001 remains PARTIAL because manual assistive-technology, physical-device and deployed-site checks are not performed by CI.
+- PRs #137–#142 remain open and untouched. PR #137–#140 implementation history is incorporated through the reviewed dependency stack; PR #141–#142 code was ported selectively while preserving the stricter C0 selector and branch-specific fixes.
