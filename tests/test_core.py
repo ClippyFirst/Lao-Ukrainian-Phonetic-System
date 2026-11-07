@@ -72,14 +72,10 @@ class TestCore(unittest.TestCase):
             result.syllables[0].rules,
         )
 
-    def test_potential_minor_selector_does_not_cross_zero_width_space(self):
+    def test_zero_width_space_is_rejected_before_minor_selector(self):
         result = analyze("ຄະ\u200bຄາ")
-        self.assertEqual(len(result.syllables), 2)
-        self.assertEqual(result.syllables[0].tone, "high-mid")
-        self.assertNotIn(
-            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
-            result.syllables[0].rules,
-        )
+        self.assertEqual(result.status, "INVALID")
+        self.assertEqual(result.syllables, [])
 
     def test_potential_minor_selector_does_not_override_uncertain_onset(self):
         result = analyze("ຣະຄາ")
