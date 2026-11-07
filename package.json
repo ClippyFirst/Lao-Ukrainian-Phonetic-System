@@ -6,7 +6,7 @@
   "engines": { "node": ">=22.14.0" },
   "scripts": {
     "generate:web-data": "python scripts/generate_web_data.py",
-    "test": "node --test web/engine.test.js && node --test tests/romanization.test.mjs && node --test tests/romanization-syllable-engine.test.mjs && node --test tests/web-layout.test.mjs",
+    "test": "node --test web/engine.test.js tests/romanization.test.mjs tests/romanization-syllable-engine.test.mjs tests/web-layout.test.mjs",
     "test:browser": "playwright test",
     "build": "npm run generate:web-data && python scripts/build_web.py",
     "check:release": "npm test && npm run build && npm run test:browser"
