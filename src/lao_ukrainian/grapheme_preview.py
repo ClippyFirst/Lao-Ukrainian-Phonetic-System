@@ -6,6 +6,7 @@ from .parser import HIGH_DIGRAPHS, TONE_MARKS
 from .phonetic_result import from_phonology
 
 VOWEL_GRAPHEMES = set("ະັາິີຶືຸູົຽອໍຳເແໂໃໄ")
+INVENTORY_ONLY_CERTAINTY = {"PALI_ONLY", "OUT_OF_SCOPE_KHMU", "NOT_USED_MODERN_LAO", "NONPHONOLOGICAL", "ORTHOGRAPHIC_ONLY"}
 
 
 def preview_from_graphemes(surface: str, parsed: dict, registry: dict) -> GraphemePreview:
@@ -65,13 +66,17 @@ def preview_from_graphemes(surface: str, parsed: dict, registry: dict) -> Graphe
     for i, ch in enumerate(chars):
         if i in roles:
             continue
-        if ch in registry["consonants"]:
-            role = "unresolved-consonant-position"
+        inventory_row = next((row for row in registry.get("grapheme_inventory", []) if row["grapheme"] == ch), None)
+        if inventory_row:
+            role = inventory_row["structural_role"]
+            certainty = "STRUCTURAL_ONLY" if inventory_row["engine_status"] in INVENTORY_ONLY_CERTAINTY else "UNRESOLVED"
+        elif ch in registry["consonants"]:
+            role, certainty = "unresolved-consonant-position", "UNRESOLVED"
         elif ch in VOWEL_GRAPHEMES:
-            role = "unresolved-vowel-component"
+            role, certainty = "unresolved-vowel-component", "UNRESOLVED"
         else:
-            role = "unregistered-grapheme"
-        roles[i] = GraphemeEvidence(ch, role, None, "UNRESOLVED")
+            role, certainty = "unregistered-grapheme", "UNRESOLVED"
+        roles[i] = GraphemeEvidence(ch, role, None, certainty)
         unresolved.append(ch)
 
     if not ipa_parts:
