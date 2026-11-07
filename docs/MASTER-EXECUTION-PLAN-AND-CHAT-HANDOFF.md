@@ -1767,3 +1767,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Engineering tasks ENG-001–003 and DOC-001–003 are **DONE_VERIFIED** for this head. Linguistic acceptance remains separate: independent IPA gold = 0 and empirical accuracy remains unavailable.
 - No merge, release, deployment setting change, branch-protection change or dataset redistribution was performed.
 - Any later commit changes the PR head and requires a fresh exact-head Verify. The successful run above is evidence for the exact SHA stated above, not a blanket guarantee for future changes.
+
+
+## Touch-target accessibility correction — 2026-11-07
+
+- The design system specifies a 44px minimum interactive target, but main had `.copy` at 38px, `.mini-button,.button` at 40px and `.copy-button` at 36px.
+- Test-first evidence: [Verify 42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) on test-only commit `d46a649ecf673a8b13ebf5815c7618e7f6d6e020` failed on the expected 38px `.copy` rule. The assertion was corrected to anchor the exact CSS selector before accepting this RED result.
+- CSS correction: commit `1f876316c5433d47256a049d3e91c2c41a0eab96` sets all three control selectors to 44px; a regression assertion covers each selector.
+- Status: **PARTIAL pending exact-head Verify**. The earlier full Verify success [42403357272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403357272) predates this accessibility patch and is not its acceptance evidence.
+- Manual keyboard-only, screen-reader, zoom and device QA remains TODO even after automated target-size assertions pass.
