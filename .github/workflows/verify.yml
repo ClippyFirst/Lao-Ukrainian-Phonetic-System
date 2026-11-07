@@ -1,7 +1,7 @@
 name: verify
 on:
   push:
-    branches: ["main", "feat/**", "fix/**"]
+    branches: ["main", "feat/**", "fix/**", "audit/**"]
   pull_request:
     branches: ["main", "benchmark/mekongphon-three-engine", "benchmark/mekongphon-immutable-inference-20261107", "improve/rule-engine-error-analysis-20261107"]
   workflow_dispatch:

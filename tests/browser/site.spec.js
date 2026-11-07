@@ -70,7 +70,7 @@ test("the service exposes named landmarks, controls, and live result announcemen
   await expect(page.locator(".trace-summary")).toHaveCount(2);
 });
 
-test("mobile, tablet, and 200-percent-equivalent layouts do not overflow horizontally", async ({ page }) => {
+test("mobile and tablet reflow layouts do not overflow horizontally", async ({ page }) => {
   for (const width of [320, 390, 640, 768]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
@@ -87,6 +87,26 @@ test("mobile, tablet, and 200-percent-equivalent layouts do not overflow horizon
     expect(layout.output, `output exceeds viewport at ${width}px`).toBeLessThanOrEqual(layout.viewport);
   }
 });
+
+test("200-percent text zoom keeps the input and result usable without horizontal overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ");
+  await page.addStyleTag({ content: "html { zoom: 2; }" });
+  await expect(page.locator("#output")).toHaveText("к'а");
+  const layout = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    document: document.documentElement.scrollWidth,
+    input: document.querySelector("#lao-input").getBoundingClientRect(),
+    output: document.querySelector("#output").getBoundingClientRect()
+  }));
+  expect(layout.document).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.input.width).toBeGreaterThan(0);
+  expect(layout.output.width).toBeGreaterThan(0);
+  expect(layout.input.right).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.output.right).toBeLessThanOrEqual(layout.viewport);
+});
+
 
 
 test("touch emulation can use quick examples and switch output methods", async ({ browser }) => {
