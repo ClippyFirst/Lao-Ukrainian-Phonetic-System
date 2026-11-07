@@ -67,7 +67,7 @@ class TestCore(unittest.TestCase):
 
     def test_palatal_affricate(self):
         s = analyze("ຈາ").syllables[0]
-        self.assertEqual(s.phonemic_ipa, "tɕaː")
+        self.assertEqual(s.phonemic_ipa, "t͡ɕaː")
         self.assertEqual(s.practical_ukrainian, "ча")
 
     def test_checked_coda(self):
@@ -89,7 +89,7 @@ class TestCore(unittest.TestCase):
 
     def test_medial_o_vowel(self):
         s = analyze("ຈອກ").syllables[0]
-        self.assertEqual(s.phonemic_ipa, "tɕɔːk")
+        self.assertEqual(s.phonemic_ipa, "t͡ɕɔːk")
         self.assertEqual(s.practical_ukrainian, "чок")
 
     def test_ti_and_catawa_marks(self):
