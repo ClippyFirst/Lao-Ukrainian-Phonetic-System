@@ -31,10 +31,11 @@ def analyze(text: str) -> Analysis:
             local_warnings = list(parsed.get("warnings", []))
             ipa, rules, tone_status, tone = phonologize(parsed)
 
-            # Ueda (1994: 95-115) describes a restricted non-final open /a/
-            # syllable in polysyllabic words as unstressed and tone-neutral.
-            # Apply only to an unmarked short-A syllable with no coda and a
-            # following syllable in the same unspaced orthographic token.
+            # Ueda (1994) describes a non-final open /a/ syllable as
+            # unstressed and tone-neutral; Enfield (2007) describes minor
+            # C0V0 syllables as lacking independent lexical tone. Orthography
+            # alone cannot prove that every matching shape is minor, so only
+            # flag an initial short-A candidate and withhold its tone.
             minor_rule = next(
                 (row for row in registry["special_tone_rules"]
                  if row["rule_id"] == "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"),
