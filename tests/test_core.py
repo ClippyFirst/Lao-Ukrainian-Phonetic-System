@@ -1,9 +1,23 @@
 import unittest
+from unittest.mock import patch
 
+import lao_ukrainian.core as core_module
 from lao_ukrainian import analyze
 
 
 class TestCore(unittest.TestCase):
+    def test_analysis_loads_registry_once_for_full_pipeline(self):
+        real_loader = core_module.load_registry
+        with (
+            patch("lao_ukrainian.core.load_registry", wraps=real_loader) as load_once,
+            patch("lao_ukrainian.parser.load_registry", side_effect=AssertionError("parser reloaded registry")),
+            patch("lao_ukrainian.phonology.load_registry", side_effect=AssertionError("phonology reloaded registry")),
+            patch("lao_ukrainian.target.load_registry", side_effect=AssertionError("target adapter reloaded registry")),
+        ):
+            result = core_module.analyze("ຂາຄາ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(load_once.call_count, 1)
+
     def test_long_open_high_class(self):
         s = analyze("ຂາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "kʰaː")
