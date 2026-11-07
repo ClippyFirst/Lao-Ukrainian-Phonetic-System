@@ -193,3 +193,14 @@ The audit, README, validation note, audit index, handoff and agent-reference ref
 - Agent-reference refresh / initial six-file documentation batch checkpoint: `d4f08fb6626136e699f05df40f1c7a3e84ad122b`; subsequent verification-boundary updates are recorded in the master handoff.
 
 Documentation content at `de69f329048cd7de5d8da5d183d0962bdcf26f18` passed exact-head Verify [42388269091 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388269091); DOC-012–016 are DONE_VERIFIED. The later source-scope evidence update is `62483d900e5c4a620828ae24319ddd6b5c741f27`, with Verify [42388391166] QUEUED at the last check. The code-bearing diagnostic commit `3efc0ccb54887830157915e8b4b84ad9177e1720` passed Verify [42388033575 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388033575) and train diagnostics [42388029325 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388029325).
+
+
+## Latest continuation checkpoint — 2026-11-07
+
+- Branch / PR head at this documentation checkpoint: \`9a276b80e26c073dd75c43d0b359c89b926b26e8\`; PR [#140](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/140) remains open against \`benchmark/mekongphon-immutable-inference-20261107\). The branch is 278 commits ahead of \`main\`, 0 behind; \`main\` is untouched.
+- New report: \`docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md\`; README and documentation index now explain the context-sensitive, non-lexical engine contract.
+- Last completed exact-head code Verify remains [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133) on code checkpoint \`16d267664beb25a9e26e9639aace42a2975582d1\`; matching base grapheme-context diagnostic [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319).
+- The direct \`grapheme_position_rules\` and broader \`phonological_context_rules\` output arrays, plus aggregate-only serialization tests, are later code/test additions. Diagnostic run [42391252559] and latest exact-head Verify [42391693342] are pending/queued at this checkpoint; no success is claimed for them.
+- Research-use scope remains: authors' stated public release purpose supports research and rule discovery. Raw source rows are not committed or retained in artifacts; independent ClippyFirst gold remains 0. Broader redistribution, sublicensing and commercial reuse remain separately gated by component-specific terms.
+- The 399 parser-withheld rows, profile-sensitive IPA differences, independent gold, qualified Vientiane adjudication, npm lockfile/clean-install reproducibility and manual accessibility QA remain unresolved.
+
