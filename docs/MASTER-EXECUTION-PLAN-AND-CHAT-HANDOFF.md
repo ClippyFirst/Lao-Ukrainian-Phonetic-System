@@ -1984,3 +1984,16 @@ A deeper call-path audit found that the earlier registry-reuse checkpoint was in
 - An intermediate test run [42384378919](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384378919) failed only because the new test incorrectly expected a long open /aː/ rhyme to be dead. The source behavior was correct; the test expectation was corrected to `live`. The final-head Verify remains the acceptance gate.
 
 **Task status:** PARTIAL pending exact-head Verify and refreshed benchmark. The earlier 14.207→4.724 ms comparison remains a historical single-run observation for the earlier, incomplete optimization and must not be presented as the final effect of this correction.
+
+
+### Full-pipeline registry reuse — verification and benchmark result
+
+The complete registry-threading change was exercised on the hosted CI runner:
+
+- Full Verify [42384505842 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384505842) on source head `89a08fae9feafa4739fc698e99adde709c978b66`; Python, audit, browser, generated-data, Chromium UI and build checks passed.
+- Full-pipeline regression test was then added to ensure `analyze()` loads the registry exactly once while parser, phonology and target modules are configured to fail if they attempt a reload. Full Verify [42384603376 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) on test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; all jobs passed.
+- Three-engine benchmark [42384500017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017), artifact [13578308566](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017/artifacts/13578308566), SHA-256 `996844312d068145673af57da8e07be48cb241c31cb5be55ef295802a803a6bc`.
+- ClippyFirst mean per-item latency is now **1.533 ms** on the hosted 100-word benchmark (model loading excluded), versus **4.724 ms** on run 42382960457 before phonology/target registry threading. This is a further **67.5% lower** single-run observation; it is not a statistically established guarantee. All three engines had zero runtime errors.
+- Benchmark accuracy/coverage remained unchanged: ClippyFirst segmental CER 11.46%, 69/100 exact, 97% coverage; on the same 97 covered items ClippyFirst 6.49% CER / 69 exact, Lao2IPA 7.72% / 68, MekongPhon neural 5.79% / 81. Tone-category scoring on the segmental-exact subset remains 79/95 known categories covered, 4 known-category errors among 79 covered (5.06%), with unresolved cases reported separately. These remain dictionary-reference diagnostics, not independent expert gold.
+
+**Task status:** DONE_VERIFIED for full-pipeline registry reuse and its regression tests; DONE_VERIFIED for refreshed pinned three-engine benchmark. Linguistic acceptance remains PARTIAL pending qualified Vientiane review. Independent project IPA gold remains 0; upstream MekongPhon corpus/source rights remain UNKNOWN.
