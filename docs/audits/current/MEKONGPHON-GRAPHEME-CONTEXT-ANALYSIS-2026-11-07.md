@@ -26,6 +26,7 @@ A vowel sign is not assigned an invented independent phoneme when it contributes
 - Diagnostic: [run 42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319).
 - Code/test checkpoint: `16d267664beb25a9e26e9639aace42a2975582d1`.
 - Aggregate artifact SHA-256: `7d51559fc9d5ef7d173850d9237cbd62577c2b7b890e96d1e73a6f113d46938a`.
+- Verification boundary: this linked artifact is from the base context analyzer at `16d267...`. The later direct-position and broader phonological-context output arrays are present in code/test checkpoint `b376296947c93b1ab01a4a26bdd5afcfc2e756db`; its exact-head diagnostic and Verify were still pending when this report revision was written.
 
 No raw source words, reference strings or per-item predictions are written to the artifact. The report contains aggregate grapheme/context distributions and structural-unit alignment counts only. The 100-row eval split is not used for discovery or rule tuning.
 
