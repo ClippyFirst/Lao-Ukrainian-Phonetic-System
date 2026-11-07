@@ -77,3 +77,10 @@ test("methodology tables that scroll horizontally are keyboard-focusable and nam
   assert.equal(scrollableTables.length, 2);
   assert.ok(scrollableTables.every((attributes) => /aria-label="[^"]+"/.test(attributes)));
 });
+
+
+test("all visible action buttons preserve the documented 44px minimum target", () => {
+  assert.match(css, /\.copy\{[^}]*min-height:44px/);
+  assert.match(css, /\.mini-button,\.button\{[^}]*min-height:44px/);
+  assert.match(css, /\.copy-button\{[^}]*min-height:44px/);
+});
