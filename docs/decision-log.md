@@ -78,7 +78,7 @@
 
 **Reason:** The 100-word error profile showed repeated optional tie-bar deletions. Using the tie-bar form as the canonical display reduced raw segmental CER from 12.79% to 11.46% and raised exact matches from 64/100 to 69/100, without changing the underlying segment or Ukrainian output. Python, browser mirror, and shared fixtures were updated together. This is an IPA notation convention, not a new Lao phonological contrast.
 
-**Evidence:** IPA chart affricate convention; benchmark [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901).
+**Evidence:** SRC-IPA-CHART; claim CLM-IPA-AFFRICATE-TIE-BAR; benchmark [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901).
 
 ## D-013 — Withhold independent tone for potential initial minor /a/ syllables
 
