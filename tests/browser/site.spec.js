@@ -57,6 +57,7 @@ test("the service exposes named landmarks, controls, and live result announcemen
   await expect(page.getByRole("main")).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
   await expect(page.getByRole("group", { name: "Швидкі приклади" })).toBeVisible();
+  await page.locator("#lao-input").fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.locator("#output")).toHaveAttribute("aria-live", "polite");
   await expect(page.locator("#status")).toHaveAttribute("role", "status");
