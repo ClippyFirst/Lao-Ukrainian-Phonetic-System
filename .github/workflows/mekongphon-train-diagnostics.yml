@@ -12,7 +12,6 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
@@ -32,14 +31,6 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_mekongphon_train_diagnostics.py'
       - name: Run aggregate-only MekongPhon train-split diagnostics
         run: python scripts/diagnose_mekongphon_train_split.py --output artifacts/mekongphon-train-diagnostics.json
-      - name: Delete earlier runs with unsanitized warning payloads
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh api --method DELETE "repos/${GITHUB_REPOSITORY}/actions/runs/42386795289"
-          gh api --method DELETE "repos/${GITHUB_REPOSITORY}/actions/runs/42386814694"
       - name: Upload aggregate diagnostics (no source rows or per-item predictions)
         if: always()
         uses: actions/upload-artifact@v7

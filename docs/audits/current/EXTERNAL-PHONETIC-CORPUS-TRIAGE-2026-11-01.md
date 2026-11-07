@@ -17,6 +17,16 @@
 
 The source code is MIT, but the corresponding `neurlang/dataset/lao/` lexicon has no declared repository license, and no per-language rights statement was found. Its derived model assets remain blocked pending provenance/license clarification. See `docs/audits/current/GORUUT-ASSET-LICENSE-REVIEW-2026-11-01.md`.
 
+## Full train-split diagnostic and rule-baseline comparison — 2026-11-07
+
+The pinned train file has raw SHA-256 \`2d0f68989009620980ced3386f11a640e6167404308eeb6a79efc52bc8e40ee0\`. First complete run: [42386956616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42386956616); aggregate artifact SHA-256 \`1598ee5f23ea9bfdba6c4eacbb4f53cc377900565a91054d4b96c354c2dd24\`.
+
+- Segmental: 6,219 rows, 93.58% coverage, 3,885 exact matches (62.47% of the full denominator), full-denominator CER 16.70%.
+- Tone categories: 4,152/8,761 covered (47.39%); 132/4,152 category disagreements (3.18%) on the covered segmental-exact subset; 616 category-length mismatches and 133 reference-alignment failures.
+- 88 of the 132 disagreements are concentrated in two reference→engine pairs: 50 high-mid→low-rising and 38 low-falling→high-mid. MekongPhon's own deterministic baseline at the pinned revision maps high-class live unmarked syllables to low-rising and low-class short-dead unmarked syllables to high-mid, the same categories as ClippyFirst's corresponding rules. The seed-lexicon references therefore diverge from the corpus project's own rule baseline in these frequent contexts. This is evidence of reference/convention sensitivity, not proof of which transcription is correct.
+- No tone rule was changed from these train-split labels. Keep the six previously flagged minor-syllable candidates and any new tonal disagreements pending qualified Vientiane review.
+- The latest diagnostic extension adds exact hash/duplicate guards and aggregate segmental edit profiles; its final-head CI is pending. The 100-row eval split remains separate and is not used for tuning.
+
 ## Current use boundaries — 2026-11-07
 
 1. Use the pinned public corpus for research, error analysis and rule discovery; cite Shurtz et al. (2026) and record the exact upstream revision and file hash.
