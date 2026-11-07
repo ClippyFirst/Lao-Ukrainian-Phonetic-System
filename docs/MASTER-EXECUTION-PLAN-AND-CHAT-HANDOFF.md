@@ -1808,3 +1808,33 @@ A cross-runtime review identified a concrete difference that must not be papered
 ### Current readiness
 
 **Research-ready as an engineering benchmark and deterministic prototype; not linguistically release-ready.** CI proves repository engineering checks, not source correctness or phonetic accuracy. ClippyFirst has not yet overtaken Lao2IPA on the same covered words. Do not merge or change the production default solely on this benchmark; preserve PR #137 open until the current benchmark diagnostic is inspected and the PR checks/review requirements are satisfied.
+
+## Final MekongPhon-informed deterministic G2P checkpoint — 2026-11-07
+
+This section supersedes the earlier "diagnostic pending" note above.
+
+- Starting base/default branch SHA: `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Working branch: `benchmark/mekongphon-three-engine`.
+- PR #137: [Improve deterministic Lao G2P using MekongPhon benchmark evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137), open, unmerged, mergeable; main remains unchanged at the starting SHA.
+- Current PR head when this handoff update was authored: `e032ba3706a85a1048be2c8c3876718ae608ebc2`.
+- Full Verify passed on several exact heads, including [42358611118](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358611118) for `6be0f41ea204a2ed2acfc5970e217e1abdb5a3a4`; final exact-head run [42358665820](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358665820) was still in progress at the time of this note. Do not mark final head verified until that run completes successfully.
+- Final schema 3.0 benchmark [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909) **SUCCESS**, zero runtime errors. Artifact [13568264361](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909/artifacts/13568264361), SHA-256 `8dbbd4d4043cea01d961d8cccad542ad9f1406c4a6245f64bac7ed9e3517af39`.
+- Identical 97-word comparison remains: ClippyFirst segmental CER 7.89% vs Lao2IPA 7.72%; benchmark-convention tonal CER 10.67% vs 10.42%. ClippyFirst remains slightly behind. Full ClippyFirst coverage 97%, with three outputs withheld.
+- Aggregate tone attribution found five aligned substitutions. These point to a few source-backed rule contexts but do not justify retuning Ueda/SEAsite rules on the held-out test set. Eight category-sequence length mismatches and four alignment failures are separately recorded.
+- Aggregate parser-tail diagnostics show two multigrapheme unconsumed tails and one standalone KHO SUNG tail, plus one malformed tone-mark-order case. These are not evidence for a new coda or onset rule. Keep fail-closed behavior.
+- ClippyFirst's mean availability latency is 12.309 ms/input for both segmental and tonal outputs in one analysis pass; Lao2IPA 0.009/0.020 ms; MekongPhon Neural 68.401/83.735 ms. Timings are runner-specific.
+- MekongPhon tonal and non-tonal model cards are now registered in `data/evidence/sources.csv`; an architecture-only methodology claim is in `data/evidence/claims.csv`. Model card Apache-2.0 does not grant rights to the MekongPhon dataset. Dataset rights remain UNKNOWN; no rows or per-item predictions are committed.
+- The source registry, completion register, research workpack, benchmark report, and external IPA documentation are updated. No neural weights, remote inference, new runtime dependency, production default change, or unsupported linguistic guess was added.
+
+### Final status and next acceptance criteria
+
+**Research-ready as an engineering prototype; not linguistically release-ready, and not yet the best measured deterministic engine.** The strongest deterministic baseline on this 100-word split remains Lao2IPA. ClippyFirst is close on the 97 shared covered words but has not surpassed it. Independent project Lao IPA gold remains 0.
+
+Remaining work:
+1. **PARTIAL — deterministic parity:** requires a separate rights-cleared development set and source-backed corrections; do not tune on the held-out 100 words.
+2. **PARTIAL — three withheld entries:** keep fail-closed until the exact orthographic structures are established by primary sources or qualified Vientiane review.
+3. **BLOCKED — independent gold:** two qualified annotators, adjudicator, rights-cleared target-profile material, and coverage report are external dependencies.
+4. **BLOCKED — dataset rights:** no corpus reuse, redistribution, or training until MekongPhon source/data rights are verified.
+5. **DEFERRED — production merge/default switch:** PR #137 remains open and unmerged; do not merge or switch defaults without the owner's approval and the external linguistic acceptance gates.
+
+Commands/checks actually executed through hosted GitHub Actions: schema 3.0 three-engine benchmark; independent IPA gold corpus structure validation; repository data/evidence audit; Python tests; external-G2P harness syntax/CLI; browser engine tests; browser data generation and generated-data reproducibility; real Chromium UI tests; built-site and relative-asset checks. All recorded exact-head Verify runs cited above succeeded; final current head still requires its own completed run. No local checkout or local Python/Node test run is claimed.
