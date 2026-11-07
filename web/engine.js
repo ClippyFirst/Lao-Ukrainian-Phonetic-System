@@ -4,6 +4,7 @@ const TONE_MARK_SET = new Set(Object.keys(TONE_MARKS));
 const POTENTIAL_MINOR_TONE_RULE = SPECIAL_TONE_RULES.find(
   ([ruleId]) => ruleId === "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"
 );
+const MINOR_C0_EXCLUDED_ONSETS = new Set(["ງ", "ຍ"]);
 const HIGH_DIGRAPHS = new Map([
   ["ຫງ", "ງ"], ["ຫຍ", "ຍ"], ["ຫນ", "ນ"], ["ຫມ", "ມ"],
   ["ຫລ", "ລ"], ["ຫຼ", "ລ"], ["ຫວ", "ວ"],
