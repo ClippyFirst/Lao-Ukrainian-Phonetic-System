@@ -1,3 +1,4 @@
+import json
 import unittest
 from scripts.analyze_mekongphon_grapheme_contexts import analyze_rows, align_tokens, grapheme_units, structural_components, tokenize_ipa
 from lao_ukrainian.data import load_registry
@@ -81,6 +82,9 @@ class GraphemeContextTests(unittest.TestCase):
         coda_position = next(rule for rule in position_rules if rule["grapheme"] == "ວ" and rule["role"] == "coda")
         self.assertEqual(onset_position["realizations"][0]["engine_ipa"], "ʋ")
         self.assertEqual(coda_position["realizations"][0]["engine_ipa"], "w")
+        serialized = json.dumps(result, ensure_ascii=False)
+        self.assertNotIn('"orth":', serialized)
+        self.assertNotIn('"ວາ"', serialized)
 
     def test_o_is_silent_vowel_carrier_or_part_of_o_vowel_by_structure(self):
         registry = load_registry()
