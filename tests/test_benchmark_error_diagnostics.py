@@ -35,13 +35,8 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
         self.assertEqual(result["total_deletions"], 0)
         self.assertEqual(result["total_insertions"], 0)
 
-    def test_neutral_syllable_has_no_invented_contour(self):
-        self.assertEqual(
-            BENCHMARK.render_mekong_tonal(
-                ["kʰa", "kʰaː"], ["neutral", "high-rising"]
-            ),
-            "kʰakʰaː˧˥",
-        )
+    def test_unresolved_tone_categories_do_not_render_tonal_output(self):
+        self.assertEqual(BENCHMARK.render_mekong_tonal(["kʰa"], [None]), "")
 
     def test_optional_affricate_tie_bars_are_secondary_allographs_only(self):
         self.assertEqual(BENCHMARK.remove_optional_ipa_tie_bars("t͡ɕa"), "tɕa")
