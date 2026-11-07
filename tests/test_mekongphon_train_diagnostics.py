@@ -35,6 +35,45 @@ class MekongPhonTrainDiagnosticTests(unittest.TestCase):
         self.assertEqual(profile["total_substitutions"], 1)
         self.assertEqual(profile["top_substitutions"][0], {"pair": "aː=>ɔː", "count": 1})
 
+    def test_alignment_contexts_attribute_only_structural_context_not_source_words(self):
+        from types import SimpleNamespace
+        from scripts.diagnose_mekongphon_train_split import alignment_error_contexts
+
+        syllable = SimpleNamespace(
+            phonetic_result=SimpleNamespace(phonemic_ipa="kʰɔː"),
+            consonant_class="low",
+            onset="ຄ",
+            vowel="AA",
+            coda=None,
+            syllable_type="live",
+            rules=[],
+        )
+        result = alignment_error_contexts("kʰaː", [syllable])
+        self.assertEqual(result["substitutions"][0]["context"],
+                         "aː=>ɔː|onset_class=low|onset=ຄ|vowel=AA|coda=|type=live|position=initial|cluster=")
+        self.assertEqual(result["deletions"], [])
+        self.assertEqual(result["insertions"], [])
+
+    def test_alignment_contexts_handle_insertions_and_deletions(self):
+        from types import SimpleNamespace
+        from scripts.diagnose_mekongphon_train_split import alignment_error_contexts
+
+        syllable = SimpleNamespace(
+            phonetic_result=SimpleNamespace(phonemic_ipa="kʰaː"),
+            consonant_class="high", onset="ຂ", vowel="AA", coda=None,
+            syllable_type="live", rules=[],
+        )
+        deletion = alignment_error_contexts("kʰaːp", [syllable])
+        insertion = alignment_error_contexts("kʰaː", [
+            SimpleNamespace(
+                phonetic_result=SimpleNamespace(phonemic_ipa="kʰaːp"),
+                consonant_class="high", onset="ຂ", vowel="AA", coda="ບ",
+                syllable_type="dead", rules=[],
+            )
+        ])
+        self.assertEqual(deletion["deletions"][0]["context"].split("|")[0], "p")
+        self.assertEqual(insertion["insertions"][0]["context"].split("|")[0], "p")
+
     def test_warning_code_drops_source_derived_tail_payload(self):
         self.assertEqual(warning_code("UNCONSUMED_AFTER_VOWEL:ມເປັນລະບຽບ"), "UNCONSUMED_AFTER_VOWEL")
 

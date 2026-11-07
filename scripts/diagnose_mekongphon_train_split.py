@@ -165,6 +165,80 @@ def alignment_error_profile(references: list[str], predictions: list[str], limit
         "unknown_fallback_tokens": dict(sorted(unknown_fallbacks.items())),
     }
 
+
+def alignment_error_contexts(reference: str, syllables: list[object], limit: int = 100) -> dict[str, list[dict[str, object]]]:
+    """Aggregate IPA edit pairs by predicted syllable structure, never by word."""
+    predicted_tokens: list[str] = []
+    predicted_contexts: list[str] = []
+    total = len(syllables)
+    for index, item in enumerate(syllables):
+        result = getattr(item, "phonetic_result", None)
+        ipa = getattr(result, "phonemic_ipa", None) if result else None
+        if not ipa:
+            continue
+        position = "initial" if index == 0 else "final" if index == total - 1 else "medial"
+        cluster = next((str(rule).split(":", 1)[1] for rule in getattr(item, "rules", [])
+                        if str(rule).startswith("ONSET-CLUSTER:")), "")
+        context = "|".join([
+            f"onset_class={getattr(item, 'consonant_class', None) or ''}",
+            f"onset={getattr(item, 'onset', None) or ''}",
+            f"vowel={getattr(item, 'vowel', None) or ''}",
+            f"coda={getattr(item, 'coda', None) or ''}",
+            f"type={getattr(item, 'syllable_type', None) or ''}",
+            f"position={position}",
+            f"cluster={cluster}",
+        ])
+        tokens = tokenize_ipa(ipa)
+        predicted_tokens.extend(tokens)
+        predicted_contexts.extend([context] * len(tokens))
+
+    reference_tokens = tokenize_ipa(reference)
+    if not predicted_tokens:
+        return {"substitutions": [], "deletions": [], "insertions": []}
+
+    n, m = len(reference_tokens), len(predicted_tokens)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(n + 1):
+        dp[i][0] = i
+    for j in range(m + 1):
+        dp[0][j] = j
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            dp[i][j] = min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + (reference_tokens[i - 1] != predicted_tokens[j - 1]),
+            )
+
+    substitutions: Counter[str] = Counter()
+    deletions: Counter[str] = Counter()
+    insertions: Counter[str] = Counter()
+    i, j = n, m
+    while i or j:
+        if i and j and reference_tokens[i - 1] == predicted_tokens[j - 1] and dp[i][j] == dp[i - 1][j - 1]:
+            i -= 1
+            j -= 1
+        elif i and j and dp[i][j] == dp[i - 1][j - 1] + 1:
+            context = predicted_contexts[j - 1]
+            substitutions[f"{reference_tokens[i - 1]}=>{predicted_tokens[j - 1]}|{context}"] += 1
+            i -= 1
+            j -= 1
+        elif i and dp[i][j] == dp[i - 1][j] + 1:
+            context_index = min(j, m - 1)
+            context = predicted_contexts[context_index]
+            deletions[f"{reference_tokens[i - 1]}|{context}"] += 1
+            i -= 1
+        else:
+            context = predicted_contexts[j - 1]
+            insertions[f"{predicted_tokens[j - 1]}|{context}"] += 1
+            j -= 1
+
+    return {
+        "substitutions": [{"context": key, "count": count} for key, count in substitutions.most_common(limit)],
+        "deletions": [{"context": key, "count": count} for key, count in deletions.most_common(limit)],
+        "insertions": [{"context": key, "count": count} for key, count in insertions.most_common(limit)],
+    }
+
 def load_dataset() -> tuple[list[dict[str, str]], str]:
     request = urllib.request.Request(DATA_URL, headers={"User-Agent": "ClippyFirst-research-diagnostic/1.0"})
     with urllib.request.urlopen(request, timeout=60) as response:
@@ -200,6 +274,7 @@ def main() -> int:
     non_established_shapes: Counter[str] = Counter()
     tone_contexts: Counter[str] = Counter()
     tone_mismatches: Counter[str] = Counter()
+    segmental_edit_context_counts = {name: Counter() for name in ("substitutions", "deletions", "insertions")}
     segmental_predictions: list[str] = []
     segmental_references: list[str] = []
     segmental_durations: list[float] = []
@@ -248,6 +323,10 @@ def main() -> int:
         )
         segmental_predictions.append(predicted_segmental)
         segmental_references.append(reference_segmental)
+        if complete:
+            for edit_type, rows_for_type in alignment_error_contexts(reference_segmental, syllables).items():
+                for edit in rows_for_type:
+                    segmental_edit_context_counts[edit_type][edit["context"]] += edit["count"]
 
         for item in syllables:
             for warning in item.warnings:
@@ -371,6 +450,10 @@ def main() -> int:
             "tone_context_counts": [
                 {"context": key, "count": count} for key, count in tone_contexts.most_common(100)
             ],
+            "segmental_edit_contexts": {
+                name: [{"context": key, "count": count} for key, count in counter.most_common(100)]
+                for name, counter in segmental_edit_context_counts.items()
+            },
             "tone_mismatch_contexts": [
                 {"context": key, "count": count} for key, count in tone_mismatches.most_common(100)
             ],
@@ -386,6 +469,7 @@ def main() -> int:
         "tone_categories": report["tone_categories"],
         "status_counts": report["diagnostics"]["status_counts"],
         "warning_counts": report["diagnostics"]["warning_counts"],
+        "segmental_edit_contexts": report["diagnostics"]["segmental_edit_contexts"],
         "report": str(args.output),
     }, ensure_ascii=False, indent=2))
     return 1 if runtime_errors else 0
