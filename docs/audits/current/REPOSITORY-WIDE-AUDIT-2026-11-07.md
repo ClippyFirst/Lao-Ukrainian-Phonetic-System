@@ -109,6 +109,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 | LAO-TARGET-001 | PARTIAL | Some IPA sequences have no justified Ukrainian target correspondence | Expert-reviewed IPA-to-Ukrainian rationale and regression coverage; no guessed mapping |
 | LAO-ROM-001 | PARTIAL | BGN/PCGN and CLDR crosswalk remains provisional and structurally bounded | Full source-located inventory, ambiguity/round-trip tests and explicit non-reversibility |
 | LAO-UI-001 | TODO | Automated Chromium coverage exists; no human device/screen-reader acceptance matrix found | Manual keyboard-only, screen-reader, mobile and visual QA on the deployed site |
+| ENG-CI-001 | PARTIAL / dependency on PR #137 | Exact-head Verify on the audit branch fails only at Browser engine tests: three existing cases fail (modern Lao ຣ analysis-dependent reading; withholding uncertain IPA; withholding incomplete IPA). The same test suite passes on PR #137 head bab117a064f0aee3b685922fe0f0738df7048b12, whose diff includes the relevant browser-engine corrections. | Review and merge the existing PR #137 or independently port its minimal reviewed fixes to main; then rerun Verify on the updated base and this audit PR. Do not copy the whole PR or claim the documentation-only change caused these failures. |
 | ENG-LOCK-001 | TODO | package.json pins Playwright but no npm lockfile is present; CI uses npm install | Generate lockfile in Node/npm-enabled clean checkout, migrate CI to npm ci, prove clean-install reproducibility |
 | ENG-BRANCH-001 | BLOCKED / owner action | Repository metadata indicates no required review/status protection was configured in the prior audit; no settings changed in this pass | Owner configures an appropriate ruleset requiring review and Verify; do not change settings without authorization |
 
@@ -119,6 +120,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 - PR #137 exact-head Verify [42358772788](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358772788): SUCCESS on bab117a064f0aee3b685922fe0f0738df7048b12.
 - PR #137 three-engine benchmark [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909): SUCCESS; aggregate-only report artifact, not a raw corpus export.
 - Earlier documentation checkpoint Verify [42299492015](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42299492015): SUCCESS on its recorded earlier SHA; it is not a substitute for verification of this audit branch's final commit.
+- Audit PR exact-head Verify [42365990689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42365990689) on fa5d027165ff06ac8add8babaabbeb975e0033e7: FAILURE at Browser engine tests only. Three tests fail as described in ENG-CI-001; corpus validation and repository data/evidence audit passed. This is a base-code regression already corrected on PR #137, not a docs test.
 
 ### Commands not executed in this session
 
