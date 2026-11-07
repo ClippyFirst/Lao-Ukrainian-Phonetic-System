@@ -4,16 +4,17 @@ from .model import PhoneticResult, PhoneticSegment
 # Multi-character phonemes and long vowels are single segment tokens; vowel
 # sequences remain separate segments and can be combined by the target adapter.
 IPA_SYMBOLS = (
-    "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕ", "dʑ", "ɲ",
+    "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕʷ", "tɕ", "dʑ", "ɲ",
+    "kʷʰ", "tʷʰ", "kʷ", "ʔʷ", "sʷ", "ŋʷ", "lʷ",
     "kʰ", "pʰ", "tʰ", "nʲ", "lʲ", "rʲ", "tʲ", "dʲ",
-    "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː",
+    "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː", "ə̯",
     "k", "p", "t", "d", "b", "ŋ", "m", "n", "s", "f",
     "h", "ɡ", "g", "x", "ɦ", "r", "l", "j", "ʋ", "w", "ʔ",
     "ʃ", "ʒ", "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
 )
 VOWEL_SYMBOLS = frozenset({
     "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː",
-    "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
+    "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə", "ə̯",
 })
 
 
