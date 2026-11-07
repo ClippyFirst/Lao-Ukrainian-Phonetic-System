@@ -7,8 +7,10 @@ on:
     paths:
       - ".github/workflows/mekongphon-train-diagnostics.yml"
       - "scripts/diagnose_mekongphon_train_split.py"
+      - "scripts/analyze_mekongphon_grapheme_contexts.py"
       - "src/lao_ukrainian/**"
       - "tests/test_mekongphon_train_diagnostics.py"
+      - "tests/test_mekongphon_grapheme_contexts.py"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +42,8 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: mekongphon-train-development-diagnostics
-          path: artifacts/mekongphon-train-diagnostics.json
+          path: |
+            artifacts/mekongphon-train-diagnostics.json
+            artifacts/mekongphon-grapheme-contexts.json
           if-no-files-found: warn
           retention-days: 90
