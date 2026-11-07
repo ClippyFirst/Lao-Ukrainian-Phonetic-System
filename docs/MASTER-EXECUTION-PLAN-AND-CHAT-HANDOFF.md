@@ -1523,7 +1523,7 @@ A code review found that truthiness-only identifier checks accepted whitespace-o
 
 ## Continuation review — Python/browser Lao segmentation contract (2026-11-03)
 
-A cross-runtime review identified a concrete difference that must not be papered over as parity: Python `segment_syllables` splits only at whitespace/U+200B, while browser `analyzeWord` performs dynamic longest-fully-parsed segmentation inside each whitespace-delimited token and preserves selected ASCII passthrough characters. The Python public API is documented as syllable-oriented, so this is not yet proven to be a defect; it is an unresolved contract boundary.
+Superseded by the 2026-11-07 runtime-contract correction: both public Python and browser APIs now attempt conservative dynamic segmentation within whitespace-delimited tokens. Both reject U+200B during Unicode validation. They are structural parsers, not lexical word segmenters; differences in punctuation, mixed-script passthrough, malformed fragments and aggregate status remain runtime-specific.
 
 - Tracked as [issue #116](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/116).
 - **LAO-PY-BROWSER-SEGMENTATION-001 — PARTIAL / contract decision required.** Acceptance: explicitly decide whether the APIs share segmentation semantics, add shared fixtures for isolated/unspaced/space-delimited/ZWSP/punctuation/malformed inputs, compare source reconstruction and statuses, then either implement parity or document the deliberate API boundary.
@@ -1901,7 +1901,7 @@ Continuation started from PR #140 head `72597559e09eec26fc7e15d3b66beafbdaa23915
 
 - Tightened the potential minor-syllable selector: the initial open short /a/ must have no local parse warnings, a supported/core onset and segmental IPA, and be followed in the same unspaced orthographic token by a major-weighted syllable (long vowel, diphthong or coda). A phrase-space boundary does not count as a following syllable.
 - Added Python and browser regressions for a positive candidate, a short-open-/a/ sequence without a major-weighted following syllable, an explicit whitespace boundary, and an analysis-dependent onset. The segmental IPA and Ukrainian adaptation remain available; only the independent tone is withheld.
-- Corrected the README runtime contract: both Python and browser paths perform conservative within-token syllable segmentation; neither is a lexical word segmenter. Python additionally treats U+200B as an explicit token boundary.
+- Corrected the README runtime contract: both Python and browser paths perform conservative within-token syllable segmentation; neither is a lexical word segmenter. Both public APIs reject U+200B during Unicode validation.
 - Extended aggregate benchmark context fields to distinguish broad C₀V₀ shapes from the narrower open-/a/ production selector, record whether the following syllable is major-weighted (including diphthongs), and include those selectors in unresolved-tone aggregation. Removed a misplaced diagnostic field from partial-parse records before it could cause an undefined-index failure.
 - No linguistic rule was added for /i/ or /u/: those remain diagnostic candidates only. No neutral contour or lexical minor-syllable identity is inferred from orthography.
 
