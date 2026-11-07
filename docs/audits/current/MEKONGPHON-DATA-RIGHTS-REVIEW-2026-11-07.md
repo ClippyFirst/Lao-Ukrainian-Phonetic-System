@@ -84,3 +84,30 @@ The 100-word benchmark described in [PR #137](https://github.com/ClippyFirst/Lao
 The two published Lao model cards independently declare Apache-2.0 for the model artifacts: [tonal checkpoint](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tonal checkpoint](https://huggingface.co/byumatrixlab/lao-ipa-nontonal). This is materially different from the unresolved dataset-level license. ClippyFirst has therefore implemented an optional runtime integration of those published artifacts, without copying the MekongPhon source corpus, source lexicon, OPUS data or upstream repository code into this project. The model artifacts are fetched from their upstream Hugging Face repositories and are not committed or redistributed by ClippyFirst.
 
 This is an evidence-based engineering interpretation of the model cards' stated license, not a legal opinion about possible third-party rights in training data or outputs. Dataset rights remain UNKNOWN for retention, derivative corpus publication, full-corpus reuse and redistribution. The neural provider remains optional; the deterministic rules engine remains the default. See docs/research/MEKONGPHON-NEURAL-INTEGRATION.md for runtime behavior and fail-closed IPA handling.
+
+## Upstream license re-check — exact component findings (2026-11-07)
+
+A second pass checked the upstream GitHub repository through its API and inspected the corpus-construction files at commit `f80f6c1840c4818b51e05f2e00cded4701a5b662`.
+
+- `byu-matrix-lab/MekongPhon` has no root `LICENSE` or `LICENSE.txt`; GitHub's repository metadata reports no recognized license. The tracked root contains README.md and the data/, pipeline/, training/ and models/ directories. The README and data/README.md describe the resources but do not grant a license. A public GitHub repository and an invitation to cite it do not grant permission to copy or adapt its code or data.
+- `pipeline/README.md` says the pipeline obtains Lao/Khmer frequency lists from SEAlang, scrapes IPA from its dictionary service, and builds lexicons from those results. `pipeline/scrape.py` confirms the Lao extraction explicitly selects entries whose source ID begins `kerr72`, and stores orthography plus tonal and non-tonal pronunciation fields.
+- The SHACHI metadata record for the SEAlang Lao Dictionary states that source material is copyrighted 1995 Dunwoody Press and 1972 Catholic University Press. This is a concrete rights warning for the underlying dictionary material; it does not establish a license for bulk extraction or derivative lexicon redistribution. The SEAlang homepage's generic “Creative Commons open license” wording remains too underspecified to identify a version, rights-holder, covered material or permitted acts.
+- The checked-in Lao downloader fetches OPUS-NLLB v1 and OPUS-ParaCrawl-Bonus v9. The Khmer downloader fetches those same sources plus OPUS-OpenSubtitles v2024. The paper's broad source list must not be treated as one dataset license: each upstream corpus release and any source content within it has its own terms. The OpenSubtitles2024 Hugging Face benchmark card declares ODC-BY for that specific held-out benchmark and says it is for development/evaluation, not training; it is not evidence of a license for the separate OPUS-OpenSubtitles/v2024 mono download used in MekongPhon's Khmer script.
+- OPUS's ParaCrawl-Bonus page says OPUS offers files it believes it is free to redistribute and will remove files if legality is in doubt. That platform-level statement is useful provenance, but does not replace a versioned license/terms record for the exact files or clear downstream redistribution of the MekongPhon-derived IPA corpus.
+
+### Revised disposition
+
+**Do not treat the full MekongPhon dataset, lexicons, source code or derived corpus as openly licensed.** Rights remain UNKNOWN/BLOCKED for copying, retention, adaptation, model retraining, redistribution and commercial use unless exact component terms or written permission are obtained. The previous 100-entry ephemeral aggregate-only diagnostic remains recorded as a narrow research activity supported by the authors' public research-release intent; it is not a legal clearance or a precedent for broader use.
+
+**The pretrained Lao model artifacts are a separate case.** Their Hugging Face model cards declare Apache-2.0, so ClippyFirst may use those published artifacts as optional runtime dependencies subject to that license and any applicable third-party rights. This permission does not extend to the MekongPhon repository code, SEAlang source dictionary, OPUS text corpora, or the training dataset as a whole. The implemented neural adapter intentionally downloads only model artifacts at runtime and does not vendor the training corpus or upstream code.
+
+Sources added/confirmed in this re-check:
+- [Upstream MekongPhon repository](https://github.com/byu-matrix-lab/MekongPhon) and [inspected commit](https://github.com/byu-matrix-lab/MekongPhon/tree/f80f6c1840c4818b51e05f2e00cded4701a5b662)
+- [MekongPhon pipeline README](https://github.com/byu-matrix-lab/MekongPhon/blob/f80f6c1840c4818b51e05f2e00cded4701a5b662/pipeline/README.md)
+- [MekongPhon Lao downloader](https://github.com/byu-matrix-lab/MekongPhon/blob/f80f6c1840c4818b51e05f2e00cded4701a5b662/data/opus_download/lao_download.sh)
+- [MekongPhon Khmer downloader](https://github.com/byu-matrix-lab/MekongPhon/blob/f80f6c1840c4818b51e05f2e00cded4701a5b662/data/opus_download/khmer_download.sh)
+- [SHACHI: Lao Dictionary metadata](https://shachi.org/resources/3954)
+- [OPUS ParaCrawl-Bonus corpus page](https://opus.nlpl.eu/datasets/ParaCrawl-Bonus)
+- [OpenSubtitles2024 dataset card](https://huggingface.co/datasets/Helsinki-NLP/OpenSubtitles2024) — relevant only to that distinct benchmark release, not proof of terms for MekongPhon's OPUS download.
+
+This remains an evidence assessment, not legal advice.
