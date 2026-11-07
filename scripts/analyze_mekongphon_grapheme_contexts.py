@@ -109,7 +109,7 @@ def role_for_index(index, structure, surface):
     return "vowel_component","joint_vowel_structure"
 
 def analyze_rows(rows, registry):
-    sound=Counter(); contexts=Counter(); units=Counter(); tone=Counter(); warnings=Counter()
+    sound=Counter(); contexts=Counter(); context_sound=Counter(); units=Counter(); tone=Counter(); warnings=Counter()
     parsed_words=skipped=syllable_total=exact=edits_total=ref_total=insertions_total=0
     for row in rows:
         orth,reference=nfc(row["orth"]),nfc(row["pron_no_tones"])
@@ -161,24 +161,24 @@ def analyze_rows(rows, registry):
                     nxt=graphemes[gi+1][0] if gi+1<len(graphemes) else "$"
                     sound[(unit,role,pos,pattern,actual,scope)]+=1
                     contexts[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope)]+=1
+                    context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,actual)]+=1
                     if role=="tone_mark": tone[(unit,pos,onset_class,stype,vowel.get("id",""),st["coda"] or "open")]+=1
     rule_groups=Counter()
-    for (grapheme,role,pos,pattern,actual,scope),count in sound.items():
-        rule_groups[(grapheme,role,pos,pattern,scope)] += count
-    distributions={}
-    for key in rule_groups:
-        grapheme,role,pos,pattern,scope=key
-        outcomes=[{"ipa":ipa,"count":count} for (g,r,p,pat,ipa,sc),count in sound.items()
-                  if (g,r,p,pat,sc)==key]
+    for key,count in context_sound.items():
+        rule_groups[key[:-1]] += count
+    distributions=[]
+    for key,total in rule_groups.items():
+        outcomes=[{"ipa":ipa,"count":count} for (*prefix,ipa),count in context_sound.items() if tuple(prefix)==key]
         outcomes.sort(key=lambda item:(-item["count"],item["ipa"]))
-        total=rule_groups[key]
-        distributions[key]={
-            "grapheme":grapheme,"role":role,"word_position":pos,
-            "orthographic_unit":pattern,"sound_scope":scope,"observations":total,
+        distributions.append({
+            "grapheme":key[0],"role":key[1],"syllable_position_in_word":key[2],
+            "previous_grapheme":key[3],"next_grapheme":key[4],"onset_class":key[5],
+            "vowel_id":key[6],"syllable_type":key[7],"coda":key[8],
+            "tone_mark":key[9],"sound_scope":key[10],"observations":total,
             "realizations":[{**item,"share":item["count"]/total} for item in outcomes],
             "consistency":outcomes[0]["count"]/total if outcomes else None,
             "evidence_tier":"high-frequency" if total>=100 else "medium-frequency" if total>=30 else "low-frequency",
-        }
+        })
     return {
       "method":{"alignment":"Longest-match IPA inventory plus Levenshtein; deterministic backtrace",
         "unit":"parser-derived onset, joint vowel structure and coda",
@@ -193,7 +193,7 @@ def analyze_rows(rows, registry):
         "structural_word_exact_rate":exact/parsed_words if parsed_words else None,
         "reference_ipa_tokens":ref_total,"alignment_edits":edits_total,"alignment_insertions":insertions_total,
         "parser_warning_codes":dict(warnings.most_common())},
-      "candidate_contextual_rules":sorted(distributions.values(),key=lambda x:(-x["observations"],x["grapheme"],x["role"])),
+      "candidate_contextual_rules":sorted(distributions,key=lambda x:(-x["observations"],x["grapheme"],x["role"])),
       "grapheme_sound_contexts":[{"grapheme":k[0],"role":k[1],"word_position":k[2],"orthographic_unit":k[3],
         "observed_ipa_at_unit_scope":k[4],"sound_scope":k[5],"count":v} for k,v in sound.most_common(1500)],
       "grapheme_context_features":[{"grapheme":k[0],"role":k[1],"word_position":k[2],"previous_grapheme":k[3],
@@ -219,7 +219,7 @@ def main():
     parser.add_argument("--output",type=Path,default=Path("artifacts/mekongphon-grapheme-contexts.json"))
     args=parser.parse_args(); result=analyze_rows(load_train(),load_registry())
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+    args.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(result["summary"],ensure_ascii=False,sort_keys=True))
 
 if __name__=="__main__": main()
