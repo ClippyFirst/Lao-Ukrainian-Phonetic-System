@@ -199,6 +199,16 @@ def load_neural():
             device="cpu",
             num_beams=MODEL_NUM_BEAMS,
         )
+        # Exercise the complete production result path once per model before
+        # scoring: pinned revision, raw IPA retention, typed parsing and
+        # fail-closed Ukrainian adaptation. This smoke input is not benchmark data.
+        smoke = engine.transcribe("ຂາ")
+        if smoke.model_revision != pinned_revision:
+            raise RuntimeError(f"{model_id}: adapter returned unexpected model revision")
+        if not smoke.raw_ipa.strip() or smoke.phonetic_result.external_ipa != smoke.raw_ipa:
+            raise RuntimeError(f"{model_id}: adapter failed to preserve non-empty raw IPA")
+        if smoke.status == "IPA_UNSUPPORTED" and smoke.ukrainian is not None:
+            raise RuntimeError(f"{model_id}: unsupported IPA must not produce Ukrainian output")
 
         def generate(text: str) -> str:
             return nfc(engine.predict_raw_ipa(text))
