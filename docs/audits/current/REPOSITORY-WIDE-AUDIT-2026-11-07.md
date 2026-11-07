@@ -19,7 +19,7 @@ It is a repository, implementation, documentation, CI and design-system audit. I
 - Working branch for this pass: `audit/repository-docs-structure-20261107`, created from that exact main SHA. The default branch was not changed.
 - Repository metadata reported `main` as unprotected. No rulesets, branch protection, repository permissions or other settings were changed.
 - Seven branches were visible at inspection: `main`, the existing audit/MekongPhon branch, two benchmark branches, the grapheme-preview branch, the practical-transcription branch and the rule-engine improvement branch.
-- Open PRs: #137–#142. Their base/head relationships are described in §2. No PR was merged, closed, retargeted or force-pushed.
+- At initial inspection, open PRs were #137–#142. This audit was subsequently opened as PR #143, directly against `main`. Their base/head relationships are described in §2. No PR was merged, closed, retargeted or force-pushed.
 - Existing audit branch `audit/repository-documentation-and-mekongphon-rights-20261107` is not a documentation-only branch: its tree is 88 commits ahead of main and includes PR #137's benchmark lineage plus optional MekongPhon integration. It was reviewed as evidence, not adopted as the working branch.
 
 ## 2. Branch and PR reconciliation
@@ -99,7 +99,7 @@ Correction committed on this branch:
 - It also preserves a whole candidate when the only unconsumed suffix is one recognized Lao consonant that is not supported as a coda, preventing a valid-looking prefix from being salvaged.
 - No IPA labels, consonant registry entries, tone rules, target correspondences or source claims were changed.
 - Commit: `0c808700e097b341fa53a522c4abd5a1c8abebc5`.
-- Status: **PARTIAL pending exact-head Verify**. The existing failing CI run is RED evidence; it is not evidence that this correction passes.
+- Exact-head verification: PR Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044) **SUCCESS** on commit `a7353b23b6b21678c9f8602247a26f694396d226`. All workflow stages passed: corpus validation, data/evidence audit, 181 Python tests, external-G2P CLI, 112 Node tests across all four suites, static build, generated-data reproducibility, 4 Chromium tests and built-page/relative-asset assertions. This verifies engineering behavior, not linguistic accuracy.
 
 ### 4.2 Node test command hides later suites
 
@@ -159,12 +159,12 @@ Project-specific constraints take precedence: source-rights verification, proven
 |---|---|---|---|
 | AUD-001 | Inspect main baseline, architecture, docs, CI, branches and PR dependencies | DONE_VERIFIED | GitHub metadata/tree/file inspection; exact baseline SHA and PR relationships recorded above. |
 | AUD-002 | Reconcile prior audit branch and PR stack | DONE_VERIFIED | Compared audit branch to main; identified 88-commit divergence and PR #137–#142 dependencies; no unsafe port. |
-| ENG-001 | Correct uncertain browser IPA being discarded | PARTIAL | Fix committed; exact-head Verify pending. |
-| ENG-002 | Prevent incomplete single-consonant coda suffix from exposing a valid-looking prefix | PARTIAL | Fix committed; exact-head Verify pending. |
-| ENG-003 | Ensure npm test reports all independent Node suites | PARTIAL | Script changed; exact-head workflow pending. |
-| DOC-001 | Correct root README heading/link placement | PARTIAL | README changed; exact-head workflow pending. |
-| DOC-002 | Publish current repository-wide audit and link it in audit index | PARTIAL | Files added/updated; exact-head workflow pending. |
-| DOC-003 | Append accurate branch/CI/blocker checkpoint to canonical handoff | PARTIAL | Handoff updated; exact-head workflow pending. |
+| ENG-001 | Correct uncertain browser IPA being discarded | DONE_VERIFIED | Fix committed and exact-head Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044) SUCCESS. |
+| ENG-002 | Prevent incomplete single-consonant coda suffix from exposing a valid-looking prefix | DONE_VERIFIED | Regression suite and exact-head Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044) SUCCESS. |
+| ENG-003 | Ensure npm test reports all independent Node suites | DONE_VERIFIED | One Node runner executed all four suites; 112 tests passed on exact head [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044). |
+| DOC-001 | Correct root README heading/link placement | DONE_VERIFIED | README change passed exact-head Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044). |
+| DOC-002 | Publish current repository-wide audit and link it in audit index | DONE_VERIFIED | Audit file and index passed exact-head Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044). |
+| DOC-003 | Append accurate branch/CI/blocker checkpoint to canonical handoff | DONE_VERIFIED | Handoff update passed exact-head Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044). |
 | LIC-001 | MekongPhon data/code redistribution and derivative rights | BLOCKED | PR #138's rights review identifies missing component-specific license terms; do not copy or redistribute dataset/code absent explicit permission. |
 | DATA-001 | Independent adjudicated IPA gold | BLOCKED | Gold corpus has 0 records and header-only gold file; requires approved IPA convention, two qualified annotators, separate adjudicator, blind intake, curator, rights-cleared source items and accepted contrast coverage. |
 | UI-001 | Manual accessibility/device QA | TODO | Requires human keyboard-only, screen-reader, zoom/text scaling, mobile/touch and deployed-site checks with environment/results recorded. |
@@ -187,22 +187,19 @@ Project-specific constraints take precedence: source-rights verification, proven
 ### Not yet verified
 
 - No local checkout or local Python/Node/Playwright execution was available through this connector-only environment.
-- The fix branch has not yet received an exact-head Verify result at the time this report is authored.
-- Chromium UI, built-page checks and generated-data drift have not run on the fix branch yet.
+- Exact-head hosted Verify passed on code/documentation head `a7353b23b6b21678c9f8602247a26f694396d226`: [run 42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044). All configured stages completed successfully.
 - No clean-install npm reproducibility check; no lockfile was generated.
 - No manual screen-reader, keyboard-only, mobile-device or deployed visual QA.
 - No independent phonetic accuracy benchmark or gold corpus was created.
 
 ### Required final acceptance
 
-1. Open the audit branch as a PR to `main`.
-2. Wait for Verify on the exact final PR head.
-3. Inspect all jobs and ensure the Node command executes all four suites even if one fails.
-4. If Verify fails, inspect logs, fix the root cause and rerun on the new exact head.
-5. Record exact SHA/run conclusion in this report and the master handoff; only then upgrade the related PARTIAL tasks to DONE_VERIFIED.
+1. PR #143 is open against `main`; no merge has been performed.
+2. Verify [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044) passed on exact PR head `a7353b23b6b21678c9f8602247a26f694396d226`.
+3. All six branch deliverables are DONE_VERIFIED for that exact head. Any subsequent commit must receive a fresh exact-head Verify before it is called fully verified.
 
 ## 9. Final readiness
 
-**Research-ready as an engineering foundation only after the browser fix passes exact-head CI; not linguistically release-ready.** The current mainline is a reproducible research prototype but its latest Verify is red. The branch contains a targeted correction and documentation hygiene changes, but these remain PARTIAL until the exact final head passes. Independent IPA gold = 0, empirical accuracy is not established, third-party data rights remain constrained, manual accessibility QA is outstanding, npm dependency resolution is not lockfile-frozen, and main is unprotected.
+**Engineering-verified research prototype on PR #143; not linguistically release-ready.** The inspected `main` baseline remains red until PR #143 is merged, but the isolated branch passed every configured Verify stage on its exact head. Independent IPA gold = 0, empirical accuracy is not established, third-party data rights remain constrained, manual accessibility QA is outstanding, npm dependency resolution is not lockfile-frozen, and main is unprotected.
 
 No release, merge, deployment change, repository-settings change, or third-party dataset redistribution was performed.
