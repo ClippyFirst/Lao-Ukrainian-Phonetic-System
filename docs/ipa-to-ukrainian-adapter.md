@@ -50,6 +50,8 @@ The current Lao engine produces phonemic IPA only. The surface and external fiel
 - `UNCERTAIN` segmental readings and `UNSUPPORTED` IPA are withheld. An unresolved tone alone is recorded in `uncertainty` while a supported segmental result may still be adapted. A plausible IPA prefix must never be rendered as if it represented the complete source syllable.
 - The adapter reads only typed IPA segments and the canonical `data/lao/ukrainian_correspondences.csv` mirror. It does not inspect Lao source graphemes or source vowel/coda identifiers.
 - Longest-match segmentation is performed before adaptation, preserving exact registered sequences such as /ʃt͡ʃ/ → щ.
+- The IPA result represents one parsed syllable. When its first typed segment is /j/ and the next is a supported vowel, the Ukrainian adapter applies the syllable-initial йотація policy (/ja/ → я, /je jɛ/ → є, /ji/ → ї, /jo jɔ/ → йо, /ju/ → ю; /jɯ/ → йи; /jɤ/ → йе). Medial/coda /j/ remains й. Python and browser adapters implement the same rule and tests.
+- The source glide /w/ is always adapted as Ukrainian в, including the /aw/ rime → ав; it is not changed to у in coda position.
 - Tone and vowel quantity remain visible in metadata. Their neutralization in practical Ukrainian spelling is an explicit target policy, not silent loss at the interface.
 - The Python and browser implementations are independently implemented and must be checked by the same contract tests and shared output fixtures.
 
