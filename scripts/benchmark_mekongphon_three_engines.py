@@ -26,7 +26,11 @@ DATA_URL = (
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
 )
 TONAL_MODEL_ID = "byumatrixlab/lao-ipa-tonal"
+TONAL_MODEL_REVISION = "e02608cfcb18abfe6b1916f5f4774bfac9ac788d"
 SEGMENTAL_MODEL_ID = "byumatrixlab/lao-ipa-nontonal"
+SEGMENTAL_MODEL_REVISION = "d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b"
+MODEL_MAX_LENGTH = 128
+MODEL_NUM_BEAMS = 5
 
 
 def nfc(value: str) -> str:
@@ -175,36 +179,62 @@ def load_lao2ipa():
 
 
 def load_neural():
+    """Load both MekongPhon models from immutable, checked Hub commits."""
     import torch
     from transformers import AutoTokenizer, EncoderDecoderModel
     from huggingface_hub import model_info
 
     torch.set_num_threads(min(2, os.cpu_count() or 1))
 
-    def load_one(model_id: str):
-        info = model_info(model_id)
-        revision = info.sha
-        model = EncoderDecoderModel.from_pretrained(model_id, revision=revision)
+    def load_one(model_id: str, pinned_revision: str):
+        info = model_info(model_id, revision=pinned_revision)
+        if info.sha != pinned_revision:
+            raise RuntimeError(
+                f"Hub resolved {model_id}@{pinned_revision} to unexpected SHA {info.sha}"
+            )
+        model = EncoderDecoderModel.from_pretrained(
+            model_id, revision=pinned_revision, trust_remote_code=False
+        )
+        resolved = getattr(model.config, "_commit_hash", None)
+        if resolved and resolved != pinned_revision:
+            raise RuntimeError(
+                f"Loaded {model_id} weights from {resolved}, expected {pinned_revision}"
+            )
         encoder = AutoTokenizer.from_pretrained(
-            model_id, subfolder="encoder_tokenizer", revision=revision
+            model_id, subfolder="encoder_tokenizer", revision=pinned_revision,
+            trust_remote_code=False,
         )
         decoder = AutoTokenizer.from_pretrained(
-            model_id, subfolder="decoder_tokenizer", revision=revision
+            model_id, subfolder="decoder_tokenizer", revision=pinned_revision,
+            trust_remote_code=False,
         )
         model.eval()
 
         def generate(text: str) -> str:
-            inputs = encoder(text, return_tensors="pt", truncation=True, max_length=128)
+            inputs = encoder(
+                text, return_tensors="pt", truncation=False, padding=False
+            )
+            token_count = int(inputs["input_ids"].shape[-1])
+            if token_count > MODEL_MAX_LENGTH:
+                raise ValueError(
+                    f"{model_id}: {token_count} input tokens exceed "
+                    f"{MODEL_MAX_LENGTH}; benchmark never truncates"
+                )
             with torch.inference_mode():
                 output_ids = model.generate(
-                    **inputs, max_length=128, num_beams=5, early_stopping=True
+                    **inputs, max_length=MODEL_MAX_LENGTH,
+                    num_beams=MODEL_NUM_BEAMS, early_stopping=True,
                 )
             return nfc(decoder.decode(output_ids[0], skip_special_tokens=True))
 
-        return generate, revision
+        return generate, pinned_revision
 
-    tonal_generate, tonal_revision = load_one(TONAL_MODEL_ID)
-    segmental_generate, segmental_revision = load_one(SEGMENTAL_MODEL_ID)
+    tonal_generate, tonal_revision = load_one(
+        TONAL_MODEL_ID, TONAL_MODEL_REVISION
+    )
+    segmental_generate, segmental_revision = load_one(
+        SEGMENTAL_MODEL_ID, SEGMENTAL_MODEL_REVISION
+    )
 
     def predict(text: str) -> dict[str, str | float]:
         started = time.perf_counter()
@@ -226,8 +256,10 @@ def load_neural():
         "segmental_revision": segmental_revision,
         "tonal_model": TONAL_MODEL_ID,
         "tonal_revision": tonal_revision,
+        "num_beams": MODEL_NUM_BEAMS,
+        "max_input_tokens": MODEL_MAX_LENGTH,
+        "truncation": False,
     }
-
 
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     import sacrebleu
