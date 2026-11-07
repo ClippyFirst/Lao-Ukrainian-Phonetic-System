@@ -140,3 +140,16 @@ The schema 3.0 report stores cross-engine shared-coverage metrics so a 97-item C
 | Mekong-convention tonal exact | 52/97 | 56/97 | 73/97 |
 
 This removes the denominator mismatch in the earlier covered-subset observation. ClippyFirst is within 0.17 percentage points of Lao2IPA segmentally and 0.25 points tonally on identical items, but is not yet ahead.
+
+### Aggregate parser-tail diagnostic — 2026-11-07
+
+The schema 3.0 aggregate-only diagnostic recorded the Unicode-name sequences of the two unconsumed vowel tails without retaining source words or per-item predictions:
+
+- `LAO LETTER LO LING + LAO LETTER KO + LAO LETTER LO LING + LAO VOWEL SIGN AA + LAO LETTER MO` (one occurrence).
+- `LAO LETTER MO + LAO LETTER HO SUNG + LAO VOWEL SIGN AA + LAO LETTER WO + LAO LETTER HO SUNG + LAO VOWEL SIGN MAI KAN + LAO LETTER NO` (one occurrence).
+- A separate single-grapheme tail is `LAO LETTER KHO SUNG` (one occurrence). This is an onset consonant, not an established coda in the current registry.
+- One additional case has malformed tone-mark order.
+
+These shapes are diagnostics, not linguistic analyses. They do not establish that any sequence is a valid syllable boundary, consonant cluster, coda or loan spelling. The two multigrapheme tails are not covered by existing onset/vowel/coda rules, and the KHO SUNG tail cannot safely be reclassified as a coda. Keep all affected outputs withheld until a primary orthography source or qualified Vientiane reviewer establishes the exact structure. No parser relaxation or new consonant value is justified by this aggregate alone.
+
+Diagnostic workflow [42357836206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206) SUCCESS; aggregate-only artifact [13568064669](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206/artifacts/13568064669), SHA-256 `0c8e23f5bb752804cef3deb270ee762509b9de150253347528eed335d61f0ae3`.
