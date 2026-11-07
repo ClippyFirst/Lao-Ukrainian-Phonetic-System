@@ -105,6 +105,26 @@ test("mai ti and mai catawa are not dropped", () => {
   assert.equal(analyze("ກ໋າ").syllables[0].tone, "low-rising");
 });
 
+test("potential initial minor open-A tone is withheld in browser and segmental IPA retained", () => {
+  const result = analyze("ຄະຄາ");
+  const first = result.syllables[0];
+  assert.equal(result.status, "PARTIAL");
+  assert.ok(first.ipa);
+  assert.ok(first.ukrainian);
+  assert.equal(first.tone, null);
+  assert.equal(first.toneContour, null);
+  assert.equal(first.toneStatus, "ANALYSIS DEPENDENT");
+  assert.ok(first.phoneticResult.uncertainty.includes("TONE-UNRESOLVED"));
+  assert.ok(first.rules.includes("TONE-RULE:VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+});
+
+test("minor-A candidate requires a major-weighted following syllable", () => {
+  const result = analyze("ຄະຄະ");
+  assert.equal(result.syllables.length, 2);
+  assert.equal(result.syllables[0].tone, "high-mid");
+  assert.equal(result.syllables[0].toneStatus, undefined);
+});
+
 test("shared Lao tone-mark storage-order fixture", () => {
   const fixturePath = resolve(dirname(fileURLToPath(import.meta.url)), "../tests/fixtures/tone_mark_order_cases.json");
   const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
