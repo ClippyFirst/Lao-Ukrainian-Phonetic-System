@@ -264,3 +264,16 @@ No release, merge, deployment change, repository-settings change, or third-party
 - Added Python API/CLI fallback and tests for unconsumed suffixes, malformed tone marks, partial onset, Pali-only characters, complete-syllable no-fallback, and inventory coverage.
 - Corrected the fallback coda-role assignment to locate the actual coda grapheme rather than assuming the last code point (a trailing tone mark must not be mislabeled as a coda).
 - Browser UI still does not render this preview. Keep the feature PARTIAL until exact-head CI and browser integration/QA are complete.
+
+
+## Browser grapheme-preview parity and exact verification — 2026-11-07
+
+- The browser engine now exposes the same separate PROVISIONAL grapheme preview as the Python API/CLI. The UI labels it explicitly as an unconfirmed preview and shows unresolved graphemes; accepted IPA and Ukrainian output remain null/withheld.
+- Browser preview uses the same registered positional onset/cluster correspondences and parser-confirmed complete vowel/coda structures, plus the generated 83-codepoint Unicode inventory. It never invents IPA for Pali/Sanskrit or Khmu entries and never infers tone.
+- For malformed/multiple tone marks, the browser reparses only the tone-stripped surface to recover segmental structure; tone metadata is still withheld. This fixes the early-return path that previously lacked onset/vowel details for preview.
+- The browser-data generator and committed data mirror now include the Unicode inventory. Exact-head generated-data reproducibility passed.
+- Exact-head Verify 42416380324 SUCCESS on 4d2ebc2c9348ac4952869492095e82d0a22dcdc4: 260 Python tests, 126 Node tests, 10 Chromium tests; npm ci, corpus validation, repository/evidence audit, build, generated-data drift, browser tests and built-page/asset assertions all passed.
+- Intermediate failures were not hidden: the first browser preview test exposed the malformed-tone early-return path; a separate generator newline issue was corrected; the final exact-head run is green.
+- LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED (engineering implementation and automated verification). This does not establish pronunciation accuracy or expand the canonical phonological inventory. All preview hints remain sourced from existing registry entries and are explicitly provisional.
+- UI-001 — PARTIAL: automated keyboard navigation, landmarks/live regions, 320–768px reflow, touch emulation, 200% zoom emulation and preview announcement pass. Manual NVDA/VoiceOver/TalkBack testing, physical mobile devices, actual browser 200%/400% zoom and deployed-site QA remain TODO.
+- Independent adjudicated Lao IPA gold remains 0; no accuracy claim is made from the preview or software tests.

@@ -40,3 +40,11 @@ The canonical Unicode inventory is `data/lao/grapheme_inventory.csv`. It catalog
 A grapheme inventory and the fallback's role inventory are different measures. A grapheme can be recognized structurally without having a standalone IPA value; a multi-sign vowel is a joint unit, not a sequence of independent phonemes. Coverage reports must distinguish Unicode recognition, structural role recognition, source-attested correspondence, full-parser acceptance, and preview-only combinations. The inventory is codepoint-complete for assigned characters in Unicode 18 Lao; phonetic coverage is intentionally narrower and remains incomplete for Indic and Khmu extensions.
 
 This is an engineering affordance, not an accuracy claim. Independent adjudicated Lao IPA gold remains required for empirical accuracy claims and promotion of new rules.
+
+
+## Automated verification
+
+- Exact-head Verify 42416380324 passed on commit 4d2ebc2c9348ac4952869492095e82d0a22dcdc4: 260 Python tests, 126 Node tests and 10 Chromium tests.
+- The browser UI shows the provisional preview separately from accepted IPA/Ukrainian output. A malformed-tone case recovers only segmental structure from the tone-stripped surface; the preview never infers tone.
+- The Unicode inventory mirror is generated from the canonical CSV and checked for reproducibility in CI.
+- Manual assistive-technology and physical-device QA remains part of UI-001; automated browser tests are not represented as manual screen-reader certification.
