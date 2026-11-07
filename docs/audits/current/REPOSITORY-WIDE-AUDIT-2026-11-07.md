@@ -85,7 +85,7 @@ The optional romanization path remains distinct from the phonetic IPA-first path
 
 ## Engineering verification evidence
 
-The latest completed full Verify inspected for this branch is [42388269091 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388269091), on documentation head `de69f329048cd7de5d8da5d183d0962bdcf26f18`. The subsequent evidence commit `62483d900e5c4a620828ae24319ddd6b5c741f27` has full Verify [42388391166](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388391166) QUEUED; it contains only the clarified MekongPhon seed-lexicon/OPUS source scope. The code-bearing diagnostic commit `3efc0ccb54887830157915e8b4b84ad9177e1720` passed full Verify [42388033575](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388033575) and the full train diagnostic [42388029325](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388029325). Its single job completed all configured stages successfully:
+The latest completed full Verify inspected for the grapheme-context code checkpoint is [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133), on `16d267664beb25a9e26e9639aace42a2975582d1`. The matching full train diagnostic is [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319). Later commits add direct positional/broader-context output arrays and an aggregate-only test guard; their exact-head diagnostic and Verify are pending at the time of this audit update. The prior full Verify 42388269091 remains valid for its documentation checkpoint only. The completed 42390739133 run executed all configured stages successfully:
 
 1. Independent IPA-gold corpus structure validation.
 2. Repository data/evidence audit.
@@ -133,6 +133,24 @@ Reviewed the five supplied references as methods, not dependencies:
 
 The repository already expresses these practices in `AGENTS.md`, `CONTRIBUTING.md`, its codebase map and CI. No external skill tree, checker, hook, orchestration runtime or frontend framework was copied into the project. The local linguistic, privacy, licensing and fail-closed contracts remain authoritative.
 
+## Grapheme-position and contextual rule discovery — 2026-11-07
+
+The production engine is a compositional grapheme/structure rules engine, not a word-to-IPA lookup. Its runtime separates onset and coda consonant values, resolves complete vowel spellings, handles documented multi-grapheme onsets, derives tone from phonological context, and adapts only typed IPA.
+
+The new [MekongPhon grapheme-context analysis](MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) parses the pinned 6,219-row train split through ClippyFirst's own syllable parser. It records each Lao code point and structural role, with previous/next signs, onset class, vowel ID, live/dead type, coda and tone mark. It separately reports engine IPA and reference-aligned IPA; multi-sign vowels remain joint units. It does not write source words or per-item predictions and does not promote dictionary references to gold.
+
+Verified diagnostic checkpoint [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319), code commit \`16d267664beb25a9e26e9639aace42a2975582d1\`, artifact SHA-256 \`7d51559fc9d5ef7d173850d9237cbd62577c2b7b890e96d1e73a6f113d46938a\`:
+- 6,219 rows; 5,820 fully structurally parsed (93.58%); 399 withheld; 9,883 parsed syllables.
+- 3,885/5,820 exact structural IPA string matches (66.75% conditional concordance, not accuracy).
+- 26,155 reference IPA tokens; 2,857 alignment edits; 163 insertions.
+- High-frequency positional examples confirm /n/ coda, /k/ onset, /aː/ from the postposed \`າ\` structure, /a/ from short \`ະ\`, and context-specific consonant values.
+
+The largest structural-unit differences are /ʋ/ vs /w/ for onset \`ວ\`, /iːə/ vs /iaː/ for \`ຽ\`, /aw/ vs /ao/ for \`ເົາ\`, /uːə/ vs /uaː/ for \`UO_LONG\`, /ɯːə/ vs /ɯːə̯/ for \`ເືອ\`, /ai/ vs /aj/ for \`ໄ\`/\`ໃ\`, /l/ vs /r/ for \`ຣ\`, and /ɤː/ vs /əː/ for \`ເີ\`. These are not automatically changed: they may reflect source transcription convention, dialect/profile, rhyme realization or lexical class.
+
+The typed IPA inventory now recognizes documented labialized onset units and the external IPA forms \`əː\` and \`ə̯\`. No unapproved Ukrainian correspondences were added; the target adapter remains fail-closed for unsupported segments. Regression tests explicitly exercise onset/coda alternations, short/long \`ເ\`, silent-carrier versus vowel-sign \`ອ\`, high digraphs, labialized onsets and IPA token boundaries.
+
+Later code commits \`43a2cfeb58c6e2af4889eb5213c0113c3cc1bd3f\` and \`990ea6838d08c2b798437acaad023dcce1b6c81a\` add direct grapheme-position and broader phonological-context distributions, plus their assertions. The subsequent aggregate-only test guard is \`3151d65269d5303ec0f92e9b6b23b6ffb7bb563b\`; exact-head diagnostic and Verify for that final code/test head are pending. Do not mark the additional distribution arrays DONE_VERIFIED until those runs pass.
+
 ## Evidence-based task ledger
 
 | ID | Status | Current evidence | Acceptance / next action |
@@ -149,6 +167,11 @@ The repository already expresses these practices in `AGENTS.md`, `CONTRIBUTING.m
 | MEKONG-RIGHTS-001 | PARTIAL | Authors' explicit public-release statement supports non-redistributive research use; pinned train-split diagnostics are implemented. Dataset-specific license/root LICENSE and component-level source terms are not declared in the inspected repository. | Continue research and rule discovery with pinned provenance and aggregate-only outputs. Obtain explicit component terms before mirroring, redistributing, sublicensing or commercial reuse. |
 | MEKONG-TRAIN-001 | DONE_VERIFIED (initial full diagnostic) | 6,219-row pinned train-split run 42386956616 succeeded; aggregate-only artifact inspected; no rules were changed from unadjudicated references. | Keep this split development-only; preserve the 100-row comparator separately and require independent expert IPA gold for accuracy claims. |
 | MEKONG-TRAIN-002 | DONE_VERIFIED | Exact SHA/duplicate guards, IPA-inventory-token edit profile, non-established context filter and focused tests passed in diagnostic run 42388029325 and full Verify 42388033575 on code commit 3efc0ccb. | Use the aggregate error profile to prioritize source review; do not tune from train labels or promote them to gold. |
+| ENGINE-GRAPHEME-001 | DONE_VERIFIED (engineering) | Existing onset/coda, full vowel-pattern, onset-cluster and tone-context rules are exercised by positional regression tests; Verify 42390739133 passed on code checkpoint 16d267664beb25a9e26e9639aace42a2975582d1. | Preserve structural, compositional processing; never add word-to-IPA lookup fallbacks. |
+| IPA-INVENTORY-002 | DONE_VERIFIED (engineering) | Labialized onset units, long schwa and schwa offglide are recognized as typed IPA segments; target adaptation remains fail-closed without an approved correspondence. | Extend target mappings only with explicit Ukrainian policy evidence. |
+| MEKONG-GRAPHEME-001 | DONE_VERIFIED (base diagnostic) | Full train-split grapheme-context run 42390734319 succeeded; aggregate engine/reference context distributions inspected. | Keep train references as development evidence, not independent gold. |
+| MEKONG-GRAPHEME-002 | PARTIAL | Direct grapheme-position and broader phonological-context distributions plus aggregate-only output test added in commits 43a2cfeb, 990ea683 and 3151d652; exact-head CI is pending. | Require exact-head diagnostic and Verify before DONE_VERIFIED; then inspect generated aggregate artifact. |
+| LAO-GRAPHEME-COVERAGE-001 | PARTIAL / fail-closed | 399/6,219 train rows are withheld by parser warnings; no unsupported structure is guessed. | Review warning families with primary orthographic evidence and expert input; expand coverage only with regression fixtures. |
 | LAO-PARSER-001 | PARTIAL / fail-closed | Three parser-tail structures and one malformed tone-mark case remain withheld. | Resolve with primary evidence and qualified review; preserve fail-closed output meanwhile. |
 
 ## Readiness judgement
