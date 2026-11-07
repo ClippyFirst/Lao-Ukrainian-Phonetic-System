@@ -29,20 +29,22 @@ def analyze(text: str) -> Analysis:
         for syllable_index, surface in enumerate(group):
             parsed = parse_syllable(surface, registry)
             local_warnings = list(parsed.get("warnings", []))
-            ipa, rules, tone_status, tone = phonologize(parsed)
+            ipa, rules, tone_status, tone = phonologize(parsed, registry)
 
-            # Ueda (1994) describes a non-final open /a/ syllable as
-            # unstressed and tone-neutral; Enfield (2007) describes minor
-            # C0V0 syllables as lacking independent lexical tone. Orthography
-            # alone cannot prove that every matching shape is minor, so only
-            # flag an initial short-A candidate and withhold its tone.
+            # Ueda (1994) and Enfield (2007) describe reduced/minor syllables
+            # without an independent lexical tone. Orthography alone cannot
+            # prove that a matching shape is minor, so flag only a narrow
+            # initial short-A candidate and withhold its tone pending review.
             onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
             minor_rule = next(
                 (row for row in registry["special_tone_rules"]
                  if row["rule_id"] == "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"),
                 None,
             )
-            following = parse_syllable(group[1], registry) if len(group) > 1 else {}
+            following = (
+                parse_syllable(group[1], registry)
+                if syllable_index == 0 and len(group) > 1 else {}
+            )
             following_vowel = following.get("vowel") or {}
             following_major_weighted = (
                 following_vowel.get("length") == "long"
