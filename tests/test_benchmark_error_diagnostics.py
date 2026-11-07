@@ -42,6 +42,17 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
         predict = BENCHMARK.load_project()
         result = predict("ຄະຄາ")
         self.assertEqual(result["status"], "PARTIAL")
+        self.assertIsNone(result["tone_categories"][0])
+        context = result["tone_contexts"][0]
+        self.assertTrue(context["candidate_minor_shape"])
+        self.assertTrue(context["candidate_minor_open_a_shape"])
+        self.assertTrue(context["following_major_weighted"])
+        self.assertEqual(context["analysis_status"], "analysis-dependent")
+
+    def test_project_predict_emits_minor_syllable_diagnostics_without_runtime_error(self):
+        predict = BENCHMARK.load_project()
+        result = predict("ຄະຄາ")
+        self.assertEqual(result["status"], "PARTIAL")
         self.assertEqual(result["tone_categories"][0], None)
         context = result["tone_contexts"][0]
         self.assertTrue(context["candidate_minor_shape"])
