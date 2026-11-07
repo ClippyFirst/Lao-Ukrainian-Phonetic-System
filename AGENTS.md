@@ -80,6 +80,10 @@ These are methodological references, not runtime dependencies. The project adopt
 
 When these references conflict with this file, the existing project requirements, or the user's explicit instructions, follow the project requirements and user instructions. Do not import or install these repositories as project dependencies merely to follow their methods.
 
+## Adopted UI/UX reference
+
+- [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/b7d5353e0130feb8c5574ef1251f8a1db1873ccb): selected web-appropriate guidance for accessibility-first review, semantic controls, keyboard/focus behavior, text contrast, responsive layout, form feedback, reduced motion and target sizing. Use its web-specific quick reference; do not transfer native-only pt/dp rules to CSS pixels. The project's [DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) remains the source of truth and already specifies 44px control targets. Do not import the skill's search CLI, datasets or generated token system as runtime dependencies.
+
 ## Methodology source refresh — 2026-11-02
 
 The adopted engineering references were checked against current upstream revisions without importing them as runtime dependencies:

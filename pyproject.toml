@@ -8,6 +8,12 @@ version = "0.1.0"
 description = "Research-grade Lao to Ukrainian phonetic-graphemic correspondence system"
 requires-python = ">=3.10"
 
+[project.optional-dependencies]
+neural = [
+    "torch>=2.6,<3",
+    "transformers>=4.49,<5",
+]
+
 [project.scripts]
 lao-ua = "lao_ukrainian.cli:main"
 

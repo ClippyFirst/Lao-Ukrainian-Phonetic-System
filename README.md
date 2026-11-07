@@ -82,6 +82,8 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 
 Start at the [documentation index](docs/README.md). It identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
+- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
+
 ## Web service
 
 The repository also contains a two-page local-first web instrument:
@@ -129,3 +131,8 @@ The Python package and browser instrument intentionally expose different input c
 - **Boundary differences:** browser validation and Python normalization/parsing are separate runtime paths. In particular, do not assume U+200B, punctuation, mixed-script passthrough, malformed fragments, or aggregate status behave identically across them. Consumers must select the documented runtime contract and must not compare the two outputs as a parity oracle.
 
 The Python API's syllable-level behavior is deliberate, not a claim that Lao spaces mark lexical words. The browser's within-token segmentation is a conservative presentation feature, not evidence that the project solves Lao lexical word segmentation. Shared phonological and IPA-to-Ukrainian rules should remain aligned where both runtimes support the same complete syllable, but phrase segmentation is not a parity requirement. Changes to either contract require runtime-specific regression tests and an explicit update to this section.
+
+
+## Optional MekongPhon neural G2P
+
+An optional neural IPA provider is available alongside (not inside or in place of) the default deterministic rules engine. Install with pip install -e '.[neural]' and run lao-ua TEXT --engine mekongphon-tonal. See [the integration guide](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md) for model provenance, CPU/CUDA setup, output contracts and limitations. Model weights are downloaded from their separately published Hugging Face repositories; they are not bundled in this repository. The default engine remains rules.

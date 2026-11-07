@@ -4,7 +4,9 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — repository inventory, documentation corrections, engineering status, unresolved acceptance gates and this pass's evidence.
+- [Repository-wide audit — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — current mainline/PR reconciliation, architecture inventory, task ledger, verification limits and readiness judgement.
+- [MekongPhon dataset rights review — 2026-11-07](current/MEKONGPHON-DATA-RIGHTS-REVIEW-2026-11-07.md) — upstream license evidence, component-level rights boundaries and conditions for reopening dataset reuse.
+- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — historical baseline for the prior documentation checkpoint; superseded as a current repository inventory by the 2026-11-07 audit.
 
 ## Current language/research workpacks
 
