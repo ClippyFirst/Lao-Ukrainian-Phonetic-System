@@ -17,7 +17,7 @@ This is a conservative rights decision, not a legal opinion that all private res
 - The tracked root tree contains README.md, data/, pipeline/, training/ and models/; no root LICENSE or COPYING file is present.
 - The upstream README describes the corpus, repository structure and citation, but contains no dataset license grant.
 - The repository's public status and the paper's statement that resources are publicly released do not, by themselves, specify the legal permissions applicable to each corpus component.
-- The paper: [MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer](https://doi.org/10.63317/4bb9rvdshu4z), LREC 2026, pp. 1650–1658. The proceedings page is published by ELRA. A proceedings license is not automatically the license for separately hosted data, source dictionaries, OPUS-derived sentence pairs or model artifacts.
+- The paper: [MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer](https://doi.org/10.63317/4bb9rvdshu4z), LREC 2026, pp. 1650–1658. The official proceedings page states that LREC proceedings are licensed under CC BY-NC 4.0. Its abstract says the data, code and pretrained models are publicly released to support future research. These are relevant availability statements, but the proceedings license is a license for the proceedings publication; neither the page nor the upstream README identifies a dataset-specific license for the separately hosted corpus, source dictionaries, OPUS-derived sentence pairs or model artifacts. Public release for research should not be silently expanded into a blanket redistribution or derivative-work grant.
 
 ## Component-by-component rights boundary
 
@@ -62,7 +62,7 @@ The 100-word benchmark described in [PR #137](https://github.com/ClippyFirst/Lao
 
 - [MekongPhon repository](https://github.com/byu-matrix-lab/MekongPhon)
 - [MekongPhon upstream inspected tree](https://github.com/byu-matrix-lab/MekongPhon/tree/f80f6c1840c4818b51e05f2e00cded4701a5b662)
-- [LREC 2026 paper and proceedings record](https://lrec.elra.info/lrec2026-main-129)
+- [LREC 2026 paper and proceedings record](https://lrec.elra.info/lrec2026-main-129) — page states proceedings CC BY-NC 4.0 and public release of resources for research, but does not state a dataset-specific license.
 - [Lao tonal model card](https://huggingface.co/byumatrixlab/lao-ipa-tonal)
 - [Lao non-tonal model card](https://huggingface.co/byumatrixlab/lao-ipa-nontonal)
 
