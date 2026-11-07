@@ -35,6 +35,14 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
         self.assertEqual(result["total_deletions"], 0)
         self.assertEqual(result["total_insertions"], 0)
 
+    def test_neutral_syllable_has_no_invented_contour(self):
+        self.assertEqual(
+            BENCHMARK.render_mekong_tonal(
+                ["kʰa", "kʰaː"], ["neutral", "high-rising"]
+            ),
+            "kʰakʰaː˧˥",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
