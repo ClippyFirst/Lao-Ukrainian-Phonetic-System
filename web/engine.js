@@ -241,13 +241,13 @@ function analyzeToken(surface) {
   if (markOrderError) {
     return { surface, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ipa: null, ukrainian: null, tone: null };
   }
-  if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."] };
+  if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."], ipa: null, ukrainian: null, tone: null, toneContour: null };
 
   const { onsetKey, onsetIndex, onsetLength, onsetClass } = found;
   const onset = CONSONANTS[onsetKey];
   const before = clean.slice(0, onsetIndex);
   const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
-  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before] };
+  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before], ipa: null, ukrainian: null, tone: null, toneContour: null };
 
   let selectedLength = onsetLength;
   let onsetForm = found.onsetForm;
@@ -280,7 +280,7 @@ function analyzeToken(surface) {
     }
   }
 
-  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null };
+  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null, tone: null, toneContour: null };
   const matched = candidate.matched;
   const coda = candidate.coda;
   const warnings = [...candidate.warnings];
@@ -324,24 +324,17 @@ function analyzeToken(surface) {
 }
 
 function isStructurallyComplete(s) {
-  return Boolean(s.ipa && s.ukrainian) &&
+  // Syllable segmentation is a source-phonology concern. Do not make it
+  // depend on whether the separate Ukrainian target adapter has a mapping.
+  return Boolean(s.ipa) &&
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
 function analyzeWord(word) {
   const chars = [...word];
-  // A malformed tone-mark position belongs to the whole orthographic unit;
-  // do not let dynamic segmentation salvage a plausible-looking substring.
-  const cleanForMarkOrder = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
-  const markOrderError = toneMarkOrderError(chars, cleanForMarkOrder, findOnset(cleanForMarkOrder));
-  if (markOrderError) {
-    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
-  }
-  // Prevent dynamic segmentation from salvaging a valid-looking syllable
-  // when adjacent tone marks make the original orthographic unit malformed.
-  if (chars.some((ch, i) => TONE_MARK_SET.has(ch) && TONE_MARK_SET.has(chars[i + 1]))) {
-    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: ["MULTIPLE_TONE_MARKS: phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
-  }
+  // Tone-mark placement and multiplicity are syllable-local properties.
+  // Candidate syllables validate their own marks below; a mark that cannot be
+  // consumed by any complete candidate keeps the whole token unresolved.
   // Do not let dynamic segmentation rescue a malformed prefix by dropping
   // characters before the first Lao onset (e.g. xເເກ -> x + ເເ + ເກ).
   // A token may have at most one recognized preposed vowel before its first
@@ -351,12 +344,20 @@ function analyzeWord(word) {
     const prefix = chars.slice(0, firstOnsetIndex).join("");
     const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
     if (!allowedPreposed.has(prefix)) {
+      const prefixWarnings = [
+        ...(chars.slice(0, firstOnsetIndex).some((ch) => TONE_MARK_SET.has(ch))
+          ? ["MALFORMED_TONE_MARK_POSITION: tone mark precedes the syllable onset."]
+          : []),
+        "Непідтримуваний фрагмент перед початковим приголосним: " + prefix,
+      ];
       return [{
         surface: word,
         status: "EVIDENCE LIMITED",
-        warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + prefix],
+        warnings: prefixWarnings,
         ukrainian: null,
         ipa: null,
+        tone: null,
+        toneContour: null,
       }];
     }
   }
@@ -374,6 +375,8 @@ function analyzeWord(word) {
       warnings: ["ເ◌ຽ is not an established preposed IA spelling; phonetic output withheld."],
       ukrainian: null,
       ipa: null,
+      tone: null,
+      toneContour: null,
     }];
   }
 
@@ -381,11 +384,16 @@ function analyzeWord(word) {
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
   const wholeCandidate = analyzeToken(word);
+  // Keep a fully parsed but analysis-dependent source reading intact. The
+  // target adapter may withhold Ukrainian output without invalidating the
+  // source-side IPA parse (e.g. modern/loan-dependent ຣ).
+  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN") {
+    return [wholeCandidate];
+  }
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
     return [wholeCandidate];
   }
-  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
-      w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
+  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
       w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||
       w.startsWith("ONSET-LABIALIZED:"))) {
     return [wholeCandidate];
@@ -424,7 +432,23 @@ function analyzeWord(word) {
       }
     }
   }
-  return best[0].parts;
+  const parts = best[0].parts;
+  // Do not let an unattached or malformed tone mark disappear as a fallback
+  // fragment. Multiple marks in different syllables are valid; multiple or
+  // misplaced marks within one syllable remain visible as one unresolved unit.
+  if (parts.some((part) => TONE_MARK_SET.has(part.surface))) {
+    return [wholeCandidate];
+  }
+  // A2 short vowels can be valid inside a closed syllable. Check their coda
+  // within each candidate, and withhold only if DP strands a recognized Lao
+  // consonant or vowel sign as an independent fallback fragment.
+  const vowelGraphemes = new Set([...VOWEL_COMBINING_MARKS, "ະ", "າ", "ຽ", "ຳ", "ເ", "ແ", "ໂ", "ໃ", "ໄ", "ວ", "ອ", "ຍ"]);
+  if (parts.some((part) => [...part.surface].length === 1 &&
+      (vowelGraphemes.has(part.surface) ||
+       ["core", "analysis-dependent"].includes(CONSONANTS[part.surface]?.[2])))) {
+    return [wholeCandidate];
+  }
+  return parts;
 }
 
 export function analyze(text) {

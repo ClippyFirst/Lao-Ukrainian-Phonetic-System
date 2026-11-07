@@ -57,6 +57,18 @@ class TestToneRuleRegistry(unittest.TestCase):
                 self.assertTrue(row["contour"])
                 self.assertTrue(row["status"])
 
+    def test_contours_are_the_ipa_conversion_of_ueda_pitch_levels(self):
+        expected = {
+            "low-rising": "˨˦",   # [24]
+            "high-rising": "˧˦",  # [34]
+            "high-mid": "˧",      # [33]
+            "low-falling": "˨˩",  # [21]
+            "high-falling": "˥˨", # [52]
+        }
+        for row in self.rules:
+            with self.subTest(rule=row["rule_id"]):
+                self.assertEqual(row["contour"], expected[row["tone"]])
+
     def test_tone_mark_rules_are_restricted_to_live_syllables(self):
         for row in self.rules:
             if row["tone_mark"] != "none":

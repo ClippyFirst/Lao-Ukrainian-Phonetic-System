@@ -1737,3 +1737,104 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Required acceptance commands remain those in `.github/workflows/verify.yml`: corpus validation, `scripts/audit.py`, Python unittest discovery, optional external-G2P harness syntax/CLI, `npm test`, `npm run build`, generated-data diff check, Playwright Chromium tests, and built-site/asset assertions.
 - No benchmark was run. No phonological correspondence CSV, gold label, external source, licensing record, or romanization path was changed.
 - Do not promote this task to DONE_VERIFIED until the exact current main SHA has a successful Verify run. Independent Lao IPA gold remains 0; this is an architecture correction, not linguistic certification.
+
+
+## Three-engine Lao G2P benchmark — 2026-11-07
+
+- **LAO-G2P-THREE-ENGINE-001 — DONE_VERIFIED for the 100-word comparative run:** a hosted GitHub Actions job evaluated ClippyFirst, `lao2ipa==1.0.0`, and `byumatrixlab/lao-ipa-tonal` against the same MekongPhon held-out 100-entry seed lexicon. Exact-head run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) **SUCCESS**; report and method are in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
+- Results: MekongPhon Neural CER **8.29%**, chrF++ **84.98**, exact 74/100, coverage 100%; Lao2IPA CER **11.97%**, chrF++ **73.85**, exact 56/100, coverage 100%; ClippyFirst CER **81.47%**, chrF++ **8.43**, exact 2/100, coverage 46% (46 `OK`, 54 `PARTIAL`). All three had zero runtime errors.
+- Provenance: MekongPhon held-out CSV source revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`; Lao2IPA 1.0.0; neural model revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`. Aggregate artifact SHA-256 `3b159eb7763dfb38dab9dbae3cc094d34523a5f08cbae522baa2da8c22b5ee2e`.
+- **Interpretation:** MekongPhon Neural is the best accuracy candidate on this isolated-word split; Lao2IPA is dramatically faster; ClippyFirst's current parser/phonology implementation has inadequate coverage and match quality on these 100 lexical entries. This is not the paper's 13,442-sentence evaluation and must not be conflated with its published CER. The reference lexicon is not independently re-adjudicated by this project; project gold remains 0. No runtime default, phonology CSV, Ukrainian mapping or gold label was changed.
+- **TODO:** add a separate non-tonal/segmental diagnostic using `pron_no_tones`, then classify the 54 ClippyFirst `PARTIAL` cases and review mismatches with a qualified Lao phonetics reviewer.
+- **BLOCKED:** item-level rights/convention review and independent expert-adjudicated Lao IPA gold remain necessary for project accuracy claims.
+- **Separate mainline verification issue:** main commit `f40c1128302486b3589da9b16bae198ef3ad1d81` has Verify run [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593) **FAILURE**: three browser tests failed (modern `ຣ` returned null instead of `la`; two typed-IPA withholding expectations returned `SUPPORTED`). The benchmark workflow did not run the full Verify suite and did not resolve those failures.
+
+
+
+## PR verification follow-up — three-engine benchmark — 2026-11-07
+
+- PR #137 exact head `a4216332341c977661de5a238be8df244e76b357`: Verify run [42305484657](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305484657) **FAILURE**. Python tests and earlier steps completed; browser engine tests failed in 3 cases: modern `ຣ` expected `la` but returned null; uncertain IPA adapter expected `la` but returned null; incomplete IPA adapter expected `UNSUPPORTED` but returned `SUPPORTED`.
+- These match the failures already seen on main at [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593). They are not caused by the new benchmark script, and were not modified in this scoped benchmark change.
+- Benchmark-specific run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) remains **SUCCESS**. PR #137 remains open and unmerged pending resolution of the separate browser-engine regressions.
+
+
+## Final PR-head verification — 2026-11-07
+
+- Current PR #137 head `1658ec5e9a70848530a5e074d3be8728eb77ecd2`: Verify run [42305592423](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305592423) **FAILURE**, Browser engine tests only. The same 3 failures remain: modern `ຣ` returns null instead of `la`; uncertain IPA adapter returns null instead of `la`; incomplete IPA adapter returns `SUPPORTED` instead of `UNSUPPORTED`. The benchmark-specific workflow remains **SUCCESS**. PR #137 is open and unmerged.
+
+## MekongPhon-informed deterministic Lao G2P continuation — 2026-11-07 (supersedes earlier benchmark status notes)
+
+### Current branch and PR
+
+- Working branch: `benchmark/mekongphon-three-engine`.
+- PR #137: [Improve deterministic Lao G2P using MekongPhon benchmark evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137), open and unmerged; base remains `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Latest code checkpoint for the aggregate-tail diagnostic: `5abd5f14416c51635461988ff8fd18b4fce2df80`. Subsequent commits update the completion register and research workpack; obtain the current PR head before any final acceptance decision.
+
+### Verified implementation
+
+- Deterministic dynamic-programming syllabification for unspaced Lao lexical words, preserving phrase boundaries and unsupported material.
+- Per-syllable tone-mark validation and short-A coda validation.
+- Typed source IPA and tone-category handling; evaluation-only conversion to MekongPhon contour notation remains separate from production contour metadata.
+- Ueda (1994) numeric tone levels converted to IPA tone letters within the explicitly scoped central-Vientiane profile.
+- The benchmark now scores segmental and tonal references independently, includes tone-category accuracy and identical-subset comparisons, and stores aggregate parser diagnostics only.
+- No neural weights, model runtime, remote inference, or new production default were added.
+
+### Benchmark evidence
+
+- Schema 3.0 comparison run [42309545197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197) SUCCESS; aggregate-only artifact [13547168327](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197/artifacts/13547168327).
+- On the identical 97 items covered by ClippyFirst and Lao2IPA: segmental CER 7.89% vs 7.72%; Mekong-convention tonal CER 10.67% vs 10.42%. ClippyFirst is close but still slightly behind Lao2IPA. ClippyFirst full-set coverage is 97%; tone-category exact 83.33% vs Lao2IPA 87.50%.
+- MekongPhon Neural remains the strongest measured engine on this 100-word lexical split. The split is not the paper's 13,442-sentence evaluation and is not independently re-adjudicated project gold.
+- Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`; SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. The upstream snapshot has no root LICENSE; rights for dataset reuse/redistribution remain unverified. No raw rows or per-item predictions are committed or placed in artifacts.
+
+### Exact-head engineering verification
+
+- PR head `97b2d9cae74701dd9fcb1a8e9e24e8c485285809`: Verify run [42309845373](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309845373) **SUCCESS**. Passed independent IPA gold structure validation, repository data/evidence audit, Python tests, optional external-G2P CLI validation, browser engine tests, browser data generation/reproducibility, real Chromium UI tests, and built-page/relative-asset checks.
+- Latest aggregate-only tail-shape diagnostic checkpoint `5abd5f14416c51635461988ff8fd18b4fce2df80`: exact-head Verify [42357841388](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357841388) **SUCCESS**. The separate benchmark [42357836206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206) was still running when this note was prepared; its aggregate Unicode-name tail diagnostics must be retrieved before classifying the remaining parser-tail work.
+- These are hosted CI results. No local checkout or local Python/Node test execution is claimed.
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Three-engine benchmark schema 3.0 | DONE_VERIFIED | Run 42309545197; exact versions/revisions, aggregate report and methodology recorded. |
+| Deterministic multisyllable parsing and local tone/coda validation | DONE_VERIFIED (engineering behavior) | Tests and exact-head Verify 42309845373. Does not establish independent linguistic accuracy. |
+| Typed tone-category and contour-convention separation | DONE_VERIFIED (benchmark contract) | Tone-category metrics and benchmark-only Mekong contour adapter; production Ueda contour retained. |
+| ClippyFirst parity with best deterministic baseline | PARTIAL | On shared 97 items ClippyFirst is 0.17 CER points behind Lao2IPA segmentally and 0.24 points behind tonally (rounded). Must improve without weakening fail-closed behavior. |
+| Two unconsumed vowel-tail cases | PARTIAL / evidence-limited | Need aggregate tail Unicode-name output from run 42357836206, then primary-source validation and targeted regressions before a parser change. |
+| Unsupported/ambiguous consonant or malformed tone-mark case | BLOCKED pending exact orthographic evidence | Do not infer a new consonant value or silently discard/reorder a tone mark. Keep IPA withheld. |
+| Independent Lao IPA gold and expert validation | BLOCKED (external specialist/rights dependency) | Gold remains 0. Requires rights-cleared Vientiane-profile material, two independent qualified annotators, blind adjudication and coverage review. |
+| Dataset reuse/redistribution rights | BLOCKED (upstream license evidence absent) | No corpus redistribution, training or committed source rows until rights are established. |
+
+### Current readiness
+
+**Research-ready as an engineering benchmark and deterministic prototype; not linguistically release-ready.** CI proves repository engineering checks, not source correctness or phonetic accuracy. ClippyFirst has not yet overtaken Lao2IPA on the same covered words. Do not merge or change the production default solely on this benchmark; preserve PR #137 open until the current benchmark diagnostic is inspected and the PR checks/review requirements are satisfied.
+
+## Final MekongPhon-informed deterministic G2P checkpoint — 2026-11-07
+
+This section supersedes the earlier "diagnostic pending" note above.
+
+- Starting base/default branch SHA: `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Working branch: `benchmark/mekongphon-three-engine`.
+- PR #137: [Improve deterministic Lao G2P using MekongPhon benchmark evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137), open, unmerged, mergeable; main remains unchanged at the starting SHA.
+- Current PR head when this handoff update was authored: `e032ba3706a85a1048be2c8c3876718ae608ebc2`.
+- Full Verify on the implementation/documentation checkpoint `1ad150f9377f558158793a244d0b0cd6c8527b4e` completed **SUCCESS** in exact-head run [42358709925](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358709925). All configured steps passed: corpus structure validation, repository data/evidence audit, Python tests, optional external-G2P syntax/CLI, browser engine tests, browser-data generation/reproducibility, Chromium UI tests, and built-page/relative-asset checks.
+- Final schema 3.0 benchmark [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909) **SUCCESS**, zero runtime errors. Artifact [13568264361](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909/artifacts/13568264361), SHA-256 `8dbbd4d4043cea01d961d8cccad542ad9f1406c4a6245f64bac7ed9e3517af39`.
+- Identical 97-word comparison remains: ClippyFirst segmental CER 7.89% vs Lao2IPA 7.72%; benchmark-convention tonal CER 10.67% vs 10.42%. ClippyFirst remains slightly behind. Full ClippyFirst coverage 97%, with three outputs withheld.
+- Aggregate tone attribution found five aligned substitutions. These point to a few source-backed rule contexts but do not justify retuning Ueda/SEAsite rules on the held-out test set. Eight category-sequence length mismatches and four alignment failures are separately recorded.
+- Aggregate parser-tail diagnostics show two multigrapheme unconsumed tails and one standalone KHO SUNG tail, plus one malformed tone-mark-order case. These are not evidence for a new coda or onset rule. Keep fail-closed behavior.
+- ClippyFirst's mean availability latency is 12.309 ms/input for both segmental and tonal outputs in one analysis pass; Lao2IPA 0.009/0.020 ms; MekongPhon Neural 68.401/83.735 ms. Timings are runner-specific.
+- MekongPhon tonal and non-tonal model cards are now registered in `data/evidence/sources.csv`; an architecture-only methodology claim is in `data/evidence/claims.csv`. Model card Apache-2.0 does not grant rights to the MekongPhon dataset. Dataset rights remain UNKNOWN; no rows or per-item predictions are committed.
+- The source registry, completion register, research workpack, benchmark report, and external IPA documentation are updated. No neural weights, remote inference, new runtime dependency, production default change, or unsupported linguistic guess was added.
+
+### Final status and next acceptance criteria
+
+**Research-ready as an engineering prototype; not linguistically release-ready, and not yet the best measured deterministic engine.** The strongest deterministic baseline on this 100-word split remains Lao2IPA. ClippyFirst is close on the 97 shared covered words but has not surpassed it. Independent project Lao IPA gold remains 0.
+
+Remaining work:
+1. **PARTIAL — deterministic parity:** requires a separate rights-cleared development set and source-backed corrections; do not tune on the held-out 100 words.
+2. **PARTIAL — three withheld entries:** keep fail-closed until the exact orthographic structures are established by primary sources or qualified Vientiane review.
+3. **BLOCKED — independent gold:** two qualified annotators, adjudicator, rights-cleared target-profile material, and coverage report are external dependencies.
+4. **BLOCKED — dataset rights:** no corpus reuse, redistribution, or training until MekongPhon source/data rights are verified.
+5. **DEFERRED — production merge/default switch:** PR #137 remains open and unmerged; do not merge or switch defaults without the owner's approval and the external linguistic acceptance gates.
+
+Commands/checks actually executed through hosted GitHub Actions: schema 3.0 three-engine benchmark; independent IPA gold corpus structure validation; repository data/evidence audit; Python tests; external-G2P harness syntax/CLI; browser engine tests; browser data generation and generated-data reproducibility; real Chromium UI tests; built-site and relative-asset checks. All recorded exact-head Verify runs cited above succeeded; final current head still requires its own completed run. No local checkout or local Python/Node test run is claimed.

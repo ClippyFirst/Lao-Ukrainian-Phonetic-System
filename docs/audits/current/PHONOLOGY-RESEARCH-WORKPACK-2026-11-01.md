@@ -80,3 +80,47 @@ The basic five-tone system is fully conditioned by rhyme type:
 The five basic contours are full-rising [24], high-rising [34], mid-level [33], low-falling [21] and full-falling [52] (pp. 106–108). Ueda also documents restricted five-/six-tone variability: a low-level [22] realization is limited to a subset of onsets and overlaps substantially with full-rising; connected/non-final contexts may show [24], [23] or [22] (pp. 106–110). This is not evidence for a robust six-way lexical contrast.
 
 Ueda §2.3 (pp. 100–101) explicitly rejects phonological consonant clusters in spoken Vientiane: written C-w sequences can surface as a rhyme /-ua-/ or lose /w/. This conflicts with Erickson's unit-labialized-phoneme analysis and must remain profile/lexeme-conditioned. Do not automatically map a written C-w sequence to /Cʷ/ or Ukrainian «кв».
+
+## MekongPhon-informed deterministic Lao engine checkpoint — 2026-11-07
+
+The MekongPhon paper and its reproducible 100-word held-out seed lexicon were used to study a high-performing neural G2P system without importing neural inference into ClippyFirst. The implementation response was to strengthen the deterministic orthographic parser and keep source IPA, tone categories, contour notation and Ukrainian adaptation as separate layers.
+
+### Reusable design principles observed
+
+1. **Syllable/rhyme/tone decomposition:** treat the syllable as onset + rhyme + tone rather than applying a direct grapheme-to-Ukrainian substitution.
+2. **Separate segmental and tonal evaluation:** compare `pron_no_tones` and `pron_with_tones` independently; otherwise a contour convention mismatch contaminates segmental CER.
+3. **Typed tone categories:** score the tone category separately from its surface contour notation. A tone label is not interchangeable with a contour string.
+4. **Fail-closed unsupported structures:** high accuracy on covered cases does not justify fabricating IPA for unanalysed input.
+5. **Version and profile explicitness:** exact model/data revisions and a source-scoped Vientiane profile are necessary for reproducible comparison.
+
+### Deterministic changes verified
+
+- Dynamic-programming segmentation for unspaced Lao lexical words while preserving phrase spaces and unparsed material.
+- Per-syllable tone-mark placement/order validation.
+- Syllable-local short-A coda checks.
+- Typed segmental IPA and tone category output, with an evaluation-only adapter to MekongPhon's contour notation.
+- Ueda (1994) numeric contour levels converted to IPA tone letters within the one-informant central-Vientiane scope.
+
+Exact PR-head Verify [42309845373](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309845373) passed Python, browser engine, generated-data reproducibility, Chromium UI and built-site checks.
+
+### Comparative result and remaining gap
+
+On the same 97 items covered by both deterministic engines, ClippyFirst is close to Lao2IPA but still slightly behind: segmental CER 7.89% vs 7.72%; tonal CER in the Mekong reference convention 10.67% vs 10.42%. ClippyFirst's full-set coverage is 97%; tone-category exact is 83.33%, versus 87.50% for Lao2IPA. MekongPhon Neural remains the strongest measured engine on the 100-word split.
+
+Three entries remain withheld. Two contain unconsumed material after the vowel; one contains an unsupported consonant or malformed tone-mark placement. No raw lexicon rows or per-item predictions are committed. The current follow-up adds aggregate Unicode-name shapes for parser tails, so any future rule can be reviewed against exact orthographic structures without redistributing the underlying benchmark records.
+
+**Research conclusion:** MekongPhon's most useful transferable ideas are decomposition, explicit tone/rhyme conditioning, typed outputs, and evaluation separation—not neural weights. ClippyFirst has adopted these engineering principles, but it has not yet surpassed Lao2IPA and has no independently adjudicated project IPA gold. Do not claim that it is the best deterministic Lao G2P system yet.
+
+### MekongPhon model architecture notes
+
+The BYU MATRIX Lab model card describes the tonal Lao system as an `EncoderDecoderModel` with a BERT encoder and BERT decoder, 512-dimensional hidden states, six encoder and six decoder layers, eight attention heads, a 1,024-unit feed-forward layer, and character-level tokenizers for both Lao input and IPA-plus-tone output. The non-tonal companion is separately trained with an IPA output vocabulary without tone diacritics. Its documented inference path uses autoregressive generation with beam search (`num_beams=4` in the example) and a maximum sequence length of 128. The model card lists 33.6M parameters and Apache-2.0 for the tonal model. See the [tonal model card](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tonal model card](https://huggingface.co/byumatrixlab/lao-ipa-nontonal).
+
+The paper reports 367,000 Lao orthographic–IPA pairs and Transformer sequence-to-sequence performance below 2% CER on its held-out test set. Its rule-based tools trade some accuracy for speed. The useful deterministic transfer is not to imitate the neural network with a lookup-free grapheme rewrite; it is to make the rule engine's own intermediate representations similarly explicit: character normalization, structural candidate generation, syllable/rhyme parsing, independent tone assignment, typed IPA output, and separate evaluation contracts. The benchmark's 100-word split is much smaller and different from the paper's sentence-level evaluation; the two scores are not interchangeable. See [Shurtz et al. (LREC 2026)](https://aclanthology.org/2026.lrec-1.129/).
+
+The published model card's architecture does not establish a particular rule for any individual Lao word. It is engineering evidence about tokenization, contextual sequence modeling and separation of tonal/non-tonal tasks—not a source for new phonological correspondences.
+
+### Deterministic comparator design review: lao2ipa 1.0.0
+
+The pinned Apache-2.0 comparator source was reviewed as a separate deterministic reference. It normalizes preposed vowels into post-onset order, merges selected consonant pairs and compound vowel tokens, uses explicit intermediate vowel states, assembles syllable objects, and applies bounded lookahead to reposition tone marks before attaching onset/tone/coda components. Its `Syllable` object separates onset, vowel, coda and tone and applies a Vientiane-oriented live/dead × class × length table. It also carries a broader set of consonant combinations for loan/extended spellings than ClippyFirst's conservative core registry.
+
+Transferable ideas already reflected in ClippyFirst are explicit vowel-token recognition, syllable-level representation, separate tone assignment, and explicit tone placement validation. Do not copy its permissive naive fallback or automatically promote every listed consonant combination into the modern Vientiane core inventory. The comparator's own README describes its grouping and tone placement as heuristics, and its source contains a mix of ordinary Lao and loan/extended clusters; every added form still needs a source/profile claim and tests. The exact upstream source inspected was `byu-matrix-lab/lao2ipa` main at source blob `7b758db2b8c2de2947c0582e7af68a49bbd9e408`; package comparator remains pinned at version 1.0.0 in the hosted benchmark.
