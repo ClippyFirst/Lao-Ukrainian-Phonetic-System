@@ -159,7 +159,7 @@ def load_project():
                         (rule for rule in item.rules if str(rule).startswith("VNT-")), ""
                     ),
                 }
-                for item in syllables
+                for index, item in enumerate(syllables)
             ],
             # ClippyFirst emits segmental IPA and tone from one analysis pass;
             # each requested output is therefore available after the same elapsed time.
