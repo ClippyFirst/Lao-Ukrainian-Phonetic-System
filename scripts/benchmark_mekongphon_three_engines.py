@@ -692,6 +692,8 @@ def main() -> int:
             else:
                 contexts = engine_tone_contexts[index] or []
                 for category_index, (expected, actual) in enumerate(zip(ref_categories, pred_categories)):
+                    if actual is None or not str(actual).strip():
+                        continue
                     key = f"{expected}=>{actual}"
                     tone_category_confusion[key] = tone_category_confusion.get(key, 0) + 1
                     if expected != actual and category_index < len(contexts):
