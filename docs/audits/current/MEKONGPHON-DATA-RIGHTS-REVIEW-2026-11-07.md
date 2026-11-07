@@ -41,7 +41,7 @@ The benchmark in [PR #137](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic
 
 The evidence indicates that the authors intend MekongPhon to be available for research: the paper says the resources are publicly released to support future research, and it quotes SEAlang's general reuse statement. On that basis, the existing narrow internal benchmark on the 100-entry seed-lexicon holdout is treated as within the stated research purpose, subject to the strict non-redistribution boundary above. The paper's 100-entry lexicon holdout is not the full 13,442-sentence evaluation set and does not contain the OPUS sentence corpus. The applicable CC version and scope are still unidentified, so this does not establish a blanket license for the full dataset, adaptations, derivative publication or commercial use. A non-commercial purpose alone does not create a license or eliminate applicable copyright/database rights.
 
-Before any dataset access that entails downloading, retaining, processing, adapting, or redistributing records, obtain one of:
+Before expanding beyond the narrow ephemeral 100-entry research benchmark—especially for retention, adaptation, full-corpus processing, training, redistribution or publication of examples—obtain one of:
 
 1. A dataset-specific license from the rights-holder that clearly covers the intended acts; or
 2. Written permission from the rights-holder specifying the dataset version, components, research use, retention, publication of aggregate results, and whether derived data or excerpts may be shared.
@@ -58,7 +58,7 @@ The 100-word benchmark described in [PR #137](https://github.com/ClippyFirst/Lao
 
 - [ ] Identify the rights-holder(s) for each source component.
 - [ ] Obtain the exact dataset version and component-level license/permission.
-- [x] Confirm public research intent for the narrow 100-entry held-out seed-lexicon diagnostic; the existing aggregate-only benchmark is scoped to this limited use.
+- [x] Record the authors' public research-release statement and SEAlang's generic reuse notice as the evidence basis for the narrow 100-entry aggregate-only diagnostic.
 - [ ] Obtain explicit confirmation of the precise Creative Commons license/version and the scope of its grant.
 - [ ] Confirm permission, if any, to publish aggregate metrics and derived examples.
 - [ ] Confirm whether derivative datasets, excerpts, or model outputs may be redistributed.
