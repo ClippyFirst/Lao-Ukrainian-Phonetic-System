@@ -80,6 +80,7 @@ def load_project():
         segmental_elapsed = time.perf_counter() - started
 
         syllables = analysis.syllables
+        vowel_by_id = {row["id"]: row for row in load_registry()["vowels"]}
         segmental_complete = bool(syllables) and all(
             item.phonetic_result and item.phonetic_result.phonemic_ipa
             for item in syllables
@@ -121,6 +122,15 @@ def load_project():
             ],
             "partial_parse_shapes": [
                 {
+                    "candidate_minor_open_a_shape": bool(
+                        index == 0
+                        and item.vowel == "A"
+                        and item.phonetic_result is not None
+                        and item.phonetic_result.vowel_length == "short"
+                        and not item.coda
+                        and not item.tone_mark
+                        and item.phonetic_result.status == "SUPPORTED"
+                    ),
                     "onset": item.onset or "",
                     "vowel": item.vowel or "",
                     "coda": item.coda or "",
@@ -150,6 +160,8 @@ def load_project():
                         and item.phonetic_result.vowel_length == "short"
                         and not item.coda
                         and not item.tone_mark
+                        and item.phonetic_result is not None
+                        and item.phonetic_result.status == "SUPPORTED"
                         and index + 1 < len(syllables)
                         and (
                             syllables[index + 1].coda is not None
@@ -157,6 +169,7 @@ def load_project():
                                 syllables[index + 1].phonetic_result is not None
                                 and syllables[index + 1].phonetic_result.vowel_length == "long"
                             )
+                            or vowel_by_id.get(syllables[index + 1].vowel or "", {}).get("nucleus_type") == "diphthong"
                         )
                     ),
                     "onset": item.onset or "",
