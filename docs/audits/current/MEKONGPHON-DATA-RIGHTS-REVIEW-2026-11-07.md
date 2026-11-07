@@ -77,3 +77,10 @@ The 100-word benchmark described in [PR #137](https://github.com/ClippyFirst/Lao
 - [Lao non-tonal model card](https://huggingface.co/byumatrixlab/lao-ipa-nontonal)
 
 *Review date: 2026-11-07. This is a repository evidence assessment, not jurisdiction-specific legal advice.*
+
+
+## Implementation consequence — model artifacts versus source corpus
+
+The two published Lao model cards independently declare Apache-2.0 for the model artifacts: [tonal checkpoint](https://huggingface.co/byumatrixlab/lao-ipa-tonal) and [non-tonal checkpoint](https://huggingface.co/byumatrixlab/lao-ipa-nontonal). This is materially different from the unresolved dataset-level license. ClippyFirst has therefore implemented an optional runtime integration of those published artifacts, without copying the MekongPhon source corpus, source lexicon, OPUS data or upstream repository code into this project. The model artifacts are fetched from their upstream Hugging Face repositories and are not committed or redistributed by ClippyFirst.
+
+This is an evidence-based engineering interpretation of the model cards' stated license, not a legal opinion about possible third-party rights in training data or outputs. Dataset rights remain UNKNOWN for retention, derivative corpus publication, full-corpus reuse and redistribution. The neural provider remains optional; the deterministic rules engine remains the default. See docs/research/MEKONGPHON-NEURAL-INTEGRATION.md for runtime behavior and fail-closed IPA handling.
