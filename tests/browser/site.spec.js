@@ -141,7 +141,7 @@ test("every interactive control has a programmatic accessible name", async ({ pa
     elements.filter((element) => {
       const labelledBy = element.getAttribute("aria-labelledby");
       const labelledByText = labelledBy
-        ? labelledBy.split(/\\s+/).map((id) => document.getElementById(id)?.textContent || "").join(" ").trim()
+        ? labelledBy.split(/\s+/).map((id) => document.getElementById(id)?.textContent || "").join(" ").trim()
         : "";
       const label = element.labels ? Array.from(element.labels).map((node) => node.textContent || "").join(" ").trim() : "";
       const name = element.getAttribute("aria-label") || labelledByText || label ||
