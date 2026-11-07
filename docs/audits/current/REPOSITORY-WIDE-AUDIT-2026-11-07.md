@@ -30,7 +30,7 @@ This is a structural, documentation, engineering and rights-evidence audit. It i
   - Exact-head Verify run [42358772788](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358772788): SUCCESS.
   - Benchmark run [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909): SUCCESS; aggregate-only report artifact.
   - Disposition: preserve and review as the existing MekongPhon implementation/benchmark work. Do not duplicate its changes or merge it blindly. Its own report correctly states that dataset rights are unresolved and raw rows/per-item predictions are not committed.
-- PR #137's branch is not this audit branch. No existing branch was deleted or rewritten.
+- Branch inventory at inspection: main, benchmark/mekongphon-three-engine and this audit branch; all three report protected=false. PR #137's branch is not this audit branch. No existing branch was deleted or rewritten.
 - The previous 2026-11-06 audit's statement that there were no open PRs is historical for its inspected checkpoint; it is superseded by the current PR inventory above.
 
 ## Architecture inventory
@@ -123,7 +123,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 | LAO-UI-001 | TODO | Automated Chromium coverage exists; no human device/screen-reader acceptance matrix found | Manual keyboard-only, screen-reader, mobile and visual QA on the deployed site |
 | ENG-CI-001 | PARTIAL / dependency on PR #137 | Exact-head Verify on the audit branch fails only at Browser engine tests: three existing cases fail (modern Lao ຣ analysis-dependent reading; withholding uncertain IPA; withholding incomplete IPA). The same test suite passes on PR #137 head bab117a064f0aee3b685922fe0f0738df7048b12, whose diff includes the relevant browser-engine corrections. | Review and merge the existing PR #137 or independently port its minimal reviewed fixes to main; then rerun Verify on the updated base and this audit PR. Do not copy the whole PR or claim the documentation-only change caused these failures. |
 | ENG-LOCK-001 | TODO | package.json pins Playwright but no npm lockfile is present; CI uses npm install | Generate lockfile in Node/npm-enabled clean checkout, migrate CI to npm ci, prove clean-install reproducibility |
-| ENG-BRANCH-001 | BLOCKED / owner action | Repository metadata indicates no required review/status protection was configured in the prior audit; no settings changed in this pass | Owner configures an appropriate ruleset requiring review and Verify; do not change settings without authorization |
+| ENG-BRANCH-001 | BLOCKED / owner action | GitHub branches API currently reports main protected=false; the branch-protection detail endpoint itself returned 403 to this integration | Repository owner enables an appropriate ruleset requiring review and Verify; do not change repository settings without authorization |
 
 ## Verification and environment boundary
 
