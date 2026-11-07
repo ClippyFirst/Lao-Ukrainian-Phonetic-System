@@ -2,11 +2,13 @@
 
 ## Decision
 
-**Status: BLOCKED for corpus reuse and redistribution; permitted research use is not established by the evidence inspected.**
+**Status: PARTIAL — limited internal non-commercial research use is reasonably supported by the authors' stated release purpose; redistribution, derivative corpus publication and broader training/reuse remain BLOCKED pending explicit component-level terms.**
 
-Do not copy MekongPhon source rows into this repository, build or publish a derivative corpus from them, include raw rows or item-level predictions in CI artifacts, or use the corpus as independent IPA gold until the dataset rights-holder provides an applicable license or written permission.
+Proceed only with a narrow, non-commercial, non-redistributive research evaluation of the published 100-entry Lao held-out seed-lexicon split, using an ephemeral CI download and aggregate-only output. The authors explicitly state that the data are publicly released to support future research, and the paper cites SEAlang's general Creative Commons reuse statement. The existing PR #137 benchmark follows this narrow pattern: it downloads the 100-word evaluation file at run time, retains no source rows or per-item predictions in the repository/artifact, and publishes aggregate metrics only.
 
-This is a conservative rights decision, not a legal opinion that all private research activity is prohibited. The available public materials do not establish a clear permission for research copying, processing, adaptation, or redistribution of the dataset itself.
+Do not copy source rows into the repository, retain or republish the full corpus, publish per-item predictions/examples, create a derivative dataset, train or release a new model on the corpus, or use it commercially until the exact dataset/component terms are confirmed. Do not admit its labels as independent IPA gold.
+
+This is an evidence-qualified interpretation of the authors' stated research-release intent, not a definitive legal opinion or a substitute for a specific license grant. The repository's machine-readable license registry should continue to treat the dataset license as UNKNOWN until a license identifier or written permission is obtained.
 
 ## Primary artifacts inspected
 
@@ -19,6 +21,10 @@ This is a conservative rights decision, not a legal opinion that all private res
 - The repository's public status and the paper's statement that resources are publicly released do not, by themselves, specify the legal permissions applicable to each corpus component.
 - The paper: [MekongPhon: A Large-Scale Parallel IPA Corpus for Lao and Khmer](https://doi.org/10.63317/4bb9rvdshu4z), LREC 2026, pp. 1650–1658. The official proceedings page states that LREC proceedings are licensed under CC BY-NC 4.0. Its abstract says the data, code and pretrained models are publicly released to support future research. The paper itself also quotes the SEAlang homepage as saying that all results are freely available for reuse under a “Creative Commons open license.” This is positive evidence that the authors intended the resources to be available for research and that the seed-dictionary source presents a reuse statement. However, neither the paper nor the SEAlang page identifies a specific Creative Commons license version or its conditions. The proceedings license is a license for the proceedings publication; neither it nor the upstream README identifies a dataset-specific license for the separately hosted MekongPhon corpus, source dictionaries, OPUS-derived sentence pairs or model artifacts. Public release for research should not be silently expanded into a blanket redistribution or derivative-work grant.
 
+## Scope of the research use already performed
+
+The benchmark in [PR #137](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137) reads the 100-entry file at the pinned upstream revision and SHA-256 recorded in its report. The file is the held-out seed lexicon split (orthography plus tonal/non-tonal IPA references), not the sentence-level OPUS-expanded corpus. The workflow computes aggregate metrics and source-free error-context counts; it does not write the input rows or per-item predictions to the report/artifact. The exact-head benchmark workflow [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909) completed SUCCESS. This is the narrow research activity that is considered reasonable to proceed with under the stated research-release intent.
+
 ## Component-by-component rights boundary
 
 | Component | Evidence observed | Disposition |
@@ -26,14 +32,14 @@ This is a conservative rights decision, not a legal opinion that all private res
 | MekongPhon repository code | Public repository; no root license identified in inspected snapshot | Do not copy/relicense code without a clear license; independently written analysis is separate |
 | Lao/Khmer lexicon CSVs | No dataset-specific license in root README or repository metadata | Rights unknown; do not copy or redistribute |
 | Scraped dictionary material | Pipeline describes SEAlang/Kerr dictionary sourcing | Requires source terms and item-level provenance review; upstream repository visibility does not clear source rights |
-| OPUS-derived sentence data | Pipeline downloads external OPUS corpora; the repository tree does not contain a blanket license grant for every underlying corpus | Review each OPUS component and its terms separately |
+| OPUS-derived sentence data | The paper describes NLLB, ParaCrawl and OpenSubtitles. The checked-in Lao download script actually downloads NLLB v1 and ParaCrawl-Bonus v9; the Khmer script additionally downloads OpenSubtitles v2024. | Not part of the 100-word lexicon benchmark. Review each component and its upstream source terms before any full sentence-corpus reuse or redistribution |
 | Derived orthography–IPA pairs | Rights may depend on source material, transcription contribution and dataset terms | No blanket derivative-use permission established |
 | Neural model artifacts | Hugging Face model cards for the Lao tonal and non-tonal models declare Apache-2.0 | This applies to those model artifacts as declared by their cards, not automatically to training data or source corpora |
 | LREC paper/proceedings | Proceedings are separately published and licensed | Cite the paper; do not transfer its proceedings license to the dataset |
 
 ## Research-use question
 
-The evidence indicates that the authors intend MekongPhon to be available for research: the paper says the resources are publicly released to support future research, and it quotes SEAlang's general reuse statement. That makes non-commercial research use a plausible intended use, but it does not let us identify the applicable license conditions or establish permission for every component and operation. A non-commercial purpose does not itself create a license or eliminate applicable copyright/database rights. Conversely, this review does not determine whether a narrowly scoped act of private analysis is permitted under every applicable jurisdiction's exceptions or limitations.
+The evidence indicates that the authors intend MekongPhon to be available for research: the paper says the resources are publicly released to support future research, and it quotes SEAlang's general reuse statement. On that basis, the existing narrow internal benchmark on the 100-entry seed-lexicon holdout is treated as within the stated research purpose, subject to the strict non-redistribution boundary above. The paper's 100-entry lexicon holdout is not the full 13,442-sentence evaluation set and does not contain the OPUS sentence corpus. The applicable CC version and scope are still unidentified, so this does not establish a blanket license for the full dataset, adaptations, derivative publication or commercial use. A non-commercial purpose alone does not create a license or eliminate applicable copyright/database rights.
 
 Before any dataset access that entails downloading, retaining, processing, adapting, or redistributing records, obtain one of:
 
@@ -44,7 +50,7 @@ If permission covers analysis but not redistribution, keep source rows and per-i
 
 ## Methodological status is separate from legal status
 
-Even if rights are later cleared, MekongPhon is not independent project gold. The Lao seed lexicon is derived from the 1972 Kerr dictionary hosted through SEAlang; the paper quotes SEAlang's unspecified Creative Commons reuse statement. Sentence-level IPA is expanded through longest-match lexicon lookup over OPUS text from NLLB, Paracrawl and OpenSubtitles, so each underlying OPUS source requires its own rights review. The paper's 500-entry qualitative review was performed by two authors whom it describes as highly proficient second-language speakers rather than native speakers; 14/500 Lao entries were judged inaccurate (reported 97.2%). This is useful quality-control evidence, but not independent project adjudication of the target Vientiane profile. The paper's evaluation protocol and held-out figures must not be conflated with blind expert annotation.
+Even if rights are later cleared, MekongPhon is not independent project gold. The Lao seed lexicon is derived from the 1972 Kerr dictionary hosted through SEAlang; the paper quotes SEAlang's unspecified Creative Commons reuse statement. Sentence-level IPA is expanded through longest-match lexicon lookup over OPUS text. The paper's prose lists NLLB, Paracrawl and OpenSubtitles, but the checked-in Lao downloader uses NLLB v1 and ParaCrawl-Bonus v9; OpenSubtitles v2024 appears in the Khmer downloader, not the Lao downloader. This paper/code source-list mismatch should be resolved before any full sentence-corpus reuse. The 100-word held-out seed-lexicon evaluation is distinct from that sentence corpus. The paper's 500-entry qualitative review was performed by two authors whom it describes as highly proficient second-language speakers rather than native speakers; 14/500 Lao entries were judged inaccurate (reported 97.2%). This is useful quality-control evidence, but not independent project adjudication of the target Vientiane profile. The paper's evaluation protocol and held-out figures must not be conflated with blind expert annotation.
 
 The 100-word benchmark described in [PR #137](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137) is a diagnostic comparison only. Its implementation stores aggregate metrics rather than source rows or per-item predictions. Its success does not change the rights status or create independent gold.
 
@@ -52,9 +58,11 @@ The 100-word benchmark described in [PR #137](https://github.com/ClippyFirst/Lao
 
 - [ ] Identify the rights-holder(s) for each source component.
 - [ ] Obtain the exact dataset version and component-level license/permission.
-- [ ] Confirm permission to download and process the data for non-commercial research.
+- [x] Confirm public research intent for the narrow 100-entry held-out seed-lexicon diagnostic; the existing aggregate-only benchmark is scoped to this limited use.
+- [ ] Obtain explicit confirmation of the precise Creative Commons license/version and the scope of its grant.
 - [ ] Confirm permission, if any, to publish aggregate metrics and derived examples.
 - [ ] Confirm whether derivative datasets, excerpts, or model outputs may be redistributed.
+- [ ] Reconcile the paper's OPUS source list with the checked-in Lao/Khmer download scripts and record exact upstream component versions/licenses.
 - [ ] Record the grant, date, scope, restrictions and evidence locator in the canonical source/license registry.
 - [ ] Re-run item-level provenance validation before any row is admitted to a project corpus.
 
