@@ -2,6 +2,7 @@ import unittest
 from scripts.analyze_mekongphon_grapheme_contexts import align_tokens, grapheme_units, structural_components, tokenize_ipa
 from lao_ukrainian.data import load_registry
 from lao_ukrainian.parser import parse_syllable
+from lao_ukrainian.phonology import phonologize
 from lao_ukrainian.phonetic_result import from_phonology
 
 class GraphemeContextTests(unittest.TestCase):
@@ -19,6 +20,31 @@ class GraphemeContextTests(unittest.TestCase):
 
     def test_combining_marks_remain_attached_to_base_grapheme(self):
         self.assertEqual(grapheme_units("ກັນ"), [("ກັ",0,2),("ນ",2,3)])
+
+    def test_same_grapheme_is_resolved_by_syllable_position(self):
+        registry = load_registry()
+        onset = parse_syllable("ວາ", registry)
+        coda = parse_syllable("ກາວ", registry)
+        self.assertFalse(onset["warnings"])
+        self.assertFalse(coda["warnings"])
+        self.assertEqual(phonologize(onset, registry)[0], "ʋaː")
+        self.assertEqual(phonologize(coda, registry)[0], "kaːw")
+
+    def test_same_consonant_has_distinct_onset_and_coda_values(self):
+        registry = load_registry()
+        onset = parse_syllable("ດາ", registry)
+        coda = parse_syllable("ກາດ", registry)
+        self.assertEqual(phonologize(onset, registry)[0], "daː")
+        self.assertEqual(phonologize(coda, registry)[0], "kaːt")
+
+    def test_preposed_e_distinguishes_short_and_long_by_structure(self):
+        registry = load_registry()
+        short = parse_syllable("ເກະ", registry)
+        long = parse_syllable("ເກ", registry)
+        self.assertEqual(short["vowel"]["ipa"], "e")
+        self.assertEqual(long["vowel"]["ipa"], "eː")
+        self.assertEqual(phonologize(short, registry)[0], "ke")
+        self.assertEqual(phonologize(long, registry)[0], "keː")
 
     def test_preposed_vowel_is_joint_structure(self):
         registry=load_registry(); surface="ເກ"; parsed=parse_syllable(surface,registry)
