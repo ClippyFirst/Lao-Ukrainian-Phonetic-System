@@ -75,6 +75,13 @@ class GraphemeContextTests(unittest.TestCase):
         self.assertEqual(coda["realizations"][0]["ipa"], "w")
         self.assertEqual(coda["observations"], 1)
 
+    def test_o_is_silent_vowel_carrier_or_part_of_o_vowel_by_structure(self):
+        registry = load_registry()
+        carrier = parse_syllable("ອາ", registry)
+        vowel_sign = parse_syllable("ກອງ", registry)
+        self.assertEqual(phonologize(carrier, registry)[0], "aː")
+        self.assertEqual(phonologize(vowel_sign, registry)[0], "kɔːŋ")
+
     def test_preposed_vowel_context_keeps_short_and_long_e_distinct(self):
         rows = [
             {"orth": "ເກະ", "pron_no_tones": "ke"},
