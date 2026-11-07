@@ -2054,3 +2054,14 @@ The selected branch remains an **engineering-verified research prototype**, not 
 - The available commit-workflow lookup returned no workflow run for this final documentation commit. The last verified full Verify remains run 42384603376 on earlier code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; it does **not** verify the later documentation commits.
 - **DOC-012–016 remain PARTIAL** until the full Verify workflow passes on the exact final documentation head. No local test, clean install or manual accessibility result is claimed.
 - Next engineering action: run/re-run the repository's full `verify` workflow against `d4f08fb6626136e699f05df40f1c7a3e84ad122b`; if the workflow is not automatically triggered for this connector-created commit, a maintainer with Actions permissions must dispatch it. The remaining substantive blockers are independent expert IPA gold (0 records), qualified Vientiane tone adjudication, component-level MekongPhon dataset/source rights, npm lockfile reproducibility and manual UI/accessibility QA.
+
+
+### Final documentation commit-chain reconciliation — 2026-11-07
+
+- Initial documentation batch checkpoint: `d4f08fb6626136e699f05df40f1c7a3e84ad122b`.
+- Follow-up exact-head caveat recorded in audit: `dea6cd09e1d848e9c17c41f64eba2c0e7bd39ea0`.
+- Validation guide clarification: `e26ab8b1a1920d81d56ba490d9285b8c3c3c7d48`.
+- Handoff verification-gate reconciliation before this final amendment: `c6cc99479de87c243d53c5f44e0bff0f6f59c0ea`.
+- Audit wording was then corrected to describe the first documentation batch rather than incorrectly calling its commit the final head. The resulting audit commit is `fcd40d66909241fe648a577d242f73bda654026f`.
+- This amendment is the final handoff reconciliation for the current execution. Its resulting commit SHA is reported in the execution summary; the exact-final-head Verify remains **NOT VERIFIED** because no workflow run was returned for the documentation commits. The previous green run remains valid only for code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`.
+
