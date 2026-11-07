@@ -642,11 +642,22 @@ export function analyze(text) {
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
   const words = normalized.split(/\s+/).filter(Boolean).map(analyzeWord);
-  const syllables = words.flat().map((syllable) =>
-    !syllable.passthrough && !syllable.ipa
-      ? { ...syllable, graphemePreview: previewFromGraphemes(syllable.surface, syllable) }
-      : syllable
-  );
+  const syllables = words.flat().map((syllable) => {
+    if (syllable.passthrough || syllable.ipa) return syllable;
+    // Reparse only the segmental structure after removing tone marks. This
+    // recovers onset/vowel roles for a provisional preview, but the preview
+    // itself never carries or infers a tone value.
+    const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+    const structural = analyzeToken(segmentalSurface);
+    const previewInput = {
+      ...structural,
+      warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
+    };
+    return {
+      ...syllable,
+      graphemePreview: previewFromGraphemes(syllable.surface, previewInput)
+    };
+  });
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
   const complete = syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
