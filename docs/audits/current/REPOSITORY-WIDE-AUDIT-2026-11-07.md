@@ -139,17 +139,17 @@ The production engine is a compositional grapheme/structure rules engine, not a 
 
 The new [MekongPhon grapheme-context analysis](MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) parses the pinned 6,219-row train split through ClippyFirst's own syllable parser. It records each Lao code point and structural role, with previous/next signs, onset class, vowel ID, live/dead type, coda and tone mark. It separately reports engine IPA and reference-aligned IPA; multi-sign vowels remain joint units. It does not write source words or per-item predictions and does not promote dictionary references to gold.
 
-Verified diagnostic checkpoint [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319), code commit \`16d267664beb25a9e26e9639aace42a2975582d1\`, artifact SHA-256 \`7d51559fc9d5ef7d173850d9237cbd62577c2b7b890e96d1e73a6f113d46938a\`:
+Verified diagnostic checkpoint [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319), code commit `16d267664beb25a9e26e9639aace42a2975582d1`, artifact SHA-256 `7d51559fc9d5ef7d173850d9237cbd62577c2b7b890e96d1e73a6f113d46938a`:
 - 6,219 rows; 5,820 fully structurally parsed (93.58%); 399 withheld; 9,883 parsed syllables.
 - 3,885/5,820 exact structural IPA string matches (66.75% conditional concordance, not accuracy).
 - 26,155 reference IPA tokens; 2,857 alignment edits; 163 insertions.
-- High-frequency positional examples confirm /n/ coda, /k/ onset, /aː/ from the postposed \`າ\` structure, /a/ from short \`ະ\`, and context-specific consonant values.
+- High-frequency positional examples confirm /n/ coda, /k/ onset, /aː/ from the postposed `າ` structure, /a/ from short `ະ`, and context-specific consonant values.
 
-The largest structural-unit differences are /ʋ/ vs /w/ for onset \`ວ\`, /iːə/ vs /iaː/ for \`ຽ\`, /aw/ vs /ao/ for \`ເົາ\`, /uːə/ vs /uaː/ for \`UO_LONG\`, /ɯːə/ vs /ɯːə̯/ for \`ເືອ\`, /ai/ vs /aj/ for \`ໄ\`/\`ໃ\`, /l/ vs /r/ for \`ຣ\`, and /ɤː/ vs /əː/ for \`ເີ\`. These are not automatically changed: they may reflect source transcription convention, dialect/profile, rhyme realization or lexical class.
+The largest structural-unit differences are /ʋ/ vs /w/ for onset `ວ`, /iːə/ vs /iaː/ for `ຽ`, /aw/ vs /ao/ for `ເົາ`, /uːə/ vs /uaː/ for `UO_LONG`, /ɯːə/ vs /ɯːə̯/ for `ເືອ`, /ai/ vs /aj/ for `ໄ`/`ໃ`, /l/ vs /r/ for `ຣ`, and /ɤː/ vs /əː/ for `ເີ`. These are not automatically changed: they may reflect source transcription convention, dialect/profile, rhyme realization or lexical class.
 
-The typed IPA inventory now recognizes documented labialized onset units and the external IPA forms \`əː\` and \`ə̯\`. No unapproved Ukrainian correspondences were added; the target adapter remains fail-closed for unsupported segments. Regression tests explicitly exercise onset/coda alternations, short/long \`ເ\`, silent-carrier versus vowel-sign \`ອ\`, high digraphs, labialized onsets and IPA token boundaries.
+The typed IPA inventory now recognizes documented labialized onset units and the external IPA forms `əː` and `ə̯`. No unapproved Ukrainian correspondences were added; the target adapter remains fail-closed for unsupported segments. Regression tests explicitly exercise onset/coda alternations, short/long `ເ`, silent-carrier versus vowel-sign `ອ`, high digraphs, labialized onsets and IPA token boundaries.
 
-Later code commits \`43a2cfeb58c6e2af4889eb5213c0113c3cc1bd3f\` and \`990ea6838d08c2b798437acaad023dcce1b6c81a\` add direct grapheme-position and broader phonological-context distributions, plus their assertions. The subsequent aggregate-only test guard is \`3151d65269d5303ec0f92e9b6b23b6ffb7bb563b\`; exact-head diagnostic and Verify for that final code/test head are pending. Do not mark the additional distribution arrays DONE_VERIFIED until those runs pass.
+Later code commits `43a2cfeb58c6e2af4889eb5213c0113c3cc1bd3f` and `990ea6838d08c2b798437acaad023dcce1b6c81a` add direct grapheme-position and broader phonological-context distributions, plus their assertions. The subsequent aggregate-only test guard is `3151d65269d5303ec0f92e9b6b23b6ffb7bb563b`; exact-head diagnostic and Verify for that final code/test head are pending. Do not mark the additional distribution arrays DONE_VERIFIED until those runs pass.
 
 ## Evidence-based task ledger
 
