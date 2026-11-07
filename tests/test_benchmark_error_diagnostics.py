@@ -43,6 +43,11 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
             "kʰakʰaː˧˥",
         )
 
+    def test_optional_affricate_tie_bars_are_secondary_allographs_only(self):
+        self.assertEqual(BENCHMARK.remove_optional_ipa_tie_bars("t͡ɕa"), "tɕa")
+        self.assertEqual(BENCHMARK.remove_optional_ipa_tie_bars("t͜ɕa"), "tɕa")
+        self.assertEqual(BENCHMARK.remove_optional_ipa_tie_bars("kʰaː"), "kʰaː")
+
 
 if __name__ == "__main__":
     unittest.main()
