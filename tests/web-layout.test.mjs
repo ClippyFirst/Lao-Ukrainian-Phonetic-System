@@ -77,3 +77,13 @@ test("methodology tables that scroll horizontally are keyboard-focusable and nam
   assert.equal(scrollableTables.length, 2);
   assert.ok(scrollableTables.every((attributes) => /aria-label="[^"]+"/.test(attributes)));
 });
+
+
+test("copy and quick-example controls meet the 44px minimum target size", () => {
+  for (const selector of [".copy", ".mini-button,.button", ".copy-button"]) {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const match = css.match(new RegExp(escaped + "\\{([^}]*)\\}"));
+    assert.ok(match, "missing CSS rule for " + selector);
+    assert.match(match[1], /min-height:44px/, selector + " must meet the 44px target minimum");
+  }
+});
