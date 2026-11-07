@@ -9,7 +9,6 @@ def main():
     ap = argparse.ArgumentParser(description="Lao → Ukrainian phonetic-graphemic analyzer")
     ap.add_argument("text")
     ap.add_argument("--json", action="store_true")
-    ap.add_argument("--segment-unspaced", action="store_true", help="infer unique syllable boundaries inside unspaced Lao tokens; ambiguous tokens remain unsplit")
     ap.add_argument(
         "--engine",
         choices=("rules", "mekongphon-tonal", "mekongphon-nontonal"),
@@ -20,11 +19,9 @@ def main():
     ap.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     ap.add_argument("--num-beams", type=int, default=4)
     args = ap.parse_args()
-    if args.segment_unspaced and args.engine != "rules":
-        ap.error("--segment-unspaced is available only with --engine rules")
 
     if args.engine == "rules":
-        result = analyze(args.text, infer_unspaced=args.segment_unspaced)
+        result = analyze(args.text)
         if args.json:
             print(json.dumps(asdict(result), ensure_ascii=False, indent=2))
             return
