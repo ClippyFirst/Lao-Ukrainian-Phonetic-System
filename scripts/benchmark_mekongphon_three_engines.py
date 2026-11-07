@@ -25,8 +25,14 @@ DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
 )
-TONAL_MODEL_ID = "byumatrixlab/lao-ipa-tonal"
-SEGMENTAL_MODEL_ID = "byumatrixlab/lao-ipa-nontonal"
+from lao_ukrainian.mekongphon import MODEL_IDS, MODEL_REVISIONS, MAX_SEQUENCE_LENGTH, MekongPhonEngine
+
+TONAL_MODEL_ID = MODEL_IDS["tonal"]
+TONAL_MODEL_REVISION = MODEL_REVISIONS["tonal"]
+SEGMENTAL_MODEL_ID = MODEL_IDS["nontonal"]
+SEGMENTAL_MODEL_REVISION = MODEL_REVISIONS["nontonal"]
+MODEL_MAX_LENGTH = MAX_SEQUENCE_LENGTH
+MODEL_NUM_BEAMS = 5
 
 
 def nfc(value: str) -> str:
@@ -175,36 +181,36 @@ def load_lao2ipa():
 
 
 def load_neural():
+    """Run both immutable checkpoints through the production MekongPhon adapter."""
     import torch
-    from transformers import AutoTokenizer, EncoderDecoderModel
     from huggingface_hub import model_info
 
     torch.set_num_threads(min(2, os.cpu_count() or 1))
 
-    def load_one(model_id: str):
-        info = model_info(model_id)
-        revision = info.sha
-        model = EncoderDecoderModel.from_pretrained(model_id, revision=revision)
-        encoder = AutoTokenizer.from_pretrained(
-            model_id, subfolder="encoder_tokenizer", revision=revision
+    def load_one(model_id: str, pinned_revision: str, *, tonal: bool):
+        info = model_info(model_id, revision=pinned_revision)
+        if info.sha != pinned_revision:
+            raise RuntimeError(
+                f"Hub resolved {model_id}@{pinned_revision} to unexpected SHA {info.sha}"
+            )
+        engine = MekongPhonEngine(
+            tonal=tonal,
+            revision=pinned_revision,
+            device="cpu",
+            num_beams=MODEL_NUM_BEAMS,
         )
-        decoder = AutoTokenizer.from_pretrained(
-            model_id, subfolder="decoder_tokenizer", revision=revision
-        )
-        model.eval()
 
         def generate(text: str) -> str:
-            inputs = encoder(text, return_tensors="pt", truncation=True, max_length=128)
-            with torch.inference_mode():
-                output_ids = model.generate(
-                    **inputs, max_length=128, num_beams=5, early_stopping=True
-                )
-            return nfc(decoder.decode(output_ids[0], skip_special_tokens=True))
+            return nfc(engine.predict_raw_ipa(text))
 
-        return generate, revision
+        return generate, pinned_revision
 
-    tonal_generate, tonal_revision = load_one(TONAL_MODEL_ID)
-    segmental_generate, segmental_revision = load_one(SEGMENTAL_MODEL_ID)
+    tonal_generate, tonal_revision = load_one(
+        TONAL_MODEL_ID, TONAL_MODEL_REVISION, tonal=True
+    )
+    segmental_generate, segmental_revision = load_one(
+        SEGMENTAL_MODEL_ID, SEGMENTAL_MODEL_REVISION, tonal=False
+    )
 
     def predict(text: str) -> dict[str, str | float]:
         started = time.perf_counter()
@@ -226,8 +232,11 @@ def load_neural():
         "segmental_revision": segmental_revision,
         "tonal_model": TONAL_MODEL_ID,
         "tonal_revision": tonal_revision,
+        "num_beams": MODEL_NUM_BEAMS,
+        "max_input_tokens": MODEL_MAX_LENGTH,
+        "truncation": False,
+        "inference_adapter": "lao_ukrainian.mekongphon.MekongPhonEngine.predict_raw_ipa",
     }
-
 
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     import sacrebleu

@@ -184,3 +184,56 @@ ClippyFirst computes segmental IPA and tone in one `analyze()` pass, so both out
 ## MekongPhon rights status correction — owner confirmation
 
 The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. The earlier preliminary statements in this report that project rights were unknown are superseded for project tracking. Record `LIC-001` as `DONE_VERIFIED (owner-confirmed)` for the authorized project use. The upstream repository's missing root LICENSE remains a provenance fact, not an active blocker after the owner's confirmation. This note does not claim an independent legal opinion and does not convert the 100-word lexicon into independently adjudicated project gold.
+
+
+## Immutable two-model inference rerun — 2026-11-07
+
+**DONE_VERIFIED — both MekongPhon neural checkpoints were downloaded and executed from explicit immutable Hub commits, alongside the ClippyFirst deterministic rule engine and Lao2IPA.**
+
+- Dedicated branch: `benchmark/mekongphon-immutable-inference-20261107`.
+- Benchmark workflow run [42371584765 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765), exact code head `cef976a2ecb4e0318ff91f8f1d928dbb4750749e`.
+- Aggregate-only artifact: [mekongphon-three-engine-aggregate](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765/artifacts/13574335831); SHA-256 `e5bf7e5482f5d82fe0b3983696ac3f4e084a2f52cc01c85618c182bdbcf4dd2f`. No source rows, references or per-item predictions are included.
+- Dataset: exact MekongPhon upstream revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`; 100 held-out lexemes; SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`.
+- Tonal model: `byumatrixlab/lao-ipa-tonal@e02608cfcb18abfe6b1916f5f4774bfac9ac788d`.
+- Non-tonal model: `byumatrixlab/lao-ipa-nontonal@d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`.
+- Runtime: Python 3.12.16, CPU PyTorch 2.6.0, Transformers 4.49.0, Hugging Face Hub 0.29.3, SacreBLEU 2.5.1; beam=5; maximum input 128 tokens; truncation disabled. The script asserts the Hub SHA and loaded model config revision match the pins.
+- Both models returned outputs for all 100 inputs; runtime errors=0. Rule engine returned segmental IPA for 97/100; its three withheld items remain missing in full-denominator scores.
+
+### Results
+
+All CER values below are corpus-level Unicode code-point edit distance divided by reference length. Exact means full-string IPA equality. The two models are scored against their matching reference columns: non-tonal model against `pron_no_tones`, tonal model against `pron_with_tones`.
+
+| Engine / output | CER ↓ | Exact | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst segmental IPA | 12.79% | 64/100 | 97% |
+| Lao2IPA segmental IPA | 8.97% | 68/100 | 100% |
+| MekongPhon non-tonal model | **6.64%** | **82/100** | 100% |
+| ClippyFirst tonal IPA, native Ueda contour convention | 27.16% | 19/100 | 97% |
+| ClippyFirst tonal IPA, MekongPhon contour convention (evaluation-only) | 15.19% | 52/100 | 97% |
+| Lao2IPA tonal IPA | 11.97% | 56/100 | 100% |
+| MekongPhon tonal model | **8.29%** | **74/100** | 100% |
+
+On the **same 97 inputs** where ClippyFirst returned segmental IPA, the non-tonal model scored CER 5.79% and 81/97 exact, versus ClippyFirst 7.89% and 64/97 exact. For tonal IPA under the benchmark's MekongPhon contour convention, the tonal model scored CER 6.30% and 73/97 exact, versus ClippyFirst 10.67% and 52/97 exact. These shared-subset comparisons avoid rewarding the neural model merely for having full coverage.
+
+For the tone-category diagnostic, restricted to segmental-exact items with alignable reference contours: ClippyFirst exact category match 83.33% (50/60), Lao2IPA 87.50% (56/64), and MekongPhon tonal 95.65% (66/69). This is a narrower conditional subset, not a corpus-wide tone accuracy score.
+
+### Interpretation and limits
+
+- On this frozen 100-word lexical reference, **MekongPhon wins the measured IPA CER and exact-match metrics** in both non-tonal and tonal modes. Its result is materially better than the current deterministic engine.
+- ClippyFirst remains valuable as a deterministic, inspectable, low-latency, fail-closed implementation; this run does not justify replacing its architecture with a neural dependency or changing its default.
+- The ClippyFirst native Ueda-contour score is not directly convention-equivalent to the MekongPhon tonal reference. The separately reported MekongPhon-contour rendering is evaluation-only and does not modify production tone metadata.
+- This lexicon is dictionary-seeded and not independently re-adjudicated by this project. It is not the paper's 13,442-sentence test set and not project-certified gold. Independent expert-adjudicated IPA gold remains 0; do not convert model output into gold.
+- MekongPhon project rights are owner-confirmed as resolved. The workflow downloads the published model artifacts and benchmark CSV at runtime and publishes aggregate metrics only; it does not redistribute source rows, predictions, upstream code or corpus data.
+- No source-language rules, Ukrainian correspondence registry, model adapter runtime default or UI behavior changed in this benchmark-only branch.
+
+### Follow-up ledger
+
+- **DONE_VERIFIED:** exact immutable revisions for both model checkpoints; runtime inference for 100/100 inputs per model; exact-head hosted benchmark; aggregate artifact and provenance.
+- **PARTIAL:** numerical comparison against the published seed-lexicon reference only; no independent expert gold.
+- **BLOCKED:** broad linguistic accuracy claims until dialect/IPA convention approval and independent expert double annotation/adjudication of a rights-cleared gold set.
+- **TODO:** review the three rule-engine withheld structures and the segmental/tone disagreements with a qualified Lao phonetics reviewer before changing deterministic rules.
+
+
+### Runtime adapter verification path
+
+The benchmark's two pinned checkpoints are now loaded and invoked through `MekongPhonEngine.predict_raw_ipa()`, the same production inference adapter used by the optional CLI/API. Hugging Face Hub SHA resolution is still checked before loading, and the adapter verifies the model config SHA when available. Benchmark scoring uses the untouched decoded IPA string; target adaptation is not included in model latency.

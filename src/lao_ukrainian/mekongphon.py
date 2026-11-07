@@ -161,7 +161,7 @@ class MekongPhonEngine:
         )
         return self._loaded
 
-    def transcribe(self, text: str) -> MekongPhonResult:
+    def _validated_input(self, text: str) -> str:
         if not isinstance(text, str) or not text.strip():
             raise ValueError("Lao input must be a non-empty string")
         normalized = unicodedata.normalize("NFC", text)
@@ -173,8 +173,10 @@ class MekongPhonEngine:
                 f"Input is {len(normalized)} code points; model limit is "
                 f"{MAX_SEQUENCE_LENGTH}. Split it explicitly; automatic truncation is disabled."
             )
+        return normalized
 
-        torch, model, encoder_tokenizer, decoder_tokenizer, device, resolved_revision = self._load()
+    def _generate_raw_ipa(self, normalized: str) -> str:
+        torch, model, encoder_tokenizer, decoder_tokenizer, device, _ = self._load()
         encoded = encoder_tokenizer(
             normalized, return_tensors="pt", truncation=False, padding=False,
         )
@@ -191,7 +193,16 @@ class MekongPhonEngine:
                 num_beams=self.num_beams,
                 early_stopping=True,
             )
-        raw_ipa = decoder_tokenizer.decode(output_ids[0], skip_special_tokens=True)
+        return decoder_tokenizer.decode(output_ids[0], skip_special_tokens=True)
+
+    def predict_raw_ipa(self, text: str) -> str:
+        """Run the pinned model and return its untouched decoded IPA string."""
+        return self._generate_raw_ipa(self._validated_input(text))
+
+    def transcribe(self, text: str) -> MekongPhonResult:
+        normalized = self._validated_input(text)
+        raw_ipa = self._generate_raw_ipa(normalized)
+        *_, resolved_revision = self._load()
         return build_result(
             normalized, raw_ipa,
             model_id=self.model_id,

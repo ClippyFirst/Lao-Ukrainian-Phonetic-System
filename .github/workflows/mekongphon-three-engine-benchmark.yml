@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - "benchmark/mekongphon-three-engine"
+      - "benchmark/mekongphon-immutable-inference-20261107"
     paths:
       - ".github/workflows/mekongphon-three-engine-benchmark.yml"
       - "scripts/benchmark_mekongphon_three_engines.py"
+      - "src/lao_ukrainian/mekongphon.py"
+      - "src/lao_ukrainian/phonetic_result.py"
+      - "src/lao_ukrainian/target.py"
       - "src/lao_ukrainian/**"
       - "data/lao/**"
   workflow_dispatch:
@@ -31,7 +35,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .
           python -m pip install lao2ipa==1.0.0 transformers==4.49.0 huggingface_hub==0.29.3 sacrebleu==2.5.1
-      - name: Run 100-word held-out benchmark
+      - name: Run pinned 100-word held-out benchmark (both MekongPhon models)
         run: python scripts/benchmark_mekongphon_three_engines.py --output artifacts/mekongphon-100-word-benchmark.json
       - name: Upload aggregate benchmark report (no source rows or predictions)
         if: always()
