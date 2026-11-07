@@ -1749,3 +1749,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Remaining status: independent adjudicated IPA gold = 0 and accuracy = null (**BLOCKED**); MekongPhon dataset rights (**BLOCKED**); expert review of phonology/target mapping (**PARTIAL**); manual keyboard/screen-reader/mobile QA (**TODO**); npm lockfile and clean-install reproducibility (**TODO**); branch ruleset/review protection (**BLOCKED / owner action**).
 - Verification boundary: this session used GitHub repository/Actions APIs only. No local Python, Node, build, benchmark or browser command was executed. PR #137's successful hosted checks are evidence for that exact PR head, not for this audit branch's final commit. The new documentation work must remain **PARTIAL** until a fresh PR-head Verify succeeds.
 - Readiness: **research-ready as an engineering/evidence-management prototype; not linguistically release-ready**. The open MekongPhon benchmark PR remains an optional diagnostic and does not alter rights or gold status.
+
+
+## Audit PR handoff reconciliation — 2026-11-07
+
+- The documentation and rights review is submitted as [PR #138](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/138), based on main `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- PR head at submission: `fe5e73860fcb6a13a91d6ea30aafaa0ffb2c1307`. This handoff append changes the PR head; verify must be checked against the latest head SHA, not this pre-append SHA.
+- PR #138 is documentation-only. It deliberately leaves PR #137 open, does not copy MekongPhon records, and does not change runtime or linguistic data.
+- Exact-head CI for the final PR #138 head is pending at handoff. Until a successful Verify result is visible for that exact SHA, DOC-AUDIT-2026-11-07 remains **PARTIAL**, not DONE_VERIFIED.
