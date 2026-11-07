@@ -40,6 +40,19 @@ class TestCore(unittest.TestCase):
         self.assertEqual(analyze("ຄະ").syllables[0].tone, "high-mid")
         self.assertEqual(analyze("ຄີ່").syllables[0].tone, "high-mid")
 
+    def test_nonfinal_open_short_a_is_tone_neutral_in_polysyllabic_unit(self):
+        result = analyze("ຄະຄາ")
+        first, second = result.syllables
+        self.assertEqual(first.phonemic_ipa, "kʰa")
+        self.assertEqual(first.tone, "neutral")
+        self.assertIsNone(first.tone_contour)
+        self.assertEqual(first.phonetic_result.tone_category, "neutral")
+        self.assertIn("VNT-NONFINAL-OPEN-A-NEUTRAL", first.rules)
+        self.assertEqual(second.tone, "high-rising")
+
+    def test_monosyllabic_open_short_a_keeps_its_lexical_tone(self):
+        self.assertEqual(analyze("ຄະ").syllables[0].tone, "high-mid")
+
     def test_low_class_ng(self):
         s = analyze("ງາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "ŋaː")
