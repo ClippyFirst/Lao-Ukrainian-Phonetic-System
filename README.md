@@ -22,6 +22,20 @@ It is deliberately **not**:
 
 The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation.
 
+## Context-sensitive grapheme-to-sound rules
+
+ClippyFirst does **not** store word → IPA dictionary correspondences. It resolves each parsed syllable structurally:
+
+- consonant graphemes use different onset and coda values where the language requires it;
+- preposed, above, below and postposed vowel signs are interpreted as parts of a complete vowel structure, not isolated character substitutions;
+- documented multi-grapheme onsets are treated as joint consonant units;
+- tone is selected from consonant class, rhyme type, vowel length and tone mark;
+- only the resulting typed IPA is passed to the Ukrainian adapter.
+
+Thus the same Lao character can have different realizations by role: for example, \`ວ\` is /ʋ/ as an onset and /w/ as a coda; \`ດ\` is /d/ as an onset and /t/ as a coda. The vowel sign \`ເ\` likewise participates in short /e/ and long /eː/ structures depending on the complete spelling.
+
+The pinned [MekongPhon grapheme-context study](docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) aggregates grapheme, position, neighbouring signs, onset class, vowel ID, rhyme and tone-mark environments. It reports engine IPA and reference-aligned IPA separately. It never turns dictionary words into production lookup rules, and its train references are not independent gold.
+
 ## Comparative methodology
 
 Russian Lao practical transcription is retained as a genuine historical/practical comparator. It is **not** the source of the Ukrainian output.
