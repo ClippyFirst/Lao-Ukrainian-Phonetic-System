@@ -175,7 +175,7 @@ Project-specific constraints take precedence: source-rights verification, proven
 | UI-001 | Manual assistive-technology/device QA | PARTIAL | New Playwright coverage exercises keyboard skip-link operation, semantic landmarks/names/live regions, 390px mobile, 768px tablet and 640px (200%-equivalent) layouts. Real screen-reader sessions, physical touch-device checks and human visual review on deployed Pages remain TODO. |
 | UI-002 | Enforce 44px minimum on copy/example controls | DONE_VERIFIED | RED run [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) confirmed 38px `.copy`; CSS sets all three controls to 44px and exact-head Verify [42403639882](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403639882) passed. |
 | GOV-001 | Protect main with required review/Verify rules | BLOCKED / owner action | Main is unprotected; settings change requires owner decision and was not performed. |
-| DEP-001 | Reproducible npm dependency installation | PARTIAL | package-lock.json added with verified npm registry tarball integrity for the three-package Playwright 1.63.0 graph; Verify now uses npm ci. Lock consistency passed npm install --package-lock-only --ignore-scripts --offline in a clean scratch directory. Exact-head hosted npm ci and full Verify are pending. |
+| DEP-001 | Reproducible npm dependency installation | DONE_VERIFIED | Exact-head Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) passed `npm ci --no-audit --no-fund` on a clean GitHub runner with 3 packages installed from the lockfile; build and generated-data reproducibility also passed. |
 | LING-001 | Expert validation of Lao phonology and Ukrainian correspondences | BLOCKED | No independent expert gold; selected tone/segment/target correspondences remain evidence-limited. |
 
 ## 8. Verification and environment limits
@@ -194,7 +194,7 @@ Project-specific constraints take precedence: source-rights verification, proven
 
 - No local checkout or local Python/Node/Playwright execution was available through this connector-only environment.
 - Exact-head hosted Verify passed on code/documentation head `a7353b23b6b21678c9f8602247a26f694396d226`: [run 42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044). All configured stages completed successfully.
-- No clean-install npm reproducibility check; no lockfile was generated.
+- Local network-backed `npm ci` could not run because external DNS is unavailable; exact-head GitHub Actions did run `npm ci` successfully with the committed lockfile.
 - No manual screen-reader, keyboard-only, mobile-device or deployed visual QA.
 - No independent phonetic accuracy benchmark or gold corpus was created.
 
@@ -206,7 +206,7 @@ Project-specific constraints take precedence: source-rights verification, proven
 
 ## 9. Final readiness
 
-**Engineering-verified research prototype on PR #143; not linguistically release-ready.** The latest PR head passed every configured Verify stage, including the test-first 44px target-size correction. Independent IPA gold = 0, empirical accuracy is not established, third-party data rights remain constrained, manual accessibility QA is outstanding, npm dependency resolution is not lockfile-frozen, and main is unprotected.
+**Engineering-verified research prototype on PR #143; not linguistically release-ready.** Exact-head Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) passed, including locked npm installation and expanded keyboard/viewport browser checks. MekongPhon rights are owner-confirmed as resolved. Independent IPA gold = 0 and empirical accuracy is not established; manual screen-reader/physical-device QA remains outstanding; main is unprotected.
 
 No release, merge, deployment change, repository-settings change, or third-party dataset redistribution was performed.
 
@@ -219,3 +219,11 @@ No release, merge, deployment change, repository-settings change, or third-party
 - **Local lockfile validation:** Node v22.16.0, npm 10.9.2; in an isolated clean scratch package, npm install --package-lock-only --ignore-scripts --offline completed successfully and normalized no dependency graph changes. A real npm ci could not be run locally because the environment cannot resolve external hosts and has no cached packages.
 - **Hosted acceptance pending:** PR-head Verify must execute npm ci, the expanded Playwright tests, build and all existing gates on the exact resulting head before DEP-001 and automated UI coverage can be promoted to DONE_VERIFIED.
 - **Human QA boundary:** automated Chromium keyboard/viewport tests are not represented as manual screen-reader or physical-device testing. Record actual OS, browser, AT/device, viewport/zoom, test steps, findings and retest evidence before closing UI-001.
+
+
+### Exact-head follow-up verification — 2026-11-07
+
+- Final branch head: `57a4728f543a1d2cd248a86d2178a4e7034f8acd` on `audit/repository-docs-structure-20261107`; PR #143 remains open against main.
+- Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) **SUCCESS** on that exact SHA. Hosted environment: Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed exactly 3 locked packages. Python suite: 181 passed. Browser suite: 7 passed, including keyboard focus traversal and method switching, named semantics/live regions, and responsive no-overflow at 390/768/640px. Build, generated-data drift, and built-page/relative-asset assertions passed.
+- An earlier test revision had one incorrect expectation because the method selector is intentionally hidden until results are shown; the test was corrected to enter a sample before asserting that control. Intermediate failed runs are superseded by the green exact-head run above.
+- **DEP-001 — DONE_VERIFIED. UI-001 — PARTIAL:** keyboard and responsive automation are verified; human screen-reader, physical-device/touch, actual 200%/400% browser zoom and deployed visual QA remain TODO.
