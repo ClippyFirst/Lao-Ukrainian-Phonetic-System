@@ -86,7 +86,6 @@ def load_project():
         )
         tonal_complete = segmental_complete and all(
             item.phonetic_result.tone_contour_ipa
-            or item.phonetic_result.tone_category == "neutral"
             for item in syllables
         )
         segmental_parts = [
@@ -145,7 +144,7 @@ def load_project():
                     # Enfield's C0V0 slot permits short /a, i, u/ with no coda.
                     # It is not promoted to a production tone rule here.
                     "candidate_minor_shape": bool(
-                        index < len(syllables) - 1
+                        index == 0
                         and item.vowel in {"A", "I", "U"}
                         and not item.coda
                     ),
@@ -156,6 +155,7 @@ def load_project():
                     "tone_mark": item.tone_mark or "none",
                     "syllable_type": item.syllable_type or "",
                     "tone_category": item.phonetic_result.tone_category if item.phonetic_result else "",
+                    "analysis_status": item.status,
                     "tone_rule_id": next(
                         (rule for rule in item.rules if str(rule).startswith("VNT-")), ""
                     ),
@@ -381,7 +381,6 @@ MEKONG_CONTOUR_TO_CATEGORY = {
 }
 MEKONG_CATEGORY_TO_CONTOUR = {
     **{category: contour for contour, category in MEKONG_CONTOUR_TO_CATEGORY.items()},
-    "neutral": "",
 }
 
 
@@ -598,6 +597,7 @@ def main() -> int:
         tone_category_alignment_failures = 0
         tone_category_confusion: dict[str, int] = {}
         tone_category_error_contexts: dict[str, int] = {}
+        tone_unresolved_contexts: dict[str, int] = {}
         tone_category_length_mismatches = 0
         for index, (ref_segmental, ref_tonal, pred_segmental, pred_tonal) in enumerate(zip(
             segmental_references, tonal_references, segmental_outputs, tonal_outputs
@@ -646,6 +646,23 @@ def main() -> int:
                         tone_category_error_contexts[context_key] = (
                             tone_category_error_contexts.get(context_key, 0) + 1
                         )
+        for contexts in engine_tone_contexts:
+            for context in contexts or []:
+                if context.get("tone_category"):
+                    continue
+                context_key = "|".join([
+                    f"class={context.get('consonant_class', '')}",
+                    f"type={context.get('syllable_type', '')}",
+                    f"vowel={context.get('vowel', '')}",
+                    f"coda={context.get('coda', '')}",
+                    f"mark={context.get('tone_mark', '')}",
+                    f"rule={context.get('tone_rule_id', '')}",
+                    f"position={context.get('word_position', '')}",
+                    f"candidate_minor={context.get('candidate_minor_shape', False)}",
+                    f"status={context.get('analysis_status', '')}",
+                ])
+                tone_unresolved_contexts[context_key] = tone_unresolved_contexts.get(context_key, 0) + 1
+
         tone_category_metrics = token_error_rate(
             tone_category_references, tone_category_predictions
         )
@@ -750,7 +767,7 @@ def main() -> int:
             "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
-            "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. Secondary IPA scores remove only optional affricate tie bars U+0361/U+035C; raw scores remain primary. No source words or complete predictions are retained in the artifact.",
+            "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. Secondary IPA scores remove only optional affricate tie bars U+0361/U+035C; raw scores remain primary. Potential minor-syllable tones are withheld and aggregated separately, not guessed. No source words or complete predictions are retained in the artifact.",
             "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
         "neutral_tone": "A non-final, unmarked, open short /a/ syllable inside one unspaced orthographic token is represented as tone-category neutral with no contour, following Ueda (1994); no neutral contour is invented.",
             "mekong_convention_conversion": "For comparison only, ClippyFirst tone categories are re-rendered with the MekongPhon rule-baseline contour notation; this does not change production IPA or tone rules",
