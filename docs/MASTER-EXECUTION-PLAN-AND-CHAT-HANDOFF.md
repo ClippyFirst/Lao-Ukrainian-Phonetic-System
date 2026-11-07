@@ -1761,3 +1761,50 @@ A cross-runtime review identified a concrete difference that must not be papered
 ## Final PR-head verification — 2026-11-07
 
 - Current PR #137 head `1658ec5e9a70848530a5e074d3be8728eb77ecd2`: Verify run [42305592423](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305592423) **FAILURE**, Browser engine tests only. The same 3 failures remain: modern `ຣ` returns null instead of `la`; uncertain IPA adapter returns null instead of `la`; incomplete IPA adapter returns `SUPPORTED` instead of `UNSUPPORTED`. The benchmark-specific workflow remains **SUCCESS**. PR #137 is open and unmerged.
+
+## MekongPhon-informed deterministic Lao G2P continuation — 2026-11-07 (supersedes earlier benchmark status notes)
+
+### Current branch and PR
+
+- Working branch: `benchmark/mekongphon-three-engine`.
+- PR #137: [Improve deterministic Lao G2P using MekongPhon benchmark evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137), open and unmerged; base remains `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Latest code checkpoint for the aggregate-tail diagnostic: `5abd5f14416c51635461988ff8fd18b4fce2df80`. Subsequent commits update the completion register and research workpack; obtain the current PR head before any final acceptance decision.
+
+### Verified implementation
+
+- Deterministic dynamic-programming syllabification for unspaced Lao lexical words, preserving phrase boundaries and unsupported material.
+- Per-syllable tone-mark validation and short-A coda validation.
+- Typed source IPA and tone-category handling; evaluation-only conversion to MekongPhon contour notation remains separate from production contour metadata.
+- Ueda (1994) numeric tone levels converted to IPA tone letters within the explicitly scoped central-Vientiane profile.
+- The benchmark now scores segmental and tonal references independently, includes tone-category accuracy and identical-subset comparisons, and stores aggregate parser diagnostics only.
+- No neural weights, model runtime, remote inference, or new production default were added.
+
+### Benchmark evidence
+
+- Schema 3.0 comparison run [42309545197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197) SUCCESS; aggregate-only artifact [13547168327](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197/artifacts/13547168327).
+- On the identical 97 items covered by ClippyFirst and Lao2IPA: segmental CER 7.89% vs 7.72%; Mekong-convention tonal CER 10.67% vs 10.42%. ClippyFirst is close but still slightly behind Lao2IPA. ClippyFirst full-set coverage is 97%; tone-category exact 83.33% vs Lao2IPA 87.50%.
+- MekongPhon Neural remains the strongest measured engine on this 100-word lexical split. The split is not the paper's 13,442-sentence evaluation and is not independently re-adjudicated project gold.
+- Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`; SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. The upstream snapshot has no root LICENSE; rights for dataset reuse/redistribution remain unverified. No raw rows or per-item predictions are committed or placed in artifacts.
+
+### Exact-head engineering verification
+
+- PR head `97b2d9cae74701dd9fcb1a8e9e24e8c485285809`: Verify run [42309845373](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309845373) **SUCCESS**. Passed independent IPA gold structure validation, repository data/evidence audit, Python tests, optional external-G2P CLI validation, browser engine tests, browser data generation/reproducibility, real Chromium UI tests, and built-page/relative-asset checks.
+- Latest aggregate-only tail-shape diagnostic checkpoint `5abd5f14416c51635461988ff8fd18b4fce2df80`: exact-head Verify [42357841388](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357841388) **SUCCESS**. The separate benchmark [42357836206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206) was still running when this note was prepared; its aggregate Unicode-name tail diagnostics must be retrieved before classifying the remaining parser-tail work.
+- These are hosted CI results. No local checkout or local Python/Node test execution is claimed.
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Three-engine benchmark schema 3.0 | DONE_VERIFIED | Run 42309545197; exact versions/revisions, aggregate report and methodology recorded. |
+| Deterministic multisyllable parsing and local tone/coda validation | DONE_VERIFIED (engineering behavior) | Tests and exact-head Verify 42309845373. Does not establish independent linguistic accuracy. |
+| Typed tone-category and contour-convention separation | DONE_VERIFIED (benchmark contract) | Tone-category metrics and benchmark-only Mekong contour adapter; production Ueda contour retained. |
+| ClippyFirst parity with best deterministic baseline | PARTIAL | On shared 97 items ClippyFirst is 0.17 CER points behind Lao2IPA segmentally and 0.24 points behind tonally (rounded). Must improve without weakening fail-closed behavior. |
+| Two unconsumed vowel-tail cases | PARTIAL / evidence-limited | Need aggregate tail Unicode-name output from run 42357836206, then primary-source validation and targeted regressions before a parser change. |
+| Unsupported/ambiguous consonant or malformed tone-mark case | BLOCKED pending exact orthographic evidence | Do not infer a new consonant value or silently discard/reorder a tone mark. Keep IPA withheld. |
+| Independent Lao IPA gold and expert validation | BLOCKED (external specialist/rights dependency) | Gold remains 0. Requires rights-cleared Vientiane-profile material, two independent qualified annotators, blind adjudication and coverage review. |
+| Dataset reuse/redistribution rights | BLOCKED (upstream license evidence absent) | No corpus redistribution, training or committed source rows until rights are established. |
+
+### Current readiness
+
+**Research-ready as an engineering benchmark and deterministic prototype; not linguistically release-ready.** CI proves repository engineering checks, not source correctness or phonetic accuracy. ClippyFirst has not yet overtaken Lao2IPA on the same covered words. Do not merge or change the production default solely on this benchmark; preserve PR #137 open until the current benchmark diagnostic is inspected and the PR checks/review requirements are satisfied.
