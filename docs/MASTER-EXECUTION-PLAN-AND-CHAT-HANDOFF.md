@@ -1757,3 +1757,10 @@ A cross-runtime review identified a concrete difference that must not be papered
 - PR head at submission: `fe5e73860fcb6a13a91d6ea30aafaa0ffb2c1307`. This handoff append changes the PR head; verify must be checked against the latest head SHA, not this pre-append SHA.
 - PR #138 is documentation-only. It deliberately leaves PR #137 open, does not copy MekongPhon records, and does not change runtime or linguistic data.
 - Exact-head CI for the final PR #138 head is pending at handoff. Until a successful Verify result is visible for that exact SHA, DOC-AUDIT-2026-11-07 remains **PARTIAL**, not DONE_VERIFIED.
+
+
+## MekongPhon license-scope clarification — 2026-11-07
+
+- Rechecked the official LREC proceedings record. It explicitly states that LREC proceedings are licensed CC BY-NC 4.0 and that the paper's abstract describes the data, code and pretrained models as publicly released for future research.
+- This strengthens the availability evidence but does not identify a dataset-specific license for the separately hosted MekongPhon repository or settle the rights of scraped dictionary, OPUS-derived, or other component data. The proceedings license is not silently treated as the corpus license.
+- Updated both the dedicated rights review and repository-wide audit to state this distinction explicitly. The decision remains **BLOCKED** for copying, redistribution and derivative corpus publication until dataset-specific permission is documented.
