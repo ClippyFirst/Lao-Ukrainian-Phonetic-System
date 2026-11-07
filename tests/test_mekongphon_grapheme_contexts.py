@@ -70,9 +70,11 @@ class GraphemeContextTests(unittest.TestCase):
         rules = result["candidate_contextual_rules"]
         onset = next(rule for rule in rules if rule["grapheme"] == "ວ" and rule["role"] == "onset_base")
         coda = next(rule for rule in rules if rule["grapheme"] == "ວ" and rule["role"] == "coda")
-        self.assertEqual(onset["realizations"][0]["ipa"], "w")
+        self.assertEqual(onset["realizations"][0]["engine_ipa"], "ʋ")
+        self.assertEqual(onset["realizations"][0]["reference_ipa"], "w")
         self.assertEqual(onset["observations"], 2)
-        self.assertEqual(coda["realizations"][0]["ipa"], "w")
+        self.assertEqual(coda["realizations"][0]["engine_ipa"], "w")
+        self.assertEqual(coda["realizations"][0]["reference_ipa"], "w")
         self.assertEqual(coda["observations"], 1)
 
     def test_o_is_silent_vowel_carrier_or_part_of_o_vowel_by_structure(self):
@@ -90,9 +92,11 @@ class GraphemeContextTests(unittest.TestCase):
         result = analyze_rows(rows, load_registry())
         rules = [rule for rule in result["candidate_contextual_rules"]
                  if rule["grapheme"] == "ເ" and rule["role"] == "preposed_vowel_sign"]
-        by_vowel = {rule["vowel_id"]: rule["realizations"][0]["ipa"] for rule in rules}
-        self.assertEqual(by_vowel["E"], "e")
-        self.assertEqual(by_vowel["EE"], "eː")
+        by_vowel = {rule["vowel_id"]: rule["realizations"][0] for rule in rules}
+        self.assertEqual(by_vowel["E"]["engine_ipa"], "e")
+        self.assertEqual(by_vowel["E"]["reference_ipa"], "e")
+        self.assertEqual(by_vowel["EE"]["engine_ipa"], "eː")
+        self.assertEqual(by_vowel["EE"]["reference_ipa"], "eː")
 
     def test_preposed_vowel_is_joint_structure(self):
         registry=load_registry(); surface="ເກ"; parsed=parse_syllable(surface,registry)
