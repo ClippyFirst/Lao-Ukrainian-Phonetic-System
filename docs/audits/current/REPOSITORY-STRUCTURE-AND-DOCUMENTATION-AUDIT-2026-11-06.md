@@ -157,3 +157,17 @@ The benchmark had been stringifying `None` as `"None"`, falsely treating unresol
 The Python `analyze()` path now reuses one loaded linguistic registry through segmentation and parsing rather than repeatedly loading CSV registries per token/syllable. No linguistic rules or output contracts changed.
 
 **Verification:** Full Verify [42382964250 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382964250); schema 4.0 benchmark [42382960457 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457), artifact [13578092183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457/artifacts/13578092183), SHA-256 `8d25f1032805e7e38339449d658d9efc4167329f4ea25d82c4de26a7ad54b655`. Mean ClippyFirst per-item latency on this hosted 100-word run was 4.724 ms versus 14.207 ms on the immediately preceding run before registry reuse (model loading excluded; single-run observation). All three engines had zero runtime errors.
+
+
+## Full-pipeline registry-reuse correction — 2026-11-07
+
+The previous registry-reuse checkpoint overstated the optimization boundary. A call-path inspection found repeated registry reads remained in phonology (`phonologize`, `determine_tone`, `classify_syllable_type`) and target adaptation (`rank_ukrainian_candidates`, `practical_from_ipa`). These were not covered by the earlier segmentation/parser-only pass.
+
+The deterministic engine now threads the registry loaded by `analyze()` through those stages as well. Public helper calls remain backward compatible because the registry argument is optional and the old lazy-load behavior remains available when omitted. The minor-syllable lookahead is also limited to the first syllable of each orthographic token.
+
+Regression coverage:
+- A focused phonology/target test makes downstream registry loading raise if a supplied registry is ignored.
+- A full-pipeline test makes parser, phonology and target registry reloads raise and checks that `analyze()` loads the registry exactly once.
+- A previous intermediate failure was a test expectation error (long open /aː/ is live, not dead); the expectation was corrected. No production phonology rule was changed by that correction.
+
+**Status: PARTIAL pending exact-head CI and refreshed three-engine benchmark.** Latest code/test checkpoint before this audit note: `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; full Verify [42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) and benchmark [42384500017](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017) were queued at the time of writing. No final performance claim is made until the refreshed benchmark artifact is inspected.
