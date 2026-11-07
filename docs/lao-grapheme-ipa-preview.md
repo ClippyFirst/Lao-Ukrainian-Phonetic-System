@@ -31,8 +31,12 @@ It does not infer a vowel from an isolated sign, guess a consonant's role from i
 - `ຂເ`: the known onset `kʰ` may be previewed; the preposed vowel sign remains unresolved because the complete vowel structure is absent.
 - `ຆາ`: no modern-Lao IPA is invented for the non-core Pali grapheme.
 
+## Inventory scope
+
+The canonical Unicode inventory is `data/lao/grapheme_inventory.csv`. It catalogs every assigned character in the Unicode 18 Lao block, while distinguishing modern Lao core letters from Pali/Sanskrit extensions, Khmu-specific letters, punctuation, repetition marks, digits and structural signs. The Unicode block is a codepoint range, not a claim that every character belongs to modern Lao phonology. The [Unicode 18 Lao Names List](https://www.unicode.org/Public/18.0.0/charts/nameslist/0e80/) establishes codepoint identities and names; the [W3C Lao script overview](https://www.w3.org/International/sealreq/lao/) describes the structural role of composite vowels, tone classes and the restricted subjoined consonant convention.
+
 ## Coverage policy
 
-A grapheme inventory and the fallback's role inventory are different measures. A grapheme can be recognized structurally without having a standalone IPA value; a multi-sign vowel is a joint unit, not a sequence of independent phonemes. Coverage reports must distinguish Unicode recognition, structural role recognition, source-attested correspondence, full-parser acceptance, and preview-only combinations.
+A grapheme inventory and the fallback's role inventory are different measures. A grapheme can be recognized structurally without having a standalone IPA value; a multi-sign vowel is a joint unit, not a sequence of independent phonemes. Coverage reports must distinguish Unicode recognition, structural role recognition, source-attested correspondence, full-parser acceptance, and preview-only combinations. The inventory is codepoint-complete for assigned characters in Unicode 18 Lao; phonetic coverage is intentionally narrower and remains incomplete for Indic and Khmu extensions.
 
 This is an engineering affordance, not an accuracy claim. Independent adjudicated Lao IPA gold remains required for empirical accuracy claims and promotion of new rules.
