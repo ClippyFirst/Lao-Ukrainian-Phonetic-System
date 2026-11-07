@@ -49,6 +49,8 @@ class TestCore(unittest.TestCase):
         self.assertIsNone(first.phonetic_result.tone_category)
         self.assertEqual(first.status, "analysis-dependent")
         self.assertIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", first.rules)
+        self.assertIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", first.phonetic_result.provenance)
+        self.assertNotIn("VNT-L-DEAD-SHORT-NONE", first.phonetic_result.provenance)
         self.assertEqual(second.tone, "high-rising")
 
     def test_monosyllabic_open_short_a_keeps_its_lexical_tone(self):
