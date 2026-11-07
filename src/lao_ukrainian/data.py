@@ -18,6 +18,7 @@ def load_registry():
         "onset_clusters": {r["grapheme"]: r for r in csv_rows("onset_clusters.csv")},
         "vowels": csv_rows("vowels.csv"),
         "tone_rules": csv_rows("tone_rules.csv"),
+        "special_tone_rules": csv_rows("special_tone_rules.csv"),
         "codas": {r["phoneme"]: r for r in csv_rows("codas.csv")},
         "correspondences": {r["ipa"]: r for r in csv_rows("ukrainian_correspondences.csv")},
         "comparative": csv_rows("../comparative/cyrillic_comparison.csv"),
