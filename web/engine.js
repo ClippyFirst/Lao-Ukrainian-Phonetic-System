@@ -318,7 +318,7 @@ function analyzeToken(surface) {
       ? "ANALYSIS DEPENDENT" : "ESTABLISHED";
   return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], vowelId: matched.v[0],
     length: matched.v[3], nucleusType: matched.v[6], coda: coda || "—", toneMark: mark,
-    syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, phoneticResult, status,
+    syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, toneStatus: resolvedTone.status, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
       "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
@@ -479,8 +479,13 @@ function analyzeWord(word) {
     first.phoneticResult.toneCategory = null;
     first.phoneticResult.toneContourIpa = null;
     first.phoneticResult.provenance = [
-      ...new Set([...(first.phoneticResult.provenance || []),
-        "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"])
+      ...new Set([
+        ...(first.phoneticResult.provenance || []).filter((rule) =>
+          !rule.startsWith("VNT-") && !rule.startsWith("TONE:")
+        ),
+        "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+        "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED",
+      ])
     ];
     first.phoneticResult.uncertainty = [
       ...new Set([...(first.phoneticResult.uncertainty || []), "TONE-UNRESOLVED"])
