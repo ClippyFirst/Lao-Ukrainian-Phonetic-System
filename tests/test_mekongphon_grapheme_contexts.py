@@ -4,6 +4,7 @@ from scripts.analyze_mekongphon_grapheme_contexts import analyze_rows, align_tok
 from lao_ukrainian.data import load_registry
 from lao_ukrainian.parser import parse_syllable
 from lao_ukrainian.phonology import phonologize
+from lao_ukrainian.target import adapt_phonetic_result
 from lao_ukrainian.phonetic_result import from_phonology
 
 class GraphemeContextTests(unittest.TestCase):
@@ -26,6 +27,7 @@ class GraphemeContextTests(unittest.TestCase):
                 self.assertEqual(result.status, "SUPPORTED")
                 self.assertEqual([segment.ipa for segment in result.segments], [ipa])
                 self.assertEqual(result.segments[0].kind, "consonant")
+                self.assertIsNone(adapt_phonetic_result(result, load_registry()))
 
     def test_reduced_schwa_offglide_is_a_supported_vowel(self):
         result = from_phonology("ə̯")
