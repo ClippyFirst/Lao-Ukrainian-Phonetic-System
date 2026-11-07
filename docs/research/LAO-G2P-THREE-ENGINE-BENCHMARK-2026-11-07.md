@@ -280,3 +280,12 @@ Ueda (1994, pp. 95–115) describes a restricted non-final open /a/ syllable as 
 The potential minor-syllable tone-unresolved selector is now mirrored in the browser engine. Both Python and browser retain segmental IPA and Ukrainian adaptation while setting the independent tone to unresolved/analysis-dependent for the same initial short-open-/a/ candidate. Regression tests cover the positive candidate and a short-open-/a/ sequence without a major-weighted following syllable, which must retain its ordinary matrix tone.
 
 Exact-head full Verify [42375716368 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375716368) on code/test head `b325a5f91a3fdf063f231537d1550a140cb2eff8`. Python tests, repository/data audit, external-G2P CLI, browser engine tests, generated-data reproducibility, Chromium UI and built-page checks all passed; tone-category and provenance fields are aligned across runtimes. This parity change does not alter the 100-word benchmark metrics above.
+
+
+### Selector precision and diagnostic alignment — 2026-11-07
+
+The production selector is intentionally narrower than the broad C₀V₀ diagnostic shape. It requires an initial, unmarked, short open /a/ with no parser warnings, a supported/core onset and segmental IPA, and a following major-weighted syllable in the same unspaced orthographic token. A following syllable is major-weighted when it has a long vowel, diphthong or coda. Explicit whitespace blocks the selector. The engine retains the segmental IPA and Ukrainian adaptation but withholds only the independent tone as analysis-dependent.
+
+The browser implementation already requires supported segmental IPA; the Python implementation was tightened to the same gate. New regressions cover the candidate, non-major following syllable, explicit space and analysis-dependent onset. The benchmark now reports broad C₀V₀ shapes separately from the narrower open-/a/ selector and includes diphthong-weighted following syllables in its aggregate contexts. This is not evidence that every selected orthographic shape is lexically minor; a qualified Vientiane reviewer must review the six candidates before the selector can be considered linguistically accepted.
+
+Exact-head full Verify [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) is queued for `759091f28cc57a746df549ac573067af9be922ab`. Earlier success does not verify these latest changes.
