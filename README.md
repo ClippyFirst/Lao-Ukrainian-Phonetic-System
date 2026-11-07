@@ -65,7 +65,7 @@ Run the complete configured engineering checks from the repository root (command
 - Validate IPA corpus structure: python scripts/ipa_gold_corpus.py validate --language lao
 - Validate canonical data/evidence: python scripts/audit.py
 - Run Python tests: PYTHONPATH=src python -m unittest discover -s tests -v
-- Install Node test dependencies: npm install --no-audit --no-fund
+- Install Node test dependencies: npm ci --no-audit --no-fund
 - Run Node/browser-engine suites: npm test
 - Build the static site: npm run build
 - Check generated-data drift: git diff --exit-code -- web/data.js
@@ -99,7 +99,7 @@ Release verification:
 
     python scripts/audit.py
     PYTHONPATH=src python -m unittest discover -s tests -v
-    npm install --no-audit --no-fund
+    npm ci --no-audit --no-fund
     npm test
     npm run build
 
