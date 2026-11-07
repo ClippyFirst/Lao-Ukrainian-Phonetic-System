@@ -22,12 +22,12 @@ def analyze(text: str) -> Analysis:
     # parser's current word-like units. Do not infer minor-syllable relations
     # across phrase whitespace.
     syllable_groups = [
-        segment_syllables(token)
+        segment_syllables(token, registry)
         for token in normalized.replace("\u200b", " ").split()
     ]
     for group in syllable_groups:
         for syllable_index, surface in enumerate(group):
-            parsed = parse_syllable(surface)
+            parsed = parse_syllable(surface, registry)
             local_warnings = list(parsed.get("warnings", []))
             ipa, rules, tone_status, tone = phonologize(parsed)
 
@@ -42,7 +42,7 @@ def analyze(text: str) -> Analysis:
                  if row["rule_id"] == "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"),
                 None,
             )
-            following = parse_syllable(group[1]) if len(group) > 1 else {}
+            following = parse_syllable(group[1], registry) if len(group) > 1 else {}
             following_vowel = following.get("vowel") or {}
             following_major_weighted = (
                 following_vowel.get("length") == "long"
