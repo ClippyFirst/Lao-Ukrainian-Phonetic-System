@@ -91,7 +91,7 @@ def structural_components(surface, parsed, registry):
     if coda_si: components.append({"surface":coda,"role":"coda","ipa":coda_ipa})
     return {"components":components,"tone_indices":tone_indices,"onset_indices":onset_si,
         "vowel_indices":vowel_si,"coda_indices":coda_si,"onset":onset,
-        "onset_form":onset_form,"vowel":vowel,"coda":coda,"high_digraph":high,"cluster":bool(cluster)}
+        "onset_form":onset_form,"onset_ipa":onset_ipa,"vowel":vowel,"coda":coda,"high_digraph":high,"cluster":bool(cluster)}
 
 def role_for_index(index, structure, surface):
     if index in structure["tone_indices"]: return "tone_mark","tone_only_not_segmental"
