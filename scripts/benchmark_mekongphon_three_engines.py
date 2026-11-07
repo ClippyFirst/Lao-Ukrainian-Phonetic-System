@@ -150,6 +150,14 @@ def load_project():
                         and item.phonetic_result.vowel_length == "short"
                         and not item.coda
                         and not item.tone_mark
+                        and index + 1 < len(syllables)
+                        and (
+                            syllables[index + 1].coda is not None
+                            or (
+                                syllables[index + 1].phonetic_result is not None
+                                and syllables[index + 1].phonetic_result.vowel_length == "long"
+                            )
+                        )
                     ),
                     "onset": item.onset or "",
                     "consonant_class": item.consonant_class or "",
@@ -651,7 +659,7 @@ def main() -> int:
                         )
         for contexts in engine_tone_contexts:
             for context in contexts or []:
-                if context.get("tone_category"):
+                if context.get("tone_category") not in {"", "None"}:
                     continue
                 context_key = "|".join([
                     f"class={context.get('consonant_class', '')}",
