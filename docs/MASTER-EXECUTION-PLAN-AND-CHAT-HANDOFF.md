@@ -2131,3 +2131,12 @@ The required engine contract is **Lao grapheme element + structural position + p
 4. Independent ClippyFirst IPA gold remains 0; dictionary references must not be promoted into gold.
 5. Manual accessibility QA, npm lockfile/clean-install reproducibility and broader source-component reuse terms remain separate release blockers.
 
+
+
+## Latest branch and documentation checkpoint — 2026-11-07
+
+- Documentation/report checkpoint branch head before this handoff amendment: \`9a276b80e26c073dd75c43d0b359c89b926b26e8\`.
+- PR #140 remains open; base \`benchmark/mekongphon-immutable-inference-20261107\`; branch is 278 commits ahead of \`main\`, 0 behind. \`main\` remains untouched.
+- Current report is \`docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md\`; README and docs index now state the grapheme-role/context rule contract.
+- Latest completed code Verify and base context diagnostic are 42390739133 and 42390734319 on \`16d267664beb25a9e26e9639aace42a2975582d1\`. The later expanded positional/broader-context distributions and aggregate-only test guard have pending exact-head diagnostic 42391252559 and Verify 42391693342; await both before marking MEKONG-GRAPHEME-002 DONE_VERIFIED.
+- No production pronunciation rules were copied from raw dictionary word mappings. The engine's positional registry rules are preserved; IPA inventory tokenization was extended for documented labialized units and \`əː\`/\`ə̯\`; unsupported Ukrainian adaptations remain fail-closed.
