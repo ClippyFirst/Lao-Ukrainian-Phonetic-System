@@ -13,6 +13,7 @@ def main():
     onset_clusters=read_csv(ROOT/"data/lao/onset_clusters.csv")
     vowels=read_csv(ROOT/"data/lao/vowels.csv")
     tones=read_csv(ROOT/"data/lao/tone_rules.csv")
+    special_tones=read_csv(ROOT/"data/lao/special_tone_rules.csv")
     ua=read_csv(ROOT/"data/lao/ukrainian_correspondences.csv")
     sources=read_csv(ROOT/"data/evidence/sources.csv")
     claims=read_csv(ROOT/"data/evidence/claims.csv")
@@ -23,6 +24,7 @@ def main():
     for row in vowels:
         assert row["nucleus_type"] in {"monophthong", "diphthong"}, f"unknown nucleus type: {row['id']}"
     assert len({r["rule_id"] for r in tones})==len(tones), "duplicate tone rule"
+    assert len({r["rule_id"] for r in special_tones})==len(special_tones), "duplicate special tone rule"
     for row in tones:
         if row["tone_mark"] != "none":
             assert row["syllable_type"] == "live", f"tone mark on non-live syllable selector: {row['rule_id']}"
@@ -35,6 +37,11 @@ def main():
     assert len({r["claim_id"] for r in claims})==len(claims), "duplicate evidence claim id"
     source_ids={r["source_id"] for r in sources}
     claim_ids={r["claim_id"] for r in claims}
+    for row in special_tones:
+        assert row["profile"] == "Vientiane", f"unknown special tone profile: {row['rule_id']}"
+        assert not row["tone"] and not row["contour"], f"invalid unresolved special tone selector: {row['rule_id']}"
+        assert row["status"] == "analysis-dependent", f"unsupported special tone status: {row['rule_id']}"
+        assert row["evidence_id"] in claim_ids, f"unknown special tone claim: {row['rule_id']}"
     consonant_by_grapheme={r["grapheme"]: r for r in consonants}
     allowed_labialized_ipa={"tʷʰ", "tɕʷ", "kʷ", "kʷʰ", "ʔʷ", "sʷ", "ŋʷ", "lʷ"}
     for row in onset_clusters:
@@ -53,7 +60,7 @@ def main():
     for row in consonants:
         cp=int(row["codepoint"].replace("U+",""),16)
         assert 0x0E80 <= cp <= 0x0EFF, f"non-Lao codepoint: {row}"
-    print(f"OK: {len(consonants)} consonant rows; {len(onset_clusters)} onset clusters; {len(vowels)} vowel rows; {len(tones)} tone rules; {len(ua)} UA mappings; {len(sources)} evidence sources; {len(claims)} evidence claims")
+    print(f"OK: {len(consonants)} consonant rows; {len(onset_clusters)} onset clusters; {len(vowels)} vowel rows; {len(tones)} tone rules; {len(special_tones)} special tone rules; {len(ua)} UA mappings; {len(sources)} evidence sources; {len(claims)} evidence claims")
 
 if __name__=="__main__":
     main()

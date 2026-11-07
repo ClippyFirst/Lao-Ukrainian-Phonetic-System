@@ -2,13 +2,13 @@
 
 ## Candidate: MekongPhon (LREC 2026)
 
-**Disposition: high-priority research lead; NOT imported as gold or training data.** The paper reports 367,000 Lao orthography–IPA pairs and sub-2% CER on held-out data. It also reports a 1.3M Khmer set. These are paper-reported figures, not results independently reproduced by this repository.
+**Disposition (updated 2026-11-07): MekongPhon project rights are DONE_VERIFIED (owner-confirmed) for the authorized project use; NOT independent gold and NOT imported as a product corpus or model-training set.** The paper reports 367,000 Lao orthography–IPA pairs and sub-2% CER on held-out data. It also reports a 1.3M Khmer set. These are paper-reported figures, not results independently reproduced by this repository.
 
 - Paper: https://aclanthology.org/2026.lrec-1.129/
 - Project: https://github.com/byu-matrix-lab/MekongPhon
 - Inspected upstream main commit: `f80f6c1840c4818b51e05f2e00cded4701a5b662`.
 - Files include `data/lexicons/lao_lexicon.csv`, `data/splits/lao_train.csv`, `data/splits/lao_eval.csv`, and a 500-sentence qualitative sample.
-- The project repository metadata has `license: null`; its tree has no LICENSE/COPYING file. The LREC proceedings page states CC BY-NC 4.0 for proceedings, but that does not automatically license the separate corpus, source lexicon, OPUS data or trained models.
+- The project repository metadata has `license: null`; its tree has no LICENSE/COPYING file. The paper states that data, code and pretrained models are publicly released to support future research and development. In addition, the repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. Record the authorized project use as owner-confirmed cleared; this is not an independent legal opinion. The upstream no-root-LICENSE fact remains provenance metadata, not an active project blocker.
 - The documented pipeline scrapes the SEAlang Lao dictionary, normalizes IPA tone marks, downloads OPUS parallel text, and applies a greedy lexicon transliterator. Sentences with out-of-lexicon tokens are filtered out. Thus the sentence IPA is dictionary-generated, not an independently hand-transcribed sentence-level reference.
 - The committed split script uses `random.seed(1234)` and reserves only 100 lexicon lines for evaluation. This is a held-out lexical split, not evidence of independent expert adjudication or robust dialect-balanced coverage.
 - The paper's “verified” claim is worth investigating, but the accessible project README/pipeline does not document annotator identities, adjudication protocol, dialect stratification, or data licensing at the per-entry level.
@@ -17,13 +17,25 @@
 
 The source code is MIT, but the corresponding `neurlang/dataset/lao/` lexicon has no declared repository license, and no per-language rights statement was found. Its derived model assets remain blocked pending provenance/license clarification. See `docs/audits/current/GORUUT-ASSET-LICENSE-REVIEW-2026-11-01.md`.
 
-## Acceptance before use
+## Full train-split diagnostic and rule-baseline comparison — 2026-11-07
 
-1. Obtain explicit corpus/lexicon/model license terms and provenance for each component (SEAlang, OPUS corpora, derived IPA, model weights).
-2. Obtain the paper and inspect the annotation/verification protocol, dialect profile, IPA conventions, tone treatment and held-out split design.
-3. Establish whether the 100-word eval split is independently adjudicated; if not, keep it as a comparator split only.
-4. Import no rows until each row has a stable source locator, profile, adjudication status and provenance; retain original IPA exactly.
-5. Keep tone, vowel length, syllable boundaries and uncertain readings intact. Do not normalize away tonal distinctions to improve agreement.
+The pinned train file has raw SHA-256 `2d0f68989009620980ced3386f11a640e6167404308eeb6a79efc52bc8e40ee0`. First complete run: [42386956616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42386956616); aggregate artifact SHA-256 `1598ee5f23ea9bfdba6c4eacbb4f53cc377900565a91054d4b96c354c2dd24`.
+
+- Segmental: 6,219 rows, 93.58% coverage, 3,885 exact matches (62.47% of the full denominator), full-denominator CER 16.70%.
+- Tone categories: 4,152/8,761 covered (47.39%); 132/4,152 category disagreements (3.18%) on the covered segmental-exact subset; 616 category-length mismatches and 133 reference-alignment failures.
+- 88 of the 132 disagreements are concentrated in two reference→engine pairs: 50 high-mid→low-rising and 38 low-falling→high-mid. MekongPhon's own deterministic baseline at the pinned revision maps high-class live unmarked syllables to low-rising and low-class short-dead unmarked syllables to high-mid, the same categories as ClippyFirst's corresponding rules. The seed-lexicon references therefore diverge from the corpus project's own rule baseline in these frequent contexts. This is evidence of reference/convention sensitivity, not proof of which transcription is correct.
+- No tone rule was changed from these train-split labels. Keep the six previously flagged minor-syllable candidates and any new tonal disagreements pending qualified Vientiane review.
+- The final diagnostic extension (exact source hash/duplicate guards, IPA-inventory-token edit profile and non-established-syllable filtering) passed [run 42388029325](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388029325) and full [Verify 42388033575](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388033575) on code commit `3efc0ccb54887830157915e8b4b84ad9177e1720`. Artifact SHA-256: `a9cb3e0a98b3a47532871d170f14d38415be8c57d093af92f8b02f84ce9232b3`.
+- IPA-inventory-token edit distance: 5,531/28,992 reference tokens (19.08% full-denominator token error rate). Leading substitutions: `aː→ə` 507, `j→i` 365, `w→ʋ` 327, `u→uː` 279, `o→w` 246, `i→iː` 237, `r→l` 171. These comparisons expose source-sensitive vowel, glide and approximant/rhotic conventions; they are not independent gold or evidence to change rules without a profile-specific primary source.
+- The 100-row eval split remains separate and is not used for tuning.
+
+## Current use boundaries — 2026-11-07
+
+1. Use the pinned public corpus for research, error analysis and rule discovery; cite Shurtz et al. (2026) and record the exact upstream revision and file hash.
+2. Use the 6,219-row train split only for development diagnostics. Keep the 100-row eval split separate for comparator reporting; do not tune on eval.
+3. Do not promote any MekongPhon row to independent ClippyFirst gold. The source lexicon and generated sentence references remain external reference material, not blind adjudication.
+4. Do not commit or re-host raw corpus rows, IPA references or per-item predictions. The current diagnostic uses only the word-level seed-lexicon split, not OPUS-derived sentence pairs; SEAlang terms for that lexicon remain unverified. OPUS terms apply if the sentence-expanded corpus is used later. MekongPhon rights are owner-confirmed for the authorized project use. Do not independently mirror or reuse SEAlang/OPUS source material outside the MekongPhon release without checking their separate terms.
+5. Keep tone, vowel length, syllable boundaries and uncertainty intact. Do not normalize away tonal distinctions to improve agreement.
 
 Current independent, project-owned, expert-adjudicated Lao gold remains 0. No MekongPhon/Goruut accuracy claim is added to this repository.
 
@@ -95,3 +107,13 @@ The exact Mozilla Data Collective record is https://mozilladatacollective.com/da
 5. Do not redistribute the corpus or derived materials unless the signed LDC agreement permits it.
 
 The source is now registered as `SRC-LDC-BABEL-LAO-2017`. This is a source discovery/access lead only: no audio or transcript data were copied, independent adjudicated Lao IPA gold remains 0, and accuracy remains null.
+
+
+## Research-use implementation update — 2026-11-07
+
+The paper abstract states that all data, code and pretrained models are publicly released to support future research and development ([ACL Anthology record](https://aclanthology.org/2026.lrec-1.129/), abstract). Following the project owner's instruction, ClippyFirst now uses MekongPhon as a research comparator and rule-discovery resource. A pinned aggregate-only diagnostic reads `data/splits/lao_train.csv` at upstream commit `f80f6c1840c4818b51e05f2e00cded4701a5b662`; CI stores only summary metrics and aggregated error contexts. The train split is not a held-out test or independent gold. The 100-row eval split remains separate.
+
+
+## Current rights status — owner confirmation — 2026-11-07
+
+The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. `LIC-001 = DONE_VERIFIED (owner-confirmed)` for authorized project use. This supersedes the preliminary upstream-only rights caution above for this project; it is not an independent legal opinion. Independent adjudicated Lao IPA gold remains 0.

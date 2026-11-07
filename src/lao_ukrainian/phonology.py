@@ -2,7 +2,7 @@ from .data import load_registry
 
 MARKS={"່":"mai_ek","້":"mai_tho","໊":"mai_ti","໋":"mai_catawa",None:"none"}
 
-def classify_syllable_type(vowel, coda):
+def classify_syllable_type(vowel, coda, registry=None):
     """Classify live/dead from the phonological rhyme.
 
     In the Vientiane-oriented model, stop/glottal finals and short
@@ -10,7 +10,7 @@ def classify_syllable_type(vowel, coda):
     sonorant-final rhymes are live; vowel length alone is not enough to
     classify an open diphthong or a nasal-final AM rhyme.
     """
-    r=load_registry()
+    r=registry if registry is not None else load_registry()
     if coda:
         cr=r["consonants"].get(coda,{})
         final=cr.get("ipa_final")
@@ -25,11 +25,11 @@ def classify_syllable_type(vowel, coda):
         return "live" if vowel["length"]=="long" else "dead"
     return None
 
-def determine_tone(onset, vowel, coda, tone_mark, onset_class=None):
-    r=load_registry()
+def determine_tone(onset, vowel, coda, tone_mark, onset_class=None, registry=None):
+    r=registry if registry is not None else load_registry()
     cr=r["consonants"].get(onset or "")
     if not cr or not vowel: return (None,"ANALYSIS DEPENDENT",[])
-    st=classify_syllable_type(vowel,coda)
+    st=classify_syllable_type(vowel,coda,r)
     mark=MARKS.get(tone_mark,"unknown")
     cls=onset_class or cr["class"]
     key=(cls,st,vowel["length"],mark)
@@ -39,8 +39,8 @@ def determine_tone(onset, vowel, coda, tone_mark, onset_class=None):
                 return rule["tone"],rule["status"],[rule["rule_id"]]
     return None,"ANALYSIS DEPENDENT",["TONE-NOT-ESTABLISHED-FOR-COMBINATION"]
 
-def phonologize(parsed):
-    r=load_registry(); o=r["consonants"].get(parsed["onset"] or ""); v=parsed["vowel"]
+def phonologize(parsed, registry=None):
+    r=registry if registry is not None else load_registry(); o=r["consonants"].get(parsed["onset"] or ""); v=parsed["vowel"]
     if not o or not v: return None,[],"ANALYSIS DEPENDENT",None
     coda=parsed["coda"]
     coda_ipa=(r["consonants"].get(coda,{}).get("ipa_final") or "") if coda else ""
@@ -50,6 +50,9 @@ def phonologize(parsed):
     onset_ipa=parsed.get("onset_ipa")
     if onset_ipa is None:
         onset_ipa="" if parsed["onset"]=="ອ" else (o["ipa_initial"] or "")
-    tone,status,rules=determine_tone(parsed["onset"],v,coda,parsed["tone_mark"],parsed.get("onset_class"))
+    tone,status,rules=determine_tone(
+        parsed["onset"], v, coda, parsed["tone_mark"],
+        parsed.get("onset_class"), registry=r,
+    )
     ipa=onset_ipa+v["ipa"]+coda_ipa
     return ipa,rules+([f"TONE:{tone}"] if tone else []),status,tone

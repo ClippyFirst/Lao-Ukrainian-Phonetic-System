@@ -206,6 +206,17 @@ class TestToneRuleRegistry(unittest.TestCase):
         self.assertEqual(status, "ANALYSIS DEPENDENT")
         self.assertEqual(rules, ["TONE-NOT-ESTABLISHED-FOR-COMBINATION"])
 
+    def test_potential_minor_tone_rule_is_source_backed_and_separate(self):
+        rules = self.registry["special_tone_rules"]
+        self.assertEqual(len(rules), 1)
+        row = rules[0]
+        self.assertEqual(row["rule_id"], "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED")
+        self.assertEqual(row["condition"], "initial-open-short-a-unmarked-followed-by-major-weighted-syllable")
+        self.assertEqual(row["tone"], "")
+        self.assertEqual(row["contour"], "")
+        self.assertEqual(row["status"], "analysis-dependent")
+        self.assertEqual(row["evidence_id"], "CLM-LAO-POTENTIAL-MINOR-OPEN-A")
+
 
 if __name__ == "__main__":
     unittest.main()

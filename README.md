@@ -1,5 +1,6 @@
 # Lao → Ukrainian Phonetic-Graphemic Correspondence System
 
+- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
@@ -10,7 +11,7 @@ This repository develops a **project-specific Ukrainian practical transcription 
 It is deliberately **not**:
 
 - Lao-character → Ukrainian-character substitution;
-- treating romanization as the primary phonetic method (the optional fallback is separate and explicitly lower-information);
+- treating romanization as the primary phonetic method; the optional romanization method is separate, lower-information, and never a fallback when phonetic analysis is unresolved;
 - a claim to be an official Ukrainian national standard;
 - a universal transcription system for every Lao dialect;
 - a lexical word-segmentation engine.
@@ -20,6 +21,20 @@ It is deliberately **not**:
 **Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/quantity → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
 
 The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation.
+
+## Context-sensitive grapheme-to-sound rules
+
+ClippyFirst does **not** store word → IPA dictionary correspondences. It resolves each parsed syllable structurally:
+
+- consonant graphemes use different onset and coda values where the language requires it;
+- preposed, above, below and postposed vowel signs are interpreted as parts of a complete vowel structure, not isolated character substitutions;
+- documented multi-grapheme onsets are treated as joint consonant units;
+- tone is selected from consonant class, rhyme type, vowel length and tone mark;
+- only the resulting typed IPA is passed to the Ukrainian adapter.
+
+Thus the same Lao character can have different realizations by role: for example, `ວ` is /ʋ/ as an onset and /w/ as a coda; `ດ` is /d/ as an onset and /t/ as a coda. The vowel sign `ເ` likewise participates in short /e/ and long /eː/ structures depending on the complete spelling.
+
+The pinned [MekongPhon grapheme-context study](docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) aggregates grapheme, position, neighbouring signs, onset class, vowel ID, rhyme and tone-mark environments. It reports engine IPA and reference-aligned IPA separately. It never turns dictionary words into production lookup rules, and its train references are not independent gold.
 
 ## Comparative methodology
 
@@ -54,7 +69,7 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 
 The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer.
 
-Known limitations remain explicit: lexical word segmentation (Lao spaces mark phrases, not words), ambiguous onset/coda boundaries, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
+Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
 
 ## Quick start and verification
 
@@ -65,7 +80,7 @@ Run the complete configured engineering checks from the repository root (command
 - Validate IPA corpus structure: python scripts/ipa_gold_corpus.py validate --language lao
 - Validate canonical data/evidence: python scripts/audit.py
 - Run Python tests: PYTHONPATH=src python -m unittest discover -s tests -v
-- Install Node test dependencies: npm ci --no-audit --no-fund
+- Install Node test dependencies: npm install --no-audit --no-fund
 - Run Node/browser-engine suites: npm test
 - Build the static site: npm run build
 - Check generated-data drift: git diff --exit-code -- web/data.js
@@ -79,9 +94,7 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 
 ## Documentation
 
-Start at the [documentation index](docs/README.md). It identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
-
-- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
+Start at the [documentation index](docs/README.md). The latest [repository-wide audit](docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) records the current architecture, branch/PR reconciliation, verification evidence and blockers. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
 ## Web service
 
@@ -99,7 +112,7 @@ Release verification:
 
     python scripts/audit.py
     PYTHONPATH=src python -m unittest discover -s tests -v
-    npm ci --no-audit --no-fund
+    npm install --no-audit --no-fund
     npm test
     npm run build
 
@@ -117,7 +130,7 @@ lao-ua 'ສະບາຍດີ' --engine mekongphon-tonal --device cpu --json
 lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device cpu --json
 ```
 
-Both engines default to immutable model revisions recorded in [the integration guide](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result.
+Both engines default to immutable model revisions recorded in [the integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result. MekongPhon project rights are owner-confirmed as resolved; independent adjudicated Lao IPA gold remains 0.
 
 ## Status
 
@@ -139,8 +152,8 @@ The project uses a provenance-backed, double-annotated IPA gold workflow. See [t
 
 The Python package and browser instrument intentionally expose different input contracts; their results must not be treated as interchangeable for unspaced multi-syllable input:
 
-- **Python API:** phrase-input oriented. Whitespace separates phrase fragments and U+200B is an explicit boundary. Within each whitespace-delimited token, deterministic dynamic programming segments structurally complete syllable candidates; unsupported material is retained as unresolved input rather than discarded. This is syllabification, not lexical word segmentation.
-- **Browser instrument:** phrase-input oriented. Within each whitespace-delimited token, it uses the corresponding conservative dynamic segmentation and retains unresolved material. It is a presentation/runtime feature, not a lexical word segmenter.
-- **Boundary differences:** browser validation and Python normalization/parsing remain separate runtime paths. Do not assume punctuation, mixed-script passthrough, malformed fragments or aggregate status behave identically across runtimes. Shared phonological/IPA results should align for the same complete supported syllable; phrase segmentation must be regression-tested in both runtimes.
+- **Python API:** phrase-input oriented. Within each whitespace-delimited token, it attempts conservative dynamic segmentation into complete orthographic syllables. This is a structural parser, not a lexical word segmenter; it retains unresolved material and withholds unsupported phonetic output rather than guessing. Explicit whitespace is a boundary between input fragments; U+200B is rejected by Unicode validation.
+- **Browser instrument:** phrase-input oriented. Within each whitespace-delimited token, it attempts conservative dynamic segmentation into complete orthographic syllables. This is a UI convenience, not a lexical word segmenter; it retains unresolved material and withholds unsupported phonetic output rather than guessing. Explicit whitespace remains a boundary between input fragments.
+- **Boundary differences:** browser validation and Python normalization/parsing are separate runtime paths. In particular, do not assume U+200B, punctuation, mixed-script passthrough, malformed fragments, or aggregate status behave identically across them. Consumers must select the documented runtime contract and must not compare the two outputs as a parity oracle.
 
-Lao spaces mark phrases, not lexical words. Both runtimes now attempt conservative syllabification inside unspaced tokens, but neither claims general-purpose lexical word segmentation. Changes to either contract require runtime-specific regression tests and an explicit update to this section.
+Both runtimes attempt conservative within-token syllable segmentation and reject U+200B; neither claims to solve Lao lexical word segmentation. Shared phonological and IPA-to-Ukrainian rules should remain aligned where both runtimes support the same complete syllable, but phrase-level segmentation and all input-normalization behavior are not a blanket parity guarantee. Changes to either contract require runtime-specific regression tests and an explicit update to this section.

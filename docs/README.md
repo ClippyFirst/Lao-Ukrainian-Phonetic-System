@@ -44,6 +44,9 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [External IPA renderers](external-ipa-renderers.md)
 - [Independent G2P comparison](independent-g2p-comparison.md)
 - [External G2P research](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md)
+- [MekongPhon neural integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md)
+- [MekongPhon rights review](audits/current/MEKONGPHON-DATA-RIGHTS-REVIEW-2026-11-07.md)
+- [MekongPhon grapheme-context analysis](audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md)
 
 ### Agent and maintainer context
 - [Agent instructions](../AGENTS.md)

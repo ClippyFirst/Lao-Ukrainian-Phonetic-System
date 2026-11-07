@@ -71,3 +71,19 @@
 **Reason:** Modern Ukrainian щ represents the fricative-plus-affricate sequence [ш]+[ч], not a single affricate. The Encyclopedia of Modern Ukraine and the Journal of the IPA Ukrainian description document this correspondence. The existing longest-match adapter can preserve the exact sequence without changing isolated segment mappings. This is target orthography, not a Lao phonological claim.
 
 **Evidence:** SRC-ESU-SHCH, SRC-JIPA-UKRAINIAN; claim CLM-UA-SHCH-SEQUENCE.
+
+## D-012 — Canonical tied IPA for the Lao alveolo-palatal affricate
+
+**Decision:** Render the core Lao affricate ຈ as `t͡ɕ` in ClippyFirst's canonical IPA output. Continue accepting un-tied `tɕ` as an IPA correspondence alias for adapter inputs and external references.
+
+**Reason:** The IPA chart uses tie-bar notation to represent an affricate as a single segment. ClippyFirst therefore adopts `t͡ɕ` as the canonical source IPA for ຈ and continues accepting untied `tɕ` as an input alias. The 100-word reference comparison exposed a notational mismatch; the resulting raw CER/exact-match change is a notation-normalization effect, not evidence of improved phonological accuracy. Future comparator reporting normalizes optional tie bars and keeps the raw allograph difference separately visible.
+
+**Evidence:** SRC-IPA-CHART; claim CLM-IPA-AFFRICATE-TIE-BAR; benchmark [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901).
+
+## D-013 — Withhold independent tone for potential initial minor /a/ syllables
+
+**Decision:** When an initial unmarked short open-/a/ syllable is followed by a major-weighted syllable in the same unspaced orthographic token, preserve segmental IPA but mark its independent tone as analysis-dependent. Do not assign a neutral tone category or invent a tone contour from orthographic shape alone.
+
+**Reason:** Ueda (1994, p. 113) describes an exceptional non-final open /a/ syllable in central Vientiane polysyllabic words as unstressed and tone-neutral (the article is based on one 46-year-old Haysok informant). Enfield (2007, §3.1, pp. 33–34) models minor C₀V₀ syllables as lacking distinctive tone independent of the major syllable, restricts V₀ to short /a, i, u/, and notes a restricted C₀ onset subset with palatal/velar nasals absent. The orthographic parser cannot prove lexical minor-syllable status or the full C₀ inventory. The implementation therefore flags only a conservative structural candidate, excludes known palatal/velar nasal onsets, and withholds tone rather than asserting that every matching spelling is definitely minor.
+
+**Evidence:** SRC-UEDA; SRC-ENFIELD; claim CLM-LAO-POTENTIAL-MINOR-OPEN-A; regression tests for the candidate selector and monosyllabic/following-weight counterexample.

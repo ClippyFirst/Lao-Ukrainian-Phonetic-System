@@ -25,6 +25,7 @@ class TestTarget(unittest.TestCase):
 
     def test_affricates_and_digraphs(self):
         self.assertEqual(adapt("tɕɔː"), "чо")
+        self.assertEqual(adapt("t͡ɕɔː"), "чо")
         self.assertEqual(adapt("t͡sa"), "ца")
         self.assertEqual(adapt("d͡za"), "дза")
         self.assertEqual(adapt("d͡ʒa"), "джа")

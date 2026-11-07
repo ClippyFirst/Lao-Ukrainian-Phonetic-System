@@ -56,7 +56,7 @@ ClippyFirst returned a complete `OK` analysis for 46 items and `PARTIAL` for 54.
 ## Remaining work
 
 - **TODO:** run a second diagnostic against `pron_no_tones` to separate segmental mismatches from tone mismatches, and report covered-subset scores alongside full-denominator scores.
-- **BLOCKED:** independent Lao phonetics adjudication and dialect/convention approval remain required before any project accuracy claim. MekongPhon rights are owner-confirmed as resolved; the reference set remains secondary and not independently re-adjudicated by this project. Existing project gold remains empty.
+- **BLOCKED:** independent Lao phonetics adjudication and dialect/convention approval remain required before any project accuracy claim. Existing project gold remains empty.
 - **TODO:** investigate ClippyFirst's 54 `PARTIAL` cases by parser/phonology failure category, then review disagreements with a qualified Lao phonetics reviewer before changing rules.
 - **BLOCKED / separate current-main issue:** Verify run [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593) on main `f40c1128302486b3589da9b16bae198ef3ad1d81` failed three browser tests: modern Lao `ຣ` expected `la` but returned null; two IPA-adapter tests expected unsupported/withheld status but got a supported result. This benchmark workflow does not run or resolve the full Verify suite.
 
@@ -124,7 +124,7 @@ The raw Ueda-contour score and the benchmark-convention score answer different q
 - Runtime errors: zero for all three engines. ClippyFirst statuses: 95 `OK`, 5 `PARTIAL`; 97% non-empty IPA coverage.
 - Remaining unresolved source-side material comprises two unconsumed vowel-tail patterns and one non-core Lao Pali/archaic consonant. The latter is intentionally withheld rather than guessed. These are the next parser/evidence review targets.
 - Four segmental-exact ClippyFirst items could not be included in the tone-category subset because their reference tone suffixes did not match the currently declared five-contour Mekong mapping. This is a limitation of the comparison adapter, not silently assigned a tone.
-- The upstream MekongPhon repository snapshot used here exposes no repository-root LICENSE file. The dataset is fetched only at workflow runtime; no source rows, references or per-item predictions are committed or included in the artifact. The repository owner confirms that the project's MekongPhon rights were fully resolved in the prior project conversation; this is an owner confirmation, not a new independent legal opinion. Independent project IPA gold remains 0.
+- The upstream MekongPhon repository snapshot used here exposes no repository-root LICENSE file. The dataset is fetched only at workflow runtime; no source rows, references or per-item predictions are committed or included in the artifact. Dataset reuse/redistribution rights remain unverified and must be cleared before any corpus redistribution or training use.
 - The 100-word lexicon is not the paper's 13,442-sentence test set and is not independently re-adjudicated project gold. The project still has zero independently adjudicated IPA gold records. No production default was switched to a neural model or external dependency.
 
 **Current conclusion:** ClippyFirst is now close to Lao2IPA on the identical 97-item covered subset, but remains slightly behind it on both segmental and benchmark-normalized tonal CER. It is not yet the best complete rule engine: three items remain withheld, its tone-category error rate is higher than Lao2IPA's, and the neural MekongPhon model remains the strongest system on this split.
@@ -181,11 +181,6 @@ Final benchmark workflow [42358468909](https://github.com/ClippyFirst/Lao-Ukrain
 ClippyFirst computes segmental IPA and tone in one `analyze()` pass, so both outputs become available at the same latency; these two values must not be summed. Lao2IPA and MekongPhon are measured as separate segmental and tonal calls. Model loading is excluded; these are single-run hosted CPU timing diagnostics, not stable cross-machine performance guarantees. ClippyFirst is substantially faster than the neural model on this runner, but much slower than Lao2IPA's lightweight transliteration function. This is an optimization lead, not a correctness criterion.
 
 
-## MekongPhon rights status correction — owner confirmation
-
-The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. The earlier preliminary statements in this report that project rights were unknown are superseded for project tracking. Record `LIC-001` as `DONE_VERIFIED (owner-confirmed)` for the authorized project use. The upstream repository's missing root LICENSE remains a provenance fact, not an active blocker after the owner's confirmation. This note does not claim an independent legal opinion and does not convert the 100-word lexicon into independently adjudicated project gold.
-
-
 ## Immutable two-model inference rerun — 2026-11-07
 
 **DONE_VERIFIED — both MekongPhon neural checkpoints were downloaded and executed from explicit immutable Hub commits, alongside the ClippyFirst deterministic rule engine and Lao2IPA.**
@@ -223,7 +218,7 @@ For the tone-category diagnostic, restricted to segmental-exact items with align
 - ClippyFirst remains valuable as a deterministic, inspectable, low-latency, fail-closed implementation; this run does not justify replacing its architecture with a neural dependency or changing its default.
 - The ClippyFirst native Ueda-contour score is not directly convention-equivalent to the MekongPhon tonal reference. The separately reported MekongPhon-contour rendering is evaluation-only and does not modify production tone metadata.
 - This lexicon is dictionary-seeded and not independently re-adjudicated by this project. It is not the paper's 13,442-sentence test set and not project-certified gold. Independent expert-adjudicated IPA gold remains 0; do not convert model output into gold.
-- MekongPhon project rights are owner-confirmed as resolved. The workflow downloads the published model artifacts and benchmark CSV at runtime and publishes aggregate metrics only; it does not redistribute source rows, predictions, upstream code or corpus data.
+- The repository owner confirms that the project's MekongPhon rights were fully resolved in the prior project conversation. The workflow downloads the published model artifacts and benchmark CSV at runtime and publishes aggregate metrics only; it does not redistribute source rows, predictions, upstream code or corpus data.
 - No source-language rules, Ukrainian correspondence registry, model adapter runtime default or UI behavior changed in this benchmark-only branch.
 
 ### Follow-up ledger
@@ -234,6 +229,99 @@ For the tone-category diagnostic, restricted to segmental-exact items with align
 - **TODO:** review the three rule-engine withheld structures and the segmental/tone disagreements with a qualified Lao phonetics reviewer before changing deterministic rules.
 
 
-### Runtime adapter verification path
+## Error-pattern analysis and deterministic-engine refinement — 2026-11-07
 
-The benchmark's two pinned checkpoints are now loaded and invoked through `MekongPhonEngine.predict_raw_ipa()`, the same production inference adapter used by the optional CLI/API. Hugging Face Hub SHA resolution is still checked before loading, and the adapter verifies the model config SHA when available. Benchmark scoring uses the untouched decoded IPA string; target adaptation is not included in model latency.
+This checkpoint follows the immutable neural inference run and adds aggregate-only edit diagnostics, syllable-position context, a conservative minor-syllable uncertainty flag, and canonical tied IPA for the Lao affricate /t͡ɕ/.
+
+- Exact-head benchmark workflow [42374547901 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901), code head `411c4e0b6f9bf2775585b65f09fd5c0531808d6d`.
+- Aggregate artifact [13575161811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901/artifacts/13575161811), SHA-256 `813073f4207d51d93ead737623b5bad744618d197caf20c95473fe60c787e42b`.
+- Same 100-word dataset, exact dataset SHA and immutable neural model revisions as the preceding section. No per-word inputs, references, or predictions were exported.
+
+### Updated metrics
+
+| Engine / output | CER ↓ | Exact | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst segmental IPA, canonical tied affricate | **11.46%** | **69/100** | 97% |
+| ClippyFirst segmental, optional tie-bar normalization diagnostic | 11.62% | 69/100 | 97% |
+| Lao2IPA segmental IPA | 8.97% | 68/100 | 100% |
+| MekongPhon non-tonal model | 6.64% | 82/100 | 100% |
+| ClippyFirst tonal IPA, native Ueda contour convention | 32.45% | 20/100 | 91% |
+| ClippyFirst tonal IPA, MekongPhon contour convention (evaluation-only) | 10.20% on shared 91 | 52/91 | 91 shared |
+| Lao2IPA tonal IPA | 11.97% overall; 10.86% on shared 91 | 53/91 on shared 91 | 100% |
+| MekongPhon tonal model | 8.29% overall; 6.75% on shared 91 | 68/91 on shared 91 | 100% |
+
+On the same **97 segmental items** covered by ClippyFirst, it now scores CER 6.49% and 69/97 exact, compared with Lao2IPA's 7.72% and 68/97 exact, and MekongPhon's 5.79% and 81/97 exact. Thus ClippyFirst is now slightly ahead of Lao2IPA on this shared segmental subset, but it still has lower full-set coverage and higher CER than the neural model.
+
+For tonal outputs on the same **91 items** where ClippyFirst supplied a complete tone sequence, its evaluation-only MekongPhon-convention CER is 10.20% (52/91 exact), versus Lao2IPA 10.86% (53/91) and MekongPhon neural 6.75% (68/91). Do not compare this shared-subset score with full-set CER without also reporting coverage.
+
+The tone-category diagnostic on segmental-exact items has 51/64 exact word-level sequences (79.69%) and a category error rate of 18.95% over 95 reference categories. Six initial short-open-/a/ shapes before a major-weighted syllable are flagged as possible minor syllables; three additional tone contexts remain unresolved for other evidence-limited reasons. The engine preserves segmental IPA but withholds the independent tone for these candidates. This is a precision/coverage decision, not a claimed accuracy gain against the dictionary reference.
+
+### What the error profile says
+
+- Canonicalizing Lao ຈ to tied affricate IPA `t͡ɕ` changed raw ClippyFirst segmental CER from 12.79% to 11.46% and exact matches from 64 to 69. The browser data mirror, Python registry, shared fixture, and target adapter were updated together. Untied `tɕ` remains accepted as an IPA adapter alias.
+- The most frequent remaining aligned code-point substitutions include `j→i` (6), `w→ʋ` (5), `ː→ə` (5), `a→ː` (5), and `o→w` (4). The `w→ʋ` discrepancy also occurs in Lao2IPA (6 cases), indicating a likely reference/transcription-convention issue rather than a ClippyFirst-only defect. Do not collapse initial /ʋ/ and coda /w/ or rewrite diphthongs/length from this aggregate alone.
+- The remaining five-tone matrix disagreements are concentrated in high-class live unmarked /oŋ, uːŋ/, low-class live /iː/ with mai ek, and high-class live unmarked /aː/. Their rule outputs match the source-scoped Vientiane matrix; the dictionary reference differs. No tone matrix retuning was made.
+- Two multigrapheme unconsumed tails, one standalone KHO SUNG tail, and one malformed tone-mark-order case remain fail-closed. They do not justify new onset/coda rules.
+
+### Linguistic basis and safety of the minor-syllable handling
+
+Ueda (1994, p. 113) describes an exceptional non-final open /a/ syllable in central Vientiane polysyllabic words as unstressed and tone-neutral; the article is based on one 46-year-old Haysok informant. Enfield (2007, §3.1, pp. 33–34) models the minor syllable as initial C₀V₀, says it has no distinctive tone independent of the major syllable, restricts V₀ to short /a, i, u/ with no length contrast, and notes that C₀ is a restricted onset subset (palatal/velar nasals absent; b rare). Because the orthographic shape alone cannot prove that a candidate is truly minor (and Enfield's full C₀ inventory cannot be inferred from the parser), ClippyFirst does **not** assign a neutral tone. It flags only an initial unmarked short-open-/a/ candidate with a supported/core onset, excluding the explicitly disallowed palatal/velar nasal onsets, followed by a supported major-weighted syllable; it preserves segmental IPA and marks tone as analysis-dependent. The special selector is separate from the five-tone matrix.
+
+### Interpretation and next steps
+
+- **DONE_VERIFIED:** aggregate error diagnostics, tie-bar canonicalization, source-backed minor-syllable uncertainty handling, and exact-head benchmark execution.
+- **PARTIAL:** ClippyFirst now edges Lao2IPA on the shared segmental subset and is close on shared tonal CER; full-set coverage and the neural benchmark remain better.
+- **BLOCKED:** broad accuracy claims remain blocked by the non-adjudicated dictionary reference and zero independent project IPA gold.
+- **TODO:** obtain a Lao phonetics review of the six minor-syllable candidates and remaining vowel/offglide disagreements; build a rights-cleared, independently adjudicated gold set before expanding rules.
+
+
+### Runtime parity follow-up — 2026-11-07
+
+The potential minor-syllable tone-unresolved selector is now mirrored in the browser engine. Both Python and browser retain segmental IPA and Ukrainian adaptation while setting the independent tone to unresolved/analysis-dependent for the same initial short-open-/a/ candidate. Regression tests cover the positive candidate and a short-open-/a/ sequence without a major-weighted following syllable, which must retain its ordinary matrix tone.
+
+Exact-head full Verify [42375716368 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375716368) on code/test head `b325a5f91a3fdf063f231537d1550a140cb2eff8`. Python tests, repository/data audit, external-G2P CLI, browser engine tests, generated-data reproducibility, Chromium UI and built-page checks all passed; tone-category and provenance fields are aligned across runtimes. This parity change does not alter the 100-word benchmark metrics above.
+
+
+### Selector precision and diagnostic alignment — 2026-11-07
+
+The production selector is intentionally narrower than the broad C₀V₀ diagnostic shape. It requires an initial, unmarked, short open /a/ with no parser warnings, a supported/core onset and segmental IPA, and a following major-weighted syllable in the same unspaced orthographic token. A following syllable is major-weighted when it has a long vowel, diphthong or coda. Explicit whitespace blocks the selector. The engine retains the segmental IPA and Ukrainian adaptation but withholds only the independent tone as analysis-dependent.
+
+The browser implementation already requires supported segmental IPA; the Python implementation was tightened to the same gate. New regressions cover the candidate, non-major following syllable, explicit space and analysis-dependent onset. The benchmark now reports broad C₀V₀ shapes separately from the narrower open-/a/ selector and includes diphthong-weighted following syllables in its aggregate contexts. This is not evidence that every selected orthographic shape is lexically minor; a qualified Vientiane reviewer must review the six candidates before the selector can be considered linguistically accepted.
+
+Exact-head full Verify [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) is queued for `759091f28cc57a746df549ac573067af9be922ab`. Earlier success does not verify these latest changes.
+
+
+### Schema 4.0: missing-tone-aware category evaluation — 2026-11-07
+
+A review of the schema 3.0 artifact found that nullable ClippyFirst tone categories were converted to the literal string `"None"`. This inflated apparent category coverage and polluted the confusion matrix. Schema 4.0 preserves nulls, compares known syllable-aligned categories only, excludes unresolved tones from the confusion matrix, and reports category-level coverage, unresolved categories/words, complete-word rate and word-length mismatches separately.
+
+On the 64-word segmental-exact subset:
+- ClippyFirst: 79/95 categories covered (83.16%); 4 selector categories unresolved and 12 categories withheld by 8 word-length mismatches; 4 actual errors among 79 covered categories (5.06%); 51/64 exact words.
+- Lao2IPA: 81/93 categories covered (87.10%); 0 errors among covered categories; 8 word-length mismatches; 56/64 exact words.
+- MekongPhon neural: 105/105 categories covered; 3 errors among 105 (2.86%); 66/69 exact words.
+
+The six possible minor open-/a/ cases in the full 100-word sample are distributed across high (1), low (2) and middle (3) onset classes. Four occur in the segmental-exact tone subset. Their tones remain withheld, not replaced with a neutral contour.
+
+Four remaining known ClippyFirst tone discrepancies are localized: two high-class live unmarked /O, UU/ + coda ງ contexts (engine low-rising vs dictionary high-mid), one low-class live /II/ + mai-ek (engine high-mid vs dictionary low-falling), and one high-class live long /AA/ unmarked context (engine low-rising vs dictionary low-falling). These are not enough to retune the source-scoped Vientiane tone matrix without independent expert adjudication.
+
+The leading segmental character-edit pairs are `j=>i` (6), `w=>ʋ` (5), `ː=>ə` (5), `a=>ː` (5), `o=>w` (4). The same `w=>ʋ` substitution occurs in Lao2IPA (6), so it may be a reference-convention difference. No global /w/↔/ʋ/ normalization was introduced.
+
+Exact benchmark run [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), aggregate artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`. Full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937).
+
+
+### Registry reuse and observed latency — 2026-11-07
+
+The Python analyzer now loads its linguistic registry once per input analysis and passes it through syllable segmentation/parsing, avoiding repeated CSV reads for every token and syllable. This is a performance-only change; the schema 4.0 accuracy and coverage metrics did not change.
+
+Full Verify [42382964250 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382964250) and benchmark [42382960457 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457), artifact [13578092183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457/artifacts/13578092183). Mean ClippyFirst per-item latency was 14.207 ms before and 4.724 ms after the change on the same hosted 100-word benchmark setup (model loading excluded). Treat this as a single-run observation, not a statistically established speedup.
+
+
+## Current MekongPhon rights disposition — owner confirmation — 2026-11-07
+
+The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. Record `LIC-001 = DONE_VERIFIED (owner-confirmed)` for the authorized project use. This supersedes preliminary `UNKNOWN`/`BLOCKED` rights language elsewhere in the historical report; it is not an independent legal opinion. The 100-word lexicon remains dictionary-seeded secondary reference material, not independent project gold. Independent adjudicated Lao IPA gold remains 0.
+
+## Production-adapter benchmark path
+
+Both immutable model checkpoints are now invoked through the production `MekongPhonEngine.predict_raw_ipa()` path; one full `transcribe()` smoke per model checks pinned revision, non-empty raw IPA retention, typed parsing and fail-closed Ukrainian adaptation. Hub resolution is checked against tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. Raw inference timing excludes typed IPA parsing and target adaptation.
+
+The optional IPA affricate tie-bar normalization is a notation-convention correction, not a phonological accuracy gain. The 100-word comparison was used to expose this allograph difference; it should not be described as an untouched test for that notational dimension. Other rule changes remain source-gated and are not justified by tuning on the 100-word eval split.

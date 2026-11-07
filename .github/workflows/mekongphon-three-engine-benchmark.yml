@@ -5,6 +5,7 @@ on:
     branches:
       - "benchmark/mekongphon-three-engine"
       - "benchmark/mekongphon-immutable-inference-20261107"
+      - "improve/rule-engine-error-analysis-20261107"
       - "audit/repository-docs-structure-20261107"
     paths:
       - ".github/workflows/mekongphon-three-engine-benchmark.yml"

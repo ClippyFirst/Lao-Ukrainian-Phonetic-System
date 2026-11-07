@@ -3,7 +3,7 @@ from .model import PhoneticResult
 from .phonetic_result import from_phonology, from_phonology as phonetic_result_from_ipa
 
 
-def adapt_phonetic_result(result: PhoneticResult) -> str | None:
+def adapt_phonetic_result(result: PhoneticResult, registry=None) -> str | None:
     """Adapt only a supported typed phonetic result; uncertain IPA fails closed."""
     if not isinstance(result, PhoneticResult):
         raise TypeError("Ukrainian adaptation requires a PhoneticResult")
@@ -11,7 +11,7 @@ def adapt_phonetic_result(result: PhoneticResult) -> str | None:
         return None
     if any(segment.certainty != "SUPPORTED" for segment in result.segments):
         return None
-    registry = load_registry()["correspondences"]
+    registry = (registry if registry is not None else load_registry())["correspondences"]
     # The Ukrainian practical layer currently neutralizes lexical tone. For
     # external neural IPA, keep tone tokens in the typed result/raw string but
     # exclude only those explicitly typed tokens from segmental adaptation.
@@ -33,18 +33,19 @@ def adapt_phonetic_result(result: PhoneticResult) -> str | None:
     return "".join(output)
 
 
-def practical_from_ipa(result: PhoneticResult) -> str | None:
+def practical_from_ipa(result: PhoneticResult, registry=None) -> str | None:
     """Compatibility name retained with the new typed-only input contract."""
-    return adapt_phonetic_result(result)
+    return adapt_phonetic_result(result, registry)
 
 
-def rank_ukrainian_candidates(result: PhoneticResult):
+def rank_ukrainian_candidates(result: PhoneticResult, registry=None):
     """Return exact whole-IPA candidates only for supported typed results."""
     if not isinstance(result, PhoneticResult):
         raise TypeError("Candidate ranking requires a PhoneticResult")
     if result.status != "SUPPORTED" or not result.phonemic_ipa:
         return []
-    row = load_registry()["correspondences"].get(result.phonemic_ipa)
+    registry = registry if registry is not None else load_registry()
+    row = registry["correspondences"].get(result.phonemic_ipa)
     if not row:
         return []
     values = row["candidates"].split("|")
