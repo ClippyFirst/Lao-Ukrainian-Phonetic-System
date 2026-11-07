@@ -92,7 +92,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 - The Lao tonal and non-tonal Hugging Face model cards declare Apache-2.0 for model artifacts; that is not a dataset license.
 - Rights for corpus rows, scraped lexicon material, OPUS-derived text, derived IPA pairs and derivative datasets remain UNKNOWN.
 - Disposition: BLOCKED for copying, redistribution, derivative corpus publication and admission as project gold. Do not infer that non-commercial intent supplies permission. Obtain an applicable dataset license or written rights-holder permission, with scope recorded component by component.
-- Methodological status is separate: MekongPhon remains a secondary diagnostic/comparator, not independently adjudicated project gold. Independent project IPA gold remains zero.
+- Methodological status is separate: the paper's 500-entry Lao review involved two authors described as proficient second-language speakers rather than native speakers; 14/500 were judged inaccurate. Sentence-level IPA is lexicon-expanded over NLLB, Paracrawl and OpenSubtitles. MekongPhon remains a secondary diagnostic/comparator, not independently adjudicated project gold. Independent project IPA gold remains zero.
 
 ### Other source boundaries
 
