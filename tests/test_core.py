@@ -44,6 +44,8 @@ class TestCore(unittest.TestCase):
         result = analyze("ຄະຄາ")
         first, second = result.syllables
         self.assertEqual(first.phonemic_ipa, "kʰa")
+        self.assertEqual(first.phonetic_result.status, "SUPPORTED")
+        self.assertEqual(first.practical_ukrainian, "к'а")
         self.assertIsNone(first.tone)
         self.assertIsNone(first.tone_contour)
         self.assertIsNone(first.phonetic_result.tone_category)
@@ -63,6 +65,15 @@ class TestCore(unittest.TestCase):
 
     def test_potential_minor_selector_does_not_cross_explicit_space(self):
         result = analyze("ຄະ ຄາ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(result.syllables[0].tone, "high-mid")
+        self.assertNotIn(
+            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+            result.syllables[0].rules,
+        )
+
+    def test_potential_minor_selector_does_not_cross_zero_width_space(self):
+        result = analyze("ຄະ\u200bຄາ")
         self.assertEqual(len(result.syllables), 2)
         self.assertEqual(result.syllables[0].tone, "high-mid")
         self.assertNotIn(
