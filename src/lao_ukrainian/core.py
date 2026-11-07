@@ -36,13 +36,13 @@ def analyze(text: str) -> Analysis:
             # Apply only to an unmarked short-A syllable with no coda and a
             # following syllable in the same unspaced orthographic token.
             neutral_rule = next(
-                (row for row in registry["tone_rules"]
+                (row for row in registry["special_tone_rules"]
                  if row["rule_id"] == "VNT-NONFINAL-OPEN-A-NEUTRAL"),
                 None,
             )
             nonfinal_open_a = (
                 syllable_index < len(group) - 1
-                and parsed.get("vowel", {}).get("id") == "A"
+                and (parsed.get("vowel") or {}).get("id") == "A"
                 and parsed.get("coda") is None
                 and parsed.get("tone_mark") is None
                 and not local_warnings
@@ -158,7 +158,7 @@ def analyze(text: str) -> Analysis:
                 status = "EVIDENCE LIMITED"
             tone_contour = next(
                 (row["contour"] for row in registry["tone_rules"]
-                 if tone is not None and row["rule_id"] in rules),
+                 if tone is not None and row["rule_id"] in rules and row["contour"]),
                 None,
             )
             analysis_warnings.extend(local_warnings)
