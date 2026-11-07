@@ -8,7 +8,7 @@ Proceed only with a narrow, non-commercial, non-redistributive research evaluati
 
 Do not copy source rows into the repository, retain or republish the full corpus, publish per-item predictions/examples, create a derivative dataset, train or release a new model on the corpus, or use it commercially until the exact dataset/component terms are confirmed. Do not admit its labels as independent IPA gold.
 
-This is an evidence-qualified interpretation of the authors' stated research-release intent, not a definitive legal opinion or a substitute for a specific license grant. The repository's machine-readable license registry should continue to treat the dataset license as UNKNOWN until a license identifier or written permission is obtained.
+This is an evidence-qualified interpretation of the authors' stated research-release intent, not a definitive legal opinion or a substitute for a specific license grant. The canonical source registry now records the MekongPhon paper and the separate SEAlang reuse notice (SRC-MEKONGPHON-2026; SRC-SEALANG-REUSE-NOTICE). The machine-readable benchmark license registry remains UNKNOWN for MekongPhon; do not convert the generic notice into a guessed CC identifier.
 
 ## Primary artifacts inspected
 
