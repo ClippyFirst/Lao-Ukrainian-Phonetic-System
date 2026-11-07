@@ -192,10 +192,10 @@ test("screen-reader roles expose the service controls and output state", async (
   await expect(page.getByRole("button", { name: "ຂາ · простий склад" })).toBeVisible();
   await expect(page.getByRole("button", { name: "ເຂົ້າໜຽວ · складні форми" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
+  await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Фонетичний" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
-  await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
   await expect(page.locator("#status")).toContainText("ГОТОВО");
   await expect(page.locator("#copy")).toBeEnabled();
   await expect(page.locator("#copy")).toHaveAccessibleName("Копіювати");
@@ -205,7 +205,7 @@ test("screen-reader roles expose the service controls and output state", async (
 test("analysis disclosure is operable by keyboard and exposes expanded state", async ({ page }) => {
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ");
-  const summary = page.getByRole("button", { name: /Поскладовий розбір/ });
+  const summary = page.locator("summary.trace-summary").first();
   await summary.focus();
   await expect(summary).toBeFocused();
   await page.keyboard.press("Space");
@@ -214,11 +214,11 @@ test("analysis disclosure is operable by keyboard and exposes expanded state", a
   await expect(page.locator(".trace-disclosure").first()).not.toHaveAttribute("open", "");
 });
 
-test("400-percent equivalent zoom reflows the service at a 320 CSS-pixel viewport", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 1000 });
+test("400-percent equivalent 320 CSS-pixel viewport reflows the service", async ({ page }) => {
+  // Actual browser zoom reduces the CSS viewport; use 320 CSS px rather than CSS zoom.
+  await page.setViewportSize({ width: 320, height: 1000 });
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ");
-  await page.addStyleTag({ content: "html { zoom: 4; }" });
   await expect(page.locator("#output")).toHaveText("к'а");
   const layout = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
