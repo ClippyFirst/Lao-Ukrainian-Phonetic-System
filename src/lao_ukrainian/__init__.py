@@ -1,5 +1,4 @@
 from .core import analyze
-from .parser import segment_unspaced_token
 from .normalize import normalize_lao, validate_unicode
 from .parser import segment_syllables, parse_syllable
 from .phonology import classify_syllable_type, determine_tone, phonologize
