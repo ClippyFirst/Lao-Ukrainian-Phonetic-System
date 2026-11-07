@@ -49,6 +49,29 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
         self.assertTrue(context["following_major_weighted"])
         self.assertEqual(context["analysis_status"], "analysis-dependent")
 
+    def test_unresolved_tone_is_not_counted_as_a_literal_category(self):
+        result = BENCHMARK.score_tone_categories(
+            [["high-mid", "low-rising"], ["high-falling"]],
+            [[None, "low-rising"], ["high-mid"]],
+        )
+        self.assertEqual(result["covered_categories"], 2)
+        self.assertEqual(result["unresolved_categories"], 1)
+        self.assertEqual(result["unresolved_words"], 1)
+        self.assertEqual(result["coverage"], 2 / 3)
+        self.assertEqual(result["category_error_rate"], 0.5)
+        self.assertEqual(result["exact_matches"], 0)
+        self.assertEqual(result["complete_words"], 1)
+
+    def test_tone_category_length_mismatch_is_reported_as_unresolved(self):
+        result = BENCHMARK.score_tone_categories(
+            [["high-mid", "low-rising"]],
+            [["high-mid"]],
+        )
+        self.assertEqual(result["word_length_mismatches"], 1)
+        self.assertEqual(result["covered_categories"], 0)
+        self.assertEqual(result["unresolved_categories"], 2)
+        self.assertEqual(result["coverage"], 0.0)
+
     def test_project_predict_emits_minor_syllable_diagnostics_without_runtime_error(self):
         predict = BENCHMARK.load_project()
         result = predict("ຄະຄາ")
