@@ -72,5 +72,5 @@ out += "export const CORRESPONDENCES=" + json.dumps(corr, ensure_ascii=False, se
 out += "export const TONE_MARKS=" + json.dumps(marks, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const TONE_RULES=" + json.dumps(rules, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const SPECIAL_TONE_RULES=" + json.dumps(special_rules, ensure_ascii=False, separators=(",", ":")) + ";\n"
-out += "export const GRAPHEME_INVENTORY=" + json.dumps(inventory, ensure_ascii=False, separators=(",", ":")) + ";\\n"
+out += "export const GRAPHEME_INVENTORY=" + json.dumps(inventory, ensure_ascii=False, separators=(",", ":")) + ";\n"
 OUT.write_text(out, encoding="utf-8")
