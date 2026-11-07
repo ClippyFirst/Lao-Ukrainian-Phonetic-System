@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+from collections import Counter
 import importlib.metadata
 import json
 import os
@@ -133,6 +134,20 @@ def load_project():
             "tone_categories": tone_categories,
             "tone_contexts": [
                 {
+                    "syllable_index": index,
+                    "syllable_count": len(syllables),
+                    "word_position": (
+                        "initial" if index == 0 else
+                        "final" if index == len(syllables) - 1 else "medial"
+                    ),
+                    # A candidate minor syllable is only a diagnostic hint:
+                    # Enfield's C0V0 slot permits short /a, i, u/ with no coda.
+                    # It is not promoted to a production tone rule here.
+                    "candidate_minor_shape": bool(
+                        index < len(syllables) - 1
+                        and item.vowel in {"A", "I", "U"}
+                        and not item.coda
+                    ),
                     "onset": item.onset or "",
                     "consonant_class": item.consonant_class or "",
                     "vowel": item.vowel or "",
@@ -260,6 +275,65 @@ def load_neural():
         "max_input_tokens": MODEL_MAX_LENGTH,
         "truncation": False,
     }
+
+def alignment_error_profile(
+    references: list[str], predictions: list[str], limit: int = 20
+) -> dict[str, object]:
+    """Aggregate code-point edit confusions without retaining words or outputs."""
+    substitutions: Counter[str] = Counter()
+    deletions: Counter[str] = Counter()
+    insertions: Counter[str] = Counter()
+
+    for reference, prediction in zip(references, predictions):
+        n, m = len(reference), len(prediction)
+        dp = [[0] * (m + 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            dp[i][0] = i
+        for j in range(m + 1):
+            dp[0][j] = j
+        for i in range(1, n + 1):
+            for j in range(1, m + 1):
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + (reference[i - 1] != prediction[j - 1]),
+                )
+        i, j = n, m
+        while i or j:
+            if i and j and reference[i - 1] == prediction[j - 1] and dp[i][j] == dp[i - 1][j - 1]:
+                i -= 1
+                j -= 1
+            elif i and j and dp[i][j] == dp[i - 1][j - 1] + 1:
+                substitutions[f"{reference[i - 1]}=>{prediction[j - 1]}"] += 1
+                i -= 1
+                j -= 1
+            elif i and dp[i][j] == dp[i - 1][j] + 1:
+                deletions[reference[i - 1]] += 1
+                i -= 1
+            else:
+                insertions[prediction[j - 1]] += 1
+                j -= 1
+
+    return {
+        "unit": "Unicode code point (NFC)",
+        "alignment": "Levenshtein; tie-break priority: match, substitution, deletion, insertion",
+        "top_substitutions": [
+            {"pair": key, "count": count}
+            for key, count in substitutions.most_common(limit)
+        ],
+        "top_deletions": [
+            {"symbol": key, "count": count}
+            for key, count in deletions.most_common(limit)
+        ],
+        "top_insertions": [
+            {"symbol": key, "count": count}
+            for key, count in insertions.most_common(limit)
+        ],
+        "total_substitutions": sum(substitutions.values()),
+        "total_deletions": sum(deletions.values()),
+        "total_insertions": sum(insertions.values()),
+    }
+
 
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     import sacrebleu
@@ -557,6 +631,10 @@ def main() -> int:
                             f"coda={context.get('coda', '')}",
                             f"mark={context.get('tone_mark', '')}",
                             f"rule={context.get('tone_rule_id', '')}",
+                            f"position={context.get('word_position', '')}",
+                            f"candidate_minor={context.get('candidate_minor_shape', False)}",
+                            f"syllable_index={context.get('syllable_index', '')}",
+                            f"syllable_count={context.get('syllable_count', '')}",
                         ])
                         tone_category_error_contexts[context_key] = (
                             tone_category_error_contexts.get(context_key, 0) + 1
@@ -572,6 +650,9 @@ def main() -> int:
         results[name] = {
             "version_or_revision": version,
             "segmental_vs_pron_no_tones": segmental_metrics,
+            "segmental_edit_profile": alignment_error_profile(
+                segmental_references, segmental_outputs
+            ),
             "tonal_vs_pron_with_tones": tonal_metrics,
             "tonal_mekong_convention_vs_pron_with_tones": mekong_convention_tonal_metrics,
             "tone_only_on_segmental_exact_subset": tone_only_metrics,
@@ -654,6 +735,7 @@ def main() -> int:
             "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
+            "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. No source words or complete predictions are retained in the artifact.",
             "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
             "mekong_convention_conversion": "For comparison only, ClippyFirst tone categories are re-rendered with the MekongPhon rule-baseline contour notation; this does not change production IPA or tone rules",
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
