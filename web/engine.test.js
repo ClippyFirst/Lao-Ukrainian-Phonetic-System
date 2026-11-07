@@ -559,15 +559,15 @@ test("browser special-tone selector is generated from the canonical evidence reg
 
 
 test("minor-syllable candidate requires a supported following onset", () => {
-  const result = analyzeWord("ຄະຣາ");
-  assert.ok(result.length >= 1);
-  assert.ok(!result[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+  const result = analyze("ຄະຣາ");
+  assert.ok(result.syllables.length >= 1);
+  assert.ok(!result.syllables[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
 });
 
 test("minor-syllable candidate excludes known palatal and velar nasal C0 onsets", () => {
   for (const word of ["ງະຄາ", "ຍະຄາ"]) {
-    const result = analyzeWord(word);
-    assert.ok(result.length >= 1);
-    assert.ok(!result[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+    const result = analyze(word);
+    assert.ok(result.syllables.length >= 1);
+    assert.ok(!result.syllables[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
   }
 });
