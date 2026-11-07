@@ -1897,3 +1897,9 @@ A cross-runtime review identified a concrete difference that must not be papered
 - **Correction — PR #137 latest head is fully verified.** Current head `bab117a064f0aee3b685922fe0f0738df7048b12` passed exact-head Verify [42358772788](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358772788): corpus validation, repository audit, Python tests, external-G2P syntax/CLI, browser engine tests, build/generated-data reproducibility, Chromium UI tests and built-page checks all SUCCESS. Earlier browser failures on older heads are historical and superseded.
 - The temporary duplicate opt-in syllabifier and its test file were removed from PR #138 after this reconciliation. No new rule engine was left duplicated. The W3C Lao orthography source remains in the evidence registry as background reference only.
 - Next acceptance: reconcile the three browser failures on PR #137, then run exact-head full Verify and preserve its benchmark/linguistic evidence. Independent expert-adjudicated IPA gold remains 0; no accuracy claim is made.
+
+## Stacked PR verification contract — 2026-11-07
+
+- PR #138 is now intentionally stacked on PR #137's branch `benchmark/mekongphon-three-engine`, so the neural adapter is reviewed against the deterministic engine implementation rather than against the older mainline parser/browser engine.
+- Updated `.github/workflows/verify.yml` so `pull_request` events targeting either `main` or `benchmark/mekongphon-three-engine` run the full Verify workflow. Push-triggered Verify on the standalone PR #138 branch still reflects its own files only; its historical three browser failures are expected until the PR merge ref includes PR #137's code.
+- Acceptance for the stacked PR is the merge-ref Verify result on PR #138, not the head-only push run. PR #137's current exact-head Verify is already green (42358772788).
