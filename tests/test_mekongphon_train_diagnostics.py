@@ -2,6 +2,7 @@ import unittest
 
 from scripts.diagnose_mekongphon_train_split import (
     alignment_error_profile,
+    tokenize_ipa,
     extract_tone_suffix,
     levenshtein,
     parse_tone_categories,
@@ -25,10 +26,14 @@ class MekongPhonTrainDiagnosticTests(unittest.TestCase):
     def test_unknown_contour_fails_closed(self):
         self.assertIsNone(parse_tone_categories("˩˥"))
 
+    def test_ipa_tokenizer_preserves_affricates_and_long_vowels(self):
+        self.assertEqual(tokenize_ipa("t͡ɕaː"), ["t͡ɕ", "aː"])
+        self.assertEqual(tokenize_ipa("¤"), ["¤"])
+
     def test_alignment_profile_aggregates_segmental_edits_only(self):
         profile = alignment_error_profile(["kʰaː", "pa"], ["kʰɔː", "pa"])
         self.assertEqual(profile["total_substitutions"], 1)
-        self.assertEqual(profile["top_substitutions"][0], {"pair": "a=>ɔ", "count": 1})
+        self.assertEqual(profile["top_substitutions"][0], {"pair": "aː=>ɔː", "count": 1})
 
     def test_warning_code_drops_source_derived_tail_payload(self):
         self.assertEqual(warning_code("UNCONSUMED_AFTER_VOWEL:ມເປັນລະບຽບ"), "UNCONSUMED_AFTER_VOWEL")
