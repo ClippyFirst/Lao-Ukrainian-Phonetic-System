@@ -316,8 +316,9 @@ function analyzeToken(surface) {
   const status = structuralWarning || phoneticResult.status === "UNSUPPORTED" ? "EVIDENCE LIMITED"
     : phoneticResult.status === "UNCERTAIN" || resolvedTone.status !== "ESTABLISHED"
       ? "ANALYSIS DEPENDENT" : "ESTABLISHED";
-  return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
-    coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, phoneticResult, status,
+  return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], vowelId: matched.v[0],
+    length: matched.v[3], nucleusType: matched.v[6], coda: coda || "—", toneMark: mark,
+    syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
       "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
@@ -447,6 +448,47 @@ function analyzeWord(word) {
       (vowelGraphemes.has(part.surface) ||
        ["core", "analysis-dependent"].includes(CONSONANTS[part.surface]?.[2])))) {
     return [wholeCandidate];
+  }
+
+  // Mirror the conservative Python selector: an initial, unmarked, short
+  // open /a/ before a major-weighted syllable may be a minor C0V0. Keep its
+  // segmental IPA and Ukrainian adaptation, but do not claim an independent
+  // tone from orthographic shape alone.
+  const first = parts[0];
+  const following = parts[1];
+  const followingMajorWeighted = following && (
+    following.length === "long" ||
+    following.nucleusType === "diphthong" ||
+    (following.coda && following.coda !== "—")
+  );
+  if (first && followingMajorWeighted &&
+      first.vowelId === "A" && first.length === "short" &&
+      first.coda === "—" && !first.toneMark && first.ipa &&
+      first.phoneticResult?.status === "SUPPORTED") {
+    first.tone = null;
+    first.toneContour = null;
+    first.toneStatus = "ANALYSIS DEPENDENT";
+    first.status = "ANALYSIS DEPENDENT";
+    first.rules = (first.rules || []).filter((rule) =>
+      !rule.startsWith("TONE-RULE:") && !rule.startsWith("TONE:")
+    );
+    first.rules.push(
+      "TONE-RULE:VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+      "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"
+    );
+    first.phoneticResult.toneCategory = null;
+    first.phoneticResult.toneContourIpa = null;
+    first.phoneticResult.provenance = [
+      ...new Set([...(first.phoneticResult.provenance || []),
+        "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"])
+    ];
+    first.phoneticResult.uncertainty = [
+      ...new Set([...(first.phoneticResult.uncertainty || []), "TONE-UNRESOLVED"])
+    ];
+    first.warnings = [
+      ...(first.warnings || []),
+      "POTENTIAL_MINOR_SYLLABLE_TONE_UNRESOLVED: segmental IPA retained."
+    ];
   }
   return parts;
 }
