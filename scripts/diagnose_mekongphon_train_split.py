@@ -62,6 +62,11 @@ def extract_tone_suffix(segmental: str, tonal: str) -> str | None:
     return "".join(tones) if index == len(segmental) else None
 
 
+def warning_code(warning: str) -> str:
+    """Drop source-derived warning payloads; retain only the stable diagnostic code."""
+    return warning.split(":", 1)[0]
+
+
 def parse_tone_categories(suffix: str) -> list[str] | None:
     if not suffix:
         return []
@@ -158,7 +163,7 @@ def main() -> int:
 
         for item in syllables:
             for warning in item.warnings:
-                warning_counts[str(warning)] += 1
+                warning_counts[warning_code(str(warning))] += 1
             if item.status != "OK":
                 shape = "|".join([
                     f"status={item.status}",
