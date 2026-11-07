@@ -82,7 +82,7 @@ The optional romanization route is a distinct, lower-information orthographic me
 
 - Upstream repository: byu-matrix-lab/MekongPhon, inspected main tree commit f80f6c1840c4818b51e05f2e00cded4701a5b662.
 - GitHub repository metadata reports license: null; the root tree has no LICENSE/COPYING file; the README gives a citation but no dataset license.
-- The LREC 2026 paper's public-release wording and the proceedings' own licensing do not automatically grant rights to every separately hosted corpus component.
+- The official LREC page states the proceedings are CC BY-NC 4.0 and the abstract says data/code/models are publicly released for future research. It does not state a dataset-specific license for the separately hosted corpus or resolve component-level rights; proceedings licensing is not automatically the dataset license.
 - The Lao tonal and non-tonal Hugging Face model cards declare Apache-2.0 for model artifacts; that is not a dataset license.
 - Rights for corpus rows, scraped lexicon material, OPUS-derived text, derived IPA pairs and derivative datasets remain UNKNOWN.
 - Disposition: BLOCKED for copying, redistribution, derivative corpus publication and admission as project gold. Do not infer that non-commercial intent supplies permission. Obtain an applicable dataset license or written rights-holder permission, with scope recorded component by component.
