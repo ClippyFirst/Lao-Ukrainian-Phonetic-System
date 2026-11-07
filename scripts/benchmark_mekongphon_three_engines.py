@@ -142,8 +142,10 @@ def load_project():
                 }
                 for item in syllables
             ],
+            # ClippyFirst emits segmental IPA and tone from one analysis pass;
+            # each requested output is therefore available after the same elapsed time.
             "segmental_seconds": segmental_elapsed,
-            "tonal_seconds": 0.0,
+            "tonal_seconds": segmental_elapsed,
         }
 
     return predict
@@ -627,7 +629,7 @@ def main() -> int:
             "exact_match": "strict full-string IPA comparison",
             "missing_output": "empty output remains in the denominator and incurs full reference deletion cost",
             "clippyfirst_tone_contract": "tone contour is stored separately in typed PhoneticResult metadata; tonal score composes it after each syllable's segmental IPA",
-            "latency": "per-item inference; model loading excluded; CPU runner, sequential items",
+            "latency": "per-item inference; model loading excluded; CPU runner, sequential items. ClippyFirst emits segmental and tonal fields in one analysis pass, so both availability latencies are equal and must not be summed; Lao2IPA and MekongPhon use separate segmental and tonal calls",
             "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. It cannot be compared numerically with the paper's sentence-level Table 4.",
             "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is not independently re-adjudicated gold for this project.",
             "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 additionally reports covered-subset metrics, isolated tone-symbol metrics, and tone-category metrics; do not compare CER across schema versions without accounting for their different reference contracts.",
