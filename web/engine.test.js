@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyze } from "./engine.js";
-import { CORRESPONDENCES } from "./data.js";
+import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
 
 test("basic long syllable", () => {
   const r = analyze("ຂາ");
@@ -542,4 +542,17 @@ test("browser IPA tokenization is independent of target sequence matching", () =
   const syllable = analyze("ຂາ").syllables[0];
   assert.deepEqual(syllable.phoneticResult.segments.map((segment) => segment.ipa), ["kʰ", "aː"]);
   assert.equal(syllable.ukrainian, "к'а");
+});
+
+test("browser special-tone selector is generated from the canonical evidence registry", () => {
+  assert.equal(SPECIAL_TONE_RULES.length, 1);
+  assert.deepEqual(SPECIAL_TONE_RULES[0], [
+    "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+    "initial-open-short-a-unmarked-followed-by-major-weighted-syllable",
+    "",
+    "",
+    "analysis-dependent",
+    "Vientiane",
+    "CLM-LAO-POTENTIAL-MINOR-OPEN-A"
+  ]);
 });
