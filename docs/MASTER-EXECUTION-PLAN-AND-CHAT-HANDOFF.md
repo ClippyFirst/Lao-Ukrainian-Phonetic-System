@@ -1800,3 +1800,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Recent relevant merged PRs preserved: #22 (durable external G2P smoke report), #19 (evidence-gated IPA benchmark harness), and #17 (fail-closed handling of unconsumed Lao orthography). Their changes are already on main; no duplication required.
 - PR #21 is closed unmerged and explicitly superseded by PR #22; left untouched.
 - Branch inventory: main, benchmark/mekongphon-three-engine and audit/repository-documentation-and-mekongphon-rights-20261107. GitHub branch metadata reports protected=false for all three, including main. The separate branch-protection detail endpoint returned 403 to this integration; no settings were changed. Repository owner action is required to enable a ruleset with required review and Verify checks.
+
+
+## Final exact-head verification record before handoff close — 2026-11-07
+
+- Audit PR #138 head `fbe1205bb7f8472668ac511c3bb56dd49156e509`; Verify [42366417530](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42366417530): **FAILURE**.
+- Passed on this exact head: gold-corpus structure validation, repository data/evidence audit, Python tests, optional external-G2P harness syntax/CLI, browser dependency installation.
+- Failed: Browser engine tests, exactly three cases: test 17 modern Lao ຣ analysis-dependent reading; test 52 withholding uncertain phonetic results; test 53 withholding incomplete IPA. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped by workflow dependency after the browser-test failure.
+- This matches the pre-existing main-based browser regression. PR #137 head `bab117a064f0aee3b685922fe0f0738df7048b12` passes the same Verify workflow and contains the corresponding browser-engine fixes. Do not port the entire PR or mark the audit branch green until the owner/reviewer resolves the existing engine PR.
+- Exact session scope: GitHub repository/API and hosted Actions inspection plus documentation/rights edits only. No local shell, Python, npm, build, benchmark or manual browser command was executed by this session.
+- Final state remains: PR #138 open/unmerged; PR #137 open/unmerged; no release or main-branch mutation. Documentation tasks remain PARTIAL pending a green exact-head Verify. Scoped 100-word non-commercial MekongPhon research benchmark is complete; dataset redistribution/full-corpus rights remain PARTIAL/uncleared.
