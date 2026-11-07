@@ -13,6 +13,10 @@ on:
       - "tests/test_mekongphon_grapheme_contexts.py"
   workflow_dispatch:
 
+concurrency:
+  group: mekongphon-grapheme-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
