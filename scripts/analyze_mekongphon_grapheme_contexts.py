@@ -162,26 +162,42 @@ def analyze_rows(rows, registry):
                     if role != "tone_mark" and role != "high_class_modifier":
                         context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,expected,actual)]+=1
                     if role=="tone_mark": tone[(unit,pos,onset_class,stype,vowel.get("id",""),st["coda"] or "open")]+=1
-    outcome_groups={}
-    for full_key,count in context_sound.items():
-        group_key=full_key[:-2]
-        outcome_groups.setdefault(group_key,Counter())[(full_key[-2],full_key[-1])] += count
-    distributions=[]
-    for key,outcome_counts in outcome_groups.items():
-        total=sum(outcome_counts.values())
-        outcomes=[{"engine_ipa":pair[0],"reference_ipa":pair[1],"count":count} for pair,count in outcome_counts.items()]
-        outcomes.sort(key=lambda item:(-item["count"],item["engine_ipa"],item["reference_ipa"]))
-        matching=sum(item["count"] for item in outcomes if item["engine_ipa"]==item["reference_ipa"])
-        distributions.append({
-            "grapheme":key[0],"role":key[1],"syllable_position_in_word":key[2],
-            "previous_grapheme":key[3],"next_grapheme":key[4],"onset_class":key[5],
-            "vowel_id":key[6],"syllable_type":key[7],"coda":key[8],
-            "tone_mark":key[9],"sound_scope":key[10],"observations":total,
-            "realizations":[{**item,"share":item["count"]/total} for item in outcomes],
-            "engine_match_share":matching/total,
-            "reference_realization_consistency":max(item["count"] for item in outcomes)/total if outcomes else None,
-            "evidence_tier":"high-frequency" if total>=100 else "medium-frequency" if total>=30 else "low-frequency",
-        })
+    def make_distributions(indices, field_names):
+        groups={}
+        for full_key,count in context_sound.items():
+            group_key=tuple(full_key[index] for index in indices)
+            groups.setdefault(group_key,Counter())[(full_key[-2],full_key[-1])] += count
+        result=[]
+        for key,outcome_counts in groups.items():
+            total=sum(outcome_counts.values())
+            outcomes=[{"engine_ipa":pair[0],"reference_ipa":pair[1],"count":count} for pair,count in outcome_counts.items()]
+            outcomes.sort(key=lambda item:(-item["count"],item["engine_ipa"],item["reference_ipa"]))
+            matching=sum(item["count"] for item in outcomes if item["engine_ipa"]==item["reference_ipa"])
+            row={name:value for name,value in zip(field_names,key)}
+            row.update({
+                "observations":total,
+                "realizations":[{**item,"share":item["count"]/total} for item in outcomes],
+                "engine_match_share":matching/total,
+                "reference_realization_consistency":max(item["count"] for item in outcomes)/total if outcomes else None,
+                "evidence_tier":"high-frequency" if total>=100 else "medium-frequency" if total>=30 else "low-frequency",
+            })
+            result.append(row)
+        return sorted(result,key=lambda x:(-x["observations"],x.get("grapheme",""),x.get("role","")))
+
+    position_rules=make_distributions(
+        (0,1,2,10),
+        ("grapheme","role","syllable_position_in_word","sound_scope"),
+    )
+    phonological_rules=make_distributions(
+        (0,1,2,5,6,7,8,9,10),
+        ("grapheme","role","syllable_position_in_word","onset_class","vowel_id",
+         "syllable_type","coda","tone_mark","sound_scope"),
+    )
+    contextual_rules=make_distributions(
+        tuple(range(11)),
+        ("grapheme","role","syllable_position_in_word","previous_grapheme","next_grapheme",
+         "onset_class","vowel_id","syllable_type","coda","tone_mark","sound_scope"),
+    )
     return {
       "method":{"alignment":"Longest-match IPA inventory plus Levenshtein; deterministic backtrace",
         "unit":"parser-derived onset, joint vowel structure and coda",
@@ -196,7 +212,9 @@ def analyze_rows(rows, registry):
         "structural_word_exact_rate":exact/parsed_words if parsed_words else None,
         "reference_ipa_tokens":ref_total,"alignment_edits":edits_total,"alignment_insertions":insertions_total,
         "parser_warning_codes":dict(warnings.most_common())},
-      "candidate_contextual_rules":sorted(distributions,key=lambda x:(-x["observations"],x["grapheme"],x["role"])),
+      "grapheme_position_rules":position_rules,
+      "phonological_context_rules":phonological_rules,
+      "candidate_contextual_rules":contextual_rules,
       "grapheme_sound_contexts":[{"grapheme":k[0],"role":k[1],"word_position":k[2],"orthographic_unit":k[3],
         "observed_ipa_at_unit_scope":k[4],"sound_scope":k[5],"count":v} for k,v in sound.most_common(1500)],
       "grapheme_context_features":[{"grapheme":k[0],"role":k[1],"word_position":k[2],"previous_grapheme":k[3],
