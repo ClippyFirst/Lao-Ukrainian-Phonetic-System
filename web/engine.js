@@ -2,7 +2,7 @@ import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS,
 
 const TONE_MARK_SET = new Set(Object.keys(TONE_MARKS));
 const POTENTIAL_MINOR_TONE_RULE = SPECIAL_TONE_RULES.find(
-  ([ruleId]) => ruleId === POTENTIAL_MINOR_TONE_RULE[0]
+  ([ruleId]) => ruleId === "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"
 );
 const HIGH_DIGRAPHS = new Map([
   ["ຫງ", "ງ"], ["ຫຍ", "ຍ"], ["ຫນ", "ນ"], ["ຫມ", "ມ"],
