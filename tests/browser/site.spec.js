@@ -123,3 +123,13 @@ test("touch emulation can use quick examples and switch output methods", async (
   await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
   await context.close();
 });
+
+
+test("browser UI labels grapheme fallback as provisional and keeps accepted output withheld", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ກາລ");
+  await expect(page.locator(".grapheme-preview")).toContainText("PROVISIONAL");
+  await expect(page.locator(".grapheme-preview")).toContainText("kaː");
+  await expect(page.locator("#output")).not.toContainText("к'а");
+  await expect(page.locator(".grapheme-preview")).toContainText("ລ");
+});

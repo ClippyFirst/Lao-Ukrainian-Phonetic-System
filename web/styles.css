@@ -257,3 +257,20 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:20px max(24px
   .trace-summary{align-items:flex-start}
   .status{max-width:65%}
 }
+
+
+.grapheme-preview {
+  margin: 0.75rem 0 0;
+  padding: 0.7rem 0.85rem;
+  border-left: 3px solid var(--accent, #8a7657);
+  border-radius: 0 0.45rem 0.45rem 0;
+  background: var(--surface-muted, #f5f2ec);
+  color: var(--text-secondary, #57534e);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.grapheme-preview code {
+  font-size: 1.05em;
+  font-weight: 700;
+}

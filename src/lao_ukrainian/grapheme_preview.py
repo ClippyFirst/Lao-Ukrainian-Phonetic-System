@@ -6,7 +6,7 @@ from .parser import HIGH_DIGRAPHS, TONE_MARKS
 from .phonetic_result import from_phonology
 
 VOWEL_GRAPHEMES = set("ະັາິີຶືຸູົຽອໍຳເແໂໃໄ")
-INVENTORY_ONLY_CERTAINTY = {"PALI_ONLY", "OUT_OF_SCOPE_KHMU", "NOT_USED_MODERN_LAO", "NONPHONOLOGICAL", "ORTHOGRAPHIC_ONLY"}
+INVENTORY_ONLY_CERTAINTY = {"PALI_ONLY", "NON_CORE_NO_MODERN_IPA", "OUT_OF_SCOPE_KHMU", "NOT_USED_MODERN_LAO", "NONPHONOLOGICAL", "ORTHOGRAPHIC_ONLY"}
 
 
 def preview_from_graphemes(surface: str, parsed: dict, registry: dict) -> GraphemePreview:

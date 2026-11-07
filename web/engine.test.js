@@ -585,3 +585,25 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
   assert.equal(analyze("ຂາຍ").output, "к'ай");
   assert.equal(analyze("ຢຽ").output, "йіа");
 });
+
+
+test("browser grapheme preview is provisional and never becomes accepted IPA or Ukrainian", () => {
+  const syllable = analyze("ກາລ").syllables[0];
+  assert.equal(syllable.ipa, null);
+  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.graphemePreview.ipaPreview, "kaː");
+  assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
+  assert.deepEqual(syllable.graphemePreview.unresolvedGraphemes, ["ລ"]);
+  assert.equal(syllable.graphemePreview.phoneticResult.status, "PROVISIONAL");
+  assert.ok(syllable.graphemePreview.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
+});
+
+test("browser grapheme preview never infers tone and withholds non-core Pali values", () => {
+  const malformed = analyze("ຂ່້າ").syllables[0].graphemePreview;
+  assert.equal(malformed.ipaPreview, "kʰaː");
+  assert.ok(malformed.warnings.includes("TONE_NOT_INFERRED_BY_GRAPHEME_PREVIEW"));
+  assert.equal(malformed.phoneticResult.toneCategory, null);
+  const pali = analyze("ຆາ").syllables[0].graphemePreview;
+  assert.equal(pali.ipaPreview, null);
+  assert.equal(pali.status, "UNRESOLVED");
+});

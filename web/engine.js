@@ -1,4 +1,4 @@
-import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES, SPECIAL_TONE_RULES } from "./data.js";
+import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES, SPECIAL_TONE_RULES, GRAPHEME_INVENTORY } from "./data.js";
 
 const TONE_MARK_SET = new Set(Object.keys(TONE_MARKS));
 const POTENTIAL_MINOR_TONE_RULE = SPECIAL_TONE_RULES.find(
@@ -182,6 +182,105 @@ function adaptPhoneticResult(result) {
     i += key.length;
   }
   return output;
+}
+
+const PREVIEW_VOWEL_GRAPHEMES = new Set("ະັາິີຶືຸູົຽອໍຳເແໂໃໄ");
+const PREVIEW_STRUCTURAL_ONLY = new Set([
+  "PALI_ONLY", "NON_CORE_NO_MODERN_IPA", "OUT_OF_SCOPE_KHMU",
+  "NOT_USED_MODERN_LAO", "NONPHONOLOGICAL", "ORTHOGRAPHIC_ONLY"
+]);
+
+function previewFromGraphemes(surface, parsed) {
+  const chars = [...surface];
+  const roles = new Map();
+  const ipaParts = [];
+  const unresolved = [];
+  const warnings = [];
+  for (let i = 0; i < chars.length; i++) {
+    if (Object.hasOwn(TONE_MARKS, chars[i])) {
+      roles.set(i, { grapheme: chars[i], role: "tone-mark", ipaHint: null, certainty: "STRUCTURAL_ONLY" });
+    }
+  }
+
+  const onsetForm = parsed.onsetForm || parsed.onset;
+  const onsetIndex = onsetForm ? surface.indexOf(onsetForm) : -1;
+  const onsetLength = onsetIndex >= 0 ? [...onsetForm].length : 0;
+  let onsetIpa = null;
+  if (onsetIndex >= 0 && onsetLength) {
+    if (Object.hasOwn(ONSET_CLUSTERS, onsetForm)) {
+      onsetIpa = ONSET_CLUSTERS[onsetForm][1];
+      roles.set(onsetIndex, { grapheme: chars[onsetIndex], role: "labialized-onset-unit", ipaHint: onsetIpa, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+      for (let i = onsetIndex + 1; i < onsetIndex + onsetLength; i++) {
+        roles.set(i, { grapheme: chars[i], role: "labialization-component", ipaHint: null, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+      }
+    } else if (HIGH_DIGRAPHS.has(onsetForm)) {
+      const base = HIGH_DIGRAPHS.get(onsetForm);
+      onsetIpa = CONSONANTS[base]?.[1] || null;
+      roles.set(onsetIndex, { grapheme: chars[onsetIndex], role: "silent-high-class-modifier", ipaHint: null, certainty: "STRUCTURAL_ONLY", structuralUnit: onsetForm });
+      roles.set(onsetIndex + 1, { grapheme: chars[onsetIndex + 1], role: "high-class-onset", ipaHint: onsetIpa, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+    } else {
+      onsetIpa = parsed.onset === "ອ" ? "" : (CONSONANTS[parsed.onset]?.[1] || null);
+      const role = parsed.onset === "ອ" ? "vowel-carrier" : "syllable-onset";
+      roles.set(onsetIndex, { grapheme: chars[onsetIndex], role, ipaHint: onsetIpa || null, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+    }
+    if (onsetIpa) ipaParts.push(onsetIpa);
+  }
+
+  const vowel = VOWELS.find((row) => row[0] === parsed.vowelId);
+  if (vowel?.[2]) {
+    ipaParts.push(vowel[2]);
+    const vowelIndices = chars.map((ch, i) => PREVIEW_VOWEL_GRAPHEMES.has(ch) && !roles.has(i) ? i : -1).filter((i) => i >= 0);
+    const unit = vowelIndices.map((i) => chars[i]).join("");
+    vowelIndices.forEach((i, offset) => roles.set(i, {
+      grapheme: chars[i], role: "vowel-structure-component",
+      ipaHint: offset === 0 ? vowel[2] : null, certainty: "PROVISIONAL",
+      structuralUnit: unit || null
+    }));
+  }
+
+  const coda = parsed.coda && parsed.coda !== "—" ? parsed.coda : null;
+  if (coda) {
+    const i = chars.map((ch, index) => ch === coda && !roles.has(index) ? index : -1).filter((index) => index >= 0).at(-1) ?? -1;
+    const codaIpa = CODAS[coda];
+    if (codaIpa && i >= 0) {
+      ipaParts.push(codaIpa);
+      roles.set(i, { grapheme: chars[i], role: "syllable-coda", ipaHint: codaIpa, certainty: "PROVISIONAL", structuralUnit: coda });
+    }
+  }
+
+  for (let i = 0; i < chars.length; i++) {
+    if (roles.has(i)) continue;
+    const ch = chars[i];
+    const inventory = GRAPHEME_INVENTORY[ch];
+    const role = inventory?.structuralRole || (CONSONANTS[ch] ? "unresolved-consonant-position" : PREVIEW_VOWEL_GRAPHEMES.has(ch) ? "unresolved-vowel-component" : "unregistered-grapheme");
+    const certainty = inventory && PREVIEW_STRUCTURAL_ONLY.has(inventory.engineStatus) ? "STRUCTURAL_ONLY" : "UNRESOLVED";
+    roles.set(i, { grapheme: ch, role, ipaHint: null, certainty });
+    unresolved.push(ch);
+  }
+
+  if (!ipaParts.length) warnings.push("NO_CONFIDENT_SEGMENTAL_HINT");
+  if (unresolved.length) warnings.push("UNRESOLVED_GRAPHEME_OR_POSITION");
+  warnings.push(...(parsed.warnings || []), "TONE_NOT_INFERRED_BY_GRAPHEME_PREVIEW");
+  const uniqueWarnings = [...new Set(warnings)];
+  const ipaPreview = ipaParts.join("") || null;
+  let phoneticResult = null;
+  if (ipaPreview) {
+    phoneticResult = createPhoneticResult(ipaPreview, {
+      vowelLength: vowel?.[3] || null,
+      status: "PROVISIONAL",
+      provenance: ["GRAPHEME-POSITION-PREVIEW"],
+      uncertainty: uniqueWarnings
+    });
+    phoneticResult.segments = phoneticResult.segments.map((segment) => ({ ...segment, certainty: "PROVISIONAL" }));
+  }
+  return {
+    ipaPreview,
+    status: ipaPreview ? "PROVISIONAL" : "UNRESOLVED",
+    graphemes: chars.map((_, index) => roles.get(index)),
+    unresolvedGraphemes: unresolved,
+    warnings: uniqueWarnings,
+    phoneticResult
+  };
 }
 
 function validateInput(text) {
@@ -543,7 +642,11 @@ export function analyze(text) {
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
   const words = normalized.split(/\s+/).filter(Boolean).map(analyzeWord);
-  const syllables = words.flat();
+  const syllables = words.flat().map((syllable) =>
+    !syllable.passthrough && !syllable.ipa
+      ? { ...syllable, graphemePreview: previewFromGraphemes(syllable.surface, syllable) }
+      : syllable
+  );
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
   const complete = syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));

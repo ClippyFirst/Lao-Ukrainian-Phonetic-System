@@ -243,6 +243,19 @@ function render() {
     rules.className = "rules";
     rules.textContent = (syllable.rules || []).join(" · ");
     element.append(rules);
+    if (syllable.graphemePreview) {
+      const preview = document.createElement("p");
+      preview.className = "grapheme-preview";
+      preview.setAttribute("role", "note");
+      const label = document.createElement("strong");
+      label.textContent = "Попередній IPA-прев’ю (PROVISIONAL; не підтверджена вимова): ";
+      const value = document.createElement("code");
+      value.textContent = syllable.graphemePreview.ipaPreview || "—";
+      const unresolved = document.createElement("span");
+      unresolved.textContent = " · Невизначені графеми: " + (syllable.graphemePreview.unresolvedGraphemes.join("") || "немає");
+      preview.append(label, value, unresolved);
+      element.append(preview);
+    }
     rows.append(element);
   });
 }
