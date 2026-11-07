@@ -12,7 +12,7 @@ A grapheme-level preview is a separate diagnostic result, generated only when th
 - `PROVISIONAL`: a partial segmental IPA hint assembled only from registered positional correspondences and a partial parse. Missing or ambiguous graphemes remain visible; tone is never inferred by this fallback.
 - `UNRESOLVED`: no safe segmental hint can be produced. Original graphemes remain available with unresolved roles.
 
-The preview's typed `PhoneticResult` is marked `PROVISIONAL` at result and segment level. The normal target adapter accepts only `SUPPORTED` results, so preview IPA cannot silently become Ukrainian output.
+The preview is currently exposed by the Python analysis API and CLI JSON output; the browser engine/UI does not yet display this fallback. The preview's typed `PhoneticResult` is marked `PROVISIONAL` at result and segment level. The normal target adapter accepts only `SUPPORTED` results, so preview IPA cannot silently become Ukrainian output.
 
 ## What the fallback may use
 
