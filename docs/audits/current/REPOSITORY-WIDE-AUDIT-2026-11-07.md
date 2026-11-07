@@ -66,11 +66,11 @@ The optional romanization path remains distinct from the phonetic IPA-first path
 
 | ID | Priority | Status before this checkpoint | Finding | Correction / acceptance |
 |---|---|---|---|---|
-| DOC-012 | P1 | PARTIAL | README described the romanization mode as an “optional fallback”, contradicting the IPA adapter contract and later README text that explicitly says it is not a fallback. | Reworded it as a separate, lower-information orthographic method that is never used when phonetic analysis is unresolved. |
-| DOC-013 | P1 | PARTIAL | README listed automatic segmentation of unspaced multi-syllable text as an unresolved limitation, while the current Python and browser contracts describe conservative dynamic segmentation into complete orthographic syllables within each whitespace-delimited token. | Reworded the limitation as lexical word-boundary detection. The parser can structurally segment supported syllables; it does not infer lexical words. |
-| DOC-014 | P2 | PARTIAL | `docs/validation.md` begins with historical test counts and an old workflow, which can be mistaken for current verification. | Added a prominent exact-head status note and links to the current audit and canonical handoff. Historical entries remain intact. |
-| DOC-015 | P2 | PARTIAL | The audit index pointed to the 2026-11-06 structure audit as its current audit, despite later code, benchmark and branch changes. | Added this 2026-11-07 repository-wide checkpoint as current and retained the 2026-11-06 audit as a historical checkpoint. |
-| DOC-016 | P2 | PARTIAL | The root README did not directly surface the current repository audit, and the audit/validation documents did not clearly distinguish the selected PR branch's verified head from `main`. | Added a direct audit link and branch-specific verification caveat. |
+| DOC-012 | P1 | DONE_VERIFIED | README romanization wording corrected; exact-head Verify 42388269091 passed on 62483d900e5c4a620828ae24319ddd6b5c741f27. | Keep romanization separate from IPA-first transcription. |
+| DOC-013 | P1 | DONE_VERIFIED | README limitation corrected to lexical word-boundary detection; exact-head Verify 42388269091 passed on 62483d900e5c4a620828ae24319ddd6b5c741f27. | Preserve the distinction between syllable parsing and lexical word segmentation. |
+| DOC-014 | P2 | DONE_VERIFIED | `docs/validation.md` now labels historical test counts/workflows and links to the current audit/handoff; exact-head Verify 42388269091 passed. | Refresh the status only when a later verified head supersedes it. |
+| DOC-015 | P2 | DONE_VERIFIED | Audit index points to this 2026-11-07 repository-wide checkpoint and retains 2026-11-06 as historical; exact-head Verify 42388269091 passed. | Keep the index aligned with the newest verified audit. |
+| DOC-016 | P2 | DONE_VERIFIED | Root README links the current audit and docs distinguish the selected PR branch from `main`; exact-head Verify 42388269091 passed. | Re-check after future branch or merge changes. |
 | ENG-LOCK-001 | P2 | TODO | No `package-lock.json` exists on the selected branch; CI uses `npm install`, so transitive npm dependency resolution is not frozen. | Record as TODO. Generate a lockfile in a Node/npm-enabled checkout, switch CI to `npm ci`, and verify clean-install reproducibility. No lockfile was fabricated in this connector-only session. |
 
 ### Preserved documentation and structure
@@ -85,7 +85,7 @@ The optional romanization path remains distinct from the phonetic IPA-first path
 
 ## Engineering verification evidence
 
-The latest exact-head full Verify run inspected for this branch is [42384603376 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376), on code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`. Its single job completed all configured stages successfully:
+The latest exact-head full Verify run inspected for this branch is [42388269091 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388269091), on evidence/documentation head `62483d900e5c4a620828ae24319ddd6b5c741f27`. The code-bearing diagnostic commit `3efc0ccb54887830157915e8b4b84ad9177e1720` separately passed full Verify [42388033575](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388033575) and the full train diagnostic [42388029325](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388029325). Its single job completed all configured stages successfully:
 
 1. Independent IPA-gold corpus structure validation.
 2. Repository data/evidence audit.
@@ -141,7 +141,7 @@ The repository already expresses these practices in `AGENTS.md`, `CONTRIBUTING.m
 | IPA-ADAPTER-001 | DONE_VERIFIED (engineering) | Typed IPA result boundary is exercised by the exact-head Verify run. | Keep target adaptation strictly downstream of typed IPA; linguistic correctness remains a separate gate. |
 | PERF-REGISTRY-001 | DONE_VERIFIED | One registry load per `analyze()` is guarded by regression tests; exact-head Verify passed. | Preserve output parity and the load-count guard. |
 | BENCH-3ENGINE-001 | DONE_VERIFIED (diagnostic run) | Immutable model revisions, aggregate-only benchmark artifact and successful exact benchmark run. | Keep metrics labelled as reference-relative diagnostics; do not call them accuracy. |
-| DOC-012–016 | PARTIAL pending this documentation commit's exact-head Verify | README terminology, limitation scope, validation status, audit index and handoff are being reconciled. | Require full Verify on the final documentation commit before DONE_VERIFIED. |
+| DOC-012–016 | DONE_VERIFIED | README terminology, limitation scope, validation status, audit index and handoff reconciled; exact-head Verify 42388269091 passed on 62483d900e5c4a620828ae24319ddd6b5c741f27. | Re-open only if subsequent documentation changes invalidate these statements. |
 | ENG-LOCK-001 | TODO | `package-lock.json` absent; workflow uses `npm install`. | Generate and verify lockfile in a local Node/npm environment; switch CI to `npm ci`. |
 | UI-A11Y-001 | TODO | Automated Chromium checks exist; manual screen-reader, keyboard-only, zoom/text scaling, mobile touch and deployed-site QA are not evidenced. | Record a human QA matrix with browser/device/AT versions, observations and resolved defects. |
 | LAO-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold = 0. | Requires a versioned target profile and IPA convention, rights-cleared sample, two qualified independent annotators, separate adjudicator, blind workflow and expert-approved contrast coverage. |
@@ -169,4 +169,4 @@ The audit, README, validation note, audit index, handoff and agent-reference ref
 - Master handoff: `16676040c0a0d8943faa4315e86008e5281c9237`.
 - Agent-reference refresh / initial six-file documentation batch checkpoint: `d4f08fb6626136e699f05df40f1c7a3e84ad122b`; subsequent verification-boundary updates are recorded in the master handoff.
 
-The earlier green Verify run 42384603376 is exact-head evidence for code/test commit `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; it predates these documentation commits. No workflow run associated with final documentation commit `d4f08fb6626136e699f05df40f1c7a3e84ad122b` was returned by the available commit-workflow query. Therefore DOC-012–016 remain **PARTIAL pending exact-final-head Verify**. Do not report the earlier code/test run as verification of the documentation patch.
+The current documentation/evidence head `62483d900e5c4a620828ae24319ddd6b5c741f27` has exact-head Verify [42388269091 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388269091). The diagnostic code commit `3efc0ccb54887830157915e8b4b84ad9177e1720` has full Verify [42388033575 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388033575) and full MekongPhon train diagnostic [42388029325 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42388029325). DOC-012–016 are DONE_VERIFIED at this checkpoint.
