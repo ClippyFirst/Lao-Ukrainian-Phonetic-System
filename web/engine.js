@@ -155,6 +155,26 @@ function adaptPhoneticResult(result) {
   const keys = sortedIpa();
   let output = "";
   let i = 0;
+
+  // Yodated Ukrainian letters are used only for syllable-initial /j/
+  // followed by a monophthong; a vowel sequence remains explicit.
+  const initialYodated = {
+    a: "я", "aː": "я",
+    e: "є", "eː": "є", ɛ: "є", "ɛː": "є",
+    i: "ї", "iː": "ї",
+    o: "йо", "oː": "йо", ɔ: "йо", "ɔː": "йо",
+    u: "ю", "uː": "ю",
+    ɯ: "йи", "ɯː": "йи",
+    ɤ: "йе", "ɤː": "йе",
+  };
+  if (result.segments.length >= 2 &&
+      result.segments[0].ipa === "j" &&
+      result.segments[1].kind === "vowel" &&
+      Object.hasOwn(initialYodated, result.segments[1].ipa) &&
+      (result.segments.length === 2 || result.segments[2].kind !== "vowel")) {
+    output += initialYodated[result.segments[1].ipa];
+    i = result.segments[0].ipa.length + result.segments[1].ipa.length;
+  }
   while (i < ipa.length) {
     const key = keys.find((candidate) => ipa.startsWith(candidate, i));
     if (!key) return null;

@@ -571,3 +571,17 @@ test("minor-syllable candidate excludes known palatal and velar nasal C0 onsets"
     assert.ok(!result.syllables[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
   }
 });
+
+
+test("browser IPA adapter applies initial yodation and Lao /w/ mapping", () => {
+  assert.equal(analyze("ຢາ").output, "я");
+  assert.equal(analyze("ເຢ").output, "є");
+  assert.equal(analyze("ຢີ").output, "ї");
+  assert.equal(analyze("ຢູ").output, "ю");
+  assert.equal(analyze("ເຂົາ").output, "к'ав");
+});
+
+test("browser IPA adapter preserves medial yod and does not collapse a diphthong", () => {
+  assert.equal(analyze("ຂາຍ").output, "к'ай");
+  assert.equal(analyze("ຢຽ").output, "йіа");
+});

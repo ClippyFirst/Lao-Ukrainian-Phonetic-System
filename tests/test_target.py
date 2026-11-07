@@ -30,6 +30,30 @@ class TestTarget(unittest.TestCase):
         self.assertEqual(adapt("d͡za"), "дза")
         self.assertEqual(adapt("d͡ʒa"), "джа")
 
+    def test_lao_w_is_rendered_with_ukrainian_v(self):
+        self.assertEqual(adapt("ʋaː"), "ва")
+        self.assertEqual(adapt("waː"), "ва")
+        self.assertEqual(adapt("aːw"), "ав")
+        self.assertEqual(adapt("aw"), "ав")
+
+    def test_syllable_initial_j_uses_ukrainian_yotated_vowels(self):
+        self.assertEqual(adapt("jaː"), "я")
+        self.assertEqual(adapt("jeː"), "є")
+        self.assertEqual(adapt("jɛ"), "є")
+        self.assertEqual(adapt("jiː"), "ї")
+        self.assertEqual(adapt("joː"), "йо")
+        self.assertEqual(adapt("jɔ"), "йо")
+        self.assertEqual(adapt("juː"), "ю")
+        self.assertEqual(adapt("jɯ"), "йи")
+        self.assertEqual(adapt("jɤː"), "йе")
+
+    def test_medial_and_coda_j_remain_yot(self):
+        self.assertEqual(adapt("aj"), "ай")
+        self.assertEqual(adapt("kaj"), "кай")
+
+    def test_yodation_does_not_collapse_a_diphthong(self):
+        self.assertEqual(adapt("jiə"), "йіа")
+
     def test_palatalization(self):
         self.assertEqual(adapt("nʲa"), "ньа")
 
