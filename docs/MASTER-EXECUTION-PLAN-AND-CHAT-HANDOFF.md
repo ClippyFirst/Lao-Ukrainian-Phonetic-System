@@ -2084,3 +2084,50 @@ The selected branch remains an **engineering-verified research prototype**, not 
 
 
 - The branch head immediately before this final handoff metadata amendment was `3eddd09ab491525207a0e2a119a4b7d324ff2415`. The SHA returned for the commit that records this amendment is the final branch head and is stated in the execution report; a commit cannot embed its own hash without creating another commit.
+
+
+## Grapheme-position rule-engine implementation — 2026-11-07
+
+### User requirement
+
+The required engine contract is **Lao grapheme element + structural position + phonological context → source IPA**, not whole-word spelling → IPA memorization. The production pipeline remains compositional: orthographic parse, onset/vowel/coda structure, source IPA, then Ukrainian adaptation.
+
+### Work completed
+
+- Confirmed and regression-tested positional behavior already represented by the runtime registries:
+  - \`ວ\`: onset /ʋ/, coda /w/;
+  - \`ດ\`: onset /d/, coda /t/;
+  - \`ບ\`: onset /b/, coda /p/;
+  - \`ອ\`: silent vowel carrier before an overt vowel versus a component of the /ɔː/ vowel structure;
+  - \`ເ\`: short /e/ versus long /eː/ according to the complete written vowel structure.
+- Added \`scripts/analyze_mekongphon_grapheme_contexts.py\`. It parses the pinned train rows with ClippyFirst's own syllable parser, records Lao code points and roles, and conditions aggregate observations on previous/next graphemes, onset class, vowel ID, live/dead type, coda and tone mark.
+- The analyzer keeps multi-grapheme vowels and onset clusters as joint units; it does not assign an invented independent phoneme to each sign.
+- Context distributions keep \`engine_ipa\` and \`reference_ipa\` separate and report grapheme-position, broader phonological-context and local-neighbour-context levels.
+- Aggregate-only output is guarded by tests; raw source words, reference strings and per-item predictions are not serialized.
+- Extended the typed IPA inventory for documented labialized onsets and the source forms \`əː\` and \`ə̯\`. This preserves IPA token boundaries; it does not add unsupported Ukrainian correspondences. The target adapter remains fail-closed.
+- Added regression coverage for onset/coda alternations, vowel-length structures, silent vowel carrier, high digraphs, labialized onset segments, IPA tokenization, engine/reference separation and aggregate-only serialization.
+- Added the methodology/report to README and the documentation index; the detailed report is \`docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md\`.
+
+### Verified research evidence
+
+- Full train-split diagnostic [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319), code checkpoint \`16d267664beb25a9e26e9639aace42a2975582d1\`.
+- Full Verify [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133), same code checkpoint.
+- Pinned MekongPhon train split: 6,219 rows; 5,820 structurally parsed (93.58%); 399 withheld; 9,883 syllables; 3,885/5,820 exact structural IPA strings (66.75% conditional concordance, not accuracy); 26,155 reference IPA tokens; 2,857 alignment edits; 163 insertions.
+- Artifact SHA-256: \`7d51559fc9d5ef7d173850d9237cbd62577c2b7b890e96d1e73a6f113d46938a\`.
+- Main source-profile differences requiring expert review: /ʋ/ versus /w/ for onset \`ວ\`; /iːə/ versus /iaː/ for \`ຽ\`; /aw/ versus /ao/ for \`ເົາ\`; /uːə/ versus /uaː/ for UO structures; /ɯːə/ versus /ɯːə̯/ for \`ເືອ\`; /ai/ versus /aj/ for \`ໄ\`/\`ໃ\`; /l/ versus /r/ for \`ຣ\`; /ɤː/ versus /əː/ for \`ເີ\`.
+- These differences were not blindly copied into production rules. They may reflect source notation, dialect/profile, rhyme realization or lexical class. The train split is development evidence, not independent gold.
+
+### Current verification boundary
+
+- Code/test checkpoint with the additional direct-position and phonological-context distribution arrays: \`b376296947c93b1ab01a4a26bdd5afcfc2e756db\`.
+- Exact-head train diagnostic [42391252559] and Verify [42391258130] were queued/pending at the last check. Do not claim these two runs passed until GitHub Actions reports success.
+- The earlier successful 42390734319/42390739133 pair verifies the base contextual analyzer and IPA inventory at \`16d267...\`; it does not verify the later distribution-output and aggregate-only test additions.
+
+### Remaining acceptance work
+
+1. Confirm exact-head diagnostic and Verify on the latest code/test commit; inspect the generated position, phonological-context and local-context distributions.
+2. Review the 399 withheld rows by warning family and only extend parsing with primary orthographic evidence.
+3. Obtain qualified Vientiane review of the source-profile differences before changing corresponding vowel, glide or \`ຣ\` rules.
+4. Independent ClippyFirst IPA gold remains 0; dictionary references must not be promoted into gold.
+5. Manual accessibility QA, npm lockfile/clean-install reproducibility and broader source-component reuse terms remain separate release blockers.
+
