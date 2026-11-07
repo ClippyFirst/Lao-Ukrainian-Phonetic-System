@@ -1,5 +1,7 @@
 # Validation
 
+> **Status note (2026-11-07):** This file is a dated engineering-validation history. Its earlier test counts and workflow IDs describe the checkpoints at which they were recorded; they are not the current mainline status. For the latest branch/commit, exact-head CI and unresolved gates, consult the [canonical master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) and [current repository audit](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md). A historical green run must not be substituted for verification of the current commit.
+
 ## Deterministic structural validation
 
 The test suite covers:
