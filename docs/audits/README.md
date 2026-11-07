@@ -15,6 +15,9 @@ This directory separates the current state from historical checkpoints. A dated 
 - [Goruut runtime evaluation](current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md) — external runtime diagnostic evidence.
 - [Goruut asset/license review](current/GORUUT-ASSET-LICENSE-REVIEW-2026-11-01.md) — asset provenance and redistribution review.
 
+
+- [Lao three-engine benchmark and rule-engine error analysis — 2026-11-07](../research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md) — immutable MekongPhon inference, aggregate error profile, deterministic-engine refinements, and remaining linguistic acceptance gates.
+
 ## Historical audit
 
 - [Final scientific audit](../final-audit.md) — historical synthesis; not a current status authority.
