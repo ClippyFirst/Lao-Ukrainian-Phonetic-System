@@ -1,0 +1,208 @@
+# Repository-wide audit and continuation — 2026-11-07
+
+## Executive assessment
+
+**Current `main`: engineering research prototype with a deployed static browser instrument; not linguistically validated and not release-ready.** The current mainline Verify is red because three browser-engine regressions fail. The Python suite and repository data/evidence audit pass on that same commit. A narrowly scoped correction has been committed on the isolated audit branch and awaits exact-head CI.
+
+This report is the current audit for the inspected `main` baseline. It deliberately separates:
+1. code and documentation present on `main`;
+2. work present only on open pull-request branches;
+3. acceptance work that remains TODO, PARTIAL or BLOCKED.
+
+It is a repository, implementation, documentation, CI and design-system audit. It is not independent Lao phonetic adjudication, a legal opinion, a full penetration test, or a manual assistive-technology audit.
+
+## 1. Repository baseline and control
+
+- Repository: [ClippyFirst/Lao-Ukrainian-Phonetic-System](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System).
+- Default branch: `main`.
+- Starting main SHA: `f40c1128302486b3589da9b16bae198ef3ad1d81` (2026-11-06 22:15 UTC).
+- Working branch for this pass: `audit/repository-docs-structure-20261107`, created from that exact main SHA. The default branch was not changed.
+- Repository metadata reported `main` as unprotected. No rulesets, branch protection, repository permissions or other settings were changed.
+- Seven branches were visible at inspection: `main`, the existing audit/MekongPhon branch, two benchmark branches, the grapheme-preview branch, the practical-transcription branch and the rule-engine improvement branch.
+- Open PRs: #137–#142. Their base/head relationships are described in §2. No PR was merged, closed, retargeted or force-pushed.
+- Existing audit branch `audit/repository-documentation-and-mekongphon-rights-20261107` is not a documentation-only branch: its tree is 88 commits ahead of main and includes PR #137's benchmark lineage plus optional MekongPhon integration. It was reviewed as evidence, not adopted as the working branch.
+
+## 2. Branch and PR reconciliation
+
+| PR | Head branch | Base | Current disposition |
+|---|---|---|---|
+| #137 deterministic Lao G2P improvements | `benchmark/mekongphon-three-engine` | `main` | Open; independent base PR. Do not assume its changes are in main. |
+| #138 optional MekongPhon integration and repository/rights audit | `audit/repository-documentation-and-mekongphon-rights-20261107` | #137 branch | Open; stacked on #137. Includes neural integration and a rights review; not a safe docs-only cherry-pick. |
+| #139 immutable inference of both MekongPhon models | `benchmark/mekongphon-immutable-inference-20261107` | #137 branch | Open; dependent benchmark PR. |
+| #140 rule-engine diagnostics/tone guard changes | `improve/rule-engine-error-analysis-20261107` | #139 branch | Open; stacked. |
+| #141 Lao–Ukrainian practical transcription system | `feature/lao-ukrainian-practical-system-20261107` | #140 branch | Open; stacked. |
+| #142 conservative grapheme-level IPA preview | `feature/grapheme-fallback-ipa-preview-20261107` | #141 branch | Open; stacked; reported Verify run [42401900141](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42401900141) SUCCESS on its own head. |
+
+**Important:** PR #142's successful CI does not verify main. It tests a branch containing its ancestors in the #137–#141 stack. The preview, Unicode inventory and the newer target/engine work are not present in the inspected main tree. The browser preview remains TODO on main until the relevant PR stack is reviewed and merged in dependency order. This audit does not merge or rebase that stack.
+
+Recently closed PR search results include earlier work on the IPA benchmark harness, external G2P, initial web app and parsing fixes. Their changes are part of the current mainline history where merged; no closed PR was resurrected.
+
+## 3. Actual architecture on main
+
+The current architecture has coherent responsibility boundaries. A broad folder migration would add churn without fixing the verified failures.
+
+| Layer | Canonical location | Role / ownership |
+|---|---|---|
+| Python package | `src/lao_ukrainian/` | Normalization, parsing, phonology, typed phonetic result, Ukrainian target adapter, public API and CLI. |
+| Canonical Lao registries | `data/lao/*.csv` | Consonants, onset clusters, vowels, codas, tone rules and Ukrainian IPA correspondences. |
+| Evidence | `data/evidence/sources.csv`, `claims.csv` | Source metadata and claim-to-source provenance. |
+| Generated browser registry | `web/data.js` | Generated mirror of canonical CSVs; never hand-edit. |
+| Browser engine and UI | `web/engine.js`, `web/app.js`, `web/romanization*.js`, `web/styles.css` | Native ES modules; separate phonetic and romanization routes. |
+| Static pages | `index.html`, `system.html` | Converter and methodology/reference page. |
+| Contracts | `schemas/` | Analysis, external IPA renderer and IPA-gold corpus schemas. |
+| Tests | `tests/`, `web/engine.test.js` | Python, Node, browser engine, shared fixtures, corpus and Chromium UI tests. |
+| Build/research tooling | `scripts/` | Registry audit/generation, static build, benchmarking and IPA-gold validation. |
+| Documentation | `docs/`, `AGENTS.md`, `GLOSSARY.md`, `CONTRIBUTING.md` | Normative specification, methods, limitations, decisions, audits and handoff. |
+| CI / deploy | `.github/workflows/` | Verify, Pages deployment and optional external runtime workflows. |
+
+The intended phonetic pipeline is Lao orthography → structural analysis → source-language phonology → typed IPA → Ukrainian adaptation → practical Ukrainian orthography. The optional CLDR/BGN-based romanization path is a separate, lower-information route. Neither route is lexical word segmentation.
+
+### Structure decision
+
+Keep the current top-level boundaries. In particular:
+- `data/lao/` remains the sole canonical source for linguistic rules.
+- `web/data.js` remains generated.
+- `data/evidence/` remains machine-readable provenance.
+- `schemas/` owns machine-readable contracts.
+- `docs/audits/current/` holds dated audit/workpack artifacts.
+- The existing master handoff remains the single canonical append-only task ledger.
+- `docs/README.md` remains the documentation landing page.
+
+Do not create parallel master plans, status registers, new frameworks, runtime skill dependencies or duplicate phonology tables.
+
+## 4. CI and concrete code findings
+
+### 4.1 Baseline Verify is failing
+
+Baseline workflow: [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593), SHA `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+
+| Workflow stage | Result |
+|---|---|
+| IPA corpus structural validation | PASS — 0 records, correctly reports `NOT_READY_NO_ADJUDICATED_GOLD` |
+| Repository data/evidence audit | PASS — 43 consonant rows, 11 onset clusters, 34 vowel rows, 17 tone rules, 70 Ukrainian mappings, 28 evidence sources, 49 claims |
+| Python tests | PASS |
+| External G2P harness syntax/CLI | PASS |
+| Browser engine tests | FAIL — 52 passed, 3 failed |
+| Build, generated-data drift, Chromium UI, built-page checks | SKIPPED because the preceding browser-engine step failed |
+
+Failing browser cases:
+- `modern Lao ຣ defaults to l but remains analysis-dependent`;
+- `browser IPA adapter withholds uncertain phonetic results`;
+- `browser IPA adapter withholds incomplete IPA rather than adapting a prefix`.
+
+Root cause:
+- `analyzeToken()` correctly constructs an uncertain phonetic result for a modern `ຣ` onset, but `analyzeWord()`'s dynamic segmenter accepts only candidates that already have a Ukrainian output. This discards the valid IPA analysis because the Ukrainian adapter correctly withholds uncertain segments.
+- For `ກາລ`, the first parse has an unconsumed trailing consonant `ລ`. The dynamic segmenter then salvages `ກາ` as a complete syllable and leaves `ລ` as a separate unresolved fragment. That exposes a misleading prefix instead of withholding the incomplete orthographic unit.
+
+Correction committed on this branch:
+- `web/engine.js` now preserves a complete but uncertain phonetic candidate as one unit.
+- It also preserves a whole candidate when the only unconsumed suffix is one recognized Lao consonant that is not supported as a coda, preventing a valid-looking prefix from being salvaged.
+- No IPA labels, consonant registry entries, tone rules, target correspondences or source claims were changed.
+- Commit: `0c808700e097b341fa53a522c4abd5a1c8abebc5`.
+- Status: **PARTIAL pending exact-head Verify**. The existing failing CI run is RED evidence; it is not evidence that this correction passes.
+
+### 4.2 Node test command hides later suites
+
+On main, `npm test` chained four independent `node --test` commands with `&&`. The first failing suite prevented the remaining suites from running, hiding useful diagnostics. The branch changes this to one Node test-runner invocation listing all four test files. This is a test-orchestration correction, not a change to product behavior.
+
+### 4.3 README heading structure
+
+The main README had a standalone Romanization matrix bullet between the H1 and introductory description. The link is moved to the Documentation section so the document begins with its title and the link is grouped with other documentation.
+
+### 4.4 Typed IPA boundary
+
+Main contains the typed `PhoneticResult` representation and source IPA tokenizer, with Ukrainian adaptation gated on supported typed segments. The adapter is not an independent grapheme-to-Ukrainian fallback. Unresolved tone metadata is distinct from segmental IPA certainty. This is an engineering contract, not proof that every source IPA string is linguistically correct.
+
+### 4.5 No silent phonetic promotion
+
+The Python implementation withholds IPA when the parser reports unconsumed source suffixes, malformed tone marks or structurally incomplete vowels. The browser must preserve the same fail-closed intent even while performing conservative within-token segmentation. The three failures above were caused by browser segmentation bypassing that intent, not by missing phoneme correspondences.
+
+## 5. Documentation audit
+
+The repository already has substantial documentation. The problem is not absence of prose; it is keeping dated status claims synchronized with the actual branch and current CI.
+
+| Document | Purpose / finding | Disposition |
+|---|---|---|
+| `README.md` | Project identity, pipeline, quick start, deployed pages, limitations. One heading-order defect fixed. | Current public entry point. |
+| `AGENTS.md` | Project-specific agent constraints and verification workflow. | Keep; do not duplicate in another policy file. |
+| `CONTRIBUTING.md` | Environment, test commands, data/evidence and review requirements. | Keep as contributor guide. |
+| `GLOSSARY.md` | Domain vocabulary and status terms. | Keep canonical. |
+| `docs/README.md` | Documentation map and source-of-truth precedence. | Keep canonical documentation index. |
+| `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` | Historical and current execution checkpoints. | Keep as sole handoff; append exact branch evidence. |
+| `docs/audits/README.md` | Current vs historical audit index. | Updated to point to this report. |
+| `docs/PRODUCT-REQUIREMENTS.md`, `system-specification.md`, `methodology.md` | Product, normative and research contracts. | Preserve separation; do not collapse into README. |
+| `docs/implementation.md`, `agents/codebase-map.md`, `web-architecture.md` | Where behavior lives and how runtime/build work. | Update only when code contracts change. |
+| `docs/limitations.md`, `final-audit.md`, `PHONOLOGY-AUDIT.md` | Known limits and historical findings. | Dated/historical context; consult current code and handoff. |
+| `docs/validation.md`, `benchmarking-and-external-ipa.md`, `ipa-gold-corpus.md`, `ipa-gold-collection-playbook.md` | Engineering and research evaluation. | Engineering checks remain separate from linguistic release approval. |
+| `docs/audits/current/*` | Language-specific workpacks and dated source audits. | Keep under current audit index; do not treat old dated snapshots as live code state. |
+| `schemas/*`, `data/evidence/*` | Machine-readable contracts and provenance. | Canonical structured evidence; never replace with prose-only claims. |
+
+No broad documentation rename or directory migration is justified. The smallest effective improvement is an accurate current audit, clear document precedence, corrected public README structure and exact current handoff.
+
+## 6. User-supplied reference repositories
+
+Reviewed their repository structure and relevant skill files. They are methodology/design references, not dependencies to vendor into this project.
+
+| Reference | Useful practice | Adoption decision |
+|---|---|---|
+| [unlazy](https://github.com/Leonxlnx/unlazy) | Explicit observable gates, per-gate evidence, dependency-aware decomposition and a final integration check. | Apply the discipline in the existing master ledger and exact-head CI; do not import a new `GATES.md` framework or checker. |
+| [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Token layering, explicit component states, responsive/accessibility checks and reusable design references. | Existing `docs/DESIGN-SYSTEM.md` already defines an editorial linguistic instrument, restrained palette, focus, 44px controls and responsive behavior. Do not import the generic design catalog or unrelated marketing/SaaS styles. |
+| [obra/superpowers](https://github.com/obra/superpowers) | Test-first RED→GREEN, systematic debugging, explicit plans and end-of-branch review. | Already reflected in `AGENTS.md` and contributor guidance. Preserve; do not vendor skills or install hooks. |
+| [mattpocock/skills](https://github.com/mattpocock/skills) | Behavior tests at public seams, independent expected values, deep modules and small interfaces. | Existing architecture and test guidance already use these principles. Apply to fixes; no second engineering handbook needed. |
+| [Ponytail](https://github.com/DietrichGebert/ponytail) | Whole-flow data tracing, concrete reproducible findings, smallest fix and deletion/YAGNI review. | Applied to this audit and the browser regression. No plugin or generic agent bundle imported. |
+
+Project-specific constraints take precedence: source-rights verification, provenance, privacy, IPA-first adaptation and fail-closed handling are not negotiable design options.
+
+## 7. Task ledger
+
+| ID | Task | Status | Acceptance evidence / blocker |
+|---|---|---|---|
+| AUD-001 | Inspect main baseline, architecture, docs, CI, branches and PR dependencies | DONE_VERIFIED | GitHub metadata/tree/file inspection; exact baseline SHA and PR relationships recorded above. |
+| AUD-002 | Reconcile prior audit branch and PR stack | DONE_VERIFIED | Compared audit branch to main; identified 88-commit divergence and PR #137–#142 dependencies; no unsafe port. |
+| ENG-001 | Correct uncertain browser IPA being discarded | PARTIAL | Fix committed; exact-head Verify pending. |
+| ENG-002 | Prevent incomplete single-consonant coda suffix from exposing a valid-looking prefix | PARTIAL | Fix committed; exact-head Verify pending. |
+| ENG-003 | Ensure npm test reports all independent Node suites | PARTIAL | Script changed; exact-head workflow pending. |
+| DOC-001 | Correct root README heading/link placement | PARTIAL | README changed; exact-head workflow pending. |
+| DOC-002 | Publish current repository-wide audit and link it in audit index | PARTIAL | Files added/updated; exact-head workflow pending. |
+| DOC-003 | Append accurate branch/CI/blocker checkpoint to canonical handoff | PARTIAL | Handoff updated; exact-head workflow pending. |
+| LIC-001 | MekongPhon data/code redistribution and derivative rights | BLOCKED | PR #138's rights review identifies missing component-specific license terms; do not copy or redistribute dataset/code absent explicit permission. |
+| DATA-001 | Independent adjudicated IPA gold | BLOCKED | Gold corpus has 0 records and header-only gold file; requires approved IPA convention, two qualified annotators, separate adjudicator, blind intake, curator, rights-cleared source items and accepted contrast coverage. |
+| UI-001 | Manual accessibility/device QA | TODO | Requires human keyboard-only, screen-reader, zoom/text scaling, mobile/touch and deployed-site checks with environment/results recorded. |
+| GOV-001 | Protect main with required review/Verify rules | BLOCKED / owner action | Main is unprotected; settings change requires owner decision and was not performed. |
+| DEP-001 | Reproducible npm dependency installation | TODO | No package-lock.json; needs Node/npm clean checkout, generated lockfile, switch to npm ci and clean-runner validation. |
+| LING-001 | Expert validation of Lao phonology and Ukrainian correspondences | BLOCKED | No independent expert gold; selected tone/segment/target correspondences remain evidence-limited. |
+
+## 8. Verification and environment limits
+
+### Executed / inspected
+
+- Repository metadata, default branch, branches and open PR relationships.
+- Main recursive Git tree and key README, AGENTS, contributor, specification, design-system, code-map, audit, workflow, package and source files.
+- Current main Verify run and full job step summary.
+- Workflow job logs for the three browser test failures.
+- Existing audit/rights branch tree and compare metadata.
+- User-supplied reference repository trees and selected `SKILL.md` files.
+- Branch creation and GitHub file writes on the dedicated branch.
+
+### Not yet verified
+
+- No local checkout or local Python/Node/Playwright execution was available through this connector-only environment.
+- The fix branch has not yet received an exact-head Verify result at the time this report is authored.
+- Chromium UI, built-page checks and generated-data drift have not run on the fix branch yet.
+- No clean-install npm reproducibility check; no lockfile was generated.
+- No manual screen-reader, keyboard-only, mobile-device or deployed visual QA.
+- No independent phonetic accuracy benchmark or gold corpus was created.
+
+### Required final acceptance
+
+1. Open the audit branch as a PR to `main`.
+2. Wait for Verify on the exact final PR head.
+3. Inspect all jobs and ensure the Node command executes all four suites even if one fails.
+4. If Verify fails, inspect logs, fix the root cause and rerun on the new exact head.
+5. Record exact SHA/run conclusion in this report and the master handoff; only then upgrade the related PARTIAL tasks to DONE_VERIFIED.
+
+## 9. Final readiness
+
+**Research-ready as an engineering foundation only after the browser fix passes exact-head CI; not linguistically release-ready.** The current mainline is a reproducible research prototype but its latest Verify is red. The branch contains a targeted correction and documentation hygiene changes, but these remain PARTIAL until the exact final head passes. Independent IPA gold = 0, empirical accuracy is not established, third-party data rights remain constrained, manual accessibility QA is outstanding, npm dependency resolution is not lockfile-frozen, and main is unprotected.
+
+No release, merge, deployment change, repository-settings change, or third-party dataset redistribution was performed.
