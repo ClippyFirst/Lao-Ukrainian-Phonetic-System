@@ -100,3 +100,20 @@ Ueda reports variability between five- and six-tone descriptions. The putative s
 Ueda §2.3 (pp. 100–101) explicitly says spoken Vientiane has no phonological consonant clusters, despite written consonant-letter sequences. In the examined examples, written C-w sequences may correspond to a rhyme glide /-ua-/ or to deletion of /w/. This directly differs from Erickson's unit-labialized-phoneme analysis. Keep these source analyses separate until variety, lexeme and orthographic pattern are reconciled.
 
 **Source locator:** Ueda (1994), [full J-STAGE PDF](https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_pdf), especially pp. 96, 100–108, 110–112. The three-diphthong inventory's middle symbol remains OCR-uncertain and has not been guessed.
+## 8. Source-faithful IPA tone-contour transcription
+
+Ueda's full-text tone tables report the five basic central-Vientiane contours in numeric pitch levels (pp. 106–108): [24], [34], [33], [21], and [52]. The paper defines the five levels from lowest to highest (1–5, p. 107 note 12). The canonical tone registry now converts those levels explicitly to IPA tone letters:
+
+| Tone category | Ueda contour | IPA tone-letter rendering | Registry use |
+|---|---:|---|---|
+| Low-rising | [24] | ˨˦ | high/middle-class live, unmarked; middle-class mai catawa |
+| High-rising | [34] | ˧˦ | low-class live unmarked; high/middle-class dead short |
+| High-mid | [33] | ˧ | mai ek across classes; low-class dead short |
+| Low-falling | [21] | ˨˩ | high/middle-class dead long; high-class mai tho |
+| High-falling | [52] | ˥˨ | low-class dead long; middle/low-class mai tho; middle mai ti |
+
+The conversion is a documented transcription convention: numeric level 1–5 maps to the IPA tone letters ˩ ˨ ˧ ˦ ˥. It does not claim new instrumental measurements or erase Ueda's reported contextual variation. The study's field sample is one 46-year-old Haysok informant, so these contours remain scoped to that central-Vientiane analysis rather than a universal Lao standard.
+
+The previous registry contour strings did not encode Ueda's numeric levels consistently. data/lao/tone_rules.csv, the shared browser fixture and generated browser mirror have been updated together. A registry test locks the five-category mapping to the source values.
+
+**Benchmark distinction:** MekongPhon/Kerr seed-lexicon IPA uses its own transcription conventions. The benchmark therefore reports full tonal IPA and isolated tone-only accuracy separately; a mismatch against that corpus is not, by itself, grounds to overwrite the source-scoped Ueda profile.

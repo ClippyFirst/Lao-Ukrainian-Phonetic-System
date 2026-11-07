@@ -126,6 +126,18 @@ test("shared Lao tone-mark storage-order fixture", () => {
   }
 });
 
+test("short A2 syllable coda is validated before the next syllable", () => {
+  const result = analyze("ກັນກາ");
+  assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກັນ|ກາ");
+  assert.equal(result.syllables.every((s) => s.ipa), true);
+});
+
+test("tone marks are validated per syllable inside an unspaced word", () => {
+  const result = analyze("ກ່າຂ່າ");
+  assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກ່າ|ຂ່າ");
+  assert.equal(result.syllables.every((s) => s.ipa), true);
+});
+
 test("multiple adjacent tone marks withhold the entire malformed token", () => {
   const r = analyze("ກ່້າ");
   assert.equal(r.status, "PARTIAL");
@@ -210,7 +222,7 @@ test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
 
 test("matched tone rule exposes its contour", () => {
   assert.equal(analyze("ຂາ").syllables[0].tone, "low-rising");
-  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˩˥");
+  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˨˦");
 });
 
 test("shared tone contour and structural withholding fixture", () => {
