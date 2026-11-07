@@ -12,7 +12,15 @@ def adapt_phonetic_result(result: PhoneticResult) -> str | None:
     if any(segment.certainty != "SUPPORTED" for segment in result.segments):
         return None
     registry = load_registry()["correspondences"]
-    ipa = "".join(segment.ipa for segment in result.segments)
+    # The Ukrainian practical layer currently neutralizes lexical tone. For
+    # external neural IPA, keep tone tokens in the typed result/raw string but
+    # exclude only those explicitly typed tokens from segmental adaptation.
+    segments = (
+        tuple(segment for segment in result.segments if segment.kind != "tone")
+        if result.external_ipa is not None
+        else result.segments
+    )
+    ipa = "".join(segment.ipa for segment in segments)
     keys = sorted(registry, key=len, reverse=True)
     output: list[str] = []
     index = 0

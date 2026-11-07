@@ -54,7 +54,7 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 
 The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer.
 
-Known limitations remain explicit: automatic segmentation of unspaced multi-syllable text, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
+Known limitations remain explicit: lexical word segmentation (Lao spaces mark phrases, not words), ambiguous onset/coda boundaries, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
 
 ## Quick start and verification
 
@@ -105,6 +105,20 @@ Release verification:
 
 The web layer is intentionally conservative and does not claim to replace the research core or provide empirical accuracy without a versioned gold corpus.
 
+## Optional MekongPhon neural inference
+
+The deterministic rule engine remains the default. Optional tonal and non-tonal neural inference is available through the separately published BYU MATRIX Lab model artifacts; weights are downloaded at first use and are not committed to this repository.
+
+Install the optional dependencies and select a model explicitly:
+
+```bash
+pip install -e '.[neural]'
+lao-ua 'ສະບາຍດີ' --engine mekongphon-tonal --device cpu --json
+lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device cpu --json
+```
+
+Both engines default to immutable model revisions recorded in [the integration guide](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result.
+
 ## Status
 
 **🟡 Research MVP; the static web instrument is deployed.** Phonological source adjudication, an independently reviewed gold corpus, external G2P comparison, and full dialect/cluster coverage remain incomplete; deployment does not imply linguistic validation.
@@ -125,8 +139,8 @@ The project uses a provenance-backed, double-annotated IPA gold workflow. See [t
 
 The Python package and browser instrument intentionally expose different input contracts; their results must not be treated as interchangeable for unspaced multi-syllable input:
 
-- **Python API:** syllable-oriented. It analyzes each whitespace-delimited or U+200B-delimited unit as one orthographic syllable candidate. It does not infer boundaries inside an unspaced Lao run. A caller that needs phrase-level results must supply explicit boundaries; this is not lexical word segmentation.
-- **Browser instrument:** phrase-input oriented. Within each whitespace-delimited token, it attempts conservative dynamic segmentation into fully parsed syllable candidates. This is a UI convenience, not a lexical word segmenter; it retains unresolved material and withholds unsupported phonetic output rather than guessing. Explicit whitespace remains a boundary between input fragments.
-- **Boundary differences:** browser validation and Python normalization/parsing are separate runtime paths. In particular, do not assume U+200B, punctuation, mixed-script passthrough, malformed fragments, or aggregate status behave identically across them. Consumers must select the documented runtime contract and must not compare the two outputs as a parity oracle.
+- **Python API:** phrase-input oriented. Whitespace separates phrase fragments and U+200B is an explicit boundary. Within each whitespace-delimited token, deterministic dynamic programming segments structurally complete syllable candidates; unsupported material is retained as unresolved input rather than discarded. This is syllabification, not lexical word segmentation.
+- **Browser instrument:** phrase-input oriented. Within each whitespace-delimited token, it uses the corresponding conservative dynamic segmentation and retains unresolved material. It is a presentation/runtime feature, not a lexical word segmenter.
+- **Boundary differences:** browser validation and Python normalization/parsing remain separate runtime paths. Do not assume punctuation, mixed-script passthrough, malformed fragments or aggregate status behave identically across runtimes. Shared phonological/IPA results should align for the same complete supported syllable; phrase segmentation must be regression-tested in both runtimes.
 
-The Python API's syllable-level behavior is deliberate, not a claim that Lao spaces mark lexical words. The browser's within-token segmentation is a conservative presentation feature, not evidence that the project solves Lao lexical word segmentation. Shared phonological and IPA-to-Ukrainian rules should remain aligned where both runtimes support the same complete syllable, but phrase segmentation is not a parity requirement. Changes to either contract require runtime-specific regression tests and an explicit update to this section.
+Lao spaces mark phrases, not lexical words. Both runtimes now attempt conservative syllabification inside unspaced tokens, but neither claims general-purpose lexical word segmentation. Changes to either contract require runtime-specific regression tests and an explicit update to this section.

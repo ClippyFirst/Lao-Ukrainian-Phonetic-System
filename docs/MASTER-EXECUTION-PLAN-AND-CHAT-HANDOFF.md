@@ -1924,3 +1924,91 @@ The repository owner confirms that the full MekongPhon rights question was resol
 - The deterministic three-engine 100-word benchmark and report from PR #137 are now included. Results remain reference-relative, not independent project gold; independent adjudicated Lao IPA gold remains 0.
 - MekongPhon rights are `DONE_VERIFIED (owner-confirmed)` per the repository owner's explicit confirmation. This supersedes earlier `UNKNOWN`/`BLOCKED` entries in historical documents for project tracking; it is not an independent legal opinion.
 - Original PR #137 remains open and unmerged; PR #143 now carries its changes in the same single working branch. No mainline merge, release, deployment or repository-setting change occurred.
+
+
+## MekongPhon neural adapter implementation — 2026-11-07
+
+- Added optional inference support for BYU MATRIX Lab's Lao tonal and non-tonal checkpoints using the model-card EncoderDecoderModel interface and separate encoder/decoder tokenizers. Model weights are downloaded from Hugging Face at runtime and are not vendored; the MekongPhon source corpus is not copied or downloaded by the inference adapter.
+- Added a separate typed external-IPA adapter, preserving raw model output, terminal tone-letter contour, model ID and resolved revision. Unknown symbols/internal tone marks fail closed; Ukrainian adaptation runs only through the existing IPA correspondence registry. No neural prediction is written into deterministic rule tables or the independent gold corpus.
+- Added optional [neural] dependencies and CLI modes: rules (default), mekongphon-tonal and mekongphon-nontonal. CPU/CUDA/auto selection is explicit; automatic truncation is disabled at the model's 128-token input limit; inference errors do not fall back silently.
+- Added offline unit tests for tone preservation, unsupported IPA rejection, revision provenance and withheld target output. These tests have not yet run in hosted CI at this handoff point. Actual model download/inference remains an opt-in integration check.
+- Rights boundary: the two Hugging Face model cards declare Apache-2.0 for their respective model artifacts; this does not clear the MekongPhon training corpus, source dictionary or OPUS components. The exact dataset license remains UNKNOWN. The implementation uses the model artifacts only and does not redistribute data or weights.
+- Status: implementation PARTIAL pending exact-head Verify and a real pinned-revision inference smoke test on both checkpoints. Independent adjudicated IPA gold remains 0; model output is an optional comparator/provider, not project truth. See docs/research/MEKONGPHON-NEURAL-INTEGRATION.md.
+
+
+## MekongPhon adapter hosted verification update — 2026-11-07
+
+- Exact head: a5a159d075c0a2a3beb85e0dc40b45cd9d50ddc3. Verify run [42367488146](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367488146): corpus structure validation PASS; repository data/evidence audit PASS; Python tests PASS (including the new offline MekongPhon adapter tests); external-G2P harness syntax/CLI PASS.
+- Full Verify remains FAILURE at Browser engine tests. The same three main-based browser failures remain: modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped because of this dependency failure.
+- No real neural inference was run: the hosted Verify intentionally does not download Hugging Face model weights. Both tonal and non-tonal model smoke tests with immutable model revisions remain TODO. The model revision can be passed explicitly to the CLI; when the default upstream revision is used, output is marked MODEL-REVISION-NOT-IMMUTABLE.
+- Readiness: neural adapter implementation exists and its offline tests pass; integration remains PARTIAL pending real model execution and green full Verify. The default deterministic engine and main branch remain unchanged.
+
+
+## MekongPhon tonal-token handling refinement — 2026-11-07
+
+- Review of the model's tonal IPA contract identified that tone letters can occur inside a multi-syllable output, not only at the end of the full string. Updated the external IPA adapter to preserve each IPA tone letter as a typed tone segment at its original position; it does not guess per-syllable alignment from a flat model output.
+- The Ukrainian practical layer's current policy neutralizes tone. The target adapter now excludes only explicitly typed tone segments for external neural output while retaining the complete raw IPA and tone tokens in the inspectable result. Unknown phonemes and unsupported symbols still fail closed.
+- Added regression coverage that a tonal model output containing internal tone markers remains supported and that segmental IPA still reaches the existing IPA-to-Ukrainian adapter. This is a project policy boundary, not a claim that tone is non-contrastive in Lao.
+- Previous exact-head Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) on 2a9a54f4c3961d030e757d9d4e919c6d6f760f46: Python tests PASS, data/evidence audit PASS; full workflow FAILURE on the same three browser-engine cases. This new tone-token refinement is a subsequent commit and requires its own Verify run.
+
+
+## MekongPhon tone-token regression correction — 2026-11-07
+
+- Verify run [42367695448](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367695448) on aab30d74ce6e4e1a14ef4e1fdf21fecd02bff8ed: data/evidence checks PASS; Python tests FAILED on one stale assertion that still expected terminal tone letters to be removed from the segment list. The new intended contract preserves those letters as typed tone segments; the separate tests for internal tone preservation and Ukrainian segmental adaptation passed in that same run.
+- Corrected the stale assertion to expect the two tone segments and their kinds. No production code change was required for this test failure. This correction is awaiting exact-head Verify.
+
+
+## Exact-head MekongPhon adapter verification — 2026-11-07
+
+- Latest integration head: d9a38e115ef454713290c3ef64bd3e7ca76e9a90. Verify run [42367765630](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367765630): corpus structure validation PASS; repository data/evidence audit PASS; Python test suite PASS (187 tests, including all MekongPhon adapter tests); optional external-G2P harness syntax/CLI PASS.
+- Full Verify remains FAILURE at browser engine tests: 113 Node tests, 110 passed and 3 failed. The failures are the previously known browser-engine issues: modern Lao ຣ context-dependent reading, withholding uncertain IPA, and withholding incomplete IPA. The relevant fixes exist in the separate open PR #137; it remains unmerged. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped after the browser-test failure.
+- The new adapter-specific Python tests all passed, including in-word tone-token preservation and segmental IPA adaptation through the existing Ukrainian correspondence table. The earlier stale test expectation was corrected and the latest Python run is green.
+- Actual downloads and inference using the tonal and non-tonal Hugging Face checkpoints have NOT been run. Model-runtime smoke tests remain TODO; no accuracy claim is made. Main remains unchanged and PR #138 remains open/unmerged.
+
+
+## Final integration head verification — 2026-11-07
+
+- Final branch head at this checkpoint: 426660d008d1b46bb63c9678ac1328b930ba1dd4. Verify run [42367846222](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367846222): corpus structure validation PASS; repository data/evidence audit PASS; Python tests PASS (187 tests); external-G2P harness syntax/CLI PASS. Browser engine tests FAIL with 110/113 passing and the same three pre-existing browser cases (modern Lao ຣ context-dependent reading; uncertain IPA withholding; incomplete IPA withholding). Build, generated-data reproducibility, Chromium UI and built-page checks were skipped.
+- MekongPhon adapter code and offline tests are passing. Actual model download/inference against the tonal and non-tonal checkpoints remains unverified; model accuracy remains unmeasured against independent expert-adjudicated project gold (0 rows).
+- PR #138 remains open/unmerged, PR #137 remains open/unmerged, and main is unchanged. The neural provider is optional in the Python package/CLI; it has not been integrated into the static browser UI or a hosted inference service.
+
+## MekongPhon upstream license re-check — 2026-11-07
+
+- Re-inspected the upstream GitHub repository at `f80f6c1840c4818b51e05f2e00cded4701a5b662`. The root contains README.md plus data/, pipeline/, training/ and models/; there is no LICENSE/LICENSE.txt/COPYING file and GitHub metadata has no recognized license. The upstream README does not grant code or corpus permissions.
+- The pipeline README and scraper show that the lexicons are built by scraping SEAlang; Lao entries explicitly select Kerr 1972 source IDs. SHACHI's Lao Dictionary record identifies source material as copyrighted 1995 Dunwoody Press and 1972 Catholic University Press. The homepage's generic “Creative Commons open license” wording does not identify version, scope or rights-holder and is not sufficient to clear bulk extraction or derivative redistribution.
+- Exact downloader inspection: Lao uses OPUS-NLLB v1 and ParaCrawl-Bonus v9; Khmer adds OPUS-OpenSubtitles v2024. These are separate source components and require their own version-specific terms. The ODC-BY declaration on the separate OpenSubtitles2024 held-out benchmark card must not be transferred to the OPUS mono file used by MekongPhon.
+- Revised rights disposition: full corpus, scraped lexicons, upstream code, derivative corpus, retention, retraining, redistribution and commercial use remain UNKNOWN/BLOCKED pending exact component terms or written permission. The previous 100-entry ephemeral aggregate-only diagnostic remains a narrow research activity supported by stated research-release intent, not legal clearance.
+- The Lao tonal/non-tonal pretrained model artifacts remain separately declared Apache-2.0 by their Hugging Face cards. The existing optional neural adapter is therefore retained: it fetches only model artifacts at runtime, does not copy the corpus or upstream code, passes output through typed IPA, and leaves deterministic rules as default. This is the feasible implementation path; the training corpus must not be imported into rule tables without rights clearance and independent phonetic validation.
+- Evidence added to `data/evidence/sources.csv` and the dedicated rights review. Model runtime smoke tests on immutable revisions and browser UI integration remain TODO; no inference accuracy or full-corpus rights claim is made.
+
+## Rule-engine branch reconciliation — 2026-11-07
+
+- The comprehensive independent deterministic Lao G2P work already exists in open PR #137 (`benchmark/mekongphon-three-engine`). It implements dynamic-programming segmentation over unspaced Lao orthographic words, per-syllable tone-mark validation, syllable-local short-A coda checks, preservation of unsupported source material, typed IPA output, and source-scoped Vientiane tone-contour handling. It has dedicated regression tests in `tests/test_multisyllable_segmentation.py`.
+- PR #137 was inspected against main (78 commits ahead, 0 behind; 20 changed files). It is the canonical branch for deterministic rule-engine improvements. Do not duplicate its segmentation/parser logic in PR #138. PR #138 remains scoped to the optional MekongPhon model provider and component-rights audit.
+- **Correction — PR #137 latest head is fully verified.** Current head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e` passed exact-head Verify [42370883565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370883565): corpus validation, repository audit, Python tests, external-G2P syntax/CLI, browser engine tests, build/generated-data reproducibility, Chromium UI tests and built-page checks all SUCCESS. Earlier browser failures on older heads are historical and superseded.
+- The temporary duplicate opt-in syllabifier and its test file were removed from PR #138 after this reconciliation. No new rule engine was left duplicated. The W3C Lao orthography source remains in the evidence registry as background reference only.
+- Next acceptance: reconcile the three browser failures on PR #137, then run exact-head full Verify and preserve its benchmark/linguistic evidence. Independent expert-adjudicated IPA gold remains 0; no accuracy claim is made.
+
+## Stacked PR verification contract — 2026-11-07
+
+- PR #138 is now intentionally stacked on PR #137's branch `benchmark/mekongphon-three-engine`, so the neural adapter is reviewed against the deterministic engine implementation rather than against the older mainline parser/browser engine.
+- Updated `.github/workflows/verify.yml` so `pull_request` events targeting either `main` or `benchmark/mekongphon-three-engine` run the full Verify workflow. Push-triggered Verify on the standalone PR #138 branch still reflects its own files only; its historical three browser failures are expected until the PR merge ref includes PR #137's code.
+- Acceptance for the stacked PR is the merge-ref Verify result on PR #138, not the head-only push run. PR #137's current exact-head Verify is already green (42358772788).
+
+- To make the stacked PR's merge-result test executable, `.github/workflows/verify.yml` was also updated on PR #137's base branch to listen for pull requests targeting `benchmark/mekongphon-three-engine`. This base-branch workflow change is required because GitHub evaluates the pull-request workflow definition from the target branch. The standalone PR #138 branch contains the matching branch filter; its merge-ref run is the acceptance check.
+
+## Session checkpoint — 2026-11-07 12:06 UTC
+
+- Starting base: `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`. Main was not modified.
+- Deterministic rule-engine branch: PR #137, `benchmark/mekongphon-three-engine`, head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`. **DONE_VERIFIED for engineering checks**: exact-head Verify [42370883565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370883565) passed all stages including Python, browser engine, build, generated-data reproducibility, Chromium UI and built-page checks. Benchmark remains reference-relative; independent expert-adjudicated IPA gold=0.
+- Neural adapter and rights branch: PR #138, `audit/repository-documentation-and-mekongphon-rights-20261107`, head `e3d7fe473231ad9329ed92c3a16e46cda0475edc`, now stacked on PR #137's branch. The model adapter's offline Python tests and external-G2P syntax/CLI checks passed on exact code-bearing run [42370743420](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370743420); browser tests in that standalone head still fail the three known cases because the head does not contain PR #137's engine code. A stacked merge-ref Verify result has not surfaced; do not claim it passed.
+- Rights: published Lao model cards declare Apache-2.0 for model artifacts; no repository/corpus license is inferred for MekongPhon source code, SEAlang-derived lexicons or OPUS corpus files. Full training-data reuse remains BLOCKED/UNKNOWN pending exact component terms or written permission. The adapter does not vendor code or corpus.
+- Real tonal/non-tonal model downloads and inference at immutable revisions remain TODO. Browser UI integration for the neural provider remains TODO. Independent expert adjudication remains BLOCKED (gold corpus empty).
+- Commands/evidence actually executed: GitHub repository/tree/file inspection; branch comparisons; exact-head GitHub Actions Verify runs 42370883565, 42370743420, 42370611865, 42370420860, 42370343482 and 42370297362; workflow job/log inspection. Local `git clone` was attempted but failed because the execution environment could not resolve github.com; no local test command is claimed.
+- PR #137 and PR #138 remain open and unmerged. PR #138 is intentionally stacked on #137; no PR was merged or closed.
+- Readiness: the deterministic engine is engineering-verified but still a research prototype pending expert IPA gold; the neural provider is implemented with offline adapter tests but actual inference is not yet verified. The repository is not release-ready.
+
+
+## MekongPhon rights and immutable runtime defaults — current disposition — 2026-11-07
+
+The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. This supersedes all earlier `UNKNOWN` / `BLOCKED` status entries copied from the historical PR #138 review. `LIC-001 = DONE_VERIFIED (owner-confirmed)` for authorized project use; this is not an independent legal opinion. Both optional runtime model defaults are now pinned to the exact immutable revisions exercised by PR #139: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`, non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The adapter checks the loaded model config revision when exposed and records provenance. Independent Lao IPA gold remains 0.

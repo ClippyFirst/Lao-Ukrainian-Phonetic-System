@@ -64,7 +64,7 @@
 
 **Reason:** Latin spelling alone can be ambiguous: `kam` may encode A + coda m or the AM nucleus, and `niav` has competing syllabifications. The original Lao parser already retains vowel IDs and atomic high-class nasal graphemes, so this information should be used as evidence rather than guessed or discarded. The official PCGN copy of the BGN/PCGN 1966 agreement and the EKI/UNGEGN report document the vowel table and silent-`h` note; the source-aware adapter can now resolve the corresponding cases while keeping the IPA-first method independent.
 
-## D-010 — Preserve Ukrainian /ʃt͡ʃ/ as the grapheme щ
+## D-011 — Preserve Ukrainian /ʃt͡ʃ/ as the grapheme щ
 
 **Decision:** Add the exact ordered IPA sequence /ʃt͡ʃ/ → Ukrainian щ to the canonical target correspondence registry. Keep the individual mappings /ʃ/ → ш and /t͡ʃ/ → ч, as well as /d͡ʒ/ → дж, /d͡z/ → дз, /t͡s/ → ц, /ɡ/ → ґ, /ɦ/ → г and /x/ → х.
 
