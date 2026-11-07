@@ -273,3 +273,10 @@ Ueda (1994, pp. 95–115) describes a restricted non-final open /a/ syllable as 
 - **PARTIAL:** ClippyFirst now edges Lao2IPA on the shared segmental subset and is close on shared tonal CER; full-set coverage and the neural benchmark remain better.
 - **BLOCKED:** broad accuracy claims remain blocked by the non-adjudicated dictionary reference and zero independent project IPA gold.
 - **TODO:** obtain a Lao phonetics review of the six minor-syllable candidates and remaining vowel/offglide disagreements; build a rights-cleared, independently adjudicated gold set before expanding rules.
+
+
+### Runtime parity follow-up — 2026-11-07
+
+The potential minor-syllable tone-unresolved selector is now mirrored in the browser engine. Both Python and browser retain segmental IPA and Ukrainian adaptation while setting the independent tone to unresolved/analysis-dependent for the same initial short-open-/a/ candidate. Regression tests cover the positive candidate and a short-open-/a/ sequence without a major-weighted following syllable, which must retain its ordinary matrix tone.
+
+Exact-head full Verify [42375450028 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375450028) on code/test head `06d966fcb10d2d5c9e7f489900a05206451249c8`. Python tests, browser engine tests, repository/data audit, generated-data reproducibility, Chromium UI and built-page checks all passed. This parity change does not alter the 100-word benchmark metrics above.
