@@ -206,6 +206,17 @@ class TestToneRuleRegistry(unittest.TestCase):
         self.assertEqual(status, "ANALYSIS DEPENDENT")
         self.assertEqual(rules, ["TONE-NOT-ESTABLISHED-FOR-COMBINATION"])
 
+    def test_special_neutral_tone_rule_is_source_backed_and_separate(self):
+        rules = self.registry["special_tone_rules"]
+        self.assertEqual(len(rules), 1)
+        row = rules[0]
+        self.assertEqual(row["rule_id"], "VNT-NONFINAL-OPEN-A-NEUTRAL")
+        self.assertEqual(row["condition"], "nonfinal-open-short-a-unmarked")
+        self.assertEqual(row["tone"], "neutral")
+        self.assertEqual(row["contour"], "")
+        self.assertEqual(row["status"], "well-supported")
+        self.assertEqual(row["evidence_id"], "CLM-LAO-NONFINAL-OPEN-A-NEUTRAL")
+
 
 if __name__ == "__main__":
     unittest.main()
