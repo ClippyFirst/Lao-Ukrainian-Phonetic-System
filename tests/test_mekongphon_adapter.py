@@ -21,9 +21,26 @@ class MekongPhonAdapterTests(unittest.TestCase):
         self.assertEqual(result.status, "UNSUPPORTED")
         self.assertIn("UNSUPPORTED-EXTERNAL-IPA-SYMBOLS", result.uncertainty)
 
-    def test_internal_tone_mark_is_not_silently_discarded(self):
-        result = from_external_ipa("kʰ˩aː")
-        self.assertEqual(result.status, "UNSUPPORTED")
+    def test_internal_tone_mark_is_typed_and_preserved(self):
+        result = from_external_ipa("kʰ˩aː˥")
+        self.assertEqual(result.status, "SUPPORTED")
+        self.assertEqual(result.phonemic_ipa, "kʰaː")
+        self.assertEqual(result.tone_contour_ipa, "˩˥")
+        self.assertEqual(
+            [part.kind for part in result.segments],
+            ["consonant", "tone", "vowel", "tone"],
+        )
+
+    def test_tonal_model_output_uses_existing_segmental_target_adapter(self):
+        result = build_result(
+            "ຂາ", "kʰ˩aː˥",
+            model_id="byumatrixlab/lao-ipa-tonal",
+            model_revision="a" * 40,
+            tonal=True,
+        )
+        self.assertEqual(result.status, "OK")
+        self.assertEqual(result.ukrainian, "к'а")
+        self.assertEqual(result.phonetic_result.external_ipa, "kʰ˩aː˥")
 
     def test_model_revision_is_recorded_and_mutability_warned(self):
         result = build_result(

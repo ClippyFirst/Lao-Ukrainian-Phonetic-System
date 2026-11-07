@@ -36,8 +36,9 @@ The published models accept at most 128 input tokens. ClippyFirst disables trunc
 Lao input → MekongPhon neural model → raw IPA → typed external-IPA adapter → Ukrainian correspondence registry → Ukrainian practical output
 
 - The original decoded string is retained as raw_ipa and phonetic_result.external_ipa.
-- The adapter tokenizes only symbols in ClippyFirst's explicit IPA inventory. Unknown symbols, internal tone marks, brackets and unsupported diacritics make the result IPA_UNSUPPORTED; partial IPA is never mapped to Ukrainian.
-- A terminal sequence of IPA tone letters is retained separately as tone_contour_ipa. No tone category is inferred from the neural output, and Ukrainian adaptation does not currently encode tone.
+- The adapter tokenizes only symbols in ClippyFirst's explicit IPA inventory. Unknown phones, brackets and unsupported diacritics make the result IPA_UNSUPPORTED; partial IPA is never mapped to Ukrainian.
+- IPA tone letters are preserved as typed tone segments in their original order and in raw_ipa. The aggregate tone_contour_ipa field is diagnostic only; the adapter does not infer per-syllable tone alignment from a flat output string.
+- The Ukrainian practical layer currently neutralizes tone. The target adapter therefore excludes only the explicitly typed tone segments while adapting supported segmental IPA; tone data remains inspectable in the typed result and raw output.
 - Ukrainian output is generated only through the existing IPA-to-Ukrainian correspondence registry. If the complete predicted segment sequence has no supported mapping, output is withheld as TARGET_MAPPING_UNAVAILABLE.
 - Neural output is not written into rule provenance, rule tables, the independent gold corpus or the default analyze() result. It is explicitly labelled MEKONGPHON.
 - Inference errors are surfaced; the engine never silently falls back to rules or a different model.
@@ -50,9 +51,9 @@ The model card describes the training data as MekongPhon. The dataset's componen
 
 ## Tests
 
-The adapter tests are offline and do not download weights. They cover terminal tone preservation, unknown-symbol rejection, internal tone fail-closed behavior, model revision provenance and the no-partial-Ukrainian-output contract. Actual model inference remains an opt-in smoke test because it requires PyTorch, Transformers, network access and a model download.
+The adapter tests are offline and do not download weights. They cover in-word tone-token preservation, unknown-symbol rejection, segmental adaptation with tone retained, model revision provenance and the no-partial-Ukrainian-output contract. Actual model inference remains an opt-in smoke test because it requires PyTorch, Transformers, network access and a model download.
 
 
 ## Hosted verification checkpoint
 
-On commit a5a159d075c0a2a3beb85e0dc40b45cd9d50ddc3, Verify run [42367488146](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367488146) reported the repository Python test step SUCCESS, which includes these offline adapter tests. The full workflow remains FAILURE because the browser engine step has the same three previously recorded regressions (modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding). Build, generated-data reproducibility and Chromium UI steps were skipped by the workflow dependency. Actual model downloads/inference against the two checkpoints remain unverified.
+On commit 2a9a54f4c3961d030e757d9d4e919c6d6f760f46, Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) reported the repository Python test step SUCCESS, which includes these offline adapter tests. The full workflow remains FAILURE because the browser engine step has the same three previously recorded regressions (modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding). Build, generated-data reproducibility and Chromium UI steps were skipped by the workflow dependency. Actual model downloads/inference against the two checkpoints remain unverified.

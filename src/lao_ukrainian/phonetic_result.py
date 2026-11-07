@@ -59,7 +59,11 @@ def from_external_ipa(
     *,
     provenance: tuple[str, ...] = (),
 ) -> PhoneticResult:
-    """Parse raw model IPA conservatively; unknown phones fail closed."""
+    """Parse raw model IPA conservatively; unknown phones fail closed.
+
+    Tone letters are retained as typed tone segments at their original
+    positions. Their alignment to syllables is not inferred from a flat string.
+    """
     import unicodedata
 
     raw = unicodedata.normalize("NFC", ipa).strip()
@@ -69,27 +73,26 @@ def from_external_ipa(
             uncertainty=("EMPTY-EXTERNAL-IPA",), external_ipa=ipa,
         )
 
-    body = raw
-    tone_contour = ""
-    while body and body[-1] in IPA_TONE_LETTERS:
-        tone_contour = body[-1] + tone_contour
-        body = body[:-1]
-    body = body.rstrip()
-
     symbols = sorted(IPA_SYMBOLS, key=len, reverse=True)
     segments: list[PhoneticSegment] = []
     boundaries = [0]
+    tone_letters: list[str] = []
     index = 0
     unsupported = False
     separators = frozenset(" .·‧")
-    while index < len(body):
-        char = body[index]
+    while index < len(raw):
+        char = raw[index]
         if char in separators:
             if boundaries[-1] != len(segments):
                 boundaries.append(len(segments))
             index += 1
             continue
-        match = next((symbol for symbol in symbols if body.startswith(symbol, index)), None)
+        if char in IPA_TONE_LETTERS:
+            tone_letters.append(char)
+            segments.append(PhoneticSegment(char, "tone", provenance))
+            index += 1
+            continue
+        match = next((symbol for symbol in symbols if raw.startswith(symbol, index)), None)
         if match is None:
             unsupported = True
             segments.append(PhoneticSegment(char, "unknown", provenance, "UNSUPPORTED"))
@@ -99,11 +102,13 @@ def from_external_ipa(
         segments.append(PhoneticSegment(match, kind, provenance))
         index += len(match)
 
-    if not segments:
+    segmental_ipa = "".join(
+        segment.ipa for segment in segments if segment.kind != "tone"
+    )
+    if not segmental_ipa:
         unsupported = True
     if boundaries[-1] != len(segments):
         boundaries.append(len(segments))
-    segmental_ipa = "".join(segment.ipa for segment in segments)
     uncertainty = ("UNSUPPORTED-EXTERNAL-IPA-SYMBOLS",) if unsupported else ()
     return PhoneticResult(
         phonemic_ipa=segmental_ipa or None,
@@ -111,7 +116,7 @@ def from_external_ipa(
         syllable_boundaries=tuple(boundaries),
         vowel_length="long" if "ː" in segmental_ipa else None,
         tone_category=None,
-        tone_contour_ipa=tone_contour or None,
+        tone_contour_ipa="".join(tone_letters) or None,
         status="UNSUPPORTED" if unsupported else "SUPPORTED",
         provenance=provenance,
         uncertainty=uncertainty,

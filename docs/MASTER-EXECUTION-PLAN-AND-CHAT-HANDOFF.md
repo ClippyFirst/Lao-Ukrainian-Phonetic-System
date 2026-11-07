@@ -1851,3 +1851,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Full Verify remains FAILURE at Browser engine tests. The same three main-based browser failures remain: modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped because of this dependency failure.
 - No real neural inference was run: the hosted Verify intentionally does not download Hugging Face model weights. Both tonal and non-tonal model smoke tests with immutable model revisions remain TODO. The model revision can be passed explicitly to the CLI; when the default upstream revision is used, output is marked MODEL-REVISION-NOT-IMMUTABLE.
 - Readiness: neural adapter implementation exists and its offline tests pass; integration remains PARTIAL pending real model execution and green full Verify. The default deterministic engine and main branch remain unchanged.
+
+
+## MekongPhon tonal-token handling refinement — 2026-11-07
+
+- Review of the model's tonal IPA contract identified that tone letters can occur inside a multi-syllable output, not only at the end of the full string. Updated the external IPA adapter to preserve each IPA tone letter as a typed tone segment at its original position; it does not guess per-syllable alignment from a flat model output.
+- The Ukrainian practical layer's current policy neutralizes tone. The target adapter now excludes only explicitly typed tone segments for external neural output while retaining the complete raw IPA and tone tokens in the inspectable result. Unknown phonemes and unsupported symbols still fail closed.
+- Added regression coverage that a tonal model output containing internal tone markers remains supported and that segmental IPA still reaches the existing IPA-to-Ukrainian adapter. This is a project policy boundary, not a claim that tone is non-contrastive in Lao.
+- Previous exact-head Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) on 2a9a54f4c3961d030e757d9d4e919c6d6f760f46: Python tests PASS, data/evidence audit PASS; full workflow FAILURE on the same three browser-engine cases. This new tone-token refinement is a subsequent commit and requires its own Verify run.
