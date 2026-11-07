@@ -295,6 +295,71 @@ def load_neural():
     }
 
 
+
+def alignment_error_profile(
+    references: list[str], predictions: list[str], limit: int = 20
+) -> dict[str, object]:
+    """Aggregate code-point edit confusions without retaining words or outputs."""
+    substitutions: Counter[str] = Counter()
+    deletions: Counter[str] = Counter()
+    insertions: Counter[str] = Counter()
+
+    for reference, prediction in zip(references, predictions):
+        n, m = len(reference), len(prediction)
+        dp = [[0] * (m + 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            dp[i][0] = i
+        for j in range(m + 1):
+            dp[0][j] = j
+        for i in range(1, n + 1):
+            for j in range(1, m + 1):
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + (reference[i - 1] != prediction[j - 1]),
+                )
+        i, j = n, m
+        while i or j:
+            if i and j and reference[i - 1] == prediction[j - 1] and dp[i][j] == dp[i - 1][j - 1]:
+                i -= 1
+                j -= 1
+            elif i and j and dp[i][j] == dp[i - 1][j - 1] + 1:
+                substitutions[f"{reference[i - 1]}=>{prediction[j - 1]}"] += 1
+                i -= 1
+                j -= 1
+            elif i and dp[i][j] == dp[i - 1][j] + 1:
+                deletions[reference[i - 1]] += 1
+                i -= 1
+            else:
+                insertions[prediction[j - 1]] += 1
+                j -= 1
+
+    return {
+        "unit": "Unicode code point (NFC)",
+        "alignment": "Levenshtein; tie-break priority: match, substitution, deletion, insertion",
+        "top_substitutions": [
+            {"pair": key, "count": count}
+            for key, count in substitutions.most_common(limit)
+        ],
+        "top_deletions": [
+            {"symbol": key, "count": count}
+            for key, count in deletions.most_common(limit)
+        ],
+        "top_insertions": [
+            {"symbol": key, "count": count}
+            for key, count in insertions.most_common(limit)
+        ],
+        "total_substitutions": sum(substitutions.values()),
+        "total_deletions": sum(deletions.values()),
+        "total_insertions": sum(insertions.values()),
+    }
+
+
+def remove_optional_ipa_tie_bars(value: str) -> str:
+    """Remove only IPA affricate tie bars for a secondary allograph score."""
+    return nfc(value.replace("\u0361", "").replace("\u035c", ""))
+
+
 def score(references: list[str], predictions: list[str]) -> dict[str, object]:
     import sacrebleu
 
