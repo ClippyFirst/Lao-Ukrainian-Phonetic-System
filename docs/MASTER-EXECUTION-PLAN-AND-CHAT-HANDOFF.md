@@ -1849,3 +1849,47 @@ Commands/checks actually executed through hosted GitHub Actions: schema 3.0 thre
 - Full methodology, metrics, and limitations: `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
 - Interpretation: neural models outperform ClippyFirst on this reference set; this is not independent gold and does not authorize replacing the deterministic default. Independent adjudicated gold remains 0. MekongPhon corpus/source-data rights remain unresolved; only aggregate metrics were published.
 - Next: specialist review of rule-engine withheld structures and disagreements; establish a rights-cleared, independently adjudicated Lao IPA set before broad accuracy claims.
+
+
+## Rule-engine error-analysis and integration checkpoint — 2026-11-07
+
+### Branches, PRs and code state
+
+- Main remains unchanged from the original starting SHA `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- PR #137 remains open/unmerged: canonical deterministic rule-engine work, branch `benchmark/mekongphon-three-engine`, head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`.
+- PR #138 remains open/unmerged and separate: neural adapter + rights review, branch `audit/repository-documentation-and-mekongphon-rights-20261107`, head `144d7369a88b88d26e29b80bc2cb3f262176f431`; left untouched in this pass.
+- PR #139 remains open/unmerged: immutable neural inference benchmark, branch `benchmark/mekongphon-immutable-inference-20261107`, head `929e0813bac46df4c316125620b3657a617275f5`, based on PR #137.
+- PR #140 remains open/unmerged: rule-engine error analysis/refinements, branch `improve/rule-engine-error-analysis-20261107`, current documentation head `2e5725c68ce151d6c31e1c776137ebe56a9308e3`, based on PR #139. No PR was merged.
+
+### Implemented refinements
+
+1. **Canonical affricate IPA:** Lao ຈ now emits `t͡ɕ`; un-tied `tɕ` remains accepted as an IPA adapter alias. Updated canonical CSV, generated browser data, Python/browser regression fixtures and target-adapter tests. Ukrainian output remains ч.
+2. **Potential minor-syllable tone uncertainty:** a narrowly defined initial unmarked short-open-/a/ candidate followed by a major-weighted syllable is flagged as possible C₀V₀ minor syllable. Segmental IPA is preserved; tone is marked analysis-dependent and withheld. No neutral contour is guessed. The selector is separate from the five-tone matrix and source-linked to Ueda (1994) + Enfield (2007).
+3. **Error-pattern diagnostics:** aggregate-only IPA code-point substitutions/deletions/insertions, syllable position, tone-rule context and unresolved-tone context are now reported. No source words or per-item predictions are committed.
+4. **Tone matrix preserved:** the five observed lexical tone disagreements still align with the source-scoped Vientiane matrix. No tuning to the held-out dictionary reference was made.
+5. **Audit/test coverage:** special-tone registry validation, source-claim checks, Python regressions, browser regressions, generated-data reproducibility, and benchmark helper tests were expanded.
+
+### Verification evidence
+
+- Immutable two-model inference benchmark: [42371584765](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765) SUCCESS; tonal model `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`, non-tonal model `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`; 100/100 real outputs per model.
+- Error-analysis benchmark after canonical affricate + minor-syllable selector: [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901) SUCCESS; code head `411c4e0b6f9bf2775585b65f09fd5c0531808d6d`; aggregate artifact [13575161811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901/artifacts/13575161811), SHA-256 `813073f4207d51d93ead737623b5bad744618d197caf20c95473fe60c787e42b`.
+- Full Verify after the final browser affricate expectation update: [42374895130](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374895130) SUCCESS on code/test head `76db0359983312db59110b83e6edeb86d033797d). This included Python tests, browser engine tests, generated browser-data reproducibility, and the configured build/UI checks.
+- Documentation-only follow-up commits have separate Verify runs; the newest run for the current handoff/doc checkpoint is still in progress at the time of this entry. Do not call it passed until the run completes.
+- No local clone or local test run is claimed. GitHub Actions are the verification source.
+
+### Measured outcome
+
+- ClippyFirst segmental IPA: CER **11.46%**, 69/100 exact, 97% coverage. On the 97 shared covered items: CER **6.49%**, 69/97 exact.
+- Lao2IPA on the same 97 items: CER **7.72%**, 68/97 exact.
+- MekongPhon non-tonal model on the same 97 items: CER **5.79%**, 81/97 exact.
+- ClippyFirst tone output: 91% coverage after six potential minor-syllable candidates and three other evidence-limited contexts are withheld. On the shared 91 tone-covered items under evaluation-only MekongPhon contour rendering, CER **10.20%**, 52/91 exact; Lao2IPA 10.86% / 53/91; MekongPhon neural 6.75% / 68/91.
+- The `w→ʋ` substitution occurs in both deterministic systems (ClippyFirst 5; Lao2IPA 6), suggesting a reference-convention issue. No global /w/↔/ʋ/ collapse was introduced.
+- Independent project Lao IPA gold remains **0**. MekongPhon corpus/source rights remain UNKNOWN; only aggregate benchmark artifacts are published.
+
+### Task ledger
+
+- **DONE_VERIFIED:** both pinned neural model inferences; aggregate error-profile benchmark; canonical affricate notation implementation and shared-subset improvement; exact-head Verify on code/test head `76db035...`.
+- **PARTIAL:** potential minor-syllable detection is conservative and explicitly unresolved; ClippyFirst is ahead of Lao2IPA on shared segmental CER but remains behind MekongPhon neural and has lower full-set coverage.
+- **TODO:** qualified Vientiane reviewer to confirm minor-syllable onset restrictions and review six candidates; investigate vowel/offglide differences on a rights-cleared development set.
+- **BLOCKED:** independent IPA gold requires two qualified annotators, adjudication, and rights-cleared material; MekongPhon source/corpus rights remain unresolved.
+- **DEFERRED:** merge/release/default switch; all PRs remain open and unmerged.
