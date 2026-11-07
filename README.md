@@ -94,7 +94,7 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 
 ## Documentation
 
-Start at the [documentation index](docs/README.md). The latest [repository-wide audit](docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) records the current architecture, branch/PR reconciliation, verification evidence and blockers. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+Start at the [documentation index](docs/README.md). The latest [repository-wide audit](docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) records the current architecture, branch/PR reconciliation, verification evidence and blockers. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md). The [Ukrainian practical transcription guide](docs/lao-ukrainian-practical-transcription.md) documents the IPA-conditioned target conventions.
 
 ## Web service
 

@@ -38,6 +38,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 
 ### IPA, corpora and evaluation
 - [Typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md)
+- [Lao → Ukrainian practical transcription guide](lao-ukrainian-practical-transcription.md)
 - [Independent IPA gold corpus contract](ipa-gold-corpus.md)
 - [Controlled IPA gold collection playbook](ipa-gold-collection-playbook.md)
 - [Benchmarking and external IPA](benchmarking-and-external-ipa.md)
