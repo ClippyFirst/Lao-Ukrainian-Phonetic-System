@@ -1,3 +1,14 @@
+## MekongPhon research-use authorization and full train-split diagnostics — 2026-11-07
+
+- The project owner explicitly directed ClippyFirst to use MekongPhon for research and engine improvement. The authors' LREC 2026 abstract states that all data, code and pretrained models are publicly released to support future research and development in low-resource language technologies ([ACL Anthology](https://aclanthology.org/2026.lrec-1.129/), abstract). Research use is therefore in scope; the prior blanket BLOCKED wording for research use was too restrictive.
+- This is not represented as a formal blanket license for redistribution, sublicensing or commercial reuse. The upstream GitHub repository has no declared repository license/root LICENSE. No raw rows, reference strings or per-item predictions are committed or included in the new CI artifact. Component-level SEAlang/OPUS terms and any future mirroring or commercial distribution remain separately gated.
+- Upstream revision: f80f6c1840c4818b51e05f2e00cded4701a5b662. Direct inspection found 6,319 lexicon rows (6,316 unique spellings), 6,219 train rows, 100 eval rows, three duplicate spellings in train and zero train/eval overlap. The paper's reported 6,039 seed entries and 367,388 sentence pairs are retained as paper-reported figures; they are not conflated with the currently committed GitHub snapshot.
+- Added scripts/diagnose_mekongphon_train_split.py: pinned download, schema/count checks, segmental CER/coverage, tone-category comparison only on segmental-exact cases, unresolved-tone accounting, parser/warning/context aggregation, and aggregate-only output. The 6,219-row train split is for development/rule discovery only, not generalization claims or independent gold. The 100-row eval remains separate and must not be used for tuning.
+- Added .github/workflows/mekongphon-train-diagnostics.yml and focused helper tests. Initial workflow run is [42386814694](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42386814694) on commit a85e7dff925d2513e59acac7bb22667546e7e15c; status must be refreshed before claiming the diagnostic passed.
+- MEKONG-RIGHTS-001 changes from BLOCKED for research use to PARTIAL: research use is supported and being executed; redistribution, sublicensing and commercial reuse remain unverified. Independent ClippyFirst gold remains 0 and no MekongPhon item is admitted to gold.tsv.
+
+---
+
 ## Engineering gate and corpus-coverage corrections — 2026-11-04
 
 - The shared IPA corpus CLI previously emitted `release_ready: true` after checking only machine-verifiable corpus engineering conditions (adjudicated rows, frozen split minimums, one target-profile signature, one IPA kind and recorded redistributable source rights). It did not evaluate expert approval of the IPA convention, annotator/adjudicator qualifications, blind intake or expert-approved phonological contrast coverage.
