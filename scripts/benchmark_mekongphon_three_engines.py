@@ -694,6 +694,7 @@ def main() -> int:
             "tone_category_on_segmental_exact_subset": tone_category_metrics,
             "tone_category_confusion_aligned_words": dict(sorted(tone_category_confusion.items())),
             "tone_category_error_contexts": dict(sorted(tone_category_error_contexts.items())),
+            "tone_unresolved_contexts": dict(sorted(tone_unresolved_contexts.items())),
             "tone_category_word_length_mismatches": tone_category_length_mismatches,
             "segmental_exact_subset_n": len(tone_references),
             "tone_only_alignment_failures": tone_alignment_failures,
@@ -772,7 +773,7 @@ def main() -> int:
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
             "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. Secondary IPA scores remove only optional affricate tie bars U+0361/U+035C; raw scores remain primary. Potential minor-syllable tones are withheld and aggregated separately, not guessed. No source words or complete predictions are retained in the artifact.",
             "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
-        "neutral_tone": "A non-final, unmarked, open short /a/ syllable inside one unspaced orthographic token is represented as tone-category neutral with no contour, following Ueda (1994); no neutral contour is invented.",
+        "potential_minor_syllable_tone": "An initial unmarked short open /a/ shape may be a minor syllable; because orthography alone cannot prove that status, the engine withholds tone rather than inventing a neutral contour."
             "mekong_convention_conversion": "For comparison only, ClippyFirst tone categories are re-rendered with the MekongPhon rule-baseline contour notation; this does not change production IPA or tone rules",
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
             "chrf++": "SacreBLEU CHRF with word_order=2, corpus-level",
