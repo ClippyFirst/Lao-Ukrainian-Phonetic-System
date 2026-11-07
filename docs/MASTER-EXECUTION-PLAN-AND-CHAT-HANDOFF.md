@@ -1776,3 +1776,12 @@ A cross-runtime review identified a concrete difference that must not be papered
 - CSS correction: commit `1f876316c5433d47256a049d3e91c2c41a0eab96` sets all three control selectors to 44px; a regression assertion covers each selector.
 - Status: **PARTIAL pending exact-head Verify**. The earlier full Verify success [42403357272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403357272) predates this accessibility patch and is not its acceptance evidence.
 - Manual keyboard-only, screen-reader, zoom and device QA remains TODO even after automated target-size assertions pass.
+
+
+## Final automated accessibility checkpoint — 2026-11-07
+
+- The 44px target-size regression test is now **DONE_VERIFIED** for the code-bearing commit `1f876316c5433d47256a049d3e91c2c41a0eab96`.
+- The test-first RED result is [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681); the exact PR-head Verify [42403639882](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403639882) completed **SUCCESS** on `620b015804bf9d8d103f7ecb1077e9115610bb22`.
+- Final recorded counts for that head: 181 Python tests, 113 Node tests (0 failures), and 4 Chromium UI tests; repository audit, corpus structure validation, external-G2P CLI, build, generated-data reproducibility and built-page/asset assertions all passed.
+- Automated target-size coverage now enforces 44px for `.copy`, `.mini-button,.button` and `.copy-button`. Manual keyboard-only, screen-reader, zoom and device QA remains **TODO**.
+- This does not change the linguistic release gate: independent adjudicated IPA gold remains 0 and empirical accuracy remains null.
