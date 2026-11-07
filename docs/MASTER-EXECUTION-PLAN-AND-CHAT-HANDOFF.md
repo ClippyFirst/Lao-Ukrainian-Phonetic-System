@@ -1859,7 +1859,7 @@ Commands/checks actually executed through hosted GitHub Actions: schema 3.0 thre
 - PR #137 remains open/unmerged: canonical deterministic rule-engine work, branch `benchmark/mekongphon-three-engine`, head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`.
 - PR #138 remains open/unmerged and separate: neural adapter + rights review, branch `audit/repository-documentation-and-mekongphon-rights-20261107`, head `144d7369a88b88d26e29b80bc2cb3f262176f431`; left untouched in this pass.
 - PR #139 remains open/unmerged: immutable neural inference benchmark, branch `benchmark/mekongphon-immutable-inference-20261107`, head `929e0813bac46df4c316125620b3657a617275f5`, based on PR #137.
-- PR #140 remains open/unmerged: rule-engine error analysis/refinements, branch `improve/rule-engine-error-analysis-20261107`, verified code/test checkpoint `76db0359983312db59110b83e6edeb86d033797d`; the later `fe31d598c98f949945bfb7d22f9e3219088694ee` checkpoint includes documentation-only follow-ups, based on PR #139. No PR was merged.
+- PR #140 remains open/unmerged: rule-engine error analysis/refinements, branch `improve/rule-engine-error-analysis-20261107`, verified code/test checkpoint `06d966fcb10d2d5c9e7f489900a05206451249c8`; later commits add documentation-only follow-ups, based on PR #139. No PR was merged.
 
 ### Implemented refinements
 
@@ -1888,7 +1888,7 @@ Commands/checks actually executed through hosted GitHub Actions: schema 3.0 thre
 
 ### Task ledger
 
-- **DONE_VERIFIED:** both pinned neural model inferences; aggregate error-profile benchmark; canonical affricate notation implementation and shared-subset improvement; exact-head Verify on code/test head `76db035...`.
+- **DONE_VERIFIED:** both pinned neural model inferences; aggregate error-profile benchmark; canonical affricate notation implementation and shared-subset improvement; exact-head Verify on code/test head `06d966f...`.
 - **PARTIAL:** potential minor-syllable detection is conservative and explicitly unresolved; ClippyFirst is ahead of Lao2IPA on shared segmental CER but remains behind MekongPhon neural and has lower full-set coverage.
 - **TODO:** qualified Vientiane reviewer to confirm minor-syllable onset restrictions and review six candidates; investigate vowel/offglide differences on a rights-cleared development set.
 - **BLOCKED:** independent IPA gold requires two qualified annotators, adjudication, and rights-cleared material; MekongPhon source/corpus rights remain unresolved.
