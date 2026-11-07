@@ -153,3 +153,17 @@ The schema 3.0 aggregate-only diagnostic recorded the Unicode-name sequences of 
 These shapes are diagnostics, not linguistic analyses. They do not establish that any sequence is a valid syllable boundary, consonant cluster, coda or loan spelling. The two multigrapheme tails are not covered by existing onset/vowel/coda rules, and the KHO SUNG tail cannot safely be reclassified as a coda. Keep all affected outputs withheld until a primary orthography source or qualified Vientiane reviewer establishes the exact structure. No parser relaxation or new consonant value is justified by this aggregate alone.
 
 Diagnostic workflow [42357836206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206) SUCCESS; aggregate-only artifact [13568064669](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206/artifacts/13568064669), SHA-256 `0c8e23f5bb752804cef3deb270ee762509b9de150253347528eed335d61f0ae3`.
+
+### Tone-category error attribution — aggregate, no lexical rows
+
+A subsequent benchmark pass attributes tone-category substitutions to the ClippyFirst rule context while still withholding all source words and per-item predictions. Among aligned syllable positions, five substitutions were observed:
+
+| Reference → ClippyFirst | Count | ClippyFirst selector context |
+|---|---:|---|
+| high-mid → low-rising | 2 | high-class, live, unmarked; vowels O and UU, coda ŋ; `VNT-H-LIVE-NONE` |
+| low-falling → high-mid | 2 | low-class, dead short unmarked (`VNT-L-DEAD-SHORT-NONE`); low-class, live with mai ek (`VNT-L-LIVE-EK`) |
+| low-falling → low-rising | 1 | high-class, live, unmarked; `VNT-H-LIVE-NONE` |
+
+There are also eight word-level category-sequence length mismatches and four reference-alignment failures in the ClippyFirst category subset. The five aligned substitutions do **not** justify changing the general Vientiane rule table: each ClippyFirst selector is already source-linked to the Ueda/SEAsite central-Vientiane model, whereas the MekongPhon reference may contain lexical, dialectal, annotation-convention or stress/context differences. The held-out set must not be used as training data or as a source of ad hoc exception rules. A correction requires an independent lexical source or expert adjudication, and a separate development set—not tuning on this test split.
+
+Tone confusion/context aggregate run [42358185703](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358185703) SUCCESS; artifact [13568751034](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358185703/artifacts/13568751034), SHA-256 `0a5e89667072e58f721929f535423c0278042a615a99c29d989505e63de5c73b`.
