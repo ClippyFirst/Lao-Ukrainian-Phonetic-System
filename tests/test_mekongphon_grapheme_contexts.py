@@ -30,10 +30,10 @@ class GraphemeContextTests(unittest.TestCase):
         self.assertEqual(structure["onset_ipa"],"m")
 
     def test_labialized_cluster_is_joint_onset_unit(self):
-        registry=load_registry(); surface="ກວາ"; parsed=parse_syllable(surface,registry)
+        registry=load_registry(); surface="ຂວັນ"; parsed=parse_syllable(surface,registry)
         self.assertFalse(parsed["warnings"])
         structure=structural_components(surface,parsed,registry)
         self.assertTrue(structure["cluster"])
-        self.assertEqual(structure["onset_ipa"],"kʷ")
+        self.assertEqual(structure["onset_ipa"],"kʷʰ")
 
 if __name__=="__main__": unittest.main()
