@@ -1,5 +1,9 @@
 # Validation
 
+
+> **Current verification authority — 2026-11-07.** The dated test counts and workflow results below are historical checkpoints, not the current suite status. The latest exact-head full Verify inspected for the selected branch `improve/rule-engine-error-analysis-20261107` is [run 42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376), SUCCESS on code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`. All configured stages passed, including repository/data audit, Python tests, external-G2P CLI validation, browser engine tests, generated-data reproducibility, Chromium UI tests and built-page checks. This evidence applies to that PR branch head, **not** to `main`, and predates the documentation-only commits recorded in the handoff; those documentation edits remain PARTIAL until Verify runs on their final commit. For the live task ledger and branch reconciliation, use the [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) and [current repository audit](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md).
+
+
 ## Deterministic structural validation
 
 The test suite covers:

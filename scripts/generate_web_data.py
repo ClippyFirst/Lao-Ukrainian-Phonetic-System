@@ -47,6 +47,11 @@ rules = [
     if r["status"] in {"core", "well-supported"}
 ]
 
+special_rules = [
+    [r["rule_id"], r["condition"], r["tone"], r["contour"], r["status"], r["profile"], r["evidence_id"]]
+    for r in rows("special_tone_rules.csv")
+]
+
 out = "// Generated from data/lao/*.csv. Do not edit by hand.\n"
 out += "export const CONSONANTS=" + json.dumps(cons, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const ONSET_CLUSTERS=" + json.dumps(onset_clusters, ensure_ascii=False, separators=(",", ":")) + ";\n"
@@ -55,4 +60,5 @@ out += "export const CODAS=" + json.dumps(codas, ensure_ascii=False, separators=
 out += "export const CORRESPONDENCES=" + json.dumps(corr, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const TONE_MARKS=" + json.dumps(marks, ensure_ascii=False, separators=(",", ":")) + ";\n"
 out += "export const TONE_RULES=" + json.dumps(rules, ensure_ascii=False, separators=(",", ":")) + ";\n"
+out += "export const SPECIAL_TONE_RULES=" + json.dumps(special_rules, ensure_ascii=False, separators=(",", ":")) + ";\n"
 OUT.write_text(out, encoding="utf-8")

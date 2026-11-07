@@ -117,3 +117,12 @@ The conversion is a documented transcription convention: numeric level 1–5 map
 The previous registry contour strings did not encode Ueda's numeric levels consistently. data/lao/tone_rules.csv, the shared browser fixture and generated browser mirror have been updated together. A registry test locks the five-category mapping to the source values.
 
 **Benchmark distinction:** MekongPhon/Kerr seed-lexicon IPA uses its own transcription conventions. The benchmark therefore reports full tonal IPA and isolated tone-only accuracy separately; a mismatch against that corpus is not, by itself, grounds to overwrite the source-scoped Ueda profile.
+
+
+## 9. Minor syllables and independent tone
+
+Enfield (2007, §3.1, pp. 33–34) models the Lao word template as C₀V₀C₁V₁V₂C₂. C₀V₀, when present, is a minor syllable; it is unstressed and does not show distinctive tone independently of the major syllable. V₀ is restricted to short /a, i, u/ without a length contrast, and C₀ belongs to a restricted onset subset. Ueda (1994, pp. 95–115) separately describes a restricted non-final open /a/ syllable as unstressed and neutral in tone in the central Vientiane profile.
+
+**Implementation boundary (2026-11-07):** the orthographic parser cannot yet prove that every initial short-open-/a/ shape is a minor syllable, nor does it fully encode the allowed C₀ subset. The engine therefore flags only an initial unmarked short-open-/a/ candidate followed by a major-weighted syllable in the same unspaced token. It preserves segmental IPA but marks the independent tone analysis-dependent and withholds the contour. It does **not** assign a neutral tone category or use a lexical exception list. This is a conservative candidate detector, not a complete minor-syllable parser.
+
+**Acceptance gap:** a qualified Vientiane Lao reviewer must verify the onset restrictions, lexical/morphological conditions, and candidate examples before the selector is widened or the candidate is upgraded to a confirmed neutral syllable. The held-out MekongPhon dictionary reference is not independent adjudication and must not be used as the deciding authority.

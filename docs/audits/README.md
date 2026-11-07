@@ -4,7 +4,8 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — repository inventory, documentation corrections, engineering status, unresolved acceptance gates and this pass's evidence.
+- [Repository-wide audit and documentation checkpoint — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — current architecture, branch/PR topology, documentation corrections, exact-head engineering evidence and remaining blockers.
+- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — preceding checkpoint; historical context, not the current branch status.
 
 ## Current language/research workpacks
 
@@ -14,6 +15,9 @@ This directory separates the current state from historical checkpoints. A dated 
 - [External phonetic corpus triage](current/EXTERNAL-PHONETIC-CORPUS-TRIAGE-2026-11-01.md) — source scope and eligibility boundaries.
 - [Goruut runtime evaluation](current/GORUUT-RUNTIME-EVALUATION-2026-11-01.md) — external runtime diagnostic evidence.
 - [Goruut asset/license review](current/GORUUT-ASSET-LICENSE-REVIEW-2026-11-01.md) — asset provenance and redistribution review.
+
+
+- [Lao three-engine benchmark and rule-engine error analysis — 2026-11-07](../research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md) — immutable MekongPhon inference, aggregate error profile, deterministic-engine refinements, and remaining linguistic acceptance gates.
 
 ## Historical audit
 

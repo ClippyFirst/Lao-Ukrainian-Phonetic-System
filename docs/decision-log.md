@@ -64,10 +64,26 @@
 
 **Reason:** Latin spelling alone can be ambiguous: `kam` may encode A + coda m or the AM nucleus, and `niav` has competing syllabifications. The original Lao parser already retains vowel IDs and atomic high-class nasal graphemes, so this information should be used as evidence rather than guessed or discarded. The official PCGN copy of the BGN/PCGN 1966 agreement and the EKI/UNGEGN report document the vowel table and silent-`h` note; the source-aware adapter can now resolve the corresponding cases while keeping the IPA-first method independent.
 
-## D-010 — Preserve Ukrainian /ʃt͡ʃ/ as the grapheme щ
+## D-011 — Preserve Ukrainian /ʃt͡ʃ/ as the grapheme щ
 
 **Decision:** Add the exact ordered IPA sequence /ʃt͡ʃ/ → Ukrainian щ to the canonical target correspondence registry. Keep the individual mappings /ʃ/ → ш and /t͡ʃ/ → ч, as well as /d͡ʒ/ → дж, /d͡z/ → дз, /t͡s/ → ц, /ɡ/ → ґ, /ɦ/ → г and /x/ → х.
 
 **Reason:** Modern Ukrainian щ represents the fricative-plus-affricate sequence [ш]+[ч], not a single affricate. The Encyclopedia of Modern Ukraine and the Journal of the IPA Ukrainian description document this correspondence. The existing longest-match adapter can preserve the exact sequence without changing isolated segment mappings. This is target orthography, not a Lao phonological claim.
 
 **Evidence:** SRC-ESU-SHCH, SRC-JIPA-UKRAINIAN; claim CLM-UA-SHCH-SEQUENCE.
+
+## D-012 — Canonical tied IPA for the Lao alveolo-palatal affricate
+
+**Decision:** Render the core Lao affricate ຈ as `t͡ɕ` in ClippyFirst's canonical IPA output. Continue accepting un-tied `tɕ` as an IPA correspondence alias for adapter inputs and external references.
+
+**Reason:** The 100-word error profile showed repeated optional tie-bar deletions. Using the tie-bar form as the canonical display reduced raw segmental CER from 12.79% to 11.46% and raised exact matches from 64/100 to 69/100, without changing the underlying segment or Ukrainian output. Python, browser mirror, and shared fixtures were updated together. This is an IPA notation convention, not a new Lao phonological contrast.
+
+**Evidence:** SRC-IPA-CHART; claim CLM-IPA-AFFRICATE-TIE-BAR; benchmark [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901).
+
+## D-013 — Withhold independent tone for potential initial minor /a/ syllables
+
+**Decision:** When an initial unmarked short open-/a/ syllable is followed by a major-weighted syllable in the same unspaced orthographic token, preserve segmental IPA but mark its independent tone as analysis-dependent. Do not assign a neutral tone category or invent a tone contour from orthographic shape alone.
+
+**Reason:** Ueda (1994) describes a restricted non-final open /a/ syllable as unstressed and tone-neutral in central Vientiane Lao. Enfield (2007, §3.1) describes minor C₀V₀ syllables as lacking distinctive tone independent of the major syllable and restricts V₀ to short /a, i, u/. However, the allowed C₀ onset subset is restricted and cannot be fully inferred from the current orthographic parser. The implementation therefore flags a candidate and withholds tone rather than asserting that every matching spelling is definitely minor.
+
+**Evidence:** SRC-UEDA; SRC-ENFIELD; claim CLM-LAO-POTENTIAL-MINOR-OPEN-A; regression tests for the candidate selector and monosyllabic/following-weight counterexample.

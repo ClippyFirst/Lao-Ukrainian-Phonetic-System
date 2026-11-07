@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: ["main", "benchmark/mekongphon-three-engine", "benchmark/mekongphon-immutable-inference-20261107"]
   workflow_dispatch:
+concurrency:
+  group: verify-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

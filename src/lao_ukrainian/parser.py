@@ -99,7 +99,7 @@ STRUCTURES = (
     ("short_o_around", "ເ", "າະ", "AW"),
 )
 
-def segment_syllables(text: str) -> list[str]:
+def segment_syllables(text: str, registry: dict | None = None) -> list[str]:
     """Split phrase-separated Lao into structurally parsed syllables.
 
     Lao spaces are phrase boundaries, not dependable word/syllable boundaries.
@@ -107,7 +107,7 @@ def segment_syllables(text: str) -> list[str]:
     syllables first, then lets the phonology layer derive IPA and tone. It
     never discards unparsed code points; unsupported material remains visible.
     """
-    registry = load_registry()
+    registry = registry or load_registry()
     words = text.replace("\u200b", " ").split()
     return [part for word in words for part in _segment_word(word, registry)]
 

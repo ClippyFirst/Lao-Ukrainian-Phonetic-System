@@ -139,3 +139,16 @@ The project also adopts selected completion-discipline practices from [Leonxlnx/
 - Review every command and script before execution. A declared command is not safe merely because it appears in a ledger; it runs with the available environment and permissions.
 
 The existing repository status vocabulary remains authoritative: `DONE_VERIFIED`, `PARTIAL`, `TODO`, `BLOCKED`, and `DEFERRED`. Do not copy Unlazy's checker, hooks, approval store, or orchestration runtime into this project without a demonstrated need; the current GitHub Actions, canonical handoff and test infrastructure remain the source of execution evidence.
+
+
+## External engineering/design reference re-check — 2026-11-07
+
+The five user-supplied repositories were rechecked as methodology references; they are not project dependencies and their skill trees, hooks, scripts or orchestration runtimes must not be copied wholesale.
+
+- [unlazy](https://github.com/Leonxlnx/unlazy): current source describes 2.1.0; the README says this is not identified as a tagged GitHub release. Use its acceptance-ledger, observable-oracle and re-verification ideas, but retain this repository's existing handoff/status vocabulary and do not install its checker.
+- [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): `skill.json` reports 2.15.0. Use targeted UX/accessibility guidance where relevant; the project's own `docs/DESIGN-SYSTEM.md`, product requirements and research-first visual direction remain authoritative.
+- [obra/superpowers](https://github.com/obra/superpowers/releases/tag/v7.0.2): v7.0.2. Retain test-first work, root-cause debugging, code review and verification-before-completion.
+- [mattpocock/skills](https://github.com/mattpocock/skills/releases/tag/v1.3.2): v1.3.2. Retain deep modules, explicit interfaces, behavior-focused tests, source-backed research and two-axis review.
+- [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/releases/tag/v5.3.3): v5.3.3. Retain codebase/data-flow mapping, connected-code review, reuse before adding abstractions and explicit residual-risk reporting.
+
+These practices supplement, but never weaken, the project's Lao evidence, typed-IPA, source-rights, privacy, fail-closed and exact-head verification requirements. Recheck upstream versions before future adoption; mutable main-branch versions must not be treated as immutable pins.
