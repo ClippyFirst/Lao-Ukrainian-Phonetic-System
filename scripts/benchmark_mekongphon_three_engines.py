@@ -451,26 +451,58 @@ def parse_mekong_tone_categories(suffix: str) -> list[str] | None:
     return categories
 
 
-def token_error_rate(references: list[list[str]], predictions: list[list[str]]) -> dict[str, object]:
-    def distance(a: list[str], b: list[str]) -> int:
-        previous = list(range(len(b) + 1))
-        for i, left in enumerate(a, 1):
-            current = [i]
-            for j, right in enumerate(b, 1):
-                current.append(min(current[-1] + 1, previous[j] + 1, previous[j - 1] + (left != right)))
-            previous = current
-        return previous[-1]
+def score_tone_categories(
+    references: list[list[str]],
+    predictions: list[list[str | None]],
+) -> dict[str, object]:
+    """Score only known aligned categories; report unresolved coverage separately."""
+    covered = 0
+    errors = 0
+    unresolved = 0
+    unresolved_words = 0
+    exact_words = 0
+    complete_words = 0
+    length_mismatches = 0
+    total = sum(len(row) for row in references)
 
-    edits = sum(distance(ref, pred) for ref, pred in zip(references, predictions))
-    total = sum(len(ref) for ref in references)
-    exact = sum(ref == pred for ref, pred in zip(references, predictions))
+    for reference, prediction in zip(references, predictions):
+        if len(reference) != len(prediction):
+            length_mismatches += 1
+            unresolved += len(reference)
+            unresolved_words += 1
+            continue
+        word_complete = True
+        word_exact = True
+        for expected, actual in zip(reference, prediction):
+            if actual is None or not str(actual).strip():
+                unresolved += 1
+                word_complete = False
+                word_exact = False
+                continue
+            covered += 1
+            if actual != expected:
+                errors += 1
+                word_exact = False
+        if word_complete:
+            complete_words += 1
+            if word_exact:
+                exact_words += 1
+        else:
+            unresolved_words += 1
+
     return {
         "n": len(references),
-        "exact_matches": exact,
-        "exact_match_rate": exact / len(references) if references else None,
-        "category_error_rate": edits / total if total else None,
-        "coverage": sum(bool(pred) for pred in predictions) / len(predictions) if predictions else 0.0,
+        "exact_matches": exact_words,
+        "exact_match_rate": exact_words / len(references) if references else None,
+        "complete_words": complete_words,
+        "complete_word_rate": complete_words / len(references) if references else None,
+        "category_error_rate": errors / covered if covered else None,
+        "coverage": covered / total if total else 0.0,
+        "covered_categories": covered,
         "reference_categories": total,
+        "unresolved_categories": unresolved,
+        "unresolved_words": unresolved_words,
+        "word_length_mismatches": length_mismatches,
     }
 
 
@@ -522,7 +554,7 @@ def main() -> int:
         partial_warning_shape_counts: dict[str, int] = {}
         segmental_withheld = 0
         tonal_withheld = 0
-        engine_tone_categories: list[list[str] | None] = []
+        engine_tone_categories: list[list[str | None] | None] = []
         engine_tone_contexts: list[list[dict[str, str]] | None] = []
         mekong_convention_tonal_outputs: list[str] = []
 
@@ -534,8 +566,7 @@ def main() -> int:
                 status = str(output["status"])
                 raw_categories = output.get("tone_categories")
                 engine_tone_categories.append(
-                    [str(value) for value in raw_categories]
-                    if raw_categories is not None else None
+                    list(raw_categories) if raw_categories is not None else None
                 )
                 raw_contexts = output.get("tone_contexts")
                 engine_tone_contexts.append(
@@ -646,7 +677,7 @@ def main() -> int:
                 continue
             raw_categories = engine_tone_categories[index]
             if raw_categories is not None:
-                pred_categories = raw_categories if all(raw_categories) else []
+                pred_categories = raw_categories
             else:
                 pred_suffix = extract_tone_suffix(pred_segmental, pred_tonal)
                 parsed_categories = parse_mekong_tone_categories(pred_suffix or "")
@@ -700,7 +731,7 @@ def main() -> int:
                 ])
                 tone_unresolved_contexts[context_key] = tone_unresolved_contexts.get(context_key, 0) + 1
 
-        tone_category_metrics = token_error_rate(
+        tone_category_metrics = score_tone_categories(
             tone_category_references, tone_category_predictions
         )
         engine_predictions[name] = {
@@ -786,7 +817,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "3.0",
+        "schema_version": "4.0",
         "cross_engine_shared_coverage": shared_comparisons,
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
@@ -817,7 +848,7 @@ def main() -> int:
             "latency": "per-item inference; model loading excluded; CPU runner, sequential items. ClippyFirst emits segmental and tonal fields in one analysis pass, so both availability latencies are equal and must not be summed; Lao2IPA and MekongPhon use separate segmental and tonal calls",
             "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. It cannot be compared numerically with the paper's sentence-level Table 4.",
             "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is not independently re-adjudicated gold for this project.",
-            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 additionally reports covered-subset metrics, isolated tone-symbol metrics, and tone-category metrics; do not compare CER across schema versions without accounting for their different reference contracts.",
+            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 additionally reports covered-subset metrics, isolated tone-symbol metrics, and tone-category metrics. Schema 4.0 scores only known syllable-aligned tone categories and reports unresolved-category coverage separately; unknown tone is never serialized as a literal category. Do not compare CER or tone-category rates across schema versions without accounting for their different scoring contracts.",
         },
         "environment": {
             "python": sys.version,
@@ -849,6 +880,10 @@ def main() -> int:
                 "tone_category_confusion_aligned_words": result["tone_category_confusion_aligned_words"],
                 "tone_category_error_contexts": result["tone_category_error_contexts"],
                 "tone_category_word_length_mismatches": result["tone_category_word_length_mismatches"],
+                "tone_category_unresolved_words": result["tone_category_on_segmental_exact_subset"]["unresolved_words"],
+                "tone_category_coverage": result["tone_category_on_segmental_exact_subset"]["coverage"],
+                "tone_category_covered_categories": result["tone_category_on_segmental_exact_subset"]["covered_categories"],
+                "tone_category_unresolved_categories": result["tone_category_on_segmental_exact_subset"]["unresolved_categories"],
                 "runtime_errors": result["runtime_errors"],
                 "status_counts": result["status_counts"],
                 "warning_counts": result["warning_counts"],
