@@ -2,6 +2,7 @@
 
 - [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
 - [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — українські відповідники приголосних, голосних, дифтонгів і позиційних IPA-реалізацій.
+- [Попередній IPA-прев’ю за графемами](docs/lao-grapheme-ipa-preview.md) — часткові сегментні підказки з явною невизначеністю; не є підтвердженою вимовою.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 

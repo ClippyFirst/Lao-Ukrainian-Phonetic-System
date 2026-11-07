@@ -2171,3 +2171,14 @@ Verification status: exact-head CI for this new code/test/documentation head is 
 - Passed: IPA gold schema validation, repository audit, 240 Python tests, 121 Node tests, generated browser-data reproducibility, static build, 4 real Chromium tests and built-page asset checks.
 - Initial run 42397809554 found a stale expected «кау» fixture; after changing it to «кав», the exact follow-up passed. No failure is concealed.
 - This is engineering verification only. Expert Ukrainian/Lao review, source-attested /aw/ cases, a sourced traditional-name exception list and independent IPA gold (currently 0) remain open.
+
+
+## Grapheme-level IPA preview fallback — 2026-11-07
+
+- User approved integrating a grapheme-aware fallback preview into the IPA engine, with uncertainty made explicit.
+- Dedicated branch: `feature/grapheme-fallback-ipa-preview-20261107`, based on practical-transcription branch head `0f6f0b9b379b3d9c5052828a230e5717bc7b8039`; `main` is untouched and prior PRs are not retargeted or merged.
+- Added `src/lao_ukrainian/grapheme_preview.py` and typed preview objects. When full IPA is withheld, registered positional onset/cluster values and parser-confirmed complete vowel/coda units can be surfaced as a partial segmental IPA preview.
+- The preview records grapheme roles, unresolved graphemes, warnings and a typed `PROVISIONAL` result. It never infers tone, never invents IPA for non-core Pali/Sanskrit graphemes, and is never passed to the Ukrainian adapter. Established `phonemic_ipa` and `practical_ukrainian` fields remain withheld.
+- Added tests for unconsumed suffixes, malformed multiple tone marks, partial onset, non-core Pali graphemes and complete syllables.
+- Specification: `docs/lao-grapheme-ipa-preview.md`.
+- Status: PARTIAL pending exact-head Verify/data audit. Broader grapheme inventory coverage and source/expert adjudication remain separate tasks; this preview is not an accuracy claim.

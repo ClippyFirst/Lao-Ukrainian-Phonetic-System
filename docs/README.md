@@ -27,6 +27,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [Romanization → Ukrainian matrix](romanization-to-ukrainian-matrix.md)
 - [Ukrainian target policy](ukrainian-target.md)
 - [Лаосько-українська практична транскрипція](lao-ukrainian-practical-transcription.md)
+- [Grapheme-level provisional IPA preview](lao-grapheme-ipa-preview.md)
 - [Unicode handling](unicode.md)
 
 ### Linguistics and implementation
