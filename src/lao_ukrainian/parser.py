@@ -153,7 +153,7 @@ def segment_unspaced_token(token: str) -> list[str] | None:
 
 
 def segment_syllables(text: str, *, infer_unspaced: bool = False) -> list[str]:
-    tokens = [x for x in text.replace("\\u200b", " ").split() if x]
+    tokens = [x for x in text.replace("\u200b", " ").split() if x]
     if not infer_unspaced:
         return tokens
     output: list[str] = []
