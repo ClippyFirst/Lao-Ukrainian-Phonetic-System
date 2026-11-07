@@ -11,7 +11,7 @@ This repository develops a **project-specific Ukrainian practical transcription 
 It is deliberately **not**:
 
 - Lao-character → Ukrainian-character substitution;
-- treating romanization as the primary phonetic method (the optional fallback is separate and explicitly lower-information);
+- treating romanization as the primary phonetic method; the optional romanization method is separate, lower-information, and never a fallback when phonetic analysis is unresolved;
 - a claim to be an official Ukrainian national standard;
 - a universal transcription system for every Lao dialect;
 - a lexical word-segmentation engine.
@@ -55,7 +55,7 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 
 The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer.
 
-Known limitations remain explicit: automatic segmentation of unspaced multi-syllable text, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
+Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
 
 ## Quick start and verification
 
@@ -80,7 +80,7 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 
 ## Documentation
 
-Start at the [documentation index](docs/README.md). It identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+Start at the [documentation index](docs/README.md). The latest [repository-wide audit](docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) records the current architecture, branch/PR reconciliation, verification evidence and blockers. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
 ## Web service
 
