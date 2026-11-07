@@ -1,6 +1,6 @@
 # Lao: IPA benchmarking and external systems
 
-**Status: benchmark harness added; empirical accuracy remains unmeasured until independently adjudicated gold rows exist.** This is not a claim that candidate engines have been installed, run, licensed for redistribution, or validated for Lao.
+**Status: independent project accuracy remains unmeasured because adjudicated project gold is empty.** A separate external comparator diagnostic has been run against MekongPhon's 100-entry held-out seed lexicon; it is not independent project gold, not the paper's sentence-level test, and not a publication-grade accuracy claim.
 
 ## Required pipeline boundary
 
