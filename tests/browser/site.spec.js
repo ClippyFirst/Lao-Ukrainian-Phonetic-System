@@ -48,6 +48,12 @@ test("keyboard users can reach the main tool through the skip link", async ({ pa
   await expect(page.locator("#lao-input")).toBeFocused();
   await page.keyboard.type("ຂາ");
   await expect(page.locator("#output")).toHaveText("к'а");
+  for (const selector of ["#example", "#example-complex", "#clear", "#copy", "#mode-phonetic", "#mode-romanization"]) {
+    await page.keyboard.press("Tab");
+    await expect(page.locator(selector)).toBeFocused();
+  }
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
 });
 
 test("the service exposes named landmarks, controls, and live result announcements", async ({ page }) => {
