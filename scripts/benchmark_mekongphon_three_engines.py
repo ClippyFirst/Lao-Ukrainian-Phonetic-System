@@ -127,6 +127,21 @@ def load_project():
                 if item.status != "OK"
             ],
             "tone_categories": tone_categories,
+            "tone_contexts": [
+                {
+                    "onset": item.onset or "",
+                    "consonant_class": item.consonant_class or "",
+                    "vowel": item.vowel or "",
+                    "coda": item.coda or "",
+                    "tone_mark": item.tone_mark or "none",
+                    "syllable_type": item.syllable_type or "",
+                    "tone_category": item.phonetic_result.tone_category if item.phonetic_result else "",
+                    "tone_rule_id": next(
+                        (rule for rule in item.rules if str(rule).startswith("VNT-")), ""
+                    ),
+                }
+                for item in syllables
+            ],
             "segmental_seconds": segmental_elapsed,
             "tonal_seconds": 0.0,
         }
@@ -359,6 +374,7 @@ def main() -> int:
         segmental_withheld = 0
         tonal_withheld = 0
         engine_tone_categories: list[list[str] | None] = []
+        engine_tone_contexts: list[list[dict[str, str]] | None] = []
         mekong_convention_tonal_outputs: list[str] = []
 
         for source in sources:
@@ -371,6 +387,14 @@ def main() -> int:
                 engine_tone_categories.append(
                     [str(value) for value in raw_categories]
                     if raw_categories is not None else None
+                )
+                raw_contexts = output.get("tone_contexts")
+                engine_tone_contexts.append(
+                    [
+                        {str(key): str(value) for key, value in context.items()}
+                        for context in raw_contexts
+                    ]
+                    if raw_contexts is not None else None
                 )
                 raw_mekong_tonal = output.get("mekong_tonal")
                 mekong_tonal = (
@@ -425,6 +449,7 @@ def main() -> int:
                 tonal_durations.append(0.0)
                 errors += 1
                 engine_tone_categories.append(None)
+                engine_tone_contexts.append(None)
                 mekong_convention_tonal_outputs.append("")
             segmental_outputs.append(segmental)
             tonal_outputs.append(tonal)
@@ -457,6 +482,7 @@ def main() -> int:
         tone_category_predictions: list[list[str]] = []
         tone_category_alignment_failures = 0
         tone_category_confusion: dict[str, int] = {}
+        tone_category_error_contexts: dict[str, int] = {}
         tone_category_length_mismatches = 0
         for index, (ref_segmental, ref_tonal, pred_segmental, pred_tonal) in enumerate(zip(
             segmental_references, tonal_references, segmental_outputs, tonal_outputs
@@ -483,9 +509,24 @@ def main() -> int:
             if len(ref_categories) != len(pred_categories):
                 tone_category_length_mismatches += 1
             else:
-                for expected, actual in zip(ref_categories, pred_categories):
+                contexts = engine_tone_contexts[index] or []
+                for category_index, (expected, actual) in enumerate(zip(ref_categories, pred_categories)):
                     key = f"{expected}=>{actual}"
                     tone_category_confusion[key] = tone_category_confusion.get(key, 0) + 1
+                    if expected != actual and category_index < len(contexts):
+                        context = contexts[category_index]
+                        context_key = "|".join([
+                            key,
+                            f"class={context.get('consonant_class', '')}",
+                            f"type={context.get('syllable_type', '')}",
+                            f"vowel={context.get('vowel', '')}",
+                            f"coda={context.get('coda', '')}",
+                            f"mark={context.get('tone_mark', '')}",
+                            f"rule={context.get('tone_rule_id', '')}",
+                        ])
+                        tone_category_error_contexts[context_key] = (
+                            tone_category_error_contexts.get(context_key, 0) + 1
+                        )
         tone_category_metrics = token_error_rate(
             tone_category_references, tone_category_predictions
         )
@@ -502,6 +543,7 @@ def main() -> int:
             "tone_only_on_segmental_exact_subset": tone_only_metrics,
             "tone_category_on_segmental_exact_subset": tone_category_metrics,
             "tone_category_confusion_aligned_words": dict(sorted(tone_category_confusion.items())),
+            "tone_category_error_contexts": dict(sorted(tone_category_error_contexts.items())),
             "tone_category_word_length_mismatches": tone_category_length_mismatches,
             "segmental_exact_subset_n": len(tone_references),
             "tone_only_alignment_failures": tone_alignment_failures,
@@ -616,6 +658,7 @@ def main() -> int:
                 "tone_category_error_rate": result["tone_category_on_segmental_exact_subset"]["category_error_rate"],
                 "tone_category_exact": result["tone_category_on_segmental_exact_subset"]["exact_match_rate"],
                 "tone_category_confusion_aligned_words": result["tone_category_confusion_aligned_words"],
+                "tone_category_error_contexts": result["tone_category_error_contexts"],
                 "tone_category_word_length_mismatches": result["tone_category_word_length_mismatches"],
                 "runtime_errors": result["runtime_errors"],
                 "status_counts": result["status_counts"],
