@@ -132,50 +132,54 @@ def analyze_rows(rows, registry):
             pos="initial" if si==0 else "final" if si==len(syllables)-1 else "medial"
             vowel=p["vowel"]; stype=classify_syllable_type(vowel,st["coda"],registry) or "unknown"
             onset_class=p.get("onset_class") or registry["consonants"].get(p.get("onset") or "",{}).get("class","unknown")
-            mark=p.get("tone_mark") or "none"; component_offset=offset; observed={}
+            mark=p.get("tone_mark") or "none"; component_offset=offset; observed={}; expected_by_role={}
             for comp in st["components"]:
                 toks=tokenize_ipa(comp["ipa"])
                 aligned=[mapping.get(component_offset+k) for k in range(len(toks))]
                 actual="".join(x for x in aligned if x is not None)
                 observed[comp["role"]]=actual
+                expected_by_role[comp["role"]]=comp["ipa"]
                 units[(comp["role"],comp["surface"],comp["ipa"],actual,pos,actual==comp["ipa"])]+=1
                 component_offset+=len(toks)
             graphemes=grapheme_units(surface)
             for gi,(unit,start,end) in enumerate(graphemes):
                 for idx in range(start,end):
                     role,scope=role_for_index(idx,st,surface)
-                    if role=="tone_mark": actual=""; pattern=surface[idx]
+                    if role=="tone_mark": actual=""; expected=""; pattern=surface[idx]
                     elif role=="high_class_modifier":
-                        actual=""; pattern=st["onset_form"]
+                        actual=""; expected=""; pattern=st["onset_form"]
                     elif role in {"onset_base","labialization_modifier"}:
-                        actual=observed.get("onset",""); pattern=st["onset_form"]
-                    elif role=="coda": actual=observed.get("coda",""); pattern=st["coda"] or ""
+                        actual=observed.get("onset",""); expected=expected_by_role.get("onset",""); pattern=st["onset_form"]
+                    elif role=="coda":
+                        actual=observed.get("coda",""); expected=expected_by_role.get("coda",""); pattern=st["coda"] or ""
                     else:
-                        actual=observed.get("vowel_structure","")
+                        actual=observed.get("vowel_structure",""); expected=expected_by_role.get("vowel_structure","")
                         pattern=vowel.get("pattern") or "".join(surface[j] for j in st["vowel_indices"])
                     prev=graphemes[gi-1][0] if gi else "^"
                     nxt=graphemes[gi+1][0] if gi+1<len(graphemes) else "$"
                     sound[(unit,role,pos,pattern,actual,scope)]+=1
                     contexts[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope)]+=1
                     if role != "tone_mark" and role != "high_class_modifier":
-                        context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,actual)]+=1
+                        context_sound[(unit,role,pos,prev,nxt,onset_class,vowel.get("id",""),stype,st["coda"] or "open",mark,scope,expected,actual)]+=1
                     if role=="tone_mark": tone[(unit,pos,onset_class,stype,vowel.get("id",""),st["coda"] or "open")]+=1
     outcome_groups={}
     for full_key,count in context_sound.items():
-        group_key=full_key[:-1]
-        outcome_groups.setdefault(group_key,Counter())[full_key[-1]] += count
+        group_key=full_key[:-2]
+        outcome_groups.setdefault(group_key,Counter())[(full_key[-2],full_key[-1])] += count
     distributions=[]
     for key,outcome_counts in outcome_groups.items():
         total=sum(outcome_counts.values())
-        outcomes=[{"ipa":ipa,"count":count} for ipa,count in outcome_counts.items()]
-        outcomes.sort(key=lambda item:(-item["count"],item["ipa"]))
+        outcomes=[{"engine_ipa":pair[0],"reference_ipa":pair[1],"count":count} for pair,count in outcome_counts.items()]
+        outcomes.sort(key=lambda item:(-item["count"],item["engine_ipa"],item["reference_ipa"]))
+        matching=sum(item["count"] for item in outcomes if item["engine_ipa"]==item["reference_ipa"])
         distributions.append({
             "grapheme":key[0],"role":key[1],"syllable_position_in_word":key[2],
             "previous_grapheme":key[3],"next_grapheme":key[4],"onset_class":key[5],
             "vowel_id":key[6],"syllable_type":key[7],"coda":key[8],
             "tone_mark":key[9],"sound_scope":key[10],"observations":total,
             "realizations":[{**item,"share":item["count"]/total} for item in outcomes],
-            "consistency":outcomes[0]["count"]/total if outcomes else None,
+            "engine_match_share":matching/total,
+            "reference_realization_consistency":max(item["count"] for item in outcomes)/total if outcomes else None,
             "evidence_tier":"high-frequency" if total>=100 else "medium-frequency" if total>=30 else "low-frequency",
         })
     return {
