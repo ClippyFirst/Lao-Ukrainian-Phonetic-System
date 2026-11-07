@@ -456,6 +456,8 @@ def main() -> int:
         tone_category_references: list[list[str]] = []
         tone_category_predictions: list[list[str]] = []
         tone_category_alignment_failures = 0
+        tone_category_confusion: dict[str, int] = {}
+        tone_category_length_mismatches = 0
         for index, (ref_segmental, ref_tonal, pred_segmental, pred_tonal) in enumerate(zip(
             segmental_references, tonal_references, segmental_outputs, tonal_outputs
         )):
@@ -478,6 +480,12 @@ def main() -> int:
                 pred_categories = parsed_categories
             tone_category_references.append(ref_categories)
             tone_category_predictions.append(pred_categories)
+            if len(ref_categories) != len(pred_categories):
+                tone_category_length_mismatches += 1
+            else:
+                for expected, actual in zip(ref_categories, pred_categories):
+                    key = f"{expected}=>{actual}"
+                    tone_category_confusion[key] = tone_category_confusion.get(key, 0) + 1
         tone_category_metrics = token_error_rate(
             tone_category_references, tone_category_predictions
         )
@@ -493,6 +501,8 @@ def main() -> int:
             "tonal_mekong_convention_vs_pron_with_tones": mekong_convention_tonal_metrics,
             "tone_only_on_segmental_exact_subset": tone_only_metrics,
             "tone_category_on_segmental_exact_subset": tone_category_metrics,
+            "tone_category_confusion_aligned_words": dict(sorted(tone_category_confusion.items())),
+            "tone_category_word_length_mismatches": tone_category_length_mismatches,
             "segmental_exact_subset_n": len(tone_references),
             "tone_only_alignment_failures": tone_alignment_failures,
             "tone_category_alignment_failures": tone_category_alignment_failures,
@@ -605,6 +615,8 @@ def main() -> int:
                 "tone_only_coverage": result["tone_only_on_segmental_exact_subset"]["coverage"],
                 "tone_category_error_rate": result["tone_category_on_segmental_exact_subset"]["category_error_rate"],
                 "tone_category_exact": result["tone_category_on_segmental_exact_subset"]["exact_match_rate"],
+                "tone_category_confusion_aligned_words": result["tone_category_confusion_aligned_words"],
+                "tone_category_word_length_mismatches": result["tone_category_word_length_mismatches"],
                 "runtime_errors": result["runtime_errors"],
                 "status_counts": result["status_counts"],
                 "warning_counts": result["warning_counts"],
