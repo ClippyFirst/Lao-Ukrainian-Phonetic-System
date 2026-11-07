@@ -167,3 +167,15 @@ A subsequent benchmark pass attributes tone-category substitutions to the Clippy
 There are also eight word-level category-sequence length mismatches and four reference-alignment failures in the ClippyFirst category subset. The five aligned substitutions do **not** justify changing the general Vientiane rule table: each ClippyFirst selector is already source-linked to the Ueda/SEAsite central-Vientiane model, whereas the MekongPhon reference may contain lexical, dialectal, annotation-convention or stress/context differences. The held-out set must not be used as training data or as a source of ad hoc exception rules. A correction requires an independent lexical source or expert adjudication, and a separate development set—not tuning on this test split.
 
 Tone confusion/context aggregate run [42358185703](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358185703) SUCCESS; artifact [13568751034](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358185703/artifacts/13568751034), SHA-256 `0a5e89667072e58f721929f535423c0278042a615a99c29d989505e63de5c73b`.
+
+### CPU latency after one-pass accounting correction
+
+Final benchmark workflow [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909) SUCCESS; aggregate artifact [13568264361](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909/artifacts/13568264361), SHA-256 `8dbbd4d4043cea01d961d8cccad542ad9f1406c4a6245f64bac7ed9e3517af39`.
+
+| Engine | Segmental availability, mean CPU ms/input | Tonal availability, mean CPU ms/input |
+|---|---:|---:|
+| ClippyFirst | 12.309 | 12.309 |
+| Lao2IPA 1.0.0 | 0.009 | 0.020 |
+| MekongPhon Neural | 68.401 | 83.735 |
+
+ClippyFirst computes segmental IPA and tone in one `analyze()` pass, so both outputs become available at the same latency; these two values must not be summed. Lao2IPA and MekongPhon are measured as separate segmental and tonal calls. Model loading is excluded; these are single-run hosted CPU timing diagnostics, not stable cross-machine performance guarantees. ClippyFirst is substantially faster than the neural model on this runner, but much slower than Lao2IPA's lightweight transliteration function. This is an optimization lead, not a correctness criterion.
