@@ -42,6 +42,20 @@ test("Lao h maps to Ukrainian г in the project policy", () => {
   assert.equal(r.syllables[0].ukrainian, "га");
 });
 
+test("Lao initial /j/ uses Ukrainian йотовані vowels", () => {
+  assert.equal(analyze("ຢາ").syllables[0].ipa, "jaː");
+  assert.equal(analyze("ຢາ").output, "я");
+  assert.equal(analyze("ເຢ").syllables[0].ukrainian, "є");
+  assert.equal(analyze("ຢີ").syllables[0].ukrainian, "ї");
+  assert.equal(analyze("ຢູ").syllables[0].ukrainian, "ю");
+});
+
+test("Lao /w/ glide is rendered as Ukrainian в, including /aw/", () => {
+  const result = analyze("ເຂົາ");
+  assert.equal(result.syllables[0].ipa, "kʰaw");
+  assert.equal(result.syllables[0].ukrainian, "к'ав");
+});
+
 test("checked coda is dead", () => {
   const r = analyze("ກັບ");
   assert.equal(r.syllables[0].ipa, "kap");
