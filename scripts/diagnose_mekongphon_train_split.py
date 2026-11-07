@@ -24,6 +24,8 @@ DATA_URL = (
 )
 DATA_REVISION = "f80f6c1840c4818b51e05f2e00cded4701a5b662"
 EXPECTED_ROWS = 6219
+EXPECTED_DUPLICATE_ROWS = 3
+EXPECTED_SHA256 = "2d0f68989009620980ced3386f11a640e6167404308eeb6a79efc52bc8e40ee0"
 MEKONG_CONTOUR_TO_CATEGORY = {
     "˩˧": "low-rising",
     "˧˥": "high-rising",
@@ -133,12 +135,17 @@ def load_dataset() -> tuple[list[dict[str, str]], str]:
     with urllib.request.urlopen(request, timeout=60) as response:
         payload = response.read()
     digest = hashlib.sha256(payload).hexdigest()
+    if digest != EXPECTED_SHA256:
+        raise ValueError(f"Pinned MekongPhon train split SHA-256 changed: {digest}")
     rows = list(csv.DictReader(payload.decode("utf-8-sig").splitlines()))
     required = {"orth", "pron_no_tones", "pron_with_tones"}
     if not rows or not required.issubset(rows[0]):
         raise ValueError("MekongPhon train split is empty or has an unexpected schema")
     if len(rows) != EXPECTED_ROWS:
         raise ValueError(f"Expected {EXPECTED_ROWS} train rows, received {len(rows)}")
+    duplicate_rows = len(rows) - len({row["orth"] for row in rows})
+    if duplicate_rows != EXPECTED_DUPLICATE_ROWS:
+        raise ValueError(f"Expected {EXPECTED_DUPLICATE_ROWS} duplicate spellings, received {duplicate_rows}")
     if any(not row["orth"].strip() or not row["pron_no_tones"].strip()
            or not row["pron_with_tones"].strip() for row in rows):
         raise ValueError("MekongPhon train split contains empty source or IPA fields")
@@ -155,7 +162,7 @@ def main() -> int:
 
     status_counts: Counter[str] = Counter()
     warning_counts: Counter[str] = Counter()
-    partial_shapes: Counter[str] = Counter()
+    non_established_shapes: Counter[str] = Counter()
     tone_contexts: Counter[str] = Counter()
     tone_mismatches: Counter[str] = Counter()
     segmental_predictions: list[str] = []
@@ -218,7 +225,7 @@ def main() -> int:
                     f"coda={item.coda or ''}",
                     f"mark={item.tone_mark or 'none'}",
                 ])
-                partial_shapes[shape] += 1
+                non_established_shapes[shape] += 1
 
         tone_reference_categories += len(reference_categories)
         if not reference_categories:
@@ -281,6 +288,7 @@ def main() -> int:
             "url": DATA_URL,
             "split": "lao_train.csv",
             "rows": len(rows),
+            "duplicate_spelling_rows": len(rows) - len({row["orth"] for row in rows}),
             "sha256": dataset_sha,
             "use": "rule-discovery and development diagnostics only; not held-out evaluation or independent gold",
             "redistribution": "No source rows, IPA references, or per-item predictions are retained in this report.",
@@ -322,8 +330,8 @@ def main() -> int:
         "diagnostics": {
             "status_counts": dict(sorted(status_counts.items())),
             "warning_counts": dict(sorted(warning_counts.items())),
-            "partial_parse_shapes": [
-                {"context": key, "count": count} for key, count in partial_shapes.most_common(50)
+            "non_established_syllable_shapes": [
+                {"context": key, "count": count} for key, count in non_established_shapes.most_common(50)
             ],
             "tone_context_counts": [
                 {"context": key, "count": count} for key, count in tone_contexts.most_common(100)
