@@ -1859,7 +1859,7 @@ Commands/checks actually executed through hosted GitHub Actions: schema 3.0 thre
 - PR #137 remains open/unmerged: canonical deterministic rule-engine work, branch `benchmark/mekongphon-three-engine`, head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`.
 - PR #138 remains open/unmerged and separate: neural adapter + rights review, branch `audit/repository-documentation-and-mekongphon-rights-20261107`, head `144d7369a88b88d26e29b80bc2cb3f262176f431`; left untouched in this pass.
 - PR #139 remains open/unmerged: immutable neural inference benchmark, branch `benchmark/mekongphon-immutable-inference-20261107`, head `929e0813bac46df4c316125620b3657a617275f5`, based on PR #137.
-- PR #140 remains open/unmerged: rule-engine error analysis/refinements, branch `improve/rule-engine-error-analysis-20261107`, current documentation head `2e5725c68ce151d6c31e1c776137ebe56a9308e3`, based on PR #139. No PR was merged.
+- PR #140 remains open/unmerged: rule-engine error analysis/refinements, branch `improve/rule-engine-error-analysis-20261107`, final documentation head `fe31d598c98f949945bfb7d22f9e3219088694ee`, based on PR #139. No PR was merged.
 
 ### Implemented refinements
 
