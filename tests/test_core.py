@@ -29,6 +29,17 @@ class TestCore(unittest.TestCase):
         self.assertEqual(analyze("ກ້າ").syllables[0].tone, "high-falling")
         self.assertEqual(analyze("ຄ້າ").syllables[0].tone, "high-falling")
 
+    def test_tone_matrix_cross_checks_live_and_dead_rhymes(self):
+        # Independent Vientiane chart: high-class live unmarked syllables
+        # remain low-rising even with a short vowel plus sonorant coda.
+        self.assertEqual(analyze("ຂົງ").syllables[0].tone, "low-rising")
+        self.assertEqual(analyze("ຂູງ").syllables[0].tone, "low-rising")
+
+        # Low-class short open/dead syllables and live mai-ek syllables
+        # are high-mid; do not retune these from conflicting dictionary rows.
+        self.assertEqual(analyze("ຄະ").syllables[0].tone, "high-mid")
+        self.assertEqual(analyze("ຄີ່").syllables[0].tone, "high-mid")
+
     def test_low_class_ng(self):
         s = analyze("ງາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "ŋaː")
