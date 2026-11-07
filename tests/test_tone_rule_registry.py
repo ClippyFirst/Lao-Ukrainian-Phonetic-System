@@ -211,7 +211,7 @@ class TestToneRuleRegistry(unittest.TestCase):
         self.assertEqual(len(rules), 1)
         row = rules[0]
         self.assertEqual(row["rule_id"], "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED")
-        self.assertEqual(row["condition"], "initial-open-short-a-unmarked")
+        self.assertEqual(row["condition"], "initial-open-short-a-unmarked-followed-by-major-weighted-syllable")
         self.assertEqual(row["tone"], "")
         self.assertEqual(row["contour"], "")
         self.assertEqual(row["status"], "analysis-dependent")
