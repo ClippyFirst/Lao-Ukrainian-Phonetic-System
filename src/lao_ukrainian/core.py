@@ -121,7 +121,7 @@ def analyze(text: str) -> Analysis:
                 tone=tone,
                 tone_contour=next(
                     (row["contour"] for row in registry["tone_rules"]
-                     if tone is not None and row["rule_id"] in rules),
+                     if tone is not None and row["rule_id"] in rules and row["contour"]),
                     None,
                 ),
                 status=phonetic_status,
