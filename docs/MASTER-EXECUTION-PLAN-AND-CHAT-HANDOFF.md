@@ -1792,3 +1792,11 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Proceed with the narrow 100-entry Lao held-out seed-lexicon evaluation only: ephemeral runtime download, internal non-commercial comparison, aggregate-only output. Existing PR #137 has already performed this benchmark successfully; the report and artifact contain no raw source rows or per-item predictions. This is not a blanket permission for retention, derivatives, training/release, commercial use or redistribution.
 - The 100-entry file is the held-out seed-lexicon split, not the OPUS-expanded sentence corpus. The paper's prose lists NLLB, ParaCrawl and OpenSubtitles, but the checked-in Lao downloader fetches NLLB v1 and ParaCrawl-Bonus v9; OpenSubtitles v2024 is present in the Khmer downloader, not the Lao downloader. This source-list discrepancy is recorded for follow-up before full sentence-corpus use.
 - The exact CC license/version and source-component rights remain TODO; the machine-readable data license registry remains UNKNOWN. Independent project IPA gold remains 0; MekongPhon labels are comparator references, not ClippyFirst gold.
+
+
+## Branch and pull-request inventory refresh — 2026-11-07
+
+- Open PRs at inspection: #137 (MekongPhon benchmark/engine work) and #138 (this repository/docs/rights audit). Both remain open and unmerged.
+- Recent relevant merged PRs preserved: #22 (durable external G2P smoke report), #19 (evidence-gated IPA benchmark harness), and #17 (fail-closed handling of unconsumed Lao orthography). Their changes are already on main; no duplication required.
+- PR #21 is closed unmerged and explicitly superseded by PR #22; left untouched.
+- Branch inventory: main, benchmark/mekongphon-three-engine and audit/repository-documentation-and-mekongphon-rights-20261107. GitHub branch metadata reports protected=false for all three, including main. The separate branch-protection detail endpoint returned 403 to this integration; no settings were changed. Repository owner action is required to enable a ruleset with required review and Verify checks.
