@@ -2065,3 +2065,6 @@ The selected branch remains an **engineering-verified research prototype**, not 
 - Audit wording was then corrected to describe the first documentation batch rather than incorrectly calling its commit the final head. The resulting audit commit is `fcd40d66909241fe648a577d242f73bda654026f`.
 - This amendment is the final handoff reconciliation for the current execution. Its resulting commit SHA is reported in the execution summary; the exact-final-head Verify remains **NOT VERIFIED** because no workflow run was returned for the documentation commits. The previous green run remains valid only for code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`.
 
+
+
+- The branch head immediately before this final handoff metadata amendment was `3eddd09ab491525207a0e2a119a4b7d324ff2415`. The SHA returned for the commit that records this amendment is the final branch head and is stated in the execution report; a commit cannot embed its own hash without creating another commit.
