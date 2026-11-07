@@ -206,7 +206,7 @@ class TestToneRuleRegistry(unittest.TestCase):
         self.assertEqual(status, "ANALYSIS DEPENDENT")
         self.assertEqual(rules, ["TONE-NOT-ESTABLISHED-FOR-COMBINATION"])
 
-    def test_special_neutral_tone_rule_is_source_backed_and_separate(self):
+    def test_potential_minor_tone_rule_is_source_backed_and_separate(self):
         rules = self.registry["special_tone_rules"]
         self.assertEqual(len(rules), 1)
         row = rules[0]
