@@ -196,7 +196,7 @@ test("screen-reader roles expose the service controls and output state", async (
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Фонетичний" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
-  await expect(page.locator("#status")).toContainText("ГОТОВО");
+  await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
   await expect(page.locator("#copy")).toBeEnabled();
   await expect(page.locator("#copy")).toHaveAccessibleName("Копіювати");
   await expect(page.locator("#output")).toHaveAttribute("aria-atomic", "true");
