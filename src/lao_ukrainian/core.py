@@ -148,10 +148,10 @@ def analyze(text: str) -> Analysis:
             )
             candidates = [
                 Candidate(value, score, [why])
-                for value, score, why in rank_ukrainian_candidates(phonetic_result)
+                for value, score, why in rank_ukrainian_candidates(phonetic_result, registry)
             ]
-            practical = practical_from_ipa(phonetic_result)
-            syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"))
+            practical = practical_from_ipa(phonetic_result, registry)
+            syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"), registry)
             consonant_class = parsed.get("onset_class")
             if consonant_class is None and parsed.get("onset"):
                 consonant_class = registry["consonants"].get(parsed["onset"], {}).get("class")
