@@ -4,7 +4,8 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — repository inventory, documentation corrections, engineering status, unresolved acceptance gates and this pass's evidence.
+- [Repository-wide audit and documentation checkpoint — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — current architecture, branch/PR topology, documentation corrections, exact-head engineering evidence and remaining blockers.
+- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — preceding checkpoint; historical context, not the current branch status.
 
 ## Current language/research workpacks
 
