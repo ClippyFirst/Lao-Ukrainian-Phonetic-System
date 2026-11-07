@@ -1919,3 +1919,37 @@ Continuation started from PR #140 head `72597559e09eec26fc7e15d3b66beafbdaa23915
 - **TODO:** qualified Vientiane reviewer to assess the six benchmark candidates and onset restrictions; investigate vowel/offglide differences on a rights-cleared development set.
 - **BLOCKED:** independent IPA gold remains empty pending two qualified annotators and adjudication; MekongPhon source/corpus rights remain unresolved.
 - **DEFERRED:** merge, release and changing the default engine; PRs #137–#140 remain open and unmerged.
+
+
+## Schema 4.0 scoring and final selector checkpoint — 2026-11-07
+
+The follow-up uncovered and corrected two evaluation/contract defects:
+
+1. Benchmark code had converted Python `None` tone categories to the literal string `"None"`. This made missing tone look like a known category and inflated category coverage. Schema 4.0 now preserves nullable categories, computes category-level coverage over aligned known syllables, excludes unresolved values from the confusion matrix, and reports unresolved categories/words and word-length mismatches separately.
+2. A newly added test initially assumed U+200B was a valid Python token boundary. The public Python and browser APIs both reject U+200B during Unicode validation. The test and README were corrected to reflect the actual API contract; no unsupported zero-width separator behavior was added.
+
+The browser now imports `SPECIAL_TONE_RULES` from generated `web/data.js`, produced from `data/lao/special_tone_rules.csv`. This removes the previous independent hard-coded rule ID/status in the browser and keeps the source-backed selector synchronized with the Python registry. The selector remains narrow: initial unmarked short open /a/, no local warnings, supported/core onset and IPA, and a major-weighted following syllable in the same token (long vowel, diphthong or coda).
+
+### Final verification evidence
+
+- Full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937) on head `d4ea4f692b9376fd1236c8eaf7d4ae41683f5201`: IPA-gold structure, repository/data audit, 212 Python tests, external-G2P syntax/CLI, browser tests, generated-data reproducibility, Chromium UI and built-page checks all passed.
+- Schema 4.0 three-engine benchmark [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), code head `3853e1cf5336482ae08256c22e9e16e71fb1e36b`, aggregate artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`. Dataset SHA-256 remains `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`.
+- Intermediate failures were not hidden: benchmark run [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) exposed a missing `load_registry` import (100 project-predictor NameErrors); the import and a direct predictor regression were added, and later benchmark runs passed. Verify [42382362789](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382362789) exposed the incorrect U+200B test assumption; the test now asserts API rejection and the latest Verify passes. Earlier intermediate browser failures during generated-registry integration were fixed; the latest full Verify includes successful browser and reproducibility checks.
+- No local clone or local test run is claimed.
+
+### Schema 4.0 results and error patterns
+
+- Segmental, shared 97 covered items: ClippyFirst CER **6.49%**, 69/97 exact; Lao2IPA **7.72%**, 68/97; MekongPhon neural **5.79%**, 81/97. Full-set coverage: ClippyFirst 97%, Lao2IPA and neural 100%.
+- Tonal, shared 91 covered items using evaluation-only MekongPhon contour rendering: ClippyFirst CER **10.20%**, 52/91 exact; Lao2IPA **10.86%**, 53/91; MekongPhon neural **6.75%**, 68/91.
+- Tone-category scoring is now category-level and coverage-aware on the segmental-exact subset. ClippyFirst: 79/95 known categories covered (**83.16%**), 4 unresolved selector categories plus 12 categories withheld by 8 word-length mismatches; 4 actual known-category errors (5.06% of covered categories), 51/64 exact words and 52/64 complete words. Lao2IPA: 81/93 covered (87.10%), 56/64 exact, 0 errors among covered categories, 8 word-length mismatches. MekongPhon neural: 105/105 covered, 66/69 exact, 3 known-category errors (2.86%). These are dictionary-reference diagnostics, not independent gold.
+- The six potential minor open-/a/ candidates in the full 100-word set span high (1), low (2) and middle (3) onset classes. The engine withholds their tone; it does not infer a neutral contour. Only four candidates fall in the segmental-exact tone subset.
+- Four actual ClippyFirst tone disagreements remain: two high-class live unmarked syllables with coda `ງ` (vowels O/UU; engine low-rising vs reference high-mid), one low-class live `II` with mai-ek (engine high-mid vs reference low-falling), and one high-class live long `AA` unmarked (engine low-rising vs reference low-falling). Do not retune the Vientiane matrix from this non-adjudicated dictionary sample.
+- Leading segmental edit pairs are `j=>i` (6), `w=>ʋ` (5), `ː=>ə` (5), `a=>ː` (5), and `o=>w` (4). `w=>ʋ` also occurs in Lao2IPA (6), so it may be a reference convention; no global /w/↔/ʋ/ collapse was introduced. Character-level edits are diagnostic signals, not standalone phonological rules.
+
+### Final task ledger
+
+- **DONE_VERIFIED:** source-backed special-tone registry and generated browser mirror; narrow Python/browser selector with boundary/uncertain-onset tests; benchmark missing-tone semantics and schema 4.0; aggregate-only error report; exact-head full Verify and pinned three-engine benchmark.
+- **PARTIAL:** the six orthographic minor-syllable candidates remain hypotheses until a qualified Vientiane reviewer confirms them; four known tone disagreements remain reference-sensitive.
+- **TODO:** qualified reviewer to assess six candidates, onset restrictions and four tone contexts; investigate vowel/offglide patterns (`j=>i`, `ː=>ə`, `a=>ː`, `o=>w`) on a rights-cleared development set.
+- **BLOCKED:** independent IPA gold remains empty pending two qualified annotators and adjudication; MekongPhon upstream source/corpus rights remain UNKNOWN.
+- **DEFERRED:** merge, release and changing the default engine. PRs #137–#140 remain open and unmerged.
