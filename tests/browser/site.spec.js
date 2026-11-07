@@ -71,7 +71,7 @@ test("the service exposes named landmarks, controls, and live result announcemen
 });
 
 test("mobile, tablet, and 200-percent-equivalent layouts do not overflow horizontally", async ({ page }) => {
-  for (const width of [390, 768, 640]) {
+  for (const width of [320, 390, 640, 768]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await page.locator("#lao-input").fill("ຂາ");
@@ -86,4 +86,20 @@ test("mobile, tablet, and 200-percent-equivalent layouts do not overflow horizon
     expect(layout.body, `body overflows at ${width}px`).toBeLessThanOrEqual(layout.viewport);
     expect(layout.output, `output exceeds viewport at ${width}px`).toBeLessThanOrEqual(layout.viewport);
   }
+});
+
+
+test("touch emulation can use quick examples and switch output methods", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+  await page.locator("#example").tap();
+  await expect(page.locator("#output")).toHaveText("к'а");
+  await page.locator("#mode-romanization").tap();
+  await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
+  await context.close();
 });
