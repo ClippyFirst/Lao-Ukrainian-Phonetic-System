@@ -36,6 +36,7 @@ def analyze(text: str) -> Analysis:
             # C0V0 syllables as lacking independent lexical tone. Orthography
             # alone cannot prove that every matching shape is minor, so only
             # flag an initial short-A candidate and withhold its tone.
+            onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
             minor_rule = next(
                 (row for row in registry["special_tone_rules"]
                  if row["rule_id"] == "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"),
@@ -55,6 +56,8 @@ def analyze(text: str) -> Analysis:
                 and parsed.get("coda") is None
                 and parsed.get("tone_mark") is None
                 and not local_warnings
+                and ipa is not None
+                and onset_status == "core"
                 and following_major_weighted
                 and not following.get("warnings")
             )
@@ -123,7 +126,6 @@ def analyze(text: str) -> Analysis:
                 rules = [*rules, "PHON-IPA-WITHHELD-MALFORMED-TONE-MARK-ORDER",
                          "PHON-TONE-WITHHELD-MALFORMED-TONE-MARK-ORDER"]
 
-            onset_status = registry["consonants"].get(parsed.get("onset") or "", {}).get("status")
             phonetic_status = (
                 "SUPPORTED"
                 if ipa and onset_status == "core" and not local_warnings
