@@ -2140,3 +2140,10 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Current report is `docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md`; README and docs index now state the grapheme-role/context rule contract.
 - Latest completed code Verify and base context diagnostic are 42390739133 and 42390734319 on `16d267664beb25a9e26e9639aace42a2975582d1`. The later expanded positional/broader-context distributions and aggregate-only test guard have pending exact-head diagnostic 42391252559 and Verify 42391693342; await both before marking MEKONG-GRAPHEME-002 DONE_VERIFIED.
 - No production pronunciation rules were copied from raw dictionary word mappings. The engine's positional registry rules are preserved; IPA inventory tokenization was extended for documented labialized units and `əː`/`ə̯`; unsupported Ukrainian adaptations remain fail-closed.
+
+## Final branch-head reconciliation — 2026-11-07
+
+- Branch head before this final handoff update: `98241b8e751bcf5004bf4e46313c7b5836337558`; PR #140 remains open; 278 commits ahead of `main`, 0 behind. `main` remains untouched.
+- Exact-head Verify [42391831295] is pending; last completed full Verify [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133) covers base contextual-analyzer checkpoint `16d267664beb25a9e26e9639aace42a2975582d1`.
+- Expanded position and broad phonological-context arrays plus aggregate-only tests are in `b376296947c93b1ab01a4a26bdd5afcfc2e756db`; diagnostic [42391252559] is still pending. Keep MEKONG-GRAPHEME-002 PARTIAL until both runs pass.
+- The report and README/index now document the positional/contextual approach. The train split remains research-only development evidence, not independent gold.
