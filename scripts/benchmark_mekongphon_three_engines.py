@@ -659,7 +659,7 @@ def main() -> int:
             tone_predictions.append(pred_tone)
         tone_only_metrics = score(tone_references, tone_predictions)
         tone_category_references: list[list[str]] = []
-        tone_category_predictions: list[list[str]] = []
+        tone_category_predictions: list[list[str | None]] = []
         tone_category_alignment_failures = 0
         tone_category_confusion: dict[str, int] = {}
         tone_category_error_contexts: dict[str, int] = {}
