@@ -1965,3 +1965,22 @@ The Python analysis path now loads the linguistic registry once per `analyze()` 
 - Schema 4.0 accuracy/coverage results remained unchanged, as expected from a data-loading optimization.
 
 **Task status:** DONE_VERIFIED for registry reuse, functional regression suite, full browser/build checks and refreshed three-engine benchmark. Linguistic acceptance remains PARTIAL pending expert review of the six potential minor-syllable candidates and four dictionary-reference tone discrepancies. Independent project IPA gold remains 0; upstream MekongPhon data rights remain UNKNOWN.
+
+
+## Full-pipeline registry reuse correction — 2026-11-07
+
+A deeper call-path audit found that the earlier registry-reuse checkpoint was incomplete: although `analyze()` passed its registry into segmentation and parsing, `phonologize()`, `determine_tone()`, `classify_syllable_type()`, and the Ukrainian target adapter still reloaded CSV registries during per-syllable processing. The previous 4.724 ms latency result therefore measured only a partial optimization.
+
+**Implemented on this branch:**
+- Added optional registry parameters to the phonology and target-adaptation APIs; calls that omit the parameter retain backward-compatible lazy loading.
+- `analyze()` now passes its one loaded registry through parsing, phonologization, tone classification, candidate ranking, and IPA-to-Ukrainian adaptation.
+- The following-syllable minor-tone check now parses the next syllable only for the first syllable in a token, rather than reparsing it for every syllable.
+- Added regression tests that patch downstream `load_registry()` calls to fail and assert that a complete multi-syllable `analyze()` call loads the registry exactly once.
+
+**Verification state at this documentation checkpoint:**
+- Code changes are on branch `improve/rule-engine-error-analysis-20261107`; latest test commit before this note: `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`.
+- Full Verify run [42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) was queued; no pass is claimed.
+- The three-engine benchmark run [42384500017](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017) was queued for source head `89a08fae9feafa4739fc698e99adde709c978b66); no new latency or accuracy result is claimed.
+- An intermediate test run [42384378919](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384378919) failed only because the new test incorrectly expected a long open /aː/ rhyme to be dead. The source behavior was correct; the test expectation was corrected to `live`. The final-head Verify remains the acceptance gate.
+
+**Task status:** PARTIAL pending exact-head Verify and refreshed benchmark. The earlier 14.207→4.724 ms comparison remains a historical single-run observation for the earlier, incomplete optimization and must not be presented as the final effect of this correction.
