@@ -9,19 +9,16 @@ from .data import load_registry
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 
 
-def analyze(text: str, *, infer_unspaced: bool = False) -> Analysis:
+def analyze(text: str) -> Analysis:
     normalized = normalize_lao(text)
-    # U+200B is accepted only in the explicit phrase/syllabification mode;
-    # the default input contract continues to reject invisible separators.
-    validation_text = normalized.replace("\u200b", " ") if infer_unspaced else normalized
-    warnings = validate_unicode(validation_text)
+    warnings = validate_unicode(normalized)
     if warnings:
         return Analysis(text, normalized, [], "INVALID", warnings)
 
     registry = load_registry()
     syllables = []
     analysis_warnings = []
-    for surface in segment_syllables(normalized, infer_unspaced=infer_unspaced):
+    for surface in segment_syllables(normalized):
         parsed = parse_syllable(surface)
         local_warnings = list(parsed.get("warnings", []))
         ipa, rules, tone_status, tone = phonologize(parsed)
