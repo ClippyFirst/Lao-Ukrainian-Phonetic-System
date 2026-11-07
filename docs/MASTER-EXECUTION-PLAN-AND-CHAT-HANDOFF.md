@@ -1823,3 +1823,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Updated the canonical source record SRC-MEKONGPHON-2026 to reflect the paper's public research-release statement, generic SEAlang reuse notice, actual Lao/Khmer downloader distinction, limited 100-entry benchmark scope, and remaining rights uncertainty.
 - Added SRC-SEALANG-REUSE-NOTICE for the homepage's generic Creative Commons reuse wording. It deliberately records that no exact license version or scope is identified.
 - Left data/benchmark/licenses.json unchanged: MekongPhon remains UNKNOWN for redistribution, derivative publication and broader use. The limited research benchmark is an evidence-qualified, aggregate-only exception in project practice, not a guessed license ID.
+
+
+## UI/UX and complete Node-suite verification — 2026-11-07
+
+- Reviewed the two static pages, CSS, browser UI orchestration and layout tests against the local DESIGN-SYSTEM.md and the web-specific UI UX Pro Max guidance pinned in AGENTS.md.
+- Source review confirmed semantic language tags, labelled navigation/input, skip links, visible 3px focus, live/status announcements, pressed-state semantics, keyboard-focusable named tables, responsive breakpoints and reduced-motion support. Sampled core text/color contrast pairs are 5.14:1 or higher (ink/paper 15.99:1; muted/paper 5.14:1; red/paper 5.16:1; blue/paper 12.82:1; white/blue 13.97:1; IPA/white 8.79:1). This is not a substitute for manual assistive-technology review.
+- Fixed the mismatch between the documented 44px control target and compact controls that were 36–40px. Added a regression test first; the test failed on the prior CSS as expected, then passed after .copy, .mini-button/.button and .copy-button were raised to 44px.
+- Fixed npm test's shell short-circuit: it now invokes all four Node test files in one node --test command, so later suites still run when one suite has failures.
+- Exact-head Verify [42366859486](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42366859486) on `87c299fb6d284d3c6a3d25294f87cf03e359b9e7`: FAILURE overall, but all 113 Node tests ran; 110 passed, 3 failed (the pre-existing modern Lao ຣ/uncertain IPA/incomplete IPA browser-engine cases). The new 44px regression test passed. Gold structure validation, data/evidence audit, Python tests and external-G2P harness syntax/CLI passed. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped because npm test returned non-zero.
+- Manual keyboard-only, screen-reader, zoom/text scaling, real-device touch and deployed-site accessibility QA remain TODO.
