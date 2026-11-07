@@ -1810,3 +1810,9 @@ A cross-runtime review identified a concrete difference that must not be papered
 - This matches the pre-existing main-based browser regression. PR #137 head `bab117a064f0aee3b685922fe0f0738df7048b12` passes the same Verify workflow and contains the corresponding browser-engine fixes. Do not port the entire PR or mark the audit branch green until the owner/reviewer resolves the existing engine PR.
 - Exact session scope: GitHub repository/API and hosted Actions inspection plus documentation/rights edits only. No local shell, Python, npm, build, benchmark or manual browser command was executed by this session.
 - Final state remains: PR #138 open/unmerged; PR #137 open/unmerged; no release or main-branch mutation. Documentation tasks remain PARTIAL pending a green exact-head Verify. Scoped 100-word non-commercial MekongPhon research benchmark is complete; dataset redistribution/full-corpus rights remain PARTIAL/uncleared.
+
+
+## Final documentation structure refinement — 2026-11-07
+
+- Moved the standalone Romanization → Ukrainian matrix link from the first line of README.md into its Documentation section so the root README starts with its H1 and has a valid document hierarchy.
+- Added DOC-010 to the repository audit ledger. The new documentation remains pending green exact-head Verify; the main-based browser regression is still the known blocker.
