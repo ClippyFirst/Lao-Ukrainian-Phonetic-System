@@ -112,8 +112,8 @@ def _orthographic_clusters(text: str) -> list[str]:
     return clusters
 
 
-def _is_complete_syllable(surface: str) -> bool:
-    parsed = parse_syllable(surface)
+def _is_complete_syllable(surface: str, registry: dict) -> bool:
+    parsed = parse_syllable(surface, registry=registry)
     return bool(parsed.get("onset") and parsed.get("vowel") and not parsed.get("warnings"))
 
 
@@ -127,7 +127,8 @@ def segment_unspaced_token(token: str) -> list[str] | None:
     clusters = _orthographic_clusters(token)
     if not clusters:
         return []
-    if _is_complete_syllable(token):
+    registry = load_registry()
+    if _is_complete_syllable(token, registry):
         return [token]
 
     # Dynamic programming over grapheme boundaries. Two paths are sufficient
@@ -138,7 +139,7 @@ def segment_unspaced_token(token: str) -> list[str] | None:
         candidates: list[tuple[str, ...]] = []
         for end in range(start + 1, len(clusters) + 1):
             part = "".join(clusters[start:end])
-            if not _is_complete_syllable(part):
+            if not _is_complete_syllable(part, registry):
                 continue
             for suffix in paths[end]:
                 candidate = (part, *suffix)
@@ -224,8 +225,8 @@ def _find_coda(after_vowel: str, registry: dict):
         return after_vowel
     return None
 
-def parse_syllable(surface: str):
-    registry = load_registry()
+def parse_syllable(surface: str, *, registry: dict | None = None):
+    registry = registry or load_registry()
     s = _strip_tone_marks(surface)
     onset, onset_i, onset_len, onset_class, onset_form, onset_ipa = _find_onset(s, registry)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)
