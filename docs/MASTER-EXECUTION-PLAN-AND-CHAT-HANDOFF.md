@@ -1897,3 +1897,7 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Regression tests added in `tests/test_unspaced_syllabification.py`: unique segmentation of `ສະບາຍດີ`, full IPA pipeline integration, unchanged default contract, malformed-token withholding, tone-mark attachment and U+200B boundaries. These tests are authored but not yet executed in this connector-only session; do not count them as passed until exact-head CI reports success.
 - This is an independent structural implementation, not copied MekongPhon code and not trained on its corpus. W3C Lao Script Resources is registered in `data/evidence/sources.csv` as orthographic background. No lexical dictionary, model output, IPA labels or corpus entries were imported.
 - Remaining acceptance: exact-head Python tests, audit, Node/browser tests, build and generated-artifact checks; review any segmentation ambiguity surfaced by tests. This feature does not solve lexical word segmentation or establish pronunciation accuracy.
+
+### Verification correction — zero-width-space input contract
+
+The first hosted run for the new syllabifier passed all six new segmentation tests but exposed a conflict with the existing security/input regression: the existing default validator intentionally rejects U+200B. The implementation was corrected to preserve that default contract and accept U+200B only when `infer_unspaced=True`; the validator itself was restored unchanged. Exact-head verification after this correction is pending.
