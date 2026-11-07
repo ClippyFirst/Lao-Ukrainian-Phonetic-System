@@ -64,6 +64,25 @@ class MekongPhonAdapterTests(unittest.TestCase):
         self.assertEqual(result.model_revision, "main")
         self.assertIn("MODEL-REVISION-NOT-IMMUTABLE", result.warnings)
 
+    def test_explicit_internal_syllable_boundary_enables_initial_yodation(self):
+        result = build_result(
+            "ຂາຢາ", "kʰaː˩.jaː˧",
+            model_id="byumatrixlab/lao-ipa-tonal",
+            model_revision="a" * 40,
+            tonal=True,
+        )
+        self.assertEqual(result.phonetic_result.syllable_boundaries, (0, 3, 6))
+        self.assertEqual(result.ukrainian, "к'ая")
+
+    def test_initial_yodation_does_not_collapse_a_diphthong(self):
+        result = build_result(
+            "ຢຽ", "jiə",
+            model_id="byumatrixlab/lao-ipa-nontonal",
+            model_revision="b" * 40,
+            tonal=False,
+        )
+        self.assertEqual(result.ukrainian, "йіа")
+
     def test_invalid_ipa_never_produces_ukrainian_output(self):
         result = build_result(
             "ຂາ", "[not IPA]",
