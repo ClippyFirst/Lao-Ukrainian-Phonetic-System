@@ -1795,3 +1795,13 @@ A cross-runtime review identified a concrete difference that must not be papered
 - **npm reproducibility — PARTIAL:** added root `package-lock.json` locking `@playwright/test@1.63.0`, `playwright@1.63.0` and `playwright-core@1.63.0`, including registry tarball URLs and SHA-512 integrity. Exact package metadata was checked against the npm registry. Verify workflow now runs `npm ci --no-audit --no-fund`; README and CONTRIBUTING install instructions also use `npm ci`.
 - **Local validation:** Node `v22.16.0`, npm `10.9.2`. An isolated scratch package with the same manifest/lock passed `npm install --package-lock-only --ignore-scripts --offline`. Actual `npm ci` could not be executed locally: external DNS/network access is unavailable and no npm package cache exists. The exact-head hosted Verify is the required acceptance test for the real clean install and new Playwright cases.
 - No dataset, model weights, IPA labels, or linguistic registries changed. No PR was merged, no release was published, and no repository settings were changed.
+
+
+## Exact-head acceptance — npm lockfile and automated accessibility — 2026-11-07
+
+- Final commit: `57a4728f543a1d2cd248a86d2178a4e7034f8acd` on `audit/repository-docs-structure-20261107`; PR #143 remains open and unmerged.
+- Exact-head Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) **SUCCESS**. Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed all 3 locked packages. 181 Python tests passed; Node test command passed; 7 Chromium tests passed (4 existing + 3 new accessibility/responsive checks); static build, generated-data reproducibility and built-page/relative-asset checks passed.
+- **DEP-001 — DONE_VERIFIED:** the committed `package-lock.json` is used by CI through `npm ci`; the clean hosted runner proves reproducible installation for the current Node test dependency graph.
+- **LAO-UI-001 — PARTIAL:** keyboard skip-link, keyboard focus traversal/method switch, accessible landmarks/control names/live regions, 390px mobile, 768px tablet and 640px narrow/200%-equivalent viewport checks are green. Real assistive technology and physical-device checks remain TODO; no claim of full manual accessibility conformance.
+- **LIC-001 — DONE_VERIFIED (owner-confirmed):** owner states MekongPhon rights were fully resolved in the prior project conversation; this supersedes earlier preliminary rights blocker notes. No new legal opinion is implied.
+- Intermediate CI failures before this exact head were caused by a test expectation that queried a result control before entering text; corrected test now passes on the exact head. Do not treat those superseded runs as current failures.
