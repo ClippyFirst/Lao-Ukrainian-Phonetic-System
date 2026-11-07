@@ -16,6 +16,7 @@ VOWEL_SYMBOLS = frozenset({
     "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː",
     "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə", "ə̯",
 })
+IPA_TONE_LETTERS = frozenset("˥˦˧˨˩")
 
 
 def from_phonology(
