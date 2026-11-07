@@ -211,3 +211,31 @@ Documentation content at `de69f329048cd7de5d8da5d183d0962bdcf26f18` passed exact
 - Exact-head Verify [42391831295] is pending on that branch head. The last completed full Verify is [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133) on base contextual-analyzer code `16d267664beb25a9e26e9639aace42a2975582d1`.
 - The expanded position/broad-context output and aggregate-only tests are in code/test checkpoint `b376296947c93b1ab01a4a26bdd5afcfc2e756db`; diagnostic [42391252559] remains pending. Therefore MEKONG-GRAPHEME-002 stays PARTIAL.
 - Documentation report, README, index, audit and handoff are updated. No unverified run is represented as successful.
+
+
+## Lao–Ukrainian practical transcription system — 2026-11-07
+
+The user requested a dedicated practical system modelled on the presentation/coverage of the Lao–Russian practical transcription reference, but designed for Ukrainian phonetics and orthography and informed by the existing Thai–Ukrainian ClippyFirst project. The new canonical reference is \`docs/lao-ukrainian-practical-transcription.md\`; README, docs index and the public \`system.html\` page link to it.
+
+### Actual implementation changes
+
+- Preserved the existing IPA-first boundary. No Lao-grapheme → Ukrainian direct mapping was introduced.
+- Confirmed the canonical target registry already distinguishes /h/ → г, /ɦ/ → г, /ɡ/ → ґ and /x/ → х; /kʰ pʰ tʰ/ → к’ п’ т’; /ŋ/ → нг; onset /ʋ/ and coda /w/ → в.
+- Corrected an inconsistent legacy rime mapping: canonical IPA /aw/ previously mapped to «ау» despite the project rule that /w/ is always Ukrainian «в». It now maps to **ав**. The derived correspondence CSV and generated browser registry were updated with the canonical source.
+- Added contextual syllable-initial /j/ adaptation: /ja/ → я; /je, jɛ/ → є; /ji/ → ї; /jo, jɔ/ → йо; /ju/ → ю; /jɯ/ → йи; /jɤ/ → йе. Medial/coda /j/ remains «й». The rule is applied only at the beginning of a typed one-syllable IPA result.
+- Mirrored the /j/ rule in Python and browser adapters; added tests for actual Lao analyses and direct IPA adapter cases.
+- Added positional onset and coda tables, short/long vowel and diphthong tables, tone/length policy, traditional-name exception policy and source limitations. The Russian table is a structural comparator, not an intermediate mapping.
+- The public methodology page now surfaces the core Ukrainian decisions and links to the complete practical transcription reference.
+
+### Verification status at this documentation checkpoint
+
+Branch: \`feature/lao-ukrainian-practical-system-20261107\`, based on PR #140 head \`d8e466321eae05f0a4dfa2944543723f368e0f23\`. Code changes include target Python, browser engine, canonical correspondence registry, generated browser mirror, derived correspondence table and tests. Exact-head CI has not yet been observed for the complete documentation/code head; mark the engineering work PARTIAL until Verify and browser tests pass.
+
+### Acceptance and remaining evidence
+
+- The target choices are explicit project conventions, not an official Ukrainian national standard.
+- The /h/ → г, /ɯ/ → и and /ɤ/ → е choices are practical approximations, not IPA identities.
+- /aw/ → ав now follows the consistent /w/ → в rule; add source-attested examples and expert review before treating the complete vowel matrix as linguistically adjudicated.
+- Traditional Ukrainian exonyms and lexicalized names need a sourced exception registry; do not overwrite established forms with regular output.
+- Independent IPA gold remains 0; no new phonetic accuracy claim is made.
+- Qualified Ukrainian phonetic/onomastic review and qualified Lao source review remain outstanding.
