@@ -117,6 +117,11 @@ Main contains the typed `PhoneticResult` representation and source IPA tokenizer
 
 The Python implementation withholds IPA when the parser reports unconsumed source suffixes, malformed tone marks or structurally incomplete vowels. The browser must preserve the same fail-closed intent even while performing conservative within-token segmentation. The three failures above were caused by browser segmentation bypassing that intent, not by missing phoneme correspondences.
 
+
+### 4.6 Interactive target sizes
+
+The design system requires 44px minimum interactive targets. Main had three exceptions: legacy `.copy` controls at 38px, quick-example `.mini-button` / `.button` controls at 40px, and the service's `.copy-button` controls at 36px. A new regression test was first run against the unmodified CSS and failed on the observed 38px declaration in Verify [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) (expected RED). The CSS correction on this branch sets all three selectors to 44px; commit `1f876316c5433d47256a049d3e91c2c41a0eab96`. Exact-head verification of this accessibility correction is pending. This is a target-size correction, not a substitute for manual assistive-technology testing.
+
 ## 5. Documentation audit
 
 The repository already has substantial documentation. The problem is not absence of prose; it is keeping dated status claims synchronized with the actual branch and current CI.
@@ -168,6 +173,7 @@ Project-specific constraints take precedence: source-rights verification, proven
 | LIC-001 | MekongPhon data/code redistribution and derivative rights | BLOCKED | PR #138's rights review identifies missing component-specific license terms; do not copy or redistribute dataset/code absent explicit permission. |
 | DATA-001 | Independent adjudicated IPA gold | BLOCKED | Gold corpus has 0 records and header-only gold file; requires approved IPA convention, two qualified annotators, separate adjudicator, blind intake, curator, rights-cleared source items and accepted contrast coverage. |
 | UI-001 | Manual accessibility/device QA | TODO | Requires human keyboard-only, screen-reader, zoom/text scaling, mobile/touch and deployed-site checks with environment/results recorded. |
+| UI-002 | Enforce 44px minimum on copy/example controls | PARTIAL | Regression RED run [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) confirmed 38px `.copy`; CSS now sets `.copy`, `.mini-button,.button` and `.copy-button` to 44px. Exact-head Verify pending. |
 | GOV-001 | Protect main with required review/Verify rules | BLOCKED / owner action | Main is unprotected; settings change requires owner decision and was not performed. |
 | DEP-001 | Reproducible npm dependency installation | TODO | No package-lock.json; needs Node/npm clean checkout, generated lockfile, switch to npm ci and clean-runner validation. |
 | LING-001 | Expert validation of Lao phonology and Ukrainian correspondences | BLOCKED | No independent expert gold; selected tone/segment/target correspondences remain evidence-limited. |
@@ -200,6 +206,6 @@ Project-specific constraints take precedence: source-rights verification, proven
 
 ## 9. Final readiness
 
-**Engineering-verified research prototype on PR #143; not linguistically release-ready.** The inspected `main` baseline remains red until PR #143 is merged, but the isolated branch passed every configured Verify stage on its exact head. Independent IPA gold = 0, empirical accuracy is not established, third-party data rights remain constrained, manual accessibility QA is outstanding, npm dependency resolution is not lockfile-frozen, and main is unprotected.
+**Engineering-verified research prototype on PR #143, with the latest 44px accessibility correction pending exact-head CI; not linguistically release-ready.** The earlier branch head passed every configured Verify stage. The current PR head adds a test-first touch-target correction and must pass a fresh exact-head Verify. Independent IPA gold = 0, empirical accuracy is not established, third-party data rights remain constrained, manual accessibility QA is outstanding, npm dependency resolution is not lockfile-frozen, and main is unprotected.
 
 No release, merge, deployment change, repository-settings change, or third-party dataset redistribution was performed.
