@@ -1914,3 +1914,13 @@ Commands/checks actually executed through hosted GitHub Actions: schema 3.0 thre
 ## MekongPhon rights status correction — owner confirmation — 2026-11-07
 
 The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. This supersedes earlier preliminary `UNKNOWN` / `BLOCKED` statements in this historical handoff, benchmark report and source triage. Current project task status: `LIC-001 = DONE_VERIFIED (owner-confirmed)` for the authorized project use. The upstream snapshot's lack of a root LICENSE remains a provenance fact, not an active project blocker after the owner's confirmation. This is not a new independent legal opinion. MekongPhon remains a secondary reference set, not independently adjudicated project gold; independent Lao IPA gold remains 0.
+
+
+## Integrated PR #137 deterministic G2P checkpoint — 2026-11-07
+
+- PR #137's 21-file change set was integrated into this continuation branch using a merge commit with parents PR #143's prior head `bded2fd2a26ecf05fdc3974051a49e1820d49012` and PR #137's exact head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`. Merge commit: `6641d6dc2d2ac6c352884551d4116db4d36e1d95`.
+- Exact integrated Verify [42408329451](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42408329451) **SUCCESS** on that SHA: 196 Python tests, 115 Node tests, 8 Chromium tests, npm ci clean install, audit, build, generated-data reproducibility and built-page checks all passed.
+- The browser DP uses source-side IPA status (`SUPPORTED` or `UNCERTAIN`) rather than target mapping availability; it retains complete uncertain readings and withholds unsupported IPA. It also prevents a trailing unsupported Lao consonant from being detached into a false syllable. Per-syllable tone-mark validation is retained; global word-level mark validation is not used because valid multi-syllable words may carry one tone mark per syllable.
+- The deterministic three-engine 100-word benchmark and report from PR #137 are now included. Results remain reference-relative, not independent project gold; independent adjudicated Lao IPA gold remains 0.
+- MekongPhon rights are `DONE_VERIFIED (owner-confirmed)` per the repository owner's explicit confirmation. This supersedes earlier `UNKNOWN`/`BLOCKED` entries in historical documents for project tracking; it is not an independent legal opinion.
+- Original PR #137 remains open and unmerged; PR #143 now carries its changes in the same single working branch. No mainline merge, release, deployment or repository-setting change occurred.
