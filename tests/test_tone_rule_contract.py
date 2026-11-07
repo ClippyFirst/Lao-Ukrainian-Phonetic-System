@@ -58,7 +58,7 @@ class ToneRuleContractTests(unittest.TestCase):
             "lao_ukrainian.phonology.load_registry",
             side_effect=AssertionError("registry should be reused"),
         ):
-            self.assertEqual(classify_syllable_type(parsed["vowel"], None, registry), "dead")
+            self.assertEqual(classify_syllable_type(parsed["vowel"], None, registry), "live")
             ipa, rules, status, tone = phonologize(parsed, registry)
         self.assertEqual(ipa, "kʰaː")
         self.assertIn("VNT-H-LIVE-NONE", rules)
