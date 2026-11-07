@@ -36,6 +36,27 @@ class TestTarget(unittest.TestCase):
     def test_velar_nasal(self):
         self.assertEqual(adapt("ŋaː"), "нга")
 
+    def test_lao_w_is_always_rendered_with_ukrainian_v(self):
+        self.assertEqual(adapt("ʋaː"), "ва")
+        self.assertEqual(adapt("waː"), "ва")
+        self.assertEqual(adapt("aːw"), "ав")
+        self.assertEqual(adapt("aw"), "ав")
+
+    def test_syllable_initial_j_uses_ukrainian_yotated_vowels(self):
+        self.assertEqual(adapt("jaː"), "я")
+        self.assertEqual(adapt("jeː"), "є")
+        self.assertEqual(adapt("jɛ"), "є")
+        self.assertEqual(adapt("jiː"), "ї")
+        self.assertEqual(adapt("joː"), "йо")
+        self.assertEqual(adapt("jɔ"), "йо")
+        self.assertEqual(adapt("juː"), "ю")
+        self.assertEqual(adapt("jɯ"), "йи")
+        self.assertEqual(adapt("jɤː"), "йе")
+
+    def test_medial_and_coda_j_remain_yot(self):
+        self.assertEqual(adapt("aj"), "ай")
+        self.assertEqual(adapt("kaj"), "кай")
+
     def test_ukrainian_shcha_sequence_is_not_split_into_sh_and_ch(self):
         result = phonetic_result_from_ipa("ʃt͡ʃa")
         self.assertEqual([segment.ipa for segment in result.segments], ["ʃ", "t͡ʃ", "a"])

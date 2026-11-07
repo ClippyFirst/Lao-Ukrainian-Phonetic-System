@@ -2147,3 +2147,27 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Exact-head Verify [42391831295] is pending; last completed full Verify [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133) covers base contextual-analyzer checkpoint `16d267664beb25a9e26e9639aace42a2975582d1`.
 - Expanded position and broad phonological-context arrays plus aggregate-only tests are in `b376296947c93b1ab01a4a26bdd5afcfc2e756db`; diagnostic [42391252559] is still pending. Keep MEKONG-GRAPHEME-002 PARTIAL until both runs pass.
 - The report and README/index now document the positional/contextual approach. The train split remains research-only development evidence, not independent gold.
+
+
+## Lao–Ukrainian practical transcription system — 2026-11-07
+
+User requirement: create a practical Lao → Ukrainian transcription system with a clear positional consonant/vowel/diphthong table, following the explanatory format of the Lao–Russian practical reference but using Ukrainian-specific target decisions; use the existing Thai–Ukrainian ClippyFirst system as an architectural/style reference.
+
+Implementation:
+- Canonical document: \`docs/lao-ukrainian-practical-transcription.md\`; indexed in README/docs index and linked from public \`system.html\`.
+- The production path remains Lao structural/phonological analysis → typed IPA → Ukrainian adapter. The Russian comparator is not used as a runtime intermediate.
+- Preserved and documented /h/ → г, /ɦ/ → г, /ɡ/ → ґ, /x/ → х; /kʰ pʰ tʰ/ → к’ п’ т’; /ŋ/ → нг; onset /ʋ/ and coda /w/ → в.
+- Fixed canonical /aw/ → «ау» to **ав** to respect the explicit /w/ → «в» target policy. Updated generated browser correspondence data and derived CSV.
+- Added contextual syllable-initial /j/ mappings to Ukrainian йотовані forms; medial/coda /j/ remains й. Python and browser implementations are aligned and covered by new regression tests.
+- Added comprehensive tables for onset consonants, phonological codas, short/long vowels and diphthongs; documented neutralized length/tones, approximations, traditional-name exceptions and evidence limits.
+- Branch \`feature/lao-ukrainian-practical-system-20261107\` is stacked on PR #140's current implementation head; do not merge PR #140 or this follow-up blindly. \`main\` remains untouched.
+
+Verification status: exact-head CI for this new code/test/documentation head is pending. The code/docs are PARTIAL until full Verify and browser suites pass. The new target table is a project decision, not an official Ukrainian standard; independent IPA gold remains 0. Source-attested /aw/ examples, expert Lao phonological review, Ukrainian phonetic/onomastic review and a source-backed traditional-name exception list remain acceptance work.
+
+
+### Practical transcription exact-head verification — 2026-11-07
+
+- Full Verify [42397887901 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42397887901) on code/test checkpoint \`798b3a1539a559e779c5aaecadfcee3bd0411631\`.
+- Passed: IPA gold schema validation, repository audit, 240 Python tests, 121 Node tests, generated browser-data reproducibility, static build, 4 real Chromium tests and built-page asset checks.
+- Initial run 42397809554 found a stale expected «кау» fixture; after changing it to «кав», the exact follow-up passed. No failure is concealed.
+- This is engineering verification only. Expert Ukrainian/Lao review, source-attested /aw/ cases, a sourced traditional-name exception list and independent IPA gold (currently 0) remain open.
