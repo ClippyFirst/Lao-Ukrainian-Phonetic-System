@@ -20,7 +20,14 @@ class MultisyllableSegmentationTests(unittest.TestCase):
         result = analyze("ສະບາຍດີ")
         self.assertEqual([item.surface for item in result.syllables], ["ສະ", "ບາຍ", "ດີ"])
         self.assertTrue(all(item.phonemic_ipa for item in result.syllables))
-        self.assertEqual(result.status, "OK")
+        # The initial short open /a/ has a potential minor-syllable shape;
+        # segmental IPA is preserved while its independent tone is withheld.
+        self.assertEqual(result.status, "PARTIAL")
+        self.assertIsNone(result.syllables[0].tone)
+        self.assertIn(
+            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+            result.syllables[0].rules,
+        )
 
     def test_zwsp_is_an_explicit_boundary_and_spaces_remain_phrase_boundaries(self):
         self.assertEqual(segment_syllables("ສະ\u200bບາຍ ດີ"), ["ສະ", "ບາຍ", "ດີ"])
