@@ -150,3 +150,10 @@ The benchmark had been stringifying `None` as `"None"`, falsely treating unresol
 **Verification:** full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937) on `d4ea4f692b9376fd1236c8eaf7d4ae41683f5201`; schema 4.0 three-engine benchmark [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`.
 
 **Status: DONE_VERIFIED for engineering and benchmark integrity; PARTIAL for linguistic acceptance.** Six possible minor-syllable candidates and four known tone discrepancies require qualified Vientiane review. Independent project IPA gold remains 0, and MekongPhon source/corpus rights remain UNKNOWN.
+
+
+## Registry-reuse performance checkpoint — 2026-11-07
+
+The Python `analyze()` path now reuses one loaded linguistic registry through segmentation and parsing rather than repeatedly loading CSV registries per token/syllable. No linguistic rules or output contracts changed.
+
+**Verification:** Full Verify [42382964250 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382964250); schema 4.0 benchmark [42382960457 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457), artifact [13578092183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457/artifacts/13578092183), SHA-256 `8d25f1032805e7e38339449d658d9efc4167329f4ea25d82c4de26a7ad54b655`. Mean ClippyFirst per-item latency on this hosted 100-word run was 4.724 ms versus 14.207 ms on the immediately preceding run before registry reuse (model loading excluded; single-run observation). All three engines had zero runtime errors.
