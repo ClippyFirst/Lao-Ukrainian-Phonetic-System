@@ -87,3 +87,14 @@ The Lao service intentionally shares the Korean service's information architectu
 6. At tablet/mobile widths, the workbench and result workspace stack; result cards become a single column on narrow screens.
 
 The Lao service does not add Hanja, Korean G2P modes or other language-specific features merely to imitate the Korean page. The tests/web-layout.test.mjs suite protects the shared layout contract and output order.
+
+
+## Accessibility verification status · 2026-11-07
+
+Automated Chromium regression coverage now checks:
+- keyboard access to the skip link and focus transfer to the Lao input;
+- accessible names and semantics for the banner, primary navigation, main landmark, text input, example group and method selector;
+- polite result/status announcements and disclosure summaries;
+- horizontal overflow and output clipping at 390px mobile, 768px tablet and 640px narrow/200%-equivalent layout widths.
+
+The 44px minimum target rule remains enforced by the layout regression suite. These automated checks are not a claim of manual assistive-technology conformance. Before closing the manual QA task, test with at least one desktop screen reader/browser combination and one mobile screen reader/device, keyboard-only navigation, browser zoom/text scaling at 200% and 400%, and physical touch interaction. Record exact versions, viewport/zoom, steps, results and defects.
