@@ -98,3 +98,5 @@ Automated Chromium regression coverage now checks:
 - horizontal overflow and output clipping at 390px mobile, 768px tablet and 640px narrow/200%-equivalent layout widths.
 
 The 44px minimum target rule remains enforced by the layout regression suite. These automated checks are not a claim of manual assistive-technology conformance. Before closing the manual QA task, test with at least one desktop screen reader/browser combination and one mobile screen reader/device, keyboard-only navigation, browser zoom/text scaling at 200% and 400%, and physical touch interaction. Record exact versions, viewport/zoom, steps, results and defects.
+
+Additional automated mobile checks: Chromium emulates a 390×844 touch context (`isMobile` + `hasTouch`) and taps the quick-example and method-switch controls. Responsive overflow is checked at 320px (400%-equivalent), 390px, 640px (200%-equivalent) and 768px. These are emulation/reflow checks; physical devices and actual browser zoom remain part of manual QA.
