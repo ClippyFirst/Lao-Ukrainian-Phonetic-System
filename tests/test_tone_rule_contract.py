@@ -1,5 +1,10 @@
 import csv
 import unittest
+from unittest.mock import patch
+
+from lao_ukrainian.data import load_registry
+from lao_ukrainian.parser import parse_syllable
+from lao_ukrainian.phonology import classify_syllable_type, phonologize
 from pathlib import Path
 
 
@@ -45,6 +50,20 @@ class ToneRuleContractTests(unittest.TestCase):
                 }
                 self.assertTrue(source_ids, row["evidence_id"])
                 self.assertLessEqual(source_ids, self.sources)
+
+    def test_phonology_reuses_supplied_registry_without_reloading_csv(self):
+        registry = load_registry()
+        parsed = parse_syllable("ຂາ", registry)
+        with patch(
+            "lao_ukrainian.phonology.load_registry",
+            side_effect=AssertionError("registry should be reused"),
+        ):
+            self.assertEqual(classify_syllable_type(parsed["vowel"], None, registry), "dead")
+            ipa, rules, status, tone = phonologize(parsed, registry)
+        self.assertEqual(ipa, "kʰaː")
+        self.assertIn("VNT-H-LIVE-NONE", rules)
+        self.assertEqual(status, "well-supported")
+        self.assertEqual(tone, "low-rising")
 
     def test_declared_matrix_has_no_ambiguous_winner(self):
         marks = {"none", "mai_ek", "mai_tho", "mai_ti", "mai_catawa"}
