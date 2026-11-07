@@ -1816,3 +1816,10 @@ A cross-runtime review identified a concrete difference that must not be papered
 
 - Moved the standalone Romanization → Ukrainian matrix link from the first line of README.md into its Documentation section so the root README starts with its H1 and has a valid document hierarchy.
 - Added DOC-010 to the repository audit ledger. The new documentation remains pending green exact-head Verify; the main-based browser regression is still the known blocker.
+
+
+## MekongPhon evidence registry reconciliation — 2026-11-07
+
+- Updated the canonical source record SRC-MEKONGPHON-2026 to reflect the paper's public research-release statement, generic SEAlang reuse notice, actual Lao/Khmer downloader distinction, limited 100-entry benchmark scope, and remaining rights uncertainty.
+- Added SRC-SEALANG-REUSE-NOTICE for the homepage's generic Creative Commons reuse wording. It deliberately records that no exact license version or scope is identified.
+- Left data/benchmark/licenses.json unchanged: MekongPhon remains UNKNOWN for redistribution, derivative publication and broader use. The limited research benchmark is an evidence-qualified, aggregate-only exception in project practice, not a guessed license ID.
