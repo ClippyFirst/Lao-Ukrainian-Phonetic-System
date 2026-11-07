@@ -175,7 +175,7 @@ Project-specific constraints take precedence: source-rights verification, proven
 | UI-001 | Manual assistive-technology/device QA | PARTIAL | New Playwright coverage exercises keyboard skip-link operation, semantic landmarks/names/live regions, 320px (400%-equivalent), 390px mobile, 640px (200%-equivalent) and 768px tablet layouts, plus touch emulation. Real screen-reader sessions, physical touch-device checks and human visual review on deployed Pages remain TODO. |
 | UI-002 | Enforce 44px minimum on copy/example controls | DONE_VERIFIED | RED run [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) confirmed 38px `.copy`; CSS sets all three controls to 44px and exact-head Verify [42403639882](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403639882) passed. |
 | GOV-001 | Protect main with required review/Verify rules | BLOCKED / owner action | Main is unprotected; settings change requires owner decision and was not performed. |
-| DEP-001 | Reproducible npm dependency installation | DONE_VERIFIED | Exact-head Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) passed `npm ci --no-audit --no-fund` on a clean GitHub runner with 3 packages installed from the lockfile; build and generated-data reproducibility also passed. |
+| DEP-001 | Reproducible npm dependency installation | DONE_VERIFIED | Exact-head Verify [42404831500](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404831500) passed `npm ci --no-audit --no-fund` on a clean GitHub runner with 3 packages installed from the lockfile; build and generated-data reproducibility also passed. |
 | LING-001 | Expert validation of Lao phonology and Ukrainian correspondences | BLOCKED | No independent expert gold; selected tone/segment/target correspondences remain evidence-limited. |
 
 ## 8. Verification and environment limits
@@ -206,7 +206,7 @@ Project-specific constraints take precedence: source-rights verification, proven
 
 ## 9. Final readiness
 
-**Engineering-verified research prototype on PR #143; not linguistically release-ready.** Exact-head Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) passed, including locked npm installation and expanded keyboard/viewport browser checks. MekongPhon rights are owner-confirmed as resolved. Independent IPA gold = 0 and empirical accuracy is not established; manual screen-reader/physical-device QA remains outstanding; main is unprotected.
+**Engineering-verified research prototype on PR #143; not linguistically release-ready.** Exact-head Verify [42404831500](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404831500) passed, including locked npm installation and expanded keyboard/viewport browser checks. MekongPhon rights are owner-confirmed as resolved. Independent IPA gold = 0 and empirical accuracy is not established; manual screen-reader/physical-device QA remains outstanding; main is unprotected.
 
 No release, merge, deployment change, repository-settings change, or third-party dataset redistribution was performed.
 
@@ -223,8 +223,8 @@ No release, merge, deployment change, repository-settings change, or third-party
 
 ### Exact-head follow-up verification — 2026-11-07
 
-- Final branch head: `57a4728f543a1d2cd248a86d2178a4e7034f8acd` on `audit/repository-docs-structure-20261107`; PR #143 remains open against main.
-- Verify [42404657721](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404657721) **SUCCESS** on that exact SHA. Hosted environment: Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed exactly 3 locked packages. Python suite: 181 passed. Browser suite: 7 passed, including keyboard focus traversal and method switching, named semantics/live regions, and responsive no-overflow at 320/390/640/768px and mobile touch emulation. Build, generated-data drift, and built-page/relative-asset assertions passed.
+- Final branch head: `387c91de0ea5fd101edd2a1a4ed93ccdb6c40866` on `audit/repository-docs-structure-20261107`; PR #143 remains open against main.
+- Verify [42404831500](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404831500) **SUCCESS** on that exact SHA. Hosted environment: Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed exactly 3 locked packages. Python suite: 181 passed. Browser suite: 8 passed, including keyboard focus traversal and method switching, named semantics/live regions, and responsive no-overflow at 320/390/640/768px and mobile touch emulation. Build, generated-data drift, and built-page/relative-asset assertions passed.
 - An earlier test revision had one incorrect expectation because the method selector is intentionally hidden until results are shown; the test was corrected to enter a sample before asserting that control. Intermediate failed runs are superseded by the green exact-head run above.
 - **DEP-001 — DONE_VERIFIED. UI-001 — PARTIAL:** keyboard and responsive automation are verified; human screen-reader, physical-device/touch, actual 200%/400% browser zoom and deployed visual QA remain TODO.
 
