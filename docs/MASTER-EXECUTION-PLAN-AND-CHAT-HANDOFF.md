@@ -1893,3 +1893,29 @@ Commands/checks actually executed through hosted GitHub Actions: schema 3.0 thre
 - **TODO:** qualified Vientiane reviewer to confirm minor-syllable onset restrictions and review six candidates; investigate vowel/offglide differences on a rights-cleared development set.
 - **BLOCKED:** independent IPA gold requires two qualified annotators, adjudication, and rights-cleared material; MekongPhon source/corpus rights remain unresolved.
 - **DEFERRED:** merge/release/default switch; all PRs remain open and unmerged.
+
+
+## Selector-boundary refinement checkpoint — 2026-11-07
+
+Continuation started from PR #140 head `72597559e09eec26fc7e15d3b66beafbdaa23915`; current branch remains `improve/rule-engine-error-analysis-20261107`, stacked on PR #139. No merge or release.
+
+- Tightened the potential minor-syllable selector: the initial open short /a/ must have no local parse warnings, a supported/core onset and segmental IPA, and be followed in the same unspaced orthographic token by a major-weighted syllable (long vowel, diphthong or coda). A phrase-space boundary does not count as a following syllable.
+- Added Python and browser regressions for a positive candidate, a short-open-/a/ sequence without a major-weighted following syllable, an explicit whitespace boundary, and an analysis-dependent onset. The segmental IPA and Ukrainian adaptation remain available; only the independent tone is withheld.
+- Corrected the README runtime contract: both Python and browser paths perform conservative within-token syllable segmentation; neither is a lexical word segmenter. Python additionally treats U+200B as an explicit token boundary.
+- Extended aggregate benchmark context fields to distinguish broad C₀V₀ shapes from the narrower open-/a/ production selector, record whether the following syllable is major-weighted (including diphthongs), and include those selectors in unresolved-tone aggregation. Removed a misplaced diagnostic field from partial-parse records before it could cause an undefined-index failure.
+- No linguistic rule was added for /i/ or /u/: those remain diagnostic candidates only. No neutral contour or lexical minor-syllable identity is inferred from orthography.
+
+### Verification state for this checkpoint
+
+- Earlier full Verify [42375870451](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375870451) passed on prior head `72597559e09eec26fc7e15d3b66beafbdaa23915`; it does not cover the boundary refinements below.
+- The current exact-head Verify is queued as [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) for code head `759091f28cc57a746df549ac573067af9be922ab`. Do not mark this checkpoint DONE_VERIFIED until that run completes successfully.
+- The branch's Verify workflow target filter now includes the stacked base branch `benchmark/mekongphon-immutable-inference-20261107`, so PR #140 receives the full test/build/UI workflow rather than a partial head-only run.
+- Local clone/tests were not run; GitHub Actions is the available verification environment.
+
+### Updated task ledger
+
+- **PARTIAL:** selector-boundary refinement and benchmark diagnostics; implementation is committed, exact-head full Verify is pending.
+- **DONE_VERIFIED:** prior immutable neural inference, three-engine aggregate benchmark, canonical tied affricate notation and earlier Python/browser rule-engine checks on their recorded heads.
+- **TODO:** qualified Vientiane reviewer to assess the six benchmark candidates and onset restrictions; investigate vowel/offglide differences on a rights-cleared development set.
+- **BLOCKED:** independent IPA gold remains empty pending two qualified annotators and adjudication; MekongPhon source/corpus rights remain unresolved.
+- **DEFERRED:** merge, release and changing the default engine; PRs #137–#140 remain open and unmerged.
