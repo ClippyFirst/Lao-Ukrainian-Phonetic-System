@@ -262,6 +262,17 @@ def main() -> int:
             summaries[key]["provisional_placeholder_units"] = stage["provisional_units"]
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
 
+    hybrid_rendering = summaries["hybrid_deterministic_rules"]
+    if (
+        hybrid_rendering["rendering_coverage"] != 1.0
+        or hybrid_rendering["unrendered_or_failed_inputs"] != 0
+        or hybrid_rendering["units_with_rendering"] != hybrid_rendering["analyzed_units"]
+    ):
+        raise RuntimeError(
+            "Hybrid 100% rendering-coverage gate failed: "
+            + json.dumps(hybrid_rendering, ensure_ascii=False, sort_keys=True)
+        )
+
     shared = [
         i for i in range(len(rows))
         if all(stages[key]["predictions"][i] for key in stages)
