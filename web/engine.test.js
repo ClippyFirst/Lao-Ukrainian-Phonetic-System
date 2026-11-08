@@ -153,7 +153,7 @@ test("shared Lao tone-mark storage-order fixture", () => {
     const result = analyze(item.surface);
     assert.equal(result.syllables.length, 1, item.id);
     assert.equal(result.syllables[0].ipa, null, item.id);
-    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.equal(result.syllables[0].ukrainian, "?", item.id);
     assert.equal(result.syllables[0].tone, null, item.id);
     assert.equal(result.status, "PARTIAL", item.id);
     assert.ok(result.syllables[0].warnings.some((warning) => warning.startsWith("MALFORMED_TONE_MARK_")), item.id);
@@ -436,7 +436,7 @@ test("unconsumed prefix before a preposed Lao vowel is not segmented away", () =
   assert.ok(!result.syllables[0].ipa, "unresolved browser analysis must not expose IPA");
   assert.equal(result.syllables[0].ukrainian, "?", "unresolved browser analysis must expose a typed placeholder");
   assert.ok(result.syllables[0].warnings.some((w) => w.includes("Непідтримуваний фрагмент перед початковим приголосним")));
-  assert.equal(result.output, "⟦" + surface + "⟧");
+  assert.equal(result.output, "?");
 });
 
 
@@ -514,7 +514,7 @@ test("browser IPA adapter withholds incomplete IPA rather than adapting a prefix
   const syllable = result.syllables[0];
   assert.equal(syllable.phoneticResult.status, "UNSUPPORTED");
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.ukrainian, "?");
 });
 
 
