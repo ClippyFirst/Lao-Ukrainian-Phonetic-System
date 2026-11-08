@@ -390,7 +390,7 @@ Python 3.12.16; CPU PyTorch 2.6.0; Transformers 4.49.0; SacreBLEU 2.5.1. MekongP
 
 ## 2026-11-08 confidence-gated rerun and external comparators
 
-**Supersession notice:** the earlier hybrid result of 90/100 exact and 97% IPA coverage was produced by a legacy helper that did not gate on typed `PhoneticResult.status`. It could score provisional grapheme hints as IPA. The corrected benchmark accepts only `SUPPORTED` and `UNCERTAIN` IPA; `PROVISIONAL` hints are excluded from accuracy metrics and counted separately as rendering coverage.
+**Supersession notice:** the earlier hybrid result of 90/100 exact and 97% IPA coverage was misattributed. Under the corrected confidence gate, that score belongs to the separate MekongPhon-reference rules profile (90% rendering). The current hybrid is 85/100 exact and 91% typed IPA coverage, with 100% Ukrainian rendering. The legacy helper could score provisional grapheme hints as IPA. The corrected benchmark accepts only `SUPPORTED` and `UNCERTAIN` IPA; `PROVISIONAL` hints are excluded from accuracy metrics and counted separately as rendering coverage.
 
 - Current hybrid: 85/100 exact, 14.45% full-denominator CER, 91% typed IPA coverage.
 - Separate Ukrainian rendering coverage: 100/100 inputs and 169/169 units; 159 supported IPA units, 1 uncertain IPA unit, 9 provisional IPA-hint units, 9 unknown-marker units.
