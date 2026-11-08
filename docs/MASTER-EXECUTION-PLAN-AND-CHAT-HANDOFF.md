@@ -2398,3 +2398,17 @@ Full report: [HVULao 1k three-engine sentence-domain stress benchmark](research/
 - PR #147 remains draft/open and unmerged; PR #146 remains draft/open and unmerged. No mainline change was made.
 - PR #146's base branch advanced by one commit (`ad5bf2a61480ea255a9b83ca6f662471d7606e84`) adding the benchmark workflow to its PR base. PR #147 was synchronized with a two-parent merge commit `110a408057bc1143b466304cff6d57c4f074bbe8`; the only overlapping file was the workflow, and the benchmark-branch version was retained (it additionally enables its own push trigger). Compare now reports 21 commits ahead, 0 behind; PR #147 is mergeable and remains draft/open. This was a branch synchronization, not a PR merge or mainline change.
 - This is a successful engineering stress benchmark, not linguistic validation. Repository remains a research prototype, not independently accuracy-validated or production/release-ready.
+
+
+## HVULao benchmark latency denominator correction — 2026-11-08
+
+The first HVULao artifact (schema 1.0) timed every rule-engine call but omitted neural calls rejected before inference. This made the reported neural mean/p95 conditional on successful inference and therefore not directly comparable with the rule-engine means. No coverage, IPA output or error count was affected.
+
+- Benchmark script now emits both `successful_inference_latency` and `all_attempt_latency`; the latter includes all 1,000 attempts and is the fair end-to-end comparison.
+- Corrected full run: [#42488818208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208), commit `61b21237d57fc519dfff40ee22ed0649df2050e0`; aggregate artifact [13621285664](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208/artifacts/13621285664), SHA-256 `d5ebe048e328e06b9b107062433a1b3f191f039c77ed56142d88704727fc325a`.
+- All-attempt mean / median / p95: Vientiane `13.50 / 12.81 / 26.00 ms`; reference rules `13.24 / 12.53 / 25.72 ms`; Neural `209.58 / 202.98 / 430.65 ms`.
+- Neural successful-inference-only (n=888): mean `236.00 ms`, median `218.89 ms`, p95 `435.22 ms`. Model load and initial smoke inference excluded.
+- Coverage unchanged: 35/1,000 (3.5%) for each rule profile; 888/1,000 (88.8%) Neural; 16,047/20,150 rule syllables with IPA; zero unexpected runtime errors.
+- Exact-head full Verify [#42488814424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488814424) on commit `61b21237d57fc519dfff40ee22ed0649df2050e0): 271 Python, 129 Node, 17 Chromium tests and corpus/audit/install/build/generated-data/built-site gates all passed.
+
+Schema 1.0 latency numbers are retained only as historical diagnostics and are superseded for comparison by schema 1.1. The benchmark remains a sentence-domain stress test, not an IPA accuracy benchmark; no adjudicated IPA gold is present.
