@@ -92,7 +92,7 @@ The updated MekongPhon 100-entry workflow completed successfully on branch check
 
 On the identical 97-word coverage subset, hybrid and MekongPhon-reference each achieved 90/97 exact matches and CER 1.40%; Neural achieved 81/97 and CER 5.79%. Hybrid runtime errors: 0. The three withheld cases and warning categories are unchanged.
 
-This establishes that the new selector preserves the earlier profile's measured output on this held-out set and adds negligible overhead. It does **not** show that new contextual generalization has been learned: the hybrid intentionally uses the same eleven mappings, and the reference is dictionary-seeded, non-tonal and not independently adjudicated gold. Hybrid coverage remains 3 percentage points below Neural on this test.
+This establishes that the new selector preserves the earlier profile's measured output on this held-out set and adds negligible overhead. It does **not** show that new contextual generalization has been learned: the hybrid intentionally uses the same eleven mappings, and the reference is dictionary-seeded, non-tonal and not independently adjudicated gold. Hybrid IPA-complete coverage remains 3 percentage points below Neural on this test; the later 100-entry rendering-coverage acceptance result is reported separately below.
 
 
 ## Exact-head engineering verification and 1k stress result — 2026-11-08
@@ -108,7 +108,7 @@ Final implementation checkpoint before this documentation update: `c705cf8ad7822
 
 ### Current conclusion
 
-**Engineering implementation is verified; Neural-level coverage and linguistic accuracy are not achieved.** The next legitimate implementation work is to resolve parser-withheld orthographic structures using primary Lao orthography/phonology evidence and independent regression examples. The documented warning families remain fail-closed; do not lower parser safeguards or add exceptions solely to increase the 66.9% score.
+**Engineering implementation is verified.** Evidence-backed IPA coverage remains below Neural on the HVULao stress set and linguistic accuracy is not independently validated; the separate 100-entry rendering-coverage acceptance result is 100% via explicitly PROVISIONAL fallbacks. The next legitimate implementation work is to resolve parser-withheld orthographic structures using primary Lao orthography/phonology evidence and independent regression examples. The documented warning families remain fail-closed; do not lower parser safeguards or add exceptions solely to increase the 66.9% score.
 
 
 ## Source-backed parser work queue — 2026-11-08
