@@ -198,7 +198,20 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 Candidate(value, score, [why])
                 for value, score, why in rank_ukrainian_candidates(phonetic_result, registry)
             ]
-            practical = practical_from_ipa(phonetic_result, registry, allow_uncertain=ipa_profile == DEFAULT_ENGINE_PROFILE)
+            practical = practical_from_ipa(
+                phonetic_result, registry,
+                allow_uncertain=ipa_profile == DEFAULT_ENGINE_PROFILE,
+            )
+            if practical is None and ipa_profile == DEFAULT_ENGINE_PROFILE:
+                # A typed IPA result can still lack a Ukrainian correspondence.
+                # Keep coverage total without bypassing the adapter or guessing:
+                # replace the unrenderable unit with an explicit typed unknown.
+                phonetic_result = from_unknown_source_unit(
+                    surface,
+                    provenance=tuple(rules) + ("FALLBACK:TARGET-UNMAPPED",),
+                    uncertainty=tuple(local_warnings) + ("UKRAINIAN-TARGET-UNMAPPED",),
+                )
+                practical = practical_from_ipa(phonetic_result, registry)
             syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"), registry)
             consonant_class = parsed.get("onset_class")
             if consonant_class is None and parsed.get("onset"):
