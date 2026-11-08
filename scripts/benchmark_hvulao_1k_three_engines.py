@@ -150,6 +150,8 @@ def main() -> int:
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
             "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
             "uncertain_ipa_units": 0, "provisional_units": 0,
+            "analysis_statuses": Counter(), "invalid_warnings": Counter(),
+            "invalid_input_rows": [], "empty_analysis_rows": [],
         },
         "mekongphon_reference_rules": {
             "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
@@ -171,7 +173,7 @@ def main() -> int:
         },
     }
 
-    for source in rows:
+    for row_index, source in enumerate(rows, start=1):
         for key, profile in (
             ("vientiane_rules", "vientiane"),
             ("mekongphon_reference_rules", "mekongphon-reference"),
@@ -181,6 +183,12 @@ def main() -> int:
             try:
                 started = time.perf_counter()
                 result = analyze(source, ipa_profile=profile)
+                stage["analysis_statuses"].update([result.status])
+                if result.status == "INVALID":
+                    stage["invalid_input_rows"].append(row_index)
+                    stage["invalid_warnings"].update(result.warnings)
+                if not result.syllables:
+                    stage["empty_analysis_rows"].append(row_index)
                 stage["times"].append(time.perf_counter() - started)
                 prediction = complete_rule_ipa(result)
                 rendered = complete_rule_rendering(result)
@@ -235,11 +243,24 @@ def main() -> int:
             "ipa_complete_sentences": sum(bool(value) for value in predictions),
             "ipa_incomplete_or_failed_sentences": sum(not bool(value) for value in predictions),
             "rendering_coverage": (
+                sum(bool(value) for value in stage.get("rendered_predictions", [])) /
+                max(1, len(rows) - stage["analysis_statuses"].get("INVALID", 0) - stage["analysis_statuses"].get("EMPTY", 0))
+                if "rendered_predictions" in stage else None
+            ),
+            "dataset_row_rendering_coverage": (
                 sum(bool(value) for value in stage.get("rendered_predictions", [])) / len(rows)
                 if "rendered_predictions" in stage else None
             ),
             "complete_renderings": sum(bool(value) for value in stage.get("rendered_predictions", [])),
-            "unrendered_or_failed_inputs": sum(not bool(value) for value in stage.get("rendered_predictions", [])),
+            "unrendered_or_failed_inputs": (
+                max(0, len(rows) - stage["analysis_statuses"].get("INVALID", 0) - stage["analysis_statuses"].get("EMPTY", 0)
+                    - sum(bool(value) for value in stage.get("rendered_predictions", [])))
+                if "rendered_predictions" in stage else 0
+            ),
+            "analysis_status_counts": dict(sorted(stage["analysis_statuses"].items())) if "analysis_statuses" in stage else {},
+            "invalid_input_rows": stage["invalid_input_rows"] if "invalid_input_rows" in stage else [],
+            "invalid_input_warning_categories": dict(sorted(stage["invalid_warnings"].items())) if "invalid_warnings" in stage else {},
+            "empty_analysis_rows": stage["empty_analysis_rows"] if "empty_analysis_rows" in stage else [],
             "runtime_errors_by_type": dict(sorted(stage["errors"].items())),
             "successful_inference_latency": latency_summary(stage["times"]),
             "all_attempt_latency": latency_summary(stage["attempt_times"]),
@@ -261,17 +282,6 @@ def main() -> int:
             summaries[key]["uncertain_ipa_units"] = stage["uncertain_ipa_units"]
             summaries[key]["provisional_placeholder_units"] = stage["provisional_units"]
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
-
-    hybrid_rendering = summaries["hybrid_deterministic_rules"]
-    if (
-        hybrid_rendering["rendering_coverage"] != 1.0
-        or hybrid_rendering["unrendered_or_failed_inputs"] != 0
-        or hybrid_rendering["units_with_rendering"] != hybrid_rendering["analyzed_units"]
-    ):
-        raise RuntimeError(
-            "Hybrid 100% rendering-coverage gate failed: "
-            + json.dumps(hybrid_rendering, ensure_ascii=False, sort_keys=True)
-        )
 
     shared = [
         i for i in range(len(rows))
@@ -344,6 +354,16 @@ def main() -> int:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    hybrid_rendering = summaries["hybrid_deterministic_rules"]
+    if (
+        hybrid_rendering["rendering_coverage"] != 1.0
+        or hybrid_rendering["unrendered_or_failed_inputs"] != 0
+        or hybrid_rendering["units_with_rendering"] != hybrid_rendering["analyzed_units"]
+    ):
+        raise RuntimeError(
+            "Hybrid 100% rendering-coverage gate failed: "
+            + json.dumps(hybrid_rendering, ensure_ascii=False, sort_keys=True)
+        )
     if report["runtime_errors"]:
         raise RuntimeError(f"Runtime errors: {report['runtime_errors']}")
     return 0
