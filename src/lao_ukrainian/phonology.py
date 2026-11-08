@@ -1,5 +1,5 @@
 from .data import load_registry
-from .mekongphon_reference_profile import apply_ipa_profile
+from .mekongphon_reference_profile import apply_ipa_profile, DEFAULT_ENGINE_PROFILE
 
 MARKS={"່":"mai_ek","້":"mai_tho","໊":"mai_ti","໋":"mai_catawa",None:"none"}
 
@@ -40,7 +40,7 @@ def determine_tone(onset, vowel, coda, tone_mark, onset_class=None, registry=Non
                 return rule["tone"],rule["status"],[rule["rule_id"]]
     return None,"ANALYSIS DEPENDENT",["TONE-NOT-ESTABLISHED-FOR-COMBINATION"]
 
-def phonologize(parsed, registry=None, ipa_profile="vientiane"):
+def phonologize(parsed, registry=None, ipa_profile=DEFAULT_ENGINE_PROFILE):
     r=registry if registry is not None else load_registry(); o=r["consonants"].get(parsed["onset"] or ""); v=parsed["vowel"]
     if not o or not v: return None,[],"ANALYSIS DEPENDENT",None
     coda=parsed["coda"]
