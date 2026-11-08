@@ -305,3 +305,5 @@ The full Verify workflow was enabled for `benchmark/**` push branches and comple
 | Production linguistic acceptance | BLOCKED | No independent IPA accuracy evidence or qualified specialist sign-off |
 
 **Readiness:** engineering-verified sentence-domain stress test is complete. The project remains a research prototype, not independently accuracy-validated or production/release-ready.
+
+PR #146's base branch advanced by one commit (`ad5bf2a61480ea255a9b83ca6f662471d7606e84`) adding the benchmark workflow. PR #147 was synchronized with merge commit `110a408057bc1143b466304cff6d57c4f074bbe8`; the single overlapping workflow file was resolved by retaining the benchmark-branch version with its push trigger. Compare is now 21 ahead / 0 behind and GitHub reports PR #147 mergeable. Both PRs remain draft/open; main was not changed.
