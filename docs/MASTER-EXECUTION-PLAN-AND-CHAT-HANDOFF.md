@@ -2295,8 +2295,8 @@ On the shared 97 words: profile CER 1.40% (8/570 edits) versus neural 5.79% (33/
 
 ### Verification
 
-- Final exact-head Verify [42467409253 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467409253) ran on branch head `aca31b594b06d1b7ab3381171b56ff745fde5985`: 271 Python, 129 Node and 17 Chromium tests passed; IPA corpus structural validation, `scripts/audit.py`, clean `npm ci`, browser tests, build, generated-data drift and built-site browser checks all passed.
-- Dedicated held-out benchmark [42467190935 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935) passed with zero runtime errors and aggregate-only warning categories. Final branch head after the last documentation/test updates: `aca31b594b06d1b7ab3381171b56ff745fde5985`.
+- Exact-head Verify [42467409253 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467409253) ran on code checkpoint `aca31b594b06d1b7ab3381171b56ff745fde5985`: 271 Python, 129 Node and 17 Chromium tests passed; IPA corpus structural validation, `scripts/audit.py`, clean `npm ci`, browser tests, build, generated-data drift and built-site browser checks all passed. Subsequent commits in this continuation only update handoff/audit metadata; runtime and benchmark code are unchanged.
+- Dedicated held-out benchmark [42467190935 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935) passed with zero runtime errors and aggregate-only warning categories.
 - Remaining coverage diagnostics: `UNCONSUMED_AFTER_VOWEL` (3 warnings) and `MALFORMED_TONE_MARK_ORDER` (1 warning). These are intentionally withheld; no neural fallback or guess was added.
 - The visible web UI has no profile selector yet; the profile is exposed through Python/CLI and browser-engine API only.
 
