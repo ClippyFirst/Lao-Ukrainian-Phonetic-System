@@ -27,7 +27,7 @@ class MekongPhonCliTests(unittest.TestCase):
             main()
 
         ipa.assert_called_once_with(
-            "ຂາ", tonal=True, revision=None, device="auto", num_beams=4
+            "ຂາ", tonal=True, revision=None, device="auto", num_beams=5
         )
         target.assert_not_called()
         self.assertIn("IPA: kʰaː˩˥", output.getvalue())
