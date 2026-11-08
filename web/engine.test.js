@@ -362,7 +362,7 @@ test("unattested preposed ເ◌ຽ remains one unresolved token", () => {
   assert.equal(r.syllables.length, 1);
   assert.equal(r.syllables[0].surface, surface);
   assert.equal(r.syllables[0].ipa, null);
-  assert.equal(r.syllables[0].ukrainian, "?");
+  assert.equal(r.syllables[0].ukrainian, null);
   assert.ok(r.syllables[0].warnings.length > 0);
   assert.equal(r.output, "?");
 });
@@ -514,7 +514,7 @@ test("browser IPA adapter uses a typed placeholder rather than adapting an incom
   const syllable = result.syllables[0];
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "?");
+  assert.equal(syllable.ukrainian, null);
 });
 
 
@@ -599,7 +599,7 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 });
 
 
-test("browser grapheme preview is provisional and never becomes accepted IPA or Ukrainian", () => {
+test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
   const syllable = analyze("ກາລ").syllables[0];
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, "?");
