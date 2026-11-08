@@ -22,7 +22,7 @@ It is deliberately **not**:
 
 **Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/quantity → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
 
-The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation.
+The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation. The primary hybrid aims for 100% rendering coverage on valid input: supported IPA is rendered normally, complete but uncertain IPA is rendered with its uncertainty preserved, and unresolved graphemes receive provisional IPA hints plus explicit ? markers through the same typed adapter. A placeholder is not a pronunciation prediction or an accuracy claim.
 
 ## Context-sensitive grapheme-to-sound rules
 
@@ -71,7 +71,7 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 
 The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer. The default ClippyFirst engine is the deterministic hybrid profile: Vientiane phonology remains its baseline, with only evidence-gated MekongPhon aggregate correspondences selected by deterministic contextual rules. Explicit `vientiane` and `mekongphon-reference` profiles remain frozen for compatibility only; future engine development targets hybrid.
 
-Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
+Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), low-confidence fallback for unresolved structures, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus. Rendering coverage, evidence-backed IPA coverage and phonetic accuracy are reported separately; 100% rendering coverage does not mean 100% correct pronunciation.
 
 ## Quick start and verification
 
@@ -90,7 +90,7 @@ Run the complete configured engineering checks from the repository root (command
 
 The browser tests require Playwright Chromium. In a fresh environment, install it with npx playwright install --with-deps chromium.
 
-For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json. The experimental deterministic compatibility profile is explicit: lao-ua "ດວງ" --engine rules --ipa-profile mekongphon-reference --json. The browser module exposes the same profile as analyze(text, { ipaProfile: "mekongphon-reference" }); the visible web UI continues to use the default Vientiane profile. The new opt-in `hybrid-deterministic` profile is available in Python and browser APIs; it keeps Vientiane as the base and applies the existing MekongPhon-derived correspondences through a deterministic priority/specificity selector. See [the hybrid-engine design note](docs/research/HYBRID-DETERMINISTIC-ENGINE-2026-11-08.md).
+For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json. The primary default is hybrid-deterministic; explicit `vientiane` and `mekongphon-reference` profiles are frozen for compatibility. The hybrid keeps Vientiane phonology as its base and applies existing MekongPhon-derived correspondences through a deterministic priority/specificity selector. On unresolved valid input, it returns a visibly provisional Ukrainian-side rendering rather than silently omitting the unit. The browser module exposes the same default and explicit compatibility profiles. See [the hybrid-engine design note](docs/research/HYBRID-DETERMINISTIC-ENGINE-2026-11-08.md).
 
 The web build regenerates the checked-in browser data mirror and copies the two static pages plus the web runtime into dist/. This is a small custom Python build, not a Vite/Webpack bundling pipeline. See [web architecture](docs/web-architecture.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
