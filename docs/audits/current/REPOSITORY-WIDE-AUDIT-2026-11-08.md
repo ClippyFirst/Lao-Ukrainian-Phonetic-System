@@ -528,3 +528,18 @@ No PR was merged and mainline/production deployment remains unchanged. The hybri
 - Benchmark [#42524982951 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42524982951), artifact 13635291111, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. Hybrid 90/100 exact, 6.64% CER, 97% reference-relative IPA coverage; Neural 82/100 exact, 100%. Same 97 rows: hybrid 90 exact / 1.40% CER, Neural 81 exact / 5.79%. Not independent gold. Hybrid mean 1.93 ms/input; zero runtime errors.
 - Provisional /l/ is now rendered as `кал?` in the malformed-tail regression while the final consonant's position remains unresolved. Tone is not inferred. Non-core consonant values and unsupported standalone semivowel values remain withheld.
 - This change improves low-confidence output completeness, not evidence-backed phonetic accuracy. Independent adjudicated IPA gold remains 0.
+
+
+## External Lao G2P engines, datasets and benchmark-confidence audit — 2026-11-08
+
+**Engineering status: DONE_VERIFIED for the same-set comparator harness; linguistic accuracy: BLOCKED / evidence-limited.**
+
+- Added pinned Epitran and orthography2ipa comparators, an ephemeral pinned LanguageNet Phonetisaurus Lao FST probe, and a three-repeat Goruut runtime probe. Aggregate artifacts only; no dataset rows or per-item predictions committed.
+- Current same-set results are in `docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md`. Segmental concordance: MekongPhon Neural 82/100 exact (6.64% CER); ClippyFirst hybrid 85/100 exact (14.45% CER; 91% typed IPA coverage); Lao2IPA 68/100 (8.97%); Epitran 71/100 (10.96%); orthography2ipa 32/100 (19.60%); Phonetisaurus 0/100 (78.90%).
+- ClippyFirst Ukrainian rendering coverage is separately 100/100 inputs and 169/169 units. Nine units are provisional hints and nine carry unknown markers. They are not accepted as IPA and must not enter CER/exact-match scoring.
+- A benchmark-confidence defect was found and fixed: the previous helper could count provisional grapheme preview values as IPA. A shared typed-status gate now accepts only `SUPPORTED` / `UNCERTAIN` results, excludes `PROVISIONAL`, and has dedicated unit tests. The prior 90/100, 97% IPA coverage figure is superseded.
+- Goruut's three-repeat run returns 81 outputs but only 47 complete source-coverage outputs; 7 inputs are unstable. The model asset reports missing `weights9`. It is not a viable production fallback on this evidence.
+- Phonetisaurus loaded and produced 100 outputs, but 0/100 exact and 78.90% CER against the pinned MekongPhon reference; segmental only. Its model was run ephemerally; do not redistribute until derived-asset rights are established.
+- No independent expert IPA gold has been found. FLEURS/Common Voice have audio/text but no IPA; they are candidates for expert annotation, not existing G2P gold. FLORES+/HPLT support text-domain coverage stress only. Wiktionary and neurlang are weak/non-independent references.
+- Full Verify run #42527429373 passed: 293 Python, 143 Node, 19 Chromium. Final exact-head verification and current 1k stress reruns remain pending.
+- Open PRs #137–#148 overlap these benchmark and audit files. PR #156 remains draft and is not merged pending stack reconciliation.
