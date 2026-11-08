@@ -753,7 +753,10 @@ export function analyze(text, options = {}) {
   const inputWarnings = validateInput(normalized);
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
-  const words = normalized.replace(/\u200b/g, " ").split(/\s+/).filter(Boolean).map((word) => analyzeWord(word, ipaProfile));
+  const words = normalized.replace(/\u200b/g, " ").split(/\s+/).filter(Boolean).map((word) => {
+    const analyzed = analyzeWord(word, ipaProfile);
+    return analyzed.length ? analyzed : [analyzeToken(word, ipaProfile)];
+  });
   const syllables = words.flat().map((syllable) => {
     if (syllable.passthrough || (syllable.ukrainian && syllable.status === "ESTABLISHED")) return syllable;
     if (ipaProfile !== "hybrid-deterministic") {
