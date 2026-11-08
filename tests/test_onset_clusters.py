@@ -36,7 +36,7 @@ class TestLaoLabializedOnsets(unittest.TestCase):
                 result = analyze(case["surface"])
                 syllable = result.syllables[0]
                 self.assertEqual(syllable.phonemic_ipa, case["ipa"])
-                self.assertIsNone(syllable.practical_ukrainian)
+                self.assertEqual(syllable.practical_ukrainian, "?")
                 self.assertEqual(syllable.ukrainian_candidates, [])
                 self.assertEqual(syllable.status, "EVIDENCE LIMITED")
                 self.assertIn(f"ONSET-CLUSTER:{case['onset_form']}", syllable.rules)
@@ -48,7 +48,7 @@ class TestLaoLabializedOnsets(unittest.TestCase):
                 self.assertEqual(parsed["onset_form"], case["onset_form"])
                 result = analyze(case["surface"])
                 self.assertEqual(result.syllables[0].phonemic_ipa, case["ipa"])
-                self.assertIsNone(result.syllables[0].practical_ukrainian)
+                self.assertEqual(result.syllables[0].practical_ukrainian, "?")
 
     def test_overlapping_cw_aa_and_uo_open_rhyme_is_withheld(self):
         for case in self.fixture["ambiguous"]:
@@ -58,7 +58,7 @@ class TestLaoLabializedOnsets(unittest.TestCase):
                 result = analyze(case["surface"])
                 syllable = result.syllables[0]
                 self.assertIsNone(syllable.phonemic_ipa)
-                self.assertIsNone(syllable.practical_ukrainian)
+                self.assertEqual(syllable.practical_ukrainian, "?")
                 self.assertIsNone(syllable.tone)
                 self.assertEqual(result.status, "PARTIAL")
 
@@ -69,7 +69,7 @@ class TestLaoLabializedOnsets(unittest.TestCase):
                 self.assertIn(case["warning"], parsed["warnings"])
                 result = analyze(case["surface"])
                 self.assertIsNone(result.syllables[0].phonemic_ipa)
-                self.assertIsNone(result.syllables[0].practical_ukrainian)
+                self.assertEqual(result.syllables[0].practical_ukrainian, "?")
 
     def test_preposed_vowel_precedes_silent_high_class_digraph_as_a_unit(self):
         for case in self.fixture["high_class_digraphs"]:
