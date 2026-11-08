@@ -480,7 +480,7 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | Goruut repeatability and source-coverage probe | DONE_VERIFIED | 5/100 strict exact across 3 repeats; 9/100 on any repeat; 47 complete-source outputs, 34 partial, 19 none; 7 unstable |
 | IPA benchmark confidence gate | DONE_VERIFIED | Shared helper accepts only typed SUPPORTED/UNCERTAIN; PROVISIONAL excluded; unit tests added |
 | Ukrainian rendering coverage separated from IPA coverage | DONE_VERIFIED | Current hybrid: 100/100 inputs, 169/169 units rendered; 159 supported, 1 uncertain, 9 provisional |
-| HVULao 1k confidence-gated stress benchmark | PARTIAL | Final rerun on dedicated branch pending; text stress only, no IPA gold |
+| HVULao 1k confidence-gated stress benchmark | DONE_VERIFIED | 1,000 rows; hybrid 100% rendering, 34.1% IPA-complete sentences, 94.14% syllable IPA; Neural 93.4% complete sentences with 66 source-limit/unsupported rejections; no IPA gold |
 | Independent expert-adjudicated IPA gold | BLOCKED / evidence-limited | Repository gold count remains 0; FLEURS/Common Voice need expert annotation |
 | Import/redistribute neurlang or Appen-derived assets as open gold | BLOCKED | Lao-specific provenance/rights not established; test-only execution does not grant redistribution rights |
 | Promote external G2P to production | DEFERRED | None meets coverage, stability, segmental and tonal evidence requirements |
