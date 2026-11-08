@@ -29,6 +29,25 @@ class PhoneticResult:
     external_ipa: str | None = None
 
 
+@dataclass(frozen=True)
+class GraphemeEvidence:
+    grapheme: str
+    role: str
+    ipa_hint: str | None = None
+    certainty: str = "PROVISIONAL"
+    structural_unit: str | None = None
+
+
+@dataclass(frozen=True)
+class GraphemePreview:
+    ipa_preview: str | None
+    status: str
+    graphemes: tuple[GraphemeEvidence, ...] = ()
+    unresolved_graphemes: tuple[str, ...] = ()
+    warnings: tuple[str, ...] = ()
+    phonetic_result: PhoneticResult | None = None
+
+
 @dataclass
 class SyllableAnalysis:
     surface: str
@@ -47,6 +66,7 @@ class SyllableAnalysis:
     warnings: list[str] = field(default_factory=list)
     tone_contour: str | None = None
     phonetic_result: PhoneticResult | None = None
+    grapheme_preview: GraphemePreview | None = None
 
 @dataclass
 class Analysis:

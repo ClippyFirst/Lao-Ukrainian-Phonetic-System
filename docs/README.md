@@ -7,6 +7,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 | Need | Canonical document |
 |---|---|
 | Current work, task status, handoff and blockers | [Master execution plan and chat handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) |
+| Latest repository-wide engineering and documentation audit | [Repository-wide audit — 2026-11-08](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) |
 | Terms and status vocabulary | [Project glossary](../GLOSSARY.md) |
 | Product scope and user-visible requirements | [Product requirements](PRODUCT-REQUIREMENTS.md) |
 | Linguistic pipeline and evidence distinctions | [Methodology](methodology.md) |
@@ -26,6 +27,8 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [Author's system page content contract](SYSTEM-PAGE.md)
 - [Romanization → Ukrainian matrix](romanization-to-ukrainian-matrix.md)
 - [Ukrainian target policy](ukrainian-target.md)
+- [Lao → Ukrainian practical transcription guide](lao-ukrainian-practical-transcription.md)
+- [Grapheme-level provisional IPA preview](lao-grapheme-ipa-preview.md)
 - [Unicode handling](unicode.md)
 
 ### Linguistics and implementation
@@ -38,18 +41,26 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 
 ### IPA, corpora and evaluation
 - [Typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md)
+- [Lao → Ukrainian practical transcription guide](lao-ukrainian-practical-transcription.md)
 - [Independent IPA gold corpus contract](ipa-gold-corpus.md)
 - [Controlled IPA gold collection playbook](ipa-gold-collection-playbook.md)
 - [Benchmarking and external IPA](benchmarking-and-external-ipa.md)
 - [External IPA renderers](external-ipa-renderers.md)
 - [Independent G2P comparison](independent-g2p-comparison.md)
 - [External G2P research](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md)
+- [MekongPhon neural integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md)
+- [MekongPhon rights review](audits/current/MEKONGPHON-DATA-RIGHTS-REVIEW-2026-11-07.md)
+- [MekongPhon grapheme-context analysis](audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md)
 
 ### Agent and maintainer context
 - [Agent instructions](../AGENTS.md)
 - [Codebase map](agents/codebase-map.md)
 - [Issue tracker conventions](agents/issue-tracker.md)
 - [Superpowers corpus plan](superpowers/plans/2026-11-01-independent-ipa-gold-corpus.md)
+
+## Accessibility QA
+
+- [Manual accessibility QA protocol and results log](accessibility-manual-qa.md) — screen readers, keyboard-only operation, physical mobile devices, real browser zoom, high contrast and visual review.
 
 ## Source-of-truth and precedence
 

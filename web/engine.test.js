@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyze } from "./engine.js";
-import { CORRESPONDENCES } from "./data.js";
+import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
 
 test("basic long syllable", () => {
   const r = analyze("ຂາ");
@@ -96,13 +96,35 @@ test("shared Lao labialized onset cluster fixture", () => {
 
 test("medial ອ is long ɔ", () => {
   const r = analyze("ຈອກ");
-  assert.equal(r.syllables[0].ipa, "tɕɔːk");
+  assert.equal(r.syllables[0].ipa, "t͡ɕɔːk");
   assert.equal(r.output, "чок");
 });
 
 test("mai ti and mai catawa are not dropped", () => {
   assert.equal(analyze("ກ໊າ").syllables[0].tone, "high-falling");
   assert.equal(analyze("ກ໋າ").syllables[0].tone, "low-rising");
+});
+
+test("potential initial minor open-A tone is withheld in browser and segmental IPA retained", () => {
+  const result = analyze("ຄະຄາ");
+  const first = result.syllables[0];
+  assert.equal(result.status, "PARTIAL");
+  assert.ok(first.ipa);
+  assert.ok(first.ukrainian);
+  assert.equal(first.tone, null);
+  assert.equal(first.toneContour, null);
+  assert.equal(first.toneStatus, "ANALYSIS DEPENDENT");
+  assert.ok(first.phoneticResult.uncertainty.includes("TONE-UNRESOLVED"));
+  assert.ok(first.phoneticResult.provenance.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+  assert.ok(first.phoneticResult.provenance.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+  assert.ok(first.rules.includes("TONE-RULE:VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+});
+
+test("minor-A candidate requires a major-weighted following syllable", () => {
+  const result = analyze("ຄະຄະ");
+  assert.equal(result.syllables.length, 2);
+  assert.equal(result.syllables[0].tone, "high-mid");
+  assert.equal(result.syllables[0].toneStatus, "ESTABLISHED");
 });
 
 test("shared Lao tone-mark storage-order fixture", () => {
@@ -124,6 +146,18 @@ test("shared Lao tone-mark storage-order fixture", () => {
     assert.equal(result.status, "PARTIAL", item.id);
     assert.ok(result.syllables[0].warnings.some((warning) => warning.startsWith("MALFORMED_TONE_MARK_")), item.id);
   }
+});
+
+test("short A2 syllable coda is validated before the next syllable", () => {
+  const result = analyze("ກັນກາ");
+  assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກັນ|ກາ");
+  assert.equal(result.syllables.every((s) => s.ipa), true);
+});
+
+test("tone marks are validated per syllable inside an unspaced word", () => {
+  const result = analyze("ກ່າຂ່າ");
+  assert.equal(result.syllables.map((s) => s.surface).join("|"), "ກ່າ|ຂ່າ");
+  assert.equal(result.syllables.every((s) => s.ipa), true);
 });
 
 test("multiple adjacent tone marks withhold the entire malformed token", () => {
@@ -210,7 +244,7 @@ test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
 
 test("matched tone rule exposes its contour", () => {
   assert.equal(analyze("ຂາ").syllables[0].tone, "low-rising");
-  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˩˥");
+  assert.equal(analyze("ຂາ").syllables[0].toneContour, "˨˦");
 });
 
 test("shared tone contour and structural withholding fixture", () => {
@@ -482,9 +516,94 @@ test("browser retains Ukrainian adaptation when only tone is unresolved", () => 
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
+test("browser withholds tone for a supported potential initial minor open-A syllable", () => {
+  const result = analyze("ຄະຄາ");
+  const first = result.syllables[0];
+  assert.equal(first.ipa, "kʰa");
+  assert.equal(first.phoneticResult.status, "SUPPORTED");
+  assert.equal(first.phoneticResult.toneCategory, null);
+  assert.equal(first.toneContour, null);
+  assert.equal(first.ukrainian, "к'а");
+  assert.ok(first.rules.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+});
+
+test("browser does not apply potential minor selector across spaces or uncertain onsets", () => {
+  const spaced = analyze("ຄະ ຄາ");
+  assert.equal(spaced.syllables[0].tone, "high-mid");
+  assert.ok(!spaced.syllables[0].rules.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+
+  const uncertain = analyze("ຣະຄາ");
+  assert.equal(uncertain.syllables[0].phoneticResult.status, "UNCERTAIN");
+  assert.ok(!uncertain.syllables[0].rules.includes("TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"));
+});
+
 
 test("browser IPA tokenization is independent of target sequence matching", () => {
   const syllable = analyze("ຂາ").syllables[0];
   assert.deepEqual(syllable.phoneticResult.segments.map((segment) => segment.ipa), ["kʰ", "aː"]);
   assert.equal(syllable.ukrainian, "к'а");
+});
+
+test("browser special-tone selector is generated from the canonical evidence registry", () => {
+  assert.equal(SPECIAL_TONE_RULES.length, 1);
+  assert.deepEqual(SPECIAL_TONE_RULES[0], [
+    "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+    "initial-open-short-a-unmarked-followed-by-major-weighted-syllable",
+    "",
+    "",
+    "analysis-dependent",
+    "Vientiane",
+    "CLM-LAO-POTENTIAL-MINOR-OPEN-A"
+  ]);
+});
+
+
+test("minor-syllable candidate requires a supported following onset", () => {
+  const result = analyze("ຄະຣາ");
+  assert.ok(result.syllables.length >= 1);
+  assert.ok(!result.syllables[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+});
+
+test("minor-syllable candidate excludes known palatal and velar nasal C0 onsets", () => {
+  for (const word of ["ງະຄາ", "ຍະຄາ"]) {
+    const result = analyze(word);
+    assert.ok(result.syllables.length >= 1);
+    assert.ok(!result.syllables[0].rules.includes("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"));
+  }
+});
+
+
+test("browser IPA adapter applies initial yodation and Lao /w/ mapping", () => {
+  assert.equal(analyze("ຢາ").output, "я");
+  assert.equal(analyze("ເຢ").output, "є");
+  assert.equal(analyze("ຢີ").output, "ї");
+  assert.equal(analyze("ຢູ").output, "ю");
+  assert.equal(analyze("ເຂົາ").output, "к'ав");
+});
+
+test("browser IPA adapter preserves medial yod and does not collapse a diphthong", () => {
+  assert.equal(analyze("ຂາຍ").output, "к'ай");
+  assert.equal(analyze("ຢຽ").output, "йіа");
+});
+
+
+test("browser grapheme preview is provisional and never becomes accepted IPA or Ukrainian", () => {
+  const syllable = analyze("ກາລ").syllables[0];
+  assert.equal(syllable.ipa, null);
+  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.graphemePreview.ipaPreview, "kaː");
+  assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
+  assert.deepEqual(syllable.graphemePreview.unresolvedGraphemes, ["ລ"]);
+  assert.equal(syllable.graphemePreview.phoneticResult.status, "PROVISIONAL");
+  assert.ok(syllable.graphemePreview.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
+});
+
+test("browser grapheme preview never infers tone and withholds non-core Pali values", () => {
+  const malformed = analyze("ຂ່້າ").syllables[0].graphemePreview;
+  assert.equal(malformed.ipaPreview, "kʰaː");
+  assert.ok(malformed.warnings.includes("TONE_NOT_INFERRED_BY_GRAPHEME_PREVIEW"));
+  assert.equal(malformed.phoneticResult.toneCategory, null);
+  const pali = analyze("ຆາ").syllables[0].graphemePreview;
+  assert.equal(pali.ipaPreview, null);
+  assert.equal(pali.status, "UNRESOLVED");
 });

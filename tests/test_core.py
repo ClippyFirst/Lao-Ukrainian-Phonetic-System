@@ -1,9 +1,23 @@
 import unittest
+from unittest.mock import patch
 
+import lao_ukrainian.core as core_module
 from lao_ukrainian import analyze
 
 
 class TestCore(unittest.TestCase):
+    def test_analysis_loads_registry_once_for_full_pipeline(self):
+        real_loader = core_module.load_registry
+        with (
+            patch("lao_ukrainian.core.load_registry", wraps=real_loader) as load_once,
+            patch("lao_ukrainian.parser.load_registry", side_effect=AssertionError("parser reloaded registry")),
+            patch("lao_ukrainian.phonology.load_registry", side_effect=AssertionError("phonology reloaded registry")),
+            patch("lao_ukrainian.target.load_registry", side_effect=AssertionError("target adapter reloaded registry")),
+        ):
+            result = core_module.analyze("ຂາຄາ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(load_once.call_count, 1)
+
     def test_long_open_high_class(self):
         s = analyze("ຂາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "kʰaː")
@@ -14,7 +28,7 @@ class TestCore(unittest.TestCase):
         rising = analyze("ຂາ").syllables[0]
         mid = analyze("ກ່າ").syllables[0]
         self.assertEqual(rising.tone, "low-rising")
-        self.assertEqual(rising.tone_contour, "˩˥")
+        self.assertEqual(rising.tone_contour, "˨˦")
         self.assertEqual(mid.tone, "high-mid")
         self.assertEqual(mid.tone_contour, "˧")
 
@@ -29,6 +43,63 @@ class TestCore(unittest.TestCase):
         self.assertEqual(analyze("ກ້າ").syllables[0].tone, "high-falling")
         self.assertEqual(analyze("ຄ້າ").syllables[0].tone, "high-falling")
 
+    def test_tone_matrix_cross_checks_live_and_dead_rhymes(self):
+        # Independent Vientiane chart: high-class live unmarked syllables
+        # remain low-rising even with a short vowel plus sonorant coda.
+        self.assertEqual(analyze("ຂົງ").syllables[0].tone, "low-rising")
+        self.assertEqual(analyze("ຂູງ").syllables[0].tone, "low-rising")
+
+        # Low-class short open/dead syllables and live mai-ek syllables
+        # are high-mid; do not retune these from conflicting dictionary rows.
+        self.assertEqual(analyze("ຄະ").syllables[0].tone, "high-mid")
+        self.assertEqual(analyze("ຄີ່").syllables[0].tone, "high-mid")
+
+    def test_initial_open_short_a_potential_minor_syllable_withholds_tone(self):
+        result = analyze("ຄະຄາ")
+        first, second = result.syllables
+        self.assertEqual(first.phonemic_ipa, "kʰa")
+        self.assertEqual(first.phonetic_result.status, "SUPPORTED")
+        self.assertEqual(first.practical_ukrainian, "к'а")
+        self.assertIsNone(first.tone)
+        self.assertIsNone(first.tone_contour)
+        self.assertIsNone(first.phonetic_result.tone_category)
+        self.assertEqual(first.status, "analysis-dependent")
+        self.assertIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", first.rules)
+        self.assertIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", first.phonetic_result.provenance)
+        self.assertNotIn("VNT-L-DEAD-SHORT-NONE", first.phonetic_result.provenance)
+        self.assertEqual(second.tone, "high-rising")
+
+    def test_monosyllabic_open_short_a_keeps_its_lexical_tone(self):
+        self.assertEqual(analyze("ຄະ").syllables[0].tone, "high-mid")
+
+    def test_initial_open_short_a_without_major_weight_does_not_trigger_minor_candidate(self):
+        result = analyze("ຄະຄະ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(result.syllables[0].tone, "high-mid")
+
+    def test_potential_minor_selector_does_not_cross_explicit_space(self):
+        result = analyze("ຄະ ຄາ")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(result.syllables[0].tone, "high-mid")
+        self.assertNotIn(
+            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+            result.syllables[0].rules,
+        )
+
+    def test_zero_width_space_is_rejected_before_minor_selector(self):
+        result = analyze("ຄະ\u200bຄາ")
+        self.assertEqual(result.status, "INVALID")
+        self.assertEqual(result.syllables, [])
+
+    def test_potential_minor_selector_does_not_override_uncertain_onset(self):
+        result = analyze("ຣະຄາ")
+        first = result.syllables[0]
+        self.assertEqual(first.phonetic_result.status, "UNCERTAIN")
+        self.assertNotIn(
+            "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED",
+            first.rules,
+        )
+
     def test_low_class_ng(self):
         s = analyze("ງາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "ŋaː")
@@ -37,7 +108,7 @@ class TestCore(unittest.TestCase):
 
     def test_palatal_affricate(self):
         s = analyze("ຈາ").syllables[0]
-        self.assertEqual(s.phonemic_ipa, "tɕaː")
+        self.assertEqual(s.phonemic_ipa, "t͡ɕaː")
         self.assertEqual(s.practical_ukrainian, "ча")
 
     def test_checked_coda(self):
@@ -59,7 +130,7 @@ class TestCore(unittest.TestCase):
 
     def test_medial_o_vowel(self):
         s = analyze("ຈອກ").syllables[0]
-        self.assertEqual(s.phonemic_ipa, "tɕɔːk")
+        self.assertEqual(s.phonemic_ipa, "t͡ɕɔːk")
         self.assertEqual(s.practical_ukrainian, "чок")
 
     def test_ti_and_catawa_marks(self):
@@ -137,7 +208,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.syllable_boundaries, (0, 2))
         self.assertEqual(result.vowel_length, "long")
         self.assertEqual(result.tone_category, "low-rising")
-        self.assertEqual(result.tone_contour_ipa, "˩˥")
+        self.assertEqual(result.tone_contour_ipa, "˨˦")
         self.assertEqual(result.status, "SUPPORTED")
         self.assertEqual(syllable.practical_ukrainian, "к'а")
 
@@ -156,3 +227,17 @@ class TestCore(unittest.TestCase):
         self.assertIn("TONE-UNRESOLVED", syllable.phonetic_result.uncertainty)
         self.assertEqual(syllable.practical_ukrainian, "к'ап")
         self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
+
+
+class TestMinorSyllableSelectorEvidence(unittest.TestCase):
+    def test_minor_candidate_requires_supported_following_onset(self):
+        result = analyze("ຄະຣາ")
+        self.assertTrue(result.syllables)
+        self.assertNotIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", result.syllables[0].rules)
+
+    def test_minor_candidate_excludes_known_palatal_and_velar_nasal_onsets(self):
+        for word in ("ງະຄາ", "ຍະຄາ"):
+            with self.subTest(word=word):
+                result = analyze(word)
+                self.assertTrue(result.syllables)
+                self.assertNotIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", result.syllables[0].rules)

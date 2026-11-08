@@ -32,9 +32,12 @@ These are project-wide target-language decisions applied only after source phono
 ## Lao-specific decisions
 
 - /ŋ/ → нг.
+- /ʋ/ and /w/ → в in both onset and coda positions; the complete /aw/ rime → ав, never ау.
+- Syllable-initial /j/ before /a aː/ → я; /e eː ɛ ɛː/ → є; /i iː/ → ї; /o oː ɔ ɔː/ → йо; /u uː/ → ю. Other initial /j/ + vowel sequences use йи/йе where appropriate; medial and coda /j/ remains й.
 - /tɕ/ → ч; this is the current Lao palatal-affricate project correspondence.
 - /ɯ/ → и as a project approximation; uncertainty remains visible in the IPA layer.
 - Vowel quantity remains analytical rather than automatically doubling vowels.
+- /aw/ → ав follows the global /w/ → в target policy; do not use the older ау candidate.
 - Lao /h/ → г is a target-language approximation, not a claim that Lao /h/ and Ukrainian /ɦ/ are phonetically identical; the target registry also retains /ɦ/ → г as its own IPA correspondence.
 
 The Russian system remains a comparator, never the source of Ukrainian output.

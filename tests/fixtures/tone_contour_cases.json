@@ -6,7 +6,7 @@
       "id": "LIVE-HIGH-CLASS-LOW-RISING",
       "surface": "ຂາ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kʰaː",
       "ukrainian": "к'а",
       "status": "ESTABLISHED"
@@ -258,7 +258,7 @@
       "id": "LIVE-MIDDLE-CLASS-AI",
       "surface": "ໄກ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kai",
       "ukrainian": "кай",
       "status": "ESTABLISHED"
@@ -267,7 +267,7 @@
       "id": "LIVE-MIDDLE-CLASS-AI2",
       "surface": "ໃກ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kai",
       "ukrainian": "кай",
       "status": "ESTABLISHED"
@@ -294,7 +294,7 @@
       "id": "LIVE-MIDDLE-CLASS-AM",
       "surface": "ກຳ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kam",
       "ukrainian": "кам",
       "status": "ESTABLISHED"
@@ -303,7 +303,7 @@
       "id": "LIVE-MIDDLE-CLASS-IA-SHORT",
       "surface": "ເກັຍ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kiə",
       "ukrainian": "кіа",
       "status": "ESTABLISHED"
@@ -312,7 +312,7 @@
       "id": "LIVE-MIDDLE-CLASS-UA-SHORT",
       "surface": "ເກຶອ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kɯə",
       "ukrainian": "киа",
       "status": "ESTABLISHED"
@@ -321,7 +321,7 @@
       "id": "LIVE-MIDDLE-CLASS-UO-SHORT",
       "surface": "ກົວະ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kuə",
       "ukrainian": "куа",
       "status": "ESTABLISHED"
@@ -330,9 +330,9 @@
       "id": "LIVE-MIDDLE-CLASS-AW-DIPHTHONG",
       "surface": "ເກົາ",
       "tone": "low-rising",
-      "tone_contour": "˩˥",
+      "tone_contour": "˨˦",
       "ipa": "kaw",
-      "ukrainian": "кау",
+      "ukrainian": "кав",
       "status": "ESTABLISHED"
     }
   ]

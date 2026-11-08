@@ -57,6 +57,18 @@ class TestToneRuleRegistry(unittest.TestCase):
                 self.assertTrue(row["contour"])
                 self.assertTrue(row["status"])
 
+    def test_contours_are_the_ipa_conversion_of_ueda_pitch_levels(self):
+        expected = {
+            "low-rising": "˨˦",   # [24]
+            "high-rising": "˧˦",  # [34]
+            "high-mid": "˧",      # [33]
+            "low-falling": "˨˩",  # [21]
+            "high-falling": "˥˨", # [52]
+        }
+        for row in self.rules:
+            with self.subTest(rule=row["rule_id"]):
+                self.assertEqual(row["contour"], expected[row["tone"]])
+
     def test_tone_mark_rules_are_restricted_to_live_syllables(self):
         for row in self.rules:
             if row["tone_mark"] != "none":
@@ -193,6 +205,17 @@ class TestToneRuleRegistry(unittest.TestCase):
         self.assertIsNone(tone)
         self.assertEqual(status, "ANALYSIS DEPENDENT")
         self.assertEqual(rules, ["TONE-NOT-ESTABLISHED-FOR-COMBINATION"])
+
+    def test_potential_minor_tone_rule_is_source_backed_and_separate(self):
+        rules = self.registry["special_tone_rules"]
+        self.assertEqual(len(rules), 1)
+        row = rules[0]
+        self.assertEqual(row["rule_id"], "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED")
+        self.assertEqual(row["condition"], "initial-open-short-a-unmarked-followed-by-major-weighted-syllable")
+        self.assertEqual(row["tone"], "")
+        self.assertEqual(row["contour"], "")
+        self.assertEqual(row["status"], "analysis-dependent")
+        self.assertEqual(row["evidence_id"], "CLM-LAO-POTENTIAL-MINOR-OPEN-A")
 
 
 if __name__ == "__main__":

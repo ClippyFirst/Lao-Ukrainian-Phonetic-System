@@ -99,8 +99,109 @@ STRUCTURES = (
     ("short_o_around", "ເ", "າະ", "AW"),
 )
 
-def segment_syllables(text: str) -> list[str]:
-    return [x for x in text.replace("\u200b", " ").split() if x]
+def segment_syllables(text: str, registry: dict | None = None) -> list[str]:
+    """Split phrase-separated Lao into structurally parsed syllables.
+
+    Lao spaces are phrase boundaries, not dependable word/syllable boundaries.
+    This deterministic dynamic program identifies complete orthographic
+    syllables first, then lets the phonology layer derive IPA and tone. It
+    never discards unparsed code points; unsupported material remains visible.
+    """
+    registry = registry or load_registry()
+    words = text.replace("\u200b", " ").split()
+    return [part for word in words for part in _segment_word(word, registry)]
+
+
+def _segment_word(word: str, registry: dict) -> list[str]:
+    chars = list(word)
+    if not chars:
+        return []
+
+    whole = parse_syllable(word, registry)
+    warnings = whole.get("warnings", [])
+    if whole.get("vowel") is not None and not warnings:
+        return [word]
+
+    # Do not salvage a plausible prefix from known ambiguous or malformed
+    # orthographic units.
+    if any(
+        warning in {
+            "AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY",
+            "LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL",
+        }
+        or warning.startswith("UNCONSUMED_BEFORE_ONSET:")
+        for warning in warnings
+    ):
+        return [word]
+
+    onset = whole.get("onset")
+    onset_form = whole.get("onset_form")
+    if onset_form and onset_form != onset and onset_form not in HIGH_DIGRAPHS:
+        return [word]
+
+    # ເ + onset + ຽ is not an established preposed IA spelling.
+    clean = _strip_tone_marks(word)
+    found_onset = _find_onset(clean, registry)
+    if found_onset:
+        _, onset_index, onset_length, *_ = found_onset
+        if clean[:onset_index] == "ເ" and clean[onset_index + onset_length:] == "ຽ":
+            return [word]
+
+    # Prefer complete syllables, but retain every unparsed code point as a
+    # visible one-character unit with a strong fallback penalty. The coda
+    # penalty resolves CVC|CV boundaries when a vowel sign follows the next
+    # consonant.
+    n = len(chars)
+    best: list[tuple[int, list[str]] | None] = [None] * (n + 1)
+    best[n] = (0, [])
+    next_syllable_vowel_signs = set("ະັິີຶືຸູ")
+
+    for i in range(n - 1, -1, -1):
+        tail = best[i + 1]
+        assert tail is not None
+        best[i] = (tail[0] - 100, [chars[i], *tail[1]])
+
+        for j in range(i + 1, min(n, i + 12) + 1):
+            candidate_text = "".join(chars[i:j])
+            parsed = parse_syllable(candidate_text, registry)
+            if parsed.get("vowel") is None or parsed.get("warnings"):
+                continue
+            following = chars[j] if j < n else ""
+            coda_starts_next = bool(parsed.get("coda") and following in next_syllable_vowel_signs)
+            suffix = best[j]
+            assert suffix is not None
+            score = suffix[0] + (j - i) - (3 if coda_starts_next else 0)
+            parts = [candidate_text, *suffix[1]]
+            current = best[i]
+            assert current is not None
+            if score > current[0] or (score == current[0] and len(parts) < len(current[1])):
+                best[i] = (score, parts)
+
+    result = best[0]
+    assert result is not None
+    parts = result[1]
+    # Tone marks are validated by each candidate syllable, not by the whole
+    # space-delimited word. If a mark cannot be consumed by a complete
+    # syllable, retain the whole orthographic unit rather than dropping it.
+    if any(part in TONE_MARKS for part in parts):
+        return [word]
+    # A2 short vowels may be legal inside a closed syllable even when the
+    # whole word's first-pass parse cannot see that coda. Validate the coda
+    # on each candidate syllable; if DP leaves a core Lao consonant or vowel
+    # sign stranded, keep the original token unresolved.
+    vowel_graphemes = set("ະາຽຳເແໂໃໄວອຍ") | VOWEL_COMBINING_MARKS
+    if any(
+        len(part) == 1 and (
+            part in vowel_graphemes
+            or (
+                part in registry["consonants"]
+                and registry["consonants"][part].get("status") in {"core", "analysis-dependent"}
+            )
+        )
+        for part in parts
+    ):
+        return [word]
+    return parts
 
 def _strip_tone_marks(surface: str) -> str:
     return "".join(ch for ch in surface if ch not in TONE_MARKS)
@@ -164,8 +265,8 @@ def _find_coda(after_vowel: str, registry: dict):
         return after_vowel
     return None
 
-def parse_syllable(surface: str):
-    registry = load_registry()
+def parse_syllable(surface: str, registry: dict | None = None):
+    registry = registry or load_registry()
     s = _strip_tone_marks(surface)
     onset, onset_i, onset_len, onset_class, onset_form, onset_ipa = _find_onset(s, registry)
     tone_mark = next((g for g in TONE_MARKS if g in surface), None)

@@ -4,7 +4,9 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — repository inventory, documentation corrections, engineering status, unresolved acceptance gates and this pass's evidence.
+- [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — latest integrated PR #143 branch state, exact-head verification, architecture, PR reconciliation, task ledger and remaining acceptance gates.
+- [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.
+- [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — historical repository inventory and earlier documentation checkpoint.
 
 ## Current language/research workpacks
 
@@ -20,3 +22,10 @@ This directory separates the current state from historical checkpoints. A dated 
 - [Final scientific audit](../final-audit.md) — historical synthesis; not a current status authority.
 - [Phonology audit notes](../PHONOLOGY-AUDIT.md) — issue-specific findings and corrections; consult current code, methodology and completion register before treating a finding as unresolved.
 - [Dated execution history](../MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — append-only continuation and verification record.
+
+
+## Additional current research audits
+
+- [MekongPhon grapheme-context analysis](current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) — train-split aggregate context diagnostics; no word-level lookup rules or independent gold.
+- [Three-engine benchmark and rule-engine error analysis](../research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md) — immutable two-model inference and aggregate comparator results.
+- [MekongPhon dataset rights review](current/MEKONGPHON-DATA-RIGHTS-REVIEW-2026-11-07.md) — preliminary component provenance plus current owner-confirmed rights disposition.

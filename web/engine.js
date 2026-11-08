@@ -1,6 +1,10 @@
-import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES } from "./data.js";
+import { CONSONANTS, ONSET_CLUSTERS, VOWELS, CODAS, CORRESPONDENCES, TONE_MARKS, TONE_RULES, SPECIAL_TONE_RULES, GRAPHEME_INVENTORY } from "./data.js";
 
 const TONE_MARK_SET = new Set(Object.keys(TONE_MARKS));
+const POTENTIAL_MINOR_TONE_RULE = SPECIAL_TONE_RULES.find(
+  ([ruleId]) => ruleId === "VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED"
+);
+const MINOR_C0_EXCLUDED_ONSETS = new Set(["ງ", "ຍ"]);
 const HIGH_DIGRAPHS = new Map([
   ["ຫງ", "ງ"], ["ຫຍ", "ຍ"], ["ຫນ", "ນ"], ["ຫມ", "ມ"],
   ["ຫລ", "ລ"], ["ຫຼ", "ລ"], ["ຫວ", "ວ"],
@@ -151,6 +155,26 @@ function adaptPhoneticResult(result) {
   const keys = sortedIpa();
   let output = "";
   let i = 0;
+
+  // Yodated Ukrainian letters are used only for syllable-initial /j/
+  // followed by a monophthong; a vowel sequence remains explicit.
+  const initialYodated = {
+    a: "я", "aː": "я",
+    e: "є", "eː": "є", ɛ: "є", "ɛː": "є",
+    i: "ї", "iː": "ї",
+    o: "йо", "oː": "йо", ɔ: "йо", "ɔː": "йо",
+    u: "ю", "uː": "ю",
+    ɯ: "йи", "ɯː": "йи",
+    ɤ: "йе", "ɤː": "йе",
+  };
+  if (result.segments.length >= 2 &&
+      result.segments[0].ipa === "j" &&
+      result.segments[1].kind === "vowel" &&
+      Object.hasOwn(initialYodated, result.segments[1].ipa) &&
+      (result.segments.length === 2 || result.segments[2].kind !== "vowel")) {
+    output += initialYodated[result.segments[1].ipa];
+    i = result.segments[0].ipa.length + result.segments[1].ipa.length;
+  }
   while (i < ipa.length) {
     const key = keys.find((candidate) => ipa.startsWith(candidate, i));
     if (!key) return null;
@@ -158,6 +182,105 @@ function adaptPhoneticResult(result) {
     i += key.length;
   }
   return output;
+}
+
+const PREVIEW_VOWEL_GRAPHEMES = new Set("ະັາິີຶືຸູົຽອໍຳເແໂໃໄ");
+const PREVIEW_STRUCTURAL_ONLY = new Set([
+  "PALI_ONLY", "NON_CORE_NO_MODERN_IPA", "OUT_OF_SCOPE_KHMU",
+  "NOT_USED_MODERN_LAO", "NONPHONOLOGICAL", "ORTHOGRAPHIC_ONLY"
+]);
+
+function previewFromGraphemes(surface, parsed) {
+  const chars = [...surface];
+  const roles = new Map();
+  const ipaParts = [];
+  const unresolved = [];
+  const warnings = [];
+  for (let i = 0; i < chars.length; i++) {
+    if (Object.hasOwn(TONE_MARKS, chars[i])) {
+      roles.set(i, { grapheme: chars[i], role: "tone-mark", ipaHint: null, certainty: "STRUCTURAL_ONLY" });
+    }
+  }
+
+  const onsetForm = parsed.onsetForm || parsed.onset;
+  const onsetIndex = onsetForm ? surface.indexOf(onsetForm) : -1;
+  const onsetLength = onsetIndex >= 0 ? [...onsetForm].length : 0;
+  let onsetIpa = null;
+  if (onsetIndex >= 0 && onsetLength) {
+    if (Object.hasOwn(ONSET_CLUSTERS, onsetForm)) {
+      onsetIpa = ONSET_CLUSTERS[onsetForm][1];
+      roles.set(onsetIndex, { grapheme: chars[onsetIndex], role: "labialized-onset-unit", ipaHint: onsetIpa, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+      for (let i = onsetIndex + 1; i < onsetIndex + onsetLength; i++) {
+        roles.set(i, { grapheme: chars[i], role: "labialization-component", ipaHint: null, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+      }
+    } else if (HIGH_DIGRAPHS.has(onsetForm)) {
+      const base = HIGH_DIGRAPHS.get(onsetForm);
+      onsetIpa = CONSONANTS[base]?.[1] || null;
+      roles.set(onsetIndex, { grapheme: chars[onsetIndex], role: "silent-high-class-modifier", ipaHint: null, certainty: "STRUCTURAL_ONLY", structuralUnit: onsetForm });
+      roles.set(onsetIndex + 1, { grapheme: chars[onsetIndex + 1], role: "high-class-onset", ipaHint: onsetIpa, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+    } else {
+      onsetIpa = parsed.onset === "ອ" ? "" : (CONSONANTS[parsed.onset]?.[1] || null);
+      const role = parsed.onset === "ອ" ? "vowel-carrier" : "syllable-onset";
+      roles.set(onsetIndex, { grapheme: chars[onsetIndex], role, ipaHint: onsetIpa || null, certainty: "PROVISIONAL", structuralUnit: onsetForm });
+    }
+    if (onsetIpa) ipaParts.push(onsetIpa);
+  }
+
+  const vowel = VOWELS.find((row) => row[0] === parsed.vowelId);
+  if (vowel?.[2]) {
+    ipaParts.push(vowel[2]);
+    const vowelIndices = chars.map((ch, i) => PREVIEW_VOWEL_GRAPHEMES.has(ch) && !roles.has(i) ? i : -1).filter((i) => i >= 0);
+    const unit = vowelIndices.map((i) => chars[i]).join("");
+    vowelIndices.forEach((i, offset) => roles.set(i, {
+      grapheme: chars[i], role: "vowel-structure-component",
+      ipaHint: offset === 0 ? vowel[2] : null, certainty: "PROVISIONAL",
+      structuralUnit: unit || null
+    }));
+  }
+
+  const coda = parsed.coda && parsed.coda !== "—" ? parsed.coda : null;
+  if (coda) {
+    const i = chars.map((ch, index) => ch === coda && !roles.has(index) ? index : -1).filter((index) => index >= 0).at(-1) ?? -1;
+    const codaIpa = CODAS[coda];
+    if (codaIpa && i >= 0) {
+      ipaParts.push(codaIpa);
+      roles.set(i, { grapheme: chars[i], role: "syllable-coda", ipaHint: codaIpa, certainty: "PROVISIONAL", structuralUnit: coda });
+    }
+  }
+
+  for (let i = 0; i < chars.length; i++) {
+    if (roles.has(i)) continue;
+    const ch = chars[i];
+    const inventory = GRAPHEME_INVENTORY[ch];
+    const role = inventory?.structuralRole || (CONSONANTS[ch] ? "unresolved-consonant-position" : PREVIEW_VOWEL_GRAPHEMES.has(ch) ? "unresolved-vowel-component" : "unregistered-grapheme");
+    const certainty = inventory && PREVIEW_STRUCTURAL_ONLY.has(inventory.engineStatus) ? "STRUCTURAL_ONLY" : "UNRESOLVED";
+    roles.set(i, { grapheme: ch, role, ipaHint: null, certainty });
+    unresolved.push(ch);
+  }
+
+  if (!ipaParts.length) warnings.push("NO_CONFIDENT_SEGMENTAL_HINT");
+  if (unresolved.length) warnings.push("UNRESOLVED_GRAPHEME_OR_POSITION");
+  warnings.push(...(parsed.warnings || []), "TONE_NOT_INFERRED_BY_GRAPHEME_PREVIEW");
+  const uniqueWarnings = [...new Set(warnings)];
+  const ipaPreview = ipaParts.join("") || null;
+  let phoneticResult = null;
+  if (ipaPreview) {
+    phoneticResult = createPhoneticResult(ipaPreview, {
+      vowelLength: vowel?.[3] || null,
+      status: "PROVISIONAL",
+      provenance: ["GRAPHEME-POSITION-PREVIEW"],
+      uncertainty: uniqueWarnings
+    });
+    phoneticResult.segments = phoneticResult.segments.map((segment) => ({ ...segment, certainty: "PROVISIONAL" }));
+  }
+  return {
+    ipaPreview,
+    status: ipaPreview ? "PROVISIONAL" : "UNRESOLVED",
+    graphemes: chars.map((_, index) => roles.get(index)),
+    unresolvedGraphemes: unresolved,
+    warnings: uniqueWarnings,
+    phoneticResult
+  };
 }
 
 function validateInput(text) {
@@ -241,13 +364,13 @@ function analyzeToken(surface) {
   if (markOrderError) {
     return { surface, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ipa: null, ukrainian: null, tone: null };
   }
-  if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."] };
+  if (!found) return { surface, status: "EVIDENCE LIMITED", warnings: ["Не знайдено сучасний початковий приголосний у реєстрі."], ipa: null, ukrainian: null, tone: null, toneContour: null };
 
   const { onsetKey, onsetIndex, onsetLength, onsetClass } = found;
   const onset = CONSONANTS[onsetKey];
   const before = clean.slice(0, onsetIndex);
   const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
-  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before] };
+  if (!allowedPreposed.has(before)) return { surface, status: "EVIDENCE LIMITED", warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + before], ipa: null, ukrainian: null, tone: null, toneContour: null };
 
   let selectedLength = onsetLength;
   let onsetForm = found.onsetForm;
@@ -280,7 +403,7 @@ function analyzeToken(surface) {
     }
   }
 
-  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null };
+  if (!candidate) return { surface, onset: onsetKey, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно визначити голосний комплекс."], ukrainian: null, ipa: null, tone: null, toneContour: null };
   const matched = candidate.matched;
   const coda = candidate.coda;
   const warnings = [...candidate.warnings];
@@ -316,32 +439,26 @@ function analyzeToken(surface) {
   const status = structuralWarning || phoneticResult.status === "UNSUPPORTED" ? "EVIDENCE LIMITED"
     : phoneticResult.status === "UNCERTAIN" || resolvedTone.status !== "ESTABLISHED"
       ? "ANALYSIS DEPENDENT" : "ESTABLISHED";
-  return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], length: matched.v[3],
-    coda: coda || "—", syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, ipa, ukrainian, phoneticResult, status,
+  return { surface, onset: onsetKey, onsetForm, class: onsetClass, vowel: matched.v[2], vowelId: matched.v[0],
+    length: matched.v[3], nucleusType: matched.v[6], coda: coda || "—", toneMark: mark,
+    syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, toneStatus: resolvedTone.status, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
       "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
 }
 
 function isStructurallyComplete(s) {
-  return Boolean(s.ipa && s.ukrainian) &&
+  // Syllable segmentation is a source-phonology concern. Do not make it
+  // depend on whether the separate Ukrainian target adapter has a mapping.
+  return Boolean(s.ipa) && ["SUPPORTED", "UNCERTAIN"].includes(s.phoneticResult?.status) &&
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
 function analyzeWord(word) {
   const chars = [...word];
-  // A malformed tone-mark position belongs to the whole orthographic unit;
-  // do not let dynamic segmentation salvage a plausible-looking substring.
-  const cleanForMarkOrder = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
-  const markOrderError = toneMarkOrderError(chars, cleanForMarkOrder, findOnset(cleanForMarkOrder));
-  if (markOrderError) {
-    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: [markOrderError + ": phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
-  }
-  // Prevent dynamic segmentation from salvaging a valid-looking syllable
-  // when adjacent tone marks make the original orthographic unit malformed.
-  if (chars.some((ch, i) => TONE_MARK_SET.has(ch) && TONE_MARK_SET.has(chars[i + 1]))) {
-    return [{ surface: word, status: "EVIDENCE LIMITED", warnings: ["MULTIPLE_TONE_MARKS: phonetic output withheld."], ukrainian: null, ipa: null, tone: null }];
-  }
+  // Tone-mark placement and multiplicity are syllable-local properties.
+  // Candidate syllables validate their own marks below; a mark that cannot be
+  // consumed by any complete candidate keeps the whole token unresolved.
   // Do not let dynamic segmentation rescue a malformed prefix by dropping
   // characters before the first Lao onset (e.g. xເເກ -> x + ເເ + ເກ).
   // A token may have at most one recognized preposed vowel before its first
@@ -351,12 +468,20 @@ function analyzeWord(word) {
     const prefix = chars.slice(0, firstOnsetIndex).join("");
     const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
     if (!allowedPreposed.has(prefix)) {
+      const prefixWarnings = [
+        ...(chars.slice(0, firstOnsetIndex).some((ch) => TONE_MARK_SET.has(ch))
+          ? ["MALFORMED_TONE_MARK_POSITION: tone mark precedes the syllable onset."]
+          : []),
+        "Непідтримуваний фрагмент перед початковим приголосним: " + prefix,
+      ];
       return [{
         surface: word,
         status: "EVIDENCE LIMITED",
-        warnings: ["Непідтримуваний фрагмент перед початковим приголосним: " + prefix],
+        warnings: prefixWarnings,
         ukrainian: null,
         ipa: null,
+        tone: null,
+        toneContour: null,
       }];
     }
   }
@@ -374,6 +499,8 @@ function analyzeWord(word) {
       warnings: ["ເ◌ຽ is not an established preposed IA spelling; phonetic output withheld."],
       ukrainian: null,
       ipa: null,
+      tone: null,
+      toneContour: null,
     }];
   }
 
@@ -381,11 +508,24 @@ function analyzeWord(word) {
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
   const wholeCandidate = analyzeToken(word);
+  // Keep a fully parsed but analysis-dependent source reading intact. The
+  // target adapter may withhold Ukrainian output without invalidating the
+  // source-side IPA parse (e.g. modern/loan-dependent ຣ).
+  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN") {
+    return [wholeCandidate];
+  }
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
     return [wholeCandidate];
   }
-  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("SHORT_VOWEL_REQUIRES_CODA") ||
-      w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
+  // A trailing unsupported Lao consonant is not a separate recoverable syllable.
+  const unconsumedWarning = (wholeCandidate.warnings || []).find((warning) =>
+    warning.startsWith("Невикористана частина структури складу: "));
+  const unconsumedTail = unconsumedWarning?.slice("Невикористана частина структури складу: ".length);
+  if (unconsumedTail && [...unconsumedTail].length === 1 &&
+      Object.hasOwn(CONSONANTS, unconsumedTail)) {
+    return [wholeCandidate];
+  }
+  if ((wholeCandidate.warnings || []).some((w) => w.startsWith("AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY") ||
       w.startsWith("LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL") ||
       w.startsWith("ONSET-LABIALIZED:"))) {
     return [wholeCandidate];
@@ -424,7 +564,74 @@ function analyzeWord(word) {
       }
     }
   }
-  return best[0].parts;
+  const parts = best[0].parts;
+  // Do not let an unattached or malformed tone mark disappear as a fallback
+  // fragment. Multiple marks in different syllables are valid; multiple or
+  // misplaced marks within one syllable remain visible as one unresolved unit.
+  if (parts.some((part) => TONE_MARK_SET.has(part.surface))) {
+    return [wholeCandidate];
+  }
+  // A2 short vowels can be valid inside a closed syllable. Check their coda
+  // within each candidate, and withhold only if DP strands a recognized Lao
+  // consonant or vowel sign as an independent fallback fragment.
+  const vowelGraphemes = new Set([...VOWEL_COMBINING_MARKS, "ະ", "າ", "ຽ", "ຳ", "ເ", "ແ", "ໂ", "ໃ", "ໄ", "ວ", "ອ", "ຍ"]);
+  if (parts.some((part) => [...part.surface].length === 1 &&
+      (vowelGraphemes.has(part.surface) ||
+       ["core", "analysis-dependent"].includes(CONSONANTS[part.surface]?.[2])))) {
+    return [wholeCandidate];
+  }
+
+  // Mirror the conservative Python selector: an initial, unmarked, short
+  // open /a/ before a major-weighted syllable may be a minor C0V0. Keep its
+  // segmental IPA and Ukrainian adaptation, but do not claim an independent
+  // tone from orthographic shape alone.
+  const first = parts[0];
+  const following = parts[1];
+  const followingMajorWeighted = following && (
+    following.length === "long" ||
+    following.nucleusType === "diphthong" ||
+    (following.coda && following.coda !== "—")
+  );
+  const followingOnsetSupported = following &&
+    CONSONANTS[following.onset]?.[2] === "core" &&
+    following.phoneticResult?.status === "SUPPORTED";
+  if (POTENTIAL_MINOR_TONE_RULE?.[4] === "analysis-dependent" && first && followingMajorWeighted &&
+      first.vowelId === "A" && first.length === "short" &&
+      first.coda === "—" && !first.toneMark && first.ipa &&
+      first.phoneticResult?.status === "SUPPORTED" &&
+      !MINOR_C0_EXCLUDED_ONSETS.has(first.onset) &&
+      followingOnsetSupported) {
+    first.tone = null;
+    first.toneContour = null;
+    first.toneStatus = POTENTIAL_MINOR_TONE_RULE[4].toUpperCase().replaceAll("-", " ");
+    first.status = "ANALYSIS DEPENDENT";
+    first.rules = (first.rules || []).filter((rule) =>
+      !rule.startsWith("TONE-RULE:") && !rule.startsWith("TONE:")
+    );
+    first.rules.push(
+      "TONE-RULE:" + POTENTIAL_MINOR_TONE_RULE[0],
+      "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED"
+    );
+    first.phoneticResult.toneCategory = null;
+    first.phoneticResult.toneContourIpa = null;
+    first.phoneticResult.provenance = [
+      ...new Set([
+        ...(first.phoneticResult.provenance || []).filter((rule) =>
+          !rule.startsWith("VNT-") && !rule.startsWith("TONE:")
+        ),
+        POTENTIAL_MINOR_TONE_RULE[0],
+        "TONE-POTENTIAL-MINOR-SYLLABLE-UNRESOLVED",
+      ])
+    ];
+    first.phoneticResult.uncertainty = [
+      ...new Set([...(first.phoneticResult.uncertainty || []), "TONE-UNRESOLVED"])
+    ];
+    first.warnings = [
+      ...(first.warnings || []),
+      "POTENTIAL_MINOR_SYLLABLE_TONE_UNRESOLVED: segmental IPA retained."
+    ];
+  }
+  return parts;
 }
 
 export function analyze(text) {
@@ -435,7 +642,22 @@ export function analyze(text) {
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
   const words = normalized.split(/\s+/).filter(Boolean).map(analyzeWord);
-  const syllables = words.flat();
+  const syllables = words.flat().map((syllable) => {
+    if (syllable.passthrough || syllable.ipa) return syllable;
+    // Reparse only the segmental structure after removing tone marks. This
+    // recovers onset/vowel roles for a provisional preview, but the preview
+    // itself never carries or infers a tone value.
+    const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+    const structural = analyzeToken(segmentalSurface);
+    const previewInput = {
+      ...structural,
+      warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
+    };
+    return {
+      ...syllable,
+      graphemePreview: previewFromGraphemes(syllable.surface, previewInput)
+    };
+  });
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
   const complete = syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));

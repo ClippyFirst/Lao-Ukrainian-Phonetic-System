@@ -19,7 +19,7 @@
 
 ## Important boundary
 
-The current parser is a syllable parser, not a lexical word segmenter. Lao spaces are phrase-level rather than reliable word boundaries. A future unspaced-text segmenter must therefore be tested independently rather than silently inferred from whitespace.
+The parser now uses deterministic dynamic programming to segment supported orthographic syllable candidates within each unspaced token. This is structural syllable segmentation, not lexical word segmentation: Lao spaces remain phrase boundaries, and the parser does not infer lexical word boundaries or silently discard unparsed material.
 
 ## Failure discipline
 
@@ -44,3 +44,14 @@ The canonical IPA correspondence registry is shared by the Python target adapter
 ## Static web build clarification — 2026-11-06
 
 The current web implementation is framework-free: index.html and system.html load native ES modules from web/. scripts/generate_web_data.py writes the canonical CSV mirror web/data.js; scripts/build_web.py copies both pages and the runtime into dist/. There is no Vite dependency or bundler in package.json. Node tooling is used for tests and Playwright, not for bundling the application. See [web architecture](web-architecture.md).
+
+
+## Integrated segmentation, provisional preview and optional neural provider — 2026-11-08
+
+- `parser.py` performs deterministic dynamic segmentation of unspaced Lao into structurally parsed syllable candidates while preserving unparsed material. It is not a lexical word segmenter; ambiguous or unsupported structures remain visible and phonetic output is withheld.
+- Tone-mark storage-order validation is per syllable. A malformed mark or unresolved structural suffix must not retain a confident tone or a misleading IPA prefix.
+- `phonetic_result.py` tokenizes source IPA against its own IPA inventory, independent of Ukrainian correspondence keys. `target.py` consumes the typed result and withholds unsupported/uncertain material instead of adapting a guessed grapheme prefix.
+- `grapheme_preview.py` provides a separate provisional segmental preview from registered positional grapheme correspondences and complete parser-confirmed vowel/coda structures. It never infers tone and cannot pass through the accepted Ukrainian target adapter.
+- `mekongphon.py` is an optional, explicitly selected neural provider. The deterministic engine remains the default; model revisions are immutable, automatic truncation is disabled, raw IPA/provenance are retained, and unknown symbols fail closed.
+- The benchmark scripts and reports are comparative diagnostics. The 100-entry external dictionary reference and training-split aggregates are not independent project IPA gold and must not be used as accuracy claims.
+- Exact integrated engineering verification: [Verify 42460320528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460320528), exact head `dd07adcd7d709ea5e1b8f94c3556965eefda73c9`.

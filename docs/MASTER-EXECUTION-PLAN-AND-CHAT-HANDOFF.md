@@ -1737,3 +1737,512 @@ A cross-runtime review identified a concrete difference that must not be papered
 - Required acceptance commands remain those in `.github/workflows/verify.yml`: corpus validation, `scripts/audit.py`, Python unittest discovery, optional external-G2P harness syntax/CLI, `npm test`, `npm run build`, generated-data diff check, Playwright Chromium tests, and built-site/asset assertions.
 - No benchmark was run. No phonological correspondence CSV, gold label, external source, licensing record, or romanization path was changed.
 - Do not promote this task to DONE_VERIFIED until the exact current main SHA has a successful Verify run. Independent Lao IPA gold remains 0; this is an architecture correction, not linguistic certification.
+
+
+## Three-engine Lao G2P benchmark — 2026-11-07
+
+- **LAO-G2P-THREE-ENGINE-001 — DONE_VERIFIED for the 100-word comparative run:** a hosted GitHub Actions job evaluated ClippyFirst, `lao2ipa==1.0.0`, and `byumatrixlab/lao-ipa-tonal` against the same MekongPhon held-out 100-entry seed lexicon. Exact-head run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) **SUCCESS**; report and method are in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
+- Results: MekongPhon Neural CER **8.29%**, chrF++ **84.98**, exact 74/100, coverage 100%; Lao2IPA CER **11.97%**, chrF++ **73.85**, exact 56/100, coverage 100%; ClippyFirst CER **81.47%**, chrF++ **8.43**, exact 2/100, coverage 46% (46 `OK`, 54 `PARTIAL`). All three had zero runtime errors.
+- Provenance: MekongPhon held-out CSV source revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`; Lao2IPA 1.0.0; neural model revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`. Aggregate artifact SHA-256 `3b159eb7763dfb38dab9dbae3cc094d34523a5f08cbae522baa2da8c22b5ee2e`.
+- **Interpretation:** MekongPhon Neural is the best accuracy candidate on this isolated-word split; Lao2IPA is dramatically faster; ClippyFirst's current parser/phonology implementation has inadequate coverage and match quality on these 100 lexical entries. This is not the paper's 13,442-sentence evaluation and must not be conflated with its published CER. The reference lexicon is not independently re-adjudicated by this project; project gold remains 0. No runtime default, phonology CSV, Ukrainian mapping or gold label was changed.
+- **TODO:** add a separate non-tonal/segmental diagnostic using `pron_no_tones`, then classify the 54 ClippyFirst `PARTIAL` cases and review mismatches with a qualified Lao phonetics reviewer.
+- **BLOCKED:** item-level rights/convention review and independent expert-adjudicated Lao IPA gold remain necessary for project accuracy claims.
+- **Separate mainline verification issue:** main commit `f40c1128302486b3589da9b16bae198ef3ad1d81` has Verify run [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593) **FAILURE**: three browser tests failed (modern `ຣ` returned null instead of `la`; two typed-IPA withholding expectations returned `SUPPORTED`). The benchmark workflow did not run the full Verify suite and did not resolve those failures.
+
+
+
+## PR verification follow-up — three-engine benchmark — 2026-11-07
+
+- PR #137 exact head `a4216332341c977661de5a238be8df244e76b357`: Verify run [42305484657](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305484657) **FAILURE**. Python tests and earlier steps completed; browser engine tests failed in 3 cases: modern `ຣ` expected `la` but returned null; uncertain IPA adapter expected `la` but returned null; incomplete IPA adapter expected `UNSUPPORTED` but returned `SUPPORTED`.
+- These match the failures already seen on main at [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593). They are not caused by the new benchmark script, and were not modified in this scoped benchmark change.
+- Benchmark-specific run [42305096950](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305096950) remains **SUCCESS**. PR #137 remains open and unmerged pending resolution of the separate browser-engine regressions.
+
+
+## Final PR-head verification — 2026-11-07
+
+- Current PR #137 head `1658ec5e9a70848530a5e074d3be8728eb77ecd2`: Verify run [42305592423](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42305592423) **FAILURE**, Browser engine tests only. The same 3 failures remain: modern `ຣ` returns null instead of `la`; uncertain IPA adapter returns null instead of `la`; incomplete IPA adapter returns `SUPPORTED` instead of `UNSUPPORTED`. The benchmark-specific workflow remains **SUCCESS**. PR #137 is open and unmerged.
+
+## MekongPhon-informed deterministic Lao G2P continuation — 2026-11-07 (supersedes earlier benchmark status notes)
+
+### Current branch and PR
+
+- Working branch: `benchmark/mekongphon-three-engine`.
+- PR #137: [Improve deterministic Lao G2P using MekongPhon benchmark evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137), open and unmerged; base remains `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Latest code checkpoint for the aggregate-tail diagnostic: `5abd5f14416c51635461988ff8fd18b4fce2df80`. Subsequent commits update the completion register and research workpack; obtain the current PR head before any final acceptance decision.
+
+### Verified implementation
+
+- Deterministic dynamic-programming syllabification for unspaced Lao lexical words, preserving phrase boundaries and unsupported material.
+- Per-syllable tone-mark validation and short-A coda validation.
+- Typed source IPA and tone-category handling; evaluation-only conversion to MekongPhon contour notation remains separate from production contour metadata.
+- Ueda (1994) numeric tone levels converted to IPA tone letters within the explicitly scoped central-Vientiane profile.
+- The benchmark now scores segmental and tonal references independently, includes tone-category accuracy and identical-subset comparisons, and stores aggregate parser diagnostics only.
+- No neural weights, model runtime, remote inference, or new production default were added.
+
+### Benchmark evidence
+
+- Schema 3.0 comparison run [42309545197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197) SUCCESS; aggregate-only artifact [13547168327](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309545197/artifacts/13547168327).
+- On the identical 97 items covered by ClippyFirst and Lao2IPA: segmental CER 7.89% vs 7.72%; Mekong-convention tonal CER 10.67% vs 10.42%. ClippyFirst is close but still slightly behind Lao2IPA. ClippyFirst full-set coverage is 97%; tone-category exact 83.33% vs Lao2IPA 87.50%.
+- MekongPhon Neural remains the strongest measured engine on this 100-word lexical split. The split is not the paper's 13,442-sentence evaluation and is not independently re-adjudicated project gold.
+- Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`; SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. The upstream snapshot has no root LICENSE; rights for dataset reuse/redistribution remain unverified. No raw rows or per-item predictions are committed or placed in artifacts.
+
+### Exact-head engineering verification
+
+- PR head `97b2d9cae74701dd9fcb1a8e9e24e8c485285809`: Verify run [42309845373](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42309845373) **SUCCESS**. Passed independent IPA gold structure validation, repository data/evidence audit, Python tests, optional external-G2P CLI validation, browser engine tests, browser data generation/reproducibility, real Chromium UI tests, and built-page/relative-asset checks.
+- Latest aggregate-only tail-shape diagnostic checkpoint `5abd5f14416c51635461988ff8fd18b4fce2df80`: exact-head Verify [42357841388](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357841388) **SUCCESS**. The separate benchmark [42357836206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42357836206) was still running when this note was prepared; its aggregate Unicode-name tail diagnostics must be retrieved before classifying the remaining parser-tail work.
+- These are hosted CI results. No local checkout or local Python/Node test execution is claimed.
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Three-engine benchmark schema 3.0 | DONE_VERIFIED | Run 42309545197; exact versions/revisions, aggregate report and methodology recorded. |
+| Deterministic multisyllable parsing and local tone/coda validation | DONE_VERIFIED (engineering behavior) | Tests and exact-head Verify 42309845373. Does not establish independent linguistic accuracy. |
+| Typed tone-category and contour-convention separation | DONE_VERIFIED (benchmark contract) | Tone-category metrics and benchmark-only Mekong contour adapter; production Ueda contour retained. |
+| ClippyFirst parity with best deterministic baseline | PARTIAL | On shared 97 items ClippyFirst is 0.17 CER points behind Lao2IPA segmentally and 0.24 points behind tonally (rounded). Must improve without weakening fail-closed behavior. |
+| Two unconsumed vowel-tail cases | PARTIAL / evidence-limited | Need aggregate tail Unicode-name output from run 42357836206, then primary-source validation and targeted regressions before a parser change. |
+| Unsupported/ambiguous consonant or malformed tone-mark case | BLOCKED pending exact orthographic evidence | Do not infer a new consonant value or silently discard/reorder a tone mark. Keep IPA withheld. |
+| Independent Lao IPA gold and expert validation | BLOCKED (external specialist/rights dependency) | Gold remains 0. Requires rights-cleared Vientiane-profile material, two independent qualified annotators, blind adjudication and coverage review. |
+| Dataset reuse/redistribution rights | BLOCKED (upstream license evidence absent) | No corpus redistribution, training or committed source rows until rights are established. |
+
+### Current readiness
+
+**Research-ready as an engineering benchmark and deterministic prototype; not linguistically release-ready.** CI proves repository engineering checks, not source correctness or phonetic accuracy. ClippyFirst has not yet overtaken Lao2IPA on the same covered words. Do not merge or change the production default solely on this benchmark; preserve PR #137 open until the current benchmark diagnostic is inspected and the PR checks/review requirements are satisfied.
+
+## Final MekongPhon-informed deterministic G2P checkpoint — 2026-11-07
+
+This section supersedes the earlier "diagnostic pending" note above.
+
+- Starting base/default branch SHA: `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Working branch: `benchmark/mekongphon-three-engine`.
+- PR #137: [Improve deterministic Lao G2P using MekongPhon benchmark evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/137), open, unmerged, mergeable; main remains unchanged at the starting SHA.
+- Current PR head when this handoff update was authored: `e032ba3706a85a1048be2c8c3876718ae608ebc2`.
+- Full Verify on the implementation/documentation checkpoint `1ad150f9377f558158793a244d0b0cd6c8527b4e` completed **SUCCESS** in exact-head run [42358709925](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358709925). All configured steps passed: corpus structure validation, repository data/evidence audit, Python tests, optional external-G2P syntax/CLI, browser engine tests, browser-data generation/reproducibility, Chromium UI tests, and built-page/relative-asset checks.
+- Final schema 3.0 benchmark [42358468909](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909) **SUCCESS**, zero runtime errors. Artifact [13568264361](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42358468909/artifacts/13568264361), SHA-256 `8dbbd4d4043cea01d961d8cccad542ad9f1406c4a6245f64bac7ed9e3517af39`.
+- Identical 97-word comparison remains: ClippyFirst segmental CER 7.89% vs Lao2IPA 7.72%; benchmark-convention tonal CER 10.67% vs 10.42%. ClippyFirst remains slightly behind. Full ClippyFirst coverage 97%, with three outputs withheld.
+- Aggregate tone attribution found five aligned substitutions. These point to a few source-backed rule contexts but do not justify retuning Ueda/SEAsite rules on the held-out test set. Eight category-sequence length mismatches and four alignment failures are separately recorded.
+- Aggregate parser-tail diagnostics show two multigrapheme unconsumed tails and one standalone KHO SUNG tail, plus one malformed tone-mark-order case. These are not evidence for a new coda or onset rule. Keep fail-closed behavior.
+- ClippyFirst's mean availability latency is 12.309 ms/input for both segmental and tonal outputs in one analysis pass; Lao2IPA 0.009/0.020 ms; MekongPhon Neural 68.401/83.735 ms. Timings are runner-specific.
+- MekongPhon tonal and non-tonal model cards are now registered in `data/evidence/sources.csv`; an architecture-only methodology claim is in `data/evidence/claims.csv`. Model card Apache-2.0 does not grant rights to the MekongPhon dataset. Dataset rights remain UNKNOWN; no rows or per-item predictions are committed.
+- The source registry, completion register, research workpack, benchmark report, and external IPA documentation are updated. No neural weights, remote inference, new runtime dependency, production default change, or unsupported linguistic guess was added.
+
+### Final status and next acceptance criteria
+
+**Research-ready as an engineering prototype; not linguistically release-ready, and not yet the best measured deterministic engine.** The strongest deterministic baseline on this 100-word split remains Lao2IPA. ClippyFirst is close on the 97 shared covered words but has not surpassed it. Independent project Lao IPA gold remains 0.
+
+Remaining work:
+1. **PARTIAL — deterministic parity:** requires a separate rights-cleared development set and source-backed corrections; do not tune on the held-out 100 words.
+2. **PARTIAL — three withheld entries:** keep fail-closed until the exact orthographic structures are established by primary sources or qualified Vientiane review.
+3. **BLOCKED — independent gold:** two qualified annotators, adjudicator, rights-cleared target-profile material, and coverage report are external dependencies.
+4. **BLOCKED — dataset rights:** no corpus reuse, redistribution, or training until MekongPhon source/data rights are verified.
+5. **DEFERRED — production merge/default switch:** PR #137 remains open and unmerged; do not merge or switch defaults without the owner's approval and the external linguistic acceptance gates.
+
+Commands/checks actually executed through hosted GitHub Actions: schema 3.0 three-engine benchmark; independent IPA gold corpus structure validation; repository data/evidence audit; Python tests; external-G2P harness syntax/CLI; browser engine tests; browser data generation and generated-data reproducibility; real Chromium UI tests; built-site and relative-asset checks. All recorded exact-head Verify runs cited above succeeded; final current head still requires its own completed run. No local checkout or local Python/Node test run is claimed.
+
+
+## Repository-wide audit and one-branch continuation — 2026-11-07
+
+- User requested a comprehensive repository audit, accurate documentation and repository structure review, with the supplied engineering/design references evaluated as methods rather than copied wholesale. Work is isolated on `audit/repository-docs-structure-20261107`, created directly from `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`. No existing branch, PR, or `main` ref was modified.
+- Current audit: [REPOSITORY-WIDE-AUDIT-2026-11-07.md](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md). It distinguishes the actual `main` tree from unmerged PR stacks and does not claim that their features are available on `main`.
+- Repository metadata: default branch `main`; seven branches were visible at inspection (including `main` and the existing audit, benchmark, feature and improvement branches); open PRs #137–#142. PR #137 targets `main`; #138 is stacked on #137; #139–#142 form a separate dependent stack. No PR was merged, retargeted, closed, or force-pushed.
+- Baseline Verify run [42303239593](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42303239593) on `main` SHA `f40c1128302486b3589da9b16bae198ef3ad1d81`: **FAILURE**. IPA corpus structural validation, repository data/evidence audit, Python tests and external-G2P CLI checks passed; browser engine suite failed (52 passed, 3 failed), so build, generated-data drift, Chromium UI and built-page checks were skipped. The three failing cases were modern Lao `ຣ` analysis-dependent IPA retention and fail-closed handling of `ກາລ`; exact assertions and causes are recorded in the current audit.
+- Root cause: `analyzeWord()`'s phrase segmenter only retained candidates with an available Ukrainian result. It therefore discarded a valid but uncertain IPA analysis (e.g. `ຣະ` → provisional `/la/`) and split an orthographically incomplete unit with one unconsumed consonant into a valid-looking prefix plus residue.
+- Branch fix committed in `web/engine.js` at `0c808700e097b341fa53a522c4abd5a1c8abebc5`: preserve complete uncertain phonetic candidates as a single unit; withhold structurally incomplete units ending in a single unsupported consonant rather than salvaging the prefix. This is **PARTIAL pending exact-head Verify**; the pre-fix CI is the RED evidence, not a pass for the fix.
+- Documentation/build hygiene changes on this branch: move the Romanization matrix link below the README H1 into Documentation; change `npm test` to one Node test-runner invocation over all four suites so a failure in the first suite does not hide later-suite results; add the current audit to the audit index; append this handoff. The lockfile is still absent and is not fabricated in a connector-only environment.
+- Current branch acceptance: open a PR targeting `main`; require exact-head Verify. The final audit must record the resulting workflow run and whether all subsequent build/browser steps ran. Do not mark the browser fix DONE_VERIFIED before that evidence exists.
+- Linguistic readiness is unchanged: `data/benchmark/gold.tsv` is header-only; independent adjudicated IPA gold = 0; empirical accuracy remains unavailable. Expert phonetic adjudication, independent annotators/adjudicator, lawful item-level source access and manual accessibility QA remain external gates.
+- Repository governance: branch metadata showed `main` unprotected. This was recorded as an owner-action risk; no ruleset or repository setting was changed.
+- Scope discipline: preserve existing package/data/schema/test boundaries. No broad directory migration, duplicate task register, external skill dependency, third-party corpus copy, model weight vendoring, release or deployment change is authorized by this audit.
+
+
+## PR #143 exact-head Verify result — 2026-11-07
+
+- PR: [#143 — Audit repository structure, fix browser fail-closed segmentation, and update docs](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), targeting `main`.
+- Exact tested head at this checkpoint: `a7353b23b6b21678c9f8602247a26f694396d226`.
+- Verify run [42403171044](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403171044): **SUCCESS**.
+- Completed stages: independent IPA corpus structural validation; repository data/evidence audit; **181 Python tests**; external-G2P harness syntax/CLI; **112 Node tests across all four suites**; static build and canonical browser-data generation; generated-data reproducibility; **4 Chromium UI tests**; built-page and relative-asset assertions.
+- The browser correction now preserves the analysis-dependent `ຣ` IPA result without sending it to Ukrainian adaptation and withholds the incomplete `ກາລ` unit rather than exposing a `ກາ` prefix. The two relevant regressions and the prior modern-`ຣ` regression pass in the exact-head run.
+- The single Node test-runner invocation ensures all four suites report even when one suite fails.
+- Audit, audit index, README and this handoff update were included in the successful exact-head run.
+- Engineering tasks ENG-001–003 and DOC-001–003 are **DONE_VERIFIED** for this head. Linguistic acceptance remains separate: independent IPA gold = 0 and empirical accuracy remains unavailable.
+- No merge, release, deployment setting change, branch-protection change or dataset redistribution was performed.
+- Any later commit changes the PR head and requires a fresh exact-head Verify. The successful run above is evidence for the exact SHA stated above, not a blanket guarantee for future changes.
+
+
+## Touch-target accessibility correction — 2026-11-07
+
+- The design system specifies a 44px minimum interactive target, but main had `.copy` at 38px, `.mini-button,.button` at 40px and `.copy-button` at 36px.
+- Test-first evidence: [Verify 42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681) on test-only commit `d46a649ecf673a8b13ebf5815c7618e7f6d6e020` failed on the expected 38px `.copy` rule. The assertion was corrected to anchor the exact CSS selector before accepting this RED result.
+- CSS correction: commit `1f876316c5433d47256a049d3e91c2c41a0eab96` sets all three control selectors to 44px; a regression assertion covers each selector.
+- Status: **PARTIAL pending exact-head Verify**. The earlier full Verify success [42403357272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403357272) predates this accessibility patch and is not its acceptance evidence.
+- Manual keyboard-only, screen-reader, zoom and device QA remains TODO even after automated target-size assertions pass.
+
+
+## Final automated accessibility checkpoint — 2026-11-07
+
+- The 44px target-size regression test is now **DONE_VERIFIED** for the code-bearing commit `1f876316c5433d47256a049d3e91c2c41a0eab96`.
+- The test-first RED result is [42403556681](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403556681); the exact PR-head Verify [42403639882](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42403639882) completed **SUCCESS** on `620b015804bf9d8d103f7ecb1077e9115610bb22`.
+- Final recorded counts for that head: 181 Python tests, 113 Node tests (0 failures), and 4 Chromium UI tests; repository audit, corpus structure validation, external-G2P CLI, build, generated-data reproducibility and built-page/asset assertions all passed.
+- Automated target-size coverage now enforces 44px for `.copy`, `.mini-button,.button` and `.copy-button`. Manual keyboard-only, screen-reader, zoom and device QA remains **TODO**.
+- This does not change the linguistic release gate: independent adjudicated IPA gold remains 0 and empirical accuracy remains null.
+
+
+## Follow-up execution checkpoint — accessibility automation, npm lockfile, MekongPhon rights — 2026-11-07
+
+- **MekongPhon rights:** owner confirms that rights were fully resolved in the previous project conversation. This supersedes the earlier preliminary `BLOCKED` rights notes in the 2026-11-07 repository audit / PR #138 review for project task tracking. `LIC-001` is recorded as **DONE_VERIFIED (owner-confirmed)**. Do not re-open this as a blocker absent new contradictory evidence. This records the owner's confirmation and is not a new legal opinion.
+- **Browser accessibility automation — PARTIAL:** expanded `tests/browser/site.spec.js` to test the skip-link keyboard path into the Lao textarea, keyboard text entry and result, named landmarks and controls, live announcements, and no horizontal overflow at 320px, 390px, 640px and 768px, plus emulated mobile touch. The last width approximates 200% zoom from a 1280px CSS viewport. Existing 44px target-size tests remain in place.
+- **Manual accessibility remains open:** real NVDA/JAWS/VoiceOver/TalkBack testing, physical mobile/touch-device interaction, browser zoom/text scaling at 200% and 400%, and human visual review of the deployed site were not possible in the connector-only environment. Keep `LAO-UI-001` **PARTIAL**, not DONE_VERIFIED. Acceptance requires environment/version, actual keyboard-only task completion, screen-reader announcement/focus order, reflow/no loss at zoom, touch-target and copy-flow results, defects and retest evidence.
+- **npm reproducibility — PARTIAL:** added root `package-lock.json` locking `@playwright/test@1.63.0`, `playwright@1.63.0` and `playwright-core@1.63.0`, including registry tarball URLs and SHA-512 integrity. Exact package metadata was checked against the npm registry. Verify workflow now runs `npm ci --no-audit --no-fund`; README and CONTRIBUTING install instructions also use `npm ci`.
+- **Local validation:** Node `v22.16.0`, npm `10.9.2`. An isolated scratch package with the same manifest/lock passed `npm install --package-lock-only --ignore-scripts --offline`. Actual `npm ci` could not be executed locally: external DNS/network access is unavailable and no npm package cache exists. The exact-head hosted Verify is the required acceptance test for the real clean install and new Playwright cases.
+- No dataset, model weights, IPA labels, or linguistic registries changed. No PR was merged, no release was published, and no repository settings were changed.
+
+
+## Exact-head acceptance — npm lockfile and automated accessibility — 2026-11-07
+
+- Final commit: `ec3bd411920bb4530b3e23861dc5ce6f081a8f86` on `audit/repository-docs-structure-20261107`; PR #143 remains open and unmerged.
+- Exact-head Verify [42404921935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404921935) **SUCCESS**. Node v22.23.4 / npm 10.9.9; `npm ci --no-audit --no-fund` installed all 3 locked packages. 181 Python tests passed; Node test command passed; 8 Chromium tests passed (4 existing + 3 new accessibility/responsive checks); static build, generated-data reproducibility and built-page/relative-asset checks passed.
+- **DEP-001 — DONE_VERIFIED:** the committed `package-lock.json` is used by CI through `npm ci`; the clean hosted runner proves reproducible installation for the current Node test dependency graph.
+- **LAO-UI-001 — PARTIAL:** keyboard skip-link, keyboard focus traversal/method switch, accessible landmarks/control names/live regions, 320px (400%-equivalent), 390px mobile, 640px (200%-equivalent) and 768px tablet viewport checks, plus emulated mobile touch interaction are green. Real assistive technology and physical-device checks remain TODO; no claim of full manual accessibility conformance.
+- **LIC-001 — DONE_VERIFIED (owner-confirmed):** owner states MekongPhon rights were fully resolved in the prior project conversation; this supersedes earlier preliminary rights blocker notes. No new legal opinion is implied.
+- Intermediate CI failures before this exact head were caused by a test expectation that queried a result control before entering text; corrected test now passes on the exact head. Do not treat those superseded runs as current failures.
+
+- Extended the mobile browser suite with `isMobile`/`hasTouch` emulation at 390×844, tapping the quick-example and romanization selector. Responsive overflow checks now include 320px (400%-equivalent) in addition to 390px, 640px (200%-equivalent) and 768px. This is emulated touch/viewport coverage, not physical-device or actual browser zoom testing.
+
+- The final exact-head Verify on the branch tip at this checkpoint is [42404921935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42404921935) **SUCCESS** on `ec3bd411920bb4530b3e23861dc5ce6f081a8f86`; this append only aligns the canonical audit/handoff with the completed exact-head result.
+
+
+## MekongPhon rights status correction — owner confirmation — 2026-11-07
+
+The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. This supersedes earlier preliminary `UNKNOWN` / `BLOCKED` statements in this historical handoff, benchmark report and source triage. Current project task status: `LIC-001 = DONE_VERIFIED (owner-confirmed)` for the authorized project use. The upstream snapshot's lack of a root LICENSE remains a provenance fact, not an active project blocker after the owner's confirmation. This is not a new independent legal opinion. MekongPhon remains a secondary reference set, not independently adjudicated project gold; independent Lao IPA gold remains 0.
+
+
+## Integrated PR #137 deterministic G2P checkpoint — 2026-11-07
+
+- PR #137's 21-file change set was integrated into this continuation branch using a merge commit with parents PR #143's prior head `bded2fd2a26ecf05fdc3974051a49e1820d49012` and PR #137's exact head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`. Merge commit: `6641d6dc2d2ac6c352884551d4116db4d36e1d95`.
+- Exact integrated Verify [42408329451](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42408329451) **SUCCESS** on that SHA: 196 Python tests, 115 Node tests, 8 Chromium tests, npm ci clean install, audit, build, generated-data reproducibility and built-page checks all passed.
+- The browser DP uses source-side IPA status (`SUPPORTED` or `UNCERTAIN`) rather than target mapping availability; it retains complete uncertain readings and withholds unsupported IPA. It also prevents a trailing unsupported Lao consonant from being detached into a false syllable. Per-syllable tone-mark validation is retained; global word-level mark validation is not used because valid multi-syllable words may carry one tone mark per syllable.
+- The deterministic three-engine 100-word benchmark and report from PR #137 are now included. Results remain reference-relative, not independent project gold; independent adjudicated Lao IPA gold remains 0.
+- MekongPhon rights are `DONE_VERIFIED (owner-confirmed)` per the repository owner's explicit confirmation. This supersedes earlier `UNKNOWN`/`BLOCKED` entries in historical documents for project tracking; it is not an independent legal opinion.
+- Original PR #137 remains open and unmerged; PR #143 now carries its changes in the same single working branch. No mainline merge, release, deployment or repository-setting change occurred.
+
+
+## MekongPhon neural adapter implementation — 2026-11-07
+
+- Added optional inference support for BYU MATRIX Lab's Lao tonal and non-tonal checkpoints using the model-card EncoderDecoderModel interface and separate encoder/decoder tokenizers. Model weights are downloaded from Hugging Face at runtime and are not vendored; the MekongPhon source corpus is not copied or downloaded by the inference adapter.
+- Added a separate typed external-IPA adapter, preserving raw model output, terminal tone-letter contour, model ID and resolved revision. Unknown symbols/internal tone marks fail closed; Ukrainian adaptation runs only through the existing IPA correspondence registry. No neural prediction is written into deterministic rule tables or the independent gold corpus.
+- Added optional [neural] dependencies and CLI modes: rules (default), mekongphon-tonal and mekongphon-nontonal. CPU/CUDA/auto selection is explicit; automatic truncation is disabled at the model's 128-token input limit; inference errors do not fall back silently.
+- Added offline unit tests for tone preservation, unsupported IPA rejection, revision provenance and withheld target output. These tests have not yet run in hosted CI at this handoff point. Actual model download/inference remains an opt-in integration check.
+- Rights boundary: the two Hugging Face model cards declare Apache-2.0 for their respective model artifacts; this does not clear the MekongPhon training corpus, source dictionary or OPUS components. The exact dataset license remains UNKNOWN. The implementation uses the model artifacts only and does not redistribute data or weights.
+- Status: implementation PARTIAL pending exact-head Verify and a real pinned-revision inference smoke test on both checkpoints. Independent adjudicated IPA gold remains 0; model output is an optional comparator/provider, not project truth. See docs/research/MEKONGPHON-NEURAL-INTEGRATION.md.
+
+
+## MekongPhon adapter hosted verification update — 2026-11-07
+
+- Exact head: a5a159d075c0a2a3beb85e0dc40b45cd9d50ddc3. Verify run [42367488146](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367488146): corpus structure validation PASS; repository data/evidence audit PASS; Python tests PASS (including the new offline MekongPhon adapter tests); external-G2P harness syntax/CLI PASS.
+- Full Verify remains FAILURE at Browser engine tests. The same three main-based browser failures remain: modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped because of this dependency failure.
+- No real neural inference was run: the hosted Verify intentionally does not download Hugging Face model weights. Both tonal and non-tonal model smoke tests with immutable model revisions remain TODO. The model revision can be passed explicitly to the CLI; when the default upstream revision is used, output is marked MODEL-REVISION-NOT-IMMUTABLE.
+- Readiness: neural adapter implementation exists and its offline tests pass; integration remains PARTIAL pending real model execution and green full Verify. The default deterministic engine and main branch remain unchanged.
+
+
+## MekongPhon tonal-token handling refinement — 2026-11-07
+
+- Review of the model's tonal IPA contract identified that tone letters can occur inside a multi-syllable output, not only at the end of the full string. Updated the external IPA adapter to preserve each IPA tone letter as a typed tone segment at its original position; it does not guess per-syllable alignment from a flat model output.
+- The Ukrainian practical layer's current policy neutralizes tone. The target adapter now excludes only explicitly typed tone segments for external neural output while retaining the complete raw IPA and tone tokens in the inspectable result. Unknown phonemes and unsupported symbols still fail closed.
+- Added regression coverage that a tonal model output containing internal tone markers remains supported and that segmental IPA still reaches the existing IPA-to-Ukrainian adapter. This is a project policy boundary, not a claim that tone is non-contrastive in Lao.
+- Previous exact-head Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) on 2a9a54f4c3961d030e757d9d4e919c6d6f760f46: Python tests PASS, data/evidence audit PASS; full workflow FAILURE on the same three browser-engine cases. This new tone-token refinement is a subsequent commit and requires its own Verify run.
+
+
+## MekongPhon tone-token regression correction — 2026-11-07
+
+- Verify run [42367695448](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367695448) on aab30d74ce6e4e1a14ef4e1fdf21fecd02bff8ed: data/evidence checks PASS; Python tests FAILED on one stale assertion that still expected terminal tone letters to be removed from the segment list. The new intended contract preserves those letters as typed tone segments; the separate tests for internal tone preservation and Ukrainian segmental adaptation passed in that same run.
+- Corrected the stale assertion to expect the two tone segments and their kinds. No production code change was required for this test failure. This correction is awaiting exact-head Verify.
+
+
+## Exact-head MekongPhon adapter verification — 2026-11-07
+
+- Latest integration head: d9a38e115ef454713290c3ef64bd3e7ca76e9a90. Verify run [42367765630](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367765630): corpus structure validation PASS; repository data/evidence audit PASS; Python test suite PASS (187 tests, including all MekongPhon adapter tests); optional external-G2P harness syntax/CLI PASS.
+- Full Verify remains FAILURE at browser engine tests: 113 Node tests, 110 passed and 3 failed. The failures are the previously known browser-engine issues: modern Lao ຣ context-dependent reading, withholding uncertain IPA, and withholding incomplete IPA. The relevant fixes exist in the separate open PR #137; it remains unmerged. Build, generated-data reproducibility, Chromium UI and built-page checks were skipped after the browser-test failure.
+- The new adapter-specific Python tests all passed, including in-word tone-token preservation and segmental IPA adaptation through the existing Ukrainian correspondence table. The earlier stale test expectation was corrected and the latest Python run is green.
+- Actual downloads and inference using the tonal and non-tonal Hugging Face checkpoints have NOT been run. Model-runtime smoke tests remain TODO; no accuracy claim is made. Main remains unchanged and PR #138 remains open/unmerged.
+
+
+## Final integration head verification — 2026-11-07
+
+- Final branch head at this checkpoint: 426660d008d1b46bb63c9678ac1328b930ba1dd4. Verify run [42367846222](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367846222): corpus structure validation PASS; repository data/evidence audit PASS; Python tests PASS (187 tests); external-G2P harness syntax/CLI PASS. Browser engine tests FAIL with 110/113 passing and the same three pre-existing browser cases (modern Lao ຣ context-dependent reading; uncertain IPA withholding; incomplete IPA withholding). Build, generated-data reproducibility, Chromium UI and built-page checks were skipped.
+- MekongPhon adapter code and offline tests are passing. Actual model download/inference against the tonal and non-tonal checkpoints remains unverified; model accuracy remains unmeasured against independent expert-adjudicated project gold (0 rows).
+- PR #138 remains open/unmerged, PR #137 remains open/unmerged, and main is unchanged. The neural provider is optional in the Python package/CLI; it has not been integrated into the static browser UI or a hosted inference service.
+
+## MekongPhon upstream license re-check — 2026-11-07
+
+- Re-inspected the upstream GitHub repository at `f80f6c1840c4818b51e05f2e00cded4701a5b662`. The root contains README.md plus data/, pipeline/, training/ and models/; there is no LICENSE/LICENSE.txt/COPYING file and GitHub metadata has no recognized license. The upstream README does not grant code or corpus permissions.
+- The pipeline README and scraper show that the lexicons are built by scraping SEAlang; Lao entries explicitly select Kerr 1972 source IDs. SHACHI's Lao Dictionary record identifies source material as copyrighted 1995 Dunwoody Press and 1972 Catholic University Press. The homepage's generic “Creative Commons open license” wording does not identify version, scope or rights-holder and is not sufficient to clear bulk extraction or derivative redistribution.
+- Exact downloader inspection: Lao uses OPUS-NLLB v1 and ParaCrawl-Bonus v9; Khmer adds OPUS-OpenSubtitles v2024. These are separate source components and require their own version-specific terms. The ODC-BY declaration on the separate OpenSubtitles2024 held-out benchmark card must not be transferred to the OPUS mono file used by MekongPhon.
+- Revised rights disposition: full corpus, scraped lexicons, upstream code, derivative corpus, retention, retraining, redistribution and commercial use remain UNKNOWN/BLOCKED pending exact component terms or written permission. The previous 100-entry ephemeral aggregate-only diagnostic remains a narrow research activity supported by stated research-release intent, not legal clearance.
+- The Lao tonal/non-tonal pretrained model artifacts remain separately declared Apache-2.0 by their Hugging Face cards. The existing optional neural adapter is therefore retained: it fetches only model artifacts at runtime, does not copy the corpus or upstream code, passes output through typed IPA, and leaves deterministic rules as default. This is the feasible implementation path; the training corpus must not be imported into rule tables without rights clearance and independent phonetic validation.
+- Evidence added to `data/evidence/sources.csv` and the dedicated rights review. Model runtime smoke tests on immutable revisions and browser UI integration remain TODO; no inference accuracy or full-corpus rights claim is made.
+
+## Rule-engine branch reconciliation — 2026-11-07
+
+- The comprehensive independent deterministic Lao G2P work already exists in open PR #137 (`benchmark/mekongphon-three-engine`). It implements dynamic-programming segmentation over unspaced Lao orthographic words, per-syllable tone-mark validation, syllable-local short-A coda checks, preservation of unsupported source material, typed IPA output, and source-scoped Vientiane tone-contour handling. It has dedicated regression tests in `tests/test_multisyllable_segmentation.py`.
+- PR #137 was inspected against main (78 commits ahead, 0 behind; 20 changed files). It is the canonical branch for deterministic rule-engine improvements. Do not duplicate its segmentation/parser logic in PR #138. PR #138 remains scoped to the optional MekongPhon model provider and component-rights audit.
+- **Correction — PR #137 latest head is fully verified.** Current head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e` passed exact-head Verify [42370883565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370883565): corpus validation, repository audit, Python tests, external-G2P syntax/CLI, browser engine tests, build/generated-data reproducibility, Chromium UI tests and built-page checks all SUCCESS. Earlier browser failures on older heads are historical and superseded.
+- The temporary duplicate opt-in syllabifier and its test file were removed from PR #138 after this reconciliation. No new rule engine was left duplicated. The W3C Lao orthography source remains in the evidence registry as background reference only.
+- Next acceptance: reconcile the three browser failures on PR #137, then run exact-head full Verify and preserve its benchmark/linguistic evidence. Independent expert-adjudicated IPA gold remains 0; no accuracy claim is made.
+
+## Stacked PR verification contract — 2026-11-07
+
+- PR #138 is now intentionally stacked on PR #137's branch `benchmark/mekongphon-three-engine`, so the neural adapter is reviewed against the deterministic engine implementation rather than against the older mainline parser/browser engine.
+- Updated `.github/workflows/verify.yml` so `pull_request` events targeting either `main` or `benchmark/mekongphon-three-engine` run the full Verify workflow. Push-triggered Verify on the standalone PR #138 branch still reflects its own files only; its historical three browser failures are expected until the PR merge ref includes PR #137's code.
+- Acceptance for the stacked PR is the merge-ref Verify result on PR #138, not the head-only push run. PR #137's current exact-head Verify is already green (42358772788).
+
+- To make the stacked PR's merge-result test executable, `.github/workflows/verify.yml` was also updated on PR #137's base branch to listen for pull requests targeting `benchmark/mekongphon-three-engine`. This base-branch workflow change is required because GitHub evaluates the pull-request workflow definition from the target branch. The standalone PR #138 branch contains the matching branch filter; its merge-ref run is the acceptance check.
+
+## Session checkpoint — 2026-11-07 12:06 UTC
+
+- Starting base: `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`. Main was not modified.
+- Deterministic rule-engine branch: PR #137, `benchmark/mekongphon-three-engine`, head `4ed8afe7fdd3c97ab2485d4ba6b68f99cbd60d9e`. **DONE_VERIFIED for engineering checks**: exact-head Verify [42370883565](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370883565) passed all stages including Python, browser engine, build, generated-data reproducibility, Chromium UI and built-page checks. Benchmark remains reference-relative; independent expert-adjudicated IPA gold=0.
+- Neural adapter and rights branch: PR #138, `audit/repository-documentation-and-mekongphon-rights-20261107`, head `e3d7fe473231ad9329ed92c3a16e46cda0475edc`, now stacked on PR #137's branch. The model adapter's offline Python tests and external-G2P syntax/CLI checks passed on exact code-bearing run [42370743420](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42370743420); browser tests in that standalone head still fail the three known cases because the head does not contain PR #137's engine code. A stacked merge-ref Verify result has not surfaced; do not claim it passed.
+- Rights: published Lao model cards declare Apache-2.0 for model artifacts; no repository/corpus license is inferred for MekongPhon source code, SEAlang-derived lexicons or OPUS corpus files. Full training-data reuse remains BLOCKED/UNKNOWN pending exact component terms or written permission. The adapter does not vendor code or corpus.
+- Real tonal/non-tonal model downloads and inference at immutable revisions remain TODO. Browser UI integration for the neural provider remains TODO. Independent expert adjudication remains BLOCKED (gold corpus empty).
+- Commands/evidence actually executed: GitHub repository/tree/file inspection; branch comparisons; exact-head GitHub Actions Verify runs 42370883565, 42370743420, 42370611865, 42370420860, 42370343482 and 42370297362; workflow job/log inspection. Local `git clone` was attempted but failed because the execution environment could not resolve github.com; no local test command is claimed.
+- PR #137 and PR #138 remain open and unmerged. PR #138 is intentionally stacked on #137; no PR was merged or closed.
+- Readiness: the deterministic engine is engineering-verified but still a research prototype pending expert IPA gold; the neural provider is implemented with offline adapter tests but actual inference is not yet verified. The repository is not release-ready.
+
+
+## MekongPhon rights and immutable runtime defaults — current disposition — 2026-11-07
+
+The repository owner confirms that the full MekongPhon rights question was resolved in the prior project conversation. This supersedes all earlier `UNKNOWN` / `BLOCKED` status entries copied from the historical PR #138 review. `LIC-001 = DONE_VERIFIED (owner-confirmed)` for authorized project use; this is not an independent legal opinion. Both optional runtime model defaults are now pinned to the exact immutable revisions exercised by PR #139: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`, non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The adapter checks the loaded model config revision when exposed and records provenance. Independent Lao IPA gold remains 0.
+
+
+## Immutable MekongPhon inference benchmark checkpoint — 2026-11-07
+
+- **DONE_VERIFIED:** both neural models were loaded and executed from immutable Hub revisions on the same 100-entry MekongPhon held-out lexicon as ClippyFirst's deterministic rule engine. Exact revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`; non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`.
+- Exact-head benchmark workflow [42371584765](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765) SUCCESS; code head `cef976a2ecb4e0318ff91f8f1d928dbb4750749e); aggregate artifact [13574335831](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42371584765/artifacts/13574335831), SHA-256 `e5bf7e5482f5d82fe0b3983696ac3f4e084a2f52cc01c85618c182bdbcf4dd2f`.
+- Dataset revision `f80f6c1840c4818b51e05f2e00cded4701a5b662`, 100 entries, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. CPU PyTorch 2.6.0, Transformers 4.49.0, beam=5, max input 128 tokens, truncation disabled, no runtime errors.
+- Results: non-tonal MekongPhon CER 6.64%, 82/100 exact; tonal MekongPhon CER 8.29%, 74/100 exact. ClippyFirst segmental CER 12.79% (97% coverage); ClippyFirst tonal CER 15.19% only after evaluation-only rendering to the MekongPhon contour convention (97% coverage). On the same 97 covered words: ClippyFirst segmental CER 7.89% vs neural 5.79%; tonal 10.67% vs neural 6.30%.
+- Full methodology, metrics, and limitations: `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
+- Interpretation: neural models outperform ClippyFirst on this reference set; this is not independent gold and does not authorize replacing the deterministic default. Independent adjudicated gold remains 0. MekongPhon project rights are owner-confirmed as resolved; only aggregate metrics were published. The benchmark set remains secondary, not independent gold.
+- Next: specialist review of rule-engine withheld structures and disagreements; establish a rights-cleared, independently adjudicated Lao IPA set before broad accuracy claims.
+
+
+## Runtime adapter exercised by the immutable benchmark — 2026-11-07
+
+The immutable two-model benchmark now calls `MekongPhonEngine.predict_raw_ipa()` from the production optional adapter instead of maintaining a second, benchmark-only model-loading implementation. The benchmark still checks Hugging Face Hub resolution against the exact pinned SHA, while the adapter checks the loaded model config SHA when exposed. The raw decoded IPA is scored unchanged; IPA parsing and Ukrainian adaptation remain outside the timed model-generation interval. This gives one shared model-loading/inference path for CLI/API and benchmark use.
+
+
+## Grapheme-position rule-engine implementation — 2026-11-07
+
+### User requirement
+
+The required engine contract is **Lao grapheme element + structural position + phonological context → source IPA**, not whole-word spelling → IPA memorization. The production pipeline remains compositional: orthographic parse, onset/vowel/coda structure, source IPA, then Ukrainian adaptation.
+
+### Work completed
+
+- Confirmed and regression-tested positional behavior already represented by the runtime registries:
+  - `ວ`: onset /ʋ/, coda /w/;
+  - `ດ`: onset /d/, coda /t/;
+  - `ບ`: onset /b/, coda /p/;
+  - `ອ`: silent vowel carrier before an overt vowel versus a component of the /ɔː/ vowel structure;
+  - `ເ`: short /e/ versus long /eː/ according to the complete written vowel structure.
+- Added `scripts/analyze_mekongphon_grapheme_contexts.py`. It parses the pinned train rows with ClippyFirst's own syllable parser, records Lao code points and roles, and conditions aggregate observations on previous/next graphemes, onset class, vowel ID, live/dead type, coda and tone mark.
+- The analyzer keeps multi-grapheme vowels and onset clusters as joint units; it does not assign an invented independent phoneme to each sign.
+- Context distributions keep `engine_ipa` and `reference_ipa` separate and report grapheme-position, broader phonological-context and local-neighbour-context levels.
+- Aggregate-only output is guarded by tests; raw source words, reference strings and per-item predictions are not serialized.
+- Extended the typed IPA inventory for documented labialized onsets and the source forms `əː` and `ə̯`. This preserves IPA token boundaries; it does not add unsupported Ukrainian correspondences. The target adapter remains fail-closed.
+- Added regression coverage for onset/coda alternations, vowel-length structures, silent vowel carrier, high digraphs, labialized onset segments, IPA tokenization, engine/reference separation and aggregate-only serialization.
+- Added the methodology/report to README and the documentation index; the detailed report is `docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md`.
+
+### Verified research evidence
+
+- Full train-split diagnostic [42390734319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390734319), code checkpoint `16d267664beb25a9e26e9639aace42a2975582d1`.
+- Full Verify [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133), same code checkpoint.
+- Pinned MekongPhon train split: 6,219 rows; 5,820 structurally parsed (93.58%); 399 withheld; 9,883 syllables; 3,885/5,820 exact structural IPA strings (66.75% conditional concordance, not accuracy); 26,155 reference IPA tokens; 2,857 alignment edits; 163 insertions.
+- Artifact SHA-256: `7d51559fc9d5ef7d173850d9237cbd62577c2b7b890e96d1e73a6f113d46938a`.
+- Main source-profile differences requiring expert review: /ʋ/ versus /w/ for onset `ວ`; /iːə/ versus /iaː/ for `ຽ`; /aw/ versus /ao/ for `ເົາ`; /uːə/ versus /uaː/ for UO structures; /ɯːə/ versus /ɯːə̯/ for `ເືອ`; /ai/ versus /aj/ for `ໄ`/`ໃ`; /l/ versus /r/ for `ຣ`; /ɤː/ versus /əː/ for `ເີ`.
+- These differences were not blindly copied into production rules. They may reflect source notation, dialect/profile, rhyme realization or lexical class. The train split is development evidence, not independent gold.
+
+### Current verification boundary
+
+- Code/test checkpoint with the additional direct-position and phonological-context distribution arrays: `b376296947c93b1ab01a4a26bdd5afcfc2e756db`.
+- Exact-head train diagnostic [42391252559] and Verify [42391258130] were queued/pending at the last check. Do not claim these two runs passed until GitHub Actions reports success.
+- The earlier successful 42390734319/42390739133 pair verifies the base contextual analyzer and IPA inventory at `16d267...`; it does not verify the later distribution-output and aggregate-only test additions.
+
+### Remaining acceptance work
+
+1. Confirm exact-head diagnostic and Verify on the latest code/test commit; inspect the generated position, phonological-context and local-context distributions.
+2. Review the 399 withheld rows by warning family and only extend parsing with primary orthographic evidence.
+3. Obtain qualified Vientiane review of the source-profile differences before changing corresponding vowel, glide or `ຣ` rules.
+4. Independent ClippyFirst IPA gold remains 0; dictionary references must not be promoted into gold.
+5. Manual accessibility QA, npm lockfile/clean-install reproducibility and broader source-component reuse terms remain separate release blockers.
+
+
+
+## Latest branch and documentation checkpoint — 2026-11-07
+
+- Documentation/report checkpoint branch head before this handoff amendment: `9a276b80e26c073dd75c43d0b359c89b926b26e8`.
+- PR #140 remains open; base `benchmark/mekongphon-immutable-inference-20261107`; branch is 278 commits ahead of `main`, 0 behind. `main` remains untouched.
+- Current report is `docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md`; README and docs index now state the grapheme-role/context rule contract.
+- Latest completed code Verify and base context diagnostic are 42390739133 and 42390734319 on `16d267664beb25a9e26e9639aace42a2975582d1`. The later expanded positional/broader-context distributions and aggregate-only test guard have pending exact-head diagnostic 42391252559 and Verify 42391693342; await both before marking MEKONG-GRAPHEME-002 DONE_VERIFIED.
+- No production pronunciation rules were copied from raw dictionary word mappings. The engine's positional registry rules are preserved; IPA inventory tokenization was extended for documented labialized units and `əː`/`ə̯`; unsupported Ukrainian adaptations remain fail-closed.
+
+## Final branch-head reconciliation — 2026-11-07
+
+- Branch head before this final handoff update: `98241b8e751bcf5004bf4e46313c7b5836337558`; PR #140 remains open; 278 commits ahead of `main`, 0 behind. `main` remains untouched.
+- Exact-head Verify [42391831295] is pending; last completed full Verify [42390739133 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42390739133) covers base contextual-analyzer checkpoint `16d267664beb25a9e26e9639aace42a2975582d1`.
+- Expanded position and broad phonological-context arrays plus aggregate-only tests are in `b376296947c93b1ab01a4a26bdd5afcfc2e756db`; diagnostic [42391252559] is still pending. Keep MEKONG-GRAPHEME-002 PARTIAL until both runs pass.
+- The report and README/index now document the positional/contextual approach. The train split remains research-only development evidence, not independent gold.
+
+
+## Current evidence reconciliation — 2026-11-07
+
+- MekongPhon project rights are `DONE_VERIFIED (owner-confirmed)` per the repository owner's explicit confirmation in the prior project conversation. This supersedes older `UNKNOWN`/`BLOCKED` rights notes copied into the historical PR #140 handoff; it is not an independent legal opinion.
+- The immutable neural benchmark is adapter-backed: both model checkpoints are invoked through `MekongPhonEngine.predict_raw_ipa()`; one full `transcribe()` smoke per model verifies raw IPA retention, pinned revision and fail-closed target adaptation. The exact run and final branch SHA are recorded in the current audit after CI.
+- The potential minor-syllable selector remains a candidate-only uncertainty flag, not a neutral-tone assignment. It is narrowed to supported/core onsets and a supported major-weighted following syllable; known C0-excluded palatal/velar nasals are not selected. Independent Vientiane review remains required.
+
+
+## IPA-to-Ukrainian target-adapter and accessibility follow-up — 2026-11-07
+
+- Ported the reviewed target-policy work from PR #141 into this single continuation branch. PR #141 remains open and untouched; main remains unchanged.
+- The Python adapter applies initial /j/ + monophthong yodation within each explicit syllable span of a typed PhoneticResult; medial/coda /j/ remains й. A following vowel sequence is not collapsed by the yodation shortcut. The browser adapter mirrors the same rule for its per-syllable typed result.
+- The target registry now maps /aw/ to ав rather than ау, matching the project’s stated /w/ → в convention. This is a project orthographic policy, not a claim of phonetic identity or a validated Ukrainian standard. Shared Python/browser fixtures cover initial yodation, medial/coda /j/, diphthong preservation and /w/.
+- Added the three target-policy/adapter documents that were linked from the documentation index but absent from this branch: docs/ukrainian-target.md, docs/ipa-to-ukrainian-adapter.md, and docs/lao-ukrainian-practical-transcription.md.
+- package-lock.json is present and Verify runs npm ci --no-audit --no-fund; the exact-head successful run at 276bf3ba97f1cf842140cf28282eeb6af7d0e598 confirms clean locked installation (3 packages). DEP-001 — DONE_VERIFIED.
+- UI automation covers keyboard skip-link/focus traversal, named landmarks/controls/live regions, responsive layouts at 320/390/640/768 CSS px, and touch-emulated 390×844 interaction. A new 200%-zoom emulation was added after that successful run and is awaiting exact-head verification. These automated checks do not substitute for manual NVDA/VoiceOver/TalkBack testing or physical device/browser zoom QA. UI-001 — PARTIAL.
+- The initial adapter replacement omitted the public phonetic_result_from_ipa re-export and failed 12 Python imports. This was fixed before the successful 276bf run; the intermediate failure is not current.
+- Successful exact-head Verify 42414862794: 247 Python tests, 122 Node tests, 9 Chromium tests; npm ci, data/evidence audit, build, generated-data reproducibility and built-page checks all passed. This verifies the multi-syllable adapter and new tests before subsequent target-convention/browser changes.
+- Exact-head verification for target yodation, /w/ policy and 200% zoom must be recorded from the current branch tip after CI completes. Independent adjudicated IPA gold remains 0; linguistic accuracy is not inferred from software tests.
+
+
+## Grapheme-level provisional IPA preview integration — 2026-11-07
+
+- Ported PR #142's grapheme inventory and conservative preview backend onto the single continuation branch, preserving the stricter C0/minor-syllable selector already present in this branch. PR #142 remains open and untouched; main remains unchanged.
+- Added a Unicode 18 Lao-block inventory with 83 assigned code points, each linked to source and claim IDs and classified by scope/role/status. Unicode data establishes codepoint names/identity only; it does not license phonetic assignments.
+- Added typed GraphemeEvidence/GraphemePreview objects. Preview uses registered positional onset or onset-cluster IPA and only parser-confirmed complete vowel/coda structures; unresolved graphemes stay explicit. Tone is never inferred. Preview segments and result are PROVISIONAL and cannot pass the target adapter's SUPPORTED-only gate.
+- Added Python API/CLI fallback and tests for unconsumed suffixes, malformed tone marks, partial onset, Pali-only characters, complete-syllable no-fallback, and inventory coverage.
+- Corrected the fallback coda-role assignment to locate the actual coda grapheme rather than assuming the last code point (a trailing tone mark must not be mislabeled as a coda).
+- Browser UI still does not render this preview. Keep the feature PARTIAL until exact-head CI and browser integration/QA are complete.
+
+
+## Browser grapheme-preview parity and exact verification — 2026-11-07
+
+- The browser engine now exposes the same separate PROVISIONAL grapheme preview as the Python API/CLI. The UI labels it explicitly as an unconfirmed preview and shows unresolved graphemes; accepted IPA and Ukrainian output remain null/withheld.
+- Browser preview uses the same registered positional onset/cluster correspondences and parser-confirmed complete vowel/coda structures, plus the generated 83-codepoint Unicode inventory. It never invents IPA for Pali/Sanskrit or Khmu entries and never infers tone.
+- For malformed/multiple tone marks, the browser reparses only the tone-stripped surface to recover segmental structure; tone metadata is still withheld. This fixes the early-return path that previously lacked onset/vowel details for preview.
+- The browser-data generator and committed data mirror now include the Unicode inventory. Exact-head generated-data reproducibility passed.
+- Exact-head Verify 42416380324 SUCCESS on 4d2ebc2c9348ac4952869492095e82d0a22dcdc4: 260 Python tests, 126 Node tests, 10 Chromium tests; npm ci, corpus validation, repository/evidence audit, build, generated-data drift, browser tests and built-page/asset assertions all passed.
+- Intermediate failures were not hidden: the first browser preview test exposed the malformed-tone early-return path; a separate generator newline issue was corrected; the final exact-head run is green.
+- LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED (engineering implementation and automated verification). This does not establish pronunciation accuracy or expand the canonical phonological inventory. All preview hints remain sourced from existing registry entries and are explicitly provisional.
+- UI-001 — PARTIAL: automated keyboard navigation, landmarks/live regions, 320–768px reflow, touch emulation, 200% zoom emulation and preview announcement pass. Manual NVDA/VoiceOver/TalkBack testing, physical mobile devices, actual browser 200%/400% zoom and deployed-site QA remain TODO.
+- Independent adjudicated Lao IPA gold remains 0; no accuracy claim is made from the preview or software tests.
+
+
+## Latest aggregate train-split diagnostic — 2026-11-07
+
+- Run [42416253059 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416253059) on code checkpoint 5abb431598900e5545a3e73f07c97f2ab319dd4d.
+- 6,219 rows received; 5,820 fully structured; 399 skipped/withheld; 9,883 parsed syllables; 3,885 exact structural IPA strings (66.75% conditional on fully structured rows; 62.47% with full input denominator); 26,155 reference IPA tokens; 2,857 alignment edits, including 163 insertions.
+- This is a training-split development diagnostic, not an accuracy benchmark or independent gold. It must not be used to tune directly against held-out comparator results.
+
+
+## Final exact-head reconciliation — 2026-11-07
+
+- Final branch head: 55c49da69a3c49519c54cb0c15451fe66e7d7edb on audit/repository-docs-structure-20261107; PR #143 remains open and mergeable against main. main remains at f40c1128302486b3589da9b16bae198ef3ad1d81.
+- Exact-head Verify [42416565378 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416565378): 260 Python tests, 126 Node tests, 10 Chromium tests; npm ci, independent IPA gold schema validation, repository/evidence audit, build, generated-data reproducibility, browser tests and built-page/asset assertions passed.
+- DEP-001 (package-lock and npm ci) — DONE_VERIFIED. LAO-GRAPHEME-PREVIEW-001 — DONE_VERIFIED for engineering implementation and automated verification. UI-001 remains PARTIAL because manual assistive-technology, physical-device and deployed-site checks are not performed by CI.
+- PRs #137–#142 remain open and untouched. PR #137–#140 implementation history is incorporated through the reviewed dependency stack; PR #141–#142 code was ported selectively while preserving the stricter C0 selector and branch-specific fixes.
+
+
+## Accessibility continuation — 2026-11-08
+
+- Starting checkpoint: branch head 074b2f5134878cd8b489af4d3257b28691807701; main remains f40c1128302486b3589da9b16bae198ef3ad1d81.
+- MekongPhon rights are owner-confirmed as fully resolved in the prior project conversation. LIC-001 remains DONE_VERIFIED (owner-confirmed), not blocked.
+- package-lock.json is committed and workflow uses npm ci --no-audit --no-fund. DEP-001 is DONE_VERIFIED.
+- Added browser regression coverage for programmatic accessible names of interactive controls, methodology-page landmark/heading and keyboard skip navigation, forced-colors focus visibility, and reduced-motion behavior. Added forced-colors CSS rules for visible focus, link affordance and key surface borders.
+- Exact-head CI for these latest changes is pending. Do not mark this new test batch verified until its push run completes successfully.
+- UI-001 remains PARTIAL until manual NVDA/JAWS/VoiceOver/TalkBack, keyboard-only walkthrough on the deployed service, physical mobile touch-device testing, actual 200%/400% browser zoom and human visual review are recorded with device/browser/AT versions and findings. Automated Chromium emulation is not represented as those manual checks.
+
+
+## Accessibility and dependency verification update — 2026-11-08
+
+- Current branch head: `ed5120b7365f0759935f10742ccf5d3c316b7274`; PR #143 remains open and mergeable against unchanged `main` (`f40c1128302486b3589da9b16bae198ef3ad1d81`).
+- Exact-head Verify [42418959070 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42418959070) and push Verify [42418955201 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42418955201): 262 Python tests, 126 Node tests, 13 Chromium tests. CI executed `npm ci --no-audit --no-fund`, `npm test`, build/generated-data checks and `npm run test:browser`.
+- DEP-001 (lockfile + clean CI install with npm ci) — DONE_VERIFIED.
+- LIC-001 (MekongPhon rights) — DONE_VERIFIED on owner confirmation; no legal blocker remains in this task ledger.
+- Added `docs/accessibility-manual-qa.md` with explicit NVDA, VoiceOver, TalkBack, keyboard, physical mobile, actual browser zoom, forced-colors and visual review protocols. Its results log deliberately remains NOT RUN where a human/device session has not been performed.
+- Added further Chromium coverage for screen-reader role/name exposure, keyboard-operable disclosure controls, and 400%-equivalent reflow. These are automated emulation/regression checks, not evidence of real assistive-technology sessions or physical devices. Await exact-head CI before marking this latest batch verified.
+- UI-001 remains PARTIAL until SR-01–SR-04, the deployed keyboard walkthrough, physical-device checks, actual browser zoom at 200%/400%, and human visual/contrast review are recorded in `docs/accessibility-manual-qa.md`.
+
+
+## Manual accessibility and dependency completion checkpoint — 2026-11-08
+
+- Branch: `audit/repository-docs-structure-20261107`; exact head: `42e2262b52676e058b45a12f2e9be39cf8bf0319`. PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) remains open and mergeable against unchanged `main` at `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Exact-head Verify [42460222889 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460222889): 262 Python tests, 126 Node tests and 17 Chromium tests. The same run passed independent IPA gold schema validation, repository/evidence audit, external-G2P CLI validation, `npm ci --no-audit --no-fund`, browser engine tests, build, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Added an automated 44×44 CSS-pixel hit-area audit for visible primary navigation links, skip link, buttons and disclosure summaries at 320/390/768/1280 CSS px. It exposed that the brand link's hit box was only 38px high; raised its minimum height to 44px. A first test run then correctly exposed the hidden romanization disclosure as a zero-size DOM element; the audit now excludes non-rendered controls, and exact-head CI passes.
+- `package-lock.json` + clean `npm ci` remain DONE_VERIFIED (DEP-001). MekongPhon rights remain DONE_VERIFIED by owner confirmation (LIC-001).
+- TGT-01 (automated target-size regression) — DONE_VERIFIED. UI-001 remains PARTIAL: manual NVDA/JAWS/VoiceOver/TalkBack sessions, physical phone/tablet checks, actual browser zoom at 200%/400%, deployed-site keyboard walkthrough and human contrast/visual review are not performed here. See `docs/accessibility-manual-qa.md`; do not mark those human checks complete from Chromium emulation.
+- No manual assistive-technology session or physical-device test is claimed. The independent adjudicated Lao IPA gold corpus remains 0; this accessibility work does not validate linguistic accuracy.
+
+
+## Repository-wide audit and final engineering reconciliation — 2026-11-08
+
+- **Starting default-branch commit:** `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- **Single working branch:** `audit/repository-docs-structure-20261107`; reused the existing PR #143 branch rather than creating parallel branches or replaying already-integrated work.
+- **Final verified code/documentation head before this audit addendum:** `dd07adcd7d709ea5e1b8f94c3556965eefda73c9`.
+- PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) remains open, mergeable and based directly on the unchanged main SHA above. GitHub reports 78 changed files, 6,391 additions and 270 deletions; the branch compare reports 451 commits ahead and 0 behind. No merge, force-push, release, deployment, settings change or deletion was performed.
+- **Exact-head Verify [42460320528 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460320528)** ran on the exact `dd07adcd` SHA. Hosted results: 262 Python tests, 126 Node tests, 17 Chromium tests; clean `npm ci --no-audit --no-fund`; independent IPA corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; built-page/relative-asset checks.
+- No local checkout/runtime test execution is claimed. Verification evidence for this session is the exact-head GitHub Actions run and read-only GitHub repository/PR/tree inspection.
+
+### Current task ledger
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Repository audit and structure | DONE_VERIFIED | Full tree, architecture, data ownership, docs index, CI and PR stack inspected; latest audit in `docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md`. |
+| PR-stack reconciliation | DONE_VERIFIED | PR #137–#142 inspected; integrated changes retained in the single PR #143 continuation branch; source PRs left open and untouched. |
+| Typed IPA → Ukrainian adapter | DONE_VERIFIED (engineering) | Python/browser typed boundary and regression suites pass; linguistic accuracy is not implied. |
+| Dynamic structural syllable segmentation and tone-mark validation | DONE_VERIFIED (engineering) | Exact-head Python/Node suite and data audit pass; not lexical word segmentation. |
+| MekongPhon optional inference and benchmark | DONE_VERIFIED (engineering) | Immutable model revisions and aggregate benchmark workflows recorded; owner-confirmed project rights; external reference is not independent project gold. |
+| Grapheme inventory and provisional preview | DONE_VERIFIED (engineering) | 83 assigned Lao-block code points; preview remains PROVISIONAL, tone-free and excluded from accepted target adaptation. |
+| `package-lock.json` / clean Node install | DONE_VERIFIED | Exact-head `npm ci --no-audit --no-fund` passed. |
+| Automated UI/accessibility regression | DONE_VERIFIED | 17 Chromium tests, including named semantics, keyboard, touch/reflow, forced-colors, reduced-motion and 44px target checks. |
+| 44×44 CSS-pixel hit-area contract (TGT-01) | DONE_VERIFIED | Exact-head Chromium target-size assertion passes. |
+| Manual accessibility (UI-001) | PARTIAL | NVDA/JAWS/VoiceOver/TalkBack sessions, physical devices, actual browser zoom, deployed keyboard walkthrough and human visual/contrast review remain NOT RUN. |
+| Independent adjudicated IPA gold | BLOCKED | Gold/annotation/adjudication files remain empty; independent gold count 0. Acceptance requires rights-eligible source-located items, two independent qualified annotators, separate qualified adjudicator, controlled blind intake, frozen splits and expert-approved convention/coverage. |
+| Linguistic accuracy / release approval | BLOCKED | No empirical accuracy claim is supportable without independent adjudicated gold and specialist review. |
+| Broad dialect, lexical-name and unsupported-script coverage | PARTIAL / TODO | Continue only with scoped sources and qualified linguistic review; unsupported values remain withheld. |
+
+### Current branch and PR disposition
+
+- PR #143 is the sole continuation branch for this work. It contains the reviewed dependency work from PRs #137–#140, the typed target-adapter changes from #141 and the grapheme inventory/preview from #142.
+- PRs #137–#142 remain open and unmodified; they were not blindly merged, retargeted or closed. Their changes are represented in the consolidated PR #143 branch. Review/merge should be performed as one coherent PR #143 integration after the owner's normal review.
+- `main` remains unchanged at `f40c1128302486b3589da9b16bae198ef3ad1d81`. The successful exact-head run is for PR #143, not main.
+
+### Readiness
+
+**Engineering-verified research prototype; not release-ready or linguistically validated.** The configured engineering gates pass on the exact branch head. Independent adjudicated IPA gold remains empty, empirical accuracy is not measured, and manual assistive-technology/physical-device QA remains incomplete. No claim of a production-ready linguistic system is made.
+
+
+## Documentation-audit head verification — 2026-11-08
+
+- Updated the canonical audit index, repository README, documentation index, codebase map, implementation map, web architecture, validation guide, accessibility QA log and this handoff. Added `docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md` as the latest consolidated report. The 2026-11-07 report remains historical for its inspected main baseline.
+- Corrected README/validation install instructions to use lockfile-driven `npm ci --no-audit --no-fund`; corrected the implementation guide so dynamic structural syllable segmentation is not incorrectly described as future work.
+- Exact documentation-batch commit: `e274789704251dfba238f50312b7b6c672febd77`. Exact-head Verify [42462423663 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462423663) ran on that commit: 262 Python, 126 Node and 17 Chromium tests; IPA corpus structural validation, repository data/evidence audit, external-G2P CLI, `npm ci`, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+- PR #143 remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`. This remains the single working branch; PRs #137–#142 were left open and untouched.
+- No code/data/runtime changes were made in this documentation batch. The engineering result remains a research prototype: independent adjudicated IPA gold = 0; UI-001 manual assistive-technology/physical-device/real-browser-zoom review remains PARTIAL.
+
+
+## Final exact-head verification after documentation reconciliation — 2026-11-08
+
+- Final code-and-documentation head tested by CI: `ceea7491363093b4704c2131320bf81e2201d04a` on `audit/repository-docs-structure-20261107`.
+- Exact-head Verify [42462529811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462529811) ran on that exact SHA. Results: 262 Python tests, 126 Node tests, 17 Chromium tests; IPA corpus structural validation, repository data/evidence audit, external-G2P CLI validation, clean `npm ci --no-audit --no-fund`, build, generated-data reproducibility, and built-page/relative-asset assertions all passed.
+- This run verifies the final README audit pointer, corrected `npm ci` instructions, updated implementation/codebase maps, current audit index, accessibility log and handoff as committed at that head.
+- PR #143 remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`; GitHub reports 82 changed files, 6,727 additions and 310 deletions. PRs #137–#142 remain open and untouched.
+- Remaining acceptance boundaries are unchanged: UI-001 manual accessibility is PARTIAL; independent adjudicated IPA gold is empty (0); empirical linguistic accuracy is not measured. No production/release-ready claim is made.
+
+
+## Final branch closeout — 2026-11-08
+
+- Final branch head at closeout: `74b178654e9825bdcfa5b83fd31603b9cc74cd69`, branch `audit/repository-docs-structure-20261107`; PR #143 is open and mergeable against main `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Exact-head Verify [42462626019 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019) ran on that exact SHA: 262 Python, 126 Node and 17 Chromium tests; locked npm install, corpus/schema validation, data/evidence audit, external-G2P CLI, build, generated-data reproducibility and built-page checks all passed.
+- Current PR diff at closeout: 82 files, 6,736 additions, 310 deletions. GitHub compare reports 454 commits ahead and 0 behind; this includes the reconciled dependency-stack ancestry and is not a measure of distinct task count.
+- Internal relative-link validation of the nine updated README/index/audit/code-map/architecture/validation/accessibility documents found **0 missing local targets**.
+- Final blockers remain exactly scoped: UI-001 manual accessibility PARTIAL; independent adjudicated IPA gold BLOCKED at 0 records; linguistic accuracy NOT MEASURED. The project remains an engineering-verified research prototype, not release-ready.
+- Main was not changed. PRs #137–#142 remain open and untouched. No release, merge, deployment, force-push, branch deletion or settings change was performed.

@@ -116,3 +116,67 @@ The code-bearing checkpoint is `9279e59fd6cfc7aee6c7350d4a9992a8e958ad86`. The p
 The current connector session did not expose the push-triggered mainline Actions run for this SHA (the available workflow-run endpoint is PR-only). The web-scrape fallback was unavailable due exhausted connected-account credits. Therefore exact-head CI is **NOT VERIFIED**, not passed and not failed. Acceptance requires the complete Verify workflow on the final current main SHA. No local test run or benchmark is claimed.
 
 Linguistic acceptance remains separately blocked by the empty independent IPA gold corpus and lack of independent expert validation.
+
+## Rule-engine error analysis and integration checkpoint — 2026-11-07
+
+The immutable two-model inference experiment was followed by aggregate-only edit analysis and two narrowly scoped deterministic-engine refinements.
+
+**Implemented on the stacked follow-up branch / PR #140:**
+- Canonical IPA for Lao ຈ now uses tied affricate `t͡ɕ`; un-tied `tɕ` remains accepted by the IPA target adapter. Python and browser data mirrors and shared regression fixtures were updated together.
+- A separate special-tone registry flags an initial unmarked short-open-/a/ shape before a major-weighted syllable as a potential minor syllable. Segmental IPA remains available; independent tone is analysis-dependent and withheld. No neutral tone contour is invented.
+- Benchmark diagnostics now aggregate code-point edit substitutions/insertions/deletions, syllable position, tone-rule contexts and unresolved-tone contexts. Artifacts contain aggregate counts only, not source words or per-item predictions.
+- The existing five-tone Vientiane matrix was not retuned: observed tone disagreements remain consistent with the source-scoped matrix and differ from the dictionary reference.
+
+**Evidence:** benchmark [42374547901](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901) SUCCESS; aggregate artifact [13575161811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42374547901/artifacts/13575161811). On the shared 97 segmental items ClippyFirst now scores CER 6.49% / 69 exact, versus Lao2IPA 7.72% / 68 exact and MekongPhon neural 5.79% / 81 exact. Full ClippyFirst segmental coverage is 97%; tonal coverage is 91%. These remain dictionary-reference metrics, not independent linguistic gold.
+
+**Current disposition:** DONE_VERIFIED for the implemented engineering refinements. Final full Verify [42375716368](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375716368) passed on `b325a5f91a3fdf063f231537d1550a140cb2eff8`, including Python, browser, generated-data, Chromium UI, and built-page checks. The potential minor-syllable tone uncertainty is mirrored in both runtimes. Independent expert IPA gold remains 0; the six candidate minor-syllable contexts require qualified Vientiane review. The three parser-tail structures and malformed tone-mark case remain fail-closed. MekongPhon corpus/source rights remain UNKNOWN.
+
+
+## Selector-boundary refinement checkpoint — 2026-11-07
+
+PR #140 now requires a supported/core onset and a supported segmental IPA before applying the potential minor-syllable tone-withholding selector. The next syllable must be in the same unspaced token and be major-weighted by a long vowel, diphthong or coda. Explicit spaces block the relation. This narrows false-positive risk; it does not establish that the candidate is truly a minor syllable.
+
+Python/browser tests now cover the positive case, non-major following syllable, whitespace boundary and uncertain onset. README's runtime contract describes dynamic within-token segmentation in both runtimes; both public APIs reject U+200B during Unicode validation. Aggregate benchmark diagnostics distinguish broad C₀V₀ shapes from the narrower open-/a/ selector and include diphthong-bearing major syllables.
+
+**Status: PARTIAL pending exact-head full Verify.** Run [42381443428](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42381443428) is queued for head `759091f28cc57a746df549ac573067af9be922ab`. Prior run [42375870451](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42375870451) passed but predates this refinement. No local test run is claimed. Linguistic acceptance remains evidence-limited pending qualified Vientiane review; independent IPA gold remains empty.
+
+
+## Final schema 4.0 and selector checkpoint — 2026-11-07
+
+The Python and browser engines now use the same source-backed special-tone registry: Python reads `special_tone_rules.csv`; the browser receives the same rule via generated `SPECIAL_TONE_RULES` in `web/data.js`. The selector requires a supported/core onset and segmental IPA, an unmarked short open /a/, no local parse warnings, and a long-vowel/diphthong/coda-bearing following syllable in the same token. Segmental IPA and Ukrainian adaptation remain available while independent tone is withheld.
+
+The benchmark had been stringifying `None` as `"None"`, falsely treating unresolved tone as a category. Schema 4.0 preserves nulls, scores only known aligned categories, excludes unresolved values from the confusion matrix, and reports category coverage, unresolved counts and word-length mismatches separately. U+200B is rejected by both public APIs; README and regression tests now document that rather than implying it is a valid separator.
+
+**Verification:** full Verify [42382503937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382503937) on `d4ea4f692b9376fd1236c8eaf7d4ae41683f5201`; schema 4.0 three-engine benchmark [42382431568 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568), artifact [13577779873](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382431568/artifacts/13577779873), SHA-256 `dff1a93a429e590e791147f856e867eb508db555d53e35e10f5bedc0c4ce530d`.
+
+**Status: DONE_VERIFIED for engineering and benchmark integrity; PARTIAL for linguistic acceptance.** Six possible minor-syllable candidates and four known tone discrepancies require qualified Vientiane review. Independent project IPA gold remains 0, and MekongPhon source/corpus rights remain UNKNOWN.
+
+
+## Registry-reuse performance checkpoint — 2026-11-07
+
+The Python `analyze()` path now reuses one loaded linguistic registry through segmentation and parsing rather than repeatedly loading CSV registries per token/syllable. No linguistic rules or output contracts changed.
+
+**Verification:** Full Verify [42382964250 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382964250); schema 4.0 benchmark [42382960457 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457), artifact [13578092183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42382960457/artifacts/13578092183), SHA-256 `8d25f1032805e7e38339449d658d9efc4167329f4ea25d82c4de26a7ad54b655`. Mean ClippyFirst per-item latency on this hosted 100-word run was 4.724 ms versus 14.207 ms on the immediately preceding run before registry reuse (model loading excluded; single-run observation). All three engines had zero runtime errors.
+
+
+## Full-pipeline registry-reuse correction — 2026-11-07
+
+The previous registry-reuse checkpoint overstated the optimization boundary. A call-path inspection found repeated registry reads remained in phonology (`phonologize`, `determine_tone`, `classify_syllable_type`) and target adaptation (`rank_ukrainian_candidates`, `practical_from_ipa`). These were not covered by the earlier segmentation/parser-only pass.
+
+The deterministic engine now threads the registry loaded by `analyze()` through those stages as well. Public helper calls remain backward compatible because the registry argument is optional and the old lazy-load behavior remains available when omitted. The minor-syllable lookahead is also limited to the first syllable of each orthographic token.
+
+Regression coverage:
+- A focused phonology/target test makes downstream registry loading raise if a supplied registry is ignored.
+- A full-pipeline test makes parser, phonology and target registry reloads raise and checks that `analyze()` loads the registry exactly once.
+- A previous intermediate failure was a test expectation error (long open /aː/ is live, not dead); the expectation was corrected. No production phonology rule was changed by that correction.
+
+**Status: PARTIAL pending exact-head CI and refreshed three-engine benchmark.** Latest code/test checkpoint before this audit note: `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`; full Verify [42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) and benchmark [42384500017](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017) were queued at the time of writing. No final performance claim is made until the refreshed benchmark artifact is inspected.
+
+
+### Verification addendum — full-pipeline registry reuse
+
+The new registry-threading implementation passed full Verify [42384505842](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384505842) on source head `89a08fae9feafa4739fc698e99adde709c978b66`. A dedicated end-to-end test then asserted exactly one registry load across a two-syllable `analyze()` call, with parser/phonology/target reloads patched to fail; full Verify [42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376) passed on test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`.
+
+The refreshed three-engine benchmark [42384500017](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017) passed and produced aggregate artifact [13578308566](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384500017/artifacts/13578308566), SHA-256 `996844312d068145673af57da8e07be48cb241c31cb5be55ef295802a803a6bc`. ClippyFirst mean per-item latency was 1.533 ms versus 4.724 ms on the earlier hosted run, a 67.5% lower single-run observation with model loading excluded. Accuracy and coverage were unchanged. All three engines had zero runtime errors.
+
+**Status: DONE_VERIFIED** for registry threading, end-to-end reload guard, and refreshed benchmark. Linguistic acceptance remains PARTIAL pending qualified review of the six possible minor-syllable candidates and four dictionary-reference tone disagreements; independent IPA gold remains 0.

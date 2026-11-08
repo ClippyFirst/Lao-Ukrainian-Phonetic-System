@@ -87,3 +87,24 @@ The Lao service intentionally shares the Korean service's information architectu
 6. At tablet/mobile widths, the workbench and result workspace stack; result cards become a single column on narrow screens.
 
 The Lao service does not add Hanja, Korean G2P modes or other language-specific features merely to imitate the Korean page. The tests/web-layout.test.mjs suite protects the shared layout contract and output order.
+
+
+## Accessibility verification status · 2026-11-07
+
+Automated Chromium regression coverage now checks:
+- keyboard access to the skip link and focus transfer to the Lao input;
+- accessible names and semantics for the banner, primary navigation, main landmark, text input, example group and method selector;
+- polite result/status announcements and disclosure summaries;
+- horizontal overflow and output clipping at 390px mobile, 768px tablet and 640px narrow/200%-equivalent layout widths.
+
+The 44px minimum target rule remains enforced by the layout regression suite. These automated checks are not a claim of manual assistive-technology conformance. Before closing the manual QA task, test with at least one desktop screen reader/browser combination and one mobile screen reader/device, keyboard-only navigation, browser zoom/text scaling at 200% and 400%, and physical touch interaction. Record exact versions, viewport/zoom, steps, results and defects.
+
+Additional automated mobile checks: Chromium emulates a 390×844 touch context (`isMobile` + `hasTouch`) and taps the quick-example and method-switch controls. Responsive overflow is checked at 320px (400%-equivalent), 390px, 640px (200%-equivalent) and 768px. These are emulation/reflow checks; physical devices and actual browser zoom remain part of manual QA.
+
+
+### Additional automated accessibility gates · 2026-11-08
+
+- Every interactive button, link, textarea and disclosure summary on the service page is checked for a programmatic accessible name.
+- The methodology page is checked for a single primary heading, named navigation landmarks, a main landmark and keyboard-operable skip navigation.
+- Chromium emulates Windows forced-colors mode and reduced-motion preference; visible focus and non-smooth document scrolling are asserted.
+- These checks strengthen automated coverage but do not replace testing with NVDA/JAWS/VoiceOver/TalkBack or physical mobile hardware.
