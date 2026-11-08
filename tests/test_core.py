@@ -261,6 +261,13 @@ class TestCore(unittest.TestCase):
         self.assertTrue(all(segment.certainty == "PROVISIONAL" for segment in syllable.phonetic_result.segments))
         self.assertIn("PHONETIC-READING-PROVISIONAL", syllable.phonetic_result.uncertainty)
 
+    def test_hybrid_accepts_zero_width_space_as_lao_syllable_boundary(self):
+        result = core_module.analyze("ກ\u200bຂ")
+        self.assertNotEqual(result.status, "INVALID")
+        self.assertEqual([unit.surface for unit in result.syllables], ["ກ", "ຂ"])
+        self.assertTrue(all(unit.practical_ukrainian is not None for unit in result.syllables))
+
+
     def test_hybrid_renders_every_assigned_lao_block_codepoint(self):
         for codepoint in range(0x0E80, 0x0F00):
             character = chr(codepoint)
