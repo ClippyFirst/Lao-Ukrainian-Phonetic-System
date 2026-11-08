@@ -235,3 +235,24 @@ test("400-percent equivalent 320 CSS-pixel viewport reflows the service", async 
   expect(layout.output.right).toBeLessThanOrEqual(layout.viewport);
   expect(layout.buttons.every((rect) => rect.width > 0 && rect.right <= layout.viewport)).toBe(true);
 });
+
+
+test("primary navigation, buttons, and analysis disclosures meet 44-pixel touch-target dimensions", async ({ page }) => {
+  for (const width of [320, 390, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page.locator("#lao-input").fill("ຂາ");
+    const targets = await page.locator(".site-header a, .skip-link, button, summary").evaluateAll((elements) =>
+      elements.map((element) => ({
+        selector: element.id || element.className || element.tagName,
+        width: element.getBoundingClientRect().width,
+        height: element.getBoundingClientRect().height
+      }))
+    );
+    expect(targets.length).toBeGreaterThan(0);
+    for (const target of targets) {
+      expect(target.width, `${target.selector} is narrower than 44px at ${width}px`).toBeGreaterThanOrEqual(44);
+      expect(target.height, `${target.selector} is shorter than 44px at ${width}px`).toBeGreaterThanOrEqual(44);
+    }
+  }
+});

@@ -22,7 +22,7 @@ button{cursor:pointer}
 .skip-link{position:absolute;top:8px;left:8px;z-index:20;padding:10px 14px;background:var(--blue);color:#fff;transform:translateY(-150%);transition:transform .18s ease}
 .skip-link:focus{transform:translateY(0)}
 .site-header{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:78px;padding:12px max(24px,calc((100vw - var(--content))/2));border-bottom:1px solid var(--line);background:var(--paper)}
-.brand{display:inline-flex;align-items:center;gap:11px;color:var(--blue);font-size:1rem;font-weight:800;letter-spacing:-.02em;text-decoration:none}
+.brand{display:inline-flex;align-items:center;min-height:44px;gap:11px;color:var(--blue);font-size:1rem;font-weight:800;letter-spacing:-.02em;text-decoration:none}
 .brand-mark{display:grid;min-width:48px;height:38px;place-items:center;padding:0 7px;background:var(--red);color:#fff;font:700 1rem/1 "Noto Sans Lao",system-ui,sans-serif;letter-spacing:0}
 .site-header nav{display:flex;align-items:center;flex-wrap:wrap;gap:6px 24px}
 .site-header nav a{display:inline-flex;align-items:center;min-height:44px;border-bottom:2px solid transparent;color:var(--muted);font-size:.92rem;font-weight:700;text-decoration:none;transition:color .16s ease,border-color .16s ease}
