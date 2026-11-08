@@ -140,17 +140,17 @@ def main() -> int:
         "vientiane_rules": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
+            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0, "passthrough_total": 0,
         },
         "mekongphon_reference_rules": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0,
+            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
         },
         "hybrid_deterministic_rules": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0,
+            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
         },
         "mekongphon_neural": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
