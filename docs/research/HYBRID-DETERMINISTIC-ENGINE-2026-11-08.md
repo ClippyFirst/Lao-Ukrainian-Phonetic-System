@@ -1,3 +1,16 @@
+## Final 1,000-row rendering-coverage acceptance — 2026-11-08
+
+The BOM-normalized HVULao rerun passed the hard gate across the entire pinned dataset:
+
+- Run [42518802702 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518802702), artifact [13632219380](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518802702/artifacts/13632219380), SHA-256 `75497805cc3e536a2fcc42b30501da140abc8a78f6a128001f8e7b109f55fef1`.
+- Hybrid rendered **1,000/1,000 inputs (100%)** and **21,680/21,680 analyzed units (100%)**. There were zero invalid rows, zero unrendered inputs and zero runtime errors.
+- Unit distribution: 16,452 SUPPORTED IPA, 19 UNCERTAIN IPA, 1,025 PROVISIONAL fallback units, plus 4,184 explicit passthrough units.
+- IPA completeness remains separate: 17,120/17,496 phonetic syllables (97.8509%) and 676/1,000 complete IPA sentences (67.6%). The neural comparator completed IPA on 934/1,000 rows (93.4%); this does not compare like-for-like with hybrid rendering coverage.
+- Hybrid mean all-attempt latency was 10.23 ms and p95 19.06 ms on this hosted CPU run.
+- Leading U+FEFF BOM stripping converted the five formerly rejected rows into valid input; embedded BOMs remain rejected.
+
+**HYBRID-RENDER-COVERAGE-001 is now DONE_VERIFIED** for the documented valid Lao-input domain, supported by both the held-out 100-entry and full 1,000-row coverage gates. This is not a phonetic-accuracy claim; HVULao supplies no IPA reference and independent adjudicated IPA gold remains 0.
+
 ## HVULao 1k rendering-coverage acceptance result — 2026-11-08
 
 The first hard-gated 1k run passed **100% of valid inputs**:
