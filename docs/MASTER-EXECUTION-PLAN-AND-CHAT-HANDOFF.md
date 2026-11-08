@@ -2236,3 +2236,13 @@ The required engine contract is **Lao grapheme element + structural position + p
 - This run verifies the final README audit pointer, corrected `npm ci` instructions, updated implementation/codebase maps, current audit index, accessibility log and handoff as committed at that head.
 - PR #143 remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`; GitHub reports 82 changed files, 6,727 additions and 310 deletions. PRs #137–#142 remain open and untouched.
 - Remaining acceptance boundaries are unchanged: UI-001 manual accessibility is PARTIAL; independent adjudicated IPA gold is empty (0); empirical linguistic accuracy is not measured. No production/release-ready claim is made.
+
+
+## Final branch closeout — 2026-11-08
+
+- Final branch head at closeout: `74b178654e9825bdcfa5b83fd31603b9cc74cd69`, branch `audit/repository-docs-structure-20261107`; PR #143 is open and mergeable against main `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Exact-head Verify [42462626019 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019) ran on that exact SHA: 262 Python, 126 Node and 17 Chromium tests; locked npm install, corpus/schema validation, data/evidence audit, external-G2P CLI, build, generated-data reproducibility and built-page checks all passed.
+- Current PR diff at closeout: 82 files, 6,736 additions, 310 deletions. GitHub compare reports 454 commits ahead and 0 behind; this includes the reconciled dependency-stack ancestry and is not a measure of distinct task count.
+- Internal relative-link validation of the nine updated README/index/audit/code-map/architecture/validation/accessibility documents found **0 missing local targets**.
+- Final blockers remain exactly scoped: UI-001 manual accessibility PARTIAL; independent adjudicated IPA gold BLOCKED at 0 records; linguistic accuracy NOT MEASURED. The project remains an engineering-verified research prototype, not release-ready.
+- Main was not changed. PRs #137–#142 remain open and untouched. No release, merge, deployment, force-push, branch deletion or settings change was performed.

@@ -73,7 +73,7 @@ For every session, record:
 | KB-01 | AUTOMATED PARTIAL | Chromium CI; exact run linked from master handoff | Automated keyboard and focus regression tests pass; deployed keyboard-only human walkthrough remains outstanding. |
 | MOB-01 | AUTOMATED PARTIAL | Chromium touch emulation; 390×844 | Emulation passes; physical devices remain outstanding. |
 | ZOOM-01 | AUTOMATED PARTIAL | Chromium CSS zoom emulation | 200% equivalent test passes; actual browser zoom remains outstanding. |
-| ZOOM-02 | AUTOMATED PARTIAL | Chromium 320 CSS-pixel viewport emulation; Verify [42462529811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462529811) | 400%-equivalent reflow regression passes on exact branch head; actual browser zoom remains NOT RUN. |
+| ZOOM-02 | AUTOMATED PARTIAL | Chromium 320 CSS-pixel viewport emulation; Verify [42462626019](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019) | 400%-equivalent reflow regression passes on exact branch head; actual browser zoom remains NOT RUN. |
 | VIS-01 | AUTOMATED PARTIAL | Chromium forced-colors emulation | CSS focus/link/border regression passes; Windows High Contrast human review remains outstanding. |
 | VIS-02 | NOT RUN | — | Human contrast and visual review outstanding. |
 | TGT-01 | AUTOMATED PASS | GitHub Actions Verify [42460222889](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460222889); Chromium | All visible primary navigation links, skip link, buttons and disclosure summaries meet 44×44 CSS-pixel minimum at 320/390/768/1280 CSS px. Brand link receives a 44px minimum height. This does not replace physical-device validation. |
@@ -93,7 +93,7 @@ UI-001 may be marked DONE_VERIFIED only after the required human sessions are re
 
 ## Final exact-head accessibility automation — 2026-11-08
 
-- Exact branch head: `ceea7491363093b4704c2131320bf81e2201d04a`.
-- Verify [42462529811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462529811): 17 Chromium tests passed. The workflow also passed 262 Python tests, 126 Node tests, locked `npm ci`, data/evidence audit, IPA corpus structural validation, build, generated-data reproducibility and built-page/asset checks.
+- Exact branch head: `74b178654e9825bdcfa5b83fd31603b9cc74cd69`.
+- Verify [42462626019 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019): 17 Chromium tests passed. The workflow also passed 262 Python tests, 126 Node tests, locked `npm ci`, data/evidence audit, IPA corpus structural validation, build, generated-data reproducibility and built-page/asset checks.
 - Automated coverage includes accessible names, named landmarks/live regions, keyboard skip navigation and disclosures, forced-colors/reduced-motion behavior, responsive reflow, touch emulation, 200%-equivalent layout and 400%-equivalent 320 CSS-pixel reflow, and 44×44 CSS-pixel target checks.
 - `TGT-01 = DONE_VERIFIED` for the automated hit-area contract. `UI-001 = PARTIAL`: no actual NVDA/JAWS/VoiceOver/TalkBack session, physical mobile-device test, actual browser zoom setting, deployed keyboard-only walkthrough or human contrast/visual review is claimed.
