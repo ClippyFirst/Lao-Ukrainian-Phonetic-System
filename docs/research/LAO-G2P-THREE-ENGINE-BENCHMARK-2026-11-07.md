@@ -393,7 +393,8 @@ Python 3.12.16; CPU PyTorch 2.6.0; Transformers 4.49.0; SacreBLEU 2.5.1. MekongP
 **Supersession notice:** the earlier hybrid result of 90/100 exact and 97% IPA coverage was misattributed. Under the corrected confidence gate, that score belongs to the separate MekongPhon-reference rules profile (90% rendering). The current hybrid is 85/100 exact and 91% typed IPA coverage, with 100% Ukrainian rendering. The legacy helper could score provisional grapheme hints as IPA. The corrected benchmark accepts only `SUPPORTED` and `UNCERTAIN` IPA; `PROVISIONAL` hints are excluded from accuracy metrics and counted separately as rendering coverage.
 
 - Current hybrid: 85/100 exact, 14.45% full-denominator CER, 91% typed IPA coverage.
-- Separate Ukrainian rendering coverage: 100/100 inputs and 169/169 units; 159 supported IPA units, 1 uncertain IPA unit, 9 provisional IPA-hint units, 9 unknown-marker units.
+- MekongPhon-reference rules: 90/100 exact, 6.64% CER, 97% typed IPA coverage but only 90% rendering; Vientiane baseline: 69/100 exact, 11.46% CER, 97% IPA coverage and 95% rendering.
+- Separate Ukrainian rendering coverage for the hybrid: 100/100 inputs and 169/169 units; 159 supported IPA units, 1 uncertain IPA unit, 9 provisional IPA-hint units, 9 unknown-marker units.
 - MekongPhon Neural: 82/100 exact, 6.64% CER, 100% coverage.
 - Lao2IPA: 68/100 exact, 8.97% CER, 100% coverage.
 - External comparators: Epitran 71/100, 10.96% CER; orthography2ipa 32/100, 19.60%; LanguageNet Phonetisaurus 0/100, 78.90%. Goruut returned 81 outputs, but only 47 had complete source coverage and 7 inputs were unstable across three repeats.
