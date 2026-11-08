@@ -236,10 +236,11 @@ test("long open o carrier is recognised", () => {
   assert.equal(r.output, "о");
 });
 
-test("invalid mixed script is rejected", () => {
+test("hybrid preserves mixed-script characters and renders supported Lao", () => {
   const r = analyze("ກа");
-  assert.equal(r.status, "INVALID");
-  assert.equal(r.output, "");
+  assert.equal(r.status, "PARTIAL");
+  assert.equal(r.output, "к'а");
+  assert.ok(r.warnings.some((warning) => warning.includes("Непідтримуваний символ")));
 });
 
 test("CRLF is accepted as line whitespace", () => {
