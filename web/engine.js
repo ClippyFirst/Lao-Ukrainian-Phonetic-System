@@ -150,10 +150,35 @@ function adaptPhoneticResult(result, { allowUncertain = false } = {}) {
     throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
   }
   if (result.status === "PROVISIONAL") {
-    return result.segments.length === 1 &&
-      result.segments[0]?.kind === "unknown" &&
-      result.segments[0]?.certainty === "PROVISIONAL" &&
-      result.segments[0]?.ipa === "?" ? "?" : null;
+    if (!result.segments.length) return "?";
+    let output = "";
+    let provisionalRun = [];
+    const flushRun = () => {
+      if (!provisionalRun.length) return;
+      const run = provisionalRun;
+      provisionalRun = [];
+      const mapped = adaptPhoneticResult({
+        ...result,
+        segments: run,
+        syllableBoundaries: [0, run.length],
+        status: "SUPPORTED",
+      });
+      output += mapped ?? "?";
+    };
+    for (const segment of result.segments) {
+      if (segment?.kind === "unknown") {
+        flushRun();
+        if (segment.ipa !== "?" || segment.certainty !== "PROVISIONAL") return null;
+        output += "?";
+      } else if (["vowel", "consonant"].includes(segment?.kind) &&
+          segment.certainty === "PROVISIONAL") {
+        provisionalRun.push({ ...segment, certainty: "SUPPORTED" });
+      } else {
+        return null;
+      }
+    }
+    flushRun();
+    return output || "?";
   }
   if (!(result.status === "SUPPORTED" || (allowUncertain && result.status === "UNCERTAIN")) || result.segments.length === 0 ||
       result.segments.some((segment) => segment?.certainty !== "SUPPORTED")) return null;
@@ -742,21 +767,8 @@ export function analyze(text, options = {}) {
       };
       return { ...syllable, graphemePreview: previewFromGraphemes(syllable.surface, previewInput) };
     }
-    // Preserve every unresolved source unit through the typed phonetic-result
-    // boundary. Known but analysis-dependent IPA may be rendered with its
-    // uncertainty status; wholly unknown structures receive a non-IPA marker.
-    let phoneticResult = syllable.phoneticResult;
-    if (!phoneticResult || !phoneticResult.segments?.length) {
-      phoneticResult = {
-        phonemicIpa: null,
-        segments: [{ ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"], certainty: "PROVISIONAL" }],
-        syllableBoundaries: [0, 1],
-        status: "PROVISIONAL",
-        provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
-        uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
-      };
-    }
-    const ukrainian = adaptPhoneticResult(phoneticResult, { allowUncertain: ipaProfile === "hybrid-deterministic" });
+    // Keep the diagnostic preview distinct, but allow its explicitly
+    // provisional IPA hints to cross the same typed adapter boundary.
     const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
     const structural = analyzeToken(segmentalSurface, ipaProfile);
     const previewInput = {
@@ -764,6 +776,30 @@ export function analyze(text, options = {}) {
       warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
     };
     const graphemePreview = previewFromGraphemes(syllable.surface, previewInput);
+    let phoneticResult = syllable.phoneticResult;
+    if (!phoneticResult || !phoneticResult.segments?.length) {
+      const hinted = graphemePreview.phoneticResult?.segments || [];
+      const provisionalSegments = [
+        ...hinted.map((segment) => ({ ...segment, certainty: "PROVISIONAL" })),
+        ...(graphemePreview.unresolvedGraphemes || []).map(() => ({
+          ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNRESOLVED-GRAPHEME"], certainty: "PROVISIONAL"
+        })),
+      ];
+      if (!provisionalSegments.length) {
+        provisionalSegments.push({
+          ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"], certainty: "PROVISIONAL"
+        });
+      }
+      phoneticResult = {
+        phonemicIpa: null,
+        segments: provisionalSegments,
+        syllableBoundaries: [0, provisionalSegments.length],
+        status: "PROVISIONAL",
+        provenance: ["FALLBACK:GRAPHEME-POSITION-PREVIEW"],
+        uncertainty: [...(graphemePreview.warnings || []), "PHONETIC-READING-PROVISIONAL"],
+      };
+    }
+    const ukrainian = adaptPhoneticResult(phoneticResult, { allowUncertain: ipaProfile === "hybrid-deterministic" });
     if (ukrainian !== null) {
       return { ...syllable, phoneticResult, ukrainian, graphemePreview,
         status: phoneticResult.status === "PROVISIONAL" ? "EVIDENCE LIMITED" : syllable.status };
@@ -775,6 +811,7 @@ export function analyze(text, options = {}) {
       provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
       uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
     }, ukrainian: "?", graphemePreview, status: "EVIDENCE LIMITED" };
+
   });
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
