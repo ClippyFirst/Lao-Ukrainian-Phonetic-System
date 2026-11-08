@@ -4,7 +4,8 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — current `main` baseline, code/CI findings, PR-stack reconciliation, documentation and structure decisions, and remaining gates.
+- [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — latest integrated PR #143 branch state, exact-head verification, architecture, PR reconciliation, task ledger and remaining acceptance gates.
+- [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.
 - [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — historical repository inventory and earlier documentation checkpoint.
 
 ## Current language/research workpacks

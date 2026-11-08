@@ -62,3 +62,12 @@ The configured CI sequence is:
 7. Run Playwright/Chromium tests against the built site and inspect required assets/accessibility hooks.
 
 For matching local commands and prerequisites, see [CONTRIBUTING.md](../CONTRIBUTING.md). Manual keyboard, screen-reader, mobile and visual QA remains a separate acceptance item. A green engineering suite does not establish expert phonetic accuracy or linguistic release readiness.
+
+
+## Integrated preview and accessibility contracts — 2026-11-08
+
+The browser engine now exposes a separate grapheme-level preview for cases where accepted IPA is withheld. The UI labels it `PROVISIONAL`, shows unresolved graphemes, does not infer tone and does not replace the accepted IPA/Ukrainian result. Its canonical inventory is generated from `data/lao/grapheme_inventory.csv` into `web/data.js`; never hand-edit the generated mirror.
+
+The current exact-head Verify [42460320528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460320528) passed 17 Chromium tests, including accessible names/landmarks/live regions, keyboard navigation/disclosures, touch emulation, responsive reflow, forced-colors/reduced-motion, 44×44 CSS-pixel target checks and 400%-equivalent 320 CSS-pixel layout. These are automated regression checks only. Actual screen-reader sessions, physical mobile devices, real browser zoom and human visual review remain separate manual gates in [the accessibility QA log](accessibility-manual-qa.md).
+
+The lockfile is committed and Verify installs with `npm ci --no-audit --no-fund`. The clean-install and full engineering results apply to the open PR #143 branch, not to unchanged `main`.

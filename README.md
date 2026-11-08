@@ -82,7 +82,7 @@ Run the complete configured engineering checks from the repository root (command
 - Validate IPA corpus structure: python scripts/ipa_gold_corpus.py validate --language lao
 - Validate canonical data/evidence: python scripts/audit.py
 - Run Python tests: PYTHONPATH=src python -m unittest discover -s tests -v
-- Install Node test dependencies: npm install --no-audit --no-fund
+- Install Node test dependencies: npm ci --no-audit --no-fund
 - Run Node/browser-engine suites: npm test
 - Build the static site: npm run build
 - Check generated-data drift: git diff --exit-code -- web/data.js
@@ -136,7 +136,7 @@ Both engines default to immutable model revisions recorded in [the integration g
 
 ## Status
 
-**🟡 Research MVP; the static web instrument is deployed.** Phonological source adjudication, an independently reviewed gold corpus, external G2P comparison, and full dialect/cluster coverage remain incomplete; deployment does not imply linguistic validation.
+**🟡 Engineering-verified research prototype on the open PR #143 branch; the static web instrument is deployed from the existing mainline.** Phonological source adjudication, an independently reviewed gold corpus, external G2P comparison, and full dialect/cluster coverage remain incomplete; deployment does not imply linguistic validation.
 
 The repository is a research foundation with explicit provenance and deterministic tests. It is not yet publication-ready: a larger syllable corpus, fuller cluster/ligature analysis, independent gold examples and expert adjudication are still required.
 

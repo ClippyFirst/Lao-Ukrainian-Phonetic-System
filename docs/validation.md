@@ -1,8 +1,6 @@
 # Validation
 
-
-> **Current verification authority — 2026-11-07.** The dated test counts and workflow results below are historical checkpoints, not the current suite status. The latest exact-head full Verify inspected for the selected branch `improve/rule-engine-error-analysis-20261107` is [run 42384603376](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42384603376), SUCCESS on code/test head `2ddb0dbb250268f2477a2614a1f3fc676a9b89e3`. All configured stages passed, including repository/data audit, Python tests, external-G2P CLI validation, browser engine tests, generated-data reproducibility, Chromium UI tests and built-page checks. This evidence applies to that PR branch head, **not** to `main`, and predates the documentation-only commits recorded in the handoff; those documentation edits remain PARTIAL until Verify runs on their final commit. For the live task ledger and branch reconciliation, use the [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) and [current repository audit](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-07.md).
-
+> **Current verification authority — 2026-11-08.** Exact-head Verify [42460320528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460320528) passed on `dd07adcd7d709ea5e1b8f94c3556965eefda73c9` in `audit/repository-docs-structure-20261107`: 262 Python tests, 126 Node tests and 17 Chromium tests; locked `npm ci`; IPA corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; and built-page/relative-asset checks. This evidence applies to the PR #143 branch, not to unchanged `main` (`f40c1128302486b3589da9b16bae198ef3ad1d81`). It verifies configured engineering contracts, not pronunciation accuracy, manual accessibility or release readiness. The live status and acceptance ledger are in the [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) and [2026-11-08 repository-wide audit](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md).
 
 ## Deterministic structural validation
 
@@ -46,7 +44,7 @@ No empirical accuracy percentage is claimed until a versioned Lao gold corpus wi
 
 ## Independent G2P comparison harness
 
-The optional comparison procedure is documented in [independent-g2p-comparison.md](independent-g2p-comparison.md). It uses `scripts/compare_external_g2p.py` with `lao2ipa==1.0.0`, compares IPA outputs after NFC normalization only, and emits a per-case JSON report. Mismatches are intentionally not treated as a correctness verdict. The external comparison has not yet been executed, so no match rate or independent accuracy claim is made.
+The optional comparison procedure is documented in [independent-g2p-comparison.md](independent-g2p-comparison.md). It uses `scripts/compare_external_g2p.py` with `lao2ipa==1.0.0`, compares IPA outputs after NFC normalization only, and emits a per-case JSON report. Mismatches are intentionally not treated as a correctness verdict. The three-engine benchmark has since been run and is documented in [the 2026-11-07 benchmark report](research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md). Those comparator metrics are dictionary-reference diagnostics, not independent project gold; the project's adjudicated IPA gold remains empty and accuracy remains unmeasured.
 
 
 ## External G2P workflow verification status (2026-10-24)
@@ -316,3 +314,8 @@ The optional `lao2ipa` 1.0.0 (Apache-2.0) diagnostic [run 41210220450](https://g
 ## Whole-message mixed-script preservation regression — 2026-11-01
 
 PR [#92](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/92) adds an exact-output browser regression for a Lao message with tab, ASCII identifier/digits, CRLF, native Lao numerals, punctuation, Khmer-script passthrough and emoji. Exact-head CI [41289891336](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41289891336) passed the audit, Python, browser, build, generated-data reproducibility and built-page checks. The output preserves unsupported/foreign material; native Lao numerals correctly keep the result PARTIAL. This is engineering evidence only, not IPA gold or accuracy evidence.
+
+
+## Reproducible Node environment — 2026-11-08
+
+The repository commits `package-lock.json` (lockfile version 3). Use `npm ci --no-audit --no-fund` for clean, lockfile-driven installation; CI uses the same command. Do not use `npm install` as the verification command when the purpose is to validate lockfile reproducibility.

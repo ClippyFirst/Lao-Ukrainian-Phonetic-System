@@ -2180,3 +2180,41 @@ The required engine contract is **Lao grapheme element + structural position + p
 - `package-lock.json` + clean `npm ci` remain DONE_VERIFIED (DEP-001). MekongPhon rights remain DONE_VERIFIED by owner confirmation (LIC-001).
 - TGT-01 (automated target-size regression) — DONE_VERIFIED. UI-001 remains PARTIAL: manual NVDA/JAWS/VoiceOver/TalkBack sessions, physical phone/tablet checks, actual browser zoom at 200%/400%, deployed-site keyboard walkthrough and human contrast/visual review are not performed here. See `docs/accessibility-manual-qa.md`; do not mark those human checks complete from Chromium emulation.
 - No manual assistive-technology session or physical-device test is claimed. The independent adjudicated Lao IPA gold corpus remains 0; this accessibility work does not validate linguistic accuracy.
+
+
+## Repository-wide audit and final engineering reconciliation — 2026-11-08
+
+- **Starting default-branch commit:** `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- **Single working branch:** `audit/repository-docs-structure-20261107`; reused the existing PR #143 branch rather than creating parallel branches or replaying already-integrated work.
+- **Final verified code/documentation head before this audit addendum:** `dd07adcd7d709ea5e1b8f94c3556965eefda73c9`.
+- PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) remains open, mergeable and based directly on the unchanged main SHA above. GitHub reports 78 changed files, 6,391 additions and 270 deletions; the branch compare reports 451 commits ahead and 0 behind. No merge, force-push, release, deployment, settings change or deletion was performed.
+- **Exact-head Verify [42460320528 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460320528)** ran on the exact `dd07adcd` SHA. Hosted results: 262 Python tests, 126 Node tests, 17 Chromium tests; clean `npm ci --no-audit --no-fund`; independent IPA corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; built-page/relative-asset checks.
+- No local checkout/runtime test execution is claimed. Verification evidence for this session is the exact-head GitHub Actions run and read-only GitHub repository/PR/tree inspection.
+
+### Current task ledger
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Repository audit and structure | DONE_VERIFIED | Full tree, architecture, data ownership, docs index, CI and PR stack inspected; latest audit in `docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md`. |
+| PR-stack reconciliation | DONE_VERIFIED | PR #137–#142 inspected; integrated changes retained in the single PR #143 continuation branch; source PRs left open and untouched. |
+| Typed IPA → Ukrainian adapter | DONE_VERIFIED (engineering) | Python/browser typed boundary and regression suites pass; linguistic accuracy is not implied. |
+| Dynamic structural syllable segmentation and tone-mark validation | DONE_VERIFIED (engineering) | Exact-head Python/Node suite and data audit pass; not lexical word segmentation. |
+| MekongPhon optional inference and benchmark | DONE_VERIFIED (engineering) | Immutable model revisions and aggregate benchmark workflows recorded; owner-confirmed project rights; external reference is not independent project gold. |
+| Grapheme inventory and provisional preview | DONE_VERIFIED (engineering) | 83 assigned Lao-block code points; preview remains PROVISIONAL, tone-free and excluded from accepted target adaptation. |
+| `package-lock.json` / clean Node install | DONE_VERIFIED | Exact-head `npm ci --no-audit --no-fund` passed. |
+| Automated UI/accessibility regression | DONE_VERIFIED | 17 Chromium tests, including named semantics, keyboard, touch/reflow, forced-colors, reduced-motion and 44px target checks. |
+| 44×44 CSS-pixel hit-area contract (TGT-01) | DONE_VERIFIED | Exact-head Chromium target-size assertion passes. |
+| Manual accessibility (UI-001) | PARTIAL | NVDA/JAWS/VoiceOver/TalkBack sessions, physical devices, actual browser zoom, deployed keyboard walkthrough and human visual/contrast review remain NOT RUN. |
+| Independent adjudicated IPA gold | BLOCKED | Gold/annotation/adjudication files remain empty; independent gold count 0. Acceptance requires rights-eligible source-located items, two independent qualified annotators, separate qualified adjudicator, controlled blind intake, frozen splits and expert-approved convention/coverage. |
+| Linguistic accuracy / release approval | BLOCKED | No empirical accuracy claim is supportable without independent adjudicated gold and specialist review. |
+| Broad dialect, lexical-name and unsupported-script coverage | PARTIAL / TODO | Continue only with scoped sources and qualified linguistic review; unsupported values remain withheld. |
+
+### Current branch and PR disposition
+
+- PR #143 is the sole continuation branch for this work. It contains the reviewed dependency work from PRs #137–#140, the typed target-adapter changes from #141 and the grapheme inventory/preview from #142.
+- PRs #137–#142 remain open and unmodified; they were not blindly merged, retargeted or closed. Their changes are represented in the consolidated PR #143 branch. Review/merge should be performed as one coherent PR #143 integration after the owner's normal review.
+- `main` remains unchanged at `f40c1128302486b3589da9b16bae198ef3ad1d81`. The successful exact-head run is for PR #143, not main.
+
+### Readiness
+
+**Engineering-verified research prototype; not release-ready or linguistically validated.** The configured engineering gates pass on the exact branch head. Independent adjudicated IPA gold remains empty, empirical accuracy is not measured, and manual assistive-technology/physical-device QA remains incomplete. No claim of a production-ready linguistic system is made.

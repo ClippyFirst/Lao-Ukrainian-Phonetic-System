@@ -7,6 +7,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 | Need | Canonical document |
 |---|---|
 | Current work, task status, handoff and blockers | [Master execution plan and chat handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) |
+| Latest repository-wide engineering and documentation audit | [Repository-wide audit — 2026-11-08](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) |
 | Terms and status vocabulary | [Project glossary](../GLOSSARY.md) |
 | Product scope and user-visible requirements | [Product requirements](PRODUCT-REQUIREMENTS.md) |
 | Linguistic pipeline and evidence distinctions | [Methodology](methodology.md) |
