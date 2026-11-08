@@ -448,3 +448,13 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | Task ID | Status | Evidence / acceptance |
 |---|---|---|
 | LAO-GRAPHEME-PREVIEW-001 | DONE_VERIFIED (engineering implementation and automated verification) | Python API/CLI and browser UI expose the same typed PROVISIONAL preview; 83 assigned Unicode 18 Lao-block code points are source/claim linked and classified. The preview only reuses registered positional IPA and parser-confirmed complete vowel/coda units, preserves unresolved graphemes, never infers tone, and cannot enter the Ukrainian adapter. Exact-head Verify 42416380324 passed 260 Python, 126 Node and 10 Chromium tests, npm ci, source/evidence audit, build and generated-data reproducibility. | This status verifies the engineering preview contract, not pronunciation accuracy. Keep unsupported Pali/Sanskrit/Khmu values unresolved. Independent adjudicated IPA gold remains 0; expert validation is required before promoting new phonological correspondences or claiming accuracy. |
+
+
+## Provisional grapheme rendering extension — 2026-11-08
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Emit provisional IPA hints for unassigned modern-Lao consonants | PARTIAL | Python/browser implementations and regressions added; exact-head CI pending |
+| Emit conservative vowel-grapheme hints when structure is unresolved | PARTIAL | Context-dependent warning retained; exact-head CI pending |
+| Preserve unknown consonants and tone uncertainty | PARTIAL | Non-core consonant withholding and no-tone-inference tests added; exact-head CI pending |
+| Linguistic accuracy of isolated grapheme hints in connected speech | BLOCKED / evidence-limited | Requires expert-adjudicated examples and contextual phonological evidence; no accuracy claim |
