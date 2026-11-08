@@ -315,9 +315,9 @@ PR #146's base branch advanced by one commit (`ad5bf2a61480ea255a9b83ca6f662471d
 
 The schema 1.0 report timed all rule-engine rows but only successful neural inferences, so its neural latency excluded 112 rejected inputs. This was a denominator mismatch, not a change in coverage or IPA output. Schema 1.1 now reports all-attempt latency for every engine and successful-inference latency separately.
 
-- Corrected run [#42488818208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208), code SHA `61b21237d57fc519dfff40ee22ed0649df2050e0`; artifact [13621285664](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208/artifacts/13621285664), SHA-256 `d5ebe048e328e06b9b107062433a1b3f191f039c77ed56142d88704727fc325a`.
-- All-attempt mean / median / p95: Vientiane `13.50 / 12.81 / 26.00 ms`; reference rules `13.24 / 12.53 / 25.72 ms`; Neural `209.58 / 202.98 / 430.65 ms`.
-- Neural successful-only n=888: `236.00 / 218.89 / 435.22 ms` mean/median/p95.
+- Two corrected runs on code SHA `61b21237d57fc519dfff40ee22ed0649df2050e0` both succeeded: push [#42488814477](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488814477), artifact `13620542012`, SHA-256 `cf7df0db5181de3d7a4b70e2cfb96f092510efdd7107a13b238c2e53fac626d8`; pull request [#42488818208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208), artifact `13621285664`, SHA-256 `d5ebe048e328e06b9b107062433a1b3f191f039c77ed56142d88704727fc325a`.
+- All-attempt mean / median / p95 ranges: Vientiane `13.50–13.53 / 12.81–12.87 / 26.00–26.17 ms`; reference rules `13.24–13.34 / 12.53–12.72 / 25.72–26.00 ms`; Neural `209.58–262.84 / 202.98–256.59 / 430.65–533.69 ms`.
+- Neural successful-only n=888 ranged: `236.00–295.97 / 218.89–276.26 / 435.22–542.77 ms` mean/median/p95. Hosted CPU variability is material.
 - Coverage and pairwise results are unchanged: rule coverage 3.5% each, Neural 88.8%; shared complete subset n=35; pairwise disagreement is not accuracy.
 - Exact-head Verify [#42488814424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488814424) on the same commit: 271 Python, 129 Node, 17 Chromium tests and all repository data/audit/install/build/reproducibility gates passed.
 
