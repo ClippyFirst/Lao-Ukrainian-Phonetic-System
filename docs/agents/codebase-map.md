@@ -29,14 +29,14 @@ Python implementation:
 - `normalize.py` — NFC normalization and Unicode/input validation.
 - `parser.py` — orthographic syllable parsing, dynamic segmentation, tone-mark storage-order checks, onset/coda and vowel structures.
 - `phonology.py` — rhyme/live-dead classification and source-scoped tone selection.
-- `mekongphon_reference_profile.py` — opt-in Vientiane/MekongPhon reference-compatible profile definitions.
+- `mekongphon_reference_profile.py` — Vientiane baseline, MekongPhon compatibility and default hybrid deterministic profile definitions.
 - `hybrid_rules.py` — deterministic rule selection by priority and context specificity; equal-rank conflicting outputs fail closed.
 - `phonetic_result.py` — source IPA inventory and typed IPA tokenization independent of Ukrainian target mappings.
 - `target.py` — typed IPA → Ukrainian adaptation; initial yodation and target-specific sequence matching.
-- `core.py` — public orchestration, uncertainty handling, and the explicit `ipa_profile` selector (`vientiane` remains the default; `hybrid-deterministic` is opt-in).
+- `core.py` — public orchestration, uncertainty handling, and the `ipa_profile` selector (default `hybrid-deterministic`; explicit `vientiane` baseline and `mekongphon-reference` compatibility profiles).
 - `model.py` / `data.py` — result types and canonical registry loading.
 
-The browser engine is a separately maintained implementation using generated canonical data. It exposes opt-in `mekongphon-reference` and `hybrid-deterministic` profiles; the visible UI remains on the default `vientiane` profile. Python and browser implementations both retain the baseline fallback and record applied hybrid rule IDs in IPA provenance. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
+The browser engine is a separately maintained implementation using generated canonical data. Its API and visible UI default to `hybrid-deterministic`, matching Python. Explicit `vientiane` and `mekongphon-reference` profiles remain available for comparison. Python and browser implementations both retain the baseline fallback and record applied hybrid rule IDs in IPA provenance. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes. Python and browser implementations both retain the baseline fallback and record applied hybrid rule IDs in IPA provenance. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
 
 ## Separate provisional grapheme preview
 
