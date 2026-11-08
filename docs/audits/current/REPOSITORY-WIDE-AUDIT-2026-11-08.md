@@ -363,3 +363,13 @@ A dedicated implementation branch `feat/hybrid-deterministic-lao-engine-20261108
 | Linguistic production acceptance | BLOCKED | No independent accuracy evidence or qualified specialist sign-off |
 
 The first hybrid version is an architectural and reproducibility improvement, not yet a Neural-level result. Existing reference-profile scores cannot be relabeled as hybrid benchmark results until the new runs complete. No local tests were run because the shell environment could not resolve GitHub; hosted CI is the required verification path.
+
+
+### Verification and first benchmark evidence
+
+- Exact-head Verify [#42507135952 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507135952) and push Verify [#42507131646 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131646) on `4afd51964532dd1f95b57eaeac36aea852b85228`.
+- 276 Python tests, 132 Node tests and 17 Chromium tests passed; corpus/audit/clean-install/build/generated-data/built-site gates passed.
+- MekongPhon held-out benchmark [#42507131648 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131648), artifact 13628190784, SHA-256 `7de8665161308fcaaa422c5c3534e181916c1958f59e88786c3521215d7f8c86d`.
+- Hybrid: 90/100 exact, CER 6.64%, coverage 97%, mean 1.41 ms, zero runtime errors. Neural: 82/100 exact, CER 6.64%, coverage 100%, mean 60.51 ms. On common coverage n=97, hybrid 90 exact / CER 1.40%, Neural 81 exact / CER 5.79%.
+- This is reference-relative and non-tonal, not independent gold. It confirms parity with MekongPhon-reference on this test, not generalized Neural-level coverage or phonetic accuracy.
+- HVULao 1k hybrid stress run [#42507136055](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507136055) is still in progress at this audit revision; no metrics are claimed until the artifact is available.
