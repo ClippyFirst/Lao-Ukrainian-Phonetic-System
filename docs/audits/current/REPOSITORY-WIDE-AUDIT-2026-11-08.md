@@ -287,6 +287,10 @@ Neural wrapper input rejections: 56 source strings over 128 code points and 56 s
 
 Only 35 sentences are complete in all three engines. Pairwise output disagreement on this shared subset: Vientiane vs reference 7.75%; Vientiane vs Neural 13.67%; reference vs Neural 6.47%. This is disagreement, not accuracy. No IPA gold is present in this corpus, so accuracy/CER cannot be measured. Full interpretation, methodology, artifact metadata and task ledger: [HVULao 1k three-engine stress report](../../research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md).
 
+### Exact-head repository verification
+
+The full Verify workflow was enabled for `benchmark/**` push branches and completed successfully on commit `53f004233760ad1c336e0b1935d37eddccffdd81`: [run #42487885967](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42487885967). Verified checks: IPA gold corpus structure, repository audit, 271 Python tests, external-G2P harness compile/help, clean `npm ci`, 129 Node tests, build/regeneration, generated-data drift, 17 Chromium browser tests, and built-page/asset checks. All passed. This run covers the benchmark report, docs index, source/evidence note, and audit/handoff updates at that commit.
+
 ### Updated readiness and tasks
 
 | Task | Status | Evidence / blocker |
