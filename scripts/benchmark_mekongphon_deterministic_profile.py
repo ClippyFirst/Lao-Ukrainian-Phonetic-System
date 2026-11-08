@@ -315,6 +315,12 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    hybrid_rendering = rendering_by_stage["hybrid_deterministic"]
+    if hybrid_rendering["inputs_complete"] != len(rows):
+        raise RuntimeError(
+            "Hybrid rendering-coverage gate failed: "
+            f"{hybrid_rendering['inputs_complete']}/{len(rows)} inputs rendered completely"
+        )
     if runtime_errors_by_stage:
         raise RuntimeError(f"Benchmark runtime errors by stage: {dict(runtime_errors_by_stage)}")
     return 0
