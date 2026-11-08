@@ -3,7 +3,19 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { analyze } from "./engine.js";
+import { analyze as analyzeDefault } from "./engine.js";
+
+// Existing browser fixtures pin the explicit Vientiane baseline. Default
+// profile selection is covered separately so profile changes stay deliberate.
+function analyze(text, options = {}) {
+  return analyzeDefault(text, { ipaProfile: options.ipaProfile ?? "vientiane" });
+}
+
+test("browser engine defaults to the hybrid deterministic profile", () => {
+  const result = analyzeDefault("ດວງ");
+  assert.equal(result.syllables[0].ipa, "duaːŋ");
+  assert.ok(result.syllables[0].rules.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
+});
 import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
 
 test("basic long syllable", () => {
