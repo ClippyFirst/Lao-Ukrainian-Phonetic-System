@@ -275,3 +275,19 @@ PR #149 exact-head Verify [#42512729689 — SUCCESS](https://github.com/ClippyFi
 ### Readiness
 
 **Published engineering-verified research prototype; not release-ready and not linguistically accuracy-validated.** The hybrid branch is engineering-verified and has a completed 1k stress benchmark, but its sentence coverage is unchanged from Vientiane on this corpus. The independent gold corpus remains empty and manual accessibility remains partial.
+
+
+## 11. MekongPhon 100-item held-out comparator result — PR #149
+
+The hybrid profile was also evaluated in the 100-item dictionary-seeded MekongPhon comparator run [#42509799353 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42509799353), artifact [13629135689](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42509799353/artifacts/13629135689), inspected on 2026-11-08. Artifact ZIP SHA-256: 2fc8b2cef8705920fed97ff98b5bb3050f39c8a8a839ad1ccb6ed9d897162d24. Dataset revision f80f6c1840c4818b51e05f2e00cded4701a5b662; split lao_eval.csv; 100 items; dataset SHA-256 5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241.
+
+| Engine | Coverage | Exact matches | Full-denominator CER |
+|---|---:|---:|---:|
+| Vientiane rules | 97% | 69/100 | 11.46% |
+| MekongPhon-reference rules | 97% | 90/100 | 6.64% |
+| Hybrid deterministic | 97% | 90/100 | 6.64% |
+| MekongPhon Neural | 100% | 82/100 | 6.64% |
+
+On the 97-item identical-coverage subset, hybrid achieved 90 exact matches and 1.40% CER; Neural achieved 81 exact matches and 5.79% CER. Mean per-input latency was 1.41 ms for hybrid and 60.06 ms for Neural, excluding model load and initial smoke inference.
+
+Interpretation boundary: the held-out list is dictionary-seeded from the MekongPhon dataset, not independently adjudicated project gold. The hybrid's rules derive from aggregate contextual correspondences in a separate pinned training split. The run tests deterministic implementation and reference-convention compatibility; it does not establish unbiased population accuracy, universal Vientiane phonology or Neural-level generalization. It scores IPA, not Ukrainian output. The result must be read together with the HVULao sentence stress test: the hybrid did not improve sentence coverage over Vientiane on that independent text-domain dataset.
