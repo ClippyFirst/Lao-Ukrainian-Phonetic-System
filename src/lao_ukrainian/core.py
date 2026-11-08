@@ -9,6 +9,9 @@ from .grapheme_preview import preview_from_graphemes
 from .mekongphon_reference_profile import DEFAULT_PROFILE, SUPPORTED_IPA_PROFILES
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
+PASSTHROUGH_CHARACTERS = frozenset(
+    ",!?;:()[]{}\"“”" + "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'-"
+)
 MINOR_C0_EXCLUDED_ONSETS = {"ງ", "ຍ"}
 
 
@@ -32,6 +35,30 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_PROFILE) -> Analysis:
     ]
     for group in syllable_groups:
         for syllable_index, surface in enumerate(group):
+            # Match the browser engine's explicit non-Lao passthrough contract:
+            # preserve ASCII letters/digits and common punctuation unchanged.
+            # These are not assigned IPA and never enter the Ukrainian IPA adapter.
+            if len(surface) == 1 and surface in PASSTHROUGH_CHARACTERS:
+                syllables.append(
+                    SyllableAnalysis(
+                        surface=surface,
+                        onset=None,
+                        vowel=None,
+                        coda=None,
+                        tone_mark=None,
+                        consonant_class=None,
+                        syllable_type=None,
+                        tone=None,
+                        phonemic_ipa=None,
+                        ukrainian_candidates=[],
+                        practical_ukrainian=surface,
+                        status="PASSTHROUGH",
+                        rules=["PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER"],
+                        warnings=[],
+                    )
+                )
+                continue
+
             parsed = parse_syllable(surface, registry)
             local_warnings = list(parsed.get("warnings", []))
             ipa, rules, tone_status, tone = phonologize(parsed, registry, ipa_profile)
@@ -219,5 +246,9 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_PROFILE) -> Analysis:
                 )
             )
 
-    overall = "OK" if syllables and all(s.status == "ESTABLISHED" for s in syllables) else "PARTIAL"
+    overall = (
+        "OK"
+        if syllables and all(s.status in {"ESTABLISHED", "PASSTHROUGH"} for s in syllables)
+        else "PARTIAL"
+    )
     return Analysis(text, normalized, syllables, overall, warnings + analysis_warnings)
