@@ -16,6 +16,14 @@ CLI:
 lao-ua "ດວງ" --engine rules --ipa-profile mekongphon-reference --json
 ```
 
+Browser-engine API:
+
+```js
+analyze("ດວງ", { ipaProfile: "mekongphon-reference" })
+```
+
+The visible browser UI intentionally remains on the default Vientiane profile; this option is exposed by the engine API, not as a user-facing selector.
+
 The profile still follows the same architecture:
 
 `Lao orthography → structural analysis → deterministic source IPA → typed IPA → Ukrainian adaptation`
