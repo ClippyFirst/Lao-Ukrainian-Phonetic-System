@@ -55,7 +55,7 @@ def _map_ipa_sequence(ipa: str, registry: dict[str, dict[str, str]]) -> str | No
     return "".join(output)
 
 
-def adapt_phonetic_result(result: PhoneticResult, registry=None) -> str | None:
+def adapt_phonetic_result(result: PhoneticResult, registry=None, *, allow_uncertain: bool = False) -> str | None:
     """Adapt typed IPA; uncertain readings are allowed but never upgraded in status."""
     if not isinstance(result, PhoneticResult):
         raise TypeError("Ukrainian adaptation requires a PhoneticResult")
@@ -68,7 +68,7 @@ def adapt_phonetic_result(result: PhoneticResult, registry=None) -> str | None:
         ):
             return "?"
         return None
-    if result.status not in {"SUPPORTED", "UNCERTAIN"} or not result.segments:
+    if result.status != "SUPPORTED" and not (allow_uncertain and result.status == "UNCERTAIN") or not result.segments:
         return None
     if any(segment.certainty != "SUPPORTED" for segment in result.segments):
         return None
@@ -103,9 +103,9 @@ def adapt_phonetic_result(result: PhoneticResult, registry=None) -> str | None:
     return "".join(output)
 
 
-def practical_from_ipa(result: PhoneticResult, registry=None) -> str | None:
+def practical_from_ipa(result: PhoneticResult, registry=None, *, allow_uncertain: bool = False) -> str | None:
     """Compatibility name retained with the new typed-only input contract."""
-    return adapt_phonetic_result(result, registry)
+    return adapt_phonetic_result(result, registry, allow_uncertain=allow_uncertain)
 
 
 def rank_ukrainian_candidates(result: PhoneticResult, registry=None):
