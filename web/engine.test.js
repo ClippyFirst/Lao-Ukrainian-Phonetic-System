@@ -602,7 +602,8 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 test("browser grapheme preview is provisional and never becomes accepted IPA or Ukrainian", () => {
   const syllable = analyze("ກາລ").syllables[0];
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.ukrainian, "?");
+  assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.graphemePreview.ipaPreview, "kaː");
   assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
   assert.deepEqual(syllable.graphemePreview.unresolvedGraphemes, ["ລ"]);
