@@ -401,3 +401,12 @@ Final code checkpoint: `c705cf8ad782246c2d72c0d789a5e44e5196eca6`.
 | Linguistic production acceptance | BLOCKED | No independent accuracy benchmark or qualified Lao phonetics sign-off |
 
 No PR was merged, no production default was changed, and PRs #146/#147 remain preserved as stacked predecessors. The hybrid PR #149 remains a draft pending owner review; its base is the existing #147 benchmark branch.
+
+
+## Source-backed Lao digit handling and parser research — 2026-11-08
+
+- Added Lao native digits U+0ED0–U+0ED9 to the explicit passthrough inventory in Python and browser runtimes. They remain unchanged, receive no IPA and are excluded from IPA adaptation. Python/browser regression tests cover the contract.
+- The source is already present in the canonical evidence registry: `SRC-W3C-LAO-LREQ`. Added claims `CLM-LAO-NATIVE-DIGITS` (established script fact) and `CLM-LAO-DIGITS-PASSTHROUGH` (project handling methodology).
+- Reviewed the full Ueda 1994 Vientiane phonology article, including p. 112 on restricted non-final CV- light syllables in polysyllabic words. The existing narrow `VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED` candidate remains fail-closed; no broader neutral-tone rule was added.
+- Enfield 2007 §3.1 remains corroborating structural evidence for C0V0 minor syllables, with an explicit dialect/corpus-scope caveat. No rural-corpus assumptions were promoted to Vientiane production rules.
+- Updated the source/evidence register and research note. Exact-head CI for the latest source-registry/documentation commits is queued/in progress at this audit update; do not mark those final commits verified until the latest run finishes.
