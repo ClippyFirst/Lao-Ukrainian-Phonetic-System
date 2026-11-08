@@ -113,23 +113,26 @@ def main() -> int:
     for row in rows:
         source = nfc(row["orth"])
         references.append(nfc(row["pron_no_tones"]))
+        baseline_prediction = ""
+        profile_prediction = ""
+        neural_prediction = ""
         try:
             started = time.perf_counter()
             baseline = analyze(source)
             baseline_times.append(time.perf_counter() - started)
-            baseline_predictions.append(complete_ipa(baseline))
+            baseline_prediction = complete_ipa(baseline)
 
             started = time.perf_counter()
             compatible = analyze(source, ipa_profile="mekongphon-reference")
             profile_times.append(time.perf_counter() - started)
-            profile_predictions.append(complete_ipa(compatible))
+            profile_prediction = complete_ipa(compatible)
 
-            neural_predictions.append(nfc(neural.predict_raw_ipa(source)))
+            neural_prediction = nfc(neural.predict_raw_ipa(source))
         except Exception:
             runtime_errors += 1
-            baseline_predictions.append("")
-            profile_predictions.append("")
-            neural_predictions.append("")
+        baseline_predictions.append(baseline_prediction)
+        profile_predictions.append(profile_prediction)
+        neural_predictions.append(neural_prediction)
 
     baseline_score = score(references, baseline_predictions)
     profile_score = score(references, profile_predictions)
