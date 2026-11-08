@@ -149,7 +149,13 @@ function adaptPhoneticResult(result) {
   if (!result || typeof result !== "object" || !Array.isArray(result.segments)) {
     throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
   }
-  if (result.status !== "SUPPORTED" || result.segments.length === 0 ||
+  if (result.status === "PROVISIONAL") {
+    return result.segments.length === 1 &&
+      result.segments[0]?.kind === "unknown" &&
+      result.segments[0]?.certainty === "PROVISIONAL" &&
+      result.segments[0]?.ipa === "?" ? "?" : null;
+  }
+  if (!["SUPPORTED", "UNCERTAIN"].includes(result.status) || result.segments.length === 0 ||
       result.segments.some((segment) => segment?.certainty !== "SUPPORTED")) return null;
   const ipa = result.segments.map((segment) => segment.ipa).join("");
   const keys = sortedIpa();
@@ -723,20 +729,33 @@ export function analyze(text, options = {}) {
 
   const words = normalized.split(/\s+/).filter(Boolean).map((word) => analyzeWord(word, ipaProfile));
   const syllables = words.flat().map((syllable) => {
-    if (syllable.passthrough || syllable.ipa) return syllable;
-    // Reparse only the segmental structure after removing tone marks. This
-    // recovers onset/vowel roles for a provisional preview, but the preview
-    // itself never carries or infers a tone value.
-    const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
-    const structural = analyzeToken(segmentalSurface, ipaProfile);
-    const previewInput = {
-      ...structural,
-      warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
-    };
-    return {
-      ...syllable,
-      graphemePreview: previewFromGraphemes(syllable.surface, previewInput)
-    };
+    if (syllable.passthrough || (syllable.ukrainian && syllable.status === "ESTABLISHED")) return syllable;
+    // Preserve every unresolved source unit through the typed phonetic-result
+    // boundary. Known but analysis-dependent IPA may be rendered with its
+    // uncertainty status; wholly unknown structures receive a non-IPA marker.
+    let phoneticResult = syllable.phoneticResult;
+    if (!phoneticResult || !phoneticResult.segments?.length) {
+      phoneticResult = {
+        phonemicIpa: null,
+        segments: [{ ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"], certainty: "PROVISIONAL" }],
+        syllableBoundaries: [0, 1],
+        status: "PROVISIONAL",
+        provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
+        uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
+      };
+    }
+    const ukrainian = adaptPhoneticResult(phoneticResult);
+    if (ukrainian !== null) {
+      return { ...syllable, phoneticResult, ukrainian,
+        status: phoneticResult.status === "PROVISIONAL" ? "EVIDENCE LIMITED" : syllable.status };
+    }
+    return { ...syllable, phoneticResult: {
+      phonemicIpa: null,
+      segments: [{ ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"], certainty: "PROVISIONAL" }],
+      syllableBoundaries: [0, 1], status: "PROVISIONAL",
+      provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
+      uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
+    }, ukrainian: "?", status: "EVIDENCE LIMITED" };
   });
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
