@@ -12,6 +12,7 @@ on:
       - ".github/workflows/mekongphon-three-engine-benchmark.yml"
       - "scripts/benchmark_mekongphon_three_engines.py"
       - "scripts/benchmark_additional_lao_g2p.py"
+      - "scripts/benchmark_phonetisaurus_lao.py"
       - "src/lao_ukrainian/mekongphon.py"
       - "src/lao_ukrainian/phonetic_result.py"
       - "src/lao_ukrainian/target.py"
@@ -44,6 +45,8 @@ jobs:
         run: python scripts/benchmark_mekongphon_three_engines.py --output artifacts/mekongphon-100-word-benchmark.json
       - name: Run pinned additional Epitran and orthography2ipa comparators
         run: python scripts/benchmark_additional_lao_g2p.py --output artifacts/additional-lao-g2p-benchmark.json
+      - name: Run ephemeral LanguageNet Phonetisaurus Lao FST comparator
+        run: python scripts/benchmark_phonetisaurus_lao.py --output artifacts/phonetisaurus-lao-benchmark.json
       - name: Upload aggregate benchmark report (no source rows or predictions)
         if: always()
         uses: actions/upload-artifact@v7
@@ -53,5 +56,7 @@ jobs:
             artifacts/mekongphon-100-word-benchmark.json
             artifacts/additional-lao-g2p-benchmark.json
             artifacts/additional-lao-g2p-benchmark.json.sha256
+            artifacts/phonetisaurus-lao-benchmark.json
+            artifacts/phonetisaurus-lao-benchmark.json.sha256
           if-no-files-found: warn
           retention-days: 90
