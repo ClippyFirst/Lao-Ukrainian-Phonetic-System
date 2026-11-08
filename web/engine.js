@@ -745,8 +745,15 @@ export function analyze(text, options = {}) {
       };
     }
     const ukrainian = adaptPhoneticResult(phoneticResult);
+    const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+    const structural = analyzeToken(segmentalSurface, ipaProfile);
+    const previewInput = {
+      ...structural,
+      warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
+    };
+    const graphemePreview = previewFromGraphemes(syllable.surface, previewInput);
     if (ukrainian !== null) {
-      return { ...syllable, phoneticResult, ukrainian,
+      return { ...syllable, phoneticResult, ukrainian, graphemePreview,
         status: phoneticResult.status === "PROVISIONAL" ? "EVIDENCE LIMITED" : syllable.status };
     }
     return { ...syllable, phoneticResult: {
@@ -755,7 +762,7 @@ export function analyze(text, options = {}) {
       syllableBoundaries: [0, 1], status: "PROVISIONAL",
       provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
       uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
-    }, ukrainian: "?", status: "EVIDENCE LIMITED" };
+    }, ukrainian: "?", graphemePreview, status: "EVIDENCE LIMITED" };
   });
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
