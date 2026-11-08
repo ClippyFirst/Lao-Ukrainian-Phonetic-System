@@ -330,7 +330,7 @@ function validateInput(text) {
     }
     if (cp === 0x200B) continue; // Lao word-boundary zero-width space.
     if (cp >= 0x0E80 && cp <= 0x0EFF) continue;
-    if (/\s/.test(ch) || cp < 0x80 || PASSTHROUGH_PUNCTUATION.has(ch)) continue;
+    if ((ch !== "\\uFEFF" && /\\s/.test(ch)) || cp < 0x80 || PASSTHROUGH_PUNCTUATION.has(ch)) continue;
     if (cp > 0x7F) warnings.push("Непідтримуваний символ поза лаоським Unicode-діапазоном.");
   }
   return [...new Set(warnings)];
