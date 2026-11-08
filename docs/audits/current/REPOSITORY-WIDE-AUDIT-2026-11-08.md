@@ -506,3 +506,15 @@ No PR was merged and mainline/production deployment remains unchanged. The hybri
 - Reviewed the full Ueda 1994 Vientiane phonology article, including p. 112 on restricted non-final CV- light syllables in polysyllabic words. The existing narrow `VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED` candidate remains fail-closed; no broader neutral-tone rule was added.
 - Enfield 2007 §3.1 remains corroborating structural evidence for C0V0 minor syllables, with an explicit dialect/corpus-scope caveat. No rural-corpus assumptions were promoted to Vientiane production rules.
 - Updated the source/evidence register and research note. Exact-head CI for the latest source-registry/documentation commits is queued/in progress at this audit update; do not mark those final commits verified until the latest run finishes.
+
+
+## Grapheme-level provisional sound fallback — 2026-11-08
+
+**PARTIAL — code and parity tests added; exact-head CI pending.**
+
+- Python and browser hybrid diagnostics now attach provisional IPA hints to unassigned modern-Lao consonants with registered initial values and to selected vowel graphemes.
+- The hint is not a phonological position claim: unresolved consonants are not silently reclassified as codas, and vowel glyph hints remain context-dependent. Tone is never guessed by this fallback.
+- Non-core consonants remain unknown; a known vowel sign in the same malformed unit may still contribute a provisional vowel hint.
+- Regression tests update the malformed-tail expectation from `kaː` / `ка?` to `kaːl` / `кал?`, while retaining an explicit unresolved marker for the uncertain position.
+- Acceptance gate: Python/browser parity, all existing tests, generated-data/build checks and Chromium UI must pass on the exact PR head. Until then, status remains PARTIAL.
+- This is low-confidence grapheme rendering, not a claim of 100% correct phonetic transcription. Independent adjudicated IPA gold remains 0.
