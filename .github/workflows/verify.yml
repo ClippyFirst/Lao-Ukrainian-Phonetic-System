@@ -3,7 +3,7 @@ on:
   push:
     branches: ["main", "feat/**", "fix/**", "audit/**", "benchmark/**"]
   pull_request:
-    branches: ["main", "benchmark/mekongphon-three-engine", "benchmark/mekongphon-immutable-inference-20261107", "improve/rule-engine-error-analysis-20261107"]
+    branches: ["main", "benchmark/mekongphon-three-engine", "benchmark/mekongphon-immutable-inference-20261107", "benchmark/hvulao-1k-three-engine-20261108", "improve/rule-engine-error-analysis-20261107"]
   workflow_dispatch:
 permissions:
   contents: read
