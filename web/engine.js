@@ -145,7 +145,7 @@ function createPhoneticResult(ipa, metadata = {}) {
   return base;
 }
 
-function adaptPhoneticResult(result) {
+function adaptPhoneticResult(result, { allowUncertain = false } = {}) {
   if (!result || typeof result !== "object" || !Array.isArray(result.segments)) {
     throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
   }
@@ -155,7 +155,7 @@ function adaptPhoneticResult(result) {
       result.segments[0]?.certainty === "PROVISIONAL" &&
       result.segments[0]?.ipa === "?" ? "?" : null;
   }
-  if (!["SUPPORTED", "UNCERTAIN"].includes(result.status) || result.segments.length === 0 ||
+  if (!(result.status === "SUPPORTED" || (allowUncertain && result.status === "UNCERTAIN")) || result.segments.length === 0 ||
       result.segments.some((segment) => segment?.certainty !== "SUPPORTED")) return null;
   const ipa = result.segments.map((segment) => segment.ipa).join("");
   const keys = sortedIpa();
@@ -507,7 +507,7 @@ function analyzeToken(surface, ipaProfile = "hybrid-deterministic") {
       "SYLLABLE:" + syllableType, ...profileRules, resolvedTone.ruleId || "TONE:UNRESOLVED"],
     uncertainty: [...warnings, ...(resolvedTone.status === "ESTABLISHED" ? [] : ["TONE-UNRESOLVED"])],
   });
-  const ukrainian = adaptPhoneticResult(phoneticResult);
+  const ukrainian = adaptPhoneticResult(phoneticResult, { allowUncertain: ipaProfile === "hybrid-deterministic" });
 
   if (onsetForm !== onsetKey && !onsetIpaOverride) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
   if (onsetIpaOverride) warnings.push("ONSET-LABIALIZED:" + onsetForm);
@@ -744,7 +744,7 @@ export function analyze(text, options = {}) {
         uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
       };
     }
-    const ukrainian = adaptPhoneticResult(phoneticResult);
+    const ukrainian = adaptPhoneticResult(phoneticResult, { allowUncertain: ipaProfile === "hybrid-deterministic" });
     const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
     const structural = analyzeToken(segmentalSurface, ipaProfile);
     const previewInput = {
