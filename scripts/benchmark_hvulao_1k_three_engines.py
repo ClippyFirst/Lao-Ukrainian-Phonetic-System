@@ -107,6 +107,7 @@ def latency_summary(values: list[float]) -> dict:
     ordered = sorted(values)
     p95 = ordered[min(len(ordered) - 1, int(0.95 * len(ordered)))]
     return {
+        "n": len(values),
         "mean_ms": statistics.mean(values) * 1000,
         "median_ms": statistics.median(values) * 1000,
         "p95_ms": p95 * 1000,
@@ -135,7 +136,7 @@ def main() -> int:
 
     stages = {
         "vientiane_rules": {
-            "predictions": [], "times": [], "errors": Counter(),
+            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0,
         },
@@ -145,7 +146,7 @@ def main() -> int:
             "syllable_total": 0, "syllable_with_ipa": 0,
         },
         "mekongphon_neural": {
-            "predictions": [], "times": [], "errors": Counter(),
+            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "input_rejections": Counter(),
         },
     }
@@ -175,6 +176,8 @@ def main() -> int:
             except Exception as exc:
                 stage["errors"][type(exc).__name__] += 1
                 stage["predictions"].append("")
+            finally:
+                stage["attempt_times"].append(time.perf_counter() - started)
 
         stage = stages["mekongphon_neural"]
         try:
@@ -192,6 +195,8 @@ def main() -> int:
         except Exception as exc:
             stage["errors"][type(exc).__name__] += 1
             stage["predictions"].append("")
+        finally:
+            stage["attempt_times"].append(time.perf_counter() - started)
 
     summaries = {}
     for key, stage in stages.items():
@@ -201,7 +206,8 @@ def main() -> int:
             "complete_outputs": sum(bool(value) for value in predictions),
             "withheld_or_failed": sum(not bool(value) for value in predictions),
             "runtime_errors_by_type": dict(sorted(stage["errors"].items())),
-            "latency": latency_summary(stage["times"]),
+            "successful_inference_latency": latency_summary(stage["times"]),
+            "all_attempt_latency": latency_summary(stage["attempt_times"]),
         }
         if "input_rejections" in stage:
             summaries[key]["input_rejections_by_reason"] = dict(sorted(stage["input_rejections"].items()))
@@ -238,7 +244,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "status": "independent_text_domain_stress_test_not_ipa_accuracy",
         "benchmark": {
             "name": "HVULao_NLP 1k raw-sentence test split",
@@ -271,7 +277,8 @@ def main() -> int:
         "all_three_complete_sentences": len(shared),
         "runtime_errors": sum(sum(stage["errors"].values()) for stage in stages.values()),
         "measurement_notes": [
-            "One hosted CPU run; model load and initial smoke inference excluded from latency.",
+            "One hosted CPU run; model load and initial smoke inference excluded from both latency measures.",
+            "successful_inference_latency covers only completed inference calls; all_attempt_latency covers all 1,000 calls including explicit input rejections and unexpected errors.",
             "Whitespace is removed for pairwise IPA comparison; tone and length marks are retained.",
             "No source sentences or per-sentence IPA predictions are persisted.",
         ],
