@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "feat/deterministic-mekongphon-reference-profile-20261108"
+      - "feat/hybrid-deterministic-lao-engine-20261108"
     paths:
       - ".github/workflows/mekongphon-deterministic-profile-benchmark.yml"
       - "scripts/benchmark_mekongphon_deterministic_profile.py"
