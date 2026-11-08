@@ -675,3 +675,11 @@ test("browser engine preserves corpus-observed punctuation as explicit passthrou
   assert.equal(passthrough.map((item) => item.surface).join(""), symbols);
   assert.ok(passthrough.every((item) => item.ipa === "" && item.ukrainian === item.surface));
 });
+
+test("browser engine segments supported passthrough prefixes before Lao syllables", () => {
+  const result = analyze("(ຂາ");
+  assert.equal(result.syllables[0].passthrough, true);
+  assert.equal(result.syllables[0].ukrainian, "(");
+  assert.equal(result.syllables[1].ipa, "kʰaː");
+  assert.equal(result.status, "OK");
+});
