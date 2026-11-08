@@ -12,6 +12,7 @@ on:
   pull_request:
     branches:
       - main
+      - "benchmark/hvulao-1k-three-engine-20261108"
     paths:
       - ".github/workflows/mekongphon-deterministic-profile-benchmark.yml"
       - "scripts/benchmark_mekongphon_deterministic_profile.py"
