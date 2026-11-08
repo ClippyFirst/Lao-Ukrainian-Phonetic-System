@@ -18,6 +18,14 @@ class TestCore(unittest.TestCase):
         self.assertEqual(len(result.syllables), 2)
         self.assertEqual(load_once.call_count, 1)
 
+    def test_default_profile_is_hybrid_while_vientiane_remains_explicit(self):
+        default = analyze("ວາ").syllables[0]
+        vientiane = analyze("ວາ", ipa_profile="vientiane").syllables[0]
+        self.assertEqual(default.phonemic_ipa, "waː")
+        self.assertEqual(vientiane.phonemic_ipa, "ʋaː")
+        self.assertIn("HYBRID-RULE:HYB-MPH-ONSET-ວ", default.rules)
+        self.assertNotIn("HYBRID-RULE:HYB-MPH-ONSET-ວ", vientiane.rules)
+
     def test_long_open_high_class(self):
         s = analyze("ຂາ").syllables[0]
         self.assertEqual(s.phonemic_ipa, "kʰaː")
