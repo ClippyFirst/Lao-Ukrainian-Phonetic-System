@@ -39,4 +39,4 @@ jobs:
           name: mekongphon-deterministic-rule-profile
           path: artifacts/mekongphon-deterministic-rule-profile.json
           if-no-files-found: warn
-          retention-days: 90
+          retention-days: 1
