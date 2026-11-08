@@ -1,3 +1,9 @@
+## Primary engine decision — hybrid deterministic (2026-11-08)
+
+The owner selected `hybrid-deterministic` as the primary ClippyFirst Lao engine. The current implementation branch changes Python API, CLI and browser defaults from Vientiane to hybrid. Vientiane remains the phonological baseline and an explicit compatibility profile; MekongPhon-reference remains available for comparison. Neural inference is not in the default transcription path. The benchmark evidence remains reference-relative/stress-only, and independent adjudicated IPA gold remains 0. Exact-head verification for this default switch is pending.
+
+---
+
 # Repository-wide audit and continuation — 2026-11-08
 
 ## Executive assessment
