@@ -244,9 +244,9 @@ class TestMinorSyllableSelectorEvidence(unittest.TestCase):
 
 
     def test_ascii_and_common_punctuation_are_explicit_passthrough_not_ipa(self):
-        result = analyze("ຂາ, 2026! abc.")
+        result = analyze("ຂາ, 2026! abc.&%–…#/`+•")
         passthrough = [item for item in result.syllables if item.status == "PASSTHROUGH"]
-        self.assertEqual("".join(item.surface for item in passthrough), ",2026!abc.")
+        self.assertEqual("".join(item.surface for item in passthrough), ",2026!abc.&%–…#/`+•")
         self.assertTrue(all(item.phonemic_ipa is None for item in passthrough))
         self.assertTrue(all(item.practical_ukrainian == item.surface for item in passthrough))
         self.assertTrue(all("PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER" in item.rules for item in passthrough))
