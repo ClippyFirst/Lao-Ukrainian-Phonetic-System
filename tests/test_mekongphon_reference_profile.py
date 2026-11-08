@@ -29,6 +29,7 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
         default = analyze("ດວງ").syllables[0]
         compatible = analyze("ດວງ", ipa_profile=PROFILE_NAME).syllables[0]
         self.assertEqual(compatible.phonemic_ipa, "duaːŋ")
+        self.assertEqual(compatible.phonetic_result.status, "SUPPORTED")
         self.assertEqual(default.tone, compatible.tone)
         self.assertEqual(default.tone_contour, compatible.tone_contour)
         self.assertIn("IPA-PROFILE-MEKONGPHON-VOWEL:UO_LONG_ALT", compatible.rules)
@@ -38,6 +39,7 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
         compatible = analyze("ວັນ", ipa_profile=PROFILE_NAME).syllables[0]
         self.assertEqual(baseline.phonemic_ipa, "ʋan")
         self.assertEqual(compatible.phonemic_ipa, "wan")
+        self.assertEqual(compatible.phonetic_result.status, "SUPPORTED")
         self.assertEqual(baseline.tone, compatible.tone)
         self.assertIn("IPA-PROFILE-MEKONGPHON-ONSET:ວ", compatible.rules)
 
