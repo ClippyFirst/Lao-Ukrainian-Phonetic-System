@@ -273,4 +273,5 @@ class TestMinorSyllableSelectorEvidence(unittest.TestCase):
         self.assertEqual("".join(item.surface for item in digits), "໑໒໓")
         self.assertTrue(all(item.status == "PASSTHROUGH" for item in digits))
         self.assertTrue(all(item.phonemic_ipa is None for item in digits))
+        self.assertTrue(all("PASSTHROUGH:LAO_NATIVE_DIGIT" in item.rules for item in digits))
         self.assertEqual(result.syllables[0].phonemic_ipa, "kʰaː")
