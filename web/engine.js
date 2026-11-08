@@ -748,7 +748,7 @@ export function analyze(text, options = {}) {
   if (!["vientiane", "mekongphon-reference", "hybrid-deterministic"].includes(ipaProfile)) {
     throw new RangeError("Unknown IPA profile: " + ipaProfile);
   }
-  const normalized = input.normalize("NFC").replace(/^\\uFEFF/, "").trim();
+  const normalized = input.normalize("NFC").replace(/^\uFEFF/, "").trim();
   if (!normalized) return { input, normalized, status: "EMPTY", output: "", syllables: [], warnings: [] };
   const inputWarnings = validateInput(normalized);
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
