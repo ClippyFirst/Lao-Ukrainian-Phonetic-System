@@ -253,6 +253,7 @@ class TestCore(unittest.TestCase):
         syllable = result.syllables[0]
         self.assertEqual(result.status, "PARTIAL")
         self.assertIsNone(syllable.phonemic_ipa)
+        self.assertEqual(syllable.phonetic_result.vowel_length, "long")
         self.assertEqual(syllable.practical_ukrainian, "ка?")
         self.assertEqual(syllable.phonetic_result.status, "PROVISIONAL")
         self.assertEqual(len(syllable.phonetic_result.segments), 3)
