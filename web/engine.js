@@ -527,33 +527,7 @@ function isStructurallyComplete(s) {
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
-function isLaoNativeDigit(ch) {
-  const cp = ch.codePointAt(0);
-  return cp >= 0x0ED0 && cp <= 0x0ED9;
-}
-
 function analyzeWord(word, ipaProfile = "vientiane") {
-  // Lao native digits are valid script characters, but are not phonetic
-  // syllables. Split them explicitly before structural parsing so they remain
-  // visible without being fed into the IPA adapter.
-  if ([...word].some(isLaoNativeDigit)) {
-    const parts = [];
-    let segment = "";
-    for (const ch of word) {
-      if (isLaoNativeDigit(ch)) {
-        if (segment) parts.push(...analyzeWord(segment, ipaProfile));
-        segment = "";
-        parts.push({
-          surface: ch, status: "PASSTHROUGH", ukrainian: ch, ipa: "",
-          warnings: [], passthrough: true, rules: ["PASSTHROUGH:LAO_NATIVE_DIGIT"],
-        });
-      } else {
-        segment += ch;
-      }
-    }
-    if (segment) parts.push(...analyzeWord(segment, ipaProfile));
-    return parts;
-  }
   const chars = [...word];
   // Tone-mark placement and multiplicity are syllable-local properties.
   // Candidate syllables validate their own marks below; a mark that cannot be
