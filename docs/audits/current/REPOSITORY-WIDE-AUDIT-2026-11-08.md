@@ -265,3 +265,39 @@ An intermediate diagnostic artifact (run 42467038446, artifact 13612136875) incl
 ### Readiness
 
 **Published engineering-verified research prototype, not production/release-ready and not independently accuracy-validated.** The opt-in deterministic profile reaches the benchmark neural CER, but remaining coverage and independent linguistic acceptance are unresolved.
+
+
+## HVULao 1k independent sentence-domain benchmark update — 2026-11-08
+
+The previous audit snapshot predates PR #147's completed benchmark and is superseded for this test by the verified result below.
+
+- Dedicated branch/PR: `benchmark/hvulao-1k-three-engine-20261108`, [draft PR #147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/147), stacked on draft PR #146. Neither PR is merged; main is unchanged.
+- Pinned source: HaHVU/HVULao_NLP revision `ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568`, `Datatest1k/testorgin1000.txt`, Git blob SHA-1 `947448807484bb994877ae5d32cba1cfdd5e2d9b`; Mendeley Data v2 DOI 10.17632/5zwym7kwn8.2, CC BY 4.0. Paired labels are segmentation/POS, not IPA.
+- Successful Actions run [#42486829108](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42486829108), code SHA `535d55e169ed518eb54113cb1980347e62240539`; aggregate artifact [13620465276](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42486829108/artifacts/13620465276), SHA-256 `b0daf8011612c86d970d5e482d0f4f9a747c59a68fa58c4afb37c039026305a3`.
+
+| Metric | Vientiane rules | MekongPhon-reference rules | MekongPhon Neural |
+|---|---:|---:|---:|
+| Complete sentences / coverage | 35/1,000 (3.5%) | 35/1,000 (3.5%) | 888/1,000 (88.8%) |
+| Rule syllables with IPA | 16,047/20,150 (79.64%) | 16,047/20,150 (79.64%) | — |
+| Mean latency | 15.82 ms | 15.43 ms | 405.70 ms |
+| p95 latency | 30.25 ms | 30.05 ms | 732.66 ms |
+| Unexpected runtime errors | 0 | 0 | 0 |
+
+Neural wrapper input rejections: 56 source strings over 128 code points and 56 strings rejected by Unicode validation. These are expected input-contract rejections, not runtime errors. The validator currently accepts Lao block, whitespace and a narrow ASCII set; do not silently strip typographic/zero-width characters or truncate/split long inputs without a separately justified and tested normalization policy.
+
+Only 35 sentences are complete in all three engines. Pairwise output disagreement on this shared subset: Vientiane vs reference 7.75%; Vientiane vs Neural 13.67%; reference vs Neural 6.47%. This is disagreement, not accuracy. No IPA gold is present in this corpus, so accuracy/CER cannot be measured. Full interpretation, methodology, artifact metadata and task ledger: [HVULao 1k three-engine stress report](../../research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md).
+
+### Updated readiness and tasks
+
+| Task | Status | Evidence / blocker |
+|---|---|---|
+| Independent 1k source pin and integrity check | DONE_VERIFIED | Immutable revision and Git blob SHA-1 validated in successful run #42486829108 |
+| Three-engine execution on all rows | DONE_VERIFIED (engineering only) | Successful workflow; zero unexpected runtime errors |
+| Coverage/latency/disagreement report | DONE_VERIFIED (comparative only) | Artifact 13620465276; shared disagreement n=35, no gold accuracy |
+| Neural wrapper Unicode/length acceptance | TODO / evidence-limited | Requires a defined, source-safe policy and regression suite |
+| Deterministic full-sentence coverage | TODO / evidence-limited | Requires primary orthography/phonology evidence for unsupported categories; preserve fail-closed behavior |
+| Independent adjudicated IPA gold | BLOCKED | Still 0 records |
+| Manual screen-reader/physical-device/real-zoom QA | PARTIAL | Human sessions still not recorded |
+| Production linguistic acceptance | BLOCKED | No independent IPA accuracy evidence or qualified specialist sign-off |
+
+**Readiness:** engineering-verified sentence-domain stress test is complete. The project remains a research prototype, not independently accuracy-validated or production/release-ready.
