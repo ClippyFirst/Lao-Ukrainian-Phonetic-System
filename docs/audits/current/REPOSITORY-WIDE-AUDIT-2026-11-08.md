@@ -291,6 +291,8 @@ Only 35 sentences are complete in all three engines. Pairwise output disagreemen
 
 The full Verify workflow was enabled for `benchmark/**` push branches and completed successfully on commit `53f004233760ad1c336e0b1935d37eddccffdd81`: [run #42487885967](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42487885967). Verified checks: IPA gold corpus structure, repository audit, 271 Python tests, external-G2P harness compile/help, clean `npm ci`, 129 Node tests, build/regeneration, generated-data drift, 17 Chromium browser tests, and built-page/asset checks. All passed. This run covers the benchmark report, docs index, source/evidence note, and audit/handoff updates at that commit.
 
+After base synchronization, exact-head Verify on `005a87c4b8f2a519e9934c32f877c3b5e2ae2130` also passed: [run #42488245976](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488245976). It repeated all 271 Python, 129 Node and 17 Chromium tests and the corpus, audit, install, build, generated-data and built-site gates successfully.
+
 ### Updated readiness and tasks
 
 | Task | Status | Evidence / blocker |
