@@ -25,7 +25,7 @@ Default CPU/GPU inference stops after stage 1 and returns typed IPA:
 
 Explicitly run stage 2 (IPA → Ukrainian):
 
-    lao-ua 'ສະບາйді' --to-ukrainian --device cpu --json
+    lao-ua 'ສະບາຍດີ' --to-ukrainian --device cpu --json
 
 Non-tonal IPA:
 
