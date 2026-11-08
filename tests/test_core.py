@@ -266,3 +266,11 @@ class TestMinorSyllableSelectorEvidence(unittest.TestCase):
         self.assertEqual(result.syllables[0].practical_ukrainian, "(")
         self.assertEqual(result.syllables[1].phonemic_ipa, "kʰaː")
         self.assertEqual(result.status, "OK")
+
+    def test_lao_native_digits_are_preserved_as_non_ipa_passthrough(self):
+        result = analyze("ຂາ໑໒໓")
+        digits = [item for item in result.syllables if item.surface in "໑໒໓"]
+        self.assertEqual("".join(item.surface for item in digits), "໑໒໓")
+        self.assertTrue(all(item.status == "PASSTHROUGH" for item in digits))
+        self.assertTrue(all(item.phonemic_ipa is None for item in digits))
+        self.assertEqual(result.syllables[0].phonemic_ipa, "kʰaː")
