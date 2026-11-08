@@ -7,6 +7,7 @@ from lao_ukrainian.mekongphon_reference_profile import (
     DEFAULT_PROFILE,
     PROFILE_NAME,
     SUPPORTED_IPA_PROFILES,
+    VOWEL_IPA_OVERRIDES,
     apply_ipa_profile,
 )
 
@@ -61,6 +62,16 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
         parsed = {"onset": "ກ", "vowel": {"id": "AA"}}
         result = apply_ipa_profile(parsed, "k", "aː", "ŋ", PROFILE_NAME)
         self.assertEqual(result, ("k", "aː", "ŋ", []))
+
+    def test_every_transferred_vowel_rule_is_explicit_and_deterministic(self):
+        for vowel_id, expected in VOWEL_IPA_OVERRIDES.items():
+            with self.subTest(vowel_id=vowel_id):
+                parsed = {"onset": "ກ", "vowel": {"id": vowel_id}}
+                _, actual, _, rules = apply_ipa_profile(
+                    parsed, "k", "old-ipa", "", PROFILE_NAME
+                )
+                self.assertEqual(actual, expected)
+                self.assertEqual(rules, [f"IPA-PROFILE-MEKONGPHON-VOWEL:{vowel_id}"])
 
     def test_supported_profile_registry_is_explicit(self):
         self.assertEqual(SUPPORTED_IPA_PROFILES, ("vientiane", "mekongphon-reference"))
