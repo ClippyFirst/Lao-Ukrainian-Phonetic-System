@@ -66,7 +66,7 @@ class MekongPhonCliTests(unittest.TestCase):
 
         ipa.assert_not_called()
         target.assert_called_once_with(
-            "ຂາ", tonal=True, revision=None, device="auto", num_beams=4
+            "ຂາ", tonal=True, revision=None, device="auto", num_beams=5
         )
         self.assertIn("Ukrainian: к'а [OK]", output.getvalue())
 
