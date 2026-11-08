@@ -6,13 +6,13 @@ from .phonetic_result import from_phonology
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 from .grapheme_preview import preview_from_graphemes
-from .mekongphon_reference_profile import DEFAULT_PROFILE, SUPPORTED_IPA_PROFILES
+from .mekongphon_reference_profile import DEFAULT_ENGINE_PROFILE, SUPPORTED_IPA_PROFILES
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 MINOR_C0_EXCLUDED_ONSETS = {"ງ", "ຍ"}
 
 
-def analyze(text: str, *, ipa_profile: str = DEFAULT_PROFILE) -> Analysis:
+def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis:
     if ipa_profile not in SUPPORTED_IPA_PROFILES:
         raise ValueError(f"Unknown IPA profile {ipa_profile!r}; expected one of {SUPPORTED_IPA_PROFILES}")
     normalized = normalize_lao(text)
