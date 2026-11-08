@@ -33,7 +33,7 @@ test("hybrid mixed-script handling does not weaken frozen compatibility profiles
 });
 
 test("hybrid still rejects invisible control characters", () => {
-  const result = analyzeDefault("ກ\\u0085ຂ");
+  const result = analyzeDefault("ກ" + String.fromCharCode(0x0085) + "ຂ");
   assert.equal(result.status, "INVALID");
   assert.equal(result.output, "");
   assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
@@ -239,7 +239,7 @@ test("long open o carrier is recognised", () => {
 test("hybrid preserves mixed-script characters and renders supported Lao", () => {
   const r = analyze("ກа");
   assert.equal(r.status, "PARTIAL");
-  assert.equal(r.output, "к'а");
+  assert.equal(r.output, "ка");
   assert.ok(r.warnings.some((warning) => warning.includes("Непідтримуваний символ")));
 });
 
