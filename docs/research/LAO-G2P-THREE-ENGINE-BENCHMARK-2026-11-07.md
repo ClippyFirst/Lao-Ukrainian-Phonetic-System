@@ -399,4 +399,5 @@ Python 3.12.16; CPU PyTorch 2.6.0; Transformers 4.49.0; SacreBLEU 2.5.1. MekongP
 - Lao2IPA: 68/100 exact, 8.97% CER, 100% coverage.
 - External comparators: Epitran 71/100, 10.96% CER; orthography2ipa 32/100, 19.60%; LanguageNet Phonetisaurus 0/100, 78.90%. Goruut returned 81 outputs, but only 47 had complete source coverage and 7 inputs were unstable across three repeats.
 - Tonal scores, confidence-gated tone-category diagnostics, latency, dataset licenses and the full engine inventory are in `docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md`.
+- Confidence-gated HVULao 1k stress run: hybrid 1,000/1,000 Ukrainian renderings, 341/1,000 IPA-complete sentences (34.1%), 94.14% syllable IPA; Neural 934/1,000 complete sentences (93.4%) but rejected 66 inputs. No IPA reference exists in this corpus, so this is coverage/stress only.
 - These remain source-attested dictionary comparisons, not independent expert accuracy. Project IPA gold remains 0.
