@@ -1,3 +1,16 @@
+## HVULao 1k rendering-coverage acceptance result — 2026-11-08
+
+The first hard-gated 1k run passed **100% of valid inputs**:
+
+- Run [42518022050 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518022050), artifact [13632605494](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518022050/artifacts/13632605494), SHA-256 `a90401fcd7e57a419a91f4a4baad48f19b38252af3134e10c41523d927bd432c`.
+- Hybrid rendered **995/995 valid inputs (100%)** and **21,601/21,601 units**. Whole-dataset coverage was 99.5% because five rows contained a leading U+FEFF text-stream BOM and were rejected by the then-current normalizer.
+- Hybrid unit counts: 16,410 SUPPORTED IPA, 19 UNCERTAIN IPA, 1,020 PROVISIONAL units; zero runtime errors.
+- IPA completeness: 17,076/17,449 phonetic syllables (97.8623%); 673/1,000 complete IPA sentences (67.3%). These remain distinct from rendering coverage.
+- Neural comparison completed 934/1,000 inputs (93.4% IPA-complete); its metric is not directly comparable to hybrid rendering coverage.
+- The five BOM-prefixed rows were inspected: U+FEFF occurred only at the start of each row, as a text-stream marker. The normalizer now strips one leading BOM and still rejects embedded BOMs. A final 1,000/1,000 rerun is pending.
+
+No IPA reference is supplied by HVULao; this is a text-domain coverage/runtime stress test, not phonetic accuracy. Independent adjudicated IPA gold remains 0.
+
 ## 100-entry rendering-coverage acceptance result — 2026-11-08
 
 The held-out MekongPhon 100-entry workflow passed the new hybrid rendering-coverage gate on exact head `da9ec77bf9a203b4b86d36aefd6a5de8ec65a750`:
