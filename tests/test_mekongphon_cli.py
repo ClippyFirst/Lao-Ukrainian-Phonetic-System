@@ -33,6 +33,19 @@ class MekongPhonCliTests(unittest.TestCase):
         self.assertIn("IPA: kʰaː˩˥", output.getvalue())
         self.assertNotIn("Ukrainian:", output.getvalue())
 
+    def test_missing_neural_dependencies_never_fall_back_to_rules(self):
+        output = StringIO()
+        with patch.object(sys, "argv", ["lao-ua", "ຂາ"]), \
+             patch("lao_ukrainian.mekongphon.transcribe_ipa",
+                   side_effect=RuntimeError("Install optional neural dependencies")) as ipa, \
+             patch("lao_ukrainian.cli.analyze",
+                   side_effect=AssertionError("silent fallback is forbidden")), \
+             redirect_stdout(output):
+            with self.assertRaisesRegex(RuntimeError, "optional neural dependencies"):
+                main()
+
+        ipa.assert_called_once()
+
     def test_ukrainian_adaptation_is_explicit_second_stage(self):
         result = SimpleNamespace(
             input="ຂາ",
