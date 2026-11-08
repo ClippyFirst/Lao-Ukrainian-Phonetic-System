@@ -27,11 +27,11 @@ def nfc(value: str) -> str:
 
 
 def git_blob_sha1(payload: bytes) -> str:
-    header = f"blob {len(payload)}\0".encode("ascii")
+    header = f"blob {len(payload)}\\0".encode("ascii")
     return hashlib.sha1(header + payload).hexdigest()
 
 
-def load_dataset() -> tuple[list[str], str]:
+def load_dataset() -> tuple[list[str], str, int]:
     url = (
         f"https://raw.githubusercontent.com/{SOURCE_REPO}/"
         f"{SOURCE_REVISION}/{SOURCE_PATH}"
@@ -47,10 +47,15 @@ def load_dataset() -> tuple[list[str], str]:
     lines = [nfc(line) for line in payload.decode("utf-8-sig").splitlines()]
     lines = [line for line in lines if line]
     if len(lines) != SOURCE_ROWS:
-        raise ValueError(f"Expected {SOURCE_ROWS} non-empty sentences, got {len(lines)}")
-    if any(not any("\u0e80" <= ch <= "\u0eff" for ch in line) for line in lines):
-        raise ValueError("A test row contains no Lao-block character")
-    return lines, digest
+        raise ValueError(f"Expected {SOURCE_ROWS} non-empty rows, got {len(lines)}")
+    lao_rows = sum(
+        any("\\u0e80" <= ch <= "\\u0eff" for ch in line) for line in lines
+    )
+    if lao_rows == 0:
+        raise ValueError("Pinned corpus contains no Lao-block characters")
+    # Preserve all source rows: punctuation/Latin-only fragments are part of the
+    # supplied text split and must not be silently discarded or rewritten.
+    return lines, digest, SOURCE_ROWS - lao_rows
 
 
 def compact_ipa(value: str) -> str:
@@ -99,7 +104,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    rows, blob_sha = load_dataset()
+    rows, blob_sha, rows_without_lao = load_dataset()
     from lao_ukrainian.core import analyze
     from lao_ukrainian.mekongphon import MekongPhonEngine
 
@@ -203,6 +208,7 @@ def main() -> int:
             "revision": SOURCE_REVISION,
             "path": SOURCE_PATH,
             "rows": len(rows),
+            "rows_without_lao_block_characters": rows_without_lao,
             "git_blob_sha1": blob_sha,
             "dataset_license": "CC-BY-4.0 (Mendeley Data version 2)",
             "input_kind": "raw Lao sentences; paired segmentation reference is not IPA",
@@ -234,7 +240,7 @@ def main() -> int:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(report, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if report["runtime_errors"]:
