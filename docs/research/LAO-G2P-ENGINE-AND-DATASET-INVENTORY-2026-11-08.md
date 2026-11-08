@@ -56,6 +56,21 @@ Single hosted CPU run, model loading excluded where applicable:
 
 Phonetisaurus timing includes model download and Docker startup and is not comparable. These are single-run diagnostics, not stable performance guarantees.
 
+## HVULao 1k sentence-domain stress test
+
+Pinned split: `HaHVU/HVULao_NLP` revision `ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568`, `Datatest1k/testorgin1000.txt`, 1,000 sentences, Git blob SHA-1 `947448807484bb994877ae5d32cba1cfdd5e2d9b`. This corpus has no IPA reference; the following are completeness and runtime metrics, not accuracy.
+
+| Engine/profile | IPA-complete sentences | Ukrainian rendering | Syllable IPA coverage | Mean latency |
+|---|---:|---:|---:|---:|
+| Vientiane rules | 676/1,000 · 67.6% | 625/1,000 · 62.5% | 97.85% | 9.12 ms |
+| MekongPhon-reference rules | 676/1,000 · 67.6% | 337/1,000 · 33.7% | 97.85% | 8.66 ms |
+| ClippyFirst hybrid | 341/1,000 · 34.1% | **1,000/1,000 · 100%** | 94.14% | 8.87 ms |
+| MekongPhon Neural | 934/1,000 · 93.4% | Not applicable (IPA-only) | Not reported in this stress harness | 241.42 ms per successful sentence |
+
+The neural model rejected 66 rows (61 source-codepoint-limit, 5 unsupported-character). The hybrid rendered all 21,680 analyzed units; 1,025 units were provisional hints. Pairwise disagreement on 332 shared complete sentences: Vientiane vs MekongPhon-reference 7.39% CER; MekongPhon-reference vs Neural 11.78%; Hybrid vs Neural 11.78%; MekongPhon-reference vs Hybrid 0.00%. Disagreement does not identify which output is correct.
+
+The older 66.9% hybrid IPA-complete sentence figure is superseded: it counted provisional preview values as accepted IPA. The confidence-gated rerun gives 34.1% IPA-complete sentences while preserving 100% Ukrainian rendering. This is the intended distinction between a readable fallback and a fully supported phonetic analysis.
+
 ## Additional engines and exclusions
 
 - [Epitran](https://github.com/dmort27/epitran) contains a Lao mapping, but upstream issue [#186](https://github.com/dmort27/epitran/issues/186) documents a Lao coda/diphthong problem and issue [#180](https://github.com/dmort27/epitran/issues/180) concerns tone handling. Our same-split test confirms that tonal output is weak relative to the reference convention.
@@ -74,6 +89,7 @@ Phonetisaurus timing includes model download and Docker startup and is not compa
 | [Mozilla Common Voice 27.0](https://commonvoice.mozilla.org/en/datasets) | Lao read speech; the current catalog lists 223 clips, 16 speakers and about 0.35 validated hours | CC0 | Useful small speaker/audio sanity set; too small and not IPA-annotated for a broad G2P gold benchmark. |
 | [FLORES+](https://github.com/facebookresearch/flores) | Human-translated Lao text, including dev/devtest sentence sets | CC-BY-SA-4.0 | Sentence coverage and robustness stress; no audio or IPA gold. |
 | [HPLT Lao](https://hplt-project.org/datasets/v2.0) | Cleaned Lao web text; v2.0 catalog lists about 232.58 MB, 262k words, 245 documents and 10.83k segments | CC0 for the listed v2.0 corpus | Large natural-text coverage/stress test; not a pronunciation reference. |
+| [HVULao_NLP 1k](https://github.com/HaHVU/HVULao_NLP) | 1,000 raw Lao sentences, pinned revision `ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568` | CC-BY-4.0 (Mendeley Data version 2) | Sentence-domain stress/coverage only; no IPA reference. |
 | [IARPA Babel Lao language pack](https://catalog.ldc.upenn.edu/LDC2017S08) | About 207 hours of conversational/telephone speech and transcripts | LDC-controlled licensed access | Valuable acoustic corpus if licensed; transcripts are not IPA. |
 | [Wiktionary Lao IPA](https://en.wiktionary.org/wiki/Category:Lao_terms_with_IPA_pronunciation) | Roughly 2,324 pages with IPA entries | Wikimedia terms and per-entry attribution apply | Secondary lexicon only. Many forms use the `lo-pron` template/rule generator; not independently adjudicated gold. |
 | [neurlang/dataset Lao](https://github.com/neurlang/dataset/tree/master/lao) | A small IPA-like Lao lexicon (about 151 KB) | Lao-specific provenance/license not established | Do not use as independent gold: it is associated with the Goruut ecosystem and may share its lexical source. |
@@ -86,7 +102,7 @@ Phonetisaurus timing includes model download and Docker startup and is not compa
 | Add ephemeral LanguageNet Phonetisaurus FST probe | DONE_VERIFIED | Pinned model blob and container; 100/100 outputs, 0 exact, 78.90% CER; test-only |
 | Re-run Goruut with repeatability/source-coverage diagnostics | DONE_VERIFIED | Three-repeat runtime artifact; 5 strict exact, 9 any-repeat exact, 47 complete-source outputs |
 | Gate IPA accuracy against typed confidence status | DONE_VERIFIED | Shared helper and unit tests; provisional hints excluded from IPA accuracy and counted in rendering coverage |
-| Run full 1k HVULao sentence stress benchmark with the same confidence gate | PARTIAL | CI run pending on this branch; this dataset is stress/coverage only, not IPA gold |
+| Run full 1k HVULao sentence stress benchmark with the same confidence gate | DONE_VERIFIED | 1,000 rows; hybrid 100% rendering, 34.1% IPA-complete sentences, 94.14% syllable IPA; Neural 93.4% complete sentences with 66 source-limit/unsupported rejections; no IPA gold |
 | Build independent expert-adjudicated Lao IPA gold | BLOCKED / evidence-limited | No expert gold corpus exists in repository; FLEURS/Common Voice audio requires expert IPA annotation |
 | Reuse neurlang/Appen-derived data as open gold or redistribute model assets | BLOCKED | Lao-specific source/license evidence insufficient; no import or redistribution |
 | Promote any external engine to production | DEFERRED | No candidate meets both confidence, source coverage, and tone requirements; production hybrid remains unchanged |
