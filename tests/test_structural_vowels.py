@@ -51,7 +51,7 @@ class TestStructuralVowels(unittest.TestCase):
     def test_unattested_preposed_e_plus_ya_withholds_phonetic_output(self):
         result = analyze("ເກຽ")
         self.assertIsNone(result.syllables[0].phonemic_ipa)
-        self.assertEqual(result.syllables[0].practical_ukrainian, "?")
+        self.assertIsNone(result.syllables[0].practical_ukrainian)
         self.assertIn("UNCONSUMED_AFTER_VOWEL:ຽ", result.syllables[0].warnings)
         self.assertEqual(result.status, "PARTIAL")
 
@@ -85,7 +85,7 @@ class TestShortVowelCodaConstraints(unittest.TestCase):
                 syllable = result.syllables[0]
                 self.assertEqual(syllable.status, "EVIDENCE LIMITED")
                 self.assertIsNone(syllable.phonemic_ipa)
-                self.assertEqual(syllable.practical_ukrainian, "?")
+                self.assertIsNone(syllable.practical_ukrainian)
                 self.assertEqual(syllable.ukrainian_candidates, [])
                 self.assertIsNone(syllable.tone)
                 self.assertIsNone(syllable.tone_contour)
@@ -119,7 +119,7 @@ class TestPreposedMaterialValidation(unittest.TestCase):
         self.assertIn("UNCONSUMED_BEFORE_ONSET:xເເ", parsed["warnings"])
         result = analyze("xເເກ")
         self.assertIsNone(result.syllables[0].phonemic_ipa)
-        self.assertEqual(result.syllables[0].practical_ukrainian, "?")
+        self.assertIsNone(result.syllables[0].practical_ukrainian)
         self.assertEqual(result.status, "PARTIAL")
 
 
@@ -224,5 +224,5 @@ class TestSharedToneContourContract(unittest.TestCase):
                 self.assertEqual(syllable.tone, case["tone"])
                 self.assertEqual(syllable.tone_contour, case["tone_contour"])
                 self.assertEqual(syllable.phonemic_ipa, case["ipa"])
-                self.assertEqual(syllable.practical_ukrainian, "?" if case["ukrainian"] is None else case["ukrainian"])
+                self.assertEqual(syllable.practical_ukrainian, case["ukrainian"])
                 self.assertEqual(syllable.status, case["status"])
