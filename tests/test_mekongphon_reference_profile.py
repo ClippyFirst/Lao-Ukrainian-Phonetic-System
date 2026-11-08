@@ -9,9 +9,12 @@ from unittest.mock import patch
 
 from lao_ukrainian import analyze
 from lao_ukrainian.cli import main as cli_main
+from lao_ukrainian.hybrid_rules import RuleConflictError, select_rule
 from lao_ukrainian.mekongphon_reference_profile import (
     DEFAULT_PROFILE,
     PROFILE_NAME,
+    HYBRID_PROFILE,
+    HYBRID_RULES,
     SUPPORTED_IPA_PROFILES,
     VOWEL_IPA_OVERRIDES,
     apply_ipa_profile,
@@ -91,7 +94,50 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
         self.assertEqual(payload["syllables"][0]["practical_ukrainian"], "дуанг")
 
     def test_supported_profile_registry_is_explicit(self):
-        self.assertEqual(SUPPORTED_IPA_PROFILES, ("vientiane", "mekongphon-reference"))
+        self.assertEqual(SUPPORTED_IPA_PROFILES, ("vientiane", "mekongphon-reference", "hybrid-deterministic"))
+
+    def test_hybrid_profile_composes_vientiane_baseline_with_evidence_rules(self):
+        baseline = analyze("ດວງ").syllables[0]
+        reference = analyze("ດວງ", ipa_profile=PROFILE_NAME).syllables[0]
+        hybrid = analyze("ດວງ", ipa_profile=HYBRID_PROFILE).syllables[0]
+        self.assertEqual(hybrid.phonemic_ipa, reference.phonemic_ipa)
+        self.assertEqual(hybrid.practical_ukrainian, reference.practical_ukrainian)
+        self.assertNotEqual(hybrid.phonemic_ipa, baseline.phonemic_ipa)
+        self.assertIn("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT", hybrid.rules)
+        self.assertEqual(hybrid.tone, baseline.tone)
+        self.assertEqual(hybrid.tone_contour, baseline.tone_contour)
+        self.assertEqual(hybrid.phonetic_result.phonemic_ipa, hybrid.phonemic_ipa)
+
+    def test_hybrid_profile_keeps_unmatched_vientiane_units(self):
+        baseline = analyze("ຂາ").syllables[0]
+        hybrid = analyze("ຂາ", ipa_profile=HYBRID_PROFILE).syllables[0]
+        self.assertEqual(hybrid.phonemic_ipa, baseline.phonemic_ipa)
+        self.assertFalse(any(rule.startswith("HYBRID-RULE:") for rule in hybrid.rules))
+
+    def test_rule_selector_prefers_more_specific_context_independent_of_order(self):
+        rules = [
+            {"rule_id": "generic", "target": "vowel", "conditions": {"vowel_id": "IA_LONG"}, "value": "x", "priority": 0},
+            {"rule_id": "specific", "target": "vowel", "conditions": {"vowel_id": "IA_LONG", "onset_class": "high"}, "value": "y", "priority": 0},
+        ]
+        context = {"vowel_id": "IA_LONG", "onset_class": "high"}
+        self.assertEqual(select_rule(rules, context, target="vowel").value, "y")
+        self.assertEqual(select_rule(list(reversed(rules)), context, target="vowel").value, "y")
+
+    def test_rule_selector_rejects_equal_rank_conflicts(self):
+        rules = [
+            {"rule_id": "left", "target": "onset", "conditions": {"onset": "ວ"}, "value": "ʋ", "priority": 1},
+            {"rule_id": "right", "target": "onset", "conditions": {"onset": "ວ"}, "value": "w", "priority": 1},
+        ]
+        with self.assertRaises(RuleConflictError):
+            select_rule(rules, {"onset": "ວ"}, target="onset")
+
+    def test_hybrid_cli_selects_profile_without_neural_engine(self):
+        output = StringIO()
+        with patch("sys.argv", ["lao-ua", "ດວງ", "--ipa-profile", HYBRID_PROFILE, "--json"]), redirect_stdout(output):
+            cli_main()
+        payload = json.loads(output.getvalue())
+        self.assertEqual(payload["syllables"][0]["phonemic_ipa"], "duaːŋ")
+        self.assertIn("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT", payload["syllables"][0]["rules"])
 
 
 if __name__ == "__main__":
