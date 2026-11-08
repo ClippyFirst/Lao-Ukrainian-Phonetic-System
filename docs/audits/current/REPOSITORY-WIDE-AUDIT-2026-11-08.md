@@ -208,3 +208,9 @@ The earlier sections above are a pre-merge audit snapshot. Their statements that
 ### Readiness
 
 **Published engineering-verified research prototype; not production/release-ready and not accuracy-validated.** The publication pipeline is green. Independent IPA gold and manual accessibility remain genuine acceptance blockers.
+
+## Neural-first source G2P correction — 2026-11-08
+
+The previously documented architecture described MekongPhon as optional and the deterministic rule engine as default. That is no longer the intended primary CLI/Python contract. The current continuation branch `feat/mekongphon-first-stage` makes the pinned MekongPhon tonal model the CLI default and exposes stage 1 separately through `transcribe_ipa()`; Ukrainian adaptation is explicit via `--to-ukrainian`. The deterministic engine remains available only through `--engine rules`, without fallback.
+
+This change is engineering work in progress until exact-head CI passes. The static GitHub Pages UI remains a separate browser implementation and does not yet call the neural model; a deployed inference backend is still required for neural parity in the public web UI. Independent IPA gold remains empty (0 records), so no new linguistic accuracy claim is made.
