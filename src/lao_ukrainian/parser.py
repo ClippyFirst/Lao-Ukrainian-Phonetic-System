@@ -151,7 +151,7 @@ def _segment_word(word: str, registry: dict) -> list[str]:
     found_onset = _find_onset(clean, registry)
     if found_onset:
         _, onset_index, onset_length, *_ = found_onset
-        if clean[:onset_index] == "ເ" and clean[onset_index + onset_length:] == "ຽ":
+        if onset_index is not None and onset_length is not None and clean[:onset_index] == "ເ" and clean[onset_index + onset_length:] == "ຽ":
             return [word]
 
     # Prefer complete syllables, but retain every unparsed code point as a
