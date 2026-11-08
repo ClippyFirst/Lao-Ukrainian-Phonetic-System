@@ -18,13 +18,13 @@ The benchmark preserves all 1,000 source rows, verifies the exact Git blob bytes
 
 ## Reproducibility
 
-- Successful workflow: [GitHub Actions run #42486829108](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42486829108)
-- Code commit: `535d55e169ed518eb54113cb1980347e62240539`
-- Aggregate artifact: [`hvulao-1k-three-engine-stress`, artifact ID 13620465276](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42486829108/artifacts/13620465276)
-- Artifact SHA-256: `b0daf8011612c86d970d5e482d0f4f9a747c59a68fa58c4afb37c039026305a3`
+- Corrected-metric workflow: [GitHub Actions run #42488818208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208)
+- Code commit: `61b21237d57fc519dfff40ee22ed0649df2050e0`
+- Aggregate artifact: [`hvulao-1k-three-engine-stress`, artifact ID 13621285664](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208/artifacts/13621285664)
+- Artifact SHA-256: `d5ebe048e328e06b9b107062433a1b3f191f039c77ed56142d88704727fc325a`
 - Python 3.12; CPU PyTorch 2.6.0; Transformers 4.49.0; Hugging Face Hub 0.29.3.
 - Neural model: `byumatrixlab/lao-ipa-nontonal`, immutable revision `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`, beam width 5, CPU.
-- One hosted CPU run. Model loading and initial smoke inference are excluded from per-input latency.
+- Schema 1.1 records two latency views: all 1,000 attempts (including explicit input rejections) and successful inference calls only. Model loading and initial smoke inference are excluded. The earlier schema 1.0 latency figures are superseded because they timed only successful neural calls but all rule-engine calls.
 
 ## Results
 
@@ -34,12 +34,14 @@ The benchmark preserves all 1,000 source rows, verifies the exact Git blob bytes
 | Complete sentence coverage | 3.5% | 3.5% | 88.8% |
 | Syllables with constructed IPA | 16,047 / 20,150 | 16,047 / 20,150 | Not measured |
 | Rule-engine syllable IPA coverage | 79.64% | 79.64% | Not applicable |
-| Mean inference time | 15.82 ms | 15.43 ms | 405.70 ms |
-| Median inference time | 15.04 ms | 14.59 ms | 380.27 ms |
-| p95 inference time | 30.25 ms | 30.05 ms | 732.66 ms |
+| Mean time, all 1,000 attempts | 13.50 ms | 13.24 ms | 209.58 ms |
+| Median time, all 1,000 attempts | 12.81 ms | 12.53 ms | 202.98 ms |
+| p95 time, all 1,000 attempts | 26.00 ms | 25.72 ms | 430.65 ms |
 | Unexpected runtime errors | 0 | 0 | 0 |
 
 The deterministic engines construct IPA for 79.64% of the syllables they analyze, but a sentence is counted as complete only if every syllable has a constructed IPA result. This strict all-or-nothing sentence measure therefore yields 3.5% complete outputs. The benchmark intentionally does not turn a partially analyzed sentence into a complete-looking transcription.
+
+The all-attempt latency is the fairest end-to-end comparison because every engine receives all 1,000 rows. The neural model's successful-inference-only latency (n=888) was mean 236.00 ms, median 218.89 ms, p95 435.22 ms; the all-attempt measure also includes the 112 fast input rejections. Latency is from one hosted CPU run and should be treated as an indicative measurement, not a stable hardware-independent throughput claim.
 
 The two rule profiles have identical syllable IPA coverage on this corpus. The reference profile changes phonetic outputs and status distribution but does not expand the number of syllables for which IPA can be constructed:
 - Vientiane statuses: ESTABLISHED 15,838; ANALYSIS DEPENDENT 3,839; EVIDENCE LIMITED 337; analysis-dependent 136.
@@ -81,7 +83,7 @@ The reference rules are closer to the neural output than the default rules are o
 |---|---|---|
 | Pin and integrity-check independent 1k text split | DONE_VERIFIED | Immutable revision and exact Git blob SHA-1 checked in successful run |
 | Execute all three engines on 1,000 rows | DONE_VERIFIED (engineering stress test) | Run #42486829108; 0 unexpected runtime errors |
-| Aggregate sentence/syllable coverage and latency | DONE_VERIFIED | Artifact 13620465276; aggregate-only |
+| Aggregate sentence/syllable coverage and dual latency measures | DONE_VERIFIED | Schema 1.1 artifact 13621285664; all-attempt and successful-inference denominators explicit; aggregate-only |
 | Pairwise output disagreement | DONE_VERIFIED (comparative only) | Shared n=35; not accuracy |
 | Broaden neural input acceptance safely | TODO / evidence-limited | Define and test Unicode/punctuation and long-input policy; no silent stripping/truncation |
 | Improve deterministic sentence-level coverage | TODO / evidence-limited | Analyze unsupported categories with primary Lao orthography/phonology evidence and regression cases; do not guess |
