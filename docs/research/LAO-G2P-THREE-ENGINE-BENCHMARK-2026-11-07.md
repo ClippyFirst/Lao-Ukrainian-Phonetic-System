@@ -384,3 +384,18 @@ ClippyFirst emits segmental and tonal fields from one analysis pass, so its equa
 Python 3.12.16; CPU PyTorch 2.6.0; Transformers 4.49.0; SacreBLEU 2.5.1. MekongPhon uses immutable tonal revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal revision `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`, beam=5, 128-token maximum and truncation disabled.
 
 **Conclusion:** MekongPhon neural is the best measured system on this reference set; Lao2IPA is fastest; ClippyFirst is inspectable and fail-closed, and on this particular run slightly outperforms Lao2IPA on identical-coverage subsets but still trails MekongPhon. No engine default should be changed on this evidence alone. Independent project IPA gold remains 0, so empirical linguistic accuracy remains unvalidated.
+
+
+---
+
+## 2026-11-08 confidence-gated rerun and external comparators
+
+**Supersession notice:** the earlier hybrid result of 90/100 exact and 97% IPA coverage was produced by a legacy helper that did not gate on typed `PhoneticResult.status`. It could score provisional grapheme hints as IPA. The corrected benchmark accepts only `SUPPORTED` and `UNCERTAIN` IPA; `PROVISIONAL` hints are excluded from accuracy metrics and counted separately as rendering coverage.
+
+- Current hybrid: 85/100 exact, 14.45% full-denominator CER, 91% typed IPA coverage.
+- Separate Ukrainian rendering coverage: 100/100 inputs and 169/169 units; 159 supported IPA units, 1 uncertain IPA unit, 9 provisional IPA-hint units, 9 unknown-marker units.
+- MekongPhon Neural: 82/100 exact, 6.64% CER, 100% coverage.
+- Lao2IPA: 68/100 exact, 8.97% CER, 100% coverage.
+- External comparators: Epitran 71/100, 10.96% CER; orthography2ipa 32/100, 19.60%; LanguageNet Phonetisaurus 0/100, 78.90%. Goruut returned 81 outputs, but only 47 had complete source coverage and 7 inputs were unstable across three repeats.
+- Tonal scores, confidence-gated tone-category diagnostics, latency, dataset licenses and the full engine inventory are in `docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md`.
+- These remain source-attested dictionary comparisons, not independent expert accuracy. Project IPA gold remains 0.
