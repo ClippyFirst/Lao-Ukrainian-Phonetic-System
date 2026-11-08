@@ -15,6 +15,8 @@ This inventory extends the existing ClippyFirst benchmark; it does not replace t
 | Engine | Segmental exact / CER | Segmental coverage | Tonal exact / CER | Interpretation |
 |---|---:|---:|---:|---|
 | ClippyFirst hybrid (current default) | 85/100 · 14.45% | 91% typed IPA | 23/100 · 34.06% native contour; 66/100 · 24.28% after evaluation-only Mekong contour conversion | 100% Ukrainian rendering; 9 provisional IPA-hint units are not scored as IPA |
+| MekongPhon-reference deterministic rules profile | 90/100 · 6.64% | 97% typed IPA | Not scored in this segmental profile artifact | 90% Ukrainian rendering; no provisional fallback |
+| Vientiane baseline rules profile | 69/100 · 11.46% | 97% typed IPA | Not scored in this segmental profile artifact | 95% Ukrainian rendering |
 | MekongPhon Neural | 82/100 · 6.64% | 100% | 74/100 · 8.29% | Best full-coverage segmental and tonal concordance on this reference split |
 | Lao2IPA 1.0.0 | 68/100 · 8.97% | 100% | 56/100 · 11.97% | Fast, broad-output baseline |
 | Epitran 1.35.3 (`lao-Laoo`) | 71/100 · 10.96% | 100% | 4/100 · 36.94% | Segmental baseline; tonal output is not competitive on this convention |
@@ -30,7 +32,7 @@ The current hybrid rendered all 100/100 inputs and all 169/169 analyzed units in
 - Typed IPA coverage: 91% of words in the 100-word comparison.
 - Provisional hints are useful fallbacks, not confirmed phonological analyses.
 
-The earlier 90/100 exact, 97% IPA-coverage figure in the 2026-11-07 report is superseded. Its legacy benchmark helper read the untyped syllable IPA field without checking the final typed `PhoneticResult.status`; provisional preview values could be counted as accepted IPA. The shared benchmark contract and regression test now gate scores on `SUPPORTED` / `UNCERTAIN` status only. Do not use the older 90/97 figure for current accuracy claims.
+The earlier 90/100 exact, 97% IPA-coverage figure in the 2026-11-07 report was attributed to the hybrid but was not a valid hybrid score. The confidence-gated rerun shows that 90/100, 6.64% CER and 97% IPA coverage belong to the separate MekongPhon-reference rules profile, which renders 90% of inputs. The hybrid is 85/100 exact, 14.45% CER and 91% typed IPA coverage, while rendering 100% of inputs through provisional hints. The legacy helper could count provisional preview values as accepted IPA; the shared benchmark contract and regression test now gate scores on `SUPPORTED` / `UNCERTAIN` only.
 
 ### Tone-category diagnostics
 
