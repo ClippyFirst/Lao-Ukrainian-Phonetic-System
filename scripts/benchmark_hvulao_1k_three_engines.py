@@ -141,7 +141,7 @@ def main() -> int:
             "syllable_total": 0, "syllable_with_ipa": 0,
         },
         "mekongphon_reference_rules": {
-            "predictions": [], "times": [], "errors": Counter(),
+            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0,
         },
