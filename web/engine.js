@@ -317,13 +317,13 @@ function previewFromGraphemes(surface, parsed) {
 const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
 
 function isPassthroughChar(ch) {
-  if (PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\\u0ED0-\\u0ED9]$/u.test(ch)) return true;
+  if (PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\u0ED0-\u0ED9]$/u.test(ch)) return true;
   const cp = ch.codePointAt(0);
   // Hybrid preserves foreign-script letters, typographic punctuation,
   // symbols and combining marks as visible passthrough units. They are never
   // reinterpreted as Lao phonemes and do not invalidate neighbouring Lao.
   return cp > 0x7F && !(cp >= 0x0E80 && cp <= 0x0EFF) &&
-    !/\\s/u.test(ch) && !/[\\u0000-\\u001F\\u007F-\\u009F\\uFEFF]/u.test(ch);
+    !/\s/u.test(ch) && !/[\u0000-\u001F\u007F-\u009F\uFEFF]/u.test(ch);
 }
 
 function validateInput(text) {
