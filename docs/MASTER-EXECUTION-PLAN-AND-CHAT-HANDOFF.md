@@ -2463,15 +2463,34 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 
 | Task | Status | Acceptance / evidence |
 |---|---|---|
-| Hybrid deterministic selector | PARTIAL | Code added; exact-head Python tests and conflict tests must pass in CI |
-| Python API and CLI profile | PARTIAL | Added; verify supported profile, no neural fallback and typed IPA provenance |
-| Browser profile parity | PARTIAL | Added; Node and Chromium checks pending |
-| MekongPhon 100-entry benchmark integration | PARTIAL | Script includes hybrid; fresh hosted artifact and zero runtime errors required |
-| HVULao 1k benchmark integration | PARTIAL | Script includes hybrid; fresh hosted artifact and comparable all-attempt latency required |
+| Hybrid deterministic selector | DONE_VERIFIED | Exact-head Verify #42507135952: Python tests, rule-conflict tests and repository gates passed |
+| Python API and CLI profile | DONE_VERIFIED | Exact-head Verify; hybrid is opt-in and does not invoke neural inference |
+| Browser profile parity | DONE_VERIFIED | 132 Node tests and 17 Chromium tests passed in #42507135952 |
+| MekongPhon 100-entry benchmark integration | DONE_VERIFIED (reference-relative) | Run #42507131648, artifact 13628190784; 90/100 exact, CER 6.64%, 97% coverage, 0 runtime errors |
+| HVULao 1k benchmark integration | PARTIAL | Run #42507136055 on exact code SHA 4afd... still running at handoff update; no result may be claimed yet |
 | Improve structural sentence coverage | TODO / evidence-limited | Investigate unresolved orthographic/parser categories using primary evidence; do not guess |
 | Context-conditioned IPA rules beyond current 11 | TODO / evidence-limited | Need inspectable context-level training aggregates and independent evaluation; frequency alone is insufficient |
 | Independent adjudicated IPA gold | BLOCKED | 0 adjudicated records; requires qualified independent annotation/adjudication |
 | Production linguistic acceptance | BLOCKED | Requires independent IPA accuracy evidence and qualified Lao phonetics sign-off |
+
+
+### Verified MekongPhon held-out benchmark result
+
+- Run [42507131648 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131648) on code checkpoint `4afd51964532dd1f95b57eaeac36aea852b85228`.
+- Aggregate artifact [13628190784](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131648/artifacts/13628190784), SHA-256 `7de8665161308fcaaa422c5c3534e181916c1958f59e88786c3521215d7f8c86d`.
+- Vientiane: 69/100 exact, CER 11.46%, coverage 97%, mean 1.79 ms.
+- MekongPhon-reference: 90/100 exact, CER 6.64%, coverage 97%, mean 1.40 ms.
+- Hybrid deterministic: 90/100 exact, CER 6.64%, coverage 97%, mean 1.41 ms.
+- MekongPhon Neural: 82/100 exact, CER 6.64%, coverage 100%, mean 60.51 ms.
+- On the shared 97-word subset, hybrid exact 90/97 and CER 1.40%; Neural exact 81/97 and CER 5.79%. Hybrid runtime errors: 0.
+- Interpretation: this is a one-run, non-tonal, dictionary-seeded reference comparison. It proves output parity with the existing reference profile on this test, not independent phonetic accuracy or generalized Neural-level coverage. Hybrid still trails Neural coverage by 3 percentage points here.
+
+### Exact-head Verify result
+
+- Pull-request Verify [#42507135952 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507135952) and push Verify [#42507131646 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131646), both on `4afd51964532dd1f95b57eaeac36aea852b85228`.
+- 276 Python tests passed; 132 Node tests passed; 17 Chromium tests passed.
+- Corpus validation, repository data/evidence audit, external-G2P CLI compile/help, clean `npm ci`, browser build, generated-data reproducibility and built-site checks passed.
+- An initial implementation checkpoint failed Python imports because a literal escaped newline was written in the profile registry. This was corrected in `4afd519...`; the exact-head runs above are green. The earlier failures are not represented as successful verification.
 
 ### Verification boundary and next actions
 
