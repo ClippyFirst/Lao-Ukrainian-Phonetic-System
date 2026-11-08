@@ -606,7 +606,7 @@ function analyzeWord(word, ipaProfile = "vientiane") {
   // the longest fully parsed syllables, but retain every unparsed code point.
   for (let i = n - 1; i >= 0; i--) {
     const ch = chars[i];
-    const passthrough = /^[,!?;:()[\]{}"“”]+$/u.test(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
+    const passthrough = /^[,!?;:()[\]{}"“”&%–…#\/`+•]+$/u.test(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
     const fallback = passthrough
       ? { surface: ch, status: "PASSTHROUGH", ukrainian: ch, ipa: "", warnings: [], passthrough: true }
       : { surface: ch, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно проаналізувати фрагмент: " + ch], ukrainian: null, ipa: null };
