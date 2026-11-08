@@ -300,3 +300,12 @@ No release, merge, deployment change, repository-settings change, or third-party
 - DEP-001 remains DONE_VERIFIED: package-lock.json exists and the workflow installs with npm ci --no-audit --no-fund. Latest exact branch head at this checkpoint is 074b2f5134878cd8b489af4d3257b28691807701; Verify [42417002151](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42417002151) and train-split diagnostics [42416997715](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416997715) both succeeded.
 - UI-001 remains PARTIAL. Added automated assertions for accessible names on interactive elements, methodology-page landmark/heading structure and keyboard skip navigation, Windows forced-colors focus visibility, and reduced-motion behavior. Real screen-reader sessions, physical-device checks and deployed-site visual QA remain outstanding because this environment cannot truthfully claim those human tests were performed.
 - No audio was supplied or required for this UI task. No external linguistic accuracy claims are inferred from these accessibility checks.
+
+
+## Accessibility / clean-install exact-head update — 2026-11-08
+
+- Current continuation branch head: `42e2262b52676e058b45a12f2e9be39cf8bf0319`; PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`.
+- Exact-head Verify [42460222889 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460222889): 262 Python, 126 Node and 17 Chromium tests passed; clean `npm ci --no-audit --no-fund`, data/evidence audit, IPA gold schema validation, external-G2P CLI, build, generated-data reproducibility and built-page checks passed.
+- DEP-001 remains DONE_VERIFIED. LIC-001 remains DONE_VERIFIED (owner-confirmed). Added 44×44 CSS-pixel touch-target regression coverage at 320/390/768/1280 CSS px and adjusted the brand link hit area to 44px. TGT-01 — DONE_VERIFIED.
+- UI-001 remains PARTIAL. Manual NVDA/JAWS/VoiceOver/TalkBack sessions, physical mobile devices, actual browser zoom, deployed-site keyboard walkthrough and human visual/contrast review remain TODO. Automated Chromium emulation is not evidence of these manual sessions; the exact checklist and results log are in `docs/accessibility-manual-qa.md`.
+- Independent adjudicated IPA gold remains 0; no linguistic accuracy claims follow from this verification.
