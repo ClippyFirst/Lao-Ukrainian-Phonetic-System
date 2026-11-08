@@ -83,3 +83,20 @@ Final implementation checkpoint before this documentation update: `c705cf8ad7822
 ### Current conclusion
 
 **Engineering implementation is verified; Neural-level coverage and linguistic accuracy are not achieved.** The next legitimate implementation work is to resolve parser-withheld orthographic structures using primary Lao orthography/phonology evidence and independent regression examples. The documented warning families remain fail-closed; do not lower parser safeguards or add exceptions solely to increase the 66.9% score.
+
+
+## Source-backed parser work queue — 2026-11-08
+
+This section records external linguistic/script evidence used to scope the next deterministic parser improvements. It does not treat these sources as new IPA gold or automatically authorize phonological mappings.
+
+1. **Lao Script Resources, W3C Internationalization Working Group, Group Note Draft (20 March 2026).** The overview states that spaces separate phrases rather than words; multipart vowels may combine up to four glyphs plus a tone mark and can surround base consonants on multiple sides; vowels may be written differently in open and closed syllables; Lao native digits are commonly used. [W3C source](https://www.w3.org/TR/laoo-lreq/). This supports preserving Lao digits as explicit non-IPA passthrough and reinforces that parser logic must operate on grapheme structure, not whitespace-delimited words. It does not provide a Vientiane IPA mapping table.
+
+2. **N. J. Enfield, A Grammar of Lao (2007), Chapter 3, Phonotactics.** The described word template is `C0 V0 C1 V1 V2 C2`; if the minor-syllable slots C0/V0 occur, both are realized, and the minor syllable is unstressed without an independent distinctive tone. The same chapter restricts minor-syllable onset and vowel inventories. [Publisher-hosted preview](https://api.pageplace.de/preview/DT0400.9783110207538_A19080877/preview-9783110207538_A19080877.pdf), pp. 33–34. Important limitation: the book's stated empirical basis is everyday semi-rural speech, not a dedicated contemporary Standard Vientiane reading corpus. Treat this as a parser research hypothesis, not a production rule.
+
+3. **Reiko Ueda, “The Phonology of the Vientiane Dialect of Lao” (1994), J-STAGE.** The abstract describes the central Vientiane consonant/rhyme/tone structure and notes an exceptional unstressed, tone-neutral /a/ syllable without a final consonant in non-final position in a polysyllabic word. [J-STAGE record](https://www.jstage.jst.go.jp/article/gengo1939/1994/106/1994_106_95/_article). This is a stronger dialect match for investigating the minor-syllable exception, but the abstract alone is insufficient to implement all graphemic conditions.
+
+### Implementation decisions
+
+- **DONE_VERIFIED:** Lao native digits U+0ED0–U+0ED9 are now preserved unchanged as explicit `PASSTHROUGH` units in Python and browser runtimes. They receive no IPA and do not enter the Ukrainian IPA adapter. Dedicated regression tests were added in both runtimes.
+- **TODO / evidence-limited:** model the C0V0 minor-syllable relationship in the structural parser. Before coding, inspect the full Ueda article and the project's existing `VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED` cases; define the orthographic conditions, tone behavior and word-boundary limits; add hand-reviewed Vientiane fixtures. Do not generalize Enfield's rural corpus conditions without Vientiane confirmation.
+- **TODO / evidence-limited:** review all multi-part vowel patterns against the W3C script model and the project's canonical vowel registry. W3C confirms orthographic complexity but is not itself a phonological reference; each IPA mapping still needs a Vientiane phonological source.
