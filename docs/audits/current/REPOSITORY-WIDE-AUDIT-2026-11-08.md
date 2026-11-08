@@ -373,3 +373,31 @@ The first hybrid version is an architectural and reproducibility improvement, no
 - Hybrid: 90/100 exact, CER 6.64%, coverage 97%, mean 1.41 ms, zero runtime errors. Neural: 82/100 exact, CER 6.64%, coverage 100%, mean 60.51 ms. On common coverage n=97, hybrid 90 exact / CER 1.40%, Neural 81 exact / CER 5.79%.
 - This is reference-relative and non-tonal, not independent gold. It confirms parity with MekongPhon-reference on this test, not generalized Neural-level coverage or phonetic accuracy.
 - HVULao 1k hybrid stress run [#42507136055](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507136055) is still in progress at this audit revision; no metrics are claimed until the artifact is available.
+
+
+## Hybrid engine exact-head verification and coverage checkpoint — 2026-11-08
+
+Final code checkpoint: `c705cf8ad782246c2d72c0d789a5e44e5196eca6`.
+
+- Exact-head Verify [#42508759262 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42508759262): 280 Python, 134 Node and 17 Chromium tests passed; corpus/data/evidence checks, clean browser install, build, generated-data reproducibility and built-site checks passed.
+- Exact-head HVULao stress [#42508759241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42508759241), artifact 13628229661, SHA-256 `145966638988265a8f255163288e48de4fa8a0293941f0ec26643c7211fe7149`.
+- All deterministic profiles completed 669/1,000 mixed-text sentences (66.9%), had 97.85% syllable IPA construction and zero runtime errors. Hybrid all-attempt mean latency was 16.28 ms (p95 30.32 ms).
+- Pinned MekongPhon Neural completed 930/1,000 (93.0%), with 70 explicit input rejections; all-attempt mean latency was 375.98 ms (p95 725.19 ms).
+- Explicit passthrough now preserves supported ASCII and corpus-observed punctuation unchanged and excludes it from IPA coverage. This is safer input handling, not additional Lao phonological knowledge. The deterministic full-sentence gap remains 26.1 percentage points.
+- The prior 100-entry held-out result remains reference-relative: hybrid 90/100 exact, 97% coverage; Neural 82/100 exact, 100% coverage. It was non-tonal and dictionary-seeded, not independent gold.
+
+### Updated task ledger
+
+| Task | Status | Acceptance / evidence |
+|---|---|---|
+| Hybrid deterministic selector and profile | DONE_VERIFIED | Exact-head Verify #42508759262 |
+| Python, CLI and browser parity | DONE_VERIFIED | 280 Python, 134 Node, 17 Chromium tests |
+| Explicit punctuation/ASCII passthrough | DONE_VERIFIED | Regression tests and exact-head Verify |
+| Hybrid MekongPhon 100-entry comparison | DONE_VERIFIED (reference-relative) | Run #42508691092 on a code checkpoint; 90/100 exact, 97% coverage; no independent gold |
+| Hybrid HVULao 1k stress | DONE_VERIFIED (coverage/runtime only) | Exact-head run #42508759241; artifact 13628229661 |
+| Reach Neural-level full-sentence coverage | TODO / evidence-limited | Current 66.9% vs 93.0%; parser structures need primary-source support |
+| Expand contextual phonology beyond the existing 11 correspondences | TODO / evidence-limited | Requires inspectable context-level support, separate evaluation and independent review |
+| Independent adjudicated IPA gold | BLOCKED | 0 independently adjudicated records |
+| Linguistic production acceptance | BLOCKED | No independent accuracy benchmark or qualified Lao phonetics sign-off |
+
+No PR was merged, no production default was changed, and PRs #146/#147 remain preserved as stacked predecessors. The hybrid PR #149 remains a draft pending owner review; its base is the existing #147 benchmark branch.
