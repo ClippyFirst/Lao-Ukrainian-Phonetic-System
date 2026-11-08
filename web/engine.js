@@ -834,7 +834,7 @@ export function analyze(text, options = {}) {
   });
   const warnings = [...new Set([...inputWarnings, ...syllables.flatMap((s) => s.warnings || [])])];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
-  const complete = syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
+  const complete = inputWarnings.length === 0 && syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
   const output = words.map((word) => word.map((s) => s.ukrainian || ("⟦" + s.surface + "⟧")).join("")).join(" ");
   return { input, normalized, status: complete ? "OK" : "PARTIAL", output, syllables, warnings: [...new Set(warnings)] };
 }
