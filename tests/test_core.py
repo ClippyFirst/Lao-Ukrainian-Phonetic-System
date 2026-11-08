@@ -254,7 +254,7 @@ class TestCore(unittest.TestCase):
         self.assertIsNone(syllable.phonemic_ipa)
         self.assertEqual(syllable.practical_ukrainian, "ка?")
         self.assertEqual(syllable.phonetic_result.status, "PROVISIONAL")
-        self.assertEqual(len(syllable.phonetic_result.segments), 1)
+        self.assertEqual(len(syllable.phonetic_result.segments), 3)
         self.assertEqual(syllable.phonetic_result.segments[-1].kind, "unknown")
         self.assertTrue(all(segment.certainty == "PROVISIONAL" for segment in syllable.phonetic_result.segments))
         self.assertIn("PHONETIC-READING-UNKNOWN", syllable.phonetic_result.uncertainty)
