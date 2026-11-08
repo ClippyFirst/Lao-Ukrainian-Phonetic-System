@@ -69,3 +69,10 @@ The adapter tests are offline and do not download weights. They cover in-word to
 ## Hosted verification checkpoint
 
 On commit 2a9a54f4c3961d030e757d9d4e919c6d6f760f46, Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) reported the repository Python test step SUCCESS, which includes these offline adapter tests. The full workflow remains FAILURE because the browser engine step has the same three previously recorded regressions (modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding). Build, generated-data reproducibility and Chromium UI steps were skipped by the workflow dependency. Actual model downloads/inference against the two checkpoints remain unverified.
+
+## Neural-first implementation verification — 2026-11-08
+
+- Exact-head repository Verify [42465428611 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465428611): 267 Python, 126 Node and 17 Chromium tests; corpus/data audits, clean npm install, browser build and generated-data checks passed.
+- Hosted three-engine benchmark [42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) exercised both pinned neural checkpoints through the stage-1-only `MekongPhonEngine.transcribe_ipa()` smoke path and completed the 100-word comparison with zero runtime errors.
+- The command/API contract is verified: default CLI stops at typed IPA; `--to-ukrainian` invokes the target stage; `--engine rules` explicitly selects the deterministic engine; no silent fallback occurs.
+- The Python/CLI primary path is neural-first. The static Pages UI is not yet connected to a neural inference backend.
