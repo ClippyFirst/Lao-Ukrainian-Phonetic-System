@@ -7,7 +7,12 @@ from contextlib import redirect_stdout
 from io import StringIO
 from unittest.mock import patch
 
-from lao_ukrainian import analyze
+from lao_ukrainian import analyze as _analyze
+from lao_ukrainian.core import analyze as analyze_default
+
+# Existing comparison fixtures intentionally use the Vientiane baseline.
+def analyze(text, *, ipa_profile="vientiane"):
+    return _analyze(text, ipa_profile=ipa_profile)
 from lao_ukrainian.cli import main as cli_main
 from lao_ukrainian.hybrid_rules import RuleConflictError, select_rule
 from lao_ukrainian.mekongphon_reference_profile import (
@@ -22,17 +27,15 @@ from lao_ukrainian.mekongphon_reference_profile import (
 
 
 class MekongPhonReferenceProfileTests(unittest.TestCase):
-    def test_default_profile_is_unchanged(self):
-        default = analyze("ດວງ")
+    def test_default_engine_profile_is_hybrid_and_vientiane_is_explicit(self):
+        default = analyze_default("ດວງ")
         explicit = analyze("ດວງ", ipa_profile=DEFAULT_PROFILE)
-        self.assertEqual(default.syllables[0].phonemic_ipa, "duːəŋ")
-        self.assertEqual(
+        self.assertEqual(default.syllables[0].phonemic_ipa, "duaːŋ")
+        self.assertIn("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT", default.syllables[0].rules)
+        self.assertEqual(explicit.syllables[0].phonemic_ipa, "duːəŋ")
+        self.assertNotEqual(
             explicit.syllables[0].phonemic_ipa,
             default.syllables[0].phonemic_ipa,
-        )
-        self.assertEqual(
-            explicit.syllables[0].practical_ukrainian,
-            default.syllables[0].practical_ukrainian,
         )
 
     def test_reference_profile_changes_only_the_requested_ipa_convention(self):
@@ -81,6 +84,14 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
                 )
                 self.assertEqual(actual, expected)
                 self.assertEqual(rules, [f"IPA-PROFILE-MEKONGPHON-VOWEL:{vowel_id}"])
+
+    def test_cli_defaults_to_hybrid_profile(self):
+        output = StringIO()
+        with patch("sys.argv", ["lao-ua", "ດວງ", "--json"]), redirect_stdout(output):
+            cli_main()
+        payload = json.loads(output.getvalue())
+        self.assertEqual(payload["syllables"][0]["phonemic_ipa"], "duaːŋ")
+        self.assertIn("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT", payload["syllables"][0]["rules"])
 
     def test_cli_selects_reference_profile_without_neural_engine(self):
         output = StringIO()
