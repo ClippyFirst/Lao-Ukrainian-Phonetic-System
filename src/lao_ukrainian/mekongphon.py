@@ -76,7 +76,7 @@ def build_result(
     model_id: str,
     model_revision: str,
     tonal: bool,
-    num_beams: int = 4,
+    num_beams: int = 5,
 ) -> MekongPhonResult:
     """Pure result assembly, separated from model loading for testability."""
     normalized = normalize_lao(text)
@@ -117,7 +117,7 @@ class MekongPhonEngine:
         tonal: bool = True,
         revision: str | None = None,
         device: str = "auto",
-        num_beams: int = 4,
+        num_beams: int = 5,
     ) -> None:
         if num_beams < 1 or num_beams > 8:
             raise ValueError("num_beams must be between 1 and 8")
@@ -263,7 +263,7 @@ def transcribe_ipa(
     tonal: bool = True,
     revision: str | None = None,
     device: str = "auto",
-    num_beams: int = 4,
+    num_beams: int = 5,
 ) -> MekongPhonIPAResult:
     """Convenience API for stage 1 only: Lao orthography → typed IPA."""
     return MekongPhonEngine(
@@ -277,7 +277,7 @@ def transcribe_lao(
     tonal: bool = True,
     revision: str | None = None,
     device: str = "auto",
-    num_beams: int = 4,
+    num_beams: int = 5,
 ) -> MekongPhonResult:
     """Convenience API; no model or neural dependency is loaded until called."""
     return MekongPhonEngine(
