@@ -669,6 +669,19 @@ test("hybrid renders uncertain phonetic readings without upgrading confidence", 
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
+test("hybrid browser renders every assigned Lao-block codepoint", () => {
+  for (let codepoint = 0x0e80; codepoint < 0x0f00; codepoint += 1) {
+    const character = String.fromCodePoint(codepoint);
+    if (!/\\p{Assigned}/u.test(character) || /\\s/u.test(character)) continue;
+    const result = analyzeDefault(character, { ipaProfile: "hybrid-deterministic" });
+    assert.notEqual(result.status, "INVALID", "U+" + codepoint.toString(16));
+    assert.ok(result.syllables.length > 0, "accepted Lao input must not disappear: U+" + codepoint.toString(16));
+    for (const unit of result.syllables) {
+      assert.notEqual(unit.ukrainian, null, "missing rendering for U+" + codepoint.toString(16));
+    }
+  }
+});
+
 test("browser engine rejects unknown deterministic IPA profiles", () => {
   assert.throws(() => analyze("ຂາ", { ipaProfile: "invented" }), RangeError);
 });
