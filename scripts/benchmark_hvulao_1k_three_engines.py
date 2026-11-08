@@ -159,6 +159,8 @@ def main() -> int:
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
             "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
             "uncertain_ipa_units": 0, "provisional_units": 0,
+            "analysis_statuses": Counter(), "invalid_warnings": Counter(),
+            "invalid_input_rows": [], "empty_analysis_rows": [],
         },
         "hybrid_deterministic_rules": {
             "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
@@ -166,6 +168,8 @@ def main() -> int:
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
             "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
             "uncertain_ipa_units": 0, "provisional_units": 0,
+            "analysis_statuses": Counter(), "invalid_warnings": Counter(),
+            "invalid_input_rows": [], "empty_analysis_rows": [],
         },
         "mekongphon_neural": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
