@@ -50,6 +50,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [External G2P research](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md)
 - [MekongPhon neural integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md)
 - [Deterministic MekongPhon-reference IPA rule port](research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md)
+- [Hybrid deterministic Lao IPA engine](research/HYBRID-DETERMINISTIC-ENGINE-2026-11-08.md)
 - [HVULao 1k three-engine sentence-domain stress benchmark](research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md)
 - [MekongPhon rights review](audits/current/MEKONGPHON-DATA-RIGHTS-REVIEW-2026-11-07.md)
 - [MekongPhon grapheme-context analysis](audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md)
