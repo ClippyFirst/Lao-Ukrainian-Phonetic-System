@@ -258,7 +258,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(len(syllable.phonetic_result.segments), 3)
         self.assertEqual(syllable.phonetic_result.segments[-1].kind, "unknown")
         self.assertTrue(all(segment.certainty == "PROVISIONAL" for segment in syllable.phonetic_result.segments))
-        self.assertIn("PHONETIC-READING-UNKNOWN", syllable.phonetic_result.uncertainty)
+        self.assertIn("PHONETIC-READING-PROVISIONAL", syllable.phonetic_result.uncertainty)
 
     def test_hybrid_renders_every_assigned_lao_block_codepoint(self):
         for codepoint in range(0x0E80, 0x0F00):
