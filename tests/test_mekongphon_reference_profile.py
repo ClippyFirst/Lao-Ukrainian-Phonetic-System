@@ -1,8 +1,14 @@
 """Regression tests for the explicit MekongPhon-compatible deterministic IPA profile."""
 
 import unittest
+import json
+import sys
+from contextlib import redirect_stdout
+from io import StringIO
+from unittest.mock import patch
 
 from lao_ukrainian import analyze
+from lao_ukrainian.cli import main as cli_main
 from lao_ukrainian.mekongphon_reference_profile import (
     DEFAULT_PROFILE,
     PROFILE_NAME,
@@ -72,6 +78,17 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
                 )
                 self.assertEqual(actual, expected)
                 self.assertEqual(rules, [f"IPA-PROFILE-MEKONGPHON-VOWEL:{vowel_id}"])
+
+    def test_cli_selects_reference_profile_without_neural_engine(self):
+        output = StringIO()
+        with patch(
+            "sys.argv",
+            ["lao-ua", "ດວງ", "--ipa-profile", "mekongphon-reference", "--json"],
+        ), redirect_stdout(output):
+            cli_main()
+        payload = json.loads(output.getvalue())
+        self.assertEqual(payload["syllables"][0]["phonemic_ipa"], "duaːŋ")
+        self.assertEqual(payload["syllables"][0]["practical_ukrainian"], "дуанг")
 
     def test_supported_profile_registry_is_explicit(self):
         self.assertEqual(SUPPORTED_IPA_PROFILES, ("vientiane", "mekongphon-reference"))
