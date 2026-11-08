@@ -22,7 +22,10 @@ import unicodedata
 import urllib.request
 from pathlib import Path
 
-from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+try:
+    from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+except ModuleNotFoundError:
+    from benchmark_ipa_contract import accepted_phonetic_ipa
 
 DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
