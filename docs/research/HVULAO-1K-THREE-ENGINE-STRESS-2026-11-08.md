@@ -93,3 +93,37 @@ The reference rules are closer to the neural output than the default rules are o
 ## Readiness
 
 This benchmark is engineering-verified and reproducible. It shows the neural wrapper has much higher full-sentence coverage on this dataset, while deterministic rules remain conservative. The repository remains a research prototype, not independently accuracy-validated or production/release-ready.
+
+
+## Hybrid deterministic profile and punctuation-safe input contract — exact-head run 2026-11-08
+
+The benchmark was rerun on the final hybrid branch head `c705cf8ad782246c2d72c0d789a5e44e5196eca6`.
+
+- GitHub Actions [run #42508759241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42508759241).
+- Aggregate-only artifact [13628229661](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42508759241/artifacts/13628229661), SHA-256 `145966638988265a8f255163288e48de4fa8a0293941f0ec26643c7211fe7149`.
+- Schema 1.2 explicitly excludes preserved ASCII/punctuation passthrough units from syllable IPA coverage. They are copied unchanged and are not assigned IPA.
+
+| Engine | Complete sentences | Sentence coverage | Mean all-attempt latency | p95 all-attempt latency | Syllable IPA coverage |
+|---|---:|---:|---:|---:|---:|
+| Vientiane rules | 669/1,000 | 66.9% | 16.33 ms | 30.20 ms | 97.85% |
+| MekongPhon-reference rules | 669/1,000 | 66.9% | 15.95 ms | 29.84 ms | 97.85% |
+| Hybrid deterministic rules | 669/1,000 | 66.9% | 16.28 ms | 30.32 ms | 97.85% |
+| MekongPhon Neural | 930/1,000 | 93.0% | 375.98 ms | 725.19 ms | not comparable in this schema |
+
+All four engines reported zero unexpected runtime errors. Neural explicitly rejected 70 inputs (61 source-length-limit and 9 unsupported-character rejections). The deterministic engines preserve 4,146 non-Lao ASCII/punctuation units as passthrough rather than assigning them fabricated IPA.
+
+### Interpretation
+
+- This is an improvement in **input acceptance and mixed-text preservation**, not a 63.4-point gain in Lao phonetic coverage. The older 3.5% sentence result used the narrower input contract; the new contract explicitly preserves common ASCII and corpus-observed punctuation.
+- The three deterministic profiles have identical 66.9% sentence coverage and 97.85% IPA construction across Lao syllables. The hybrid selector changes phonetic profile outputs but does not yet resolve additional structural/parser cases.
+- The Neural engine remains 26.1 percentage points ahead in complete-sentence coverage on this stress set, at roughly 23 times the hybrid's mean all-attempt latency on this run.
+- This dataset has no IPA gold. Neither output agreement nor coverage establishes phonetic accuracy.
+
+### Updated task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Punctuation/ASCII passthrough contract | DONE_VERIFIED | Exact-head Verify #42508759262; explicit PASSTHROUGH units; punctuation regression tests |
+| Hybrid 1k benchmark | DONE_VERIFIED (stress only) | Exact-head run #42508759241, artifact 13628229661 |
+| Deterministic sentence coverage parity with Neural | TODO | 66.9% vs 93.0%; requires source-grounded structural parsing improvements |
+| Independent IPA accuracy comparison | BLOCKED | No IPA reference in HVULao; independent adjudicated gold remains 0 |
