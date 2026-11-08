@@ -6,6 +6,7 @@ one syllable, a phrase with explicit spaces, or a ZWSP-delimited sequence.
 """
 
 from .data import load_registry
+from .normalize import PASSTHROUGH_CHARACTERS
 
 TONE_MARKS = {"່": "mai_ek", "້": "mai_tho", "໊": "mai_ti", "໋": "mai_catawa"}
 
@@ -129,9 +130,15 @@ def _segment_word(word: str, registry: dict) -> list[str]:
             "AMBIGUOUS_LABIALIZED_ONSET_VOWEL_BOUNDARY",
             "LABIALIZED_ONSET_BEFORE_ROUNDED_VOWEL",
         }
-        or warning.startswith("UNCONSUMED_BEFORE_ONSET:")
         for warning in warnings
     ):
+        return [word]
+    unconsumed_before = next(
+        (warning.split(":", 1)[1] for warning in warnings
+         if warning.startswith("UNCONSUMED_BEFORE_ONSET:")),
+        "",
+    )
+    if unconsumed_before and any(ch not in PASSTHROUGH_CHARACTERS for ch in unconsumed_before):
         return [word]
 
     onset = whole.get("onset")
