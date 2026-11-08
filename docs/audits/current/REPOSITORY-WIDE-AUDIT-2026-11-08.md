@@ -351,18 +351,18 @@ A dedicated implementation branch `feat/hybrid-deterministic-lao-engine-20261108
 - New `hybrid-deterministic` profile composes the existing Vientiane phonological baseline with the eleven already documented MekongPhon-reference correspondences.
 - A deterministic selector orders matches by explicit priority and condition specificity. Declaration order is irrelevant; equal-rank conflicting outputs raise an error.
 - Rule application is traced in typed IPA provenance with stable hybrid rule IDs.
-- Python API, CLI and browser engine expose the profile. The default Vientiane profile and visible UI remain unchanged.
+- Python API, rules CLI, browser engine and visible UI now default to `hybrid-deterministic`. Vientiane remains the phonological baseline and an explicit frozen compatibility profile; MekongPhon-reference is frozen for compatibility only. Future engine work targets hybrid only.
 - Python and browser regression tests cover profile output, provenance, baseline fallback, tone preservation, rule specificity and conflict rejection.
-- Both frozen benchmark scripts now include the hybrid engine as a separate comparison path. New artifacts have not yet been generated at this checkpoint.
+- Existing benchmark scripts retain profile comparisons as historical evidence; no further parallel engine development is planned. The MekongPhon 100-entry hybrid benchmark is complete; the latest exact-head HVULao 1k run is still in progress.
 
 ### Status
 
 | Area | Status | Acceptance |
 |---|---|---|
-| Selector and profile implementation | PARTIAL | Exact-head hosted Python/Node tests pending |
-| Browser parity | PARTIAL | Node, Chromium and build gates pending |
-| MekongPhon 100-entry benchmark | PARTIAL | Fresh hybrid artifact and zero runtime errors required |
-| HVULao 1k stress benchmark | PARTIAL | Fresh hybrid artifact; compare coverage and all-attempt latency |
+| Selector and profile implementation | DONE_VERIFIED | Exact-head Verify #42511764559; 283 Python tests passed |
+| Browser parity | DONE_VERIFIED | 136 Node and 17 Chromium tests; build and generated-data checks passed in #42511764559 |
+| MekongPhon 100-entry benchmark | DONE_VERIFIED (reference-relative) | Run #42509799353: hybrid 90/100 exact, CER 6.64%, 97% coverage; zero runtime errors |
+| HVULao 1k stress benchmark | PARTIAL | Prior exact-head run #42508759241: 66.9% deterministic coverage vs 93.0% Neural; latest exact-head run #42511955510 is still running |
 | New context-specific IPA values | TODO / evidence-limited | Need train-split context aggregates and independent evaluation; no guessed rules |
 | Structural coverage expansion | TODO / evidence-limited | Primary orthographic evidence required for each newly accepted parser rule |
 | Independent adjudicated IPA gold | BLOCKED | Still 0 |
@@ -406,7 +406,7 @@ Final code checkpoint: `c705cf8ad782246c2d72c0d789a5e44e5196eca6`.
 | Independent adjudicated IPA gold | BLOCKED | 0 independently adjudicated records |
 | Linguistic production acceptance | BLOCKED | No independent accuracy benchmark or qualified Lao phonetics sign-off |
 
-No PR was merged, no production default was changed, and PRs #146/#147 remain preserved as stacked predecessors. The hybrid PR #149 remains a draft pending owner review; its base is the existing #147 benchmark branch.
+No PR was merged and mainline/production deployment remains unchanged. The hybrid default is implemented and verified on PR #149's draft branch, stacked on #147; PRs #146/#147 remain preserved as predecessors. The default takes effect on main only after the dependency stack is reviewed and merged.
 
 
 ## Source-backed Lao digit handling and parser research — 2026-11-08
