@@ -730,6 +730,18 @@ export function analyze(text, options = {}) {
   const words = normalized.split(/\s+/).filter(Boolean).map((word) => analyzeWord(word, ipaProfile));
   const syllables = words.flat().map((syllable) => {
     if (syllable.passthrough || (syllable.ukrainian && syllable.status === "ESTABLISHED")) return syllable;
+    if (ipaProfile !== "hybrid-deterministic") {
+      if (syllable.ipa) return syllable;
+      // Frozen compatibility profiles retain their historical withheld-output
+      // contract; the full-coverage placeholder policy belongs to hybrid only.
+      const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+      const structural = analyzeToken(segmentalSurface, ipaProfile);
+      const previewInput = {
+        ...structural,
+        warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
+      };
+      return { ...syllable, graphemePreview: previewFromGraphemes(syllable.surface, previewInput) };
+    }
     // Preserve every unresolved source unit through the typed phonetic-result
     // boundary. Known but analysis-dependent IPA may be rendered with its
     // uncertainty status; wholly unknown structures receive a non-IPA marker.
