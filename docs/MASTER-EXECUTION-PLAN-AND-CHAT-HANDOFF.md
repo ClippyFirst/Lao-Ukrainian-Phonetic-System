@@ -2438,3 +2438,48 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - HVULao, FLORES-200 and HPLT are text-domain stress sets only. They can measure sentence coverage, fail-closed behavior, input acceptance and latency—not phonetic correctness.
 - Do not bypass Hugging Face access gates, infer licensing from another dataset version, silently normalize source text, or promote weak references into `data/benchmark/gold.tsv`.
 - Next executable benchmark candidate is Wiktionary after a pinned structured dump can be obtained and Vientiane entries can be separated reliably. FLORES-200 and HPLT remain access-blocked until the repository owner accepts their respective access terms / receives approval.
+
+
+## Hybrid deterministic Lao engine continuation — 2026-11-08
+
+### Starting point and branch
+
+- Starting implementation checkpoint: PR #147 head `f3b8b3b7b919c3a32bd66ea8972f87461a82411e`, which is stacked on PR #146. This deliberately preserves the existing Vientiane baseline, MekongPhon-reference profile, and both benchmark branches without merging them.
+- New dedicated branch: `feat/hybrid-deterministic-lao-engine-20261108`.
+- New profile: `hybrid-deterministic`; existing `vientiane` default and `mekongphon-reference` compatibility profile remain available.
+- No changes to `main`, production defaults, repository settings, or existing PR states.
+
+### Implemented in this continuation
+
+- Added `src/lao_ukrainian/hybrid_rules.py`: immutable rule-match records, exact/list condition matching, priority then specificity selection, order-independent tie handling, and explicit conflict rejection when equally ranked rules disagree.
+- Added `hybrid-deterministic` profile: Vientiane phonology remains the base; the existing nine vowel and two onset correspondences are applied through the rule selector. No new IPA values or unsupported context exceptions were invented.
+- Added rule IDs and hybrid provenance to the typed IPA result. Tone selection and Ukrainian adaptation remain separate and unchanged.
+- Exposed the profile through Python API, CLI and browser API. The visible browser UI and production default remain Vientiane.
+- Added Python and browser tests for parity, baseline fallthrough, provenance, tone preservation, rule specificity, declaration-order independence and conflict rejection.
+- Extended both held-out MekongPhon and HVULao 1k benchmark scripts to include the hybrid profile as a separate engine. These updated benchmark scripts have not yet produced new artifacts at this checkpoint.
+- Added `docs/research/HYBRID-DETERMINISTIC-ENGINE-2026-11-08.md` and updated README/codebase navigation.
+
+### Task ledger
+
+| Task | Status | Acceptance / evidence |
+|---|---|---|
+| Hybrid deterministic selector | PARTIAL | Code added; exact-head Python tests and conflict tests must pass in CI |
+| Python API and CLI profile | PARTIAL | Added; verify supported profile, no neural fallback and typed IPA provenance |
+| Browser profile parity | PARTIAL | Added; Node and Chromium checks pending |
+| MekongPhon 100-entry benchmark integration | PARTIAL | Script includes hybrid; fresh hosted artifact and zero runtime errors required |
+| HVULao 1k benchmark integration | PARTIAL | Script includes hybrid; fresh hosted artifact and comparable all-attempt latency required |
+| Improve structural sentence coverage | TODO / evidence-limited | Investigate unresolved orthographic/parser categories using primary evidence; do not guess |
+| Context-conditioned IPA rules beyond current 11 | TODO / evidence-limited | Need inspectable context-level training aggregates and independent evaluation; frequency alone is insufficient |
+| Independent adjudicated IPA gold | BLOCKED | 0 adjudicated records; requires qualified independent annotation/adjudication |
+| Production linguistic acceptance | BLOCKED | Requires independent IPA accuracy evidence and qualified Lao phonetics sign-off |
+
+### Verification boundary and next actions
+
+- GitHub Actions exact-head Verify and both updated benchmark workflows must run on the final branch head. Do not count prior PR #146/#147 workflow runs as verification of this branch.
+- No local checkout or local test execution was available: outbound GitHub access from the shell environment failed DNS resolution. Repository changes were made through GitHub's authenticated file/branch APIs.
+- If hosted CI fails, fix the code and rerun. After green verification, record exact run IDs, artifact IDs/hashes, engine outputs, coverage, runtime errors and latency here and in the current audit.
+- The hybrid's first version intentionally reproduces the existing reference-profile mapping set through a safer, extensible selector. It is not yet evidence of Neural-level accuracy or coverage.
+
+### Readiness
+
+**PARTIAL implementation under hosted verification; research prototype, not release-ready.** The production default remains unchanged.
