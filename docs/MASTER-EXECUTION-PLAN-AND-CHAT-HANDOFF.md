@@ -2533,3 +2533,20 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - PR #149 remains open as a draft on `feat/hybrid-deterministic-lao-engine-20261108`, based on the existing PR #147 benchmark branch. No merge was performed.
 - PRs #146 and #147 remain unchanged and unmerged. The existing Vientiane default, visible browser UI and production behavior remain unchanged.
 - Repository readiness: **engineering-verified research prototype; not linguistically release-ready**.
+
+
+## Source-backed input and parser continuation — 2026-11-08
+
+- Lao native digits U+0ED0–U+0ED9 are now explicit non-phonetic passthrough in Python and browser runtimes. They are preserved byte-for-byte at the character level, receive no IPA and bypass the Ukrainian IPA adapter. Python and browser regression tests cover this.
+- Evidence is recorded in `data/evidence/claims.csv`: `CLM-LAO-NATIVE-DIGITS` (W3C Lao script fact) and `CLM-LAO-DIGITS-PASSTHROUGH` (project methodology). W3C source `SRC-W3C-LAO-LREQ` already existed in the source registry.
+- Full Ueda (1994) article review confirms a restricted non-final short-open-/a/ CV- light syllable in polysyllabic Vientiane words, unstressed and without distinctive lexical tone. The engine already marks only a narrow initial candidate as unresolved; no speculative neutral-tone assignment or generalized medial rule was added.
+- Enfield (2007) §3.1 supports a related C0V0 minor-syllable structure but is based on semi-rural conversational speech; it remains corroborating evidence, not a direct Standard Vientiane production rule.
+- W3C also confirms spaces are phrase boundaries rather than reliable word boundaries, and multipart vowels can span several glyph positions. The existing dynamic syllable parser and source-indexed vowel registry already implement this general contract; no duplicate parser was added.
+
+### New acceptance evidence
+
+| Task | Status | Acceptance |
+|---|---|---|
+| Lao native digit passthrough | DONE_VERIFIED on code checkpoint | Python and browser tests passed in Verify #42509801841 (281 Python, 135 Node, 17 Chromium); later removal of a redundant browser pre-split is separately verified by #42509827961 |
+| Source registry and claims update | PARTIAL pending final CI | `claims.csv` now records both script fact and implementation methodology; latest branch-head audit workflow must pass |
+| Broaden minor-syllable rule | DEFERRED / evidence-limited | Requires orthographic examples and expert-reviewed Vientiane fixtures; current narrow candidate remains unresolved |
