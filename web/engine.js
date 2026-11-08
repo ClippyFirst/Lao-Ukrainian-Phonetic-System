@@ -351,6 +351,41 @@ function toneMarkOrderError(chars, clean, found) {
     ? null : "MALFORMED_TONE_MARK_POSITION";
 }
 
+
+const HYBRID_RULES = [
+  ...Object.entries({
+    AW_LONG: "ao", UA_LONG: "ɯːə̯", IA_LONG: "iaː", OEE: "əː",
+    AI: "aj", UO_LONG: "uaː", UO_LONG_ALT: "uaː", AI2: "aj", OE: "ə",
+  }).map(([id, value]) => ({
+    ruleId: "HYB-MPH-VOWEL-" + id, target: "vowel",
+    conditions: { vowelId: id }, value, priority: 0,
+    provenance: "IPA-PROFILE-MEKONGPHON-VOWEL:" + id,
+  })),
+  ...Object.entries({ "ວ": "w", "ຣ": "r" }).map(([onset, value]) => ({
+    ruleId: "HYB-MPH-ONSET-" + onset, target: "onset",
+    conditions: { onset }, value, priority: 0,
+    provenance: "IPA-PROFILE-MEKONGPHON-ONSET:" + onset,
+  })),
+];
+
+function selectHybridRule(target, context) {
+  const matches = HYBRID_RULES.filter((rule) =>
+    rule.target === target &&
+    Object.entries(rule.conditions).every(([key, expected]) => context[key] === expected)
+  );
+  if (!matches.length) return null;
+  const rank = (rule) => [rule.priority, Object.keys(rule.conditions).length];
+  const bestRank = matches.map(rank).sort((a, b) => b[0] - a[0] || b[1] - a[1])[0];
+  const best = matches.filter((rule) => {
+    const r = rank(rule);
+    return r[0] === bestRank[0] && r[1] === bestRank[1];
+  });
+  if (new Set(best.map((rule) => rule.value)).size > 1) {
+    throw new RangeError("Conflicting hybrid IPA rules: " + best.map((rule) => rule.ruleId).sort().join(", "));
+  }
+  return best.sort((a, b) => a.ruleId.localeCompare(b.ruleId))[0];
+}
+
 function analyzeToken(surface, ipaProfile = "vientiane") {
   const chars = [...surface];
   const toneMarkCount = chars.filter((ch) => TONE_MARK_SET.has(ch)).length;
@@ -420,15 +455,8 @@ function analyzeToken(surface, ipaProfile = "vientiane") {
   if (ipaProfile === "mekongphon-reference") {
     const onsetOverride = { "ວ": "w", "ຣ": "r" }[onsetKey];
     const vowelOverride = {
-      AW_LONG: "ao",
-      UA_LONG: "ɯːə̯",
-      IA_LONG: "iaː",
-      OEE: "əː",
-      AI: "aj",
-      UO_LONG: "uaː",
-      UO_LONG_ALT: "uaː",
-      AI2: "aj",
-      OE: "ə",
+      AW_LONG: "ao", UA_LONG: "ɯːə̯", IA_LONG: "iaː", OEE: "əː",
+      AI: "aj", UO_LONG: "uaː", UO_LONG_ALT: "uaː", AI2: "aj", OE: "ə",
     }[matched.v[0]];
     if (onsetOverride && onsetOverride !== onsetIpa) {
       onsetIpa = onsetOverride;
@@ -437,6 +465,21 @@ function analyzeToken(surface, ipaProfile = "vientiane") {
     if (vowelOverride && vowelOverride !== vowelIpa) {
       vowelIpa = vowelOverride;
       profileRules.push("IPA-PROFILE-MEKONGPHON-VOWEL:" + matched.v[0]);
+    }
+  } else if (ipaProfile === "hybrid-deterministic") {
+    const context = {
+      onset: onsetKey, onsetClass, vowelId: matched.v[0],
+      vowelLength: matched.v[3], coda, toneMark: mark,
+    };
+    const onsetRule = selectHybridRule("onset", context);
+    const vowelRule = selectHybridRule("vowel", context);
+    if (onsetRule && onsetRule.value !== onsetIpa) {
+      onsetIpa = onsetRule.value;
+      profileRules.push(onsetRule.provenance, "HYBRID-RULE:" + onsetRule.ruleId);
+    }
+    if (vowelRule && vowelRule.value !== vowelIpa) {
+      vowelIpa = vowelRule.value;
+      profileRules.push(vowelRule.provenance, "HYBRID-RULE:" + vowelRule.ruleId);
     }
   }
   const ipa = structuralWarning ? null : onsetIpa + vowelIpa + codaIpa;
@@ -456,7 +499,7 @@ function analyzeToken(surface, ipaProfile = "vientiane") {
 
   if (onsetForm !== onsetKey && !onsetIpaOverride) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
   if (onsetIpaOverride) warnings.push("ONSET-LABIALIZED:" + onsetForm);
-  if (onsetKey === "ຣ") warnings.push(ipaProfile === "mekongphon-reference" ? "MekongPhon-reference profile uses /r/ for ຣ; this reading remains analysis-dependent." : "ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
+  if (onsetKey === "ຣ") warnings.push(ipaProfile !== "vientiane" ? "Reference-compatible deterministic profile uses /r/ for ຣ; this reading remains analysis-dependent." : "ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
   if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
@@ -661,7 +704,7 @@ function analyzeWord(word, ipaProfile = "vientiane") {
 export function analyze(text, options = {}) {
   const input = String(text ?? "");
   const ipaProfile = options?.ipaProfile ?? "vientiane";
-  if (!["vientiane", "mekongphon-reference"].includes(ipaProfile)) {
+  if (!["vientiane", "mekongphon-reference", "hybrid-deterministic"].includes(ipaProfile)) {
     throw new RangeError("Unknown IPA profile: " + ipaProfile);
   }
   const normalized = input.normalize("NFC").trim();
