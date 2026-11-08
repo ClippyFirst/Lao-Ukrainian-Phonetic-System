@@ -1,4 +1,4 @@
-from .normalize import normalize_lao, validate_unicode
+from .normalize import normalize_lao, validate_unicode, PASSTHROUGH_PUNCTUATION
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
 from .target import rank_ukrainian_candidates, practical_from_ipa
@@ -9,8 +9,8 @@ from .grapheme_preview import preview_from_graphemes
 from .mekongphon_reference_profile import DEFAULT_PROFILE, SUPPORTED_IPA_PROFILES
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
-PASSTHROUGH_CHARACTERS = frozenset(
-    ",!?;:()[]{}\"“”" + "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'-"
+PASSTHROUGH_CHARACTERS = PASSTHROUGH_PUNCTUATION | frozenset(
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'-"
 )
 MINOR_C0_EXCLUDED_ONSETS = {"ງ", "ຍ"}
 
