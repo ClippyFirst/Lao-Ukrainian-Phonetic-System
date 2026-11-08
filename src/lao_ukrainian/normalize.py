@@ -1,7 +1,13 @@
 import unicodedata
 
+PASSTHROUGH_PUNCTUATION = frozenset(",!?;:()[]{}\"“”&%–…#/`+•")
+LAO_NATIVE_DIGITS = frozenset(chr(cp) for cp in range(0x0ED0, 0x0EDA))
+PASSTHROUGH_CHARACTERS = PASSTHROUGH_PUNCTUATION | frozenset("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'-") | LAO_NATIVE_DIGITS
+
 def normalize_lao(text: str) -> str:
-    return unicodedata.normalize("NFC", text)
+    normalized = unicodedata.normalize("NFC", text)
+    # A leading U+FEFF is a file/text-stream BOM, not Lao source content.
+    return normalized[1:] if normalized.startswith("\ufeff") else normalized
 
 def validate_unicode(text: str) -> list[str]:
     problems=[]
@@ -9,9 +15,11 @@ def validate_unicode(text: str) -> list[str]:
         cp=ord(ch)
         if (cp < 0x20 and ch not in "\n\t\r") or 0x7F <= cp <= 0x9F:
             problems.append(f"control character U+{cp:04X}")
+        if cp == 0x200B:  # Lao word-boundary zero-width space; normalized to a token boundary by callers.
+            continue
         if 0x0E80 <= cp <= 0x0EFF:
             continue
-        if ch.isspace() or (ch.isascii() and (ch.isalnum() or ch in "-'.")):
+        if ch.isspace() or ch in PASSTHROUGH_CHARACTERS:
             continue
         if cp > 0x7F:
             problems.append(f"unsupported non-Lao character U+{cp:04X} {ch}")

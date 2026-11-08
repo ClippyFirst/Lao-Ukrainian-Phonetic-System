@@ -32,8 +32,8 @@ class MultisyllableSegmentationTests(unittest.TestCase):
     def test_zwsp_is_an_explicit_boundary_and_spaces_remain_phrase_boundaries(self):
         self.assertEqual(segment_syllables("ສະ\u200bບາຍ ດີ"), ["ສະ", "ບາຍ", "ດີ"])
 
-    def test_unsupported_material_is_retained_as_a_partial_unit(self):
-        source = "ສະxບາຍ"
+    def test_unsupported_lao_material_is_retained_as_a_partial_unit(self):
+        source = "ສະໍບາຍ"
         parts = segment_syllables(source)
         self.assertEqual("".join(parts), source)
         result = analyze(source)

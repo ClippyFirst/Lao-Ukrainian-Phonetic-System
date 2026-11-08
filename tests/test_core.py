@@ -1,8 +1,13 @@
 import unittest
+import unicodedata
 from unittest.mock import patch
 
 import lao_ukrainian.core as core_module
-from lao_ukrainian import analyze
+from lao_ukrainian import analyze as _analyze
+
+# Existing linguistic matrix tests pin the Vientiane baseline explicitly.
+def analyze(text, *, ipa_profile="vientiane"):
+    return _analyze(text, ipa_profile=ipa_profile)
 
 
 class TestCore(unittest.TestCase):
@@ -17,6 +22,17 @@ class TestCore(unittest.TestCase):
             result = core_module.analyze("ຂາຄາ")
         self.assertEqual(len(result.syllables), 2)
         self.assertEqual(load_once.call_count, 1)
+
+    def test_default_profile_is_hybrid_while_vientiane_remains_explicit(self):
+        default = core_module.analyze("ວາ").syllables[0]
+        vientiane = analyze("ວາ", ipa_profile="vientiane").syllables[0]
+        self.assertEqual(default.phonemic_ipa, "waː")
+        self.assertEqual(vientiane.phonemic_ipa, "ʋaː")
+        self.assertIn("HYBRID-RULE:HYB-MPH-ONSET-ວ", default.rules)
+        self.assertNotIn("HYBRID-RULE:HYB-MPH-ONSET-ວ", vientiane.rules)
+        parsed = core_module.parse_syllable("ວາ")
+        self.assertEqual(core_module.phonologize(parsed)[0], "waː")
+        self.assertEqual(core_module.phonologize(parsed, ipa_profile="vientiane")[0], "ʋaː")
 
     def test_long_open_high_class(self):
         s = analyze("ຂາ").syllables[0]
@@ -86,10 +102,12 @@ class TestCore(unittest.TestCase):
             result.syllables[0].rules,
         )
 
-    def test_zero_width_space_is_rejected_before_minor_selector(self):
+    def test_zero_width_space_separates_minor_selector_units(self):
         result = analyze("ຄະ\u200bຄາ")
-        self.assertEqual(result.status, "INVALID")
-        self.assertEqual(result.syllables, [])
+        self.assertNotEqual(result.status, "INVALID")
+        self.assertEqual(len(result.syllables), 2)
+        self.assertEqual(result.syllables[0].tone, "high-mid")
+        self.assertNotIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", result.syllables[0].rules)
 
     def test_potential_minor_selector_does_not_override_uncertain_onset(self):
         result = analyze("ຣະຄາ")
@@ -143,6 +161,8 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
         self.assertIsNone(s.practical_ukrainian)
+        self.assertEqual(s.phonetic_result.status, "UNSUPPORTED")
+        self.assertEqual(s.phonetic_result.segments, ())
         self.assertEqual(s.ukrainian_candidates, [])
         self.assertIsNone(s.tone)
         self.assertIn("PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS", s.rules)
@@ -212,11 +232,12 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.status, "SUPPORTED")
         self.assertEqual(syllable.practical_ukrainian, "к'а")
 
-    def test_analysis_dependent_segmental_ipa_is_not_promoted_to_ukrainian_output(self):
+    def test_analysis_dependent_segmental_ipa_is_rendered_with_uncertain_status(self):
         syllable = analyze("ຣະ").syllables[0]
         self.assertEqual(syllable.phonemic_ipa, "la")
         self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
         self.assertIsNone(syllable.practical_ukrainian)
+        self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
         self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
 
     def test_segmental_ipa_remains_adaptable_when_tone_is_unresolved(self):
@@ -226,6 +247,50 @@ class TestCore(unittest.TestCase):
         self.assertIsNone(syllable.phonetic_result.tone_category)
         self.assertIn("TONE-UNRESOLVED", syllable.phonetic_result.uncertainty)
         self.assertEqual(syllable.practical_ukrainian, "к'ап")
+        self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
+
+
+    def test_hybrid_renders_unknown_lao_unit_through_typed_provisional_boundary(self):
+        result = core_module.analyze("ກາລ")
+        syllable = result.syllables[0]
+        self.assertEqual(result.status, "PARTIAL")
+        self.assertIsNone(syllable.phonemic_ipa)
+        self.assertEqual(syllable.phonetic_result.vowel_length, "long")
+        self.assertEqual(syllable.practical_ukrainian, "ка?")
+        self.assertEqual(syllable.phonetic_result.status, "PROVISIONAL")
+        self.assertEqual(len(syllable.phonetic_result.segments), 3)
+        self.assertEqual(syllable.phonetic_result.segments[-1].kind, "unknown")
+        self.assertTrue(all(segment.certainty == "PROVISIONAL" for segment in syllable.phonetic_result.segments))
+        self.assertIn("PHONETIC-READING-PROVISIONAL", syllable.phonetic_result.uncertainty)
+
+    def test_hybrid_accepts_zero_width_space_as_lao_syllable_boundary(self):
+        result = core_module.analyze("ກ\u200bຂ")
+        self.assertNotEqual(result.status, "INVALID")
+        self.assertEqual([unit.surface for unit in result.syllables], ["ກ", "ຂ"])
+        self.assertTrue(all(unit.practical_ukrainian is not None for unit in result.syllables))
+
+
+    def test_hybrid_renders_every_assigned_lao_block_codepoint(self):
+        for codepoint in range(0x0E80, 0x0F00):
+            character = chr(codepoint)
+            if unicodedata.name(character, None) is None or character.isspace():
+                continue
+            with self.subTest(codepoint=f"U+{codepoint:04X}"):
+                result = core_module.analyze(character)
+                self.assertNotEqual(result.status, "INVALID")
+                self.assertTrue(result.syllables, "accepted Lao input must not disappear")
+                for unit in result.syllables:
+                    self.assertIsNotNone(
+                        unit.practical_ukrainian,
+                        f"accepted source unit {unit.surface!r} has no rendering",
+                    )
+
+
+    def test_hybrid_renders_analysis_dependent_ipa_without_promoting_confidence(self):
+        syllable = core_module.analyze("ຣະ").syllables[0]
+        self.assertEqual(syllable.phonemic_ipa, "ra")
+        self.assertEqual(syllable.practical_ukrainian, "ра")
+        self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
         self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
 
 
@@ -241,3 +306,37 @@ class TestMinorSyllableSelectorEvidence(unittest.TestCase):
                 result = analyze(word)
                 self.assertTrue(result.syllables)
                 self.assertNotIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", result.syllables[0].rules)
+
+
+    def test_ascii_and_common_punctuation_are_explicit_passthrough_not_ipa(self):
+        result = analyze("ຂາ, 2026! abc.&%–…#/`+•")
+        passthrough = [item for item in result.syllables if item.status == "PASSTHROUGH"]
+        self.assertEqual("".join(item.surface for item in passthrough), ",2026!abc.&%–…#/`+•")
+        self.assertTrue(all(item.phonemic_ipa is None for item in passthrough))
+        self.assertTrue(all(item.practical_ukrainian == item.surface for item in passthrough))
+        self.assertTrue(all("PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER" in item.rules for item in passthrough))
+        self.assertEqual(result.syllables[0].phonemic_ipa, "kʰaː")
+        self.assertEqual(result.status, "OK")
+
+    def test_passthrough_only_input_is_preserved_without_fabricated_ipa(self):
+        result = analyze("ABC-123!?")
+        self.assertEqual(result.status, "OK")
+        self.assertEqual("".join(item.practical_ukrainian for item in result.syllables), "ABC-123!?")
+        self.assertTrue(all(item.phonemic_ipa is None for item in result.syllables))
+        self.assertTrue(all(item.status == "PASSTHROUGH" for item in result.syllables))
+
+    def test_passthrough_prefix_does_not_hide_following_lao_syllable(self):
+        result = analyze("(ຂາ")
+        self.assertEqual(result.syllables[0].status, "PASSTHROUGH")
+        self.assertEqual(result.syllables[0].practical_ukrainian, "(")
+        self.assertEqual(result.syllables[1].phonemic_ipa, "kʰaː")
+        self.assertEqual(result.status, "OK")
+
+    def test_lao_native_digits_are_preserved_as_non_ipa_passthrough(self):
+        result = analyze("ຂາ໑໒໓")
+        digits = [item for item in result.syllables if item.surface in "໑໒໓"]
+        self.assertEqual("".join(item.surface for item in digits), "໑໒໓")
+        self.assertTrue(all(item.status == "PASSTHROUGH" for item in digits))
+        self.assertTrue(all(item.phonemic_ipa is None for item in digits))
+        self.assertTrue(all("PASSTHROUGH:LAO_NATIVE_DIGIT" in item.rules for item in digits))
+        self.assertEqual(result.syllables[0].phonemic_ipa, "kʰaː")

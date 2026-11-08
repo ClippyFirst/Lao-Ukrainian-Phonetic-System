@@ -1,0 +1,43 @@
+name: HVULao 1k three-engine stress benchmark
+
+on:
+  pull_request:
+    branches:
+      - "feat/deterministic-mekongphon-reference-profile-20261108"
+      - "benchmark/hvulao-1k-three-engine-20261108"
+    paths:
+      - ".github/workflows/hvulao-1k-three-engine-benchmark.yml"
+      - "scripts/benchmark_hvulao_1k_three_engines.py"
+      - "src/lao_ukrainian/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU PyTorch
+        run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
+      - name: Install project and pinned MekongPhon inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install transformers==4.49.0 huggingface_hub==0.29.3
+      - name: Run independent HVULao 1k text-domain stress benchmark
+        run: python scripts/benchmark_hvulao_1k_three_engines.py --output artifacts/hvulao-1k-three-engine-stress.json
+      - name: Upload aggregate metrics only
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: hvulao-1k-three-engine-stress
+          path: artifacts/hvulao-1k-three-engine-stress.json
+          if-no-files-found: warn
+          retention-days: 7

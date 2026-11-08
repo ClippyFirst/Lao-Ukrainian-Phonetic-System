@@ -1,17 +1,20 @@
-from .normalize import normalize_lao, validate_unicode
+from .normalize import normalize_lao, validate_unicode, PASSTHROUGH_CHARACTERS, LAO_NATIVE_DIGITS
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
 from .target import rank_ukrainian_candidates, practical_from_ipa
-from .phonetic_result import from_phonology
+from .phonetic_result import from_phonology, from_unknown_source_unit, from_provisional_preview
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 from .grapheme_preview import preview_from_graphemes
+from .mekongphon_reference_profile import DEFAULT_ENGINE_PROFILE, SUPPORTED_IPA_PROFILES
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 MINOR_C0_EXCLUDED_ONSETS = {"ງ", "ຍ"}
 
 
-def analyze(text: str) -> Analysis:
+def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis:
+    if ipa_profile not in SUPPORTED_IPA_PROFILES:
+        raise ValueError(f"Unknown IPA profile {ipa_profile!r}; expected one of {SUPPORTED_IPA_PROFILES}")
     normalized = normalize_lao(text)
     warnings = validate_unicode(normalized)
     if warnings:
@@ -24,14 +27,38 @@ def analyze(text: str) -> Analysis:
     # parser's current word-like units. Do not infer minor-syllable relations
     # across phrase whitespace.
     syllable_groups = [
-        segment_syllables(token, registry)
+        segment_syllables(token, registry) or [token]
         for token in normalized.replace("\u200b", " ").split()
     ]
     for group in syllable_groups:
         for syllable_index, surface in enumerate(group):
+            # Match the browser engine's explicit non-Lao passthrough contract:
+            # preserve ASCII letters/digits and common punctuation unchanged.
+            # These are not assigned IPA and never enter the Ukrainian IPA adapter.
+            if len(surface) == 1 and surface in PASSTHROUGH_CHARACTERS:
+                syllables.append(
+                    SyllableAnalysis(
+                        surface=surface,
+                        onset=None,
+                        vowel=None,
+                        coda=None,
+                        tone_mark=None,
+                        consonant_class=None,
+                        syllable_type=None,
+                        tone=None,
+                        phonemic_ipa=None,
+                        ukrainian_candidates=[],
+                        practical_ukrainian=surface,
+                        status="PASSTHROUGH",
+                        rules=["PASSTHROUGH:LAO_NATIVE_DIGIT" if surface in LAO_NATIVE_DIGITS else "PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER"],
+                        warnings=[],
+                    )
+                )
+                continue
+
             parsed = parse_syllable(surface, registry)
             local_warnings = list(parsed.get("warnings", []))
-            ipa, rules, tone_status, tone = phonologize(parsed, registry)
+            ipa, rules, tone_status, tone = phonologize(parsed, registry, ipa_profile)
 
             # Ueda (1994) and Enfield (2007) describe reduced/minor syllables
             # without an independent lexical tone. Orthography alone cannot
@@ -53,7 +80,7 @@ def analyze(text: str) -> Analysis:
                 following_onset or "", {}
             ).get("status")
             following_ipa = (
-                phonologize(following, registry)[0] if following else None
+                phonologize(following, registry, ipa_profile)[0] if following else None
             )
             following_major_weighted = (
                 following_vowel.get("length") == "long"
@@ -158,11 +185,33 @@ def analyze(text: str) -> Analysis:
                 provenance=tuple(rules),
                 uncertainty=tuple(local_warnings) + (() if tone_status in ESTABLISHED_TONE_STATUSES else ("TONE-UNRESOLVED",)),
             )
+            grapheme_preview = preview_from_graphemes(surface, parsed, registry) if ipa is None else None
+            if not phonetic_result.segments and ipa_profile == DEFAULT_ENGINE_PROFILE:
+                # Use registered grapheme-position hints only as explicitly
+                # PROVISIONAL typed segments; unresolved source groups stay as
+                # unknown markers and all output still crosses the IPA adapter.
+                phonetic_result = (
+                    from_provisional_preview(grapheme_preview, provenance=tuple(rules))
+                    if grapheme_preview is not None
+                    else from_unknown_source_unit(surface, provenance=tuple(rules), uncertainty=tuple(local_warnings))
+                )
             candidates = [
                 Candidate(value, score, [why])
                 for value, score, why in rank_ukrainian_candidates(phonetic_result, registry)
             ]
-            practical = practical_from_ipa(phonetic_result, registry)
+            practical = practical_from_ipa(
+                phonetic_result, registry,
+                allow_uncertain=ipa_profile == DEFAULT_ENGINE_PROFILE,
+            )
+            if practical is None and ipa_profile == DEFAULT_ENGINE_PROFILE:
+                # A typed IPA result can still lack a Ukrainian correspondence.
+                # Keep coverage total without bypassing the adapter or guessing.
+                phonetic_result = from_unknown_source_unit(
+                    surface,
+                    provenance=tuple(rules) + ("FALLBACK:TARGET-UNMAPPED",),
+                    uncertainty=tuple(local_warnings) + ("UKRAINIAN-TARGET-UNMAPPED",),
+                )
+                practical = practical_from_ipa(phonetic_result, registry)
             syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"), registry)
             consonant_class = parsed.get("onset_class")
             if consonant_class is None and parsed.get("onset"):
@@ -179,7 +228,10 @@ def analyze(text: str) -> Analysis:
 
             if practical is None and ipa:
                 status = "ANALYSIS DEPENDENT" if phonetic_result.status == "UNCERTAIN" else "EVIDENCE LIMITED"
-            if structural_uncertainty or multiple_tone_marks or malformed_tone_mark_order:
+            if (
+                structural_uncertainty or multiple_tone_marks
+                or malformed_tone_mark_order or phonetic_result.status == "PROVISIONAL"
+            ):
                 status = "EVIDENCE LIMITED"
 
             # Even if an IPA string is computable, malformed/unconsumed source
@@ -191,8 +243,8 @@ def analyze(text: str) -> Analysis:
                  if tone is not None and row["rule_id"] in rules and row["contour"]),
                 None,
             )
-            # Diagnostic-only fallback: never promote partial grapheme hints to accepted IPA or Ukrainian output.
-            grapheme_preview = preview_from_graphemes(surface, parsed, registry) if ipa is None else None
+            # Diagnostic preview remains inspectable even when its separate
+            # PROVISIONAL typed segments also support a low-confidence fallback.
             analysis_warnings.extend(local_warnings)
             syllables.append(
                 SyllableAnalysis(
@@ -216,5 +268,9 @@ def analyze(text: str) -> Analysis:
                 )
             )
 
-    overall = "OK" if syllables and all(s.status == "ESTABLISHED" for s in syllables) else "PARTIAL"
+    overall = (
+        "OK"
+        if syllables and all(s.status in {"ESTABLISHED", "PASSTHROUGH"} for s in syllables)
+        else "PARTIAL"
+    )
     return Analysis(text, normalized, syllables, overall, warnings + analysis_warnings)

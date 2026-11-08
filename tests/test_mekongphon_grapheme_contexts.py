@@ -44,7 +44,7 @@ class GraphemeContextTests(unittest.TestCase):
         coda = parse_syllable("ກາວ", registry)
         self.assertFalse(onset["warnings"])
         self.assertFalse(coda["warnings"])
-        self.assertEqual(phonologize(onset, registry)[0], "ʋaː")
+        self.assertEqual(phonologize(onset, registry, ipa_profile="vientiane")[0], "ʋaː")
         self.assertEqual(phonologize(coda, registry)[0], "kaːw")
 
     def test_same_consonant_has_distinct_onset_and_coda_values(self):

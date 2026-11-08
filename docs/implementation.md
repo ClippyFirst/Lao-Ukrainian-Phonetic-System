@@ -2,11 +2,11 @@
 
 ## Architecture
 
-- `normalize.py` — NFC normalization and mixed-script validation.
+- `normalize.py` — NFC normalization and mixed-script validation; U+200B is accepted as a Lao word boundary and normalized to a token separator before parsing; a leading U+FEFF text-stream BOM is stripped, while embedded BOMs remain invalid.
 - `parser.py` — Lao graphemic syllable parsing and structural vowel recognition.
 - `phonology.py` — live/dead classification, tone lookup and phonemic IPA construction.
 - `phonetic_result.py` — typed `PhoneticResult` boundary: source-inventory IPA tokenization, syllable offsets, length, tone, provenance and uncertainty; tokenization is independent of target correspondence keys.
-- `target.py` — typed-result-only IPA-to-Ukrainian adapter and candidate ranking.
+- `target.py` — typed-result-only IPA-to-Ukrainian adapter and candidate ranking; only the primary hybrid profile may adapt UNCERTAIN IPA without upgrading its status, and its PROVISIONAL IPA-hint/unknown sequence renders through the same adapter.
 - `core.py` — public analysis orchestration.
 - `model.py` — serializable analysis dataclasses.
 - `data.py` — registry loading.
@@ -33,7 +33,7 @@ Unknown Unicode, unknown vowel structures, and unsupported phonological combinat
 - `web/romanization-ukrainian.js` — compatibility export for the syllable engine; it no longer contains a letter-by-letter mapping.
 - `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
 
-The phonetic engine remains the default. Its Ukrainian output is produced only from the typed `PhoneticResult`; uncertain or unsupported results are withheld. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
+The hybrid deterministic phonetic engine is the default. Its Ukrainian output is produced only from the typed PhoneticResult: structurally complete UNCERTAIN IPA can be rendered with its uncertainty preserved, while unresolved units use a typed PROVISIONAL sequence built from diagnostic grapheme-position IPA hints plus explicit unknown markers, rendered through the same adapter. This guarantees rendering coverage without claiming an IPA value or accuracy. Frozen compatibility profiles keep their prior withholding behavior. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
 
 See [the typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md) for the executable boundary, status semantics and verification.
 
@@ -48,10 +48,10 @@ The current web implementation is framework-free: index.html and system.html loa
 
 ## Integrated segmentation, provisional preview and optional neural provider — 2026-11-08
 
-- `parser.py` performs deterministic dynamic segmentation of unspaced Lao into structurally parsed syllable candidates while preserving unparsed material. It is not a lexical word segmenter; ambiguous or unsupported structures remain visible and phonetic output is withheld.
+- `parser.py` performs deterministic dynamic segmentation of unspaced Lao into structurally parsed syllable candidates while preserving unparsed material. It is not a lexical word segmenter; ambiguous or unsupported structures remain visible and accepted IPA is withheld; the hybrid may render a separate explicitly PROVISIONAL hint/unknown sequence.
 - Tone-mark storage-order validation is per syllable. A malformed mark or unresolved structural suffix must not retain a confident tone or a misleading IPA prefix.
-- `phonetic_result.py` tokenizes source IPA against its own IPA inventory, independent of Ukrainian correspondence keys. `target.py` consumes the typed result and withholds unsupported/uncertain material instead of adapting a guessed grapheme prefix.
-- `grapheme_preview.py` provides a separate provisional segmental preview from registered positional grapheme correspondences and complete parser-confirmed vowel/coda structures. It never infers tone and cannot pass through the accepted Ukrainian target adapter.
-- `mekongphon.py` is an optional, explicitly selected neural provider. The deterministic engine remains the default; model revisions are immutable, automatic truncation is disabled, raw IPA/provenance are retained, and unknown symbols fail closed.
+- `phonetic_result.py` tokenizes source IPA against its own IPA inventory, independent of Ukrainian correspondence keys. `target.py` consumes the typed result. In hybrid only, uncertain but complete IPA can be rendered with its status intact; unsupported units receive a typed PROVISIONAL hint/unknown sequence. No grapheme-preview hint is promoted to SUPPORTED IPA or mapped directly from Lao spelling; fallback hints are explicitly typed PROVISIONAL segments and pass through the ordinary IPA adapter.
+- `grapheme_preview.py` provides a diagnostic provisional segmental preview from registered positional grapheme correspondences and parser-confirmed vowel/coda structures. It never infers tone or becomes supported IPA. In the primary hybrid fallback, its hints are wrapped in a separate PROVISIONAL PhoneticResult, unresolved graphemes become typed unknown segments, and the ordinary IPA-to-Ukrainian adapter renders the provisional sequence.
+- `mekongphon.py` is an optional, explicitly selected neural provider. The hybrid deterministic engine remains the default; model revisions are immutable, automatic truncation is disabled, raw IPA/provenance are retained, and unknown symbols fail closed.
 - The benchmark scripts and reports are comparative diagnostics. The 100-entry external dictionary reference and training-split aggregates are not independent project IPA gold and must not be used as accuracy claims.
 - Exact integrated engineering verification: [Verify 42460320528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42460320528), exact head `dd07adcd7d709ea5e1b8f94c3556965eefda73c9`.

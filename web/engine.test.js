@@ -3,7 +3,19 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { analyze } from "./engine.js";
+import { analyze as analyzeDefault } from "./engine.js";
+
+// Existing browser fixtures pin the explicit Vientiane baseline. Default
+// profile selection is covered separately so profile changes stay deliberate.
+function analyze(text, options = {}) {
+  return analyzeDefault(text, { ipaProfile: options.ipaProfile ?? "vientiane" });
+}
+
+test("browser engine defaults to the hybrid deterministic profile", () => {
+  const result = analyzeDefault("ດວງ");
+  assert.equal(result.syllables[0].ipa, "duaːŋ");
+  assert.ok(result.syllables[0].rules.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
+});
 import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
 
 test("basic long syllable", () => {
@@ -214,10 +226,19 @@ test("CRLF is accepted as line whitespace", () => {
   assert.equal(r.output, "ка к\u0027а");
 });
 
-test("zero-width space is rejected rather than silently removed", () => {
-  const r = analyze("ກ\u200bຂ");
-  assert.equal(r.status, "INVALID");
-  assert.equal(r.output, "");
+test("browser strips only a leading text-stream BOM", () => {
+  const bom = String.fromCharCode(0xfeff);
+  const clean = analyze("ກາ", { ipaProfile: "hybrid-deterministic" });
+  const prefixed = analyze(bom + "ກາ", { ipaProfile: "hybrid-deterministic" });
+  assert.deepEqual(prefixed.syllables.map((unit) => unit.surface), clean.syllables.map((unit) => unit.surface));
+  assert.equal(analyze("ກ" + bom + "າ", { ipaProfile: "hybrid-deterministic" }).status, "INVALID");
+});
+
+test("zero-width space is accepted as a Lao syllable boundary", () => {
+  const r = analyze("ກ\u200bຂ", { ipaProfile: "hybrid-deterministic" });
+  assert.notEqual(r.status, "INVALID");
+  assert.deepEqual(r.syllables.map((unit) => unit.surface), ["ກ", "ຂ"]);
+  assert.ok(r.syllables.every((unit) => typeof unit.ukrainian === "string" && unit.ukrainian.length > 0));
 });
 
 test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
@@ -422,7 +443,7 @@ test("unconsumed prefix before a preposed Lao vowel is not segmented away", () =
   assert.equal(result.syllables.length, 1, "malformed token must remain one unresolved unit");
   assert.equal(result.syllables[0].surface, surface, "no source characters may be discarded");
   assert.ok(!result.syllables[0].ipa, "unresolved browser analysis must not expose IPA");
-  assert.ok(!result.syllables[0].ukrainian, "unresolved browser analysis must not expose Ukrainian output");
+  assert.ok(!result.syllables[0].ukrainian, "frozen Vientiane profile still withholds unresolved output");
   assert.ok(result.syllables[0].warnings.some((w) => w.includes("Непідтримуваний фрагмент перед початковим приголосним")));
   assert.equal(result.output, "⟦" + surface + "⟧");
 });
@@ -488,16 +509,16 @@ test("browser Ukrainian adaptation consumes a typed IPA result", () => {
   assert.equal(syllable.ukrainian, "к'а");
 });
 
-test("browser IPA adapter withholds uncertain phonetic results", () => {
-  const result = analyze("ຣະ");
+test("browser hybrid adapter renders uncertain IPA without upgrading its status", () => {
+  const result = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" });
   const syllable = result.syllables[0];
-  assert.equal(syllable.ipa, "la");
+  assert.equal(syllable.ipa, "ra");
   assert.equal(syllable.phoneticResult.status, "UNCERTAIN");
-  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.ukrainian, "ра");
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
-test("browser IPA adapter withholds incomplete IPA rather than adapting a prefix", () => {
+test("frozen Vientiane browser adapter withholds incomplete IPA rather than adapting a prefix", () => {
   const result = analyze("ກາລ");
   const syllable = result.syllables[0];
   assert.equal(syllable.phoneticResult.status, "UNSUPPORTED");
@@ -587,10 +608,11 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 });
 
 
-test("browser grapheme preview is provisional and never becomes accepted IPA or Ukrainian", () => {
-  const syllable = analyze("ກາລ").syllables[0];
+test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
+  const syllable = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.ukrainian, "ка?");
+  assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.graphemePreview.ipaPreview, "kaː");
   assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
   assert.deepEqual(syllable.graphemePreview.unresolvedGraphemes, ["ລ"]);
@@ -606,4 +628,123 @@ test("browser grapheme preview never infers tone and withholds non-core Pali val
   const pali = analyze("ຆາ").syllables[0].graphemePreview;
   assert.equal(pali.ipaPreview, null);
   assert.equal(pali.status, "UNRESOLVED");
+});
+
+
+test("browser engine supports the deterministic MekongPhon-reference IPA profile", () => {
+  const baseline = analyze("ດວງ");
+  const compatible = analyze("ດວງ", { ipaProfile: "mekongphon-reference" });
+  assert.equal(baseline.syllables[0].ipa, "duːəŋ");
+  assert.equal(compatible.syllables[0].ipa, "duaːŋ");
+  assert.equal(compatible.syllables[0].phoneticResult.status, "SUPPORTED");
+  assert.equal(compatible.syllables[0].phoneticResult.phonemicIpa, "duaːŋ");
+  assert.equal(compatible.syllables[0].ukrainian, "дуанг");
+  assert.ok(compatible.syllables[0].rules.includes("IPA-PROFILE-MEKONGPHON-VOWEL:UO_LONG_ALT"));
+  assert.ok(compatible.syllables[0].phoneticResult.provenance.includes("IPA-PROFILE-MEKONGPHON-VOWEL:UO_LONG_ALT"));
+  assert.equal(compatible.syllables[0].tone, baseline.syllables[0].tone);
+});
+
+test("browser MekongPhon-reference profile keeps onset and uncertainty boundaries", () => {
+  const baseline = analyze("ວັນ");
+  const compatible = analyze("ວັນ", { ipaProfile: "mekongphon-reference" });
+  assert.equal(baseline.syllables[0].ipa, "ʋan");
+  assert.equal(compatible.syllables[0].ipa, "wan");
+  assert.equal(compatible.syllables[0].ukrainian, "ван");
+  assert.ok(compatible.syllables[0].rules.includes("IPA-PROFILE-MEKONGPHON-ONSET:ວ"));
+
+  const rhotic = analyze("ຣະ", { ipaProfile: "mekongphon-reference" });
+  assert.equal(rhotic.syllables[0].ipa, "ra");
+  assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
+  assert.equal(rhotic.syllables[0].ukrainian, null);
+});
+
+test("hybrid browser renders unresolved Lao units through a typed provisional placeholder", () => {
+  const result = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" });
+  const syllable = result.syllables[0];
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(syllable.ipa, null);
+  assert.equal(syllable.ukrainian, "ка?");
+  assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
+  assert.equal(syllable.phoneticResult.vowelLength, "long");
+  assert.equal(syllable.phoneticResult.toneCategory, null);
+  assert.equal(syllable.phoneticResult.segments.length, 3);
+  assert.equal(syllable.phoneticResult.segments.at(-1).kind, "unknown");
+  assert.ok(syllable.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
+});
+
+test("hybrid renders uncertain phonetic readings without upgrading confidence", () => {
+  const syllable = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
+  assert.equal(syllable.ipa, "ra");
+  assert.equal(syllable.ukrainian, "ра");
+  assert.equal(syllable.phoneticResult.status, "UNCERTAIN");
+  assert.equal(syllable.status, "ANALYSIS DEPENDENT");
+});
+
+test("hybrid browser renders every assigned Lao-block codepoint", () => {
+  for (let codepoint = 0x0e80; codepoint < 0x0f00; codepoint += 1) {
+    const character = String.fromCodePoint(codepoint);
+    if (!/\p{Assigned}/u.test(character) || /\s/u.test(character)) continue;
+    const result = analyzeDefault(character, { ipaProfile: "hybrid-deterministic" });
+    assert.notEqual(result.status, "INVALID", "U+" + codepoint.toString(16));
+    assert.ok(result.syllables.length > 0, "accepted Lao input must not disappear: U+" + codepoint.toString(16));
+    for (const unit of result.syllables) {
+      assert.notEqual(unit.ukrainian, null, "missing rendering for U+" + codepoint.toString(16));
+    }
+  }
+});
+
+test("browser engine rejects unknown deterministic IPA profiles", () => {
+  assert.throws(() => analyze("ຂາ", { ipaProfile: "invented" }), RangeError);
+});
+
+
+test("browser hybrid deterministic profile composes Vientiane baseline with MekongPhon evidence rules", () => {
+  const baseline = analyze("ດວງ");
+  const reference = analyze("ດວງ", { ipaProfile: "mekongphon-reference" });
+  const hybrid = analyze("ດວງ", { ipaProfile: "hybrid-deterministic" });
+  assert.equal(hybrid.syllables[0].ipa, reference.syllables[0].ipa);
+  assert.equal(hybrid.syllables[0].ukrainian, reference.syllables[0].ukrainian);
+  assert.notEqual(hybrid.syllables[0].ipa, baseline.syllables[0].ipa);
+  assert.ok(hybrid.syllables[0].rules.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
+  assert.ok(hybrid.syllables[0].phoneticResult.provenance.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
+  assert.equal(hybrid.syllables[0].tone, baseline.syllables[0].tone);
+});
+
+test("browser hybrid profile preserves Vientiane fallthrough and uncertain onset status", () => {
+  const baseline = analyze("ຂາ");
+  const hybrid = analyze("ຂາ", { ipaProfile: "hybrid-deterministic" });
+  assert.equal(hybrid.syllables[0].ipa, baseline.syllables[0].ipa);
+  assert.ok(!hybrid.syllables[0].rules.some((rule) => rule.startsWith("HYBRID-RULE:")));
+  const rhotic = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" });
+  assert.equal(rhotic.syllables[0].ipa, "ra");
+  assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
+  assert.equal(rhotic.syllables[0].ukrainian, "ра");
+});
+
+test("browser engine rejects unknown hybrid rule profiles", () => {
+  assert.throws(() => analyze("ຂາ", { ipaProfile: "not-a-profile" }), RangeError);
+});
+
+test("browser engine preserves corpus-observed punctuation as explicit passthrough", () => {
+  const symbols = "&%–…#/" + String.fromCharCode(96) + "+•";
+  const result = analyze("ຂາ" + symbols);
+  const passthrough = result.syllables.filter((item) => item.passthrough);
+  assert.equal(passthrough.map((item) => item.surface).join(""), symbols);
+  assert.ok(passthrough.every((item) => item.ipa === "" && item.ukrainian === item.surface));
+});
+
+test("browser engine segments supported passthrough prefixes before Lao syllables", () => {
+  const result = analyze("(ຂາ");
+  assert.equal(result.syllables[0].passthrough, true);
+  assert.equal(result.syllables[0].ukrainian, "(");
+  assert.equal(result.syllables[1].ipa, "kʰaː");
+  assert.equal(result.status, "OK");
+});
+
+test("browser engine preserves Lao native digits as non-IPA passthrough", () => {
+  const result = analyze("ຂາ໑໒໓");
+  const digits = result.syllables.filter((item) => item.surface.length === 1 && item.surface.codePointAt(0) >= 0x0ED0 && item.surface.codePointAt(0) <= 0x0ED9);
+  assert.equal(digits.map((item) => item.surface).join(""), "໑໒໓");
+  assert.ok(digits.every((item) => item.passthrough && item.ipa === "" && item.ukrainian === item.surface));
+  assert.equal(result.syllables[0].ipa, "kʰaː");
 });

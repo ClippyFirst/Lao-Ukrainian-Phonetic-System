@@ -22,7 +22,7 @@ It is deliberately **not**:
 
 **Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/quantity → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
 
-The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation.
+The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation. The primary hybrid aims for 100% rendering coverage on valid input: supported IPA is rendered normally, complete but uncertain IPA is rendered with its uncertainty preserved, and unresolved graphemes receive provisional IPA hints plus explicit ? markers through the same typed adapter. A placeholder is not a pronunciation prediction or an accuracy claim.
 
 ## Context-sensitive grapheme-to-sound rules
 
@@ -36,7 +36,7 @@ ClippyFirst does **not** store word → IPA dictionary correspondences. It resol
 
 Thus the same Lao character can have different realizations by role: for example, `ວ` is /ʋ/ as an onset and /w/ as a coda; `ດ` is /d/ as an onset and /t/ as a coda. The vowel sign `ເ` likewise participates in short /e/ and long /eː/ structures depending on the complete spelling.
 
-The pinned [MekongPhon grapheme-context study](docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) aggregates grapheme, position, neighbouring signs, onset class, vowel ID, rhyme and tone-mark environments. It reports engine IPA and reference-aligned IPA separately. It never turns dictionary words into production lookup rules, and its train references are not independent gold.
+The pinned [MekongPhon grapheme-context study](docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) aggregates grapheme, position, neighbouring signs, onset class, vowel ID, rhyme and tone-mark environments. The default Vientiane engine does not turn dictionary words into lexical lookup rules. An additional opt-in [MekongPhon-reference IPA profile](docs/research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md) applies a small set of high-frequency aggregate correspondences as deterministic convention overrides; it is experimental, does not use model weights, and is not independent gold.
 
 ## Comparative methodology
 
@@ -69,9 +69,11 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 
 ## Scope and limitations
 
-The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer.
+The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer. The default ClippyFirst engine is the deterministic hybrid profile: Vientiane phonology remains its baseline, with only evidence-gated MekongPhon aggregate correspondences selected by deterministic contextual rules. Explicit `vientiane` and `mekongphon-reference` profiles remain frozen for compatibility only; future engine development targets hybrid.
 
-Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus.
+**Coverage validation (2026-11-08):** hybrid rendered 1,000/1,000 valid HVULao inputs (21,680/21,680 units) and 100/100 held-out MekongPhon inputs. On HVULao, evidence-backed IPA covered 97.85% of phonetic syllables and 67.6% of complete sentences; the remaining units are explicitly provisional or uncertain. These figures measure rendering/IPA coverage, not phonetic accuracy; independent adjudicated IPA gold remains unavailable.
+
+Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), low-confidence fallback for unresolved structures, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus. Rendering coverage, evidence-backed IPA coverage and phonetic accuracy are reported separately; 100% rendering coverage does not mean 100% correct pronunciation.
 
 ## Quick start and verification
 
@@ -90,7 +92,7 @@ Run the complete configured engineering checks from the repository root (command
 
 The browser tests require Playwright Chromium. In a fresh environment, install it with npx playwright install --with-deps chromium.
 
-For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json.
+For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json. The primary default is hybrid-deterministic; explicit `vientiane` and `mekongphon-reference` profiles are frozen for compatibility. The hybrid keeps Vientiane phonology as its base and applies existing MekongPhon-derived correspondences through a deterministic priority/specificity selector. On unresolved valid input, it returns a visibly provisional Ukrainian-side rendering rather than silently omitting the unit. The browser module exposes the same default and explicit compatibility profiles. See [the hybrid-engine design note](docs/research/HYBRID-DETERMINISTIC-ENGINE-2026-11-08.md).
 
 The web build regenerates the checked-in browser data mirror and copies the two static pages plus the web runtime into dist/. This is a small custom Python build, not a Vite/Webpack bundling pipeline. See [web architecture](docs/web-architecture.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -108,7 +110,7 @@ The repository also contains a two-page local-first web instrument:
 **Live site:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/  
 **Methodology:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/system.html
 
-The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. The Ukrainian result has two selectable methods: the default IPA-first phonetic adaptation and a separate syllable-level adapter for the provisional CLDR Lao-Latin/BGN romanization. The latter parses onset, vowel nucleus and coda rather than replacing Latin characters one by one, and cross-checks each romanized onset, source vowel ID and supported coda against the original Lao syllable analysis. The `h` in `kh/th/ph` marks aspiration, while standalone `h` from ຫ/ຮ represents /h/ and maps to `г`; the aspirated stops map to `к'/т'/п'`. The high-class nasal ligatures ໜ/ໝ and their expanded spellings ຫນ/ຫມ are checked as /n/ and /m/, not audible /h+n/ or /h+m/. The same source-aware silent-hoa handling covers the implemented forms ຫງ, ຫຍ, ຫລ/ຫຼ and ຫວ. Source vowel IDs also disambiguate romanizations such as `kam` (A + final m versus the AM nucleus). Ambiguous or mismatched syllables are withheld as partial rather than guessed. It cannot reconstruct tone or pronunciation absent from romanization and is not a phonetic equivalent. See [the methodology](docs/methodology.md#optional-romanization-to-ukrainian-mode). GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. Deployment history is available in the [GitHub Pages workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/pages.yml); exact-main engineering checks are recorded in the [verification workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/verify.yml).
+The browser artifact is generated from the canonical Lao CSV registries. It does not upload user text or require a runtime API. Its default phonetic route uses the same `hybrid-deterministic` profile as the Python API and CLI. The Ukrainian result has two selectable methods: the default IPA-first phonetic adaptation and a separate syllable-level adapter for the provisional CLDR Lao-Latin/BGN romanization. The latter parses onset, vowel nucleus and coda rather than replacing Latin characters one by one, and cross-checks each romanized onset, source vowel ID and supported coda against the original Lao syllable analysis. The `h` in `kh/th/ph` marks aspiration, while standalone `h` from ຫ/ຮ represents /h/ and maps to `г`; the aspirated stops map to `к'/т'/п'`. The high-class nasal ligatures ໜ/ໝ and their expanded spellings ຫນ/ຫມ are checked as /n/ and /m/, not audible /h+n/ or /h+m/. The same source-aware silent-hoa handling covers the implemented forms ຫງ, ຫຍ, ຫລ/ຫຼ and ຫວ. Source vowel IDs also disambiguate romanizations such as `kam` (A + final m versus the AM nucleus). Ambiguous or mismatched syllables are withheld as partial rather than guessed. It cannot reconstruct tone or pronunciation absent from romanization and is not a phonetic equivalent. See [the methodology](docs/methodology.md#optional-romanization-to-ukrainian-mode). GitHub Pages deployment is automated by `.github/workflows/pages.yml`; the multi-page static build uses relative paths and works under the repository project URL. Deployment history is available in the [GitHub Pages workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/pages.yml); exact-main engineering checks are recorded in the [verification workflow](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/verify.yml).
 
 Release verification:
 

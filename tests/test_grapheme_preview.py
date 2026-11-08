@@ -11,7 +11,7 @@ class GraphemePreviewTests(unittest.TestCase):
         syllable = analyze("ກາລ").syllables[0]
         preview = syllable.grapheme_preview
         self.assertIsNone(syllable.phonemic_ipa)
-        self.assertIsNone(syllable.practical_ukrainian)
+        self.assertEqual(syllable.practical_ukrainian, "ка?")
         self.assertEqual(preview.ipa_preview, "kaː")
         self.assertEqual(preview.status, "PROVISIONAL")
         self.assertEqual(preview.unresolved_graphemes, ("ລ",))
@@ -24,7 +24,7 @@ class GraphemePreviewTests(unittest.TestCase):
         self.assertEqual(syllable.grapheme_preview.ipa_preview, "kʰaː")
         self.assertIn("TONE_NOT_INFERRED_BY_GRAPHEME_PREVIEW", syllable.grapheme_preview.warnings)
         self.assertIsNone(syllable.grapheme_preview.phonetic_result.tone_category)
-        self.assertIsNone(syllable.practical_ukrainian)
+        self.assertEqual(syllable.practical_ukrainian, "к'а")
 
     def test_partial_onset_is_visible_when_vowel_structure_is_unknown(self):
         preview = analyze("ຂເ").syllables[0].grapheme_preview

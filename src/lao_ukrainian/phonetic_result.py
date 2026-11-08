@@ -57,6 +57,76 @@ def from_phonology(
     )
 
 
+
+def from_unknown_source_unit(
+    surface: str,
+    *,
+    provenance: tuple[str, ...] = (),
+    uncertainty: tuple[str, ...] = (),
+) -> PhoneticResult:
+    """Represent an unresolved source unit without inventing IPA.
+
+    The single typed unknown segment is deliberately not an IPA phone. The
+    target adapter may render it as a visible placeholder while preserving
+    the original source surface on the enclosing analysis record.
+    """
+    if not surface:
+        raise ValueError("An unknown source unit must not be empty")
+    trace = (*provenance, "FALLBACK:UNKNOWN-SOURCE-UNIT")
+    return PhoneticResult(
+        phonemic_ipa=None,
+        segments=(PhoneticSegment("?", "unknown", trace, "PROVISIONAL"),),
+        syllable_boundaries=(0, 1),
+        status="PROVISIONAL",
+        provenance=trace,
+        uncertainty=(*uncertainty, "PHONETIC-READING-UNKNOWN"),
+    )
+
+
+
+def from_provisional_preview(
+    preview,
+    *,
+    provenance: tuple[str, ...] = (),
+) -> PhoneticResult:
+    """Build a typed low-confidence IPA/unknown sequence from diagnostic hints.
+
+    Preview hints remain provisional. Unresolved grapheme groups become typed
+    unknown markers; no preview segment is promoted to supported phonemic IPA.
+    """
+    trace = (*provenance, "FALLBACK:GRAPHEME-POSITION-PREVIEW")
+    segments: list[PhoneticSegment] = []
+    typed_preview = getattr(preview, "phonetic_result", None)
+    if typed_preview is not None:
+        for segment in typed_preview.segments:
+            if segment.kind == "unknown":
+                segments.append(PhoneticSegment("?", "unknown", trace, "PROVISIONAL"))
+            else:
+                segments.append(PhoneticSegment(
+                    segment.ipa, segment.kind,
+                    (*segment.provenance, *trace), "PROVISIONAL",
+                ))
+    unresolved = tuple(getattr(preview, "unresolved_graphemes", ()))
+    segments.extend(
+        PhoneticSegment("?", "unknown", trace, "PROVISIONAL")
+        for _ in unresolved
+    )
+    if not segments:
+        segments.append(PhoneticSegment("?", "unknown", trace, "PROVISIONAL"))
+    uncertainty = tuple(getattr(preview, "warnings", ())) + ("PHONETIC-READING-PROVISIONAL",)
+    return PhoneticResult(
+        phonemic_ipa=None,
+        segments=tuple(segments),
+        syllable_boundaries=(0, len(segments)),
+        vowel_length=getattr(typed_preview, "vowel_length", None),
+        tone_category=None,
+        tone_contour_ipa=None,
+        status="PROVISIONAL",
+        provenance=trace,
+        uncertainty=tuple(dict.fromkeys(uncertainty)),
+    )
+
+
 def from_external_ipa(
     ipa: str,
     *,

@@ -138,7 +138,8 @@
                       "enum": [
                         "SUPPORTED",
                         "UNCERTAIN",
-                        "UNSUPPORTED"
+                        "UNSUPPORTED",
+                        "PROVISIONAL"
                       ]
                     }
                   }
@@ -173,7 +174,8 @@
                 "enum": [
                   "SUPPORTED",
                   "UNCERTAIN",
-                  "UNSUPPORTED"
+                  "UNSUPPORTED",
+                  "PROVISIONAL"
                 ]
               },
               "provenance": {

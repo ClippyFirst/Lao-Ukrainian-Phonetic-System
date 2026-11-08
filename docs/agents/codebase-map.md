@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** integrated continuation branch `audit/repository-docs-structure-20261107`, exact head `dd07adcd7d709ea5e1b8f94c3556965eefda73c9`. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** current main `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` plus open PRs #146/#147 and the hybrid deterministic continuation branch. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
@@ -29,16 +29,18 @@ Python implementation:
 - `normalize.py` — NFC normalization and Unicode/input validation.
 - `parser.py` — orthographic syllable parsing, dynamic segmentation, tone-mark storage-order checks, onset/coda and vowel structures.
 - `phonology.py` — rhyme/live-dead classification and source-scoped tone selection.
-- `phonetic_result.py` — source IPA inventory and typed IPA tokenization independent of Ukrainian target mappings.
+- `mekongphon_reference_profile.py` — Vientiane baseline, MekongPhon compatibility and default hybrid deterministic profile definitions.
+- `hybrid_rules.py` — deterministic rule selection by priority and context specificity; equal-rank conflicting outputs fail closed.
+- `phonetic_result.py` — source IPA inventory, typed IPA tokenization, and `from_provisional_preview()` for evidence-labelled grapheme hints plus explicit unknown segments.
 - `target.py` — typed IPA → Ukrainian adaptation; initial yodation and target-specific sequence matching.
-- `core.py` — public orchestration and uncertainty handling.
+- `core.py` — public orchestration, uncertainty handling, and the `ipa_profile` selector (default `hybrid-deterministic`; explicit `vientiane` baseline and `mekongphon-reference` compatibility profiles).
 - `model.py` / `data.py` — result types and canonical registry loading.
 
-The browser engine is a separately maintained implementation using generated canonical data. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
+The browser engine is a separately maintained implementation using generated canonical data. Its API and visible UI default to `hybrid-deterministic`, matching Python. Explicit `vientiane` and `mekongphon-reference` profiles remain frozen for compatibility only; future engine development targets hybrid. Python and browser implementations both retain the baseline fallback and record applied hybrid rule IDs in IPA provenance. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
 
-## Separate provisional grapheme preview
+## Provisional grapheme hints and hybrid fallback
 
-When the complete phonological path withholds accepted IPA, `grapheme_preview.py` can produce a distinct `PROVISIONAL` segmental hint from registered positional onset/cluster values and parser-confirmed vowel/coda structures. It preserves unresolved graphemes, does not infer tone, and is never passed to the accepted Ukrainian target adapter. Browser parity lives in `web/engine.js` and the UI labels the result as provisional.
+`grapheme_preview.py` produces a diagnostic `PROVISIONAL` segmental hint from registered positional onset/cluster values and parser-confirmed vowel/coda structures. The primary hybrid may wrap those hints as a separate typed `PROVISIONAL` `PhoneticResult`, append explicit unknown segments for unresolved graphemes, and send that typed result through the ordinary Ukrainian IPA adapter. This is not direct grapheme-to-Ukrainian mapping: provisional IPA runs remain visibly low-confidence, unknown segments render `?`, and none is promoted to `SUPPORTED` IPA. Tone is never inferred by the preview. Browser parity lives in `web/engine.js`; both runtimes preserve known vowel length when available.
 
 Canonical codepoint inventory: `data/lao/grapheme_inventory.csv` (83 assigned code points in the Unicode 18 Lao block). Unicode character identity does not itself establish a pronunciation.
 
@@ -67,7 +69,7 @@ The optional CLDR/BGN-oriented romanization method is lower-information and sour
 2. Vowel nucleus × coda classification: live/dead affects tone; do not infer it from the length label alone.
 3. Ambiguous onset clusters and unconsumed suffixes: preserve the fail-closed parser contract.
 4. Typed IPA → Ukrainian boundary: only supported typed IPA may produce accepted target output.
-5. Provisional preview: never promote provisional segments or infer tone.
+5. Provisional fallback: allow typed PROVISIONAL IPA hints through the ordinary adapter, but never promote them to SUPPORTED or infer tone.
 6. External G2P: pin versions/revisions, preserve raw output and provenance; inter-engine agreement is not accuracy.
 7. Gold ingestion: only independent, adjudicated, rights-eligible, held-out records may enter accuracy denominators.
 8. Python/browser parity: shared source data and fixtures do not eliminate runtime-specific edge cases.

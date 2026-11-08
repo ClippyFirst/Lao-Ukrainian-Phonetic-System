@@ -3,12 +3,14 @@ import json
 from dataclasses import asdict
 
 from .core import analyze
+from .mekongphon_reference_profile import DEFAULT_ENGINE_PROFILE
 
 
 def main():
     ap = argparse.ArgumentParser(description="Lao → Ukrainian phonetic-graphemic analyzer")
     ap.add_argument("text")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--ipa-profile", choices=("vientiane", "mekongphon-reference", "hybrid-deterministic"), default=DEFAULT_ENGINE_PROFILE, help="deterministic source-IPA convention (default: hybrid-deterministic); vientiane selects the explicit Vientiane baseline and mekongphon-reference selects the compatibility profile")
     ap.add_argument(
         "--engine",
         choices=("rules", "mekongphon-tonal", "mekongphon-nontonal"),
@@ -21,7 +23,7 @@ def main():
     args = ap.parse_args()
 
     if args.engine == "rules":
-        result = analyze(args.text)
+        result = analyze(args.text, ipa_profile=args.ipa_profile)
         if args.json:
             print(json.dumps(asdict(result), ensure_ascii=False, indent=2))
             return
@@ -36,6 +38,9 @@ def main():
                 unresolved = "".join(preview.unresolved_graphemes) or "none"
                 print(f"  IPA preview={preview.ipa_preview or '—'} [{preview.status}]; unresolved={unresolved}")
         return
+
+    if args.ipa_profile != DEFAULT_ENGINE_PROFILE:
+        ap.error("--ipa-profile applies only to --engine rules")
 
     from .mekongphon import transcribe_lao
 

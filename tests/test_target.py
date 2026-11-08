@@ -77,10 +77,11 @@ class TestTarget(unittest.TestCase):
         with self.assertRaises(TypeError):
             practical_from_ipa("kʰaː")
 
-    def test_uncertain_result_is_withheld(self):
+    def test_uncertain_result_is_withheld_by_default_compatibility_adapter(self):
         result = phonetic_result_from_ipa("la", status="UNCERTAIN",
                                           uncertainty=("ONSET-ANALYSIS-DEPENDENT",))
         self.assertIsNone(adapt_phonetic_result(result))
+        self.assertEqual(adapt_phonetic_result(result, allow_uncertain=True), "ла")
 
     def test_typed_result_preserves_metadata_and_segment_boundaries(self):
         result = phonetic_result_from_ipa(

@@ -93,13 +93,13 @@ function toneFor(cls, syllableType, length, mark) {
 const IPA_SYMBOLS = [
   "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕ", "dʑ", "ɲ",
   "kʰ", "pʰ", "tʰ", "nʲ", "lʲ", "rʲ", "tʲ", "dʲ",
-  "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː",
+  "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː", "ə̯",
   "k", "p", "t", "d", "b", "ŋ", "m", "n", "s", "f",
   "h", "ɡ", "g", "x", "ɦ", "r", "l", "j", "ʋ", "w", "ʔ",
   "ʃ", "ʒ", "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
 ];
 const IPA_VOWELS = new Set([
-  "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː",
+  "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː", "ə̯",
   "a", "i", "ɯ", "u", "e", "ɛ", "o", "ɔ", "ɤ", "ə",
 ]);
 
@@ -145,11 +145,42 @@ function createPhoneticResult(ipa, metadata = {}) {
   return base;
 }
 
-function adaptPhoneticResult(result) {
+function adaptPhoneticResult(result, { allowUncertain = false } = {}) {
   if (!result || typeof result !== "object" || !Array.isArray(result.segments)) {
     throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
   }
-  if (result.status !== "SUPPORTED" || result.segments.length === 0 ||
+  if (result.status === "PROVISIONAL") {
+    if (!result.segments.length) return "?";
+    let output = "";
+    let provisionalRun = [];
+    const flushRun = () => {
+      if (!provisionalRun.length) return;
+      const run = provisionalRun;
+      provisionalRun = [];
+      const mapped = adaptPhoneticResult({
+        ...result,
+        segments: run,
+        syllableBoundaries: [0, run.length],
+        status: "SUPPORTED",
+      });
+      output += mapped ?? "?";
+    };
+    for (const segment of result.segments) {
+      if (segment?.kind === "unknown") {
+        flushRun();
+        if (segment.ipa !== "?" || segment.certainty !== "PROVISIONAL") return null;
+        output += "?";
+      } else if (["vowel", "consonant"].includes(segment?.kind) &&
+          segment.certainty === "PROVISIONAL") {
+        provisionalRun.push({ ...segment, certainty: "SUPPORTED" });
+      } else {
+        return null;
+      }
+    }
+    flushRun();
+    return output || "?";
+  }
+  if (!(result.status === "SUPPORTED" || (allowUncertain && result.status === "UNCERTAIN")) || result.segments.length === 0 ||
       result.segments.some((segment) => segment?.certainty !== "SUPPORTED")) return null;
   const ipa = result.segments.map((segment) => segment.ipa).join("");
   const keys = sortedIpa();
@@ -283,6 +314,12 @@ function previewFromGraphemes(surface, parsed) {
   };
 }
 
+const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
+
+function isPassthroughChar(ch) {
+  return PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\u0ED0-\u0ED9]$/u.test(ch);
+}
+
 function validateInput(text) {
   const warnings = [];
   for (const ch of text) {
@@ -291,8 +328,9 @@ function validateInput(text) {
       warnings.push("Вхід містить керівний символ.");
       continue;
     }
+    if (cp === 0x200B) continue; // Lao word-boundary zero-width space.
     if (cp >= 0x0E80 && cp <= 0x0EFF) continue;
-    if (/\s/.test(ch) || (cp < 0x80 && /[-'.]/.test(ch))) continue;
+    if ((ch !== "\uFEFF" && /\s/.test(ch)) || cp < 0x80 || PASSTHROUGH_PUNCTUATION.has(ch)) continue;
     if (cp > 0x7F) warnings.push("Непідтримуваний символ поза лаоським Unicode-діапазоном.");
   }
   return [...new Set(warnings)];
@@ -351,7 +389,42 @@ function toneMarkOrderError(chars, clean, found) {
     ? null : "MALFORMED_TONE_MARK_POSITION";
 }
 
-function analyzeToken(surface) {
+
+const HYBRID_RULES = [
+  ...Object.entries({
+    AW_LONG: "ao", UA_LONG: "ɯːə̯", IA_LONG: "iaː", OEE: "əː",
+    AI: "aj", UO_LONG: "uaː", UO_LONG_ALT: "uaː", AI2: "aj", OE: "ə",
+  }).map(([id, value]) => ({
+    ruleId: "HYB-MPH-VOWEL-" + id, target: "vowel",
+    conditions: { vowelId: id }, value, priority: 0,
+    provenance: "IPA-PROFILE-MEKONGPHON-VOWEL:" + id,
+  })),
+  ...Object.entries({ "ວ": "w", "ຣ": "r" }).map(([onset, value]) => ({
+    ruleId: "HYB-MPH-ONSET-" + onset, target: "onset",
+    conditions: { onset }, value, priority: 0,
+    provenance: "IPA-PROFILE-MEKONGPHON-ONSET:" + onset,
+  })),
+];
+
+function selectHybridRule(target, context) {
+  const matches = HYBRID_RULES.filter((rule) =>
+    rule.target === target &&
+    Object.entries(rule.conditions).every(([key, expected]) => context[key] === expected)
+  );
+  if (!matches.length) return null;
+  const rank = (rule) => [rule.priority, Object.keys(rule.conditions).length];
+  const bestRank = matches.map(rank).sort((a, b) => b[0] - a[0] || b[1] - a[1])[0];
+  const best = matches.filter((rule) => {
+    const r = rank(rule);
+    return r[0] === bestRank[0] && r[1] === bestRank[1];
+  });
+  if (new Set(best.map((rule) => rule.value)).size > 1) {
+    throw new RangeError("Conflicting hybrid IPA rules: " + best.map((rule) => rule.ruleId).sort().join(", "));
+  }
+  return best.sort((a, b) => a.ruleId.localeCompare(b.ruleId))[0];
+}
+
+function analyzeToken(surface, ipaProfile = "hybrid-deterministic") {
   const chars = [...surface];
   const toneMarkCount = chars.filter((ch) => TONE_MARK_SET.has(ch)).length;
   if (toneMarkCount > 1) {
@@ -414,8 +487,40 @@ function analyzeToken(surface) {
     ? { name: null, contour: null, status: "ANALYSIS DEPENDENT", ruleId: "TONE-NOT-ESTABLISHED-FOR-COMBINATION" }
     : tone;
   const codaIpa = coda ? CODAS[coda] : "";
-  const onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
-  const ipa = structuralWarning ? null : onsetIpa + matched.v[2] + codaIpa;
+  let onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
+  let vowelIpa = matched.v[2];
+  const profileRules = [];
+  if (ipaProfile === "mekongphon-reference") {
+    const onsetOverride = { "ວ": "w", "ຣ": "r" }[onsetKey];
+    const vowelOverride = {
+      AW_LONG: "ao", UA_LONG: "ɯːə̯", IA_LONG: "iaː", OEE: "əː",
+      AI: "aj", UO_LONG: "uaː", UO_LONG_ALT: "uaː", AI2: "aj", OE: "ə",
+    }[matched.v[0]];
+    if (onsetOverride && onsetOverride !== onsetIpa) {
+      onsetIpa = onsetOverride;
+      profileRules.push("IPA-PROFILE-MEKONGPHON-ONSET:" + onsetKey);
+    }
+    if (vowelOverride && vowelOverride !== vowelIpa) {
+      vowelIpa = vowelOverride;
+      profileRules.push("IPA-PROFILE-MEKONGPHON-VOWEL:" + matched.v[0]);
+    }
+  } else if (ipaProfile === "hybrid-deterministic") {
+    const context = {
+      onset: onsetKey, onsetClass, vowelId: matched.v[0],
+      vowelLength: matched.v[3], coda, toneMark: mark,
+    };
+    const onsetRule = selectHybridRule("onset", context);
+    const vowelRule = selectHybridRule("vowel", context);
+    if (onsetRule && onsetRule.value !== onsetIpa) {
+      onsetIpa = onsetRule.value;
+      profileRules.push(onsetRule.provenance, "HYBRID-RULE:" + onsetRule.ruleId);
+    }
+    if (vowelRule && vowelRule.value !== vowelIpa) {
+      vowelIpa = vowelRule.value;
+      profileRules.push(vowelRule.provenance, "HYBRID-RULE:" + vowelRule.ruleId);
+    }
+  }
+  const ipa = structuralWarning ? null : onsetIpa + vowelIpa + codaIpa;
   const adapterStatus = ipa && !structuralWarning &&
     onset[2] === "core" && warnings.length === 0
     ? "SUPPORTED" : ipa ? "UNCERTAIN" : "UNSUPPORTED";
@@ -425,14 +530,14 @@ function analyzeToken(surface) {
     toneContourIpa: resolvedTone.contour,
     status: adapterStatus,
     provenance: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0],
-      "SYLLABLE:" + syllableType, resolvedTone.ruleId || "TONE:UNRESOLVED"],
+      "SYLLABLE:" + syllableType, ...profileRules, resolvedTone.ruleId || "TONE:UNRESOLVED"],
     uncertainty: [...warnings, ...(resolvedTone.status === "ESTABLISHED" ? [] : ["TONE-UNRESOLVED"])],
   });
-  const ukrainian = adaptPhoneticResult(phoneticResult);
+  const ukrainian = adaptPhoneticResult(phoneticResult, { allowUncertain: ipaProfile === "hybrid-deterministic" });
 
   if (onsetForm !== onsetKey && !onsetIpaOverride) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
   if (onsetIpaOverride) warnings.push("ONSET-LABIALIZED:" + onsetForm);
-  if (onsetKey === "ຣ") warnings.push("ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
+  if (onsetKey === "ຣ") warnings.push(ipaProfile !== "vientiane" ? "Reference-compatible deterministic profile uses /r/ for ຣ; this reading remains analysis-dependent." : "ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
   if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
@@ -443,7 +548,7 @@ function analyzeToken(surface) {
     length: matched.v[3], nucleusType: matched.v[6], coda: coda || "—", toneMark: mark,
     syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, toneStatus: resolvedTone.status, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
-      "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
+      "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, ...profileRules, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
 }
 
@@ -454,7 +559,7 @@ function isStructurallyComplete(s) {
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
-function analyzeWord(word) {
+function analyzeWord(word, ipaProfile = "hybrid-deterministic") {
   const chars = [...word];
   // Tone-mark placement and multiplicity are syllable-local properties.
   // Candidate syllables validate their own marks below; a mark that cannot be
@@ -467,7 +572,7 @@ function analyzeWord(word) {
   if (firstOnsetIndex >= 0) {
     const prefix = chars.slice(0, firstOnsetIndex).join("");
     const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
-    if (!allowedPreposed.has(prefix)) {
+    if (!allowedPreposed.has(prefix) && ![...prefix].every(isPassthroughChar)) {
       const prefixWarnings = [
         ...(chars.slice(0, firstOnsetIndex).some((ch) => TONE_MARK_SET.has(ch))
           ? ["MALFORMED_TONE_MARK_POSITION: tone mark precedes the syllable onset."]
@@ -490,7 +595,7 @@ function analyzeWord(word) {
   // ເ+onset as long /eː/ and leave ຽ behind, leaking a misleading IPA prefix.
   const cleanWord = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
   const iaOnset = findOnset(cleanWord);
-  if (iaOnset &&
+  if (iaOnset && iaOnset.onsetIndex !== null && iaOnset.onsetLength !== null &&
       cleanWord.slice(0, iaOnset.onsetIndex) === "ເ" &&
       cleanWord.slice(iaOnset.onsetIndex + iaOnset.onsetLength) === "ຽ") {
     return [{
@@ -507,11 +612,14 @@ function analyzeWord(word) {
   // A short-vowel spelling that requires a coda is a single incomplete
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
-  const wholeCandidate = analyzeToken(word);
+  const wholeCandidate = analyzeToken(word, ipaProfile);
   // Keep a fully parsed but analysis-dependent source reading intact. The
   // target adapter may withhold Ukrainian output without invalidating the
   // source-side IPA parse (e.g. modern/loan-dependent ຣ).
-  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN") {
+  const hasUnconsumedSuffix = (wholeCandidate.warnings || []).some((warning) =>
+    warning.startsWith("Невикористана частина структури складу: ")
+  );
+  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN" && !hasUnconsumedSuffix) {
     return [wholeCandidate];
   }
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
@@ -539,14 +647,14 @@ function analyzeWord(word) {
   // the longest fully parsed syllables, but retain every unparsed code point.
   for (let i = n - 1; i >= 0; i--) {
     const ch = chars[i];
-    const passthrough = /^[,!?;:()[\]{}"“”]+$/u.test(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
+    const passthrough = isPassthroughChar(ch);
     const fallback = passthrough
       ? { surface: ch, status: "PASSTHROUGH", ukrainian: ch, ipa: "", warnings: [], passthrough: true }
       : { surface: ch, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно проаналізувати фрагмент: " + ch], ukrainian: null, ipa: null };
     best[i] = { score: best[i + 1].score - 100, parts: [fallback, ...best[i + 1].parts] };
 
     for (let j = i + 1; j <= Math.min(n, i + 12); j++) {
-      const candidate = analyzeToken(chars.slice(i, j).join(""));
+      const candidate = analyzeToken(chars.slice(i, j).join(""), ipaProfile);
       if (!isStructurallyComplete(candidate)) continue;
       const length = j - i;
       const nextChar = chars[j] || "";
@@ -634,29 +742,83 @@ function analyzeWord(word) {
   return parts;
 }
 
-export function analyze(text) {
+export function analyze(text, options = {}) {
   const input = String(text ?? "");
-  const normalized = input.normalize("NFC").trim();
+  const ipaProfile = options?.ipaProfile ?? "hybrid-deterministic";
+  if (!["vientiane", "mekongphon-reference", "hybrid-deterministic"].includes(ipaProfile)) {
+    throw new RangeError("Unknown IPA profile: " + ipaProfile);
+  }
+  const normalized = input.normalize("NFC").replace(/^\uFEFF/, "").trim();
   if (!normalized) return { input, normalized, status: "EMPTY", output: "", syllables: [], warnings: [] };
   const inputWarnings = validateInput(normalized);
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
-  const words = normalized.split(/\s+/).filter(Boolean).map(analyzeWord);
+  const words = normalized.replace(/\u200b/g, " ").split(/\s+/).filter(Boolean).map((word) => {
+    const analyzed = analyzeWord(word, ipaProfile);
+    return analyzed.length ? analyzed : [analyzeToken(word, ipaProfile)];
+  });
   const syllables = words.flat().map((syllable) => {
-    if (syllable.passthrough || syllable.ipa) return syllable;
-    // Reparse only the segmental structure after removing tone marks. This
-    // recovers onset/vowel roles for a provisional preview, but the preview
-    // itself never carries or infers a tone value.
+    if (syllable.passthrough || (syllable.ukrainian && syllable.status === "ESTABLISHED")) return syllable;
+    if (ipaProfile !== "hybrid-deterministic") {
+      if (syllable.ipa) return syllable;
+      // Frozen compatibility profiles retain their historical withheld-output
+      // contract; the full-coverage placeholder policy belongs to hybrid only.
+      const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
+      const structural = analyzeToken(segmentalSurface, ipaProfile);
+      const previewInput = {
+        ...structural,
+        warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
+      };
+      return { ...syllable, graphemePreview: previewFromGraphemes(syllable.surface, previewInput) };
+    }
+    // Keep the diagnostic preview distinct, but allow its explicitly
+    // provisional IPA hints to cross the same typed adapter boundary.
     const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
-    const structural = analyzeToken(segmentalSurface);
+    const structural = analyzeToken(segmentalSurface, ipaProfile);
     const previewInput = {
       ...structural,
       warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
     };
-    return {
-      ...syllable,
-      graphemePreview: previewFromGraphemes(syllable.surface, previewInput)
-    };
+    const graphemePreview = previewFromGraphemes(syllable.surface, previewInput);
+    let phoneticResult = syllable.phoneticResult;
+    if (!phoneticResult || !phoneticResult.segments?.length) {
+      const hinted = graphemePreview.phoneticResult?.segments || [];
+      const provisionalSegments = [
+        ...hinted.map((segment) => ({ ...segment, certainty: "PROVISIONAL" })),
+        ...(graphemePreview.unresolvedGraphemes || []).map(() => ({
+          ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNRESOLVED-GRAPHEME"], certainty: "PROVISIONAL"
+        })),
+      ];
+      if (!provisionalSegments.length) {
+        provisionalSegments.push({
+          ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"], certainty: "PROVISIONAL"
+        });
+      }
+      phoneticResult = {
+        phonemicIpa: null,
+        segments: provisionalSegments,
+        syllableBoundaries: [0, provisionalSegments.length],
+        vowelLength: graphemePreview.phoneticResult?.vowelLength ?? null,
+        toneCategory: null,
+        toneContourIpa: null,
+        status: "PROVISIONAL",
+        provenance: ["FALLBACK:GRAPHEME-POSITION-PREVIEW"],
+        uncertainty: [...(graphemePreview.warnings || []), "PHONETIC-READING-PROVISIONAL"],
+      };
+    }
+    const ukrainian = adaptPhoneticResult(phoneticResult, { allowUncertain: ipaProfile === "hybrid-deterministic" });
+    if (ukrainian !== null) {
+      return { ...syllable, phoneticResult, ukrainian, graphemePreview,
+        status: phoneticResult.status === "PROVISIONAL" ? "EVIDENCE LIMITED" : syllable.status };
+    }
+    return { ...syllable, phoneticResult: {
+      phonemicIpa: null,
+      segments: [{ ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"], certainty: "PROVISIONAL" }],
+      syllableBoundaries: [0, 1], status: "PROVISIONAL",
+      provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
+      uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
+    }, ukrainian: "?", graphemePreview, status: "EVIDENCE LIMITED" };
+
   });
   const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");

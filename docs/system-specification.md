@@ -4,9 +4,13 @@
 
 The active model is contemporary Standard Lao with a Vientiane-oriented phonological reference model. It is not a universal model of every Lao variety.
 
+## Primary deterministic engine
+
+ClippyFirst's primary Lao engine is `hybrid-deterministic`, selected by default in the Python API, rules CLI and browser runtime. It uses the Vientiane-oriented phonological analysis as its base and applies only the existing evidence-gated MekongPhon aggregate correspondences through a deterministic contextual selector. The explicit `vientiane` and `mekongphon-reference` profiles are frozen for compatibility only; future engine implementation and optimization work targets hybrid. Optional Neural inference is not part of the default transcription path. This engine-selection decision does not establish independent phonetic accuracy or linguistic release readiness.
+
 ## Processing layers
 
-1. Unicode normalization and script validation.
+1. Unicode normalization and script validation (including U+200B as an explicit Lao word-boundary separator and stripping a leading U+FEFF file BOM).
 2. Graphemic syllable parsing.
 3. Consonant-class identification.
 4. Vowel structure and quantity.
@@ -33,7 +37,7 @@ Tone is a separate field. The Vientiane reference model has five tones. Tone is 
 
 ## Ukrainian output
 
-The executable target boundary is a typed `PhoneticResult`; the Ukrainian adapter consumes only its registered IPA segments and metadata. `UNCERTAIN` segmental readings and `UNSUPPORTED` IPA are withheld rather than mapped from Lao spelling or partial IPA. Tone uncertainty is independent: when segmental IPA is supported, the Ukrainian form may be produced while tone remains unresolved in metadata. The current Lao engine does not claim an independent broad-surface IPA layer. See [the adapter contract](ipa-to-ukrainian-adapter.md).
+The executable target boundary is a typed `PhoneticResult`; the Ukrainian adapter consumes only its registered IPA segments and metadata. In the primary hybrid profile, structurally complete UNCERTAIN IPA may be adapted as a low-confidence Ukrainian rendering while its uncertainty status is preserved. When no defensible complete IPA can be produced, the hybrid may reuse registered grapheme-position hints only as PROVISIONAL typed segments and append explicit unknown markers for unresolved graphemes. The same adapter renders the provisional known portion and visible ? markers; none of this fallback is promoted to canonical IPA or counted as phonetic accuracy. The frozen Vientiane and MekongPhon-reference compatibility profiles retain their historical withholding behavior. Tone uncertainty is independent: when segmental IPA is supported, the Ukrainian form may be produced while tone remains unresolved in metadata. The current Lao engine does not claim an independent broad-surface IPA layer. See [the adapter contract](ipa-to-ukrainian-adapter.md).
 
 
 

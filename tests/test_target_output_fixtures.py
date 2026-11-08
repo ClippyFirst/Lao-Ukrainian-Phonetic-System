@@ -3,7 +3,13 @@ import json
 import unittest
 from pathlib import Path
 
-from lao_ukrainian import analyze
+from lao_ukrainian import analyze as _analyze
+
+# These legacy fixtures assert the explicit Vientiane baseline. The public
+# API default is tested separately as hybrid-deterministic.
+def analyze(text, *, ipa_profile="vientiane"):
+    return _analyze(text, ipa_profile=ipa_profile)
+
 
 
 FIXTURE = Path(__file__).parent / "fixtures" / "target_output_cases.json"
