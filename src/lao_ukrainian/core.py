@@ -185,8 +185,8 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 provenance=tuple(rules),
                 uncertainty=tuple(local_warnings) + (() if tone_status in ESTABLISHED_TONE_STATUSES else ("TONE-UNRESOLVED",)),
             )
-            if not phonetic_result.segments:
-                # Preserve complete input coverage without fabricating a phone:
+            if not phonetic_result.segments and ipa_profile == DEFAULT_ENGINE_PROFILE:
+                # Preserve complete primary-hybrid coverage without fabricating a phone:
                 # the typed result carries one explicit unknown unit and the
                 # target adapter renders a visible low-confidence placeholder.
                 phonetic_result = from_unknown_source_unit(
