@@ -226,6 +226,14 @@ test("CRLF is accepted as line whitespace", () => {
   assert.equal(r.output, "ка к\u0027а");
 });
 
+test("browser strips only a leading text-stream BOM", () => {
+  const bom = String.fromCharCode(0xfeff);
+  const clean = analyze("ກາ", { ipaProfile: "hybrid-deterministic" });
+  const prefixed = analyze(bom + "ກາ", { ipaProfile: "hybrid-deterministic" });
+  assert.deepEqual(prefixed.syllables.map((unit) => unit.surface), clean.syllables.map((unit) => unit.surface));
+  assert.equal(analyze("ກ" + bom + "າ", { ipaProfile: "hybrid-deterministic" }).status, "INVALID");
+});
+
 test("zero-width space is accepted as a Lao syllable boundary", () => {
   const r = analyze("ກ\u200bຂ", { ipaProfile: "hybrid-deterministic" });
   assert.notEqual(r.status, "INVALID");
