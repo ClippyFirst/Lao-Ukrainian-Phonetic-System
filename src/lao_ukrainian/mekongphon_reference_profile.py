@@ -35,6 +35,8 @@ def apply_ipa_profile(parsed, onset_ipa, vowel_ipa, coda_ipa, profile=DEFAULT_PR
     """Return profile-specific segmental units and explicit provenance rules."""
     if profile == DEFAULT_PROFILE:
         return onset_ipa, vowel_ipa, coda_ipa, []
+    if profile == HYBRID_PROFILE:
+        return apply_hybrid_profile(parsed, onset_ipa, vowel_ipa, coda_ipa)
     if profile != PROFILE_NAME:
         raise ValueError(
             f"Unknown IPA profile {profile!r}; expected one of {SUPPORTED_IPA_PROFILES}"
