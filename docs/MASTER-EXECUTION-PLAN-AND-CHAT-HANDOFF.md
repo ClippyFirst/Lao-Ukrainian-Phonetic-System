@@ -2649,3 +2649,15 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 | Lao native digit passthrough | DONE_VERIFIED on code checkpoint | Python and browser tests passed in Verify #42509801841 (281 Python, 135 Node, 17 Chromium); later removal of a redundant browser pre-split is separately verified by #42509827961 |
 | Source registry and claims update | PARTIAL pending final CI | `claims.csv` now records both script fact and implementation methodology; latest branch-head audit workflow must pass |
 | Broaden minor-syllable rule | DEFERRED / evidence-limited | Requires orthographic examples and expert-reviewed Vientiane fixtures; current narrow candidate remains unresolved |
+
+
+## Provisional grapheme-first fallback — 2026-11-08
+
+- Branch: `feat/grapheme-first-provisional-fallback-20261108`, based on current `main` at `e351d7577378dd8927da66f6205f5ff5b63f145e`.
+- Goal: when the hybrid parser cannot establish a complete Lao syllable, retain the best available sound hint for each recognized modern-Lao phonetic grapheme rather than leaving known consonants/vowel signs entirely silent.
+- Updated `src/lao_ukrainian/grapheme_preview.py` and `web/engine.js` in parity. Unassigned core consonants now expose their registered initial IPA as `PROVISIONAL`; selected vowel signs expose conservative grapheme-level IPA hints. Position/value uncertainty is retained in warnings and unresolved-grapheme metadata.
+- These hints do not establish onset/coda position, do not become supported phonemic IPA, and do not infer tone. Non-core Pali/Sanskrit/Khmu material remains without invented consonant values. IPA-to-Ukrainian adaptation still receives typed provisional segments; unknown markers remain visible.
+- Example acceptance target: malformed `ກາລ` should expose `kaːl` as a provisional segmental hint and render `кал?`, not silently drop the known /l/ hint or pretend its syllable position is established.
+- Added Python and browser regression assertions for unresolved consonant hints, context-dependent vowel hints and non-core consonant withholding.
+- Status at documentation update: **PARTIAL / awaiting exact-head hosted CI**. No local checkout or local test execution was available through the GitHub connector workflow. Do not claim tests pass until the new PR-head Verify workflow completes.
+- Linguistic boundary: this improves low-confidence rendering coverage, not phonetic accuracy. Per-grapheme hints are deliberately crude and may not equal the actual sound in context. Expert-adjudicated IPA gold remains required for accuracy claims.
