@@ -602,7 +602,7 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
   const syllable = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "?");
+  assert.equal(syllable.ukrainian, "ка?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.graphemePreview.ipaPreview, "kaː");
   assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
@@ -654,11 +654,11 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   const syllable = result.syllables[0];
   assert.equal(result.status, "PARTIAL");
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "?");
+  assert.equal(syllable.ukrainian, "ка?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
-  assert.equal(syllable.phoneticResult.segments.length, 1);
-  assert.equal(syllable.phoneticResult.segments[0].kind, "unknown");
-  assert.equal(syllable.phoneticResult.segments[0].certainty, "PROVISIONAL");
+  assert.equal(syllable.phoneticResult.segments.length, 3);
+  assert.equal(syllable.phoneticResult.segments.at(-1).kind, "unknown");
+  assert.ok(syllable.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
 });
 
 test("hybrid renders uncertain phonetic readings without upgrading confidence", () => {
