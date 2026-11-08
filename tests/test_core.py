@@ -255,8 +255,8 @@ class TestCore(unittest.TestCase):
         self.assertEqual(syllable.practical_ukrainian, "ка?")
         self.assertEqual(syllable.phonetic_result.status, "PROVISIONAL")
         self.assertEqual(len(syllable.phonetic_result.segments), 1)
-        self.assertEqual(syllable.phonetic_result.segments[0].kind, "unknown")
-        self.assertEqual(syllable.phonetic_result.segments[0].certainty, "PROVISIONAL")
+        self.assertEqual(syllable.phonetic_result.segments[-1].kind, "unknown")
+        self.assertTrue(all(segment.certainty == "PROVISIONAL" for segment in syllable.phonetic_result.segments))
         self.assertIn("PHONETIC-READING-UNKNOWN", syllable.phonetic_result.uncertainty)
 
     def test_hybrid_renders_analysis_dependent_ipa_without_promoting_confidence(self):
