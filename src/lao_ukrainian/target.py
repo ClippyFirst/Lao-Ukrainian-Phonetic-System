@@ -56,10 +56,19 @@ def _map_ipa_sequence(ipa: str, registry: dict[str, dict[str, str]]) -> str | No
 
 
 def adapt_phonetic_result(result: PhoneticResult, registry=None) -> str | None:
-    """Adapt supported typed IPA, applying yodation at explicit syllable starts."""
+    """Adapt typed IPA; uncertain readings are allowed but never upgraded in status."""
     if not isinstance(result, PhoneticResult):
         raise TypeError("Ukrainian adaptation requires a PhoneticResult")
-    if result.status != "SUPPORTED" or not result.segments:
+    if result.status == "PROVISIONAL":
+        if (
+            len(result.segments) == 1
+            and result.segments[0].kind == "unknown"
+            and result.segments[0].certainty == "PROVISIONAL"
+            and result.segments[0].ipa == "?"
+        ):
+            return "?"
+        return None
+    if result.status not in {"SUPPORTED", "UNCERTAIN"} or not result.segments:
         return None
     if any(segment.certainty != "SUPPORTED" for segment in result.segments):
         return None
