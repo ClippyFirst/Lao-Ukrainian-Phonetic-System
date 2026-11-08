@@ -2412,3 +2412,8 @@ The first HVULao artifact (schema 1.0) timed every rule-engine call but omitted 
 - Exact-head full Verify [#42488814424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488814424) on commit `61b21237d57fc519dfff40ee22ed0649df2050e0`: 271 Python, 129 Node, 17 Chromium tests and corpus/audit/install/build/generated-data/built-site gates all passed.
 
 Schema 1.0 latency numbers are retained only as historical diagnostics and are superseded for comparison by schema 1.1. The benchmark remains a sentence-domain stress test, not an IPA accuracy benchmark; no adjudicated IPA gold is present.
+
+
+## Benchmark workflow de-duplication — 2026-11-08
+
+The stacked PR's base branch already defines the benchmark on `pull_request` events targeting `feat/deterministic-mekongphon-reference-profile-20261108`. The benchmark branch had additionally enabled a branch-specific `push` trigger, so every commit to PR #147 launched two identical full 1k neural runs (push and pull_request). Removed only the redundant push trigger from the PR branch workflow. The base-branch PR trigger and manual `workflow_dispatch` remain; future head updates should run one benchmark instead of two. This is workflow efficiency only; no engine, dataset, or benchmark metric changed.
