@@ -2,7 +2,7 @@ from .normalize import normalize_lao, validate_unicode, PASSTHROUGH_CHARACTERS, 
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
 from .target import rank_ukrainian_candidates, practical_from_ipa
-from .phonetic_result import from_phonology
+from .phonetic_result import from_phonology, from_unknown_source_unit
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 from .grapheme_preview import preview_from_graphemes
@@ -185,6 +185,15 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 provenance=tuple(rules),
                 uncertainty=tuple(local_warnings) + (() if tone_status in ESTABLISHED_TONE_STATUSES else ("TONE-UNRESOLVED",)),
             )
+            if not phonetic_result.segments:
+                # Preserve complete input coverage without fabricating a phone:
+                # the typed result carries one explicit unknown unit and the
+                # target adapter renders a visible low-confidence placeholder.
+                phonetic_result = from_unknown_source_unit(
+                    surface,
+                    provenance=tuple(rules),
+                    uncertainty=tuple(local_warnings),
+                )
             candidates = [
                 Candidate(value, score, [why])
                 for value, score, why in rank_ukrainian_candidates(phonetic_result, registry)
@@ -206,7 +215,10 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
 
             if practical is None and ipa:
                 status = "ANALYSIS DEPENDENT" if phonetic_result.status == "UNCERTAIN" else "EVIDENCE LIMITED"
-            if structural_uncertainty or multiple_tone_marks or malformed_tone_mark_order:
+            if (
+                structural_uncertainty or multiple_tone_marks
+                or malformed_tone_mark_order or phonetic_result.status == "PROVISIONAL"
+            ):
                 status = "EVIDENCE LIMITED"
 
             # Even if an IPA string is computable, malformed/unconsumed source
