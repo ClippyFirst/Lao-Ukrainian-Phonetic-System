@@ -649,6 +649,26 @@ test("browser MekongPhon-reference profile keeps onset and uncertainty boundarie
   assert.equal(rhotic.syllables[0].ukrainian, null);
 });
 
+test("hybrid browser renders unresolved Lao units through a typed provisional placeholder", () => {
+  const result = analyze("ກາລ");
+  const syllable = result.syllables[0];
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(syllable.ipa, null);
+  assert.equal(syllable.ukrainian, "?");
+  assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
+  assert.equal(syllable.phoneticResult.segments.length, 1);
+  assert.equal(syllable.phoneticResult.segments[0].kind, "unknown");
+  assert.equal(syllable.phoneticResult.segments[0].certainty, "PROVISIONAL");
+});
+
+test("hybrid renders uncertain phonetic readings without upgrading confidence", () => {
+  const syllable = analyze("ຣະ").syllables[0];
+  assert.equal(syllable.ipa, "ra");
+  assert.equal(syllable.ukrainian, "ра");
+  assert.equal(syllable.phoneticResult.status, "UNCERTAIN");
+  assert.equal(syllable.status, "ANALYSIS DEPENDENT");
+});
+
 test("browser engine rejects unknown deterministic IPA profiles", () => {
   assert.throws(() => analyze("ຂາ", { ipaProfile: "invented" }), RangeError);
 });
