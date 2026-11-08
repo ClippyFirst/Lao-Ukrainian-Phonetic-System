@@ -71,6 +71,20 @@ def complete_ipa(analysis) -> str:
     return nfc("".join(item.phonemic_ipa for item in syllables))
 
 
+def rendering_diagnostics(analysis) -> dict:
+    units = analysis.syllables
+    phonetic = [item for item in units if item.status != "PASSTHROUGH"]
+    return {
+        "inputs_complete": int(bool(units) and all(item.practical_ukrainian is not None for item in units)),
+        "units": len(units),
+        "rendered_units": sum(item.practical_ukrainian is not None for item in units),
+        "supported_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic),
+        "uncertain_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic),
+        "provisional_placeholder_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic),
+        "passthrough_units": sum(item.status == "PASSTHROUGH" for item in units),
+    }
+
+
 def remove_optional_ipa_tie_bars(value: str) -> str:
     return nfc(value.replace("\u0361", "").replace("\u035c", ""))
 
@@ -130,6 +144,11 @@ def main() -> int:
     hybrid_warning_counts = Counter()
     hybrid_status_counts = Counter()
     runtime_errors_by_stage = Counter()
+    rendering_by_stage = {
+        "baseline_vientiane": Counter(),
+        "mekongphon_reference": Counter(),
+        "hybrid_deterministic": Counter(),
+    }
 
     for row in rows:
         source = nfc(row["orth"])
@@ -143,6 +162,7 @@ def main() -> int:
             started = time.perf_counter()
             baseline = analyze(source, ipa_profile="vientiane")
             baseline_times.append(time.perf_counter() - started)
+            rendering_by_stage["baseline_vientiane"].update(rendering_diagnostics(baseline))
             baseline_prediction = complete_ipa(baseline)
             if not baseline_prediction:
                 for item in baseline.syllables:
@@ -154,6 +174,7 @@ def main() -> int:
             started = time.perf_counter()
             compatible = analyze(source, ipa_profile="mekongphon-reference")
             profile_times.append(time.perf_counter() - started)
+            rendering_by_stage["mekongphon_reference"].update(rendering_diagnostics(compatible))
             profile_prediction = complete_ipa(compatible)
             profile_status_counts.update(item.status for item in compatible.syllables)
             if not profile_prediction:
@@ -166,6 +187,7 @@ def main() -> int:
             started = time.perf_counter()
             hybrid = analyze(source, ipa_profile="hybrid-deterministic")
             hybrid_times.append(time.perf_counter() - started)
+            rendering_by_stage["hybrid_deterministic"].update(rendering_diagnostics(hybrid))
             hybrid_prediction = complete_ipa(hybrid)
             hybrid_status_counts.update(item.status for item in hybrid.syllables)
             if not hybrid_prediction:
@@ -210,7 +232,7 @@ def main() -> int:
     pair_denominator = sum(len(b) for _, b in profile_vs_neural)
 
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "status": "heldout_comparison_not_independent_accuracy",
         "dataset": {
             "repository": "BYU MATRIX Lab MekongPhon",
@@ -260,6 +282,19 @@ def main() -> int:
             ),
             "note": "Each stage is timed independently; model load and initial smoke inference are excluded.",
         },
+        "rendering_coverage": {
+            key: {
+                "complete_inputs": values["inputs_complete"],
+                "input_coverage": values["inputs_complete"] / len(rows),
+                "analyzed_units": values["units"],
+                "units_with_rendering": values["rendered_units"],
+                "supported_ipa_units": values["supported_ipa_units"],
+                "uncertain_ipa_units": values["uncertain_ipa_units"],
+                "provisional_placeholder_units": values["provisional_placeholder_units"],
+                "passthrough_units": values["passthrough_units"],
+            }
+            for key, values in rendering_by_stage.items()
+        },
         "coverage_diagnostics": {
             "baseline_withheld_warning_codes": dict(sorted(baseline_warning_counts.items())),
             "profile_withheld_warning_codes": dict(sorted(profile_warning_counts.items())),
@@ -274,7 +309,7 @@ def main() -> int:
             "The profile is derived from the separate MekongPhon train split; it is an explicit compatibility experiment, not a universal phonetic standard.",
             "No rule is tuned from this held-out split; the default Vientiane profile is unchanged.",
             "The hybrid currently uses the same evidenced mappings with deterministic rule selection; this tests implementation parity, not new linguistic evidence.",
-            "The comparison scores IPA only and does not score Ukrainian target adaptation.",
+            "The comparison scores IPA only and does not score Ukrainian target adaptation. Rendering coverage is reported separately and placeholders are not phonetic predictions.",
         ],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
