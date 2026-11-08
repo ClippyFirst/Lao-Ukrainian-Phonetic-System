@@ -22,7 +22,7 @@ This inventory extends the existing ClippyFirst benchmark; it does not replace t
 | Epitran 1.35.3 (`lao-Laoo`) | 71/100 · 10.96% | 100% | 4/100 · 36.94% | Segmental baseline; tonal output is not competitive on this convention |
 | orthography2ipa (`lo` spec; upstream commit `32b66b0b1a4b66f7267790d7ec1f346460f8d814`) | 32/100 · 19.60% | 100% | 2/100 · 37.51% | Negative-control baseline; high output coverage does not imply good IPA |
 | LanguageNet Phonetisaurus Lao FST | 0/100 · 78.90% | 100% | Not available | Model loaded successfully; very poor concordance on this split; no tone evaluation |
-| Goruut runtime | 5/100 exact on all three repeats in the final exact-head run (a preceding rerun returned 3/100); 10/100 exact on at least one repeat | 81/100 responses; only 47/100 complete source coverage | Not scored | Runtime is nondeterministic/incomplete; not a production candidate on this evidence |
+| Goruut runtime | 3–6/100 exact on all three repeats across three exact-head runs; 9–10/100 exact on at least one repeat; 8–12 unstable inputs | 81/100 responses; only 47/100 complete source coverage | Not scored | Runtime is nondeterministic/incomplete; not a production candidate on this evidence |
 
 ### ClippyFirst rendering versus IPA coverage
 
