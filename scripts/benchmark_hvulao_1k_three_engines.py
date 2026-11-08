@@ -27,7 +27,7 @@ def nfc(value: str) -> str:
 
 
 def git_blob_sha1(payload: bytes) -> str:
-    header = f"blob {len(payload)}\\0".encode("ascii")
+    header = f"blob {len(payload)}\0".encode("ascii")
     return hashlib.sha1(header + payload).hexdigest()
 
 
@@ -49,7 +49,7 @@ def load_dataset() -> tuple[list[str], str, int]:
     if len(lines) != SOURCE_ROWS:
         raise ValueError(f"Expected {SOURCE_ROWS} non-empty rows, got {len(lines)}")
     lao_rows = sum(
-        any("\\u0e80" <= ch <= "\\u0eff" for ch in line) for line in lines
+        any("\u0e80" <= ch <= "\u0eff" for ch in line) for line in lines
     )
     if lao_rows == 0:
         raise ValueError("Pinned corpus contains no Lao-block characters")
@@ -240,7 +240,7 @@ def main() -> int:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if report["runtime_errors"]:
