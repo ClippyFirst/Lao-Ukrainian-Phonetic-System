@@ -5,7 +5,9 @@ LAO_NATIVE_DIGITS = frozenset(chr(cp) for cp in range(0x0ED0, 0x0EDA))
 PASSTHROUGH_CHARACTERS = PASSTHROUGH_PUNCTUATION | frozenset("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'-") | LAO_NATIVE_DIGITS
 
 def normalize_lao(text: str) -> str:
-    return unicodedata.normalize("NFC", text)
+    normalized = unicodedata.normalize("NFC", text)
+    # A leading U+FEFF is a file/text-stream BOM, not Lao source content.
+    return normalized[1:] if normalized.startswith("\ufeff") else normalized
 
 def validate_unicode(text: str) -> list[str]:
     problems=[]
