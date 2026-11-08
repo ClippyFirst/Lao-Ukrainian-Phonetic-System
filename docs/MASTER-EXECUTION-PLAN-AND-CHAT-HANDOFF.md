@@ -2218,3 +2218,12 @@ The required engine contract is **Lao grapheme element + structural position + p
 ### Readiness
 
 **Engineering-verified research prototype; not release-ready or linguistically validated.** The configured engineering gates pass on the exact branch head. Independent adjudicated IPA gold remains empty, empirical accuracy is not measured, and manual assistive-technology/physical-device QA remains incomplete. No claim of a production-ready linguistic system is made.
+
+
+## Documentation-audit head verification — 2026-11-08
+
+- Updated the canonical audit index, repository README, documentation index, codebase map, implementation map, web architecture, validation guide, accessibility QA log and this handoff. Added `docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md` as the latest consolidated report. The 2026-11-07 report remains historical for its inspected main baseline.
+- Corrected README/validation install instructions to use lockfile-driven `npm ci --no-audit --no-fund`; corrected the implementation guide so dynamic structural syllable segmentation is not incorrectly described as future work.
+- Exact documentation-batch commit: `e274789704251dfba238f50312b7b6c672febd77`. Exact-head Verify [42462423663 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462423663) ran on that commit: 262 Python, 126 Node and 17 Chromium tests; IPA corpus structural validation, repository data/evidence audit, external-G2P CLI, `npm ci`, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+- PR #143 remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`. This remains the single working branch; PRs #137–#142 were left open and untouched.
+- No code/data/runtime changes were made in this documentation batch. The engineering result remains a research prototype: independent adjudicated IPA gold = 0; UI-001 manual assistive-technology/physical-device/real-browser-zoom review remains PARTIAL.

@@ -19,7 +19,7 @@
 
 ## Important boundary
 
-The current parser is a syllable parser, not a lexical word segmenter. Lao spaces are phrase-level rather than reliable word boundaries. A future unspaced-text segmenter must therefore be tested independently rather than silently inferred from whitespace.
+The parser now uses deterministic dynamic programming to segment supported orthographic syllable candidates within each unspaced token. This is structural syllable segmentation, not lexical word segmentation: Lao spaces remain phrase boundaries, and the parser does not infer lexical word boundaries or silently discard unparsed material.
 
 ## Failure discipline
 
