@@ -2,7 +2,7 @@
 
 The held-out MekongPhon 100-entry workflow passed the new hybrid rendering-coverage gate on exact head `da9ec77bf9a203b4b86d36aefd6a5de8ec65a750`:
 
-- Run [42518333013 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518333013), artifact [13631884430](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518333013/artifacts/13631884430), SHA-256 `0c91d91cff8f9e8fea99e2717e13? `.
+- Run [42518333013 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518333013), artifact [13631884430](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518333013/artifacts/13631884430), SHA-256 `0c91d91cff8f9e8fea99e2713e17ee4e2490fbb89a98cabc0ee803f471831b8f `.
 - Hybrid rendering coverage: **100/100 inputs (100%)**, **169/169 units rendered**.
 - Hybrid unit distribution: 159 SUPPORTED IPA units, 1 UNCERTAIN IPA unit, 9 PROVISIONAL placeholder units; zero runtime errors.
 - Compatibility rendering coverage remains lower: Vientiane 95/100 and MekongPhon-reference 90/100. The hybrid-only fallback is responsible for the complete rendering coverage.
