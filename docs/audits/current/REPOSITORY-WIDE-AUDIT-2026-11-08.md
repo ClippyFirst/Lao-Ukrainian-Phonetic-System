@@ -1,3 +1,20 @@
+## Owner acceptance: complete valid-input rendering — 2026-11-08
+
+The owner clarified that the primary hybrid must render 100% of valid Lao input, with low confidence explicitly allowed and silently omitted units disallowed. This is a rendering-coverage requirement, not a phonetic-accuracy claim.
+
+- Hybrid now permits structurally complete UNCERTAIN IPA to pass through the typed Ukrainian adapter without upgrading its status.
+- Where complete IPA is unavailable, registered grapheme-position hints are wrapped as typed PROVISIONAL segments and unresolved graphemes become typed unknown markers. The same adapter maps provisional IPA runs and emits visible ? markers. No direct grapheme-to-Ukrainian bypass is used.
+- PROVISIONAL results retain known vowel-length metadata where available, do not invent tone, and do not count as canonical IPA or phonetic accuracy.
+- U+200B is accepted as a Lao word-boundary separator, consistent with the parser's existing ZWSP segmentation behavior. Other invalid controls and unsupported scripts remain rejected.
+- Vientiane and MekongPhon-reference compatibility profiles remain frozen; the new fallback is hybrid-only.
+- Exact-head Verify #42518022030 passed on checkpoint 03c2604d61f20b1f0b89f54896ceebec70cd2836: 287 Python, 139 Node and 17 Chromium tests, plus corpus, evidence, install, build, generated-data and built-site checks.
+- The HVULao 1k benchmark now separates rendering coverage from IPA completeness, reports invalid/empty rows separately, and hard-fails if any valid hybrid input lacks a rendered unit. A final exact-head benchmark is still running; do not mark 100% acceptance DONE_VERIFIED until its artifact confirms 100% valid-input coverage.
+- The held-out MekongPhon 100-entry benchmark has also been extended to report rendering coverage and enforce complete hybrid rendering, and its workflow now runs on relevant PRs.
+
+**Task ledger:** HYBRID-RENDER-COVERAGE-001 — PARTIAL pending successful hard-gated HVULao 1k and MekongPhon 100-entry runs, plus final exact-head Verify. Independent adjudicated IPA gold remains 0; linguistic accuracy is still unmeasured.
+
+---
+
 ## Primary engine decision — hybrid deterministic (2026-11-08)
 
 The owner selected `hybrid-deterministic` as the primary ClippyFirst Lao engine. Implementation head `3458a98dced27f56fae93dac6814d842ead4fed6` changes the public Python `analyze()` and `phonologize()` APIs, CLI and browser defaults from Vientiane to hybrid. Vientiane remains the phonological baseline and an explicit frozen compatibility profile; MekongPhon-reference remains a frozen compatibility profile. Future engine implementation and optimization work targets hybrid only. Neural inference is not in the default transcription path. Exact-head Verify [42512614846 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42512614846): 283 Python, 136 Node and 17 Chromium tests passed; corpus/evidence validation, clean install, build, generated-data reproducibility and built-site checks passed. PR #149 remains a draft stacked on #147/#146, so the new defaults are active on the continuation branch but not yet on `main` or the deployed Pages site. The benchmark evidence remains reference-relative/stress-only, and independent adjudicated IPA gold remains 0.
