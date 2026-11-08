@@ -90,7 +90,7 @@ Run the complete configured engineering checks from the repository root (command
 
 The browser tests require Playwright Chromium. In a fresh environment, install it with npx playwright install --with-deps chromium.
 
-For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json. The experimental deterministic compatibility profile is explicit: lao-ua "ດວງ" --engine rules --ipa-profile mekongphon-reference --json.
+For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json. The experimental deterministic compatibility profile is explicit: lao-ua "ດວງ" --engine rules --ipa-profile mekongphon-reference --json. The browser module exposes the same profile as analyze(text, { ipaProfile: "mekongphon-reference" }); the visible web UI continues to use the default Vientiane profile.
 
 The web build regenerates the checked-in browser data mirror and copies the two static pages plus the web runtime into dist/. This is a small custom Python build, not a Vite/Webpack bundling pipeline. See [web architecture](docs/web-architecture.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
