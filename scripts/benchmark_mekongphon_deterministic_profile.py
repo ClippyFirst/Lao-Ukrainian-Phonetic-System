@@ -118,13 +118,17 @@ def main() -> int:
     references = []
     baseline_predictions = []
     profile_predictions = []
+    hybrid_predictions = []
     neural_predictions = []
     baseline_times = []
     profile_times = []
+    hybrid_times = []
     neural_times = []
     baseline_warning_counts = Counter()
     profile_warning_counts = Counter()
     profile_status_counts = Counter()
+    hybrid_warning_counts = Counter()
+    hybrid_status_counts = Counter()
     runtime_errors_by_stage = Counter()
 
     for row in rows:
@@ -132,6 +136,7 @@ def main() -> int:
         references.append(nfc(row["pron_no_tones"]))
         baseline_prediction = ""
         profile_prediction = ""
+        hybrid_prediction = ""
         neural_prediction = ""
 
         try:
@@ -159,6 +164,18 @@ def main() -> int:
 
         try:
             started = time.perf_counter()
+            hybrid = analyze(source, ipa_profile="hybrid-deterministic")
+            hybrid_times.append(time.perf_counter() - started)
+            hybrid_prediction = complete_ipa(hybrid)
+            hybrid_status_counts.update(item.status for item in hybrid.syllables)
+            if not hybrid_prediction:
+                for item in hybrid.syllables:
+                    hybrid_warning_counts.update(warning_code(str(w)) for w in item.warnings)
+        except Exception as exc:
+            runtime_errors_by_stage["hybrid:" + type(exc).__name__] += 1
+
+        try:
+            started = time.perf_counter()
             neural_prediction = nfc(neural.predict_raw_ipa(source))
             neural_times.append(time.perf_counter() - started)
         except Exception as exc:
@@ -166,6 +183,7 @@ def main() -> int:
 
         baseline_predictions.append(baseline_prediction)
         profile_predictions.append(profile_prediction)
+        hybrid_predictions.append(hybrid_prediction)
         neural_predictions.append(neural_prediction)
 
     baseline_score = score(references, baseline_predictions)
@@ -173,7 +191,7 @@ def main() -> int:
     neural_score = score(references, neural_predictions)
     shared = [
         i for i, values in enumerate(zip(
-            baseline_predictions, profile_predictions, neural_predictions
+            baseline_predictions, profile_predictions, hybrid_predictions, neural_predictions
         ))
         if all(values)
     ]
@@ -182,6 +200,7 @@ def main() -> int:
         "n": len(shared),
         "baseline_rules": score(shared_refs, [baseline_predictions[i] for i in shared]),
         "mekongphon_reference_rules": score(shared_refs, [profile_predictions[i] for i in shared]),
+        "hybrid_deterministic_rules": score(shared_refs, [hybrid_predictions[i] for i in shared]),
         "mekongphon_neural": score(shared_refs, [neural_predictions[i] for i in shared]),
     }
     profile_vs_neural = [
@@ -216,6 +235,7 @@ def main() -> int:
         "scores_full_100": {
             "baseline_vientiane_rules": baseline_score,
             "mekongphon_reference_rules": profile_score,
+            "hybrid_deterministic_rules": score(references, hybrid_predictions),
             "mekongphon_neural": neural_score,
         },
         "scores_identical_coverage": shared_scores,
@@ -232,6 +252,9 @@ def main() -> int:
             "mekongphon_reference_rules_mean": (
                 statistics.mean(profile_times) * 1000 if profile_times else None
             ),
+            "hybrid_deterministic_rules_mean": (
+                statistics.mean(hybrid_times) * 1000 if hybrid_times else None
+            ),
             "neural_model_inference_mean": (
                 statistics.mean(neural_times) * 1000 if neural_times else None
             ),
@@ -241,6 +264,8 @@ def main() -> int:
             "baseline_withheld_warning_codes": dict(sorted(baseline_warning_counts.items())),
             "profile_withheld_warning_codes": dict(sorted(profile_warning_counts.items())),
             "profile_syllable_status_counts": dict(sorted(profile_status_counts.items())),
+            "hybrid_withheld_warning_codes": dict(sorted(hybrid_warning_counts.items())),
+            "hybrid_syllable_status_counts": dict(sorted(hybrid_status_counts.items())),
         },
         "runtime_errors_by_stage": dict(sorted(runtime_errors_by_stage.items())),
         "runtime_errors": sum(runtime_errors_by_stage.values()),
@@ -248,6 +273,7 @@ def main() -> int:
             "The 100-word holdout is dictionary-seeded and is not independently adjudicated project gold.",
             "The profile is derived from the separate MekongPhon train split; it is an explicit compatibility experiment, not a universal phonetic standard.",
             "No rule is tuned from this held-out split; the default Vientiane profile is unchanged.",
+            "The hybrid currently uses the same evidenced mappings with deterministic rule selection; this tests implementation parity, not new linguistic evidence.",
             "The comparison scores IPA only and does not score Ukrainian target adaptation.",
         ],
     }
