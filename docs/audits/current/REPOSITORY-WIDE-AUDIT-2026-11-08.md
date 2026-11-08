@@ -334,3 +334,32 @@ Removed the redundant branch-specific `push` trigger from PR #147's benchmark wo
 The current benchmark inventory now identifies five distinct sources: (1) MekongPhon held-out 100-entry orthography–IPA comparison — executed, reference-relative; (2) HVULao_NLP 1k sentence split — executed, stress/coverage only; (3) Wiktionary Lao IPA category (2,317 pages reported) — candidate weak reference, not imported; (4) FLORES-200 Lao devtest (1,012 rows) — gated content/access conditions pending; (5) HPLT Lao monolingual test (2,000 rows) — manual approval pending. The canonical task ledger and acceptance boundaries are in the master handoff section “Five-source Lao benchmark portfolio”.
 
 No candidate dataset was downloaded, copied, or added to runtime/corpus data in this step. No gated access was bypassed. The three not-yet-run candidates are not counted as completed benchmarks. Wiktionary requires a pinned snapshot and dialect separation before use; FLORES/HPLT have no IPA reference and are coverage/runtime stress only. Independent adjudicated IPA gold remains 0.
+
+
+## Hybrid deterministic engine continuation — 2026-11-08
+
+A dedicated implementation branch `feat/hybrid-deterministic-lao-engine-20261108` was created from the existing benchmark continuation head `f3b8b3b7b919c3a32bd66ea8972f87461a82411e`. The branch preserves PR #146 and PR #147 as unmerged predecessors and does not change main.
+
+### Implementation snapshot
+
+- New `hybrid-deterministic` profile composes the existing Vientiane phonological baseline with the eleven already documented MekongPhon-reference correspondences.
+- A deterministic selector orders matches by explicit priority and condition specificity. Declaration order is irrelevant; equal-rank conflicting outputs raise an error.
+- Rule application is traced in typed IPA provenance with stable hybrid rule IDs.
+- Python API, CLI and browser engine expose the profile. The default Vientiane profile and visible UI remain unchanged.
+- Python and browser regression tests cover profile output, provenance, baseline fallback, tone preservation, rule specificity and conflict rejection.
+- Both frozen benchmark scripts now include the hybrid engine as a separate comparison path. New artifacts have not yet been generated at this checkpoint.
+
+### Status
+
+| Area | Status | Acceptance |
+|---|---|---|
+| Selector and profile implementation | PARTIAL | Exact-head hosted Python/Node tests pending |
+| Browser parity | PARTIAL | Node, Chromium and build gates pending |
+| MekongPhon 100-entry benchmark | PARTIAL | Fresh hybrid artifact and zero runtime errors required |
+| HVULao 1k stress benchmark | PARTIAL | Fresh hybrid artifact; compare coverage and all-attempt latency |
+| New context-specific IPA values | TODO / evidence-limited | Need train-split context aggregates and independent evaluation; no guessed rules |
+| Structural coverage expansion | TODO / evidence-limited | Primary orthographic evidence required for each newly accepted parser rule |
+| Independent adjudicated IPA gold | BLOCKED | Still 0 |
+| Linguistic production acceptance | BLOCKED | No independent accuracy evidence or qualified specialist sign-off |
+
+The first hybrid version is an architectural and reproducibility improvement, not yet a Neural-level result. Existing reference-profile scores cannot be relabeled as hybrid benchmark results until the new runs complete. No local tests were run because the shell environment could not resolve GitHub; hosted CI is the required verification path.
