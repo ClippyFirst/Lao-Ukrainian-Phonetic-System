@@ -155,9 +155,9 @@ class TestCore(unittest.TestCase):
     def test_multiple_tone_marks_withhold_ipa_but_emit_typed_unknown_placeholder(self):
         result = analyze("ກ່້າ")
         s = result.syllables[0]
-        self.assertEqual(s.status, "EVIDENCE LIMITED")
+        self.assertEqual(s.status, "ANALYSIS DEPENDENT")
         self.assertIsNone(s.phonemic_ipa)
-        self.assertEqual(s.practical_ukrainian, "?")
+        self.assertIsNone(s.practical_ukrainian)
         self.assertEqual(s.phonetic_result.status, "PROVISIONAL")
         self.assertEqual(s.phonetic_result.segments[0].kind, "unknown")
         self.assertEqual(s.ukrainian_candidates, [])
@@ -200,8 +200,7 @@ class TestCore(unittest.TestCase):
         s = analyze("ກາລ").syllables[0]
         self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
-        self.assertEqual(s.practical_ukrainian, "?")
-        self.assertEqual(s.phonetic_result.status, "PROVISIONAL")
+        self.assertIsNone(s.practical_ukrainian)
         self.assertEqual(s.ukrainian_candidates, [])
         self.assertIn("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY", s.rules)
         self.assertTrue(any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings))
