@@ -1,3 +1,16 @@
+## Owner acceptance update — 2026-11-08: 100% rendering coverage
+
+The owner clarified that the primary hybrid must cover **100% of valid input**, even when the result is low-confidence. Coverage means every accepted input unit receives a visible Ukrainian-side rendering; it does not mean every unit receives known IPA or correct pronunciation.
+
+The hybrid distinguishes:
+- SUPPORTED: evidence-backed IPA and ordinary Ukrainian adaptation.
+- UNCERTAIN: a structurally complete IPA reading that can be rendered by the hybrid adapter, while remaining explicitly analysis-dependent.
+- PROVISIONAL: no defensible IPA is available; a typed unknown segment crosses the same PhoneticResult boundary and the Ukrainian adapter renders ?. The original Lao surface, warnings and provenance remain available on the analysis record.
+
+This is not a direct grapheme-to-Ukrainian bypass. The placeholder is not an IPA phone, is not included in IPA coverage, and must never be scored as a phonetic prediction. The frozen Vientiane and MekongPhon-reference profiles retain their prior withholding behavior. Invalid Unicode/script input remains rejected; the 100% target applies to the documented valid-input domain.
+
+Benchmarks must report separately: (1) rendering coverage, (2) evidence-backed IPA coverage, (3) uncertain/provisional fallback shares, and (4) phonetic accuracy only against independent adjudicated gold. A complete rendering can coexist with low or unknown phonetic accuracy.
+
 # Hybrid deterministic Lao IPA engine — 2026-11-08
 
 ## Scope and status
