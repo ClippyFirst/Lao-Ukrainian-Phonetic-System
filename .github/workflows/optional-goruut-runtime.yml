@@ -8,6 +8,7 @@ on:
       - "tests/test_goruut_benchmark.py"
       - "tests/fixtures/goruut-probes.txt"
       - ".github/workflows/optional-goruut-runtime.yml"
+      - "scripts/benchmark_additional_lao_g2p.py"
 
 permissions:
   contents: read
