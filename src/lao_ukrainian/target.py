@@ -60,14 +60,41 @@ def adapt_phonetic_result(result: PhoneticResult, registry=None, *, allow_uncert
     if not isinstance(result, PhoneticResult):
         raise TypeError("Ukrainian adaptation requires a PhoneticResult")
     if result.status == "PROVISIONAL":
-        if (
-            len(result.segments) == 1
-            and result.segments[0].kind == "unknown"
-            and result.segments[0].certainty == "PROVISIONAL"
-            and result.segments[0].ipa == "?"
-        ):
+        if not result.segments:
             return "?"
-        return None
+        output: list[str] = []
+        provisional_run = []
+
+        def flush_provisional_run() -> None:
+            if not provisional_run:
+                return
+            run = tuple(provisional_run)
+            provisional_run.clear()
+            ipa = "".join(segment.ipa for segment in run)
+            typed_run = PhoneticResult(
+                phonemic_ipa=ipa,
+                segments=run,
+                syllable_boundaries=(0, len(run)),
+                status="SUPPORTED",
+                provenance=result.provenance,
+                uncertainty=result.uncertainty,
+            )
+            output.append(adapt_phonetic_result(typed_run, registry) or "?")
+
+        for segment in result.segments:
+            if segment.kind == "unknown":
+                flush_provisional_run()
+                if segment.ipa != "?" or segment.certainty != "PROVISIONAL":
+                    return None
+                output.append("?")
+            elif segment.certainty == "PROVISIONAL" and segment.kind in {"vowel", "consonant"}:
+                provisional_run.append(
+                    type(segment)(segment.ipa, segment.kind, segment.provenance, "SUPPORTED")
+                )
+            else:
+                return None
+        flush_provisional_run()
+        return "".join(output) or "?"
     if result.status != "SUPPORTED" and not (allow_uncertain and result.status == "UNCERTAIN") or not result.segments:
         return None
     if any(segment.certainty != "SUPPORTED" for segment in result.segments):
