@@ -4,7 +4,7 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository-wide audit and documentation/structure refresh — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — current `main` at `c0d7218...`, exact-main CI, merged PR #143, open PR #145/#146/#147 dependency graph, architecture, reference review and remaining acceptance gates.
+- [Repository-wide audit and documentation/structure refresh — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — current `main` at `c0d7218...`, exact-main CI, merged PR #143, open PR #145–#149 dependency graph, including the approved but unmerged hybrid primary-engine proposal and its completed HVULao 1k stress benchmark, architecture, reference review and remaining acceptance gates.
 - [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.
 - [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — historical repository inventory and earlier documentation checkpoint.
 

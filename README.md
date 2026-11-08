@@ -122,7 +122,7 @@ The web layer is intentionally conservative and does not claim to replace the re
 
 ## Optional MekongPhon neural inference
 
-The deterministic rule engine remains the default. Optional tonal and non-tonal neural inference is available through the separately published BYU MATRIX Lab model artifacts; weights are downloaded at first use and are not committed to this repository.
+On the current main branch, the deterministic rule engine remains the default. The owner-approved direction is hybrid-deterministic (Vientiane baseline plus deterministic, evidence-gated MekongPhon-derived rules), proposed in [PR #149](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/149); it is not active on main until that dependency stack is reviewed and integrated. Optional tonal and non-tonal neural inference is available through the separately published BYU MATRIX Lab model artifacts; weights are downloaded at first use and are not committed to this repository.
 
 Install the optional dependencies and select a model explicitly:
 

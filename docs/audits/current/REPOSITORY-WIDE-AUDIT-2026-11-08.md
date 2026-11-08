@@ -210,3 +210,68 @@ These PR runs are evidence for their own branch heads only. They are not evidenc
 ## 9. Readiness
 
 **Published engineering-verified research prototype; not release-ready or linguistically validated.** Mainline engineering and deployment checks are green. The principal blockers are still independent adjudicated IPA gold (0 records), qualified linguistic acceptance and manual accessibility/device QA. The outstanding PRs must be integrated in dependency order and verified on the resulting exact mainline head; their branch-level green checks do not replace that gate.
+
+
+## 10. Hybrid engine decision and final HVULao 1k checkpoint — 2026-11-08
+
+This section supersedes the earlier PR-topology paragraphs in this audit where they stop at PR #147. It does not change the audited main snapshot.
+
+### Engine decision and repository truth
+
+- The owner-approved strategic direction is one primary deterministic hybrid: Vientiane remains the phonological baseline; only existing, evidence-supported MekongPhon-derived aggregate correspondences may be selected through the explicit deterministic selector.
+- The hybrid implementation is proposed in PR [#149](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/149), head 0c58ca7bfd12e4c2f7b2187ddbf6cfc7baadc801. It is open, draft, and stacked on PR #147, not part of main.
+- On the audited main at c0d7218..., the deterministic rules profile remains the Python/CLI default; the browser uses its deterministic JavaScript engine. Neural inference remains explicitly selected and does not silently replace or fall back to rules.
+- PR #149 changes the default only on its own branch: Python analyze()/phonologize(), CLI and browser engine. Legacy vientiane and mekongphon-reference profiles remain compatibility profiles there. Do not describe this as already deployed.
+- Do not merge #149 directly into main while its base is #147. The integration order is #146 → #147 → #149 after review of PR #145's competing neural-first proposal and the intended deterministic-only public default. PR #148 is documentation-only and independently based on main.
+
+### Current PR topology
+
+| PR | Base | Head | State | Disposition |
+|---|---|---|---|---|
+| #145 neural-first CLI proposal | main | feat/mekongphon-first-stage | Open, non-draft | Competing engine-selection proposal; review against the owner-approved hybrid-only direction before integration |
+| #146 deterministic MekongPhon-reference profile | main | feat/deterministic-mekongphon-reference-profile-20261108 | Open, draft | Dependency for #147; retain as compatibility/reference implementation, review for overlap with hybrid |
+| #147 three-engine HVULao 1k stress benchmark | #146 | benchmark/hvulao-1k-three-engine-20261108 | Open, draft | Benchmark evidence; stacked, not mainline |
+| #148 repository audit/docs refresh | main | audit/docs-architecture-refresh-20261108 | Open, non-draft | This documentation continuation; no runtime changes |
+| #149 hybrid deterministic primary engine | #147 | feat/hybrid-deterministic-lao-engine-20261108 | Open, draft | Owner-approved target architecture; stacked, not mainline |
+
+Older PRs #137–#142 remain historical open branches whose implementation lineage was consolidated through merged PR #143. Do not replay or merge them independently without a fresh diff/ancestry review. No PR was merged, closed, retargeted, force-pushed or deleted in this audit.
+
+### Final HVULao 1k result on the hybrid head
+
+The exact-head benchmark run [#42512729648 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42512729648) completed on the exact PR #149 head 0c58ca7.... Aggregate artifact [13629963023](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42512729648/artifacts/13629963023) was downloaded and inspected.
+
+| Metric | Vientiane rules | MekongPhon-reference rules | Hybrid deterministic | MekongPhon Neural |
+|---|---:|---:|---:|---:|
+| Complete sentence outputs | 669/1,000 | 669/1,000 | 669/1,000 | 930/1,000 |
+| Sentence coverage | 66.9% | 66.9% | 66.9% | 93.0% |
+| Syllable IPA coverage (rule engines) | 97.85% | 97.85% | 97.85% | n/a |
+| Mean all-attempt latency | 16.78 ms | 16.04 ms | 16.39 ms | 391.18 ms |
+| p95 all-attempt latency | 31.04 ms | 29.93 ms | 30.55 ms | 761.11 ms |
+| Unexpected runtime errors | 0 | 0 | 0 | 0 |
+
+- On this sentence corpus, hybrid and both legacy deterministic profiles produced identical outputs and identical coverage. The selector did not expand structural coverage or alter any of the 1,000 sentence results in this test.
+- Neural produced complete outputs for 930/1,000 sentences. Its 70 rejections were explicit input-contract rejections (61 source-codepoint-limit, 9 unsupported-character), not unexpected runtime errors.
+- The engines shared 639 complete sentences. Deterministic-vs-neural output disagreement was 11.62% CER on that shared subset; this is disagreement, not an error rate or accuracy.
+- The dataset is the raw-text HVULao_NLP 1k test split at immutable revision ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568, Mendeley Data v2 CC BY 4.0. Its paired labels are segmentation/POS, not IPA.
+- The benchmark is a sentence-domain stress/coverage/runtime/disagreement test. There is no IPA gold, so gold IPA CER and pronunciation accuracy remain unmeasured. The workflow stores aggregate metrics only and does not persist sentence text or per-sentence predictions.
+
+### Exact-head verification of hybrid
+
+PR #149 exact-head Verify [#42512729689 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42512729689) passed on 0c58ca7.... The PR body records 283 Python, 136 Node and 17 Chromium tests, plus corpus/evidence audit, optional external-G2P CLI checks, clean locked browser install, build, generated-data reproducibility and built-site checks. This evidence applies to the PR #149 branch and its stacked base, not to main.
+
+### Updated task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Mainline audit/docs snapshot at c0d7218... | DONE_VERIFIED | Exact-main Verify #42463921672; Pages #42463361038 |
+| Five supplied upstream reference snapshots and root MIT licenses | DONE_VERIFIED | Upstream main SHAs unchanged at this check; all five root LICENSE files declare MIT; no code/data/skills copied |
+| Hybrid deterministic implementation | DONE_VERIFIED on PR branch; PARTIAL at repository/mainline level | Exact-head Verify #42512729689; #149 remains draft/open and stacked |
+| HVULao 1k stress benchmark for hybrid | DONE_VERIFIED (stress only) | Run #42512729648 and inspected aggregate artifact #13629963023 |
+| Mainline activation of hybrid default | TODO / dependency-managed | Review #145 conflict, integrate #146 → #147 → #149 or rebase/retarget through owner process, then exact-main Verify and deployment decision |
+| Independent adjudicated IPA gold | BLOCKED | 0 records; requires qualified blind double annotation, separate adjudication and rights-cleared sources |
+| Manual accessibility | PARTIAL | Human screen-reader, physical-device, real 200%/400% zoom and visual QA still required |
+| Broad linguistic acceptance | BLOCKED / evidence-limited | Qualified Lao specialist review and independent gold required; no accuracy claim |
+
+### Readiness
+
+**Published engineering-verified research prototype; not release-ready and not linguistically accuracy-validated.** The hybrid branch is engineering-verified and has a completed 1k stress benchmark, but its sentence coverage is unchanged from Vientiane on this corpus. The independent gold corpus remains empty and manual accessibility remains partial.

@@ -103,13 +103,17 @@ The four IPA-gold JSONL files are intentionally empty on the audited mainline; `
 
 ## 7. Current PR integration context (2026-11-08)
 
-- PR #143 is merged into `main`; do not replay its integrated implementation.
-- PR #145 (`feat/mekongphon-first-stage`) is open against `main` and proposes neural-first Python/CLI behavior.
-- PR #146 (`feat/deterministic-mekongphon-reference-profile-20261108`) is open against `main` and adds an opt-in deterministic reference profile.
-- PR #147 (`benchmark/hvulao-1k-three-engine-20261108`) is stacked on PR #146; it is not independently based on `main`.
-- PRs #137–#142 remain open as older stacked branches whose work was consolidated through #143. They should not be blindly merged or replayed.
+- PR #143 is merged into main; do not replay its integrated implementation.
+- PR #145 is open against main and proposes neural-first Python/CLI behavior. It is a competing engine-selection proposal, not the owner-approved final direction.
+- PR #146 is open/draft against main and adds the deterministic MekongPhon-reference compatibility profile.
+- PR #147 is open/draft and stacked on #146; it adds the HVULao 1k three-engine sentence stress benchmark.
+- PR #148 is the documentation/audit refresh branch based on the audited mainline.
+- PR #149 is the owner-approved hybrid deterministic primary-engine proposal, stacked on #147. Its exact head 0c58ca7bfd12e4c2f7b2187ddbf6cfc7baadc801 passed Verify #42512729689 and HVULao 1k stress benchmark #42512729648. It is not merged into main.
+- On main, deterministic rules remains the Python/CLI default until #149's dependency stack is reviewed and integrated. On #149, the hybrid profile is the default in Python API, CLI and browser.
+- Integration should review #145's neural-first proposal against the approved hybrid-only direction, then reconcile #146 → #147 → #149. Do not blindly merge the stack or treat branch-level checks as mainline evidence.
+- PRs #137–#142 remain older open branches whose implementation lineage was consolidated through #143; do not replay them independently.
 
-See the [current repository-wide audit](../audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) for exact SHAs, CI evidence and dispositions.
+The HVULao 1k result is a stress/coverage/runtime/disagreement benchmark, not IPA accuracy: hybrid sentence coverage is 66.9%, equal to Vientiane and MekongPhon-reference on this dataset; Neural is 93.0%; all three rule profiles have 97.85% syllable IPA coverage; deterministic-vs-neural disagreement on 639 shared complete sentences is 11.62% CER. See the current repository-wide audit for metric definitions, artifact provenance and limitations.
 
 ## 8. Verification
 
