@@ -500,7 +500,7 @@ test("browser Ukrainian adaptation consumes a typed IPA result", () => {
   assert.equal(syllable.ukrainian, "к'а");
 });
 
-test("browser IPA adapter withholds uncertain phonetic results", () => {
+test("browser hybrid adapter renders uncertain IPA without upgrading its status", () => {
   const result = analyze("ຣະ");
   const syllable = result.syllables[0];
   assert.equal(syllable.ipa, "la");
@@ -646,7 +646,7 @@ test("browser MekongPhon-reference profile keeps onset and uncertainty boundarie
   const rhotic = analyze("ຣະ", { ipaProfile: "mekongphon-reference" });
   assert.equal(rhotic.syllables[0].ipa, "ra");
   assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
-  assert.equal(rhotic.syllables[0].ukrainian, "ра");
+  assert.equal(rhotic.syllables[0].ukrainian, null);
 });
 
 test("browser engine rejects unknown deterministic IPA profiles", () => {
