@@ -43,7 +43,7 @@ class GraphemePreviewTests(unittest.TestCase):
 
     def test_text_cli_displays_provisional_preview_separately(self):
         output = StringIO()
-        with patch("sys.argv", ["lao-ua", "ກາລ"]), redirect_stdout(output):
+        with patch("sys.argv", ["lao-ua", "ກາລ", "--engine", "rules"]), redirect_stdout(output):
             main()
         rendered = output.getvalue()
         self.assertIn("IPA=None", rendered)
