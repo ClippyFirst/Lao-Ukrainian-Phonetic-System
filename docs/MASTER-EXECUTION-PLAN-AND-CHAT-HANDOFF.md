@@ -2671,3 +2671,18 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Hybrid mean latency in this run: 1.93 ms/input vs Neural 66.72 ms/input; hosted single-run diagnostic, not a guarantee. Zero runtime errors.
 - The fallback now retains known /l/ in malformed `ກາລ` as a provisional segment and outputs `кал?`; unknown position remains marked. Unsupported standalone semivowel `ຽ` is deliberately not guessed.
 - Engineering implementation status: **DONE_VERIFIED**. Linguistic accuracy of isolated grapheme hints remains **BLOCKED / evidence-limited** pending expert-adjudicated contextual IPA gold.
+
+
+## External Lao G2P engine and dataset benchmark — 2026-11-08
+
+- Dedicated branch: `benchmark/additional-lao-g2p-20261108`, based on main `819c2528b1c726adfd3062be89084fedce7ad84d`; PR #156 remains draft.
+- New canonical inventory/report: `docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md`.
+- Same-set 100-word tests now include ClippyFirst hybrid, Lao2IPA 1.0.0, MekongPhon Neural (segmental and tonal), Epitran 1.35.3, orthography2ipa pinned to an upstream commit, and LanguageNet Phonetisaurus Lao FST. Goruut was re-run with three repeats and source-coverage diagnostics.
+- Confidence correction: IPA accuracy must use typed `PhoneticResult.status` and accept only `SUPPORTED` / `UNCERTAIN`. `PROVISIONAL` grapheme hints are not IPA gold predictions. A shared benchmark gate and regression tests now enforce this across the 100-word, deterministic-profile and HVULao 1k scripts.
+- Current hybrid diagnostic: 85/100 exact on the 100-word set, 14.45% full-denominator CER and 91% typed IPA coverage; separately, 100/100 inputs and 169/169 units render in Ukrainian, including 9 provisional IPA-hint units. The prior 90/100, 97% IPA-coverage figure is superseded because its legacy helper did not gate typed confidence status.
+- Other same-set results: MekongPhon Neural 82/100 exact, 6.64% segmental CER, 100% coverage; Lao2IPA 68/100, 8.97%; Epitran 71/100, 10.96%; orthography2ipa 32/100, 19.60%; Phonetisaurus 0/100, 78.90%. Tonal results and the full dataset/licensing inventory are in the canonical report.
+- Goruut: 5/100 exact across all three repeats, 9/100 exact on at least one repeat, 81 responses, only 47 complete source-coverage outputs, 7 unstable inputs; no promotion.
+- Independent expert-adjudicated IPA gold remains 0. MekongPhon is dictionary-seeded reference evidence, not independent gold. FLEURS/Common Voice can support a future expert-annotated audio gold set; FLORES+/HPLT are stress inputs only.
+- Current exact-head Verify passed at run #42527429373: 293 Python, 143 Node and 19 Chromium tests. The final branch-head Verify and deterministic/HVULao benchmark reruns are pending after the final helper-import fix.
+- PR #156 is intentionally not merged: open PRs #137–#148 overlap benchmark workflows/scripts and canonical audit/handoff docs. Leave those PRs untouched; reconcile the stack before merging.
+- Production engine remains unchanged. No external engine is promoted. The 1k HVULao stress benchmark is not an IPA accuracy test.
