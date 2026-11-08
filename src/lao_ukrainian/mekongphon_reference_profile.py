@@ -12,7 +12,7 @@ SUPPORTED_IPA_PROFILES = (DEFAULT_PROFILE, PROFILE_NAME)
 # Aggregate-only, high-frequency train-split correspondences. The source
 # diagnostic uses the pinned 6,219-row MekongPhon training split; it is not
 # derived from the 100-row evaluation split. Counts and interpretation are
-# documented in docs/research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md.
+# documented in docs/research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md and claim CLM-MEKONGPHON-REFERENCE-PROFILE.
 VOWEL_IPA_OVERRIDES = {
     "AW_LONG": "ao",       # engine aw -> reference ao (534 aligned contexts)
     "UA_LONG": "ɯːə̯",    # engine ɯːə -> reference ɯːə̯ (459)
