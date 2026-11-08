@@ -22,6 +22,8 @@ import unicodedata
 import urllib.request
 from pathlib import Path
 
+from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+
 DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
@@ -98,23 +100,15 @@ def load_project():
                 or vowel_by_id.get(item.vowel or "", {}).get("nucleus_type") == "diphthong"
             )
 
-        def accepted_ipa(item) -> bool:
-            result = item.phonetic_result
-            return bool(
-                result
-                and result.status in {"SUPPORTED", "UNCERTAIN"}
-                and result.phonemic_ipa
-            )
-
         segmental_complete = bool(phonetic_syllables) and all(
-            accepted_ipa(item) for item in phonetic_syllables
+            accepted_phonetic_ipa(item.phonetic_result) for item in phonetic_syllables
         )
         tonal_complete = segmental_complete and all(
             item.phonetic_result.tone_contour_ipa
             for item in phonetic_syllables
         )
         segmental_parts = [
-            item.phonetic_result.phonemic_ipa if accepted_ipa(item) else ""
+            item.phonetic_result.phonemic_ipa if accepted_phonetic_ipa(item.phonetic_result) else ""
             for item in phonetic_syllables
         ]
         segmental = nfc("".join(segmental_parts)) if segmental_complete else ""
@@ -126,7 +120,7 @@ def load_project():
             if tonal_complete else ""
         )
         tone_categories = [
-            item.phonetic_result.tone_category if accepted_ipa(item) else None
+            item.phonetic_result.tone_category if accepted_phonetic_ipa(item.phonetic_result) else None
             for item in phonetic_syllables
         ]
         mekong_complete = segmental_complete and all(tone_categories)
@@ -875,7 +869,7 @@ def main() -> int:
         },
         "method": {
             "normalization": "Unicode NFC and outer whitespace trim only",
-            "segmental_comparison": "phonemic segments and vowel length against pron_no_tones",
+            "segmental_comparison": "only typed SUPPORTED/UNCERTAIN IPA and vowel length against pron_no_tones; PROVISIONAL grapheme hints are excluded and reported separately in rendering_coverage",
             "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
