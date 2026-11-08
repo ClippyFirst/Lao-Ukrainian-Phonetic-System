@@ -226,10 +226,11 @@ test("CRLF is accepted as line whitespace", () => {
   assert.equal(r.output, "ка к\u0027а");
 });
 
-test("zero-width space is rejected rather than silently removed", () => {
-  const r = analyze("ກ\u200bຂ");
-  assert.equal(r.status, "INVALID");
-  assert.equal(r.output, "");
+test("zero-width space is accepted as a Lao syllable boundary", () => {
+  const r = analyze("ກ\u200bຂ", { ipaProfile: "hybrid-deterministic" });
+  assert.notEqual(r.status, "INVALID");
+  assert.deepEqual(r.syllables.map((unit) => unit.surface), ["ກ", "ຂ"]);
+  assert.ok(r.syllables.every((unit) => typeof unit.ukrainian === "string" && unit.ukrainian.length > 0));
 });
 
 test("empty input", () => assert.equal(analyze("").status, "EMPTY"));
