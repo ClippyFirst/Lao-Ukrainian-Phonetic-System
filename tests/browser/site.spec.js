@@ -9,12 +9,18 @@ test("Lao input produces visible Ukrainian and IPA results", async ({ page }) =>
   await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
 });
 
-test("mixed-script input fails closed instead of fabricating output", async ({ page }) => {
+test("mixed-script input preserves visible text and renders supported Lao spans", async ({ page }) => {
   await page.goto("/");
-  await page.locator("#lao-input").fill("ກа");
+  await page.locator("#lao-input").fill("ຂາ — українська 08:05 🙂");
   await expect(page.locator("#results")).toBeVisible();
-  await expect(page.locator("#analysis-status")).toContainText("НЕ ВСТАНОВЛЕНО");
-  await expect(page.locator("#output")).toContainText("не пройшов перевірку");
+  await expect(page.locator("#analysis-status")).toContainText("ЧАСТКОВИЙ АНАЛІЗ");
+  await expect(page.locator("#output")).toHaveText("к'а — українська 08:05 🙂");
+  await expect(page.locator("#warnings")).toContainText("Непідтримуваний символ");
+  await page.locator("#mode-romanization").click();
+  await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#romanization-trace")).toBeVisible();
+  await expect(page.locator("#output")).not.toContainText("не пройшов перевірку");
+  await expect(page.locator("#output")).not.toBeEmpty();
 });
 
 test("clear control restores the empty state", async ({ page }) => {
