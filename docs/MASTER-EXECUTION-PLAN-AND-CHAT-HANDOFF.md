@@ -2378,7 +2378,7 @@ Full report: [HVULao 1k three-engine sentence-domain stress benchmark](research/
 
 - Added `benchmark/**` to the push branch filters in `.github/workflows/verify.yml` so benchmark branches receive the same repository verification as main/feature branches.
 - Exact-head Verify [#42487885967 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42487885967) on commit `53f004233760ad1c336e0b1935d37eddccffdd81`: independent IPA gold structure validation PASS; `scripts/audit.py` PASS; 271 Python tests PASS; optional external-G2P harness compile/help PASS; clean `npm ci` PASS; 129 Node tests PASS; build/regeneration PASS; generated `web/data.js` drift check PASS; 17 Chromium browser tests PASS; built-page/relative-asset checks PASS.
-- This full Verify run includes the docs/index/source registry/handoff/audit/report changes present at that head. Later changes, if any, are documentation-only and must not be described as part of that exact-head run.
+- After synchronizing the base branch and resolving the single workflow overlap, final pre-handoff head `005a87c4b8f2a519e9934c32f877c3b5e2ae2130` also passed exact-head Verify [#42488245976 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488245976) with the same complete check set: 271 Python, 129 Node and 17 Chromium tests; corpus validation, repository audit, clean install, external-G2P CLI, build, generated-data drift and built-site checks all PASS.
 
 ### Updated task ledger
 
