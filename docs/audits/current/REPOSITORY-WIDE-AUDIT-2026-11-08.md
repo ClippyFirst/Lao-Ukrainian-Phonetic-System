@@ -88,7 +88,7 @@ No broad file move was justified. Preserve the existing `docs/research/`, `docs/
 
 | PR | Head | Base | State/evidence | Disposition |
 |---|---|---|---|---|
-| [#145 neural-first G2P](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) | `feat/mekongphon-first-stage` at `a70769d7005e40e15b68a3df181cadbfa4cce51f` | `main` at audited baseline | Open, mergeable; exact-head Verify [#42465428611 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465428611); neural benchmark [#42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) | Leave untouched. It changes Python/CLI default semantics; review separately. Its static Pages limitation remains explicit. |
+| [#145 neural-first G2P](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) | `feat/mekongphon-first-stage` at `a70769d7005e40e15b68a3df181cadbfa4cce51f` | `main` at audited baseline | Open, mergeable; exact-head Verify [#42465535231 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465535231); neural benchmark [#42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) | Leave untouched. It changes Python/CLI default semantics; review separately. Its static Pages limitation remains explicit. |
 | [#146 deterministic reference profile](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/146) | `feat/deterministic-mekongphon-reference-profile-20261108` at `ad5bf2a61480ea255a9b83ca6f662471d7606e84` | `main` | Open, draft, mergeable; exact-head Verify [#42467552887 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467552887); held-out benchmark [#42467190935 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935) | Leave untouched. It adds an opt-in deterministic profile; its benchmark is dictionary-seeded comparator evidence, not independent gold. |
 | [#147 HVULao 1k three-engine stress benchmark](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/147) | `benchmark/hvulao-1k-three-engine-20261108` at `f3b8b3b7b919c3a32bd66ea8972f87461a82411e` | PR #146 branch, not `main` | Open, draft, mergeable; Verify [#42490019054 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42490019054); benchmark [#42490023554 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42490023554) | Leave untouched. It is stacked on #146 and must not be treated as a standalone mainline change. Its raw text corpus has segmentation/POS annotations, not IPA. |
 
@@ -201,7 +201,7 @@ Inspected:
 Hosted checks actually inspected:
 - main Verify #42463921672 — SUCCESS on exact main SHA, 262 Python / 126 Node / 17 Chromium;
 - Pages deployment #42463361038 — SUCCESS;
-- PR #145 Verify #42465428611 and neural benchmark #42465378241 — SUCCESS;
+- PR #145 Verify #42465535231 and neural benchmark #42465378241 — SUCCESS;
 - PR #146 Verify #42467552887 and benchmark #42467190935 — SUCCESS;
 - PR #147 Verify #42490019054 and benchmark #42490023554 — SUCCESS.
 
