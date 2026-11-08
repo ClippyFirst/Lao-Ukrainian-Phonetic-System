@@ -594,7 +594,7 @@ function analyzeWord(word, ipaProfile = "hybrid-deterministic") {
   // ເ+onset as long /eː/ and leave ຽ behind, leaking a misleading IPA prefix.
   const cleanWord = chars.filter((ch) => !TONE_MARK_SET.has(ch)).join("");
   const iaOnset = findOnset(cleanWord);
-  if (iaOnset &&
+  if (iaOnset && iaOnset.onsetIndex !== null && iaOnset.onsetLength !== null &&
       cleanWord.slice(0, iaOnset.onsetIndex) === "ເ" &&
       cleanWord.slice(iaOnset.onsetIndex + iaOnset.onsetLength) === "ຽ") {
     return [{
