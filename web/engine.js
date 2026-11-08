@@ -392,7 +392,7 @@ function selectHybridRule(target, context) {
   return best.sort((a, b) => a.ruleId.localeCompare(b.ruleId))[0];
 }
 
-function analyzeToken(surface, ipaProfile = "vientiane") {
+function analyzeToken(surface, ipaProfile = "hybrid-deterministic") {
   const chars = [...surface];
   const toneMarkCount = chars.filter((ch) => TONE_MARK_SET.has(ch)).length;
   if (toneMarkCount > 1) {
@@ -527,7 +527,7 @@ function isStructurallyComplete(s) {
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
-function analyzeWord(word, ipaProfile = "vientiane") {
+function analyzeWord(word, ipaProfile = "hybrid-deterministic") {
   const chars = [...word];
   // Tone-mark placement and multiplicity are syllable-local properties.
   // Candidate syllables validate their own marks below; a mark that cannot be
@@ -712,7 +712,7 @@ function analyzeWord(word, ipaProfile = "vientiane") {
 
 export function analyze(text, options = {}) {
   const input = String(text ?? "");
-  const ipaProfile = options?.ipaProfile ?? "vientiane";
+  const ipaProfile = options?.ipaProfile ?? "hybrid-deterministic";
   if (!["vientiane", "mekongphon-reference", "hybrid-deterministic"].includes(ipaProfile)) {
     throw new RangeError("Unknown IPA profile: " + ipaProfile);
   }
