@@ -147,17 +147,23 @@ def main() -> int:
         "vientiane_rules": {
             "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0, "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0, "uncertain_ipa_units": 0, "provisional_units": 0, "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0, "uncertain_ipa_units": 0, "provisional_units": 0,
+            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
+            "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
+            "uncertain_ipa_units": 0, "provisional_units": 0,
         },
         "mekongphon_reference_rules": {
-            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
+            "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
+            "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
+            "uncertain_ipa_units": 0, "provisional_units": 0,
         },
         "hybrid_deterministic_rules": {
-            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
+            "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
+            "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
+            "uncertain_ipa_units": 0, "provisional_units": 0,
         },
         "mekongphon_neural": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
