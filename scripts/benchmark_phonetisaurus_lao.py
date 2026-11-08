@@ -94,14 +94,13 @@ def main() -> int:
                 "\n".join(row["orth"] for row in rows) + "\n", encoding="utf-8"
             )
             command = [
-                "docker", "run", "--rm",
+                "docker", "run", "--rm", "--entrypoint", "bash",
                 "-v", f"{root}:/work",
                 "-w", "/work",
                 DOCKER_IMAGE,
-                "phonetisaurus-apply",
-                "--model", "/work/lao.fst",
-                "--word_list", "/work/words.txt",
-                "--nbest", "1",
+                "-lc",
+                "test -s /work/lao.fst && test -s /work/words.txt && "
+                "phonetisaurus-apply --model /work/lao.fst --word_list /work/words.txt --nbest 1",
             ]
             result = subprocess.run(
                 command, check=False, capture_output=True, text=True, timeout=300
