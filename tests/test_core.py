@@ -152,14 +152,14 @@ class TestCore(unittest.TestCase):
         self.assertEqual(analyze("ກ໊າ").syllables[0].tone, "high-falling")
         self.assertEqual(analyze("ກ໋າ").syllables[0].tone, "low-rising")
 
-    def test_multiple_tone_marks_withhold_ipa_but_emit_typed_unknown_placeholder(self):
+    def test_multiple_tone_marks_withhold_ipa_and_ukrainian_output(self):
         result = analyze("ກ່້າ")
         s = result.syllables[0]
-        self.assertEqual(s.status, "ANALYSIS DEPENDENT")
+        self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
         self.assertIsNone(s.practical_ukrainian)
-        self.assertEqual(s.phonetic_result.status, "PROVISIONAL")
-        self.assertEqual(s.phonetic_result.segments[0].kind, "unknown")
+        self.assertEqual(s.phonetic_result.status, "UNSUPPORTED")
+        self.assertEqual(s.phonetic_result.segments, ())
         self.assertEqual(s.ukrainian_candidates, [])
         self.assertIsNone(s.tone)
         self.assertIn("PHON-IPA-WITHHELD-MULTIPLE-TONE-MARKS", s.rules)
@@ -188,15 +188,14 @@ class TestCore(unittest.TestCase):
         self.assertEqual(s.practical_ukrainian, "а")
 
 
-    def test_unconsumed_material_before_preposed_vowel_emits_placeholder(self):
+    def test_unconsumed_material_before_preposed_vowel_withholds_output(self):
         s = analyze("xເເກ").syllables[0]
-        self.assertEqual(s.status, "EVIDENCE LIMITED")
+        self.assertEqual(s.status, "ANALYSIS DEPENDENT")
         self.assertIsNone(s.phonemic_ipa)
-        self.assertEqual(s.practical_ukrainian, "?")
-        self.assertEqual(s.phonetic_result.status, "PROVISIONAL")
+        self.assertIsNone(s.practical_ukrainian)
         self.assertTrue(any(w.startswith("UNCONSUMED_BEFORE_ONSET:") for w in s.warnings))
 
-    def test_unconsumed_grapheme_keeps_whole_unit_ipa_unknown_but_renders_placeholder(self):
+    def test_unconsumed_grapheme_withholds_whole_unit_ipa_and_target(self):
         s = analyze("ກາລ").syllables[0]
         self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
@@ -205,12 +204,11 @@ class TestCore(unittest.TestCase):
         self.assertIn("PHON-IPA-WITHHELD-UNCONSUMED-ORTHOGRAPHY", s.rules)
         self.assertTrue(any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings))
 
-    def test_unconsumed_material_before_legal_final_renders_unknown_placeholder(self):
+    def test_unconsumed_material_before_legal_final_withholds_full_output(self):
         s = analyze("ກາກງ").syllables[0]
         self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
-        self.assertEqual(s.practical_ukrainian, "?")
-        self.assertEqual(s.phonetic_result.status, "PROVISIONAL")
+        self.assertIsNone(s.practical_ukrainian)
         self.assertEqual(s.ukrainian_candidates, [])
         self.assertTrue(
             any(w.startswith("UNCONSUMED_AFTER_VOWEL:") for w in s.warnings)
