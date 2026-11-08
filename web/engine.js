@@ -283,6 +283,8 @@ function previewFromGraphemes(surface, parsed) {
   };
 }
 
+const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
+
 function validateInput(text) {
   const warnings = [];
   for (const ch of text) {
@@ -292,7 +294,7 @@ function validateInput(text) {
       continue;
     }
     if (cp >= 0x0E80 && cp <= 0x0EFF) continue;
-    if (/\s/.test(ch) || (cp < 0x80 && /[-'.]/.test(ch))) continue;
+    if (/\s/.test(ch) || cp < 0x80 || PASSTHROUGH_PUNCTUATION.has(ch)) continue;
     if (cp > 0x7F) warnings.push("Непідтримуваний символ поза лаоським Unicode-діапазоном.");
   }
   return [...new Set(warnings)];
