@@ -2258,3 +2258,72 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Three-engine comparative benchmark artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425) was downloaded and inspected. Updated metrics are recorded in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
 - Current remaining acceptance: independent adjudicated Lao IPA gold = 0 (BLOCKED); empirical linguistic accuracy is not validated; manual NVDA/JAWS/VoiceOver/TalkBack, physical mobile and actual 200%/400% browser zoom QA remain PARTIAL.
 - Status: GitHub Pages publication DONE_VERIFIED; research prototype published; not linguistically validated or release-ready.
+
+
+## Deterministic MekongPhon rule-port continuation — 2026-11-08
+
+This section supersedes earlier branch/main/PR snapshots above for the work in PR #146.
+
+### Starting state and branch
+
+- Starting `main` commit: `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` (after PR #144).
+- Dedicated branch: `feat/deterministic-mekongphon-reference-profile-20261108`.
+- Pull request: [#146 — Add deterministic MekongPhon-reference IPA rule profile](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/146), currently draft/open.
+- The branch preserves the existing deterministic rules as the default. No change was made to `main`.
+
+### Work completed
+
+- Added `ipa_profile="mekongphon-reference"` to Python `analyze()` and CLI `--ipa-profile mekongphon-reference`.
+- Ported the same profile contract into `web/engine.js` as `analyze(text, { ipaProfile: "mekongphon-reference" })`; browser UI remains on default `vientiane`.
+- Transferred nine dominant vowel-structure correspondences and two onset correspondences from aggregate contextual diagnostics of the pinned MekongPhon training split. The profile uses no neural weights, does no runtime model download, does no word-level lookup and does not change tone selection.
+- Profile overrides are included in typed-IPA provenance and rules. The IPA remains the boundary consumed by the Ukrainian adapter.
+- Added Python and Node regression tests, including a full test over all nine vowel overrides and checks that uncertain `ຣ` remains uncertain.
+- Added the held-out profile benchmark workflow and documented the source split, immutable revisions, limitations and results.
+- Updated README, docs index, codebase map, evidence claim registry and this handoff.
+
+### Held-out comparison
+
+Successful run [42467190935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935), artifact [13612311669](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935/artifacts/13612311669), code checkpoint `e46b0cafa9c1b2d47c746d4258e3b1d624e26d7c). Frozen 100-row MekongPhon holdout SHA-256: `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. Neural non-tonal model revision: `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`, beam width 5.
+
+| Engine | CER / full 100 | Exact matches | Coverage |
+|---|---:|---:|---:|
+| Default Vientiane rules | 11.46% | 69/100 | 97% |
+| Deterministic MekongPhon-reference profile | **6.64%** | **90/100** | 97% |
+| MekongPhon Neural | 6.64% | 82/100 | 100% |
+
+On the shared 97 words: profile CER 1.40% (8/570 edits) versus neural 5.79% (33/570); profile 90 exact matches versus neural 81. The profile matches the neural model's full-set CER while exceeding its exact matches, but it still withholds 3% of inputs. One-run CPU mean latency (model load excluded): profile 1.38 ms/input; neural 58.08 ms/input. Runtime errors: 0. This is agreement with a dictionary-seeded reference, not independent accuracy.
+
+### Verification
+
+- Exact-head Verify on the prior code checkpoint passed: Python 270 tests, Node 129 tests, Chromium 17 tests; corpus structural validation, `scripts/audit.py`, clean `npm ci`, browser tests, build, generated-data drift and built-site browser checks passed. Latest docs-only changes are being rechecked at the final branch head.
+- Dedicated held-out benchmark workflow passed with zero runtime errors and aggregate-only warning categories.
+- Remaining coverage diagnostics: `UNCONSUMED_AFTER_VOWEL` (3 warnings) and `MALFORMED_TONE_MARK_ORDER` (1 warning). These are intentionally withheld; no neural fallback or guess was added.
+- The visible web UI has no profile selector yet; the profile is exposed through Python/CLI and browser-engine API only.
+
+### Artifact-retention note
+
+An early diagnostic artifact from run [42467038446](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467038446), artifact ID `13612136875`, included a few exact unconsumed remainder fragments in warning diagnostics. This was corrected: later artifacts contain only aggregate warning categories and the benchmark workflow retention was reduced to one day. The available GitHub connector exposes artifact download/listing but not deletion, so the earlier artifact could not be removed during this run and retains its original expiry. No source rows, IPA references or per-item predictions were stored in that artifact.
+
+### Current task ledger
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Deterministic MekongPhon-reference IPA profile — Python | DONE_VERIFIED (engineering) | API/CLI, provenance and 270-test Python suite |
+| Deterministic MekongPhon-reference IPA profile — browser engine | DONE_VERIFIED (engineering) | Same opt-in profile in JS; 129 Node tests and 17 Chromium tests |
+| Reference-profile comparison against pinned neural engine | DONE_VERIFIED (comparative only) | Run #42467190935; CER 6.64% vs neural 6.64%; profile coverage 97% vs neural 100% |
+| Remaining three percent of holdout coverage | PARTIAL / EVIDENCE-LIMITED | Unconsumed suffixes and malformed tone-mark order remain withheld; acceptance requires scoped primary orthography evidence and regression cases, not copying holdout IPA |
+| Visible UI profile selector | DEFERRED | Not required for the engine parity experiment; default web UI remains Vientiane |
+| Independent adjudicated IPA gold | BLOCKED | Independent gold count remains 0; requires two independent qualified annotators and separate adjudicator |
+| Manual screen-reader / physical-device / actual zoom QA | PARTIAL | NVDA/JAWS/VoiceOver/TalkBack, physical mobile and 200%/400% browser zoom remain NOT RUN |
+| Linguistic accuracy / production release | BLOCKED | Dictionary-seeded benchmark is not independent gold; qualified Lao phonetics review still required |
+
+### Branch and PR disposition
+
+- PR #146 remains draft/open; it is not merged.
+- PR #145 ("Make MekongPhon Neural the primary Lao-to-IPA stage") was left open and untouched because this task explicitly keeps the deterministic engine primary.
+- PRs #137–#142 remain open and untouched; their integrated work is already present on the starting mainline after PRs #143/#144.
+- No force-push, branch deletion, merge, release, deployment or external settings change was performed.
+
+### Readiness
+
+The deterministic reference profile now matches MekongPhon Neural's full-set CER and exceeds it on exact matches, but has 97% rather than 100% coverage and is only validated against a dictionary-seeded holdout. The repository remains a published engineering-verified research prototype, not independently accuracy-validated or production/release-ready.
