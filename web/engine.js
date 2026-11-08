@@ -351,7 +351,7 @@ function toneMarkOrderError(chars, clean, found) {
     ? null : "MALFORMED_TONE_MARK_POSITION";
 }
 
-function analyzeToken(surface) {
+function analyzeToken(surface, ipaProfile = "vientiane") {
   const chars = [...surface];
   const toneMarkCount = chars.filter((ch) => TONE_MARK_SET.has(ch)).length;
   if (toneMarkCount > 1) {
@@ -414,8 +414,32 @@ function analyzeToken(surface) {
     ? { name: null, contour: null, status: "ANALYSIS DEPENDENT", ruleId: "TONE-NOT-ESTABLISHED-FOR-COMBINATION" }
     : tone;
   const codaIpa = coda ? CODAS[coda] : "";
-  const onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
-  const ipa = structuralWarning ? null : onsetIpa + matched.v[2] + codaIpa;
+  let onsetIpa = onsetIpaOverride ?? (onsetKey === "ອ" ? "" : onset[1]);
+  let vowelIpa = matched.v[2];
+  const profileRules = [];
+  if (ipaProfile === "mekongphon-reference") {
+    const onsetOverride = { "ວ": "w", "ຣ": "r" }[onsetKey];
+    const vowelOverride = {
+      AW_LONG: "ao",
+      UA_LONG: "ɯːə̯",
+      IA_LONG: "iaː",
+      OEE: "əː",
+      AI: "aj",
+      UO_LONG: "uaː",
+      UO_LONG_ALT: "uaː",
+      AI2: "aj",
+      OE: "ə",
+    }[matched.v[0]];
+    if (onsetOverride && onsetOverride !== onsetIpa) {
+      onsetIpa = onsetOverride;
+      profileRules.push("IPA-PROFILE-MEKONGPHON-ONSET:" + onsetKey);
+    }
+    if (vowelOverride && vowelOverride !== vowelIpa) {
+      vowelIpa = vowelOverride;
+      profileRules.push("IPA-PROFILE-MEKONGPHON-VOWEL:" + matched.v[0]);
+    }
+  }
+  const ipa = structuralWarning ? null : onsetIpa + vowelIpa + codaIpa;
   const adapterStatus = ipa && !structuralWarning &&
     onset[2] === "core" && warnings.length === 0
     ? "SUPPORTED" : ipa ? "UNCERTAIN" : "UNSUPPORTED";
@@ -432,7 +456,7 @@ function analyzeToken(surface) {
 
   if (onsetForm !== onsetKey && !onsetIpaOverride) warnings.push(onsetForm + " має нульовий /h/; він змінює лише тоновий клас.");
   if (onsetIpaOverride) warnings.push("ONSET-LABIALIZED:" + onsetForm);
-  if (onsetKey === "ຣ") warnings.push("ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
+  if (onsetKey === "ຣ") warnings.push(ipaProfile === "mekongphon-reference" ? "MekongPhon-reference profile uses /r/ for ຣ; this reading remains analysis-dependent." : "ຣ має сучасне /l/-читання за замовчуванням; /r/ зберігається для іншомовних/історичних випадків.");
   if (structuralWarning) warnings.push("PHON-IPA-WITHHELD-STRUCTURAL-UNCERTAINTY: повний склад не встановлено.");
   if (resolvedTone.status !== "ESTABLISHED") warnings.push("Тон для цієї комбінації не встановлено в канонічному наборі правил.");
 
@@ -454,7 +478,7 @@ function isStructurallyComplete(s) {
     !(s.warnings || []).some((w) => w.startsWith("Невикористана частина") || w.startsWith("Не вдалося надійно") || w.startsWith("Не знайдено") || w.startsWith("SHORT_VOWEL_REQUIRES_CODA") || w.startsWith("MALFORMED_TONE_MARK_"));
 }
 
-function analyzeWord(word) {
+function analyzeWord(word, ipaProfile = "vientiane") {
   const chars = [...word];
   // Tone-mark placement and multiplicity are syllable-local properties.
   // Candidate syllables validate their own marks below; a mark that cannot be
@@ -507,7 +531,7 @@ function analyzeWord(word) {
   // A short-vowel spelling that requires a coda is a single incomplete
   // orthographic unit. Do not let the fallback segmenter split off the vowel
   // sign and make the malformed token look like multiple independent syllables.
-  const wholeCandidate = analyzeToken(word);
+  const wholeCandidate = analyzeToken(word, ipaProfile);
   // Keep a fully parsed but analysis-dependent source reading intact. The
   // target adapter may withhold Ukrainian output without invalidating the
   // source-side IPA parse (e.g. modern/loan-dependent ຣ).
@@ -546,7 +570,7 @@ function analyzeWord(word) {
     best[i] = { score: best[i + 1].score - 100, parts: [fallback, ...best[i + 1].parts] };
 
     for (let j = i + 1; j <= Math.min(n, i + 12); j++) {
-      const candidate = analyzeToken(chars.slice(i, j).join(""));
+      const candidate = analyzeToken(chars.slice(i, j).join(""), ipaProfile);
       if (!isStructurallyComplete(candidate)) continue;
       const length = j - i;
       const nextChar = chars[j] || "";
@@ -634,8 +658,12 @@ function analyzeWord(word) {
   return parts;
 }
 
-export function analyze(text) {
+export function analyze(text, options = {}) {
   const input = String(text ?? "");
+  const ipaProfile = options?.ipaProfile ?? "vientiane";
+  if (!["vientiane", "mekongphon-reference"].includes(ipaProfile)) {
+    throw new RangeError("Unknown IPA profile: " + ipaProfile);
+  }
   const normalized = input.normalize("NFC").trim();
   if (!normalized) return { input, normalized, status: "EMPTY", output: "", syllables: [], warnings: [] };
   const inputWarnings = validateInput(normalized);
@@ -648,7 +676,7 @@ export function analyze(text) {
     // recovers onset/vowel roles for a provisional preview, but the preview
     // itself never carries or infers a tone value.
     const segmentalSurface = [...syllable.surface].filter((ch) => !TONE_MARK_SET.has(ch)).join("");
-    const structural = analyzeToken(segmentalSurface);
+    const structural = analyzeToken(segmentalSurface, ipaProfile);
     const previewInput = {
       ...structural,
       warnings: [...new Set([...(syllable.warnings || []), ...(structural.warnings || [])])]
