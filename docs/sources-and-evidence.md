@@ -23,3 +23,8 @@ Ueda's Vientiane study (1994, pp. 96–97) distinguishes VV rhymes (long vowels 
 ## Unicode grapheme inventory
 
 SRC-UNICODE-CHART-2026 is the Unicode Consortium's Unicode 18 Lao Names List. It establishes codepoint identity and official character names, not pronunciation. CLM-LAO-UNICODE-INVENTORY-2026 therefore supports inventory completeness and scope classification only. Modern Lao phonetic roles are separately grounded in SRC-ISHIDA-ORTHO-2026 and language-specific phonological sources; Pali/Sanskrit and Khmu entries are not promoted to modern Lao pronunciation rules.
+
+
+## Independent sentence-domain stress corpus (not IPA evidence)
+
+The HVULao_NLP 1,000-row raw-text split is used only to measure sentence-domain engine coverage, input rejection, runtime and output disagreement. The pinned source is [HaHVU/HVULao_NLP](https://github.com/HaHVU/HVULao_NLP) revision `ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568`, file `Datatest1k/testorgin1000.txt`, Git blob SHA-1 `947448807484bb994877ae5d32cba1cfdd5e2d9b`; the dataset release is [Mendeley Data v2, DOI 10.17632/5zwym7kwn8.2](https://doi.org/10.17632/5zwym7kwn8.2), published under CC BY 4.0. Its paired annotations concern word segmentation/POS and do not provide IPA. Therefore it is not a phonetic gold source and must not support CER, accuracy or correctness claims. Reproducible aggregate results are documented in [the HVULao 1k three-engine stress report](research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md).
