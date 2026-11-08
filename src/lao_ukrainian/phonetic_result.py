@@ -57,6 +57,32 @@ def from_phonology(
     )
 
 
+
+def from_unknown_source_unit(
+    surface: str,
+    *,
+    provenance: tuple[str, ...] = (),
+    uncertainty: tuple[str, ...] = (),
+) -> PhoneticResult:
+    """Represent an unresolved source unit without inventing IPA.
+
+    The single typed unknown segment is deliberately not an IPA phone. The
+    target adapter may render it as a visible placeholder while preserving
+    the original source surface on the enclosing analysis record.
+    """
+    if not surface:
+        raise ValueError("An unknown source unit must not be empty")
+    trace = (*provenance, "FALLBACK:UNKNOWN-SOURCE-UNIT")
+    return PhoneticResult(
+        phonemic_ipa=None,
+        segments=(PhoneticSegment("?", "unknown", trace, "PROVISIONAL"),),
+        syllable_boundaries=(0, 1),
+        status="PROVISIONAL",
+        provenance=trace,
+        uncertainty=(*uncertainty, "PHONETIC-READING-UNKNOWN"),
+    )
+
+
 def from_external_ipa(
     ipa: str,
     *,
