@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** current main `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` plus the open deterministic-profile continuation PR #146. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** current main `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` plus open PRs #146/#147 and the hybrid deterministic continuation branch. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
@@ -28,13 +28,15 @@ Lao source text
 Python implementation:
 - `normalize.py` — NFC normalization and Unicode/input validation.
 - `parser.py` — orthographic syllable parsing, dynamic segmentation, tone-mark storage-order checks, onset/coda and vowel structures.
-- `phonology.py` — rhyme/live-dead classification, source-scoped tone selection, and an explicit opt-in MekongPhon-reference IPA convention profile.
+- `phonology.py` — rhyme/live-dead classification and source-scoped tone selection.
+- `mekongphon_reference_profile.py` — opt-in Vientiane/MekongPhon reference-compatible profile definitions.
+- `hybrid_rules.py` — deterministic rule selection by priority and context specificity; equal-rank conflicting outputs fail closed.
 - `phonetic_result.py` — source IPA inventory and typed IPA tokenization independent of Ukrainian target mappings.
 - `target.py` — typed IPA → Ukrainian adaptation; initial yodation and target-specific sequence matching.
-- `core.py` — public orchestration, uncertainty handling, and the explicit `ipa_profile` selector (default remains `vientiane`).
+- `core.py` — public orchestration, uncertainty handling, and the explicit `ipa_profile` selector (`vientiane` remains the default; `hybrid-deterministic` is opt-in).
 - `model.py` / `data.py` — result types and canonical registry loading.
 
-The browser engine is a separately maintained implementation using generated canonical data. It now exposes the same opt-in `ipaProfile: "mekongphon-reference"` contract as Python; the visible UI remains on the default `vientiane` profile. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
+The browser engine is a separately maintained implementation using generated canonical data. It exposes opt-in `mekongphon-reference` and `hybrid-deterministic` profiles; the visible UI remains on the default `vientiane` profile. Python and browser implementations both retain the baseline fallback and record applied hybrid rule IDs in IPA provenance. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
 
 ## Separate provisional grapheme preview
 
