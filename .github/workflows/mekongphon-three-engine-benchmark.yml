@@ -7,9 +7,11 @@ on:
       - "benchmark/mekongphon-immutable-inference-20261107"
       - "improve/rule-engine-error-analysis-20261107"
       - "audit/repository-docs-structure-20261107"
+      - "benchmark/additional-lao-g2p-20261108"
     paths:
       - ".github/workflows/mekongphon-three-engine-benchmark.yml"
       - "scripts/benchmark_mekongphon_three_engines.py"
+      - "scripts/benchmark_additional_lao_g2p.py"
       - "src/lao_ukrainian/mekongphon.py"
       - "src/lao_ukrainian/phonetic_result.py"
       - "src/lao_ukrainian/target.py"
@@ -36,14 +38,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e .
-          python -m pip install lao2ipa==1.0.0 transformers==4.49.0 huggingface_hub==0.29.3 sacrebleu==2.5.1
+          python -m pip install lao2ipa==1.0.0 transformers==4.49.0 huggingface_hub==0.29.3 sacrebleu==2.5.1 epitran==1.35.3
+          python -m pip install "git+https://github.com/TigreGotico/orthography2ipa.git@32b66b0b1a4b66f7267790d7ec1f346460f8d814"
       - name: Run pinned 100-word held-out benchmark (both MekongPhon models)
         run: python scripts/benchmark_mekongphon_three_engines.py --output artifacts/mekongphon-100-word-benchmark.json
+      - name: Run pinned additional Epitran and orthography2ipa comparators
+        run: python scripts/benchmark_additional_lao_g2p.py --output artifacts/additional-lao-g2p-benchmark.json
       - name: Upload aggregate benchmark report (no source rows or predictions)
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: mekongphon-three-engine-aggregate
-          path: artifacts/mekongphon-100-word-benchmark.json
+          path: |
+            artifacts/mekongphon-100-word-benchmark.json
+            artifacts/additional-lao-g2p-benchmark.json
+            artifacts/additional-lao-g2p-benchmark.json.sha256
           if-no-files-found: warn
           retention-days: 90
