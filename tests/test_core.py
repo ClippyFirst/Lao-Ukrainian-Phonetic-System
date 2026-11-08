@@ -29,6 +29,9 @@ class TestCore(unittest.TestCase):
         self.assertEqual(vientiane.phonemic_ipa, "ʋaː")
         self.assertIn("HYBRID-RULE:HYB-MPH-ONSET-ວ", default.rules)
         self.assertNotIn("HYBRID-RULE:HYB-MPH-ONSET-ວ", vientiane.rules)
+        parsed = core_module.parse_syllable("ວາ")
+        self.assertEqual(core_module.phonologize(parsed)[0], "waː")
+        self.assertEqual(core_module.phonologize(parsed, ipa_profile="vientiane")[0], "ʋaː")
 
     def test_long_open_high_class(self):
         s = analyze("ຂາ").syllables[0]
