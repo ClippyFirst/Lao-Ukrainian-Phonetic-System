@@ -7,7 +7,7 @@ description of Vientiane Lao. The default Vientiane profile is unchanged.
 
 PROFILE_NAME = "mekongphon-reference"
 DEFAULT_PROFILE = "vientiane"
-SUPPORTED_IPA_PROFILES = (DEFAULT_PROFILE, PROFILE_NAME)
+HYBRID_PROFILE = "hybrid-deterministic"\nSUPPORTED_IPA_PROFILES = (DEFAULT_PROFILE, PROFILE_NAME, HYBRID_PROFILE)
 
 # Aggregate-only, high-frequency train-split correspondences. The source
 # diagnostic uses the pinned 6,219-row MekongPhon training split; it is not
@@ -52,4 +52,48 @@ def apply_ipa_profile(parsed, onset_ipa, vowel_ipa, coda_ipa, profile=DEFAULT_PR
         vowel_ipa = VOWEL_IPA_OVERRIDES[vowel_id]
         rules.append(f"IPA-PROFILE-MEKONGPHON-VOWEL:{vowel_id}")
 
+    return onset_ipa, vowel_ipa, coda_ipa, rules
+
+
+# The hybrid profile treats Vientiane phonology as the base system and applies
+# only explicit, train-split-supported MekongPhon convention rules. These
+# rules are intentionally no more specific than the evidence currently allows.
+from .hybrid_rules import phonological_context, select_rule
+
+HYBRID_RULES = tuple(
+    {
+        "rule_id": f"HYB-MPH-VOWEL-{vowel_id}",
+        "target": "vowel",
+        "conditions": {"vowel_id": vowel_id},
+        "value": value,
+        "priority": 0,
+        "provenance": f"IPA-PROFILE-MEKONGPHON-VOWEL:{vowel_id}",
+    }
+    for vowel_id, value in VOWEL_IPA_OVERRIDES.items()
+) + tuple(
+    {
+        "rule_id": f"HYB-MPH-ONSET-{grapheme}",
+        "target": "onset",
+        "conditions": {"onset": grapheme},
+        "value": value,
+        "priority": 0,
+        "provenance": f"IPA-PROFILE-MEKONGPHON-ONSET:{grapheme}",
+    }
+    for grapheme, value in ONSET_IPA_OVERRIDES.items()
+)
+
+
+def apply_hybrid_profile(parsed, onset_ipa, vowel_ipa, coda_ipa):
+    """Apply evidence-gated reference rules over the Vientiane IPA baseline."""
+    context = phonological_context(parsed)
+    rules = []
+    for target, current in (("onset", onset_ipa), ("vowel", vowel_ipa)):
+        match = select_rule(HYBRID_RULES, context, target=target)
+        if match is None or match.value == current:
+            continue
+        if target == "onset":
+            onset_ipa = match.value
+        else:
+            vowel_ipa = match.value
+        rules.extend((match.provenance, f"HYBRID-RULE:{match.rule_id}"))
     return onset_ipa, vowel_ipa, coda_ipa, rules
