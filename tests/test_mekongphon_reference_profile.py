@@ -30,6 +30,8 @@ class MekongPhonReferenceProfileTests(unittest.TestCase):
         compatible = analyze("ດວງ", ipa_profile=PROFILE_NAME).syllables[0]
         self.assertEqual(compatible.phonemic_ipa, "duaːŋ")
         self.assertEqual(compatible.phonetic_result.status, "SUPPORTED")
+        self.assertEqual(compatible.phonetic_result.phonemic_ipa, compatible.phonemic_ipa)
+        self.assertEqual(compatible.practical_ukrainian, "дуанг")
         self.assertEqual(default.tone, compatible.tone)
         self.assertEqual(default.tone_contour, compatible.tone_contour)
         self.assertIn("IPA-PROFILE-MEKONGPHON-VOWEL:UO_LONG_ALT", compatible.rules)
