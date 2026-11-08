@@ -241,3 +241,21 @@ class TestMinorSyllableSelectorEvidence(unittest.TestCase):
                 result = analyze(word)
                 self.assertTrue(result.syllables)
                 self.assertNotIn("VNT-POTENTIAL-MINOR-OPEN-A-UNRESOLVED", result.syllables[0].rules)
+
+
+    def test_ascii_and_common_punctuation_are_explicit_passthrough_not_ipa(self):
+        result = analyze("ຂາ, 2026! abc.")
+        passthrough = [item for item in result.syllables if item.status == "PASSTHROUGH"]
+        self.assertEqual("".join(item.surface for item in passthrough), ",2026!abc.")
+        self.assertTrue(all(item.phonemic_ipa is None for item in passthrough))
+        self.assertTrue(all(item.practical_ukrainian == item.surface for item in passthrough))
+        self.assertTrue(all("PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER" in item.rules for item in passthrough))
+        self.assertEqual(result.syllables[0].phonemic_ipa, "kʰaː")
+        self.assertEqual(result.status, "OK")
+
+    def test_passthrough_only_input_is_preserved_without_fabricated_ipa(self):
+        result = analyze("ABC-123!?")
+        self.assertEqual(result.status, "OK")
+        self.assertEqual("".join(item.practical_ukrainian for item in result.syllables), "ABC-123!?")
+        self.assertTrue(all(item.phonemic_ipa is None for item in result.syllables))
+        self.assertTrue(all(item.status == "PASSTHROUGH" for item in result.syllables))
