@@ -2,7 +2,7 @@
 
 ## Architecture
 
-- `normalize.py` — NFC normalization and mixed-script validation; U+200B is accepted as a Lao word boundary and normalized to a token separator before parsing.
+- `normalize.py` — NFC normalization and mixed-script validation; U+200B is accepted as a Lao word boundary and normalized to a token separator before parsing; a leading U+FEFF text-stream BOM is stripped, while embedded BOMs remain invalid.
 - `parser.py` — Lao graphemic syllable parsing and structural vowel recognition.
 - `phonology.py` — live/dead classification, tone lookup and phonemic IPA construction.
 - `phonetic_result.py` — typed `PhoneticResult` boundary: source-inventory IPA tokenization, syllable offsets, length, tone, provenance and uncertainty; tokenization is independent of target correspondence keys.
