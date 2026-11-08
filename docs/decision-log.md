@@ -96,3 +96,12 @@
 **Reason:** The hybrid profile combines the Vientiane-oriented structural and tonal analysis with the already reviewed train-split aggregate correspondences, without runtime model downloads, word-level dictionary lookups or neural inference. The 100-entry benchmark supports reference-relative performance on that bounded set, but does not establish independent phonetic accuracy or universal Neural-level performance. Unknown or unsupported cases remain fail-closed.
 
 **Acceptance:** Python API, CLI and browser defaults all select `hybrid-deterministic`; explicit Vientiane selection reproduces the prior baseline; regression tests and exact-head hosted Verify pass. This is an engine-default decision, not a linguistic release approval.
+
+
+## D-013 — 100% rendering coverage for valid hybrid input
+
+**Decision:** The primary `hybrid-deterministic` engine must return a Ukrainian-side rendering for every valid input unit. Supported IPA uses the ordinary adapter; complete but UNCERTAIN IPA may be adapted without upgrading its status; unresolved structures use a typed PROVISIONAL sequence built from registered grapheme-position IPA hints and explicit unknown markers. The same IPA-to-Ukrainian adapter renders both provisional IPA runs and visible `?` markers. No direct grapheme-to-Ukrainian bypass is permitted. Frozen `vientiane` and `mekongphon-reference` compatibility profiles retain their previous withholding behavior.
+
+**Reason:** Users require full text coverage even when the phonetic evidence is weak. Rendering completeness is a product behavior, not a claim of phonetic accuracy. Keeping SUPPORTED, UNCERTAIN and PROVISIONAL distinct preserves evidence provenance while avoiding silently dropped source material. A leading U+FEFF file BOM is stripped; U+200B is accepted as a Lao word boundary; embedded BOM and other unsupported controls remain invalid.
+
+**Acceptance:** Exact-head Verify passes; held-out MekongPhon 100-entry benchmark renders 100/100 inputs and 169/169 units; HVULao 1k benchmark renders 1,000/1,000 inputs and 21,680/21,680 units, with separate IPA coverage and status counts. Independent adjudicated IPA gold remains 0; this decision does not grant linguistic release readiness.
