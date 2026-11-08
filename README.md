@@ -136,7 +136,7 @@ Both engines default to immutable model revisions recorded in [the integration g
 
 ## Status
 
-**🟡 Engineering-verified research prototype on the open PR #143 branch; the static web instrument is deployed from the existing mainline.** Phonological source adjudication, an independently reviewed gold corpus, external G2P comparison, and full dialect/cluster coverage remain incomplete; deployment does not imply linguistic validation.
+**🟡 Engineering-verified research prototype on `main`; the static web instrument is deployed through GitHub Pages.** Phonological source adjudication, an independently reviewed gold corpus and full dialect/cluster coverage remain incomplete; comparative external G2P benchmarking is available, but deployment does not imply linguistic validation.
 
 The repository is a research foundation with explicit provenance and deterministic tests. It is not yet publication-ready: a larger syllable corpus, fuller cluster/ligature analysis, independent gold examples and expert adjudication are still required.
 
@@ -159,3 +159,12 @@ The Python package and browser instrument intentionally expose different input c
 - **Boundary differences:** browser validation and Python normalization/parsing are separate runtime paths. In particular, do not assume U+200B, punctuation, mixed-script passthrough, malformed fragments, or aggregate status behave identically across them. Consumers must select the documented runtime contract and must not compare the two outputs as a parity oracle.
 
 Both runtimes attempt conservative within-token syllable segmentation and reject U+200B; neither claims to solve Lao lexical word segmentation. Shared phonological and IPA-to-Ukrainian rules should remain aligned where both runtimes support the same complete syllable, but phrase-level segmentation and all input-normalization behavior are not a blanket parity guarantee. Changes to either contract require runtime-specific regression tests and an explicit update to this section.
+
+
+## Post-merge publication checkpoint — 2026-11-08
+
+- PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) was squash-merged into `main`.
+- Mainline merge commit: `c3ba58c0e0e6ba64821abe4c9d46c75ff559b2b4`.
+- GitHub Pages workflow [42463361038](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038): **SUCCESS**. Browser regression tests, static build, built-site Chromium tests, deployment artifact checks, Pages deployment and deployed-asset smoke tests all passed.
+- Live site: https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ — checked after deployment; HTTP 200.
+- The site is an engineering-verified research prototype, not a linguistically validated production release. Independent adjudicated IPA gold remains 0; manual assistive-technology and physical-device accessibility QA remains partial.
