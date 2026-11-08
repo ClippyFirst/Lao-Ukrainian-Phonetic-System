@@ -141,7 +141,7 @@ def main() -> int:
 
         try:
             started = time.perf_counter()
-            baseline = analyze(source)
+            baseline = analyze(source, ipa_profile="vientiane")
             baseline_times.append(time.perf_counter() - started)
             baseline_prediction = complete_ipa(baseline)
             if not baseline_prediction:
