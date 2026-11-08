@@ -87,3 +87,12 @@
 **Reason:** Ueda (1994, p. 113) describes an exceptional non-final open /a/ syllable in central Vientiane polysyllabic words as unstressed and tone-neutral (the article is based on one 46-year-old Haysok informant). Enfield (2007, §3.1, pp. 33–34) models minor C₀V₀ syllables as lacking distinctive tone independent of the major syllable, restricts V₀ to short /a, i, u/, and notes a restricted C₀ onset subset with palatal/velar nasals absent. The orthographic parser cannot prove lexical minor-syllable status or the full C₀ inventory. The implementation therefore flags only a conservative structural candidate, excludes known palatal/velar nasal onsets, and withholds tone rather than asserting that every matching spelling is definitely minor.
 
 **Evidence:** SRC-UEDA; SRC-ENFIELD; claim CLM-LAO-POTENTIAL-MINOR-OPEN-A; regression tests for the candidate selector and monosyllabic/following-weight counterexample.
+
+
+## D-014 — Hybrid deterministic profile is the primary ClippyFirst engine
+
+**Decision:** Make `hybrid-deterministic` the default profile for the Python API, CLI rules path and browser engine. Keep Vientiane phonology as the base analysis and apply only the explicit, deterministic, evidence-gated MekongPhon aggregate correspondences. Retain `vientiane` and `mekongphon-reference` as explicit compatibility/comparison profiles. The optional Neural adapter is not part of the default transcription path.
+
+**Reason:** The hybrid profile combines the Vientiane-oriented structural and tonal analysis with the already reviewed train-split aggregate correspondences, without runtime model downloads, word-level dictionary lookups or neural inference. The 100-entry benchmark supports reference-relative performance on that bounded set, but does not establish independent phonetic accuracy or universal Neural-level performance. Unknown or unsupported cases remain fail-closed.
+
+**Acceptance:** Python API, CLI and browser defaults all select `hybrid-deterministic`; explicit Vientiane selection reproduces the prior baseline; regression tests and exact-head hosted Verify pass. This is an engine-default decision, not a linguistic release approval.
