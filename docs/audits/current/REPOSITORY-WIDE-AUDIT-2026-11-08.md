@@ -1,3 +1,53 @@
+## Unified Lao → IPA hybrid arbitration contract — 2026-11-08
+
+The current `main` branch already has `hybrid-deterministic` as the default engine. This entry reconciles what “combine all engines” can mean without conflating IPA transcription, orthographic romanization, and model diagnostics.
+
+### Existing implementation and verified coverage
+
+- The production path is one deterministic engine: Lao Unicode → structural syllable parsing → Vientiane phonological baseline → evidence-gated MekongPhon-derived hybrid rules → typed IPA → Ukrainian adapter.
+- The current hybrid rule registry contains nine aggregate vowel correspondences and two onset correspondences from the pinned MekongPhon training-split diagnostics. Selection is deterministic by priority/specificity; declaration order is irrelevant and equal-rank conflicting outputs raise a conflict.
+- Hybrid rendering coverage is already `DONE_VERIFIED`: 1,000/1,000 HVULao inputs and 21,680/21,680 units; 100/100 held-out MekongPhon inputs and 169/169 units. The distribution includes SUPPORTED, UNCERTAIN, PROVISIONAL and passthrough units. This is not 100% supported IPA and not 100% phonetic accuracy.
+- The merged hybrid default and the latest mixed-script / Lao-numeral rendering fixes remain in main. Frozen Vientiane and MekongPhon-reference profiles are compatibility profiles, not additional runtime voters.
+
+### Engine integration matrix
+
+| Engine / route | Role in the unified system | Why it is / is not a live IPA voter |
+|---|---|---|
+| Vientiane deterministic rules | Phonological baseline: syllable structure, segmental IPA and tone | Primary deterministic source; retained |
+| MekongPhon-reference deterministic profile | Aggregate, train-split-derived IPA convention overrides | Already integrated into hybrid through 11 explicit rules; no model inference |
+| MekongPhon tonal neural model | Optional external tonal IPA comparator | Not blindly merged: its flat output lacks trusted per-syllable alignment in the adapter; model disagreement is not proof of correctness |
+| MekongPhon non-tonal neural model | Optional segmental IPA comparator | Cannot supply lexical tone; its non-tonal outputs must never overwrite or infer tone |
+| Lao2IPA | External G2P comparator | Useful for differential diagnostics; not independent gold and not a source of automatic production exceptions |
+| CLDR Lao-Latin / BGN-PCGN-aligned route | Separate orthographic romanization route | Not IPA; it omits phonological/tone information and must not vote on IPA or act as a fallback for phonetic uncertainty |
+| Grapheme-position preview | Last-resort typed provisional hint source | Already used only through PROVISIONAL IPA-typed segments and UNKNOWN markers; never promoted to supported IPA |
+
+### Deterministic arbitration policy
+
+1. Parse the Lao source once and preserve source syllable boundaries, grapheme provenance and passthrough units.
+2. Generate the default IPA from the Vientiane phonological baseline.
+3. Apply only the 11 existing hybrid overrides whose provenance is recorded. A future override needs context-level evidence, a pinned source, a held-out comparison and a regression fixture; a frequency count alone is insufficient.
+4. Treat neural and external G2P outputs as diagnostics unless a future adapter can prove source alignment, tone scope, model revision, and independent evaluation. Non-tonal engines may corroborate segmental phones only; they cannot decide tone.
+5. Route only typed IPA / typed provisional segments through the Ukrainian adapter. Keep romanization outside this path.
+6. If evidence conflicts or a structural parse is unsupported, preserve a deterministic visible result with UNCERTAIN / PROVISIONAL / UNKNOWN status. Do not hide the unit, guess a tone, or present an unresolved choice as certain.
+
+This removes *algorithmic* ambiguity (same normalized input and same engine/data revision yield the same selected output). It cannot honestly remove *linguistic* ambiguity where sources disagree or evidence is absent. No majority vote can establish truth without an adjudicated reference.
+
+### Task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| One default deterministic hybrid path | DONE_VERIFIED | Default API / CLI / browser use `hybrid-deterministic`; typed IPA-first adapter boundary |
+| 100% valid-input rendering | DONE_VERIFIED | HVULao 1,000/1,000 and 21,680/21,680 units; MekongPhon holdout 100/100 and 169/169 |
+| Vientiane + MekongPhon aggregate hybridization | DONE_VERIFIED | 11 evidence-traced overrides; deterministic conflict rejection |
+| Neural / Lao2IPA diagnostic comparison | PARTIAL | Existing optional adapters and benchmark evidence; no independent adjudicated IPA gold |
+| Automatic multi-model voting into production IPA | DEFERRED | Unsafe without aligned per-syllable candidates, tone scope and independent adjudication |
+| Zero linguistic ambiguity / guaranteed correct IPA | BLOCKED | Independent expert-adjudicated IPA gold remains 0; requires qualified Lao phonetics review |
+| User-supplied long-text regression | BLOCKED | The supplied material contains generated outputs, not the original Lao source string; exact end-to-end reproduction is not possible from output text alone |
+
+**Readiness:** engineering-verified research prototype. Rendering coverage is complete for the tested valid-input domain; phonetic accuracy and full-language structural coverage remain unverified.
+
+---
+
 ## Follow-up: Lao numeral alignment and IPA presentation — 2026-11-08
 
 - The long mixed-content test exposed a source-crosswalk index shift when Lao numeral tokens appeared between Lao words. This made subsequent romanized words fail grapheme alignment and appear as unresolved brackets despite valid source Lao.
