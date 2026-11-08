@@ -509,10 +509,10 @@ test("browser hybrid adapter renders uncertain IPA without upgrading its status"
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
-test("browser IPA adapter withholds incomplete IPA rather than adapting a prefix", () => {
+test("browser IPA adapter uses a typed placeholder rather than adapting an incomplete prefix", () => {
   const result = analyze("ກາລ");
   const syllable = result.syllables[0];
-  assert.equal(syllable.phoneticResult.status, "UNSUPPORTED");
+  assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, "?");
 });
