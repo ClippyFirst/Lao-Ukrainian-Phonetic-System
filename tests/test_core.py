@@ -259,3 +259,10 @@ class TestMinorSyllableSelectorEvidence(unittest.TestCase):
         self.assertEqual("".join(item.practical_ukrainian for item in result.syllables), "ABC-123!?")
         self.assertTrue(all(item.phonemic_ipa is None for item in result.syllables))
         self.assertTrue(all(item.status == "PASSTHROUGH" for item in result.syllables))
+
+    def test_passthrough_prefix_does_not_hide_following_lao_syllable(self):
+        result = analyze("(ຂາ")
+        self.assertEqual(result.syllables[0].status, "PASSTHROUGH")
+        self.assertEqual(result.syllables[0].practical_ukrainian, "(")
+        self.assertEqual(result.syllables[1].phonemic_ipa, "kʰaː")
+        self.assertEqual(result.status, "OK")
