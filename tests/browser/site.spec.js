@@ -243,7 +243,7 @@ test("primary navigation, buttons, and analysis disclosures meet 44-pixel touch-
     await page.goto("/");
     await page.locator("#lao-input").fill("ຂາ");
     const targets = await page.locator(".site-header a, .skip-link, button, summary").evaluateAll((elements) =>
-      elements.map((element) => ({
+      elements.filter((element) => element.getClientRects().length > 0).map((element) => ({
         selector: element.id || element.className || element.tagName,
         width: element.getBoundingClientRect().width,
         height: element.getBoundingClientRect().height
