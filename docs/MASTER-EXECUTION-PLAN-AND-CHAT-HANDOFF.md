@@ -1,3 +1,15 @@
+## Hybrid 100% input-coverage implementation — 2026-11-08
+
+- Owner requirement: the primary hybrid engine must render 100% of valid Lao input units. Low confidence is acceptable; silent omission is not. Rendering coverage is separate from evidence-backed IPA coverage and phonetic accuracy.
+- Implementation: from_unknown_source_unit() in phonetic_result.py creates one explicit typed PROVISIONAL unknown segment when hybrid cannot establish a complete IPA result. target.py maps only this typed marker to ?; it does not read Lao graphemes or bypass IPA. Hybrid may adapt structurally complete UNCERTAIN IPA while retaining UNCERTAIN status. Candidate ranking remains supported-IPA-only.
+- Compatibility: Vientiane and MekongPhon-reference remain frozen; provisional coverage fallback and uncertain-result rendering are hybrid-only. Invalid Unicode/mixed-script input remains rejected. The fallback is not IPA and is excluded from IPA coverage/accuracy.
+- Parity: browser engine mirrors the typed provisional segment and ? target output; diagnostic grapheme preview remains separate and cannot feed the adapter.
+- Verification status: implementation and regression changes are in progress on feat/hybrid-deterministic-lao-engine-20261108. First exact-head Verify run #42515786377 failed (17 legacy assertions still expected no output); those tests were reconciled to the new hybrid contract while retaining frozen-profile assertions. A fresh exact-head CI run is still required before marking this task DONE_VERIFIED.
+- Task ledger: HYBRID-RENDER-COVERAGE-001 — PARTIAL pending exact-head Python/Node/Chromium/build checks and a revised HVULao report. Acceptance: 100% rendering coverage for all 1,000 valid corpus rows, zero missing rendered units, explicit counts for SUPPORTED/UNCERTAIN/PROVISIONAL, and unchanged independent-gold status (0).
+- Accuracy boundary: no fallback IPA values, tone contours, lengths or phonological facts are invented. A ? is a visible unknown placeholder, not a successful pronunciation prediction.
+
+---
+
 ## Primary engine decision — hybrid deterministic (2026-11-08)
 
 - Owner decision: `hybrid-deterministic` is now the primary ClippyFirst engine for Lao → Ukrainian transcription.
