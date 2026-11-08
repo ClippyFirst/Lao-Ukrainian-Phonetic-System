@@ -36,21 +36,21 @@ The profile takes only high-frequency correspondences that recur across the sepa
 
 The following are reference-convention differences observed in the training split. Counts are aggregate aligned contexts, not independent human judgments.
 
-| Structural unit | Existing ClippyFirst IPA | MekongPhon reference IPA | Train observations |
+| Structural unit | Existing ClippyFirst IPA | MekongPhon reference IPA | Dominant train agreement |
 |---|---|---|---:|
-| `AW_LONG` | `aw` | `ao` | 534 |
-| `UA_LONG` | `ɯːə` | `ɯːə̯` | 459 |
-| `IA_LONG` | `iːə` | `iaː` | 275 |
-| `OEE` | `ɤː` | `əː` | 212 |
-| `AI` | `ai` | `aj` | 205 |
-| `UO_LONG` | `uːə` | `uaː` | 184 |
-| `UO_LONG_ALT` | `uːə` | `uaː` | 180 |
-| `AI2` | `ai` | `aj` | 158 |
-| `OE` | `ɤ` | `ə` | 86 |
-| Onset `ວ` | `ʋ` | `w` | recurrent across contexts |
-| Onset `ຣ` | `l` | `r` | recurrent across contexts |
+| `AW_LONG` | `aw` | `ao` | 534/549 (97.3%) |
+| `UA_LONG` | `ɯːə` | `ɯːə̯` | 459/471 (97.5%) |
+| `IA_LONG` | `iːə` | `iaː` | 275/281 (97.9%) |
+| `OEE` | `ɤː` | `əː` | 212/234 (90.6%) |
+| `AI` | `ai` | `aj` | 205/205 (100%) |
+| `UO_LONG` | `uːə` | `uaː` | 184/188 (97.9%) |
+| `UO_LONG_ALT` | `uːə` | `uaː` | 180/184 (97.8%) |
+| `AI2` | `ai` | `aj` | 158/163 (96.9%) |
+| `OE` | `ɤ` | `ə` | 86/92 (93.5%) |
+| Onset `ວ` | `ʋ` | `w` | 330/333 (99.1%) |
+| Onset `ຣ` | `l` | `r` | 172/175 (98.3%) |
 
-These mappings are applied only when the user explicitly selects the reference profile. In particular, the `ຣ` difference may involve lexical/loanword or transcription conventions, and the `ວ` difference is a phonetic-profile distinction; neither is silently promoted to the default Vientiane rule set.
+These mappings are dominant aggregate correspondences, not exception-free laws. The profile applies them by structural vowel ID and onset grapheme; the remaining minority alignments are deliberately not turned into word-level exceptions. `OEE` and `OE` have the lowest agreement in this set (90.6% and 93.5%), so they remain opt-in. In particular, the `ຣ` difference may involve lexical/loanword or transcription conventions, and the `ວ` difference is a phonetic-profile distinction; neither is silently promoted to the default Vientiane rule set.
 
 The profile leaves tone selection, live/dead classification, syllable segmentation, unsupported-material handling and uncertainty policy unchanged. It records every applied override in the per-syllable provenance list.
 
