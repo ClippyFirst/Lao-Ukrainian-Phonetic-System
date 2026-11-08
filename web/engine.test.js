@@ -634,11 +634,13 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
   const syllable = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "ка?");
+  assert.equal(syllable.ukrainian, "кал?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
-  assert.equal(syllable.graphemePreview.ipaPreview, "kaː");
+  assert.equal(syllable.graphemePreview.ipaPreview, "kaːl");
   assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
   assert.deepEqual(syllable.graphemePreview.unresolvedGraphemes, ["ລ"]);
+  assert.equal(syllable.graphemePreview.graphemes.at(-1).ipaHint, "l");
+  assert.ok(syllable.graphemePreview.warnings.includes("CONSONANT_POSITION_NOT_ESTABLISHED"));
   assert.equal(syllable.graphemePreview.phoneticResult.status, "PROVISIONAL");
   assert.ok(syllable.graphemePreview.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
 });
@@ -649,8 +651,10 @@ test("browser grapheme preview never infers tone and withholds non-core Pali val
   assert.ok(malformed.warnings.includes("TONE_NOT_INFERRED_BY_GRAPHEME_PREVIEW"));
   assert.equal(malformed.phoneticResult.toneCategory, null);
   const pali = analyze("ຆາ").syllables[0].graphemePreview;
-  assert.equal(pali.ipaPreview, null);
-  assert.equal(pali.status, "UNRESOLVED");
+  assert.equal(pali.ipaPreview, "aː");
+  assert.equal(pali.status, "PROVISIONAL");
+  assert.equal(pali.graphemes[0].ipaHint, null);
+  assert.equal(pali.graphemes[1].ipaHint, "aː");
 });
 
 
