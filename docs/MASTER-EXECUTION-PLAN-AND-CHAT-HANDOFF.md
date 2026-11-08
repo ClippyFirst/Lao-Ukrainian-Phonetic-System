@@ -2396,4 +2396,5 @@ Full report: [HVULao 1k three-engine sentence-domain stress benchmark](research/
 ### Branch and readiness
 
 - PR #147 remains draft/open and unmerged; PR #146 remains draft/open and unmerged. No mainline change was made.
+- PR #146's base branch advanced by one commit (`ad5bf2a61480ea255a9b83ca6f662471d7606e84`) adding the benchmark workflow to its PR base. PR #147 was synchronized with a two-parent merge commit `110a408057bc1143b466304cff6d57c4f074bbe8`; the only overlapping file was the workflow, and the benchmark-branch version was retained (it additionally enables its own push trigger). Compare now reports 21 commits ahead, 0 behind; PR #147 is mergeable and remains draft/open. This was a branch synchronization, not a PR merge or mainline change.
 - This is a successful engineering stress benchmark, not linguistic validation. Repository remains a research prototype, not independently accuracy-validated or production/release-ready.
