@@ -6,7 +6,7 @@ from .core import analyze
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Lao → Ukrainian phonetic-graphemic analyzer")
+    ap = argparse.ArgumentParser(description="Lao → MekongPhon IPA; optional IPA → Ukrainian adaptation")
     ap.add_argument("text")
     ap.add_argument("--json", action="store_true")
     ap.add_argument(
