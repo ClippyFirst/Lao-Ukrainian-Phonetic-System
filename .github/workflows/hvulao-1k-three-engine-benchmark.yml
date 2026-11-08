@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - "feat/deterministic-mekongphon-reference-profile-20261108"
+      - "benchmark/hvulao-1k-three-engine-20261108"
     paths:
       - ".github/workflows/hvulao-1k-three-engine-benchmark.yml"
       - "scripts/benchmark_hvulao_1k_three_engines.py"
