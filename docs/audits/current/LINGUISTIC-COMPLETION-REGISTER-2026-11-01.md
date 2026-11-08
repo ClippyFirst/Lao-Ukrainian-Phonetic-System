@@ -466,3 +466,21 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | Python/browser provisional sound hints for unresolved modern-Lao consonants and selected vowels | DONE_VERIFIED (engineering) | Verify #42524982973: 289 Python, 143 Node, 19 Chromium; exact-head source/data/build/generated-artifact gates passed |
 | Preserve uncertain consonant position and tone; do not guess non-core consonants or unsupported standalone offglides | DONE_VERIFIED (engineering contract) | Python/browser regression tests in Verify #42524982973 |
 | Accuracy of grapheme-only hints in actual Lao words and connected speech | BLOCKED / evidence-limited | Requires independent expert-adjudicated contextual IPA records; project gold remains 0 |
+
+
+## External Lao engine benchmark and dataset expansion — 2026-11-08
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Epitran 1.35.3 same-split segmental/tonal comparison | DONE_VERIFIED | 71/100 exact, 10.96% segmental CER; 4/100 tonal exact, 36.94% CER; aggregate CI artifact |
+| orthography2ipa Lao `lo` spec comparison | DONE_VERIFIED | 32/100 exact, 19.60% segmental CER; 2/100 tonal exact, 37.51% CER; upstream commit pinned |
+| LanguageNet Phonetisaurus Lao FST probe | DONE_VERIFIED | 100/100 outputs; 0/100 exact, 78.90% CER; ephemeral model/container only; no tone |
+| Goruut repeatability and source-coverage probe | DONE_VERIFIED | 5/100 strict exact across 3 repeats; 9/100 on any repeat; 47 complete-source outputs, 34 partial, 19 none; 7 unstable |
+| IPA benchmark confidence gate | DONE_VERIFIED | Shared helper accepts only typed SUPPORTED/UNCERTAIN; PROVISIONAL excluded; unit tests added |
+| Ukrainian rendering coverage separated from IPA coverage | DONE_VERIFIED | Current hybrid: 100/100 inputs, 169/169 units rendered; 159 supported, 1 uncertain, 9 provisional |
+| HVULao 1k confidence-gated stress benchmark | PARTIAL | Final rerun on dedicated branch pending; text stress only, no IPA gold |
+| Independent expert-adjudicated IPA gold | BLOCKED / evidence-limited | Repository gold count remains 0; FLEURS/Common Voice need expert annotation |
+| Import/redistribute neurlang or Appen-derived assets as open gold | BLOCKED | Lao-specific provenance/rights not established; test-only execution does not grant redistribution rights |
+| Promote external G2P to production | DEFERRED | None meets coverage, stability, segmental and tonal evidence requirements |
+
+**Correction:** the earlier 90/100 exact, 97% IPA-coverage figure is superseded because the legacy benchmark helper did not gate the typed `PhoneticResult.status`; provisional grapheme hints could be counted as accepted IPA. Current accepted IPA score is 85/100 exact with 91% IPA coverage, while Ukrainian rendering remains 100%.
