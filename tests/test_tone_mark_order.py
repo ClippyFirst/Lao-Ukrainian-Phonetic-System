@@ -35,7 +35,7 @@ class TestToneMarkStorageOrder(unittest.TestCase):
                 result = analyze(case["surface"])
                 syllable = result.syllables[0]
                 self.assertIsNone(syllable.phonemic_ipa)
-                self.assertIsNone(syllable.practical_ukrainian)
+                self.assertEqual(syllable.practical_ukrainian, "?")
                 self.assertEqual(syllable.ukrainian_candidates, [])
                 self.assertIsNone(syllable.tone)
                 self.assertEqual(syllable.status, "EVIDENCE LIMITED")
