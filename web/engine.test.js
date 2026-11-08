@@ -667,3 +667,11 @@ test("browser hybrid profile preserves Vientiane fallthrough and uncertain onset
 test("browser engine rejects unknown hybrid rule profiles", () => {
   assert.throws(() => analyze("ຂາ", { ipaProfile: "not-a-profile" }), RangeError);
 });
+
+test("browser engine preserves corpus-observed punctuation as explicit passthrough", () => {
+  const symbols = "&%–…#/" + String.fromCharCode(96) + "+•";
+  const result = analyze("ຂາ" + symbols);
+  const passthrough = result.syllables.filter((item) => item.passthrough);
+  assert.equal(passthrough.map((item) => item.surface).join(""), symbols);
+  assert.ok(passthrough.every((item) => item.ipa === "" && item.ukrainian === item.surface));
+});
