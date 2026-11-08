@@ -34,7 +34,7 @@ Python implementation:
 - `core.py` — public orchestration, uncertainty handling, and the explicit `ipa_profile` selector (default remains `vientiane`).
 - `model.py` / `data.py` — result types and canonical registry loading.
 
-The browser engine is a separately maintained implementation using generated canonical data. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
+The browser engine is a separately maintained implementation using generated canonical data. It now exposes the same opt-in `ipaProfile: "mekongphon-reference"` contract as Python; the visible UI remains on the default `vientiane` profile. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
 
 ## Separate provisional grapheme preview
 
