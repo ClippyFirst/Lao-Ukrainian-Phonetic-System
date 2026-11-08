@@ -1,6 +1,6 @@
 import unicodedata
 
-PASSTHROUGH_PUNCTUATION = frozenset(",!?;:()[]{}\"“”")
+PASSTHROUGH_PUNCTUATION = frozenset(",!?;:()[]{}\"“”&%–…#/`+•")
 
 def normalize_lao(text: str) -> str:
     return unicodedata.normalize("NFC", text)
