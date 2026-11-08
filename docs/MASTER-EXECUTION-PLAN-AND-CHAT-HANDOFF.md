@@ -2258,3 +2258,24 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Three-engine comparative benchmark artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425) was downloaded and inspected. Updated metrics are recorded in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
 - Current remaining acceptance: independent adjudicated Lao IPA gold = 0 (BLOCKED); empirical linguistic accuracy is not validated; manual NVDA/JAWS/VoiceOver/TalkBack, physical mobile and actual 200%/400% browser zoom QA remain PARTIAL.
 - Status: GitHub Pages publication DONE_VERIFIED; research prototype published; not linguistically validated or release-ready.
+
+## MekongPhon-first G2P stage — 2026-11-08
+
+- User requirement: the primary source-side pipeline must be Lao orthography → MekongPhon Neural → inspectable IPA first; Ukrainian target adaptation is a distinct subsequent stage. The deterministic Lao grapheme-rule engine must not be the default source G2P or a silent fallback.
+- Starting `main`: `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. Dedicated branch: `feat/mekongphon-first-stage`.
+- Added `MekongPhonIPAResult`, `MekongPhonEngine.transcribe_ipa()` and public `transcribe_ipa()`. Stage 1 returns untouched raw IPA, typed `PhoneticResult`, pinned model revision and status without calling the Ukrainian adapter.
+- CLI defaults to `mekongphon-tonal` and stops after IPA. `--to-ukrainian` explicitly invokes stage 2. `--engine rules` selects the deterministic alternative. Missing neural dependencies/errors do not trigger fallback.
+- Reworked the three-engine benchmark's model smoke test to exercise `transcribe_ipa()` directly; the G2P benchmark must not invoke target adaptation as part of the source-side measurement.
+- Added offline tests for stage separation and default CLI selection; updated README, system specification and MekongPhon integration guide.
+- **Current verification status:** implementation committed on the working branch; exact-head GitHub Actions Verify is pending. Do not mark this batch DONE_VERIFIED until CI completes on the final head.
+- **Remaining separate blocker:** the static GitHub Pages application runs browser-native JavaScript and cannot execute the Python/PyTorch model. The CLI/Python source stage is neural-first; the public web UI remains deterministic until an inference backend is designed, deployed and tested. Do not imply that Pages is already calling MekongPhon.
+- Independent adjudicated IPA gold remains 0. Neural benchmark performance is dictionary-reference evidence, not independent linguistic validation.
+
+## Neural-first G2P exact-head verification — 2026-11-08
+
+- Final implementation/test head before this verification note: `a04ab57578a21417aa649ff1917a26f537c2ef73` on `feat/mekongphon-first-stage`.
+- Exact-head Verify [42465428611 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465428611): 267 Python tests, 126 Node tests, 17 Chromium tests; corpus schema validation, repository data/evidence audit, external-G2P CLI check, `npm ci`, browser tests, static build, generated-data reproducibility and built-page/asset assertions all passed.
+- Neural benchmark [42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) on implementation head `eb492244eecdfc44cdac95f646c9aabff780ab44`. Both immutable MekongPhon tonal and non-tonal checkpoints loaded and ran through `MekongPhonEngine.transcribe_ipa()`; smoke checks and the 100-word three-engine comparison completed with zero runtime errors.
+- CI exposed two expected test-contract updates during the migration: the grapheme-preview CLI test now explicitly selects `--engine rules`; the second-stage CLI test now expects beam width 5. Both were corrected and the exact final Verify run passed. Intermediate failures are not represented as final failures.
+- Beam width defaults to 5, matching the frozen comparative benchmark; model revisions remain pinned. The neural benchmark remains a dictionary-reference comparison, not independent project gold.
+- **Status:** neural-first CLI/Python stage and separate IPA result boundary — DONE_VERIFIED (engineering). Ukrainian stage remains explicit and reuses the existing typed IPA adapter. Static Pages UI still uses browser-native deterministic JS and requires a separate deployed inference backend before it can use MekongPhon.

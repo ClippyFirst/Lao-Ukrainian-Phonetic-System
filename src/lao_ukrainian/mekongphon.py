@@ -1,7 +1,8 @@
-"""Optional inference adapter for BYU MATRIX Lab's Lao IPA models.
+"""Primary neural Lao-to-IPA adapter for BYU MATRIX Lab's MekongPhon models.
 
 Model weights are downloaded from Hugging Face at runtime and are not bundled
-with ClippyFirst. The rule-based engine remains the default and is independent.
+with ClippyFirst. The deterministic rule engine remains available explicitly
+as an independent diagnostic/alternative, never as a silent fallback.
 """
 from __future__ import annotations
 
@@ -32,6 +33,25 @@ class MekongPhonUnavailableError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class MekongPhonIPAResult:
+    """Output of stage 1 only: Lao orthography to typed IPA."""
+
+    input: str
+    normalized_input: str
+    model_id: str
+    model_revision: str
+    tonal: bool
+    num_beams: int
+    raw_ipa: str
+    phonetic_result: PhoneticResult
+    status: str
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class MekongPhonResult:
     input: str
     normalized_input: str
@@ -56,7 +76,7 @@ def build_result(
     model_id: str,
     model_revision: str,
     tonal: bool,
-    num_beams: int = 4,
+    num_beams: int = 5,
 ) -> MekongPhonResult:
     """Pure result assembly, separated from model loading for testability."""
     normalized = normalize_lao(text)
@@ -97,7 +117,7 @@ class MekongPhonEngine:
         tonal: bool = True,
         revision: str | None = None,
         device: str = "auto",
-        num_beams: int = 4,
+        num_beams: int = 5,
     ) -> None:
         if num_beams < 1 or num_beams > 8:
             raise ValueError("num_beams must be between 1 and 8")
@@ -199,17 +219,56 @@ class MekongPhonEngine:
         """Run the pinned model and return its untouched decoded IPA string."""
         return self._generate_raw_ipa(self._validated_input(text))
 
-    def transcribe(self, text: str) -> MekongPhonResult:
+    def transcribe_ipa(self, text: str) -> MekongPhonIPAResult:
+        """Run stage 1 and stop at typed IPA; do not invoke Ukrainian mapping."""
         normalized = self._validated_input(text)
         raw_ipa = self._generate_raw_ipa(normalized)
         *_, resolved_revision = self._load()
-        return build_result(
-            normalized, raw_ipa,
+        provenance = (
+            "MEKONGPHON", self.model_id, f"MODEL-REVISION:{resolved_revision}"
+        )
+        phonetic = from_external_ipa(raw_ipa, provenance=provenance)
+        warnings: list[str] = []
+        if not _SHA_RE.fullmatch(resolved_revision):
+            warnings.append("MODEL-REVISION-NOT-IMMUTABLE")
+        status = "OK" if phonetic.status == "SUPPORTED" else "IPA_UNSUPPORTED"
+        return MekongPhonIPAResult(
+            input=text,
+            normalized_input=normalized,
             model_id=self.model_id,
             model_revision=resolved_revision,
             tonal=self.tonal,
             num_beams=self.num_beams,
+            raw_ipa=raw_ipa,
+            phonetic_result=phonetic,
+            status=status,
+            warnings=tuple(warnings),
         )
+
+    def transcribe(self, text: str) -> MekongPhonResult:
+        """Run both stages: Lao → MekongPhon IPA → Ukrainian adaptation."""
+        ipa = self.transcribe_ipa(text)
+        return build_result(
+            ipa.normalized_input, ipa.raw_ipa,
+            model_id=ipa.model_id,
+            model_revision=ipa.model_revision,
+            tonal=ipa.tonal,
+            num_beams=ipa.num_beams,
+        )
+
+
+def transcribe_ipa(
+    text: str,
+    *,
+    tonal: bool = True,
+    revision: str | None = None,
+    device: str = "auto",
+    num_beams: int = 5,
+) -> MekongPhonIPAResult:
+    """Convenience API for stage 1 only: Lao orthography → typed IPA."""
+    return MekongPhonEngine(
+        tonal=tonal, revision=revision, device=device, num_beams=num_beams
+    ).transcribe_ipa(text)
 
 
 def transcribe_lao(
@@ -218,7 +277,7 @@ def transcribe_lao(
     tonal: bool = True,
     revision: str | None = None,
     device: str = "auto",
-    num_beams: int = 4,
+    num_beams: int = 5,
 ) -> MekongPhonResult:
     """Convenience API; no model or neural dependency is loaded until called."""
     return MekongPhonEngine(

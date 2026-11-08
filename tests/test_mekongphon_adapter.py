@@ -16,6 +16,37 @@ class MekongPhonAdapterTests(unittest.TestCase):
         self.assertIsNone(tonal._loaded)
         self.assertIsNone(nontonal._loaded)
 
+    def test_ipa_stage_stops_before_ukrainian_adaptation(self):
+        from unittest.mock import patch
+
+        engine = MekongPhonEngine(tonal=True)
+        revision = MODEL_REVISIONS["tonal"]
+        with patch.object(engine, "_generate_raw_ipa", return_value="kʰaː˩˥"), \
+             patch.object(engine, "_load", return_value=(None, None, None, None, "cpu", revision)), \
+             patch("lao_ukrainian.mekongphon.adapt_phonetic_result",
+                   side_effect=AssertionError("stage 2 must not run")):
+            result = engine.transcribe_ipa("ຂາ")
+
+        self.assertEqual(result.raw_ipa, "kʰaː˩˥")
+        self.assertEqual(result.model_revision, revision)
+        self.assertEqual(result.status, "OK")
+        self.assertEqual(result.phonetic_result.external_ipa, result.raw_ipa)
+        self.assertEqual(result.phonetic_result.tone_contour_ipa, "˩˥")
+
+    def test_convenience_ipa_api_returns_typed_stage_one_result(self):
+        from unittest.mock import patch
+        from lao_ukrainian.mekongphon import transcribe_ipa
+
+        with patch.object(MekongPhonEngine, "_generate_raw_ipa", return_value="kʰaː"), \
+             patch.object(MekongPhonEngine, "_load", return_value=(
+                 None, None, None, None, "cpu", MODEL_REVISIONS["tonal"]
+             )):
+            result = transcribe_ipa("ຂາ", device="cpu")
+
+        self.assertEqual(result.raw_ipa, "kʰaː")
+        self.assertEqual(result.phonetic_result.phonemic_ipa, "kʰaː")
+        self.assertEqual(result.status, "OK")
+
     def test_external_ipa_preserves_raw_output_and_terminal_tone(self):
         result = from_external_ipa(
             "kʰaː˩˥",

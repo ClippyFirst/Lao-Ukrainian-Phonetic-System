@@ -20,9 +20,11 @@ It is deliberately **not**:
 
 ## Research pipeline
 
-**Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/quantity → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
+**Primary runtime:** Lao Unicode → pinned MekongPhon Neural model → raw IPA → typed IPA validation/provenance → (explicit second stage) Ukrainian target adaptation → practical Ukrainian orthography.
 
-The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation.
+The raw model output and typed IPA are independently inspectable. The neural G2P stage does not derive IPA from ClippyFirst's Lao grapheme rules. Unknown IPA symbols fail closed; inference errors never trigger a silent rules-engine fallback. The Ukrainian stage consumes only the typed IPA result.
+
+The deterministic context-sensitive rule engine remains available as an explicit independent alternative/diagnostic (`--engine rules`). It is not the default Lao-to-IPA path.
 
 ## Context-sensitive grapheme-to-sound rules
 
@@ -90,7 +92,17 @@ Run the complete configured engineering checks from the repository root (command
 
 The browser tests require Playwright Chromium. In a fresh environment, install it with npx playwright install --with-deps chromium.
 
-For an installed Python package, run pip install -e . and then use lao-ua "ຂາ" or lao-ua "ໄກ່" --json.
+For the primary neural Lao → IPA stage, install the optional model dependencies and run:
+
+```bash
+pip install -e '.[neural]'
+lao-ua "ຂາ"                         # MekongPhon tonal → typed IPA only
+lao-ua "ຂາ" --to-ukrainian          # explicitly run IPA → Ukrainian as stage 2
+lao-ua "ຂາ" --engine mekongphon-nontonal  # segmental IPA without tones
+lao-ua "ຂາ" --engine rules          # explicit deterministic alternative
+```
+
+The model weights are downloaded from Hugging Face on first use at immutable revisions. A plain install without `.[neural]` does not silently fall back: the neural CLI reports the missing optional dependencies. The static GitHub Pages UI is still a browser-native deterministic engine; it does not execute PyTorch. Making the live web UI call this neural stage requires a separately deployed inference backend and is tracked as a distinct deployment task.
 
 The web build regenerates the checked-in browser data mirror and copies the two static pages plus the web runtime into dist/. This is a small custom Python build, not a Vite/Webpack bundling pipeline. See [web architecture](docs/web-architecture.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 

@@ -1,6 +1,6 @@
 # MekongPhon neural G2P integration
 
-**Status: optional inference adapter implemented; rule-based engine remains the default.** MekongPhon rights are recorded as `DONE_VERIFIED (owner-confirmed)` for the authorized project use; independent project IPA gold remains 0.
+**Status: MekongPhon Neural is the default CLI/Python G2P stage; deterministic rules are explicit alternative.** MekongPhon rights are recorded as `DONE_VERIFIED (owner-confirmed)` for the authorized project use; independent project IPA gold remains 0.
 
 ## Models and upstream contract
 
@@ -19,29 +19,41 @@ Install the optional dependency extra:
 
     pip install -e '.[neural]'
 
-CPU inference:
+Default CPU/GPU inference stops after stage 1 and returns typed IPA:
 
-    lao-ua 'ສະບາຍດີ' --engine mekongphon-tonal --device cpu --json
+    lao-ua 'ສະບາຍດີ' --device cpu --json
+
+Explicitly run stage 2 (IPA → Ukrainian):
+
+    lao-ua 'ສະບາຍດີ' --to-ukrainian --device cpu --json
 
 Non-tonal IPA:
 
     lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device auto
 
-The adapter defaults to immutable revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The loaded model config revision is checked against the requested SHA when available. You may explicitly override it with `--revision`; a non-SHA revision is marked `MODEL-REVISION-NOT-IMMUTABLE`. The resolved revision is included in JSON output. First use downloads the model files into the normal Hugging Face cache; no model weights are checked into Git.
+The deterministic grapheme-rule engine is available only when explicitly requested:
+
+    lao-ua 'ສະບາຍດີ' --engine rules
+
+The adapter defaults to immutable revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The loaded model config revision is checked against the requested SHA when available. You may explicitly override it with `--revision`; a non-SHA revision is marked `MODEL-REVISION-NOT-IMMUTABLE`. The resolved revision is included in JSON output. First use downloads the model files into the normal Hugging Face cache; no model weights are checked into Git. The CLI and convenience API default to beam width 5, matching the three-engine benchmark configuration; override with `--num-beams` only when intentionally changing inference.
 
 The published models accept at most 128 input tokens. ClippyFirst disables truncation and rejects over-limit input rather than silently dropping text. Use an explicit input chunking strategy only when the user intends separate inference units; automatic phrase segmentation is not claimed.
 
 ## Pipeline and fail-closed behavior
 
-Lao input → MekongPhon neural model → raw IPA → typed external-IPA adapter → Ukrainian correspondence registry → Ukrainian practical output
+Stage 1 (default): Lao input → MekongPhon neural model → raw IPA → typed external-IPA adapter.
+
+Stage 2 (explicit `--to-ukrainian`): typed IPA → Ukrainian correspondence registry → Ukrainian practical output.
+
+The Python API exposes `transcribe_ipa()` / `MekongPhonEngine.transcribe_ipa()` for stage 1 only, and `transcribe_lao()` / `MekongPhonEngine.transcribe()` for both stages.
 
 - The original decoded string is retained as raw_ipa and phonetic_result.external_ipa.
 - The adapter tokenizes only symbols in ClippyFirst's explicit IPA inventory. Unknown phones, brackets and unsupported diacritics make the result IPA_UNSUPPORTED; partial IPA is never mapped to Ukrainian.
 - IPA tone letters are preserved as typed tone segments in their original order and in raw_ipa. The aggregate tone_contour_ipa field is diagnostic only; the adapter does not infer per-syllable tone alignment from a flat output string.
 - The Ukrainian practical layer currently neutralizes tone. The target adapter therefore excludes only the explicitly typed tone segments while adapting supported segmental IPA; tone data remains inspectable in the typed result and raw output.
-- Ukrainian output is generated only through the existing IPA-to-Ukrainian correspondence registry. If the complete predicted segment sequence has no supported mapping, output is withheld as TARGET_MAPPING_UNAVAILABLE.
-- Neural output is not written into rule provenance, rule tables, the independent gold corpus or the default analyze() result. It is explicitly labelled MEKONGPHON.
-- Inference errors are surfaced; the engine never silently falls back to rules or a different model.
+- Ukrainian output is generated only through the existing IPA-to-Ukrainian correspondence registry, and only when stage 2 is requested. The default CLI response is the IPA-stage result and does not call the target adapter. If the complete predicted segment sequence has no supported mapping, output is withheld as TARGET_MAPPING_UNAVAILABLE.
+- Neural output is not written into rule provenance, rule tables, the independent gold corpus or the deterministic `analyze()` result. It is explicitly labelled MEKONGPHON.
+- Inference errors are surfaced; the engine never silently falls back to rules or a different model. The CLI defaults to the pinned tonal checkpoint; use `--engine rules` only to select the independent deterministic engine.
 
 ## Evaluation and limitations
 
@@ -51,9 +63,16 @@ The model card describes the training data as MekongPhon. The repository owner c
 
 ## Tests
 
-The adapter tests are offline and do not download weights. They cover in-word tone-token preservation, unknown-symbol rejection, segmental adaptation with tone retained, model revision provenance and the no-partial-Ukrainian-output contract. Actual model inference remains an opt-in smoke test because it requires PyTorch, Transformers, network access and a model download.
+The adapter tests are offline and do not download weights. They cover in-word tone-token preservation, unknown-symbol rejection, segmental adaptation with tone retained, model revision provenance and the no-partial-Ukrainian-output contract. Actual model inference requires PyTorch, Transformers, network access and a model download. The immutable checkpoints have already completed the repository's 100-word hosted benchmark; this branch's exact-head verification must additionally confirm the new default CLI and stage-1-only contract.
 
 
 ## Hosted verification checkpoint
 
 On commit 2a9a54f4c3961d030e757d9d4e919c6d6f760f46, Verify run [42367579457](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42367579457) reported the repository Python test step SUCCESS, which includes these offline adapter tests. The full workflow remains FAILURE because the browser engine step has the same three previously recorded regressions (modern Lao ຣ context-dependent reading, uncertain IPA withholding and incomplete IPA withholding). Build, generated-data reproducibility and Chromium UI steps were skipped by the workflow dependency. Actual model downloads/inference against the two checkpoints remain unverified.
+
+## Neural-first implementation verification — 2026-11-08
+
+- Exact-head repository Verify [42465428611 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465428611): 267 Python, 126 Node and 17 Chromium tests; corpus/data audits, clean npm install, browser build and generated-data checks passed.
+- Hosted three-engine benchmark [42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) exercised both pinned neural checkpoints through the stage-1-only `MekongPhonEngine.transcribe_ipa()` smoke path and completed the 100-word comparison with zero runtime errors.
+- The command/API contract is verified: default CLI stops at typed IPA; `--to-ukrainian` invokes the target stage; `--engine rules` explicitly selects the deterministic engine; no silent fallback occurs.
+- The Python/CLI primary path is neural-first. The static Pages UI is not yet connected to a neural inference backend.

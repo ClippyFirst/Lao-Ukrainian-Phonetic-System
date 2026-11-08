@@ -208,3 +208,17 @@ The earlier sections above are a pre-merge audit snapshot. Their statements that
 ### Readiness
 
 **Published engineering-verified research prototype; not production/release-ready and not accuracy-validated.** The publication pipeline is green. Independent IPA gold and manual accessibility remain genuine acceptance blockers.
+
+## Neural-first source G2P correction — 2026-11-08
+
+The previously documented architecture described MekongPhon as optional and the deterministic rule engine as default. That is no longer the intended primary CLI/Python contract. The current continuation branch `feat/mekongphon-first-stage` makes the pinned MekongPhon tonal model the CLI default and exposes stage 1 separately through `transcribe_ipa()`; Ukrainian adaptation is explicit via `--to-ukrainian`. The deterministic engine remains available only through `--engine rules`, without fallback.
+
+This change is engineering work in progress until exact-head CI passes. The static GitHub Pages UI remains a separate browser implementation and does not yet call the neural model; a deployed inference backend is still required for neural parity in the public web UI. Independent IPA gold remains empty (0 records), so no new linguistic accuracy claim is made.
+
+## Neural-first implementation verification — 2026-11-08
+
+Branch `feat/mekongphon-first-stage` implements and verifies the primary CLI/Python G2P contract. Exact-head Verify [42465428611 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465428611) on `a04ab57578a21417aa649ff1917a26f537c2ef73`: 267 Python tests, 126 Node tests, 17 Chromium tests, corpus/data audits, clean npm install, browser build, generated-data reproducibility and built-page assertions all passed.
+
+Neural benchmark [42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) exercised both pinned MekongPhon checkpoints through the stage-1-only `transcribe_ipa()` smoke path and completed the 100-word comparison with zero runtime errors. The default CLI returns typed IPA; `--to-ukrainian` explicitly runs stage 2; `--engine rules` explicitly selects the independent deterministic engine; there is no silent fallback. Beam width 5 matches the benchmark.
+
+Engineering completion applies to CLI/Python only. The static GitHub Pages application still runs its browser-native deterministic engine; connecting it to MekongPhon requires a separately deployed inference backend. Independent adjudicated IPA gold remains 0, so this does not establish independent linguistic accuracy.
