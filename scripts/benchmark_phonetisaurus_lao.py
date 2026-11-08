@@ -98,11 +98,10 @@ def main() -> int:
                 "-v", f"{root}:/work",
                 "-w", "/work",
                 DOCKER_IMAGE,
-                "phonetisaurus-g2pfst",
-                "--model=/work/lao.fst",
-                "--wordlist=/work/words.txt",
-                "--nbest=1",
-                "--print_scores=false",
+                "phonetisaurus-apply",
+                "--model", "/work/lao.fst",
+                "--word_list", "/work/words.txt",
+                "--nbest", "1",
             ]
             result = subprocess.run(
                 command, check=False, capture_output=True, text=True, timeout=300
