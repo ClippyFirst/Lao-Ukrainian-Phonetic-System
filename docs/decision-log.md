@@ -91,7 +91,7 @@
 
 ## D-014 — Hybrid deterministic profile is the primary ClippyFirst engine
 
-**Decision:** Make `hybrid-deterministic` the default profile for the Python API, CLI rules path and browser engine. Keep Vientiane phonology as the base analysis and apply only the explicit, deterministic, evidence-gated MekongPhon aggregate correspondences. Retain `vientiane` and `mekongphon-reference` as explicit compatibility/comparison profiles. The optional Neural adapter is not part of the default transcription path.
+**Decision:** Make `hybrid-deterministic` the default profile for the Python API, CLI rules path and browser engine. Keep Vientiane phonology as the base analysis and apply only the explicit, deterministic, evidence-gated MekongPhon aggregate correspondences. Retain `vientiane` and `mekongphon-reference` only as frozen explicit compatibility profiles; future Lao engine implementation and optimization work targets `hybrid-deterministic` only. The optional Neural adapter is not part of the default transcription path.
 
 **Reason:** The hybrid profile combines the Vientiane-oriented structural and tonal analysis with the already reviewed train-split aggregate correspondences, without runtime model downloads, word-level dictionary lookups or neural inference. The 100-entry benchmark supports reference-relative performance on that bounded set, but does not establish independent phonetic accuracy or universal Neural-level performance. Unknown or unsupported cases remain fail-closed.
 
