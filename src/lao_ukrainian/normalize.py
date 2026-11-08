@@ -1,5 +1,7 @@
 import unicodedata
 
+PASSTHROUGH_PUNCTUATION = frozenset(",!?;:()[]{}\"“”")
+
 def normalize_lao(text: str) -> str:
     return unicodedata.normalize("NFC", text)
 
@@ -11,7 +13,9 @@ def validate_unicode(text: str) -> list[str]:
             problems.append(f"control character U+{cp:04X}")
         if 0x0E80 <= cp <= 0x0EFF:
             continue
-        if ch.isspace() or (ch.isascii() and (ch.isalnum() or ch in "-'.")):
+        if ch.isspace() or ch in PASSTHROUGH_PUNCTUATION:
+            continue
+        if ch.isascii() and (ch.isalnum() or ch in "-'."):
             continue
         if cp > 0x7F:
             problems.append(f"unsupported non-Lao character U+{cp:04X} {ch}")
