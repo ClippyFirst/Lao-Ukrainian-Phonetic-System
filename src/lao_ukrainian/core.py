@@ -27,7 +27,7 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
     # parser's current word-like units. Do not infer minor-syllable relations
     # across phrase whitespace.
     syllable_groups = [
-        segment_syllables(token, registry)
+        segment_syllables(token, registry) or [token]
         for token in normalized.replace("\u200b", " ").split()
     ]
     for group in syllable_groups:
