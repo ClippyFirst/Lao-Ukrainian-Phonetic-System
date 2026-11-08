@@ -67,13 +67,22 @@ def compact_ipa(value: str) -> str:
     return nfc("".join(value.split()))
 
 
+def accepted_ipa(item) -> bool:
+    result = item.phonetic_result
+    return bool(
+        result
+        and result.status in {"SUPPORTED", "UNCERTAIN"}
+        and result.phonemic_ipa
+    )
+
+
 def complete_rule_ipa(analysis) -> str:
-    # Non-Lao ASCII/punctuation units are preserved as passthrough;
-    # only Lao phonetic syllables participate in the IPA completeness gate.
+    # Non-Lao ASCII/punctuation units are preserved as passthrough.
+    # PROVISIONAL grapheme hints count for rendering, never as IPA accuracy.
     syllables = [item for item in analysis.syllables if item.status != "PASSTHROUGH"]
-    if not syllables or any(not item.phonemic_ipa for item in syllables):
+    if not syllables or any(not accepted_ipa(item) for item in syllables):
         return ""
-    return compact_ipa("".join(item.phonemic_ipa for item in syllables))
+    return compact_ipa("".join(item.phonetic_result.phonemic_ipa for item in syllables))
 
 
 def complete_rule_rendering(analysis) -> str:
@@ -201,7 +210,7 @@ def main() -> int:
                 stage["syllables"].update(item.status for item in result.syllables)
                 phonetic_syllables = [item for item in result.syllables if item.status != "PASSTHROUGH"]
                 stage["syllable_total"] += len(phonetic_syllables)
-                stage["syllable_with_ipa"] += sum(bool(item.phonemic_ipa) for item in phonetic_syllables)
+                stage["syllable_with_ipa"] += sum(accepted_ipa(item) for item in phonetic_syllables)
                 stage["passthrough_total"] += sum(item.status == "PASSTHROUGH" for item in result.syllables)
                 stage["unit_total"] += len(result.syllables)
                 stage["units_rendered"] += sum(item.practical_ukrainian is not None for item in result.syllables)
