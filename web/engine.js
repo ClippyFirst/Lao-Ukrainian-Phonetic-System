@@ -279,13 +279,39 @@ function previewFromGraphemes(surface, parsed) {
     }
   }
 
+  // Keep rendering useful when structural parsing cannot assign a role:
+  // expose a per-grapheme sound hint, but never call it a supported coda/onset.
+  const fallbackVowels = new Map([
+    ["ະ", "a"], ["ັ", "a"], ["າ", "aː"], ["ິ", "i"], ["ີ", "iː"],
+    ["ຶ", "ɯ"], ["ື", "ɯː"], ["ຸ", "u"], ["ູ", "uː"], ["ົ", "o"],
+    ["ຽ", "ə"], ["ອ", "ɔː"], ["ໍ", "ɔː"], ["ຳ", "am"],
+    ["ເ", "e"], ["ແ", "ɛ"], ["ໂ", "o"], ["ໃ", "ai"], ["ໄ", "ai"],
+  ]);
   for (let i = 0; i < chars.length; i++) {
     if (roles.has(i)) continue;
     const ch = chars[i];
     const inventory = GRAPHEME_INVENTORY[ch];
-    const role = inventory?.structuralRole || (CONSONANTS[ch] ? "unresolved-consonant-position" : PREVIEW_VOWEL_GRAPHEMES.has(ch) ? "unresolved-vowel-component" : "unregistered-grapheme");
-    const certainty = inventory && PREVIEW_STRUCTURAL_ONLY.has(inventory.engineStatus) ? "STRUCTURAL_ONLY" : "UNRESOLVED";
-    roles.set(i, { grapheme: ch, role, ipaHint: null, certainty });
+    const consonant = CONSONANTS[ch];
+    const vowelHint = fallbackVowels.get(ch);
+    let role;
+    let ipaHint = null;
+    let certainty;
+    if (consonant?.[1] && ["core", "analysis-dependent"].includes(consonant[2])) {
+      role = "unresolved-consonant-position";
+      ipaHint = consonant[1];
+      certainty = "PROVISIONAL";
+      warnings.push("CONSONANT_POSITION_NOT_ESTABLISHED");
+    } else if (vowelHint) {
+      role = "unresolved-vowel-component";
+      ipaHint = vowelHint;
+      certainty = "PROVISIONAL";
+      warnings.push("VOWEL_VALUE_CONTEXT_DEPENDENT");
+    } else {
+      role = inventory?.structuralRole || (consonant ? "unresolved-consonant-position" : PREVIEW_VOWEL_GRAPHEMES.has(ch) ? "unresolved-vowel-component" : "unregistered-grapheme");
+      certainty = inventory && PREVIEW_STRUCTURAL_ONLY.has(inventory.engineStatus) ? "STRUCTURAL_ONLY" : "UNRESOLVED";
+    }
+    roles.set(i, { grapheme: ch, role, ipaHint, certainty });
+    if (ipaHint) ipaParts.push(ipaHint);
     unresolved.push(ch);
   }
 
