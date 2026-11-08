@@ -52,7 +52,7 @@ class GraphemePreviewTests(unittest.TestCase):
             main()
         rendered = output.getvalue()
         self.assertIn("IPA=None", rendered)
-        self.assertIn("IPA preview=kaː [PROVISIONAL]", rendered)
+        self.assertIn("IPA preview=kaːl [PROVISIONAL]", rendered)
         self.assertIn("unresolved=ລ", rendered)
 
 
