@@ -173,16 +173,14 @@ def main() -> int:
 
     for source in rows:
         for key, profile in (
-            ("vientiane_rules", None),
+            ("vientiane_rules", "vientiane"),
             ("mekongphon_reference_rules", "mekongphon-reference"),
             ("hybrid_deterministic_rules", "hybrid-deterministic"),
         ):
             stage = stages[key]
             try:
                 started = time.perf_counter()
-                result = analyze(source) if profile is None else analyze(
-                    source, ipa_profile=profile
-                )
+                result = analyze(source, ipa_profile=profile)
                 stage["times"].append(time.perf_counter() - started)
                 prediction = complete_rule_ipa(result)
                 rendered = complete_rule_rendering(result)
