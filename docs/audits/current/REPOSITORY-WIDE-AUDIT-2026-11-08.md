@@ -1,3 +1,14 @@
+## Follow-up correction: browser hybrid mixed-script rendering — 2026-11-08
+
+- Defect observed on the live instrument: a message containing Lao plus visible foreign-script text/punctuation was globally rejected, hiding valid Lao output and disabling the separate romanization view.
+- Corrected in PR [#150](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/150), merged as `d0688d325c7450515ef42345ff1f7dec8d14f718`.
+- Default hybrid now preserves visible non-Lao Unicode units verbatim and analyses Lao spans independently. Unsupported units produce warnings and aggregate `PARTIAL` status. This is passthrough, not transliteration or a phonetic claim for the foreign-script material.
+- Unsafe control characters remain invalid; frozen compatibility profiles retain strict mixed-script validation. The typed provisional IPA fallback for unresolved Lao remains unchanged.
+- Verification: PR exact-head run [42521697622](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521697622) passed 289 Python, 143 Node and 17 Chromium tests; main verify [42521799243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799243) passed; Pages deployment [42521799240](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799240) and deployment record [7641593395](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/deployments/7641593395) succeeded. Live engine source returned HTTP 200 with the new branches.
+- Research limitation unchanged: zero independently adjudicated IPA gold references; no accuracy claim follows from rendering coverage.
+
+---
+
 ## Owner acceptance: complete valid-input rendering — 2026-11-08
 
 The owner clarified that the primary hybrid must render 100% of valid Lao input, with low confidence explicitly allowed and silently omitted units disallowed. This is a rendering-coverage requirement, not a phonetic-accuracy claim.
@@ -5,7 +16,7 @@ The owner clarified that the primary hybrid must render 100% of valid Lao input,
 - Hybrid now permits structurally complete UNCERTAIN IPA to pass through the typed Ukrainian adapter without upgrading its status.
 - Where complete IPA is unavailable, registered grapheme-position hints are wrapped as typed PROVISIONAL segments and unresolved graphemes become typed unknown markers. The same adapter maps provisional IPA runs and emits visible ? markers. No direct grapheme-to-Ukrainian bypass is used.
 - PROVISIONAL results retain known vowel-length metadata where available, do not invent tone, and do not count as canonical IPA or phonetic accuracy.
-- U+200B is accepted as a Lao word-boundary separator, consistent with the parser's existing ZWSP segmentation behavior. A leading U+FEFF text-stream BOM is stripped; embedded BOMs remain rejected. Other invalid controls and unsupported scripts remain rejected.
+- U+200B is accepted as a Lao word-boundary separator, consistent with the parser's existing ZWSP segmentation behavior. A leading U+FEFF text-stream BOM is stripped; embedded BOMs remain rejected. Unsafe C0/C1 controls and embedded BOM remain rejected. In the default browser hybrid, visible unsupported scripts and symbols are preserved verbatim as passthrough units while supported Lao spans are processed; the aggregate result is PARTIAL with an explicit warning. Frozen Vientiane and MekongPhon-reference profiles retain strict mixed-script rejection.
 - Vientiane and MekongPhon-reference compatibility profiles remain frozen; the new fallback is hybrid-only.
 - Exact-head Verify #42518974175 passed on code checkpoint c3aa7ea582fc88cda955cc635bb38b75b37590e8: 289 Python, 140 Node and 17 Chromium tests, plus corpus, evidence, install, build, generated-data and built-site checks, including leading/embedded BOM tests.
 - Held-out MekongPhon 100-entry benchmark #42518802728 passed: hybrid rendered 100/100 inputs and 169/169 units, with 159 SUPPORTED, 1 UNCERTAIN and 9 PROVISIONAL units; zero runtime errors. IPA coverage remained 97/100 and reference-relative exact match 90/100 (CER 6.6445%), not independent gold. Vientiane and MekongPhon-reference rendering coverage were 95/100 and 90/100.
