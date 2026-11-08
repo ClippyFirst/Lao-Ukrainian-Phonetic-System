@@ -8,6 +8,7 @@ The owner clarified that the primary hybrid must render 100% of valid Lao input,
 - U+200B is accepted as a Lao word-boundary separator, consistent with the parser's existing ZWSP segmentation behavior. Other invalid controls and unsupported scripts remain rejected.
 - Vientiane and MekongPhon-reference compatibility profiles remain frozen; the new fallback is hybrid-only.
 - Exact-head Verify #42518022030 passed on checkpoint 03c2604d61f20b1f0b89f54896ceebec70cd2836: 287 Python, 139 Node and 17 Chromium tests, plus corpus, evidence, install, build, generated-data and built-site checks.
+- Held-out MekongPhon 100-entry benchmark #42518333013 passed: hybrid rendered 100/100 inputs and 169/169 units, with 159 SUPPORTED, 1 UNCERTAIN and 9 PROVISIONAL units; zero runtime errors. IPA coverage remained 97/100 and reference-relative exact match 90/100 (CER 6.6445%), not independent gold. Vientiane and MekongPhon-reference rendering coverage were 95/100 and 90/100.
 - The HVULao 1k benchmark now separates rendering coverage from IPA completeness, reports invalid/empty rows separately, and hard-fails if any valid hybrid input lacks a rendered unit. A final exact-head benchmark is still running; do not mark 100% acceptance DONE_VERIFIED until its artifact confirms 100% valid-input coverage.
 - The held-out MekongPhon 100-entry benchmark has also been extended to report rendering coverage and enforce complete hybrid rendering, and its workflow now runs on relevant PRs.
 
