@@ -285,6 +285,10 @@ function previewFromGraphemes(surface, parsed) {
 
 const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
 
+function isPassthroughChar(ch) {
+  return PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
+}
+
 function validateInput(text) {
   const warnings = [];
   for (const ch of text) {
@@ -536,7 +540,7 @@ function analyzeWord(word, ipaProfile = "vientiane") {
   if (firstOnsetIndex >= 0) {
     const prefix = chars.slice(0, firstOnsetIndex).join("");
     const allowedPreposed = new Set(["", "ເ", "ແ", "ໂ", "ໃ", "ໄ"]);
-    if (!allowedPreposed.has(prefix)) {
+    if (!allowedPreposed.has(prefix) && ![...prefix].every(isPassthroughChar)) {
       const prefixWarnings = [
         ...(chars.slice(0, firstOnsetIndex).some((ch) => TONE_MARK_SET.has(ch))
           ? ["MALFORMED_TONE_MARK_POSITION: tone mark precedes the syllable onset."]
@@ -580,7 +584,10 @@ function analyzeWord(word, ipaProfile = "vientiane") {
   // Keep a fully parsed but analysis-dependent source reading intact. The
   // target adapter may withhold Ukrainian output without invalidating the
   // source-side IPA parse (e.g. modern/loan-dependent ຣ).
-  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN") {
+  const hasUnconsumedSuffix = (wholeCandidate.warnings || []).some((warning) =>
+    warning.startsWith("Невикористана частина структури складу: ")
+  );
+  if (wholeCandidate.ipa && wholeCandidate.phoneticResult?.status === "UNCERTAIN" && !hasUnconsumedSuffix) {
     return [wholeCandidate];
   }
   if (wholeCandidate.onsetForm && wholeCandidate.onsetForm !== wholeCandidate.onset) {
@@ -608,7 +615,7 @@ function analyzeWord(word, ipaProfile = "vientiane") {
   // the longest fully parsed syllables, but retain every unparsed code point.
   for (let i = n - 1; i >= 0; i--) {
     const ch = chars[i];
-    const passthrough = /^[,!?;:()[\]{}"“”&%–…#\/`+•]+$/u.test(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
+    const passthrough = isPassthroughChar(ch);
     const fallback = passthrough
       ? { surface: ch, status: "PASSTHROUGH", ukrainian: ch, ipa: "", warnings: [], passthrough: true }
       : { surface: ch, status: "EVIDENCE LIMITED", warnings: ["Не вдалося надійно проаналізувати фрагмент: " + ch], ukrainian: null, ipa: null };
