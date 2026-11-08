@@ -1,6 +1,21 @@
 # Validation
 
-> **Current verification authority — 2026-11-08.** Exact-head Verify [42462626019](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019) passed on `74b178654e9825bdcfa5b83fd31603b9cc74cd69` in `audit/repository-docs-structure-20261107`: 262 Python tests, 126 Node tests and 17 Chromium tests; locked `npm ci`; IPA corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; and built-page/relative-asset checks. This evidence applies to the PR #143 branch, not to unchanged `main` (`f40c1128302486b3589da9b16bae198ef3ad1d81`). It verifies configured engineering contracts, not pronunciation accuracy, manual accessibility or release readiness. The live status and acceptance ledger are in the [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) and [2026-11-08 repository-wide audit](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md).
+> **Current verification authority — 2026-11-08.** PR #150 exact-head Verify [42521697622](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521697622) passed on `5d191ee4dfba03556204128271290fe7ad6db929`: 289 Python, 143 Node and 17 Chromium tests; corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; locked install; build; generated-data reproducibility; and built-page/relative-asset checks. Post-merge main Verify [42521799243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799243) passed on `d0688d325c7450515ef42345ff1f7dec8d14f718`. GitHub Pages deployment [42521799240](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799240) completed successfully; deployment record [7641593395](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/deployments/7641593395) reports success. Live site and browser engine were fetched successfully. These checks verify engineering and rendering behavior, not pronunciation accuracy or independent linguistic adjudication. The independently adjudicated IPA gold corpus remains empty.
+
+## Deterministic structural validation
+
+The test suite covers:
+
+- NFC normalization, strict unsafe-control rejection, and hybrid mixed-script passthrough;
+- ordinary consonant and vowel mappings;
+- consonant-class-dependent Vientiane tones;
+- live/dead classification;
+- final-stop neutralization;
+- preposed long/short vowel structures;
+- special-vowel handling for ໄ/ໃ;
+- structural handling of ຳ and Niggahita-related forms;
+- the vowel-carrier behavior of ອ;
+- Russian-versus-Ukrainian comparative decisions.
 
 ## Deterministic structural validation
 
