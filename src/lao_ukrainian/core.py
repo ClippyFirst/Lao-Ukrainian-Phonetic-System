@@ -14,7 +14,7 @@ MINOR_C0_EXCLUDED_ONSETS = {"ງ", "ຍ"}
 
 def analyze(text: str, *, ipa_profile: str = DEFAULT_PROFILE) -> Analysis:
     if ipa_profile not in SUPPORTED_IPA_PROFILES:
-        raise ValueError(f\"Unknown IPA profile {ipa_profile!r}; expected one of {SUPPORTED_IPA_PROFILES}\")
+        raise ValueError(f"Unknown IPA profile {ipa_profile!r}; expected one of {SUPPORTED_IPA_PROFILES}")
     normalized = normalize_lao(text)
     warnings = validate_unicode(normalized)
     if warnings:
