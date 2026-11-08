@@ -1,10 +1,10 @@
 # Audit and evidence register
 
-This directory separates the current state from historical checkpoints. A dated report is immutable context for the state it inspected; it must not be read as a live specification when a later code or evidence checkpoint exists.
+This directory separates the current state from historical checkpoints. A dated report is immutable context for the state it inspected; it must not be read as a live specification when a later code or evidence checkpoint exists. The 2026-11-08 repository-wide audit is refreshed against the current mainline head and supersedes its earlier pre-merge wording.
 
 ## Current audit
 
-- [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — latest integrated PR #143 branch state, exact-head verification, architecture, PR reconciliation, task ledger and remaining acceptance gates.
+- [Repository-wide audit and documentation/structure refresh — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — current `main` at `c0d7218...`, exact-main CI, merged PR #143, open PR #145/#146/#147 dependency graph, architecture, reference review and remaining acceptance gates.
 - [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.
 - [Repository structure and documentation audit — 2026-11-06](current/REPOSITORY-STRUCTURE-AND-DOCUMENTATION-AUDIT-2026-11-06.md) — historical repository inventory and earlier documentation checkpoint.
 
