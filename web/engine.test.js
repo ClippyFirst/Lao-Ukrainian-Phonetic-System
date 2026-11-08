@@ -82,20 +82,20 @@ test("shared Lao labialized onset cluster fixture", () => {
     assert.equal(result.syllables.length, 1, item.id);
     assert.equal(result.syllables[0].onsetForm, item.onset_form, item.id);
     assert.equal(result.syllables[0].ipa, item.ipa, item.id);
-    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.equal(result.syllables[0].ukrainian, "?", item.id);
     assert.equal(result.syllables[0].status, "EVIDENCE LIMITED", item.id);
   }
   for (const item of fixture.constructed_cluster_controls) {
     const result = analyze(item.surface);
     assert.equal(result.syllables[0].onsetForm, item.onset_form, item.id);
     assert.equal(result.syllables[0].ipa, item.ipa, item.id);
-    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.equal(result.syllables[0].ukrainian, "?", item.id);
   }
   for (const item of [...fixture.ambiguous, ...fixture.rounded_rejected]) {
     const result = analyze(item.surface);
     assert.equal(result.syllables.length, 1, item.id);
     assert.equal(result.syllables[0].ipa, null, item.id);
-    assert.equal(result.syllables[0].ukrainian, null, item.id);
+    assert.equal(result.syllables[0].ukrainian, "?", item.id);
     assert.ok(result.syllables[0].warnings.some((warning) => warning.startsWith(item.warning)), item.id);
   }
   for (const item of fixture.high_class_digraphs) {
@@ -177,9 +177,9 @@ test("multiple adjacent tone marks withhold the entire malformed token", () => {
   assert.equal(r.status, "PARTIAL");
   assert.equal(r.syllables.length, 1);
   assert.equal(r.syllables[0].ipa, null);
-  assert.equal(r.syllables[0].ukrainian, null);
+  assert.equal(r.syllables[0].ukrainian, "?");
   assert.ok(r.syllables[0].warnings.some((w) => w.startsWith("MULTIPLE_TONE_MARKS")));
-  assert.equal(r.output, "⟦ກ່້າ⟧");
+  assert.equal(r.output, "?");
 });
 
 test("silent high-class digraph is phonologically n", () => {
@@ -247,7 +247,7 @@ test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
     const syllable = result.syllables[0];
     assert.equal(syllable.status, "EVIDENCE LIMITED");
     assert.equal(syllable.ipa, null);
-    assert.equal(syllable.ukrainian, null);
+    assert.equal(syllable.ukrainian, "?");
     assert.equal(syllable.tone, null);
     assert.equal(syllable.toneContour, null);
     assert.ok(syllable.rules.includes("TONE-RULE:TONE-NOT-ESTABLISHED-FOR-COMBINATION"));
@@ -295,7 +295,7 @@ test("multi-syllable place-name phrase is not truncated", () => {
 
 test("unparsed characters remain visible instead of being silently dropped", () => {
   const r = analyze("ຄົນຆ");
-  assert.match(r.output, /⟦ຆ⟧/);
+  assert.equal(r.output, "?");
   assert.equal(r.status, "PARTIAL");
 });
 
@@ -321,8 +321,8 @@ test("postposed vowel sign before an onset remains an unresolved whole token", (
   assert.equal(r.syllables.length, 1);
   assert.equal(r.syllables[0].surface, surface);
   assert.equal(r.syllables[0].ipa, null);
-  assert.equal(r.syllables[0].ukrainian, null);
-  assert.equal(r.output, "⟦" + surface + "⟧");
+  assert.equal(r.syllables[0].ukrainian, "?");
+  assert.equal(r.output, "?");
 });
 
 test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
@@ -362,9 +362,9 @@ test("unattested preposed ເ◌ຽ remains one unresolved token", () => {
   assert.equal(r.syllables.length, 1);
   assert.equal(r.syllables[0].surface, surface);
   assert.equal(r.syllables[0].ipa, null);
-  assert.equal(r.syllables[0].ukrainian, null);
+  assert.equal(r.syllables[0].ukrainian, "?");
   assert.ok(r.syllables[0].warnings.length > 0);
-  assert.equal(r.output, "⟦" + surface + "⟧");
+  assert.equal(r.output, "?");
 });
 
 
@@ -434,7 +434,7 @@ test("unconsumed prefix before a preposed Lao vowel is not segmented away", () =
   assert.equal(result.syllables.length, 1, "malformed token must remain one unresolved unit");
   assert.equal(result.syllables[0].surface, surface, "no source characters may be discarded");
   assert.ok(!result.syllables[0].ipa, "unresolved browser analysis must not expose IPA");
-  assert.ok(!result.syllables[0].ukrainian, "unresolved browser analysis must not expose Ukrainian output");
+  assert.equal(result.syllables[0].ukrainian, "?", "unresolved browser analysis must expose a typed placeholder");
   assert.ok(result.syllables[0].warnings.some((w) => w.includes("Непідтримуваний фрагмент перед початковим приголосним")));
   assert.equal(result.output, "⟦" + surface + "⟧");
 });
@@ -505,7 +505,7 @@ test("browser IPA adapter withholds uncertain phonetic results", () => {
   const syllable = result.syllables[0];
   assert.equal(syllable.ipa, "la");
   assert.equal(syllable.phoneticResult.status, "UNCERTAIN");
-  assert.equal(syllable.ukrainian, null);
+  assert.equal(syllable.ukrainian, "ла");
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
@@ -645,7 +645,7 @@ test("browser MekongPhon-reference profile keeps onset and uncertainty boundarie
   const rhotic = analyze("ຣະ", { ipaProfile: "mekongphon-reference" });
   assert.equal(rhotic.syllables[0].ipa, "ra");
   assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
-  assert.equal(rhotic.syllables[0].ukrainian, null);
+  assert.equal(rhotic.syllables[0].ukrainian, "ра");
 });
 
 test("browser engine rejects unknown deterministic IPA profiles", () => {
@@ -673,7 +673,7 @@ test("browser hybrid profile preserves Vientiane fallthrough and uncertain onset
   const rhotic = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" });
   assert.equal(rhotic.syllables[0].ipa, "ra");
   assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
-  assert.equal(rhotic.syllables[0].ukrainian, null);
+  assert.equal(rhotic.syllables[0].ukrainian, "ра");
 });
 
 test("browser engine rejects unknown hybrid rule profiles", () => {
