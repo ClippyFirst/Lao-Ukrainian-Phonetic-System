@@ -49,6 +49,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [Independent G2P comparison](independent-g2p-comparison.md)
 - [External G2P research](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md)
 - [MekongPhon neural integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md)
+- [Deterministic MekongPhon-reference IPA rule port](research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md)
 - [MekongPhon rights review](audits/current/MEKONGPHON-DATA-RIGHTS-REVIEW-2026-11-07.md)
 - [MekongPhon grapheme-context analysis](audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md)
 
