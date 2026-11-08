@@ -518,3 +518,13 @@ No PR was merged and mainline/production deployment remains unchanged. The hybri
 - Regression tests update the malformed-tail expectation from `kaː` / `ка?` to `kaːl` / `кал?`, while retaining an explicit unresolved marker for the uncertain position.
 - Acceptance gate: Python/browser parity, all existing tests, generated-data/build checks and Chromium UI must pass on the exact PR head. Until then, status remains PARTIAL.
 - This is low-confidence grapheme rendering, not a claim of 100% correct phonetic transcription. Independent adjudicated IPA gold remains 0.
+
+## Grapheme-level provisional sound fallback — exact-head acceptance
+
+**DONE_VERIFIED — engineering checks; linguistic accuracy remains evidence-limited.**
+
+- Final head `2311be3712ef3f7af9f34b49b6fde835a38bc9b4`.
+- Verify [#42524982973 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42524982973): 289 Python, 143 Node, 19 Chromium; source/data audit, IPA schema, build, generated-data drift and built-page checks passed.
+- Benchmark [#42524982951 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42524982951), artifact 13635291111, SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. Hybrid 90/100 exact, 6.64% CER, 97% reference-relative IPA coverage; Neural 82/100 exact, 100%. Same 97 rows: hybrid 90 exact / 1.40% CER, Neural 81 exact / 5.79%. Not independent gold. Hybrid mean 1.93 ms/input; zero runtime errors.
+- Provisional /l/ is now rendered as `кал?` in the malformed-tail regression while the final consonant's position remains unresolved. Tone is not inferred. Non-core consonant values and unsupported standalone semivowel values remain withheld.
+- This change improves low-confidence output completeness, not evidence-backed phonetic accuracy. Independent adjudicated IPA gold remains 0.
