@@ -9,7 +9,7 @@ def main():
     ap = argparse.ArgumentParser(description="Lao → Ukrainian phonetic-graphemic analyzer")
     ap.add_argument("text")
     ap.add_argument("--json", action="store_true")
-    ap.add_argument("--ipa-profile", choices=("vientiane", "mekongphon-reference"), default="vientiane", help="deterministic source-IPA convention; mekongphon-reference is an experimental reference-compatibility profile")
+    ap.add_argument("--ipa-profile", choices=("vientiane", "mekongphon-reference", "hybrid-deterministic"), default="vientiane", help="deterministic source-IPA convention; mekongphon-reference and hybrid-deterministic are experimental reference-compatibility profiles")
     ap.add_argument(
         "--engine",
         choices=("rules", "mekongphon-tonal", "mekongphon-nontonal"),
