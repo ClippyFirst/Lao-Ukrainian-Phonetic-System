@@ -12,4 +12,4 @@ class TestUnicode(unittest.TestCase):
     def test_reject_zero_width_space(self): self.assertTrue(any("U+200B" in item for item in validate_unicode("ກ\u200bຂ")))
 
     def test_accept_common_punctuation_and_typographic_quotes(self):
-        self.assertEqual(validate_unicode('ລາວ, "ສະບາຍດີ!" (2026);'), [])
+        self.assertEqual(validate_unicode('ລາວ, "ສະບາຍດີ!" (2026);&%–…#/`+•'), [])
