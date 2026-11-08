@@ -335,3 +335,52 @@ The optional IPA affricate tie-bar normalization is a notation-convention correc
 - MekongPhon neural: segmental CER 6.64%, tie-bar-normalized exact matches 82/100, full segmental/tonal coverage; tone-category error 2.86%, 105/105 categories covered.
 - These are 100-word dictionary-seeded comparator results, not independently adjudicated gold or unbiased population accuracy. The held-out list is not a tuning target. The rule engine's lower coverage and tone error remain visible; do not claim parity with the neural model or Lao2IPA.
 - The project /w/→в practical orthography policy does not alter the raw IPA comparator's w/ʋ distinction. No source phonology rule was retuned from this run.
+
+
+
+## Latest three-engine production-adapter benchmark — run 42416252986, inspected 2026-11-08
+
+The latest successful workflow run before the merge used code checkpoint `5abb431598900e5545a3e73f07c97f2ab319dd4d` and produced aggregate artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425). The artifact ZIP SHA-256 is `df3250e4b4e35e41d6a1c718221c0bab1e8e681a854fd30adec900309192376d`. Dataset SHA-256: `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`. All three engines completed with zero runtime errors.
+
+### Full 100-item scores
+
+| Engine | Segmental CER ↓ | Segmental exact | Segmental coverage | Tonal CER ↓ | Tonal exact | Tonal coverage |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst rule engine | 11.46% | 69/100 | 97% | 32.45% native Ueda contour; 21.98% Mekong-convention evaluation | 20/100 native; 52/100 Mekong-convention | 91% |
+| Lao2IPA 1.0.0 | 8.97% | 68/100 | 100% | 11.97% | 56/100 | 100% |
+| MekongPhon neural | **6.64%** | **82/100** | **100%** | **8.29%** | **74/100** | **100%** |
+
+ClippyFirst's Mekong-convention tonal rendering is evaluation-only; the native production tone contours remain source-scoped to Ueda. Do not compare the native Ueda raw-contour CER as if it used the same contour notation as the reference.
+
+### Identical-coverage comparisons
+
+| Same covered items | ClippyFirst | Lao2IPA | MekongPhon neural |
+|---|---:|---:|---:|
+| Segmental CER, shared n=97 | 6.49% (69 exact) | 7.72% (68 exact) | **5.79% (81 exact)** |
+| Tonal CER, shared n=91, Mekong contour convention | 10.20% (52 exact) | 10.86% (53 exact) | **6.75% (68 exact)** |
+
+ClippyFirst narrowly beats Lao2IPA on this run's shared segmental and evaluation-convention tonal CER, but MekongPhon neural remains stronger on both shared subsets. This is a dictionary-seeded 100-word comparison, not independent project gold or a population accuracy estimate.
+
+### Tone-category diagnostics
+
+- ClippyFirst: 51/64 exact word-level sequences (79.69%); 4 errors among 79 covered categories (5.06%); 79/95 categories covered; 16 unresolved.
+- Lao2IPA: 56/64 exact sequences (87.50%); 0 errors among 81 covered categories; 81/93 categories covered; 12 unresolved.
+- MekongPhon neural: 66/69 exact sequences (95.65%); 3 errors among 105 covered categories (2.86%); 105/105 categories covered.
+
+These metrics are conditional on segmental-exact alignments and parseable reference contours; they are not whole-language tone accuracy.
+
+### Single-run CPU timing (model loading excluded)
+
+| Engine | Segmental mean latency | Tonal mean latency |
+|---|---:|---:|
+| ClippyFirst | 1.308 ms | 1.308 ms |
+| Lao2IPA 1.0.0 | 0.006 ms | 0.013 ms |
+| MekongPhon neural | 60.220 ms | 73.269 ms |
+
+ClippyFirst emits segmental and tonal fields from one analysis pass, so its equal latency figures are not additive. These are one hosted CPU run, not statistically stable cross-machine performance guarantees.
+
+### Environment and interpretation
+
+Python 3.12.16; CPU PyTorch 2.6.0; Transformers 4.49.0; SacreBLEU 2.5.1. MekongPhon uses immutable tonal revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal revision `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`, beam=5, 128-token maximum and truncation disabled.
+
+**Conclusion:** MekongPhon neural is the best measured system on this reference set; Lao2IPA is fastest; ClippyFirst is inspectable and fail-closed, and on this particular run slightly outperforms Lao2IPA on identical-coverage subsets but still trails MekongPhon. No engine default should be changed on this evidence alone. Independent project IPA gold remains 0, so empirical linguistic accuracy remains unvalidated.
