@@ -322,3 +322,8 @@ The schema 1.0 report timed all rule-engine rows but only successful neural infe
 - Exact-head Verify [#42488814424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488814424) on the same commit: 271 Python, 129 Node, 17 Chromium tests and all repository data/audit/install/build/reproducibility gates passed.
 
 The schema 1.0 latency values are superseded. The dataset still has no IPA references; the repository remains a research prototype and not linguistically release-ready.
+
+
+## Benchmark workflow de-duplication — 2026-11-08
+
+Removed the redundant branch-specific `push` trigger from PR #147's benchmark workflow. Its base branch already supplies the `pull_request` trigger for this target branch, and the manual `workflow_dispatch` remains. Previously, each commit started duplicate 1k neural benchmarks; future PR updates now need only one full run. No model, dataset, inference behavior or results changed.
