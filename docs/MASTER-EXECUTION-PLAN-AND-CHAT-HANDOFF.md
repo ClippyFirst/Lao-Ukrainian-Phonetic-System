@@ -1,3 +1,13 @@
+## Primary engine decision — hybrid deterministic (2026-11-08)
+
+- Owner decision: `hybrid-deterministic` is now the primary ClippyFirst engine for Lao → Ukrainian transcription.
+- Python `analyze()`, the rules CLI and the browser engine default to the hybrid profile. The Vientiane phonological system remains its baseline; the deterministic selector applies only the existing evidence-gated MekongPhon aggregate correspondences.
+- Explicit `vientiane` and `mekongphon-reference` profiles remain available for compatibility and controlled comparison. Neural inference is not part of the default transcription path.
+- This default change does not upgrade benchmark evidence: the 100-entry benchmark remains dictionary-reference-relative; HVULao remains a text coverage/runtime stress test; independent adjudicated IPA gold remains 0. Unsupported cases continue to fail closed.
+- Code defaults and regression tests have been updated. Exact-head hosted verification is pending and will be recorded once available.
+
+---
+
 ## Engineering gate and corpus-coverage corrections — 2026-11-04
 
 - The shared IPA corpus CLI previously emitted `release_ready: true` after checking only machine-verifiable corpus engineering conditions (adjudicated rows, frozen split minimums, one target-profile signature, one IPA kind and recorded redistributable source rights). It did not evaluate expert approval of the IPA convention, annotator/adjudicator qualifications, blind intake or expert-approved phonological contrast coverage.
