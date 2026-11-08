@@ -2,7 +2,7 @@
 
 ## Executive assessment
 
-**The integrated PR #143 branch is an engineering-verified research prototype. It is not linguistically validated or release-ready.** Exact-head GitHub Actions Verify passed on `e274789704251dfba238f50312b7b6c672febd77`: 262 Python tests, 126 Node tests and 17 Chromium tests, plus clean npm installation, corpus/schema validation, repository data/evidence audit, build, generated-data reproducibility and built-page checks.
+**The integrated PR #143 branch is an engineering-verified research prototype. It is not linguistically validated or release-ready.** Exact-head GitHub Actions Verify passed on `ceea7491363093b4704c2131320bf81e2201d04a`: 262 Python tests, 126 Node tests and 17 Chromium tests, plus clean npm installation, corpus/schema validation, repository data/evidence audit, build, generated-data reproducibility and built-page checks.
 
 The default branch `main` remains unchanged at `f40c1128302486b3589da9b16bae198ef3ad1d81`. The work is consolidated on the single continuation branch `audit/repository-docs-structure-20261107`, in open PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), which GitHub currently reports as mergeable. No merge, release, deployment, force-push, branch deletion or repository-settings change was performed.
 
@@ -16,11 +16,11 @@ This is an engineering, repository-structure, documentation, CI and design-syste
 | Default branch | `main` |
 | Starting main SHA | `f40c1128302486b3589da9b16bae198ef3ad1d81` |
 | Single working branch | `audit/repository-docs-structure-20261107` |
-| Exact verified head | `e274789704251dfba238f50312b7b6c672febd77` |
+| Exact verified head | `ceea7491363093b4704c2131320bf81e2201d04a` |
 | Pull request | [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), open and mergeable, base `main` |
-| PR diff | 82 files, 6,716 additions, 308 deletions |
-| GitHub compare | 451 commits ahead, 0 behind |
-| Exact-head Verify | [42462423663 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462423663) |
+| PR diff | 82 files, 6,727 additions, 310 deletions |
+| GitHub compare | 453 commits ahead, 0 behind |
+| Exact-head Verify | [42462529811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462529811) |
 
 The compare count reflects the branch's integrated commit ancestry; the PR file diff is the more useful measure of its current content. The branch was reused from the previous work rather than creating parallel branches.
 
@@ -116,7 +116,7 @@ These are engineering/design references, not project dependencies or linguistic 
 
 ## 6. Exact-head verification
 
-[Verify #42462423663](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462423663) ran on the exact branch head `e274789704251dfba238f50312b7b6c672febd77` and completed **SUCCESS**.
+[Verify #42462529811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462529811) ran on the exact branch head `ceea7491363093b4704c2131320bf81e2201d04a` and completed **SUCCESS**.
 
 | Gate | Result |
 |---|---|

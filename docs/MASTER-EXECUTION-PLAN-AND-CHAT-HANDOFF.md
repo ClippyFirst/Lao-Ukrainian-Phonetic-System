@@ -2227,3 +2227,12 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Exact documentation-batch commit: `e274789704251dfba238f50312b7b6c672febd77`. Exact-head Verify [42462423663 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462423663) ran on that commit: 262 Python, 126 Node and 17 Chromium tests; IPA corpus structural validation, repository data/evidence audit, external-G2P CLI, `npm ci`, build, generated-data reproducibility and built-page/relative-asset checks all passed.
 - PR #143 remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`. This remains the single working branch; PRs #137–#142 were left open and untouched.
 - No code/data/runtime changes were made in this documentation batch. The engineering result remains a research prototype: independent adjudicated IPA gold = 0; UI-001 manual assistive-technology/physical-device/real-browser-zoom review remains PARTIAL.
+
+
+## Final exact-head verification after documentation reconciliation — 2026-11-08
+
+- Final code-and-documentation head tested by CI: `ceea7491363093b4704c2131320bf81e2201d04a` on `audit/repository-docs-structure-20261107`.
+- Exact-head Verify [42462529811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462529811) ran on that exact SHA. Results: 262 Python tests, 126 Node tests, 17 Chromium tests; IPA corpus structural validation, repository data/evidence audit, external-G2P CLI validation, clean `npm ci --no-audit --no-fund`, build, generated-data reproducibility, and built-page/relative-asset assertions all passed.
+- This run verifies the final README audit pointer, corrected `npm ci` instructions, updated implementation/codebase maps, current audit index, accessibility log and handoff as committed at that head.
+- PR #143 remains open and mergeable against unchanged main `f40c1128302486b3589da9b16bae198ef3ad1d81`; GitHub reports 82 changed files, 6,727 additions and 310 deletions. PRs #137–#142 remain open and untouched.
+- Remaining acceptance boundaries are unchanged: UI-001 manual accessibility is PARTIAL; independent adjudicated IPA gold is empty (0); empirical linguistic accuracy is not measured. No production/release-ready claim is made.
