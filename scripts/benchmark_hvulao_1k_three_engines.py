@@ -88,6 +88,19 @@ def levenshtein(a: str, b: str) -> int:
     return previous[-1]
 
 
+def classify_input_rejection(exc: ValueError) -> str | None:
+    message = str(exc)
+    if message.startswith("Input is ") and "code points; model limit is" in message:
+        return "source_codepoint_limit"
+    if "Tokenized input exceeds the model" in message:
+        return "tokenized_sequence_limit"
+    if message.startswith("Input contains unsupported characters:"):
+        return "unsupported_characters"
+    if message == "Lao input must be a non-empty string":
+        return "empty_input"
+    return None
+
+
 def latency_summary(values: list[float]) -> dict:
     if not values:
         return {"mean_ms": None, "median_ms": None, "p95_ms": None, "total_s": None}
@@ -124,6 +137,7 @@ def main() -> int:
         "vientiane_rules": {
             "predictions": [], "times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
+            "syllable_total": 0, "syllable_with_ipa": 0,
         },
         "mekongphon_reference_rules": {
             "predictions": [], "times": [], "errors": Counter(),
@@ -131,6 +145,7 @@ def main() -> int:
         },
         "mekongphon_neural": {
             "predictions": [], "times": [], "errors": Counter(),
+            "input_rejections": Counter(),
         },
     }
 
@@ -149,6 +164,8 @@ def main() -> int:
                 prediction = complete_rule_ipa(result)
                 stage["predictions"].append(prediction)
                 stage["syllables"].update(item.status for item in result.syllables)
+                stage["syllable_total"] += len(result.syllables)
+                stage["syllable_with_ipa"] += sum(bool(item.phonemic_ipa) for item in result.syllables)
                 if not prediction:
                     for item in result.syllables:
                         stage["withheld"].update(
@@ -164,6 +181,13 @@ def main() -> int:
             prediction = neural.predict_raw_ipa(source)
             stage["times"].append(time.perf_counter() - started)
             stage["predictions"].append(compact_ipa(prediction))
+        except ValueError as exc:
+            rejection = classify_input_rejection(exc)
+            if rejection:
+                stage["input_rejections"][rejection] += 1
+            else:
+                stage["errors"][type(exc).__name__] += 1
+            stage["predictions"].append("")
         except Exception as exc:
             stage["errors"][type(exc).__name__] += 1
             stage["predictions"].append("")
@@ -178,7 +202,15 @@ def main() -> int:
             "runtime_errors_by_type": dict(sorted(stage["errors"].items())),
             "latency": latency_summary(stage["times"]),
         }
+        if "input_rejections" in stage:
+            summaries[key]["input_rejections_by_reason"] = dict(sorted(stage["input_rejections"].items()))
         if "syllables" in stage:
+            summaries[key]["syllable_count"] = stage["syllable_total"]
+            summaries[key]["syllables_with_ipa"] = stage["syllable_with_ipa"]
+            summaries[key]["syllable_ipa_coverage"] = (
+                stage["syllable_with_ipa"] / stage["syllable_total"]
+                if stage["syllable_total"] else None
+            )
             summaries[key]["syllable_status_counts"] = dict(sorted(stage["syllables"].items()))
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
 
