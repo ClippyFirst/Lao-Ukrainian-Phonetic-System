@@ -65,7 +65,7 @@ def load_dataset():
 
 
 def complete_ipa(analysis) -> str:
-    syllables = analysis.syllables
+    syllables = [item for item in analysis.syllables if item.status != "PASSTHROUGH"]
     if not syllables or any(not item.phonemic_ipa for item in syllables):
         return ""
     return nfc("".join(item.phonemic_ipa for item in syllables))
