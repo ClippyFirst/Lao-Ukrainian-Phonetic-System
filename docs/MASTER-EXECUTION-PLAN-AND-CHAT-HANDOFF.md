@@ -2661,3 +2661,13 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Added Python and browser regression assertions for unresolved consonant hints, context-dependent vowel hints and non-core consonant withholding.
 - Status at documentation update: **PARTIAL / awaiting exact-head hosted CI**. No local checkout or local test execution was available through the GitHub connector workflow. Do not claim tests pass until the new PR-head Verify workflow completes.
 - Linguistic boundary: this improves low-confidence rendering coverage, not phonetic accuracy. Per-grapheme hints are deliberately crude and may not equal the actual sound in context. Expert-adjudicated IPA gold remains required for accuracy claims.
+
+### Exact-head verification — 2026-11-08
+
+- Final implementation/test head: `2311be3712ef3f7af9f34b49b6fde835a38bc9b4`.
+- Full Verify [#42524982973 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42524982973): 289 Python tests, 143 Node tests, 19 Chromium tests; IPA gold schema, repository data/evidence audit, external-G2P harness CLI, locked browser dependency install, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+- Exact-head deterministic profile benchmark [#42524982951 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42524982951), aggregate artifact [13635291111](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42524982951/artifacts/13635291111), report SHA-256 `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`.
+- Dictionary-seeded 100-item comparator remained unchanged: hybrid 90/100 exact, CER 6.64%, 97% coverage; Neural 82/100 exact, 100% coverage. On the 97 shared-coverage items, hybrid 90 exact / CER 1.40%, Neural 81 exact / CER 5.79%. This is reference-relative, not independent expert gold; it does not validate the new fallback's linguistic accuracy.
+- Hybrid mean latency in this run: 1.93 ms/input vs Neural 66.72 ms/input; hosted single-run diagnostic, not a guarantee. Zero runtime errors.
+- The fallback now retains known /l/ in malformed `ກາລ` as a provisional segment and outputs `кал?`; unknown position remains marked. Unsupported standalone semivowel `ຽ` is deliberately not guessed.
+- Engineering implementation status: **DONE_VERIFIED**. Linguistic accuracy of isolated grapheme hints remains **BLOCKED / evidence-limited** pending expert-adjudicated contextual IPA gold.
