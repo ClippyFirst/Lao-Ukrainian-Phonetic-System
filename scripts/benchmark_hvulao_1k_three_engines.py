@@ -145,6 +145,11 @@ def main() -> int:
             "withheld": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0,
         },
+        "hybrid_deterministic_rules": {
+            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
+            "withheld": Counter(), "syllables": Counter(),
+            "syllable_total": 0, "syllable_with_ipa": 0,
+        },
         "mekongphon_neural": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "input_rejections": Counter(),
@@ -155,6 +160,7 @@ def main() -> int:
         for key, profile in (
             ("vientiane_rules", None),
             ("mekongphon_reference_rules", "mekongphon-reference"),
+            ("hybrid_deterministic_rules", "hybrid-deterministic"),
         ):
             stage = stages[key]
             try:
@@ -230,6 +236,8 @@ def main() -> int:
         ("vientiane_rules", "mekongphon_reference_rules"),
         ("vientiane_rules", "mekongphon_neural"),
         ("mekongphon_reference_rules", "mekongphon_neural"),
+        ("hybrid_deterministic_rules", "mekongphon_neural"),
+        ("mekongphon_reference_rules", "hybrid_deterministic_rules"),
     ):
         edits = sum(
             levenshtein(stages[left]["predictions"][i], stages[right]["predictions"][i])
@@ -264,7 +272,8 @@ def main() -> int:
         },
         "engines": {
             "vientiane_rules": {"implementation": "ClippyFirst deterministic default"},
-            "mekongphon_reference_rules": {"implementation": "ClippyFirst deterministic opt-in profile"},
+            "mekongphon_reference_rules": {"implementation": "ClippyFirst legacy deterministic compatibility profile"},
+            "hybrid_deterministic_rules": {"implementation": "Vientiane baseline plus deterministic evidence-rule selector"},
             "mekongphon_neural": {
                 "model_id": MODEL_ID,
                 "revision": MODEL_REVISION,
