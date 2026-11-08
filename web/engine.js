@@ -760,7 +760,12 @@ export function analyze(text, options = {}) {
   // Frozen compatibility profiles retain strict historical validation. The
   // default hybrid profile is coverage-first: unsupported visible characters
   // pass through unchanged while Lao spans are analysed independently.
-  if (inputWarnings.length && ipaProfile !== "hybrid-deterministic") {
+  const hasUnsafeControls = [...normalized].some((ch) => {
+    const cp = ch.codePointAt(0);
+    return (cp < 0x20 && !["\\n", "\\t", "\\r"].includes(ch)) ||
+      (cp >= 0x7F && cp <= 0x9F) || cp === 0xFEFF;
+  });
+  if (hasUnsafeControls || (inputWarnings.length && ipaProfile !== "hybrid-deterministic")) {
     return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
   }
 
