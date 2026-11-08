@@ -13,7 +13,10 @@ import unicodedata
 import urllib.request
 from pathlib import Path
 
-from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+try:
+    from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+except ModuleNotFoundError:
+    from benchmark_ipa_contract import accepted_phonetic_ipa
 
 SOURCE_REPO = "HaHVU/HVULao_NLP"
 SOURCE_REVISION = "ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568"
