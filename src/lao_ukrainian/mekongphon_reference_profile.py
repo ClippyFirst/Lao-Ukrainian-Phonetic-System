@@ -2,12 +2,14 @@
 
 This is an explicitly selected reference-compatibility profile, not a claim
 that the model's dictionary IPA is a universal or independently adjudicated
-description of Vientiane Lao. The default Vientiane profile is unchanged.
+description of Vientiane Lao. Vientiane remains the phonological baseline;
+the hybrid deterministic profile is the default ClippyFirst engine.
 """
 
 PROFILE_NAME = "mekongphon-reference"
-DEFAULT_PROFILE = "vientiane"
+DEFAULT_PROFILE = "vientiane"  # Explicit Vientiane baseline/compatibility profile.
 HYBRID_PROFILE = "hybrid-deterministic"
+DEFAULT_ENGINE_PROFILE = HYBRID_PROFILE
 SUPPORTED_IPA_PROFILES = (DEFAULT_PROFILE, PROFILE_NAME, HYBRID_PROFILE)
 
 # Aggregate-only, high-frequency train-split correspondences. The source
