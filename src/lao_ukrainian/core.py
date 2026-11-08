@@ -1,4 +1,4 @@
-from .normalize import normalize_lao, validate_unicode, PASSTHROUGH_CHARACTERS
+from .normalize import normalize_lao, validate_unicode, PASSTHROUGH_CHARACTERS, LAO_NATIVE_DIGITS
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
 from .target import rank_ukrainian_candidates, practical_from_ipa
@@ -50,7 +50,7 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_PROFILE) -> Analysis:
                         ukrainian_candidates=[],
                         practical_ukrainian=surface,
                         status="PASSTHROUGH",
-                        rules=["PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER"],
+                        rules=["PASSTHROUGH:LAO_NATIVE_DIGIT" if surface in LAO_NATIVE_DIGITS else "PASSTHROUGH:NON_LAO_ORTHOGRAPHIC_CHARACTER"],
                         warnings=[],
                     )
                 )
