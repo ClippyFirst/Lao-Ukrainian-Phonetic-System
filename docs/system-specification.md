@@ -10,7 +10,7 @@ ClippyFirst's primary Lao engine is `hybrid-deterministic`, selected by default 
 
 ## Processing layers
 
-1. Unicode normalization and script validation (including U+200B as an explicit Lao word-boundary separator).
+1. Unicode normalization and script validation (including U+200B as an explicit Lao word-boundary separator and stripping a leading U+FEFF file BOM).
 2. Graphemic syllable parsing.
 3. Consonant-class identification.
 4. Vowel structure and quantity.
