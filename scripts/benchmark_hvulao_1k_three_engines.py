@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 from collections import Counter
 import hashlib
 import json
@@ -32,15 +33,19 @@ def git_blob_sha1(payload: bytes) -> str:
 
 
 def load_dataset() -> tuple[list[str], str, int]:
-    url = (
-        f"https://raw.githubusercontent.com/{SOURCE_REPO}/"
-        f"{SOURCE_REVISION}/{SOURCE_PATH}"
-    )
+    url = f"https://api.github.com/repos/{SOURCE_REPO}/git/blobs/{SOURCE_GIT_BLOB_SHA1}"
     request = urllib.request.Request(
-        url, headers={"User-Agent": "ClippyFirst-HVULao-1k-benchmark/1.0"}
+        url,
+        headers={
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "ClippyFirst-HVULao-1k-benchmark/1.0",
+        },
     )
     with urllib.request.urlopen(request, timeout=60) as response:
-        payload = response.read()
+        blob = json.loads(response.read().decode("utf-8"))
+    if blob.get("sha") != SOURCE_GIT_BLOB_SHA1 or blob.get("encoding") != "base64":
+        raise ValueError("GitHub did not return the expected pinned HVULao_NLP blob")
+    payload = base64.b64decode(blob["content"], validate=False)
     digest = git_blob_sha1(payload)
     if digest != SOURCE_GIT_BLOB_SHA1:
         raise ValueError(f"Pinned HVULao_NLP Git blob changed: {digest}")
