@@ -239,8 +239,8 @@ This is a 100-word dictionary-seeded comparison, not independent phonetic accura
 
 ### Verification and branch disposition
 
-- Final exact-head Verify [42467409253 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467409253) ran on `aca31b594b06d1b7ab3381171b56ff745fde5985`: 271 Python, 129 Node and 17 Chromium tests passed; IPA corpus structural validation, repository audit, clean `npm ci`, browser tests, build, generated-data drift and built-site checks all passed.
-- Dedicated profile benchmark [42467190935 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935) passed with zero runtime errors. Final branch head after the last documentation/test updates: `aca31b594b06d1b7ab3381171b56ff745fde5985`.
+- Exact-head Verify [42467409253 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467409253) ran on code checkpoint `aca31b594b06d1b7ab3381171b56ff745fde5985`: 271 Python, 129 Node and 17 Chromium tests passed; IPA corpus structural validation, repository audit, clean `npm ci`, browser tests, build, generated-data drift and built-site checks all passed. Subsequent commits in this continuation only update handoff/audit metadata; runtime and benchmark code are unchanged.
+- Dedicated profile benchmark [42467190935 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935) passed with zero runtime errors.
 - PR #146 remains draft/open and unmerged.
 - PR #145 remains open and untouched; its neural-default direction conflicts with the deterministic-first requirement.
 - PRs #137–#142 remain open and untouched; their implementation changes are already integrated into the starting mainline.
