@@ -250,6 +250,26 @@ class TestCore(unittest.TestCase):
         self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
 
 
+    def test_hybrid_renders_unknown_lao_unit_through_typed_provisional_boundary(self):
+        result = core_module.analyze("ກາລ")
+        syllable = result.syllables[0]
+        self.assertEqual(result.status, "PARTIAL")
+        self.assertIsNone(syllable.phonemic_ipa)
+        self.assertEqual(syllable.practical_ukrainian, "?")
+        self.assertEqual(syllable.phonetic_result.status, "PROVISIONAL")
+        self.assertEqual(len(syllable.phonetic_result.segments), 1)
+        self.assertEqual(syllable.phonetic_result.segments[0].kind, "unknown")
+        self.assertEqual(syllable.phonetic_result.segments[0].certainty, "PROVISIONAL")
+        self.assertIn("PHONETIC-READING-UNKNOWN", syllable.phonetic_result.uncertainty)
+
+    def test_hybrid_renders_analysis_dependent_ipa_without_promoting_confidence(self):
+        syllable = core_module.analyze("ຣະ").syllables[0]
+        self.assertEqual(syllable.phonemic_ipa, "ra")
+        self.assertEqual(syllable.practical_ukrainian, "ра")
+        self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
+        self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
+
+
 class TestMinorSyllableSelectorEvidence(unittest.TestCase):
     def test_minor_candidate_requires_supported_following_onset(self):
         result = analyze("ຄະຣາ")
