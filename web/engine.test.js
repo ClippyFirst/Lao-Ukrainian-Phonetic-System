@@ -237,7 +237,7 @@ test("long open o carrier is recognised", () => {
 });
 
 test("hybrid preserves mixed-script characters and renders supported Lao", () => {
-  const r = analyze("ກа");
+  const r = analyzeDefault("ກа");
   assert.equal(r.status, "PARTIAL");
   assert.equal(r.output, "ка");
   assert.ok(r.warnings.some((warning) => warning.includes("Непідтримуваний символ")));
