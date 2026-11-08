@@ -262,6 +262,9 @@ def main() -> int:
                 if "rendered_predictions" in stage else 0
             ),
             "analysis_status_counts": dict(sorted(stage["analysis_statuses"].items())) if "analysis_statuses" in stage else {},
+            "valid_input_rows": (len(rows) - stage["analysis_statuses"].get("INVALID", 0) - stage["analysis_statuses"].get("EMPTY", 0)) if "analysis_statuses" in stage else None,
+            "invalid_input_count": stage["analysis_statuses"].get("INVALID", 0) if "analysis_statuses" in stage else None,
+            "empty_analysis_count": stage["analysis_statuses"].get("EMPTY", 0) if "analysis_statuses" in stage else None,
             "invalid_input_rows": stage["invalid_input_rows"] if "invalid_input_rows" in stage else [],
             "invalid_input_warning_categories": dict(sorted(stage["invalid_warnings"].items())) if "invalid_warnings" in stage else {},
             "empty_analysis_rows": stage["empty_analysis_rows"] if "empty_analysis_rows" in stage else [],
@@ -324,7 +327,7 @@ def main() -> int:
             "git_blob_sha1": blob_sha,
             "dataset_license": "CC-BY-4.0 (Mendeley Data version 2)",
             "input_kind": "raw Lao sentences; paired segmentation reference is not IPA",
-            "coverage_definition": "Rendering coverage requires a non-null Ukrainian-side rendering for every analyzed source unit, including explicit passthrough and typed PROVISIONAL placeholders. IPA-complete sentence coverage separately requires IPA for every Lao phonetic syllable; placeholders and passthrough are excluded from IPA coverage. Neither metric is phonetic accuracy.",
+            "coverage_definition": "Rendering coverage is calculated over non-empty, non-INVALID inputs; rejected inputs and empty analyses are reported separately. Every accepted input requires a non-null Ukrainian-side rendering for every analyzed source unit, including explicit passthrough and typed PROVISIONAL placeholders. IPA-complete sentence coverage separately requires IPA for every Lao phonetic syllable; placeholders and passthrough are excluded from IPA coverage. Neither metric is phonetic accuracy.",
             "limitations": [
                 "No IPA reference is supplied; gold IPA CER is not measurable.",
                 "Pairwise output disagreement is not accuracy and cannot identify the correct engine.",
