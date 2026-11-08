@@ -70,7 +70,7 @@ def preview_from_graphemes(surface: str, parsed: dict, registry: dict) -> Graphe
     fallback_vowels = {
         "ະ": "a", "ັ": "a", "າ": "aː", "ິ": "i", "ີ": "iː",
         "ຶ": "ɯ", "ື": "ɯː", "ຸ": "u", "ູ": "uː", "ົ": "o",
-        "ຽ": "ə", "ອ": "ɔː", "ໍ": "ɔː", "ຳ": "am",
+        "ອ": "ɔː", "ໍ": "ɔː", "ຳ": "am",
         "ເ": "e", "ແ": "ɛ", "ໂ": "o", "ໃ": "ai", "ໄ": "ai",
     }
     for i, ch in enumerate(chars):
