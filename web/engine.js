@@ -449,7 +449,7 @@ function analyzeToken(surface, ipaProfile = "vientiane") {
     toneContourIpa: resolvedTone.contour,
     status: adapterStatus,
     provenance: ["INITIAL:" + onsetClass, "VOWEL:" + matched.v[0],
-      "SYLLABLE:" + syllableType, resolvedTone.ruleId || "TONE:UNRESOLVED"],
+      "SYLLABLE:" + syllableType, ...profileRules, resolvedTone.ruleId || "TONE:UNRESOLVED"],
     uncertainty: [...warnings, ...(resolvedTone.status === "ESTABLISHED" ? [] : ["TONE-UNRESOLVED"])],
   });
   const ukrainian = adaptPhoneticResult(phoneticResult);
@@ -467,7 +467,7 @@ function analyzeToken(surface, ipaProfile = "vientiane") {
     length: matched.v[3], nucleusType: matched.v[6], coda: coda || "—", toneMark: mark,
     syllableType, tone: resolvedTone.name, toneContour: resolvedTone.contour, toneStatus: resolvedTone.status, ipa, ukrainian, phoneticResult, status,
     rules: ["INITIAL:" + onsetClass, ...(onsetIpaOverride ? ["ONSET-CLUSTER:" + onsetForm] : []),
-      "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
+      "VOWEL:" + matched.v[0], "SYLLABLE:" + syllableType, ...profileRules, resolvedTone.ruleId ? "TONE-RULE:" + resolvedTone.ruleId : "TONE:UNRESOLVED"],
     warnings };
 }
 
@@ -669,7 +669,7 @@ export function analyze(text, options = {}) {
   const inputWarnings = validateInput(normalized);
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
-  const words = normalized.split(/\s+/).filter(Boolean).map(analyzeWord);
+  const words = normalized.split(/\s+/).filter(Boolean).map((word) => analyzeWord(word, ipaProfile));
   const syllables = words.flat().map((syllable) => {
     if (syllable.passthrough || syllable.ipa) return syllable;
     // Reparse only the segmental structure after removing tone marks. This
