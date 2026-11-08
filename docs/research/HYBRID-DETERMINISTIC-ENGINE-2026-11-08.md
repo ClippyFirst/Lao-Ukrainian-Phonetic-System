@@ -1,3 +1,16 @@
+## 100-entry rendering-coverage acceptance result — 2026-11-08
+
+The held-out MekongPhon 100-entry workflow passed the new hybrid rendering-coverage gate on exact head `da9ec77bf9a203b4b86d36aefd6a5de8ec65a750`:
+
+- Run [42518333013 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518333013), artifact [13631884430](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42518333013/artifacts/13631884430), SHA-256 `0c91d91cff8f9e8fea99e2717e13? `.
+- Hybrid rendering coverage: **100/100 inputs (100%)**, **169/169 units rendered**.
+- Hybrid unit distribution: 159 SUPPORTED IPA units, 1 UNCERTAIN IPA unit, 9 PROVISIONAL placeholder units; zero runtime errors.
+- Compatibility rendering coverage remains lower: Vientiane 95/100 and MekongPhon-reference 90/100. The hybrid-only fallback is responsible for the complete rendering coverage.
+- IPA benchmark is unchanged in scope: 97/100 IPA-complete inputs (97%), 90/100 exact matches, CER 6.6445% against the pinned non-tonal dictionary reference. This is reference-relative, not independent accuracy or gold.
+- On this benchmark, all 9 provisional units are included in rendering coverage but excluded from canonical IPA coverage and phonetic accuracy.
+
+This verifies 100% rendering coverage on this 100-entry held-out set. It does **not** establish 100% coverage across all Lao text; the independent HVULao 1k stress gate remains in progress. Independent adjudicated IPA gold remains 0.
+
 ## Owner acceptance update — 2026-11-08: 100% rendering coverage
 
 The owner clarified that the primary hybrid must cover **100% of valid input**, even when the result is low-confidence. Coverage means every accepted input unit receives a visible Ukrainian-side rendering; it does not mean every unit receives known IPA or correct pronunciation.
