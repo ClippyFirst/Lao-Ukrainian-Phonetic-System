@@ -327,3 +327,10 @@ The schema 1.0 latency values are superseded. The dataset still has no IPA refer
 ## Benchmark workflow de-duplication — 2026-11-08
 
 Removed the redundant branch-specific `push` trigger from PR #147's benchmark workflow. Its base branch already supplies the `pull_request` trigger for this target branch, and the manual `workflow_dispatch` remains. Previously, each commit started duplicate 1k neural benchmarks; future PR updates now need only one full run. No model, dataset, inference behavior or results changed.
+
+
+## Five-source benchmark portfolio audit — 2026-11-08
+
+The current benchmark inventory now identifies five distinct sources: (1) MekongPhon held-out 100-entry orthography–IPA comparison — executed, reference-relative; (2) HVULao_NLP 1k sentence split — executed, stress/coverage only; (3) Wiktionary Lao IPA category (2,317 pages reported) — candidate weak reference, not imported; (4) FLORES-200 Lao devtest (1,012 rows) — gated content/access conditions pending; (5) HPLT Lao monolingual test (2,000 rows) — manual approval pending. The canonical task ledger and acceptance boundaries are in the master handoff section “Five-source Lao benchmark portfolio”.
+
+No candidate dataset was downloaded, copied, or added to runtime/corpus data in this step. No gated access was bypassed. The three not-yet-run candidates are not counted as completed benchmarks. Wiktionary requires a pinned snapshot and dialect separation before use; FLORES/HPLT have no IPA reference and are coverage/runtime stress only. Independent adjudicated IPA gold remains 0.
