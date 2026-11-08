@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from collections import Counter
 import hashlib
 import json
 import statistics
@@ -70,6 +71,14 @@ def complete_ipa(analysis) -> str:
     return nfc("".join(item.phonemic_ipa for item in syllables))
 
 
+def remove_optional_ipa_tie_bars(value: str) -> str:
+    return nfc(value.replace("\u0361", "").replace("\u035c", ""))
+
+
+def warning_code(value: str) -> str:
+    return value.split(":", 1)[0]
+
+
 def score(references, predictions):
     edits = sum(levenshtein(ref, pred) for ref, pred in zip(references, predictions))
     denominator = sum(len(ref) for ref in references)
@@ -77,6 +86,10 @@ def score(references, predictions):
     return {
         "coverage": len(covered) / len(references) if references else None,
         "exact_matches": sum(ref == pred for ref, pred in zip(references, predictions)),
+        "tie_bar_normalized_exact_matches": sum(
+            remove_optional_ipa_tie_bars(ref) == remove_optional_ipa_tie_bars(pred)
+            for ref, pred in zip(references, predictions)
+        ),
         "cer_full_denominator": edits / denominator if denominator else None,
         "reference_codepoints": denominator,
         "edit_distance": edits,
@@ -108,7 +121,10 @@ def main() -> int:
     neural_predictions = []
     baseline_times = []
     profile_times = []
-    runtime_errors = 0
+    neural_times = []
+    baseline_warning_counts = Counter()
+    profile_warning_counts = Counter()
+    runtime_errors_by_stage = Counter()
 
     for row in rows:
         source = nfc(row["orth"])
@@ -116,20 +132,36 @@ def main() -> int:
         baseline_prediction = ""
         profile_prediction = ""
         neural_prediction = ""
+
         try:
             started = time.perf_counter()
             baseline = analyze(source)
             baseline_times.append(time.perf_counter() - started)
             baseline_prediction = complete_ipa(baseline)
+            if not baseline_prediction:
+                for item in baseline.syllables:
+                    baseline_warning_counts.update(warning_code(str(w)) for w in item.warnings)
+        except Exception as exc:
+            runtime_errors_by_stage["baseline:" + type(exc).__name__] += 1
 
+        try:
             started = time.perf_counter()
             compatible = analyze(source, ipa_profile="mekongphon-reference")
             profile_times.append(time.perf_counter() - started)
             profile_prediction = complete_ipa(compatible)
+            if not profile_prediction:
+                for item in compatible.syllables:
+                    profile_warning_counts.update(warning_code(str(w)) for w in item.warnings)
+        except Exception as exc:
+            runtime_errors_by_stage["profile:" + type(exc).__name__] += 1
 
+        try:
+            started = time.perf_counter()
             neural_prediction = nfc(neural.predict_raw_ipa(source))
-        except Exception:
-            runtime_errors += 1
+            neural_times.append(time.perf_counter() - started)
+        except Exception as exc:
+            runtime_errors_by_stage["neural:" + type(exc).__name__] += 1
+
         baseline_predictions.append(baseline_prediction)
         profile_predictions.append(profile_prediction)
         neural_predictions.append(neural_prediction)
@@ -198,10 +230,17 @@ def main() -> int:
             "mekongphon_reference_rules_mean": (
                 statistics.mean(profile_times) * 1000 if profile_times else None
             ),
-            "neural_model_inference_mean": None,
-            "note": "Neural inference is run after both deterministic analyses; separate neural timing is not collected in this diagnostic.",
+            "neural_model_inference_mean": (
+                statistics.mean(neural_times) * 1000 if neural_times else None
+            ),
+            "note": "Each stage is timed independently; model load and initial smoke inference are excluded.",
         },
-        "runtime_errors": runtime_errors,
+        "coverage_diagnostics": {
+            "baseline_withheld_warning_codes": dict(sorted(baseline_warning_counts.items())),
+            "profile_withheld_warning_codes": dict(sorted(profile_warning_counts.items())),
+        },
+        "runtime_errors_by_stage": dict(sorted(runtime_errors_by_stage.items())),
+        "runtime_errors": sum(runtime_errors_by_stage.values()),
         "limitations": [
             "The 100-word holdout is dictionary-seeded and is not independently adjudicated project gold.",
             "The profile is derived from the separate MekongPhon train split; it is an explicit compatibility experiment, not a universal phonetic standard.",
