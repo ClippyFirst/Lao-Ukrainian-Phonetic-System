@@ -607,3 +607,35 @@ test("browser grapheme preview never infers tone and withholds non-core Pali val
   assert.equal(pali.ipaPreview, null);
   assert.equal(pali.status, "UNRESOLVED");
 });
+
+
+test("browser engine supports the deterministic MekongPhon-reference IPA profile", () => {
+  const baseline = analyze("ດວງ");
+  const compatible = analyze("ດວງ", { ipaProfile: "mekongphon-reference" });
+  assert.equal(baseline.syllables[0].ipa, "duːəŋ");
+  assert.equal(compatible.syllables[0].ipa, "duaːŋ");
+  assert.equal(compatible.syllables[0].phoneticResult.status, "SUPPORTED");
+  assert.equal(compatible.syllables[0].phoneticResult.phonemicIpa, "duaːŋ");
+  assert.equal(compatible.syllables[0].ukrainian, "дуанг");
+  assert.ok(compatible.syllables[0].rules.includes("IPA-PROFILE-MEKONGPHON-VOWEL:UO_LONG_ALT"));
+  assert.ok(compatible.syllables[0].phoneticResult.provenance.includes("IPA-PROFILE-MEKONGPHON-VOWEL:UO_LONG_ALT"));
+  assert.equal(compatible.syllables[0].tone, baseline.syllables[0].tone);
+});
+
+test("browser MekongPhon-reference profile keeps onset and uncertainty boundaries", () => {
+  const baseline = analyze("ວັນ");
+  const compatible = analyze("ວັນ", { ipaProfile: "mekongphon-reference" });
+  assert.equal(baseline.syllables[0].ipa, "ʋan");
+  assert.equal(compatible.syllables[0].ipa, "wan");
+  assert.equal(compatible.syllables[0].ukrainian, "ван");
+  assert.ok(compatible.syllables[0].rules.includes("IPA-PROFILE-MEKONGPHON-ONSET:ວ"));
+
+  const rhotic = analyze("ຣະ", { ipaProfile: "mekongphon-reference" });
+  assert.equal(rhotic.syllables[0].ipa, "ra");
+  assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
+  assert.equal(rhotic.syllables[0].ukrainian, null);
+});
+
+test("browser engine rejects unknown deterministic IPA profiles", () => {
+  assert.throws(() => analyze("ຂາ", { ipaProfile: "invented" }), RangeError);
+});
