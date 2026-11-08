@@ -317,7 +317,12 @@ function previewFromGraphemes(surface, parsed) {
 const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
 
 function isPassthroughChar(ch) {
-  return PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\u0ED0-\u0ED9]$/u.test(ch);
+  if (PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\u0ED0-\u0ED9]$/u.test(ch)) return true;
+  const cp = ch.codePointAt(0);
+  // Hybrid preserves visible foreign-script letters, punctuation, symbols
+  // and combining marks verbatim; these are not treated as Lao phonemes.
+  return cp > 0x7F && !(cp >= 0x0E80 && cp <= 0x0EFF) &&
+    !/\s/u.test(ch) && !/[\u0000-\u001F\u007F-\u009F\uFEFF]/u.test(ch);
 }
 
 function validateInput(text) {
@@ -751,7 +756,14 @@ export function analyze(text, options = {}) {
   const normalized = input.normalize("NFC").replace(/^\uFEFF/, "").trim();
   if (!normalized) return { input, normalized, status: "EMPTY", output: "", syllables: [], warnings: [] };
   const inputWarnings = validateInput(normalized);
-  if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
+  const hasUnsafeControls = [...normalized].some((ch) => {
+    const cp = ch.codePointAt(0);
+    return (cp < 0x20 && !["\n", "\t", "\r"].includes(ch)) ||
+      (cp >= 0x7F && cp <= 0x9F) || cp === 0xFEFF;
+  });
+  if (hasUnsafeControls || (inputWarnings.length && ipaProfile !== "hybrid-deterministic")) {
+    return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
+  }
 
   const words = normalized.replace(/\u200b/g, " ").split(/\s+/).filter(Boolean).map((word) => {
     const analyzed = analyzeWord(word, ipaProfile);
@@ -820,9 +832,9 @@ export function analyze(text, options = {}) {
     }, ukrainian: "?", graphemePreview, status: "EVIDENCE LIMITED" };
 
   });
-  const warnings = [...new Set(syllables.flatMap((s) => s.warnings || []))];
+  const warnings = [...new Set([...inputWarnings, ...syllables.flatMap((s) => s.warnings || [])])];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
-  const complete = syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
+  const complete = inputWarnings.length === 0 && syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
   const output = words.map((word) => word.map((s) => s.ukrainian || ("⟦" + s.surface + "⟧")).join("")).join(" ");
   return { input, normalized, status: complete ? "OK" : "PARTIAL", output, syllables, warnings: [...new Set(warnings)] };
 }

@@ -16,6 +16,28 @@ test("browser engine defaults to the hybrid deterministic profile", () => {
   assert.equal(result.syllables[0].ipa, "duaːŋ");
   assert.ok(result.syllables[0].rules.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
 });
+
+test("hybrid renders Lao spans inside mixed-script text and preserves unsupported visible units", () => {
+  const source = "«ຂາ» — українська 08:05 / 08:50 🙂";
+  const result = analyzeDefault(source);
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "«к'а» — українська 08:05 / 08:50 🙂");
+  assert.ok(result.syllables.some((unit) => unit.ipa === "kʰaː"));
+  assert.ok(result.warnings.some((warning) => warning.includes("Непідтримуваний символ")));
+});
+
+test("hybrid mixed-script handling does not weaken frozen compatibility profiles", () => {
+  const result = analyzeDefault("ກа", { ipaProfile: "vientiane" });
+  assert.equal(result.status, "INVALID");
+  assert.equal(result.output, "");
+});
+
+test("hybrid still rejects invisible control characters", () => {
+  const result = analyzeDefault("ກ" + String.fromCharCode(0x0085) + "ຂ");
+  assert.equal(result.status, "INVALID");
+  assert.equal(result.output, "");
+  assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
+});
 import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
 
 test("basic long syllable", () => {
@@ -214,10 +236,11 @@ test("long open o carrier is recognised", () => {
   assert.equal(r.output, "о");
 });
 
-test("invalid mixed script is rejected", () => {
-  const r = analyze("ກа");
-  assert.equal(r.status, "INVALID");
-  assert.equal(r.output, "");
+test("hybrid preserves mixed-script characters and renders supported Lao", () => {
+  const r = analyzeDefault("ຂາа");
+  assert.equal(r.status, "PARTIAL");
+  assert.equal(r.output, "к'аа");
+  assert.ok(r.warnings.some((warning) => warning.includes("Непідтримуваний символ")));
 });
 
 test("CRLF is accepted as line whitespace", () => {
