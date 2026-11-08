@@ -48,3 +48,22 @@ The first hybrid rule set deliberately reuses only the nine vowel-structure and 
 ## Readiness
 
 **PARTIAL / engineering implementation under verification.** This branch is not release-ready. Existing Vientiane and MekongPhon-reference profiles are preserved, and the production default remains unchanged.
+
+
+## First hosted held-out result
+
+The updated MekongPhon 100-entry workflow completed successfully on branch checkpoint `4afd51964532dd1f95b57eaeac36aea852b85228`:
+
+- Run [42507131648](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131648), artifact [13628190784](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42507131648/artifacts/13628190784), SHA-256 `7de8665161308fcaaa422c5c3534e181916c1958f59e88786c3521215d7f8c86d`.
+- Dataset: pinned 100-row `lao_eval.csv`, reference `pron_no_tones`; neural comparator is the pinned non-tonal checkpoint.
+
+| Engine | Exact / 100 | CER / 100 | Coverage | Mean latency |
+|---|---:|---:|---:|---:|
+| Vientiane rules | 69 | 11.46% | 97% | 1.79 ms |
+| MekongPhon-reference | 90 | 6.64% | 97% | 1.40 ms |
+| Hybrid deterministic | **90** | **6.64%** | 97% | **1.41 ms** |
+| MekongPhon Neural | 82 | 6.64% | 100% | 60.51 ms |
+
+On the identical 97-word coverage subset, hybrid and MekongPhon-reference each achieved 90/97 exact matches and CER 1.40%; Neural achieved 81/97 and CER 5.79%. Hybrid runtime errors: 0. The three withheld cases and warning categories are unchanged.
+
+This establishes that the new selector preserves the earlier profile's measured output on this held-out set and adds negligible overhead. It does **not** show that new contextual generalization has been learned: the hybrid intentionally uses the same eleven mappings, and the reference is dictionary-seeded, non-tonal and not independently adjudicated gold. Hybrid coverage remains 3 percentage points below Neural on this test.
