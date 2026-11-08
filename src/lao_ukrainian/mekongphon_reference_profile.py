@@ -7,7 +7,8 @@ description of Vientiane Lao. The default Vientiane profile is unchanged.
 
 PROFILE_NAME = "mekongphon-reference"
 DEFAULT_PROFILE = "vientiane"
-HYBRID_PROFILE = "hybrid-deterministic"\nSUPPORTED_IPA_PROFILES = (DEFAULT_PROFILE, PROFILE_NAME, HYBRID_PROFILE)
+HYBRID_PROFILE = "hybrid-deterministic"
+SUPPORTED_IPA_PROFILES = (DEFAULT_PROFILE, PROFILE_NAME, HYBRID_PROFILE)
 
 # Aggregate-only, high-frequency train-split correspondences. The source
 # diagnostic uses the pinned 6,219-row MekongPhon training split; it is not
