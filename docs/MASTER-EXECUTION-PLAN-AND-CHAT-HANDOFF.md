@@ -1,3 +1,15 @@
+## Lao numeral crosswalk and IPA display correction — 2026-11-08
+
+- Owner-provided long-form mixed-content input exposed a source-alignment defect in the separate CLDR romanization adapter: Lao numeral-only tokens (໐–໙) were not excluded from the source syllable group sequence, shifting all following Lao syllable crosswalk indices. The romanization syllable parser also treated Lao numeral tokens as unresolved rather than numeric passthrough.
+- PR [#152](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/152) merged into `main` as `b1e014265c22d9a369ab9fe2cc3da6c2d57dca38`.
+- Fix: Lao digits are numeric passthrough in the romanization adapter and are skipped when constructing the source syllable crosswalk, preserving alignment across dates and quantities.
+- IPA display now omits passthrough units (digits, punctuation, foreign-script text) and uses `?` for unresolved Lao units rather than a misleading run of em dashes. This is a display policy only; it does not invent IPA or change phonetic rules.
+- Exact-head Verify [42522532528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42522532528) passed: 289 Python tests, 143 Node tests, 19 Chromium tests, corpus validation, repository audit, external-G2P syntax/CLI, locked install, build, generated-data reproducibility and built-site checks.
+- GitHub Pages deployment is expected from the main-branch web asset change. Live deployment confirmation for this commit was not available during this run; do not infer publication from merge or CI alone.
+- Linguistic scope unchanged: CLDR romanization remains provisional, and unsupported Lao phonology remains evidence-limited.
+
+---
+
 ## Hybrid mixed-script partial rendering — 2026-11-08
 
 - Owner correction: the default browser hybrid must not reject an entire message because visible non-Lao text, punctuation, symbols, emoji, or timestamps appear beside Lao. It renders supported Lao spans, preserves visible non-Lao units verbatim, retains an unsupported-character warning, and reports `PARTIAL`; it does not claim foreign text was phonetically transcribed.
