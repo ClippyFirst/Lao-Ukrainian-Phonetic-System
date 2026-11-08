@@ -53,3 +53,5 @@ CLM-LAO-POTENTIAL-MINOR-OPEN-A,An initial unmarked short open /a/ syllable with 
 CLM-IPA-AFFRICATE-TIE-BAR,The IPA chart uses tie-bar notation to represent affricates as single segments; the project adopts t͡ɕ as canonical output for Lao ຈ while retaining untied tɕ as an accepted correspondence alias,methodology,SRC-IPA-CHART
 CLM-LAO-UNICODE-INVENTORY-2026,"The Unicode Lao block contains modern Lao graphemes and additional Pali Sanskrit Khmu numeric and orthographic characters; block membership is not equivalent to the modern Lao phonological inventory",methodology,SRC-UNICODE-CHART-2026;SRC-ISHIDA-ORTHO-2026
 CLM-MEKONGPHON-REFERENCE-PROFILE,"An opt-in deterministic IPA profile applies high-frequency aggregate segmental correspondences observed in the pinned MekongPhon training split; it is a reference-compatibility experiment, not a universal Lao phonology claim",methodology,SRC-MEKONGPHON-2026
+CLM-LAO-NATIVE-DIGITS,Lao native digits are part of the script and are commonly used,established,SRC-W3C-LAO-LREQ
+CLM-LAO-DIGITS-PASSTHROUGH,Native Lao digits are preserved unchanged as non-phonetic passthrough and are not assigned IPA,methodology,SRC-W3C-LAO-LREQ
