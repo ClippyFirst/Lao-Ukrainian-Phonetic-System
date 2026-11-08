@@ -68,7 +68,9 @@ def compact_ipa(value: str) -> str:
 
 
 def complete_rule_ipa(analysis) -> str:
-    syllables = analysis.syllables
+    # Non-Lao ASCII/punctuation units are preserved as passthrough;
+    # only Lao phonetic syllables participate in the IPA completeness gate.
+    syllables = [item for item in analysis.syllables if item.status != "PASSTHROUGH"]
     if not syllables or any(not item.phonemic_ipa for item in syllables):
         return ""
     return compact_ipa("".join(item.phonemic_ipa for item in syllables))
@@ -138,7 +140,7 @@ def main() -> int:
         "vientiane_rules": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0,
+            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
         },
         "mekongphon_reference_rules": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
@@ -172,8 +174,10 @@ def main() -> int:
                 prediction = complete_rule_ipa(result)
                 stage["predictions"].append(prediction)
                 stage["syllables"].update(item.status for item in result.syllables)
-                stage["syllable_total"] += len(result.syllables)
-                stage["syllable_with_ipa"] += sum(bool(item.phonemic_ipa) for item in result.syllables)
+                phonetic_syllables = [item for item in result.syllables if item.status != "PASSTHROUGH"]
+                stage["syllable_total"] += len(phonetic_syllables)
+                stage["syllable_with_ipa"] += sum(bool(item.phonemic_ipa) for item in phonetic_syllables)
+                stage["passthrough_total"] += sum(item.status == "PASSTHROUGH" for item in result.syllables)
                 if not prediction:
                     for item in result.syllables:
                         stage["withheld"].update(
@@ -225,6 +229,7 @@ def main() -> int:
                 if stage["syllable_total"] else None
             )
             summaries[key]["syllable_status_counts"] = dict(sorted(stage["syllables"].items()))
+            summaries[key]["passthrough_units"] = stage["passthrough_total"]
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
 
     shared = [
@@ -252,7 +257,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "status": "independent_text_domain_stress_test_not_ipa_accuracy",
         "benchmark": {
             "name": "HVULao_NLP 1k raw-sentence test split",
@@ -264,6 +269,7 @@ def main() -> int:
             "git_blob_sha1": blob_sha,
             "dataset_license": "CC-BY-4.0 (Mendeley Data version 2)",
             "input_kind": "raw Lao sentences; paired segmentation reference is not IPA",
+            "coverage_definition": "A complete output requires IPA for every Lao phonetic syllable; explicit ASCII/punctuation passthrough units are preserved unchanged and excluded from IPA coverage.",
             "limitations": [
                 "No IPA reference is supplied; gold IPA CER is not measurable.",
                 "Pairwise output disagreement is not accuracy and cannot identify the correct engine.",
