@@ -309,3 +309,16 @@ After base synchronization, exact-head Verify on `005a87c4b8f2a519e9934c32f877c3
 **Readiness:** engineering-verified sentence-domain stress test is complete. The project remains a research prototype, not independently accuracy-validated or production/release-ready.
 
 PR #146's base branch advanced by one commit (`ad5bf2a61480ea255a9b83ca6f662471d7606e84`) adding the benchmark workflow. PR #147 was synchronized with merge commit `110a408057bc1143b466304cff6d57c4f074bbe8`; the single overlapping workflow file was resolved by retaining the benchmark-branch version with its push trigger. Compare is now 21 ahead / 0 behind and GitHub reports PR #147 mergeable. Both PRs remain draft/open; main was not changed.
+
+
+## HVULao latency methodology correction — 2026-11-08
+
+The schema 1.0 report timed all rule-engine rows but only successful neural inferences, so its neural latency excluded 112 rejected inputs. This was a denominator mismatch, not a change in coverage or IPA output. Schema 1.1 now reports all-attempt latency for every engine and successful-inference latency separately.
+
+- Corrected run [#42488818208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208), code SHA `61b21237d57fc519dfff40ee22ed0649df2050e0`; artifact [13621285664](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488818208/artifacts/13621285664), SHA-256 `d5ebe048e328e06b9b107062433a1b3f191f039c77ed56142d88704727fc325a`.
+- All-attempt mean / median / p95: Vientiane `13.50 / 12.81 / 26.00 ms`; reference rules `13.24 / 12.53 / 25.72 ms`; Neural `209.58 / 202.98 / 430.65 ms`.
+- Neural successful-only n=888: `236.00 / 218.89 / 435.22 ms` mean/median/p95.
+- Coverage and pairwise results are unchanged: rule coverage 3.5% each, Neural 88.8%; shared complete subset n=35; pairwise disagreement is not accuracy.
+- Exact-head Verify [#42488814424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42488814424) on the same commit: 271 Python, 129 Node, 17 Chromium tests and all repository data/audit/install/build/reproducibility gates passed.
+
+The schema 1.0 latency values are superseded. The dataset still has no IPA references; the repository remains a research prototype and not linguistically release-ready.
