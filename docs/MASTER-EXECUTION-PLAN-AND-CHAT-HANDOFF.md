@@ -2258,3 +2258,15 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Three-engine comparative benchmark artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425) was downloaded and inspected. Updated metrics are recorded in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
 - Current remaining acceptance: independent adjudicated Lao IPA gold = 0 (BLOCKED); empirical linguistic accuracy is not validated; manual NVDA/JAWS/VoiceOver/TalkBack, physical mobile and actual 200%/400% browser zoom QA remain PARTIAL.
 - Status: GitHub Pages publication DONE_VERIFIED; research prototype published; not linguistically validated or release-ready.
+
+## MekongPhon-first G2P stage — 2026-11-08
+
+- User requirement: the primary source-side pipeline must be Lao orthography → MekongPhon Neural → inspectable IPA first; Ukrainian target adaptation is a distinct subsequent stage. The deterministic Lao grapheme-rule engine must not be the default source G2P or a silent fallback.
+- Starting `main`: `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. Dedicated branch: `feat/mekongphon-first-stage`.
+- Added `MekongPhonIPAResult`, `MekongPhonEngine.transcribe_ipa()` and public `transcribe_ipa()`. Stage 1 returns untouched raw IPA, typed `PhoneticResult`, pinned model revision and status without calling the Ukrainian adapter.
+- CLI defaults to `mekongphon-tonal` and stops after IPA. `--to-ukrainian` explicitly invokes stage 2. `--engine rules` selects the deterministic alternative. Missing neural dependencies/errors do not trigger fallback.
+- Reworked the three-engine benchmark's model smoke test to exercise `transcribe_ipa()` directly; the G2P benchmark must not invoke target adaptation as part of the source-side measurement.
+- Added offline tests for stage separation and default CLI selection; updated README, system specification and MekongPhon integration guide.
+- **Current verification status:** implementation committed on the working branch; exact-head GitHub Actions Verify is pending. Do not mark this batch DONE_VERIFIED until CI completes on the final head.
+- **Remaining separate blocker:** the static GitHub Pages application runs browser-native JavaScript and cannot execute the Python/PyTorch model. The CLI/Python source stage is neural-first; the public web UI remains deterministic until an inference backend is designed, deployed and tested. Do not imply that Pages is already calling MekongPhon.
+- Independent adjudicated IPA gold remains 0. Neural benchmark performance is dictionary-reference evidence, not independent linguistic validation.
