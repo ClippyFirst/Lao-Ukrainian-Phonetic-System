@@ -2417,3 +2417,24 @@ Schema 1.0 latency numbers are retained only as historical diagnostics and are s
 ## Benchmark workflow de-duplication — 2026-11-08
 
 The stacked PR's base branch already defines the benchmark on `pull_request` events targeting `feat/deterministic-mekongphon-reference-profile-20261108`. The benchmark branch had additionally enabled a branch-specific `push` trigger, so every commit to PR #147 launched two identical full 1k neural runs (push and pull_request). Removed only the redundant push trigger from the PR branch workflow. The base-branch PR trigger and manual `workflow_dispatch` remain; future head updates should run one benchmark instead of two. This is workflow efficiency only; no engine, dataset, or benchmark metric changed.
+
+
+## Five-source Lao benchmark portfolio — research inventory, 2026-11-08
+
+The requested portfolio of five distinct evaluation sources is now identified. **Only the first two have been executed in this session**; the remaining three are candidates with explicit evidence/access limitations. Do not present this inventory as five completed benchmark runs or five IPA-accuracy tests.
+
+| # | Source / benchmark | Intended use | Status | Evidence boundary / next acceptance |
+|---:|---|---|---|---|
+| 1 | MekongPhon held-out 100-entry orthography–IPA split | Lexical three-engine comparison; CER and tone diagnostics | DONE_VERIFIED (comparative, reference-relative) | Existing report `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`; MekongPhon is not independent adjudicated project gold |
+| 2 | [HVULao_NLP 1k raw-sentence test split](https://doi.org/10.17632/5zwym7kwn8.2) | Sentence-domain coverage, input rejection, runtime and output disagreement | DONE_VERIFIED (stress only) | Runs #42488814477, #42488818208 and final-head #42489525056; no IPA reference; paired labels are segmentation/POS |
+| 3 | [Wiktionary Lao terms with IPA](https://en.wiktionary.org/wiki/Category:Lao_terms_with_IPA_pronunciation) | Weak external word-level IPA comparison | CANDIDATE / NOT RUN | Category reports 2,317 IPA-bearing pages (2,324 total at snapshot); CC BY-SA. Must pin a dump/snapshot, extract IPA, separate Vientiane from Luang Prabang/other labels, normalize notation conservatively, and mark contributor IPA as weak reference—not adjudicated gold |
+| 4 | [FLORES-200 Lao devtest](https://huggingface.co/datasets/facebook/flores) | Independent sentence-domain stress/coverage test | BLOCKED pending gated dataset terms/access | Public card describes 1,012 devtest sentences and CC BY-SA 4.0, but dataset content requires accepting access conditions. No IPA reference; never score phonetic CER |
+| 5 | [HPLT Chinese–Southeast Asian monolingual test set](https://huggingface.co/datasets/Moriton/chinese-southeast-asian-test) | Longer-input / domain stress test | BLOCKED pending manual access approval | Dataset card lists 2,000 Lao test rows (50–100 whitespace-delimited tokens); gated with manual approval. No IPA reference; use only as coverage/runtime stress after access is granted |
+
+### Portfolio rules
+
+- The portfolio contains **two executed benchmarks and three identified but not yet executable candidates**. The count of five refers to distinct evaluation sources, not five completed runs.
+- Only MekongPhon and Wiktionary contain IPA-like references. MekongPhon is model-associated secondary reference data; Wiktionary is community-authored, mixed-dialect and not independently adjudicated. Neither substitutes for the project's independent IPA gold corpus (still 0 records).
+- HVULao, FLORES-200 and HPLT are text-domain stress sets only. They can measure sentence coverage, fail-closed behavior, input acceptance and latency—not phonetic correctness.
+- Do not bypass Hugging Face access gates, infer licensing from another dataset version, silently normalize source text, or promote weak references into `data/benchmark/gold.tsv`.
+- Next executable benchmark candidate is Wiktionary after a pinned structured dump can be obtained and Vientiane entries can be separated reliably. FLORES-200 and HPLT remain access-blocked until the repository owner accepts their respective access terms / receives approval.
