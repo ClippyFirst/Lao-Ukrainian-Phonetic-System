@@ -4,6 +4,10 @@
 
 The active model is contemporary Standard Lao with a Vientiane-oriented phonological reference model. It is not a universal model of every Lao variety.
 
+## Primary deterministic engine
+
+ClippyFirst's primary Lao engine is `hybrid-deterministic`, selected by default in the Python API, rules CLI and browser runtime. It uses the Vientiane-oriented phonological analysis as its base and applies only the existing evidence-gated MekongPhon aggregate correspondences through a deterministic contextual selector. The explicit `vientiane` and `mekongphon-reference` profiles are frozen for compatibility only; future engine implementation and optimization work targets hybrid. Optional Neural inference is not part of the default transcription path. This engine-selection decision does not establish independent phonetic accuracy or linguistic release readiness.
+
 ## Processing layers
 
 1. Unicode normalization and script validation.
