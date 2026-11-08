@@ -71,6 +71,8 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 
 The core model covers modern Lao consonant classes, source vowel quantity, major orthographic vowel structures, codas, Vientiane-oriented live/dead tone logic, IPA, and a separate Ukrainian target layer. The default ClippyFirst engine is the deterministic hybrid profile: Vientiane phonology remains its baseline, with only evidence-gated MekongPhon aggregate correspondences selected by deterministic contextual rules. Explicit `vientiane` and `mekongphon-reference` profiles remain frozen for compatibility only; future engine development targets hybrid.
 
+**Coverage validation (2026-11-08):** hybrid rendered 1,000/1,000 valid HVULao inputs (21,680/21,680 units) and 100/100 held-out MekongPhon inputs. On HVULao, evidence-backed IPA covered 97.85% of phonetic syllables and 67.6% of complete sentences; the remaining units are explicitly provisional or uncertain. These figures measure rendering/IPA coverage, not phonetic accuracy; independent adjudicated IPA gold remains unavailable.
+
 Known limitations remain explicit: lexical word-boundary detection (the parser can structurally segment supported syllables within a token but does not infer lexical words), low-confidence fallback for unresolved structures, restricted initial clusters, full tonal treatment of ໜ/ໝ, Pali/Sanskrit output, lexical exceptions/conventional names, and empirical accuracy against an adjudicated gold corpus. Rendering coverage, evidence-backed IPA coverage and phonetic accuracy are reported separately; 100% rendering coverage does not mean 100% correct pronunciation.
 
 ## Quick start and verification
