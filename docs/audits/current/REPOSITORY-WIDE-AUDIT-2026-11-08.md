@@ -208,3 +208,60 @@ The earlier sections above are a pre-merge audit snapshot. Their statements that
 ### Readiness
 
 **Published engineering-verified research prototype; not production/release-ready and not accuracy-validated.** The publication pipeline is green. Independent IPA gold and manual accessibility remain genuine acceptance blockers.
+
+
+## 11. Deterministic MekongPhon-reference profile continuation — 2026-11-08
+
+This is the current continuation checkpoint and supersedes the pre-profile implementation/readiness snapshot above.
+
+### Implementation
+
+- Starting main SHA: `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`.
+- Working branch: `feat/deterministic-mekongphon-reference-profile-20261108`.
+- Draft PR: [#146](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/146).
+- Python API and CLI expose an explicit deterministic IPA convention profile. Browser engine implements the same profile API. The default Vientiane rule profile and visible web UI remain unchanged.
+- Nine high-frequency vowel-ID mappings and two onset mappings were transferred from aggregate train-split correspondences. No model weights, neural inference, lexical word lookup or automatic neural fallback are involved.
+- IPA provenance records each applied override. Typed IPA is still passed to the Ukrainian adapter; unsupported/uncertain target mappings remain fail-closed.
+
+### Evidence-gated comparison
+
+Successful dedicated benchmark: [run 42467190935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935), artifact 13612311669, artifact SHA-256 `5471b2f8d4c1d599fe881811ca8d31c326c0d79b2929b859100ca086af83a329`.
+
+| Engine | Full-set CER | Exact / 100 | Coverage |
+|---|---:|---:|---:|
+| Default ClippyFirst rules | 11.46% | 69 | 97% |
+| Deterministic reference profile | **6.64%** | **90** | 97% |
+| MekongPhon Neural | 6.64% | 82 | 100% |
+
+On identical coverage (n=97), reference-profile CER is 1.40% vs neural 5.79%. The profile therefore reaches the neural model's full-set CER and exceeds its exact matches on this reference, but does not reach its coverage. One-run mean CPU latency was 1.38 ms/input for the profile and 58.08 ms/input for the neural model, excluding model load. Runtime errors: 0.
+
+This is a 100-word dictionary-seeded comparison, not independent phonetic accuracy. The default Vientiane rules are unchanged. Remaining warnings are `UNCONSUMED_AFTER_VOWEL` (3) and `MALFORMED_TONE_MARK_ORDER` (1); these are still withheld. Do not tune against the held-out IPA references.
+
+### Verification and branch disposition
+
+- Verify passed on code checkpoint `e46b0cafa9c1b2d47c746d4258e3b1d624e26d7c`: 270 Python tests, 129 Node tests and 17 Chromium tests; IPA corpus structural validation, repository audit, `npm ci`, browser tests, build, generated-data drift and built-site checks passed. A later docs-only exact-head run is pending.
+- Dedicated profile benchmark workflow passed with zero runtime errors.
+- PR #146 remains draft/open and unmerged.
+- PR #145 remains open and untouched; its neural-default direction conflicts with the deterministic-first requirement.
+- PRs #137–#142 remain open and untouched; their implementation changes are already integrated into the starting mainline.
+- Main remains at `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; no release, merge, deployment or settings change was performed.
+
+### Artifact hygiene note
+
+An intermediate diagnostic artifact (run 42467038446, artifact 13612136875) included exact orthographic remainder fragments in warning diagnostics. The script was corrected to emit aggregate warning categories only and the workflow retention was reduced to one day. The GitHub connector did not expose artifact deletion, so the original artifact remains until its original expiry; it contains no source rows, IPA references or per-item predictions. Subsequent sanitized artifact 13612311669 contains aggregate metrics and warning categories only.
+
+### Updated task ledger
+
+| Task | Status | Acceptance boundary |
+|---|---|---|
+| Deterministic reference IPA profile, Python and browser engine | DONE_VERIFIED (engineering) | Python/Node/Chromium regression and provenance tests pass |
+| Held-out comparison to MekongPhon Neural | DONE_VERIFIED (comparative only) | Full-set CER parity; 97% vs 100% coverage |
+| Three withheld inputs | PARTIAL / EVIDENCE-LIMITED | Source-supported structural rule required; malformed tone order remains withheld |
+| Visible UI profile selector | DEFERRED | Not needed for engine-level parity; UI default unchanged |
+| Independent adjudicated IPA gold | BLOCKED | 0 records; requires independent annotators/adjudicator |
+| Manual accessibility | PARTIAL | Human AT, physical-device and real-zoom QA remains unperformed |
+| Linguistic/production release | BLOCKED | Independent gold and qualified specialist review required |
+
+### Readiness
+
+**Published engineering-verified research prototype, not production/release-ready and not independently accuracy-validated.** The opt-in deterministic profile reaches the benchmark neural CER, but remaining coverage and independent linguistic acceptance are unresolved.
