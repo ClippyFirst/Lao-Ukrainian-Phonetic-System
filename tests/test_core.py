@@ -1,4 +1,5 @@
 import unittest
+import unicodedata
 from unittest.mock import patch
 
 import lao_ukrainian.core as core_module
@@ -258,6 +259,22 @@ class TestCore(unittest.TestCase):
         self.assertEqual(syllable.phonetic_result.segments[-1].kind, "unknown")
         self.assertTrue(all(segment.certainty == "PROVISIONAL" for segment in syllable.phonetic_result.segments))
         self.assertIn("PHONETIC-READING-UNKNOWN", syllable.phonetic_result.uncertainty)
+
+    def test_hybrid_renders_every_assigned_lao_block_codepoint(self):
+        for codepoint in range(0x0E80, 0x0F00):
+            character = chr(codepoint)
+            if unicodedata.name(character, None) is None or character.isspace():
+                continue
+            with self.subTest(codepoint=f"U+{codepoint:04X}"):
+                result = core_module.analyze(character)
+                self.assertNotEqual(result.status, "INVALID")
+                self.assertTrue(result.syllables, "accepted Lao input must not disappear")
+                for unit in result.syllables:
+                    self.assertIsNotNone(
+                        unit.practical_ukrainian,
+                        f"accepted source unit {unit.surface!r} has no rendering",
+                    )
+
 
     def test_hybrid_renders_analysis_dependent_ipa_without_promoting_confidence(self):
         syllable = core_module.analyze("ຣະ").syllables[0]
