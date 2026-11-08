@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** integrated continuation branch `audit/repository-docs-structure-20261107`, exact head `dd07adcd7d709ea5e1b8f94c3556965eefda73c9`. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** current main `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` plus the open deterministic-profile continuation PR #146. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
