@@ -6,16 +6,16 @@ The active model is contemporary Standard Lao with a Vientiane-oriented phonolog
 
 ## Processing layers
 
-1. Unicode normalization and script validation.
-2. Graphemic syllable parsing.
-3. Consonant-class identification.
-4. Vowel structure and quantity.
-5. Coda and live/dead classification.
-6. Vientiane tone determination.
-7. Phonemic IPA representation.
-8. Typed `PhoneticResult` adapter boundary.
-9. Ukrainian adaptation from that typed IPA result.
-10. Practical Ukrainian orthography.
+The primary runtime keeps source G2P and target adaptation as two explicit stages:
+
+1. Unicode normalization and Lao script validation.
+2. **Stage 1 — Lao → IPA:** the pinned MekongPhon Neural tonal checkpoint (or explicitly selected non-tonal checkpoint) predicts raw IPA.
+3. Preserve the untouched model output, immutable model revision and provider provenance.
+4. Parse the complete prediction into typed `PhoneticResult` segments, retaining tone, length, boundaries and uncertainty; unsupported IPA is withheld.
+5. **Stage 2 — IPA → Ukrainian:** only when requested, adapt the typed IPA through the Ukrainian correspondence registry.
+6. Render practical Ukrainian orthography.
+
+The deterministic ClippyFirst grapheme/phonology/tone engine remains available as an explicit independent alternative and diagnostic. It is not the primary Lao-to-IPA provider and is never a silent fallback for MekongPhon.
 
 The Russian, Serbian and Bulgarian layers are comparative controls. They are never hidden intermediate representations.
 
