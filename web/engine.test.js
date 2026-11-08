@@ -690,7 +690,7 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   const syllable = result.syllables[0];
   assert.equal(result.status, "PARTIAL");
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "ка?");
+  assert.equal(syllable.ukrainian, "кал?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.phoneticResult.vowelLength, "long");
   assert.equal(syllable.phoneticResult.toneCategory, null);
