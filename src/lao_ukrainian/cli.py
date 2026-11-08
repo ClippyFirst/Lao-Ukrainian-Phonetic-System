@@ -17,7 +17,7 @@ def main():
     )
     ap.add_argument("--revision", help="Hugging Face model commit SHA (recommended for reproducibility)")
     ap.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
-    ap.add_argument("--num-beams", type=int, default=4)
+    ap.add_argument("--num-beams", type=int, default=5)
     ap.add_argument(
         "--to-ukrainian", action="store_true",
         help="run stage 2 (typed IPA → Ukrainian); otherwise stop after IPA",
