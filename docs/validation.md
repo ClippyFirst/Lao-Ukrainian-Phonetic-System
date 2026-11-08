@@ -1,3 +1,11 @@
+## Unified hybrid arbitration review — 2026-11-08
+
+This review reconciles the existing hybrid engine with the owner's request to combine Lao IPA engines. It is a documentation-only clarification; it does not change IPA mappings or runtime selection. The production hybrid remains Vientiane-baseline + 11 evidence-traced MekongPhon aggregate rules. Neural MekongPhon and Lao2IPA remain diagnostic comparators; CLDR Lao-Latin remains a separate orthographic route. Automatic majority voting is deliberately deferred because outputs do not share a guaranteed per-syllable alignment, the non-tonal model cannot provide lexical tone, and the project has no independently adjudicated IPA gold. Deterministic arbitration and 100% rendering coverage are verified separately from phonetic accuracy.
+
+Task ledger and engine roles: see [the unified arbitration contract](research/HYBRID-DETERMINISTIC-ENGINE-2026-11-08.md) and the current master handoff. The supplied example contains output text but not the original Lao source string, so it cannot yet be added as an exact source-to-IPA regression fixture.
+
+---
+
 # Validation
 
 > **Current verification authority — 2026-11-08.** PR #150 exact-head Verify [42521697622](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521697622) passed on `5d191ee4dfba03556204128271290fe7ad6db929`: 289 Python, 143 Node and 17 Chromium tests; corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; locked install; build; generated-data reproducibility; and built-page/relative-asset checks. Post-merge main Verify [42521799243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799243) passed on `d0688d325c7450515ef42345ff1f7dec8d14f718`. GitHub Pages deployment [42521799240](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799240) completed successfully; deployment record [7641593395](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/deployments/7641593395) reports success. Live site and browser engine were fetched successfully. These checks verify engineering and rendering behavior, not pronunciation accuracy or independent linguistic adjudication. The independently adjudicated IPA gold corpus remains empty.
