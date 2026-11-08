@@ -2246,3 +2246,15 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Internal relative-link validation of the nine updated README/index/audit/code-map/architecture/validation/accessibility documents found **0 missing local targets**.
 - Final blockers remain exactly scoped: UI-001 manual accessibility PARTIAL; independent adjudicated IPA gold BLOCKED at 0 records; linguistic accuracy NOT MEASURED. The project remains an engineering-verified research prototype, not release-ready.
 - Main was not changed. PRs #137–#142 remain open and untouched. No release, merge, deployment, force-push, branch deletion or settings change was performed.
+
+
+
+## Post-merge Pages publication and benchmark closeout — 2026-11-08
+
+- PR #143 was squash-merged into `main`; merge commit: `c3ba58c0e0e6ba64821abe4c9d46c75ff559b2b4`.
+- GitHub Pages workflow [42463361038 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038): Node browser regression, static build, generated data, Chromium UI tests, deployment artifact checks, Pages deployment and deployed-asset smoke checks all passed.
+- Live site https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ returned HTTP 200 after deployment.
+- The earlier handoff statements that PR #143 remained open and main remained unchanged are historical and superseded by this section.
+- Three-engine comparative benchmark artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425) was downloaded and inspected. Updated metrics are recorded in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
+- Current remaining acceptance: independent adjudicated Lao IPA gold = 0 (BLOCKED); empirical linguistic accuracy is not validated; manual NVDA/JAWS/VoiceOver/TalkBack, physical mobile and actual 200%/400% browser zoom QA remain PARTIAL.
+- Status: GitHub Pages publication DONE_VERIFIED; research prototype published; not linguistically validated or release-ready.
