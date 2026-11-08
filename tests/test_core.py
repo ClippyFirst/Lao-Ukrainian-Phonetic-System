@@ -190,7 +190,7 @@ class TestCore(unittest.TestCase):
 
     def test_unconsumed_material_before_preposed_vowel_emits_placeholder(self):
         s = analyze("xເເກ").syllables[0]
-        self.assertEqual(s.status, "ANALYSIS DEPENDENT")
+        self.assertEqual(s.status, "EVIDENCE LIMITED")
         self.assertIsNone(s.phonemic_ipa)
         self.assertEqual(s.practical_ukrainian, "?")
         self.assertEqual(s.phonetic_result.status, "PROVISIONAL")
@@ -236,7 +236,7 @@ class TestCore(unittest.TestCase):
         syllable = analyze("ຣະ").syllables[0]
         self.assertEqual(syllable.phonemic_ipa, "la")
         self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
-        self.assertEqual(syllable.practical_ukrainian, "ла")
+        self.assertIsNone(syllable.practical_ukrainian)
         self.assertEqual(syllable.phonetic_result.status, "UNCERTAIN")
         self.assertEqual(syllable.status, "ANALYSIS DEPENDENT")
 
