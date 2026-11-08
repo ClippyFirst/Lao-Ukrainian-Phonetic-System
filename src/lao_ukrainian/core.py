@@ -6,12 +6,15 @@ from .phonetic_result import from_phonology
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 from .grapheme_preview import preview_from_graphemes
+from .mekongphon_reference_profile import DEFAULT_PROFILE, SUPPORTED_IPA_PROFILES
 
 ESTABLISHED_TONE_STATUSES = {"core", "well-supported"}
 MINOR_C0_EXCLUDED_ONSETS = {"ງ", "ຍ"}
 
 
-def analyze(text: str) -> Analysis:
+def analyze(text: str, *, ipa_profile: str = DEFAULT_PROFILE) -> Analysis:
+    if ipa_profile not in SUPPORTED_IPA_PROFILES:
+        raise ValueError(f\"Unknown IPA profile {ipa_profile!r}; expected one of {SUPPORTED_IPA_PROFILES}\")
     normalized = normalize_lao(text)
     warnings = validate_unicode(normalized)
     if warnings:
@@ -31,7 +34,7 @@ def analyze(text: str) -> Analysis:
         for syllable_index, surface in enumerate(group):
             parsed = parse_syllable(surface, registry)
             local_warnings = list(parsed.get("warnings", []))
-            ipa, rules, tone_status, tone = phonologize(parsed, registry)
+            ipa, rules, tone_status, tone = phonologize(parsed, registry, ipa_profile)
 
             # Ueda (1994) and Enfield (2007) describe reduced/minor syllables
             # without an independent lexical tone. Orthography alone cannot
@@ -53,7 +56,7 @@ def analyze(text: str) -> Analysis:
                 following_onset or "", {}
             ).get("status")
             following_ipa = (
-                phonologize(following, registry)[0] if following else None
+                phonologize(following, registry, ipa_profile)[0] if following else None
             )
             following_major_weighted = (
                 following_vowel.get("length") == "long"
