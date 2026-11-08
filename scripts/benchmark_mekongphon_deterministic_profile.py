@@ -251,8 +251,8 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    if runtime_errors:
-        raise RuntimeError(f"{runtime_errors} benchmark inputs raised runtime errors")
+    if runtime_errors_by_stage:
+        raise RuntimeError(f"Benchmark runtime errors by stage: {dict(runtime_errors_by_stage)}")
     return 0
 
 
