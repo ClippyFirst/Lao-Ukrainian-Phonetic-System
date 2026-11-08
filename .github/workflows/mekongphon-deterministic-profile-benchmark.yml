@@ -4,15 +4,20 @@ on:
   push:
     branches:
       - "feat/deterministic-mekongphon-reference-profile-20261108"
+      - "benchmark/additional-lao-g2p-20261108"
       - "feat/hybrid-deterministic-lao-engine-20261108"
+      - "benchmark/additional-lao-g2p-20261108"
     paths:
       - ".github/workflows/mekongphon-deterministic-profile-benchmark.yml"
       - "scripts/benchmark_mekongphon_deterministic_profile.py"
       - "src/lao_ukrainian/**"
+      - "scripts/benchmark_additional_lao_g2p.py"
+      - "scripts/benchmark_phonetisaurus_lao.py"
   pull_request:
     branches:
       - main
       - "benchmark/hvulao-1k-three-engine-20261108"
+      - "main"
     paths:
       - ".github/workflows/mekongphon-deterministic-profile-benchmark.yml"
       - "scripts/benchmark_mekongphon_deterministic_profile.py"
