@@ -477,7 +477,7 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | Epitran 1.35.3 same-split segmental/tonal comparison | DONE_VERIFIED | 71/100 exact, 10.96% segmental CER; 4/100 tonal exact, 36.94% CER; aggregate CI artifact |
 | orthography2ipa Lao `lo` spec comparison | DONE_VERIFIED | 32/100 exact, 19.60% segmental CER; 2/100 tonal exact, 37.51% CER; upstream commit pinned |
 | LanguageNet Phonetisaurus Lao FST probe | DONE_VERIFIED | 100/100 outputs; 0/100 exact, 78.90% CER; ephemeral model/container only; no tone |
-| Goruut repeatability and source-coverage probe | DONE_VERIFIED | 3/100 strict exact across 3 repeats; 10/100 on any repeat; 47 complete-source outputs, 34 partial, 19 none; 12 unstable |
+| Goruut repeatability and source-coverage probe | DONE_VERIFIED | 5/100 strict exact in final exact-head run (preceding rerun: 3/100); 10/100 on any repeat; 47 complete-source outputs, 34 partial, 19 none; 12 unstable |
 | IPA benchmark confidence gate | DONE_VERIFIED | Shared helper accepts only typed SUPPORTED/UNCERTAIN; PROVISIONAL excluded; unit tests added |
 | Ukrainian rendering coverage separated from IPA coverage | DONE_VERIFIED | Current hybrid: 100/100 inputs, 169/169 units rendered; 159 supported, 1 uncertain, 9 provisional |
 | HVULao 1k confidence-gated stress benchmark | DONE_VERIFIED | 1,000 rows; hybrid 100% rendering, 34.1% IPA-complete sentences, 94.14% syllable IPA; Neural 93.4% complete sentences with 66 source-limit/unsupported rejections; no IPA gold |
