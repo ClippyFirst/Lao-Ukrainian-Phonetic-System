@@ -67,6 +67,22 @@ The benchmark reports full-denominator CER, exact matches, coverage, identical-c
 - Held-out split SHA-256: `5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241`.
 - Script: `scripts/benchmark_mekongphon_deterministic_profile.py`.
 - Workflow: `.github/workflows/mekongphon-deterministic-profile-benchmark.yml`.
+- Successful run: [workflow run 42467190935](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935), code checkpoint `e46b0cafa9c1b2d47c746d4258e3b1d624e26d7c`.
+- Aggregate artifact ID: `13612311669`; SHA-256 `5471b2f8d4c1d599fe881811ca8d31c326c0d79b2929b859100ca086af83a329`.
+
+### Held-out result (one CPU run)
+
+| Engine | CER, full 100 | Exact matches | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst Vientiane rules | 11.46% | 69/100 | 97% |
+| ClippyFirst MekongPhon-reference rules | **6.64%** | **90/100** | 97% |
+| MekongPhon non-tonal neural | 6.64% | 82/100 | 100% |
+
+On the identical 97-word coverage subset, the deterministic profile has CER **1.40%** (8 edits / 570 reference code points), versus **5.79%** (33 / 570) for MekongPhon Neural. The profile has 90 exact matches and the neural model 81 on this shared subset. The profile's predictions differ from neural predictions by 5.17% CER on those 97 words; the goal is reference agreement, not imitation of every model output.
+
+One-run mean inference time, model load excluded: baseline rules 1.75 ms/input, reference profile 1.38 ms/input, neural 58.08 ms/input. Runtime errors: 0. These are single-run measurements, not stable performance guarantees.
+
+The profile retains the baseline's 97% coverage. Aggregate withheld-warning counts are `UNCONSUMED_AFTER_VOWEL: 3` and `MALFORMED_TONE_MARK_ORDER: 1`; no neural fallback is used. These cases remain withheld rather than guessed. They require independent structural/orthographic evidence before any new parser rule is accepted.
 
 This held-out set is dictionary-seeded secondary reference material, not independently adjudicated project gold. Its scores measure agreement with that reference, not universal phonetic accuracy.
 
