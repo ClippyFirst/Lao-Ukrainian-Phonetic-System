@@ -2327,3 +2327,67 @@ An early diagnostic artifact from run [42467038446](https://github.com/ClippyFir
 ### Readiness
 
 The deterministic reference profile now matches MekongPhon Neural's full-set CER and exceeds it on exact matches, but has 97% rather than 100% coverage and is only validated against a dictionary-seeded holdout. The repository remains a published engineering-verified research prototype, not independently accuracy-validated or production/release-ready.
+
+
+## Independent HVULao 1k three-engine stress benchmark — 2026-11-08
+
+This section supersedes the earlier PR #147 description that said no completed run/artifact had been verified.
+
+### Source and scope
+
+- Dedicated branch: `benchmark/hvulao-1k-three-engine-20261108`.
+- Draft PR: [#147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/147), stacked on PR #146 so the opt-in reference profile is tested without merging either PR to main.
+- Dataset: [HaHVU/HVULao_NLP](https://github.com/HaHVU/HVULao_NLP), immutable revision `ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568`, `Datatest1k/testorgin1000.txt`, Git blob SHA-1 `947448807484bb994877ae5d32cba1cfdd5e2d9b`; [Mendeley Data v2, DOI 10.17632/5zwym7kwn8.2](https://doi.org/10.17632/5zwym7kwn8.2), CC BY 4.0.
+- 1,000 raw text rows. The paired annotations are segmentation/POS, not IPA. This is a sentence-domain stress/coverage/runtime/disagreement test, **not an IPA accuracy benchmark**. No gold IPA CER or accuracy claim is possible.
+- The script downloads exact Git blob bytes, checks the blob SHA, preserves every row, and persists aggregate metrics only (no source sentences or per-row predictions).
+
+### Successful execution and metrics
+
+- Successful workflow [#42486829108](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42486829108), code checkpoint `535d55e169ed518eb54113cb1980347e62240539`.
+- Aggregate artifact [13620465276](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42486829108/artifacts/13620465276), SHA-256 `b0daf8011612c86d970d5e482d0f4f9a747c59a68fa58c4afb37c039026305a3`.
+- Python 3.12, CPU PyTorch 2.6.0, Transformers 4.49.0, Hugging Face Hub 0.29.3; model `byumatrixlab/lao-ipa-nontonal` revision `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`, beam width 5, CPU.
+
+| Metric | Vientiane rules | MekongPhon-reference rules | MekongPhon Neural |
+|---|---:|---:|---:|
+| Complete sentence outputs | 35/1,000 | 35/1,000 | 888/1,000 |
+| Sentence coverage | 3.5% | 3.5% | 88.8% |
+| Rule syllables with IPA | 16,047/20,150 | 16,047/20,150 | — |
+| Rule syllable IPA coverage | 79.64% | 79.64% | — |
+| Mean latency | 15.82 ms | 15.43 ms | 405.70 ms |
+| Median latency | 15.04 ms | 14.59 ms | 380.27 ms |
+| p95 latency | 30.25 ms | 30.05 ms | 732.66 ms |
+| Unexpected runtime errors | 0 | 0 | 0 |
+
+Only 35 sentences are complete in all three systems. On that shared subset, pairwise disagreement CER (whitespace removed; tone/length retained) is: Vientiane vs reference 7.75%; Vientiane vs Neural 13.67%; reference vs Neural 6.47%. This is output disagreement, not accuracy. The reference profile does not expand rule-engine IPA construction coverage on this dataset; it changes output conventions and status distribution.
+
+The neural wrapper rejected 112 rows before inference: 56 by the 128-code-point source limit and 56 by its current Unicode validator. The validator permits Lao-block characters, whitespace and a narrow ASCII set; corpus typographic punctuation/zero-width formatting characters are among rejected forms. These are explicit input-contract rejections, not runtime errors. Do not silently strip, truncate or split without a separately specified and tested normalization policy.
+
+Interpretation: the neural wrapper has substantially greater complete-sentence coverage on this raw text split. Rule engines construct IPA for 79.64% of analyzed syllables, but their all-or-nothing complete-sentence coverage is only 3.5%; unsupported syllables prevent a sentence from being presented as complete. The 35-sentence shared subset is too small for broad linguistic conclusions. No engine is proven more accurate.
+
+Full report: [HVULao 1k three-engine sentence-domain stress benchmark](research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md). Dataset provenance/evidence boundary is also recorded in `docs/sources-and-evidence.md`.
+
+### Execution history and corrections
+
+- Initial runs failed before inference because the benchmark incorrectly required every row to contain a Lao-block character. Corrected to validate Lao presence at corpus level while preserving all rows.
+- Raw GitHub content did not preserve the exact Git object bytes for the SHA check. Switched to the pinned Git blob API and verified the actual blob SHA-1.
+- Two full inference attempts then exposed expected wrapper `ValueError` input rejections; the benchmark originally misclassified them as runtime errors. It now separates known input-contract rejections from unexpected runtime errors.
+- A subsequent full inference completed but exposed a missing syllable-counter initialization in the second rule stage. Fixed and reran the complete 1,000-row benchmark successfully.
+- Final successful run #42486829108 completed every workflow step, including aggregate artifact upload. Earlier failed runs are diagnostic history, not evidence of engine accuracy/failure.
+
+### Updated task ledger
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Pin/integrity-check independent 1k source rows | DONE_VERIFIED | Successful run #42486829108 verified immutable revision and exact Git blob SHA-1 |
+| Run all three engines over all 1,000 rows | DONE_VERIFIED (engineering stress test) | #42486829108; 0 unexpected runtime errors |
+| Aggregate sentence/syllable coverage and latency | DONE_VERIFIED | Artifact 13620465276; aggregate-only |
+| Pairwise output disagreement | DONE_VERIFIED (comparative only) | Shared n=35; not accuracy |
+| Expand neural wrapper Unicode/length acceptance | TODO / evidence-limited | Define a source-safe policy for typographic marks, zero-width formatting and >128 code-point rows; regression-test before changing behavior |
+| Improve deterministic full-sentence coverage | TODO / evidence-limited | Investigate unsupported parser/phonology categories with primary Lao evidence; keep uncertain outputs withheld |
+| Independent adjudicated IPA gold | BLOCKED | 0 gold records; requires qualified independent annotation and adjudication |
+| Production linguistic acceptance | BLOCKED | No gold IPA accuracy evidence or qualified specialist sign-off |
+
+### Branch and readiness
+
+- PR #147 remains draft/open and unmerged; PR #146 remains draft/open and unmerged. No mainline change was made.
+- This is a successful engineering stress benchmark, not linguistic validation. Repository remains a research prototype, not independently accuracy-validated or production/release-ready.
