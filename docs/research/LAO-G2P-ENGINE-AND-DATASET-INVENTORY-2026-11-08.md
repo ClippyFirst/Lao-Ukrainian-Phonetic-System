@@ -26,7 +26,7 @@ This inventory extends the existing ClippyFirst benchmark; it does not replace t
 
 ### ClippyFirst rendering versus IPA coverage
 
-The current hybrid rendered all 100/100 inputs and all 169/169 analyzed units in Ukrainian. Of those units, 159 had supported IPA, 1 had explicitly uncertain IPA, and 9 were provisional grapheme hints; 9 units retained unknown markers. Thus:
+The current hybrid rendered all 100/100 inputs and all 169/169 analyzed units in Ukrainian. Of those units, 159 had supported IPA, 1 had explicitly uncertain IPA, and 9 were provisional grapheme hints; 9 units retained unknown markers. The separate MekongPhon-reference rules profile rendered 90/100 inputs (159/169 units); the Vientiane baseline rendered 95/100 inputs (164/169 units). Thus:
 
 - Ukrainian rendering coverage: 100%.
 - Typed IPA coverage: 91% of words in the 100-word comparison.
