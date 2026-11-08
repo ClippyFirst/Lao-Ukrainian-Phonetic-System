@@ -3,6 +3,8 @@ from lao_ukrainian import normalize_lao, validate_unicode
 
 class TestUnicode(unittest.TestCase):
     def test_nfc(self): self.assertEqual(normalize_lao("ກາ"),"ກາ")
+    def test_strip_leading_text_stream_bom(self): self.assertEqual(normalize_lao("\\ufeffກາ"), "ກາ")
+    def test_reject_embedded_bom(self): self.assertTrue(any("U+FEFF" in item for item in validate_unicode(normalize_lao("ກ\\ufeffາ"))))
     def test_reject_mixed_cyrillic(self): self.assertTrue(validate_unicode("ກа"))
     def test_accept_lao_tone_mark(self): self.assertEqual(validate_unicode("ກ່າ"),[])
     def test_accept_crlf_whitespace(self): self.assertEqual(validate_unicode("ກ\r\nຂ"),[])
