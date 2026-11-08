@@ -100,7 +100,7 @@ The older 66.9% hybrid IPA-complete sentence figure is superseded: it counted pr
 |---|---|---|
 | Add Epitran and orthography2ipa as pinned same-split comparators | DONE_VERIFIED | Aggregate-only CI artifact; package/spec revisions and hashes recorded |
 | Add ephemeral LanguageNet Phonetisaurus FST probe | DONE_VERIFIED | Pinned model blob and container; 100/100 outputs, 0 exact, 78.90% CER; test-only |
-| Re-run Goruut with repeatability/source-coverage diagnostics | DONE_VERIFIED | Final exact-head three-repeat artifact; 5 strict exact (preceding rerun: 3), 10 any-repeat exact, 47 complete-source outputs |
+| Re-run Goruut with repeatability/source-coverage diagnostics | DONE_VERIFIED | Three exact-head three-repeat artifacts; 3–6 strict exact, 9–10 any-repeat exact, 47 complete-source outputs; latest run 6 strict / 9 any-repeat / 8 unstable |
 | Gate IPA accuracy against typed confidence status | DONE_VERIFIED | Shared helper and unit tests; provisional hints excluded from IPA accuracy and counted in rendering coverage |
 | Run full 1k HVULao sentence stress benchmark with the same confidence gate | DONE_VERIFIED | 1,000 rows; hybrid 100% rendering, 34.1% IPA-complete sentences, 94.14% syllable IPA; Neural 93.4% complete sentences with 66 source-limit/unsupported rejections; no IPA gold |
 | Build independent expert-adjudicated Lao IPA gold | BLOCKED / evidence-limited | No expert gold corpus exists in repository; FLEURS/Common Voice audio requires expert IPA annotation |
