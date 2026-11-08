@@ -5,7 +5,7 @@ The owner clarified that the primary hybrid must cover **100% of valid input**, 
 The hybrid distinguishes:
 - SUPPORTED: evidence-backed IPA and ordinary Ukrainian adaptation.
 - UNCERTAIN: a structurally complete IPA reading that can be rendered by the hybrid adapter, while remaining explicitly analysis-dependent.
-- PROVISIONAL: no defensible IPA is available; a typed unknown segment crosses the same PhoneticResult boundary and the Ukrainian adapter renders ?. The original Lao surface, warnings and provenance remain available on the analysis record.
+- PROVISIONAL: no defensible IPA is available; registered grapheme-position hints, if available, are wrapped as PROVISIONAL IPA segments and unresolved graphemes become typed unknown markers. The same Ukrainian adapter maps the provisional IPA runs and renders ? at unknown positions. The original Lao surface, warnings and provenance remain available on the analysis record.
 
 This is not a direct grapheme-to-Ukrainian bypass. The placeholder is not an IPA phone, is not included in IPA coverage, and must never be scored as a phonetic prediction. The frozen Vientiane and MekongPhon-reference profiles retain their prior withholding behavior. Invalid Unicode/script input remains rejected; the 100% target applies to the documented valid-input domain.
 
