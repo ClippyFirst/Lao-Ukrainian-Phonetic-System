@@ -328,6 +328,7 @@ function validateInput(text) {
       warnings.push("Вхід містить керівний символ.");
       continue;
     }
+    if (cp === 0x200B) continue; // Lao word-boundary zero-width space.
     if (cp >= 0x0E80 && cp <= 0x0EFF) continue;
     if (/\s/.test(ch) || cp < 0x80 || PASSTHROUGH_PUNCTUATION.has(ch)) continue;
     if (cp > 0x7F) warnings.push("Непідтримуваний символ поза лаоським Unicode-діапазоном.");
@@ -752,7 +753,7 @@ export function analyze(text, options = {}) {
   const inputWarnings = validateInput(normalized);
   if (inputWarnings.length) return { input, normalized, status: "INVALID", output: "", syllables: [], warnings: inputWarnings };
 
-  const words = normalized.split(/\s+/).filter(Boolean).map((word) => analyzeWord(word, ipaProfile));
+  const words = normalized.replace(/\u200b/g, " ").split(/\s+/).filter(Boolean).map((word) => analyzeWord(word, ipaProfile));
   const syllables = words.flat().map((syllable) => {
     if (syllable.passthrough || (syllable.ukrainian && syllable.status === "ESTABLISHED")) return syllable;
     if (ipaProfile !== "hybrid-deterministic") {
