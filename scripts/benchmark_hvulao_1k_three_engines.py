@@ -76,6 +76,13 @@ def complete_rule_ipa(analysis) -> str:
     return compact_ipa("".join(item.phonemic_ipa for item in syllables))
 
 
+def complete_rule_rendering(analysis) -> str:
+    """Return a rendering only when every analyzed source unit has a target."""
+    if not analysis.syllables or any(item.practical_ukrainian is None for item in analysis.syllables):
+        return ""
+    return "".join(item.practical_ukrainian for item in analysis.syllables)
+
+
 def levenshtein(a: str, b: str) -> int:
     previous = list(range(len(b) + 1))
     for i, ca in enumerate(a, 1):
@@ -138,9 +145,9 @@ def main() -> int:
 
     stages = {
         "vientiane_rules": {
-            "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
+            "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0, "passthrough_total": 0,
+            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0, "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0, "uncertain_ipa_units": 0, "provisional_units": 0, "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0, "uncertain_ipa_units": 0, "provisional_units": 0,
         },
         "mekongphon_reference_rules": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
@@ -172,12 +179,19 @@ def main() -> int:
                 )
                 stage["times"].append(time.perf_counter() - started)
                 prediction = complete_rule_ipa(result)
+                rendered = complete_rule_rendering(result)
                 stage["predictions"].append(prediction)
+                stage["rendered_predictions"].append(rendered)
                 stage["syllables"].update(item.status for item in result.syllables)
                 phonetic_syllables = [item for item in result.syllables if item.status != "PASSTHROUGH"]
                 stage["syllable_total"] += len(phonetic_syllables)
                 stage["syllable_with_ipa"] += sum(bool(item.phonemic_ipa) for item in phonetic_syllables)
                 stage["passthrough_total"] += sum(item.status == "PASSTHROUGH" for item in result.syllables)
+                stage["unit_total"] += len(result.syllables)
+                stage["units_rendered"] += sum(item.practical_ukrainian is not None for item in result.syllables)
+                stage["supported_ipa_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic_syllables)
+                stage["uncertain_ipa_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic_syllables)
+                stage["provisional_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic_syllables)
                 if not prediction:
                     for item in result.syllables:
                         stage["withheld"].update(
@@ -186,6 +200,7 @@ def main() -> int:
             except Exception as exc:
                 stage["errors"][type(exc).__name__] += 1
                 stage["predictions"].append("")
+                stage["rendered_predictions"].append("")
             finally:
                 stage["attempt_times"].append(time.perf_counter() - started)
 
@@ -212,9 +227,15 @@ def main() -> int:
     for key, stage in stages.items():
         predictions = stage["predictions"]
         summaries[key] = {
-            "sentence_coverage": sum(bool(value) for value in predictions) / len(rows),
-            "complete_outputs": sum(bool(value) for value in predictions),
-            "withheld_or_failed": sum(not bool(value) for value in predictions),
+            "ipa_complete_sentence_coverage": sum(bool(value) for value in predictions) / len(rows),
+            "ipa_complete_sentences": sum(bool(value) for value in predictions),
+            "ipa_incomplete_or_failed_sentences": sum(not bool(value) for value in predictions),
+            "rendering_coverage": (
+                sum(bool(value) for value in stage.get("rendered_predictions", [])) / len(rows)
+                if "rendered_predictions" in stage else None
+            ),
+            "complete_renderings": sum(bool(value) for value in stage.get("rendered_predictions", [])),
+            "unrendered_or_failed_inputs": sum(not bool(value) for value in stage.get("rendered_predictions", [])),
             "runtime_errors_by_type": dict(sorted(stage["errors"].items())),
             "successful_inference_latency": latency_summary(stage["times"]),
             "all_attempt_latency": latency_summary(stage["attempt_times"]),
@@ -230,6 +251,11 @@ def main() -> int:
             )
             summaries[key]["syllable_status_counts"] = dict(sorted(stage["syllables"].items()))
             summaries[key]["passthrough_units"] = stage["passthrough_total"]
+            summaries[key]["analyzed_units"] = stage["unit_total"]
+            summaries[key]["units_with_rendering"] = stage["units_rendered"]
+            summaries[key]["supported_ipa_units"] = stage["supported_ipa_units"]
+            summaries[key]["uncertain_ipa_units"] = stage["uncertain_ipa_units"]
+            summaries[key]["provisional_placeholder_units"] = stage["provisional_units"]
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
 
     shared = [
@@ -257,7 +283,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "status": "independent_text_domain_stress_test_not_ipa_accuracy",
         "benchmark": {
             "name": "HVULao_NLP 1k raw-sentence test split",
@@ -269,7 +295,7 @@ def main() -> int:
             "git_blob_sha1": blob_sha,
             "dataset_license": "CC-BY-4.0 (Mendeley Data version 2)",
             "input_kind": "raw Lao sentences; paired segmentation reference is not IPA",
-            "coverage_definition": "A complete output requires IPA for every Lao phonetic syllable; explicit ASCII/punctuation passthrough units are preserved unchanged and excluded from IPA coverage.",
+            "coverage_definition": "Rendering coverage requires a non-null Ukrainian-side rendering for every analyzed source unit, including explicit passthrough and typed PROVISIONAL placeholders. IPA-complete sentence coverage separately requires IPA for every Lao phonetic syllable; placeholders and passthrough are excluded from IPA coverage. Neither metric is phonetic accuracy.",
             "limitations": [
                 "No IPA reference is supplied; gold IPA CER is not measurable.",
                 "Pairwise output disagreement is not accuracy and cannot identify the correct engine.",
