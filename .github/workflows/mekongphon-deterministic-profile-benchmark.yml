@@ -9,6 +9,13 @@ on:
       - ".github/workflows/mekongphon-deterministic-profile-benchmark.yml"
       - "scripts/benchmark_mekongphon_deterministic_profile.py"
       - "src/lao_ukrainian/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mekongphon-deterministic-profile-benchmark.yml"
+      - "scripts/benchmark_mekongphon_deterministic_profile.py"
+      - "src/lao_ukrainian/**"
   workflow_dispatch:
 
 permissions:
