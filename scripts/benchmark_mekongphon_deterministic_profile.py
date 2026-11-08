@@ -124,6 +124,9 @@ def main() -> int:
     neural_times = []
     baseline_warning_counts = Counter()
     profile_warning_counts = Counter()
+    baseline_warning_details = Counter()
+    profile_warning_details = Counter()
+    profile_status_counts = Counter()
     runtime_errors_by_stage = Counter()
 
     for row in rows:
@@ -141,6 +144,7 @@ def main() -> int:
             if not baseline_prediction:
                 for item in baseline.syllables:
                     baseline_warning_counts.update(warning_code(str(w)) for w in item.warnings)
+                    baseline_warning_details.update(str(w) for w in item.warnings)
         except Exception as exc:
             runtime_errors_by_stage["baseline:" + type(exc).__name__] += 1
 
@@ -149,9 +153,11 @@ def main() -> int:
             compatible = analyze(source, ipa_profile="mekongphon-reference")
             profile_times.append(time.perf_counter() - started)
             profile_prediction = complete_ipa(compatible)
+            profile_status_counts.update(item.status for item in compatible.syllables)
             if not profile_prediction:
                 for item in compatible.syllables:
                     profile_warning_counts.update(warning_code(str(w)) for w in item.warnings)
+                    profile_warning_details.update(str(w) for w in item.warnings)
         except Exception as exc:
             runtime_errors_by_stage["profile:" + type(exc).__name__] += 1
 
@@ -238,6 +244,9 @@ def main() -> int:
         "coverage_diagnostics": {
             "baseline_withheld_warning_codes": dict(sorted(baseline_warning_counts.items())),
             "profile_withheld_warning_codes": dict(sorted(profile_warning_counts.items())),
+            "baseline_withheld_warning_details": dict(sorted(baseline_warning_details.items())),
+            "profile_withheld_warning_details": dict(sorted(profile_warning_details.items())),
+            "profile_syllable_status_counts": dict(sorted(profile_status_counts.items())),
         },
         "runtime_errors_by_stage": dict(sorted(runtime_errors_by_stage.items())),
         "runtime_errors": sum(runtime_errors_by_stage.values()),
