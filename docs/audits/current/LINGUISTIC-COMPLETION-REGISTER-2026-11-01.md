@@ -448,3 +448,21 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | Task ID | Status | Evidence / acceptance |
 |---|---|---|
 | LAO-GRAPHEME-PREVIEW-001 | DONE_VERIFIED (engineering implementation and automated verification) | Python API/CLI and browser UI expose the same typed PROVISIONAL preview; 83 assigned Unicode 18 Lao-block code points are source/claim linked and classified. The preview only reuses registered positional IPA and parser-confirmed complete vowel/coda units, preserves unresolved graphemes, never infers tone, and cannot enter the Ukrainian adapter. Exact-head Verify 42416380324 passed 260 Python, 126 Node and 10 Chromium tests, npm ci, source/evidence audit, build and generated-data reproducibility. | This status verifies the engineering preview contract, not pronunciation accuracy. Keep unsupported Pali/Sanskrit/Khmu values unresolved. Independent adjudicated IPA gold remains 0; expert validation is required before promoting new phonological correspondences or claiming accuracy. |
+
+
+## Provisional grapheme rendering extension — 2026-11-08
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Emit provisional IPA hints for unassigned modern-Lao consonants | PARTIAL | Python/browser implementations and regressions added; exact-head CI pending |
+| Emit conservative vowel-grapheme hints when structure is unresolved | PARTIAL | Context-dependent warning retained; exact-head CI pending |
+| Preserve unknown consonants and tone uncertainty | PARTIAL | Non-core consonant withholding and no-tone-inference tests added; exact-head CI pending |
+| Linguistic accuracy of isolated grapheme hints in connected speech | BLOCKED / evidence-limited | Requires expert-adjudicated examples and contextual phonological evidence; no accuracy claim |
+
+### Grapheme fallback verification update — 2026-11-08
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Python/browser provisional sound hints for unresolved modern-Lao consonants and selected vowels | DONE_VERIFIED (engineering) | Verify #42524982973: 289 Python, 143 Node, 19 Chromium; exact-head source/data/build/generated-artifact gates passed |
+| Preserve uncertain consonant position and tone; do not guess non-core consonants or unsupported standalone offglides | DONE_VERIFIED (engineering contract) | Python/browser regression tests in Verify #42524982973 |
+| Accuracy of grapheme-only hints in actual Lao words and connected speech | BLOCKED / evidence-limited | Requires independent expert-adjudicated contextual IPA records; project gold remains 0 |

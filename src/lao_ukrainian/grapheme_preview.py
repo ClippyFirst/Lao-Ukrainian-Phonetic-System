@@ -64,20 +64,45 @@ def preview_from_graphemes(surface: str, parsed: dict, registry: dict) -> Graphe
             ipa_parts.append(coda_ipa)
             roles[i] = GraphemeEvidence(chars[i], "syllable-coda", coda_ipa, "PROVISIONAL", coda)
 
+    # If structural parsing failed to assign a position, still expose a
+    # low-confidence sound hint for each modern-Lao phonetic grapheme. This is
+    # deliberately NOT promoted to a coda/onset or to supported phonemic IPA.
+    fallback_vowels = {
+        "ະ": "a", "ັ": "a", "າ": "aː", "ິ": "i", "ີ": "iː",
+        "ຶ": "ɯ", "ື": "ɯː", "ຸ": "u", "ູ": "uː", "ົ": "o",
+        "ອ": "ɔː", "ໍ": "ɔː", "ຳ": "am",
+        "ເ": "e", "ແ": "ɛ", "ໂ": "o", "ໃ": "ai", "ໄ": "ai",
+    }
     for i, ch in enumerate(chars):
         if i in roles:
             continue
         inventory_row = next((row for row in registry.get("grapheme_inventory", []) if row["grapheme"] == ch), None)
-        if inventory_row:
-            role = inventory_row["structural_role"]
-            certainty = "STRUCTURAL_ONLY" if inventory_row["engine_status"] in INVENTORY_ONLY_CERTAINTY else "UNRESOLVED"
-        elif ch in registry["consonants"]:
-            role, certainty = "unresolved-consonant-position", "UNRESOLVED"
-        elif ch in VOWEL_GRAPHEMES:
-            role, certainty = "unresolved-vowel-component", "UNRESOLVED"
+        consonant = registry["consonants"].get(ch, {})
+        vowel_hint = fallback_vowels.get(ch)
+        if consonant.get("ipa_initial") and consonant.get("status") in {"core", "analysis-dependent"}:
+            role = "unresolved-consonant-position"
+            hint = consonant["ipa_initial"]
+            certainty = "PROVISIONAL"
+            warnings.append("CONSONANT_POSITION_NOT_ESTABLISHED")
+        elif vowel_hint:
+            role = "unresolved-vowel-component"
+            hint = vowel_hint
+            certainty = "PROVISIONAL"
+            warnings.append("VOWEL_VALUE_CONTEXT_DEPENDENT")
         else:
-            role, certainty = "unregistered-grapheme", "UNRESOLVED"
-        roles[i] = GraphemeEvidence(ch, role, None, certainty)
+            if inventory_row:
+                role = inventory_row["structural_role"]
+                certainty = "STRUCTURAL_ONLY" if inventory_row["engine_status"] in INVENTORY_ONLY_CERTAINTY else "UNRESOLVED"
+            elif ch in registry["consonants"]:
+                role, certainty = "unresolved-consonant-position", "UNRESOLVED"
+            elif ch in VOWEL_GRAPHEMES:
+                role, certainty = "unresolved-vowel-component", "UNRESOLVED"
+            else:
+                role, certainty = "unregistered-grapheme", "UNRESOLVED"
+            hint = None
+        roles[i] = GraphemeEvidence(ch, role, hint, certainty)
+        if hint:
+            ipa_parts.append(hint)
         unresolved.append(ch)
 
     if not ipa_parts:

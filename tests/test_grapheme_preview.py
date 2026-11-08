@@ -11,10 +11,12 @@ class GraphemePreviewTests(unittest.TestCase):
         syllable = analyze("ກາລ").syllables[0]
         preview = syllable.grapheme_preview
         self.assertIsNone(syllable.phonemic_ipa)
-        self.assertEqual(syllable.practical_ukrainian, "ка?")
-        self.assertEqual(preview.ipa_preview, "kaː")
+        self.assertEqual(syllable.practical_ukrainian, "кал?")
+        self.assertEqual(preview.ipa_preview, "kaːl")
         self.assertEqual(preview.status, "PROVISIONAL")
         self.assertEqual(preview.unresolved_graphemes, ("ລ",))
+        self.assertEqual(preview.graphemes[-1].ipa_hint, "l")
+        self.assertIn("CONSONANT_POSITION_NOT_ESTABLISHED", preview.warnings)
         self.assertEqual(preview.phonetic_result.status, "PROVISIONAL")
         self.assertTrue(all(s.certainty == "PROVISIONAL" for s in preview.phonetic_result.segments))
 
@@ -28,15 +30,18 @@ class GraphemePreviewTests(unittest.TestCase):
 
     def test_partial_onset_is_visible_when_vowel_structure_is_unknown(self):
         preview = analyze("ຂເ").syllables[0].grapheme_preview
-        self.assertEqual(preview.ipa_preview, "kʰ")
+        self.assertEqual(preview.ipa_preview, "kʰe")
         self.assertEqual(preview.unresolved_graphemes, ("ເ",))
+        self.assertEqual(preview.graphemes[-1].ipa_hint, "e")
         self.assertEqual(preview.graphemes[0].role, "syllable-onset")
 
-    def test_non_core_pali_grapheme_gets_no_invented_ipa(self):
+    def test_non_core_pali_consonant_stays_unknown_but_known_vowel_gets_hint(self):
         preview = analyze("ຆາ").syllables[0].grapheme_preview
-        self.assertIsNone(preview.ipa_preview)
-        self.assertEqual(preview.status, "UNRESOLVED")
+        self.assertEqual(preview.ipa_preview, "aː")
+        self.assertEqual(preview.status, "PROVISIONAL")
         self.assertIn("ຆ", preview.unresolved_graphemes)
+        self.assertEqual(preview.graphemes[0].ipa_hint, None)
+        self.assertEqual(preview.graphemes[1].ipa_hint, "aː")
 
     def test_complete_syllable_does_not_receive_fallback_preview(self):
         self.assertIsNone(analyze("ຂາ").syllables[0].grapheme_preview)
@@ -47,7 +52,7 @@ class GraphemePreviewTests(unittest.TestCase):
             main()
         rendered = output.getvalue()
         self.assertIn("IPA=None", rendered)
-        self.assertIn("IPA preview=kaː [PROVISIONAL]", rendered)
+        self.assertIn("IPA preview=kaːl [PROVISIONAL]", rendered)
         self.assertIn("unresolved=ລ", rendered)
 
 
