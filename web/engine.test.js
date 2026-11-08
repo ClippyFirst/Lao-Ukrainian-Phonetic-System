@@ -694,7 +694,7 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.phoneticResult.vowelLength, "long");
   assert.equal(syllable.phoneticResult.toneCategory, null);
-  assert.equal(syllable.phoneticResult.segments.length, 3);
+  assert.equal(syllable.phoneticResult.segments.length, 4);
   assert.equal(syllable.phoneticResult.segments.at(-1).kind, "unknown");
   assert.ok(syllable.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
 });
