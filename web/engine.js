@@ -286,7 +286,7 @@ function previewFromGraphemes(surface, parsed) {
 const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
 
 function isPassthroughChar(ch) {
-  return PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch);
+  return PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\u0ED0-\u0ED9]$/u.test(ch);
 }
 
 function validateInput(text) {
