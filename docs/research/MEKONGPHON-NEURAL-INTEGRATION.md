@@ -35,7 +35,7 @@ The deterministic grapheme-rule engine is available only when explicitly request
 
     lao-ua 'ສະບາຍດີ' --engine rules
 
-The adapter defaults to immutable revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The loaded model config revision is checked against the requested SHA when available. You may explicitly override it with `--revision`; a non-SHA revision is marked `MODEL-REVISION-NOT-IMMUTABLE`. The resolved revision is included in JSON output. First use downloads the model files into the normal Hugging Face cache; no model weights are checked into Git.
+The adapter defaults to immutable revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The loaded model config revision is checked against the requested SHA when available. You may explicitly override it with `--revision`; a non-SHA revision is marked `MODEL-REVISION-NOT-IMMUTABLE`. The resolved revision is included in JSON output. First use downloads the model files into the normal Hugging Face cache; no model weights are checked into Git. The CLI and convenience API default to beam width 5, matching the three-engine benchmark configuration; override with `--num-beams` only when intentionally changing inference.
 
 The published models accept at most 128 input tokens. ClippyFirst disables truncation and rejects over-limit input rather than silently dropping text. Use an explicit input chunking strategy only when the user intends separate inference units; automatic phrase segmentation is not claimed.
 
