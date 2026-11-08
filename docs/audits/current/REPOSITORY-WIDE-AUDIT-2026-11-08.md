@@ -1,210 +1,212 @@
-# Repository-wide audit and continuation — 2026-11-08
+# Repository-wide audit and documentation/structure refresh — 2026-11-08
 
 ## Executive assessment
 
-**The integrated PR #143 branch is an engineering-verified research prototype. It is not linguistically validated or release-ready.** Exact-head GitHub Actions Verify passed on `74b178654e9825bdcfa5b83fd31603b9cc74cd69`: 262 Python tests, 126 Node tests and 17 Chromium tests, plus clean npm installation, corpus/schema validation, repository data/evidence audit, build, generated-data reproducibility and built-page checks.
+**The repository is an engineering-verified, published research prototype. It is not linguistically validated and is not release-ready.** The existing top-level structure is coherent; this audit therefore preserves it and corrects stale documentation/ownership descriptions rather than introducing a competing architecture or moving large numbers of files.
 
-The default branch `main` remains unchanged at `f40c1128302486b3589da9b16bae198ef3ad1d81`. The work is consolidated on the single continuation branch `audit/repository-docs-structure-20261107`, in open PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), which GitHub currently reports as mergeable. No merge, release, deployment, force-push, branch deletion or repository-settings change was performed.
+- Repository: `ClippyFirst/Lao-Ukrainian-Phonetic-System`
+- Default branch: `main`
+- Audited starting HEAD: `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`
+- Working branch for this refresh: `audit/docs-architecture-refresh-20261108`
+- Working branch was created from the exact audited `main` SHA above.
+- Exact-main Verify: [#42463921672 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463921672), run on the same `c0d7218...` SHA.
+- Mainline test counts from the workflow log: **262 Python, 126 Node, 17 Chromium**.
+- GitHub Pages deployment: [#42463361038 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038); the live site was checked after deployment and returned HTTP 200.
+- Repository license: MIT. This applies to repository-owned material only; it does not grant rights to third-party corpora, model data or copied source material.
 
-This is an engineering, repository-structure, documentation, CI and design-system audit. It is not independent Lao phonetic adjudication, a legal opinion, a full security penetration test, or manual assistive-technology certification.
+This is a repository/engineering/documentation/CI/reference-practice audit. It is not an expert Lao phonology adjudication, legal opinion, penetration test, or manual assistive-technology certification.
 
-## 1. Baseline, branch and evidence
+## 1. Repository structure and architecture
 
-| Item | Verified state |
-|---|---|
-| Repository | `ClippyFirst/Lao-Ukrainian-Phonetic-System` |
-| Default branch | `main` |
-| Starting main SHA | `f40c1128302486b3589da9b16bae198ef3ad1d81` |
-| Single working branch | `audit/repository-docs-structure-20261107` |
-| Exact verified head | `74b178654e9825bdcfa5b83fd31603b9cc74cd69` |
-| Pull request | [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143), open and mergeable, base `main` |
-| PR diff | 82 files, 6,736 additions, 310 deletions |
-| GitHub compare | 454 commits ahead, 0 behind |
-| Exact-head Verify | [42462626019 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019) |
+The current structure is intentionally retained. The project already separates implementation, canonical data, provenance, generated assets, schemas, tests, scripts, research and documentation.
 
-The compare count reflects the branch's integrated commit ancestry; the PR file diff is the more useful measure of its current content. The branch was reused from the previous work rather than creating parallel branches.
-
-No local repository checkout or local test execution is claimed. The current session used GitHub repository/tree/file/PR inspection and the hosted Actions evidence above.
-
-## 2. Architecture and structure decision
-
-The existing repository boundaries are coherent. A broad folder migration, framework replacement or second documentation system would add churn without resolving an acceptance blocker. Preserve these canonical ownership boundaries:
-
-| Area | Canonical location | Responsibility |
+| Concern | Canonical location | Responsibility |
 |---|---|---|
-| Python implementation | `src/lao_ukrainian/` | Normalization, structural parsing, phonology, typed IPA, target adaptation, API and CLI |
-| Optional neural provider | `src/lao_ukrainian/mekongphon.py` | Explicitly selected, pinned optional model inference; not the deterministic default |
-| Canonical Lao registries | `data/lao/*.csv` | Consonants, onset clusters, vowels, codas, tone rules, special tone rules, target correspondences and grapheme inventory |
-| Evidence provenance | `data/evidence/sources.csv`, `claims.csv` | Source metadata and claim-to-source links |
-| Generated browser data | `web/data.js` | Deterministic mirror generated from canonical CSV; never hand-edit |
-| Browser runtime/UI | `web/engine.js`, `web/app.js`, `web/romanization*.js`, `web/styles.css` | Native ES modules and UI; separate phonetic/romanization routes |
-| Static pages/build | `index.html`, `system.html`, `scripts/build_web.py` | Two-page local-first instrument and static `dist/` output |
-| Contracts | `schemas/` | Analysis, comparator and IPA-gold JSON schemas |
-| Tests | `tests/`, `web/engine.test.js` | Python, Node, shared fixtures and Playwright Chromium |
-| Research/build tooling | `scripts/` | Audit, data generation, benchmarks, diagnostics and corpus validation |
-| Documentation | `docs/`, `AGENTS.md`, `GLOSSARY.md`, `CONTRIBUTING.md` | Specification, methodology, limitations, evidence, decisions, audit and handoff |
+| Python package | `src/lao_ukrainian/` | Normalization, parsing, phonology, typed IPA, Ukrainian adaptation, CLI and optional neural adapter |
+| Browser implementation | `web/` | Native ES modules, deterministic engine, UI, separate romanization route and CSS |
+| Public pages | `index.html`, `system.html` | Local-first converter and methodology page |
+| Canonical language data | `data/lao/*.csv` | Lao grapheme/phonological registries and target correspondences |
+| Provenance | `data/evidence/` | Source registry and claim evidence |
+| Derived data | `data/derived/` | Reproducible derived correspondence data |
+| Benchmarks and gold | `data/benchmark/` | Gold-corpus lifecycle, rights metadata, splits and aggregate benchmark records |
+| Contracts | `schemas/` | Analysis, comparative and IPA-gold schemas |
+| Tooling | `scripts/` | Audits, corpus validation, generators, build and benchmark diagnostics |
+| Tests | `tests/`, `web/engine.test.js` | Python, Node, browser, fixtures and built-site checks |
+| Documentation | `docs/`, `AGENTS.md`, `GLOSSARY.md`, `CONTRIBUTING.md` | Specification, evidence, limitations, decisions, audits, handoff and contributor/agent guidance |
+| Automation | `.github/workflows/` | Verify, Pages deployment, optional external G2P and benchmark workflows |
 
-### Pipeline boundary
+### Architecture decision
 
-The accepted phonetic route is:
+Do not migrate the repository into an invented monorepo layout, add a frontend framework, introduce a second documentation home, or vendor complete external agent-skill trees. Those changes would add maintenance and review cost without solving an identified acceptance gap.
 
-`Lao orthography → structural syllable analysis → source-language phonology → typed IPA → Ukrainian target adaptation → practical Ukrainian orthography`.
+Keep these boundaries authoritative:
 
-The typed IPA layer is a real adapter boundary, not a parallel audit display. The target adapter consumes typed IPA segments and withholds unsupported/uncertain input. The optional CLDR/BGN-oriented romanization route is a separate, lower-information orthographic method; it cannot reconstruct tone and is not a fallback for failed phonetic analysis.
+1. `data/lao/*.csv` is canonical; generated browser data is not edited by hand.
+2. `data/evidence/` owns source/claim provenance.
+3. `schemas/` owns machine-readable contracts.
+4. `src/lao_ukrainian/` and `web/` are separate runtimes with shared semantic fixtures where justified.
+5. `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` remains the single canonical execution ledger.
+6. `docs/audits/current/` contains current snapshots; dated research reports remain immutable historical evidence.
 
-The grapheme preview is a third, explicitly provisional diagnostic layer. It must not be described as accepted IPA, must not infer tone and must never be passed into the accepted Ukrainian target adapter.
+### Accepted phonetic pipeline
 
-### Repository organization
+`Lao orthography → structural analysis → source-language phonology → typed IPA → Ukrainian target adaptation → Ukrainian practical orthography`.
 
-Keep the current top-level organization. Canonical data remains in `data/lao/`; provenance in `data/evidence/`; schemas in `schemas/`; current audits in `docs/audits/current/`; generated browser data in `web/data.js`; the single canonical execution ledger remains `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+Typed IPA is the actual adapter boundary. The optional CLDR/BGN-oriented romanization route is lower-information and separate; it cannot reconstruct tone and is not a fallback for failed phonetic analysis. The grapheme preview is explicitly provisional, tone-free and excluded from accepted Ukrainian adaptation.
 
-## 3. Branch and PR reconciliation
+### Runtime state on the audited mainline
 
-| PR | Head branch | Dependency/base | Disposition in this pass |
-|---|---|---|---|
-| #137 deterministic G2P improvements | `benchmark/mekongphon-three-engine` | `main` | Open; changes integrated into PR #143 branch |
-| #138 optional MekongPhon integration / rights audit | `audit/repository-documentation-and-mekongphon-rights-20261107` | #137 branch | Open; dependency branch inspected; changes represented in consolidated PR #143 |
-| #139 immutable MekongPhon inference benchmark | `benchmark/mekongphon-immutable-inference-20261107` | #137 branch | Open; benchmark work represented in PR #143 |
-| #140 tone-rule guards and aggregate diagnostics | `improve/rule-engine-error-analysis-20261107` | #139 branch | Open; changes integrated in PR #143 |
-| #141 practical Lao–Ukrainian target adapter | `feature/lao-ukrainian-practical-system-20261107` | #140 branch | Open; changes selectively ported/integrated in PR #143 |
-| #142 grapheme inventory and provisional IPA preview | `feature/grapheme-fallback-ipa-preview-20261107` | #141 branch | Open; changes integrated in PR #143 |
-| #143 consolidated continuation | `audit/repository-docs-structure-20261107` | `main` | Open, mergeable; sole branch used for this continuation |
+- Python CLI: deterministic `rules` is the default; MekongPhon tonal/non-tonal inference is opt-in.
+- Browser Pages application: browser-native deterministic JavaScript; it does not run Python/PyTorch.
+- Optional neural path: pinned model revisions, raw IPA/model provenance and fail-closed typed IPA mapping.
+- A neural-first CLI/Python proposal exists in PR #145. It is not merged into the audited mainline. Even if PR #145 merges, its own scope says Pages remains deterministic until a separate inference backend exists.
 
-PRs #137–#142 were not closed, retargeted, force-pushed or blindly merged. PR #143 contains their reviewed implementation lineage and the documentation/accessibility/lockfile work. Keep #143 as the single integration proposal; review its complete diff before merging.
+## 2. Source tree and documentation quality
 
-## 4. Implementation audit
+The tree contains distinct areas for:
+- top-level project entry and contribution documents;
+- canonical linguistic data and evidence registries;
+- research/benchmark reports and current audits;
+- schemas and corpus validation;
+- Python and browser runtime code;
+- unit, integration, browser and shared-fixture tests;
+- CI workflows and static-site deployment.
 
-### 4.1 Structural segmentation and tone
+The existing docs index already establishes document precedence. The key correction required was temporal: the prior 2026-11-08 audit and code map still described PR #143 as open and `main` as unchanged, although PR #143 had since been merged. The current audit, code map and validation header are refreshed against the actual mainline SHA and current PR topology.
 
-The parser uses dynamic programming to segment unspaced Lao text into structurally parsed syllable candidates while preserving unresolved material. It is not a lexical word segmenter. Tone-mark placement/order is checked per syllable; malformed marks, incomplete vowel/coda structures and unsupported suffixes must not retain a confident tone or expose a misleading IPA prefix.
+No broad file move was justified. Preserve the existing `docs/research/`, `docs/audits/current/`, `docs/agents/` and `docs/superpowers/` distinctions.
 
-The Python and browser implementations share canonical data and regression fixtures for their explicitly shared contracts. Their full phrase-level normalization/segmentation behavior is not a blanket parity guarantee.
+## 3. Branch, PR and issue reconciliation
 
-### 4.2 Typed IPA and Ukrainian adapter
+### Merged work
 
-The source IPA tokenizer uses its own IPA inventory rather than deriving source segmentation from Ukrainian target keys. Typed results preserve segment identity, boundaries, length, tone metadata, provenance and uncertainty. The Ukrainian adapter consumes typed results and fails closed on unsupported or uncertain material. Target conventions such as initial yodation, medial/coda /j/, diphthong preservation and /w/ → в are project policy, not an official Ukrainian national standard.
+- PR #143 — [Integrate Lao G2P, IPA target adapter, grapheme preview, and repository audit](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) — **merged** into `main` as `c3ba58c0e0e6ba64821abe4c9d46c75ff559b2b4`.
+- Pages deployment [#42463361038](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038) succeeded after that merge.
+- Do not re-port the work already integrated by #143.
 
-### 4.3 MekongPhon
+### Open PRs
 
-The optional provider is explicitly selected; the deterministic rule engine remains the default. Model revisions are pinned, silent truncation is disabled, the model's 128-token limit is enforced, raw IPA and provenance are retained, and unknown IPA symbols fail closed. The provider does not silently fall back to deterministic rules.
+| PR | Head | Base | State/evidence | Disposition |
+|---|---|---|---|---|
+| [#145 neural-first G2P](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) | `feat/mekongphon-first-stage` at `a70769d7005e40e15b68a3df181cadbfa4cce51f` | `main` at audited baseline | Open, mergeable; exact-head Verify [#42465428611 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465428611); neural benchmark [#42465378241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42465378241) | Leave untouched. It changes Python/CLI default semantics; review separately. Its static Pages limitation remains explicit. |
+| [#146 deterministic reference profile](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/146) | `feat/deterministic-mekongphon-reference-profile-20261108` at `ad5bf2a61480ea255a9b83ca6f662471d7606e84` | `main` | Open, draft, mergeable; exact-head Verify [#42467552887 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467552887); held-out benchmark [#42467190935 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42467190935) | Leave untouched. It adds an opt-in deterministic profile; its benchmark is dictionary-seeded comparator evidence, not independent gold. |
+| [#147 HVULao 1k three-engine stress benchmark](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/147) | `benchmark/hvulao-1k-three-engine-20261108` at `f3b8b3b7b919c3a32bd66ea8972f87461a82411e` | PR #146 branch, not `main` | Open, draft, mergeable; Verify [#42490019054 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42490019054); benchmark [#42490023554 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42490023554) | Leave untouched. It is stacked on #146 and must not be treated as a standalone mainline change. Its raw text corpus has segmentation/POS annotations, not IPA. |
 
-The project owner confirmed MekongPhon project rights were resolved in the prior project conversation. Record this as **owner-confirmed**, not as an independent legal opinion. The external dictionary/model references remain comparator material and are not the project's independent adjudicated IPA gold.
+PRs #145 and #146 are parallel proposals against the same `main` baseline and touch overlapping project contracts/documentation. They require an explicit integration/rebase order and a review of their combined semantics before merging. PR #147 depends on #146. Do not merge #147 directly to `main` or silently rebase/retarget any of these PRs.
 
-### 4.4 Grapheme inventory and provisional preview
+PRs #137–#142 remain open as older stacked proposals. Their work was consolidated through merged PR #143. They were not deleted, closed, retargeted or force-pushed in this audit; do not blindly merge or replay them. The new documentation-only branch does not depend on these old branch heads.
 
-The Unicode 18 Lao-block inventory contains 83 assigned code points with scope/role classification and source/claim links. Unicode codepoint identity establishes character identity, not phonetic value.
+### Open issues
 
-The fallback preview reuses registered positional onset/cluster values and parser-confirmed complete vowel/coda structures. Unresolved graphemes remain visible. Tone is not inferred; preview output is `PROVISIONAL` and is excluded from the accepted Ukrainian adapter. Unsupported Pali/Sanskrit/Khmu cases remain unresolved rather than guessed.
+- [#99 — recruit experts and run the first blind Lao IPA gold pilot](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/99): still the real external/human dependency for independent gold.
+- [#9 — compare Lao-to-IPA output against an independent G2P baseline](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/issues/9): comparator research; do not confuse baseline agreement with adjudicated accuracy.
 
-### 4.5 Static web and design system
+The repository API reports 11 open issue-count items including pull requests; the current open issue collection contains these two non-PR issues.
 
-The service remains a two-page, local-first, framework-free static application with native browser ES modules. Canonical CSV data is generated into `web/data.js`; the build copies pages/runtime to `dist/`. No React/Vite/Webpack dependency is justified.
+## 4. Five supplied engineering references
 
-The visual direction remains an editorial linguistic instrument, not a generic SaaS dashboard. The reference repositories inform methods and design checks only; no generic skill bundle or runtime dependency is vendored.
+All five repositories were inspected at their current upstream `main` commits on 2026-11-08. Their root `LICENSE` files declare MIT at the inspected snapshots. This confirms the stated license of those repositories, not the license of third-party material embedded in their data, examples, fonts, screenshots or transitive assets.
 
-## 5. Reference repository audit
-
-| Reference | Applicable practice | Project disposition |
+| Reference and inspected commit | Relevant practice | Adoption decision |
 |---|---|---|
-| [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy) | Observable acceptance gates, task decomposition and evidence-linked completion | Use the existing master ledger and CI; do not import a duplicate gate framework |
-| [UI UX Pro Max Skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Design tokens, component states, responsive and accessibility checks | Retain the existing Lao editorial design system; adopt only relevant checks, not generic SaaS templates |
-| [obra/superpowers](https://github.com/obra/superpowers) | Test-first work, systematic debugging, explicit review and verification | Already reflected in `AGENTS.md` and `CONTRIBUTING.md`; no plugin runtime is vendored |
-| [mattpocock/skills](https://github.com/mattpocock/skills) | Deep modules, behavior-focused tests, clear interfaces and source-backed research | Apply at public seams; no parallel handbook or skill tree |
-| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | Whole-flow data tracing, trust boundaries, smallest complete fix and residual-risk reporting | Applied to code/data-flow review; no new runtime dependency |
+| [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy/tree/16671491f6679ad9378f52604d3bc2415b4120c7) — `16671491f6679ad9378f52604d3bc2415b4120c7` | Acceptance ledger, observable oracles, explicit command/expectation/evidence, re-verification | Reuse the existing master ledger/status vocabulary and CI. Do not copy its checker, hooks, approval store or orchestration runtime. Upstream README describes 2.1.0 source and says it is not identified as a tagged GitHub release. |
+| [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/4f2dbb67e64969a9a30ab00742f2d55d66ddec2b) — `4f2dbb67e64969a9a30ab00742f2d55d66ddec2b` | Accessibility-first audit, keyboard/focus, contrast, form feedback, responsive layout, reduced motion and platform-specific interaction | Apply web-specific checks to the existing editorial linguistic instrument. Keep `docs/DESIGN-SYSTEM.md` authoritative; do not import its CLI, datasets, generated token system or generic SaaS templates. Do not mix native pt/dp rules with CSS px/WCAG requirements. |
+| [obra/superpowers](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7) — `22f0b463e7a5e579904dd6211a520321035526f7` | True RED/GREEN TDD, plan-before-implementation, root-cause debugging, review and verification-before-completion | Already represented in `AGENTS.md` and `CONTRIBUTING.md`; retain selectively, without adding its plugin/harness runtime. |
+| [mattpocock/skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d) — `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` | Composable skills, deep modules, explicit interfaces, behavior-focused tests, source-backed research and two-axis review | Retain the existing domain glossary, codebase map and focused contributor instructions; do not copy a duplicate skill tree or force an issue-tracker setup process. |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846) — `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` | Trace actual data flow, review connected code, minimize changes without cutting safety/tests, report residual risk | Apply to code/data-flow reviews and acceptance boundaries. Do not adopt benchmark marketing claims or install the runtime. |
 
-These are engineering/design references, not project dependencies or linguistic authorities. Project-specific source evidence, provenance, privacy, rights and fail-closed requirements take precedence.
+**Result:** methodology adoption is sufficient and already mostly encoded in `AGENTS.md`. No new runtime dependency, vendored source, generated skill directory or duplicate agent framework is justified.
 
-## 6. Exact-head verification
+## 5. Build, dependency and CI contract
 
-[Verify #42462626019](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42462626019) ran on the exact branch head `74b178654e9825bdcfa5b83fd31603b9cc74cd69` and completed **SUCCESS**.
+- Python package requires Python >=3.10; hosted Verify uses Python 3.12.
+- Browser/test tooling requires Node >=22.14.0.
+- `package-lock.json` pins Playwright test tooling; use `npm ci --no-audit --no-fund`, not an unconstrained `npm install`, for clean verification.
+- `npm test` runs Node suites; `npm run build` regenerates browser data then builds static pages; `npm run test:browser` runs Playwright Chromium.
+- `npm run check:release` is a web-only convenience sequence; it does not replace Python, corpus, source-rights or manual QA checks.
+- No Vite/Webpack/frontend framework is present or required. The current site is a small static native-ES-module application.
+- GitHub Pages deployment is already active and has a successful post-merge deployment.
+
+### Exact-main engineering evidence
+
+Verify [#42463921672](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463921672) ran on the audited main SHA `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` and succeeded.
 
 | Gate | Result |
 |---|---|
-| Independent IPA corpus structural validation | PASS — structure valid; empty gold is not promoted |
-| Repository data/evidence audit | PASS |
+| IPA gold corpus structural validation | PASS; 0 records, status `NOT_READY_NO_ADJUDICATED_GOLD` |
+| Repository data/evidence audit | PASS; 83 Lao-block graphemes, 43 consonant rows, 11 onset clusters, 34 vowel rows, 17 tone rules, 1 special tone rule, 70 Ukrainian mappings, 38 sources, 53 claims |
 | Python unittest discovery | PASS — 262 |
-| External-G2P harness syntax/CLI | PASS |
-| Locked Node installation | PASS — `npm ci --no-audit --no-fund` |
+| Optional external-G2P harness syntax/CLI | PASS |
+| Locked Node install | PASS — `npm ci --no-audit --no-fund` |
 | Node suites | PASS — 126 |
-| Static build / canonical browser data generation | PASS |
+| Static build / generated browser data | PASS |
 | Generated-data reproducibility | PASS — no `web/data.js` drift |
-| Playwright Chromium UI | PASS — 17 |
-| Built-page and relative-asset assertions | PASS |
+| Playwright Chromium | PASS — 17 |
+| Built pages / relative assets | PASS |
 
-Commands configured in the hosted workflow include:
+The separate Pages run #42463361038 also passed deployment/artifact and deployed-asset smoke checks. These are engineering and publication checks, not evidence of expert phonetic accuracy or manual accessibility certification.
 
-```bash
-python scripts/ipa_gold_corpus.py validate --language lao
-python scripts/audit.py
-PYTHONPATH=src python -m unittest discover -s tests -v
-python -m py_compile scripts/compare_external_g2p.py
-PYTHONPATH=src python scripts/compare_external_g2p.py --help
-npm ci --no-audit --no-fund
-npm test
-npm run build
-git diff --exit-code -- web/data.js
-npx playwright install --with-deps chromium
-npm run test:browser
-```
+## 6. Evidence and linguistic status
 
-The successful workflow is exact-head engineering evidence for PR #143. It is not mainline post-merge verification, Pages deployment evidence for this branch, expert phonetic adjudication or manual accessibility certification.
+- The primary project pipeline remains Lao orthography → structural analysis → source phonology → typed IPA → Ukrainian adaptation.
+- Tone, length, syllable structure, provenance, uncertainty and warnings must remain inspectable.
+- The target correspondences are project policy, not an official Ukrainian national standard.
+- Romanization is separate and lower-information.
+- The provisional grapheme preview is not accepted IPA and cannot produce the accepted Ukrainian result.
+- MekongPhon inference is model output with its own revision/provenance; the owner has confirmed project rights for the authorized use, but this is not an independent legal opinion.
+- The 100-word dictionary-seeded benchmark and the 1,000-row HVULao sentence stress test are not independent IPA gold. The latter has segmentation/POS labels only.
+- The benchmark #147 result on its own stacked branch is a coverage/runtime/output-disagreement stress test. It does not provide IPA accuracy, CER against gold or correctness.
 
-## 7. Task ledger and acceptance status
+### Gold corpus
 
-| Task | Status | Evidence / remaining acceptance |
+The four JSONL gold-lifecycle files are intentionally empty; `gold.tsv` is header-only. The gold corpus remains 0 adjudicated records. The release gate should continue to report `NOT_READY_NO_ADJUDICATED_GOLD`.
+
+### Remaining acceptance blockers
+
+1. **Independent IPA gold — BLOCKED.** Acceptance requires a source/rights-approved target variety and IPA convention, rights-eligible source-located records, two qualified independent annotators through controlled blind intake, a separate qualified adjudicator, frozen lexical-group-disjoint splits, and a specialist-reviewed contrast-coverage report.
+2. **Manual accessibility — PARTIAL.** Automated 17 Chromium checks do not substitute for NVDA/JAWS/VoiceOver/TalkBack, physical iOS/Android devices, actual 200%/400% browser zoom, deployed keyboard-only walkthrough and human contrast/visual review. Record evidence in `docs/accessibility-manual-qa.md`.
+3. **Linguistic review — BLOCKED / evidence-limited.** Qualified Lao specialist review remains necessary for disputed tone/rhyme rules, dialect scope, rare clusters, loanwords, conventional names, Pali/Sanskrit and Khmu.
+4. **Neural-first web delivery — DEFERRED / separate deployment.** PR #145 explicitly does not provide a browser inference backend. If the owner later chooses neural inference for Pages, it needs a separately scoped service, privacy/security review, availability/cost model and UI contract; this is not silently added here.
+5. **Neural-first CLI proposal — PARTIAL at repository level.** PR #145 branch implementation is exact-head verified but is not merged into `main`; acceptance for mainline requires review/integration and a new mainline exact-head Verify.
+6. **Reference profile / 1k benchmark — PARTIAL at repository level.** PR #146/#147 are verified on their own branches but remain unmerged and stacked. Acceptance requires ordered integration and final combined verification; no linguistic gold claims are added.
+
+## 7. Task ledger for this refresh
+
+| Task | Status | Evidence / acceptance |
 |---|---|---|
-| Repository structure and documentation audit | DONE_VERIFIED | Full tree, entry points, docs, schemas, tests, workflows and PR stack inspected; this report and code map updated |
-| Single-branch integration | DONE_VERIFIED | Existing PR #143 branch reused; no parallel branch created |
-| Dynamic structural syllabification and tone-mark validation | DONE_VERIFIED (engineering) | Exact-head Python/Node suites pass; not lexical word segmentation |
-| Typed IPA → Ukrainian adapter | DONE_VERIFIED (engineering) | Typed source IPA boundary and target-only adapter covered by regression tests |
-| MekongPhon optional provider and benchmark | DONE_VERIFIED (engineering) | Immutable inference and aggregate workflows recorded; external reference is not project gold |
-| MekongPhon project rights | DONE_VERIFIED (owner-confirmed) | Owner confirmation; not an independent legal opinion |
-| Grapheme inventory / provisional preview | DONE_VERIFIED (engineering) | 83 assigned code points; preview remains provisional and tone-free |
-| `package-lock.json` and clean install | DONE_VERIFIED | Exact-head `npm ci` passed |
-| Automated accessibility and responsive regression | DONE_VERIFIED | 17 Chromium tests, including keyboard, semantics, reflow, touch emulation, forced-colors and reduced-motion |
-| TGT-01 44×44 hit-area checks | DONE_VERIFIED | Exact-head Chromium assertion passes at 320/390/768/1280 CSS px |
-| UI-001 manual accessibility | PARTIAL | Actual screen readers, physical devices, real browser zoom, deployed keyboard walkthrough and human contrast/visual review remain NOT RUN |
-| Independent adjudicated IPA gold | BLOCKED | Independent gold count remains 0; requires source-eligible double annotation, independent adjudication, frozen splits and expert-approved convention/coverage |
-| Empirical linguistic accuracy | BLOCKED / NOT MEASURED | No accuracy denominator exists; never infer accuracy from dictionary comparison, model agreement or engineering tests |
-| Broad dialect, lexical-name and unsupported-script coverage | PARTIAL / TODO | Needs scoped primary sources and qualified Lao linguistic review; unsupported output remains withheld |
+| Inspect mainline metadata, tree, README, docs, schemas, tests, workflows and build configuration | DONE_VERIFIED | Main SHA `c0d7218...`; recursive tree and canonical files inspected |
+| Inspect recent commits and current exact-main workflow | DONE_VERIFIED | Commit history and Verify #42463921672 inspected |
+| Inspect open PRs and branch dependencies | DONE_VERIFIED | PRs #137–#147 and their base/head relationships checked; #143 merge verified |
+| Inspect open issues | DONE_VERIFIED | #99 blind IPA gold pilot; #9 external G2P comparison |
+| Inspect five user-supplied upstream repositories | DONE_VERIFIED | Current main SHAs, README/skill references and root MIT license files checked |
+| Preserve coherent repository structure | DONE_VERIFIED | No broad migration or dependency/framework added |
+| Refresh codebase map and stale current audit | PARTIAL | Changes committed on this branch; final exact-head CI is still required |
+| Refresh validation authority and master handoff | PARTIAL | Documentation update is committed; exact-head CI still required |
+| Manual accessibility QA | PARTIAL | Requires human/device sessions |
+| Independent IPA gold | BLOCKED | 0 adjudicated records; specialist and blind annotation dependencies |
+| Mainline neural-first CLI | PARTIAL | PR #145 not merged |
+| Mainline deterministic profile and HVULao benchmark | PARTIAL | PR #146/#147 not merged; #147 stacked on #146 |
 
-## 8. Remaining blockers and acceptance criteria
+## 8. Commands and verification performed in this audit session
 
-1. **Manual accessibility QA — PARTIAL.** Run and record NVDA/JAWS/VoiceOver/TalkBack, a full keyboard-only deployed walkthrough, physical iOS/Android devices, actual browser zoom at 200%/400%, and human contrast/visual review. Record OS, browser, AT/device versions, deployed commit, steps, results and retests in `docs/accessibility-manual-qa.md`.
-2. **Independent IPA gold — BLOCKED.** Collect rights-eligible source-located Lao lexical items; approve the IPA convention and contrast coverage with a qualified specialist; obtain two independent annotations through a controlled blind intake channel; use a separate qualified adjudicator; freeze lexeme-group-disjoint splits; validate the export and score only held-out adjudicated items.
-3. **Linguistic review — BLOCKED / evidence-limited.** Review tone/rhyme rules, loanwords, conventional names, rare clusters, Pali/Sanskrit and Khmu values with qualified Lao specialists. Every accepted rule needs a scoped source and a clear claim boundary.
-4. **Release readiness — BLOCKED.** Re-run exact-main Verify and Pages deployment after PR #143 is reviewed and merged through the owner's normal process; complete manual accessibility and independent linguistic acceptance first. This audit does not merge the PR.
+This session used authenticated GitHub repository inspection and hosted workflow evidence. It did not have a local checkout or local shell, so no local Python/npm commands are claimed as executed.
 
-## 9. Readiness decision
+Inspected:
+- repository metadata, recursive `main` tree and recent commits;
+- README, AGENTS, CONTRIBUTING, codebase map, docs index, audits index, validation guide, web architecture, design system, master handoff and IPA gold contract;
+- Python CLI/core/neural adapter source and package/build configuration;
+- open PR metadata/diffs, branch topology, open issues and workflow run/job logs;
+- five upstream README and root LICENSE files; UI UX Pro Max skill and web quick-reference files.
 
-**Engineering-verified research prototype; not production/release-ready and not accuracy-validated.**
+Hosted checks actually inspected:
+- main Verify #42463921672 — SUCCESS on exact main SHA, 262 Python / 126 Node / 17 Chromium;
+- Pages deployment #42463361038 — SUCCESS;
+- PR #145 Verify #42465428611 and neural benchmark #42465378241 — SUCCESS;
+- PR #146 Verify #42467552887 and benchmark #42467190935 — SUCCESS;
+- PR #147 Verify #42490019054 and benchmark #42490023554 — SUCCESS.
 
-The engineering workflow is green on the exact PR #143 head. The main branch remains unchanged. Independent adjudicated IPA gold is empty, empirical accuracy is not measured, and manual assistive-technology/physical-device QA is incomplete. Do not market or document the project as a validated universal Lao-to-Ukrainian transcription standard.
+These PR runs are evidence for their own branch heads only. They are not evidence that their changes are merged into main or that this documentation branch has passed CI.
 
+## 9. Readiness
 
-## 10. Post-merge and GitHub Pages verification — 2026-11-08
-
-The earlier sections above are a pre-merge audit snapshot. Their statements that PR #143 remained open and `main` was unchanged are superseded by this post-merge checkpoint.
-
-- PR [#143](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/143) was squash-merged. Merge commit and new `main` head: `c3ba58c0e0e6ba64821abe4c9d46c75ff559b2b4`.
-- GitHub Pages workflow [42463361038 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038).
-- Exact workflow stages: browser regression tests PASS; static build and generated data PASS; Chromium tests against built site PASS; deployment artifact assertions PASS; Pages deploy PASS; deployed HTML/JS/CSS/data smoke checks PASS.
-- Live URL https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ was fetched after the workflow and returned **HTTP 200** with the expected Lao-to-Ukrainian interface title and input/result controls.
-- This is a real deployment of the merged `main`, not merely a preview from the PR branch. The site was already configured for Pages; no Pages settings change was needed.
-
-### Updated task ledger
-
-| Task | Current status | Evidence / boundary |
-|---|---|---|
-| PR #143 integration into main | DONE_VERIFIED | Squash merge `c3ba58c0e0e6ba64821abe4c9d46c75ff559b2b4` |
-| GitHub Pages publication | DONE_VERIFIED | Workflow #42463361038 success; deployed-site smoke checks success; live HTTP 200 |
-| Automated browser regression on merged source | DONE_VERIFIED | Pages workflow browser tests and built-site Chromium tests passed |
-| Live manual adversarial browser interaction after deployment | PARTIAL | Pre-merge live-site stress and negative tests were exercised; post-merge workflow smoke tests passed, but a second interactive post-deploy browser session was unavailable in this run |
-| Three-engine 100-word benchmark | DONE_VERIFIED (comparative only) | Latest artifact from run #42416252986; metrics appended to benchmark report |
-| Independent adjudicated IPA gold | BLOCKED | 0 records; no project accuracy claim |
-| Manual screen-reader / physical-device / actual browser zoom QA | PARTIAL | Still requires human sessions and recording in `docs/accessibility-manual-qa.md` |
-| Broad linguistic acceptance | BLOCKED / evidence-limited | Requires qualified Lao phonetics review and independent source adjudication |
-
-### Readiness
-
-**Published engineering-verified research prototype; not production/release-ready and not accuracy-validated.** The publication pipeline is green. Independent IPA gold and manual accessibility remain genuine acceptance blockers.
+**Published engineering-verified research prototype; not release-ready or linguistically validated.** Mainline engineering and deployment checks are green. The principal blockers are still independent adjudicated IPA gold (0 records), qualified linguistic acceptance and manual accessibility/device QA. The outstanding PRs must be integrated in dependency order and verified on the resulting exact mainline head; their branch-level green checks do not replace that gate.

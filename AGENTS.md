@@ -82,7 +82,7 @@ When these references conflict with this file, the existing project requirements
 
 ## Adopted UI/UX reference
 
-- [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/b7d5353e0130feb8c5574ef1251f8a1db1873ccb): selected web-appropriate guidance for accessibility-first review, semantic controls, keyboard/focus behavior, text contrast, responsive layout, form feedback, reduced motion and target sizing. Use its web-specific quick reference; do not transfer native-only pt/dp rules to CSS pixels. The project's [DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) remains the source of truth and already specifies 44px control targets. Do not import the skill's search CLI, datasets or generated token system as runtime dependencies.
+- [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/4f2dbb67e64969a9a30ab00742f2d55d66ddec2b): selected web-appropriate guidance for accessibility-first review, semantic controls, keyboard/focus behavior, text contrast, responsive layout, form feedback, reduced motion and target sizing. Use its web-specific quick reference; do not transfer native-only pt/dp rules to CSS pixels. The project's [DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) remains the source of truth and already specifies 44px control targets. Do not import the skill's search CLI, datasets or generated token system as runtime dependencies.
 
 ## Methodology source refresh — 2026-11-02
 
@@ -156,3 +156,16 @@ The five user-supplied repositories were rechecked as methodology references; th
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/releases/tag/v5.3.3): v5.3.3. Retain codebase/data-flow mapping, connected-code review, reuse before adding abstractions and explicit residual-risk reporting.
 
 These practices supplement, but never weaken, the project's Lao evidence, typed-IPA, source-rights, privacy, fail-closed and exact-head verification requirements. Recheck upstream versions before future adoption; mutable main-branch versions must not be treated as immutable pins.
+
+
+## Upstream reference snapshot — 2026-11-08
+
+The five user-supplied repositories were rechecked against their current upstream `main` refs. Each inspected root `LICENSE` file declares MIT at that snapshot; this is not a blanket grant for embedded third-party data/assets.
+
+- Unlazy: `Leonxlnx/unlazy@16671491f6679ad9378f52604d3bc2415b4120c7`. Adopt acceptance-ledger and observable-gate ideas; keep the project's existing master ledger and CI. Upstream describes 2.1.0 source but does not identify it as a tagged GitHub release.
+- UI UX Pro Max: `nextlevelbuilder/ui-ux-pro-max-skill@4f2dbb67e64969a9a30ab00742f2d55d66ddec2b`. Use the web-specific UX quick reference for accessibility, keyboard/focus, contrast, responsive layout and reduced motion. Native point/dp recommendations must not be copied into CSS-pixel/WCAG requirements.
+- Superpowers: `obra/superpowers@22f0b463e7a5e579904dd6211a520321035526f7`. Keep test-first development, systematic debugging, two-axis review and verification-before-completion.
+- Matt Pocock Skills: `mattpocock/skills@4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`. Keep composable instructions, deep modules, explicit interfaces and behavior-focused tests.
+- Ponytail: `DietrichGebert/ponytail@96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. Keep whole-flow tracing, trust-boundary review and minimal complete fixes.
+
+No source code, CLI, hook, skill tree, data bundle or runtime dependency from these references was copied into this repository. Existing project-specific instructions remain authoritative.

@@ -2258,3 +2258,43 @@ The required engine contract is **Lao grapheme element + structural position + p
 - Three-engine comparative benchmark artifact [13591561425](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42416252986/artifacts/13591561425) was downloaded and inspected. Updated metrics are recorded in `docs/research/LAO-G2P-THREE-ENGINE-BENCHMARK-2026-11-07.md`.
 - Current remaining acceptance: independent adjudicated Lao IPA gold = 0 (BLOCKED); empirical linguistic accuracy is not validated; manual NVDA/JAWS/VoiceOver/TalkBack, physical mobile and actual 200%/400% browser zoom QA remain PARTIAL.
 - Status: GitHub Pages publication DONE_VERIFIED; research prototype published; not linguistically validated or release-ready.
+
+
+
+## Repository documentation and architecture refresh — 2026-11-08
+
+- **Starting default-branch commit:** `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` (`main`).
+- **Single working branch:** `audit/docs-architecture-refresh-20261108`, created from that exact main commit. No other working branch was created.
+- **Scope:** current-state repository audit, documentation correction, codebase-map refresh, upstream reference re-check, PR/issue topology reconciliation. No phonological rules, source data, generated browser data, runtime code, dependencies, deployment settings or repository settings were changed.
+- **Mainline exact-head Verify:** [#42463921672 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463921672) on `c0d7218...`: 262 Python, 126 Node, 17 Chromium; corpus validation, data/evidence audit, external-G2P CLI, clean `npm ci`, build, generated-data reproducibility and built-page assertions passed.
+- **Pages deployment:** [#42463361038 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038); deployed-site checks passed.
+- **Merged history correction:** PR #143 is merged into main at `c3ba58c0e0e6ba64821abe4c9d46c75ff559b2b4`. Earlier pre-merge statements in the dated audit are historical and superseded by the refreshed current audit.
+- **Current PR topology:** #145 and #146 are separate open PRs based on main; #147 is stacked on #146. PRs #137–#142 remain older open stacked PRs whose implementation lineage was consolidated by merged #143. No PR was merged, closed, retargeted, force-pushed or modified during this documentation refresh.
+- **Issues:** #99 (blind IPA gold pilot) and #9 (external G2P comparison) remain open.
+- **Five reference repositories:** inspected current upstream main snapshots and root MIT license files. Their selected methodology practices are already captured in `AGENTS.md`; the UI UX Pro Max reference is refreshed to current main SHA. No code, datasets, skills, hooks, CLI or dependencies were copied.
+
+### Documentation changes in this branch
+
+- Refreshed `docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md` against the real mainline and current PR graph.
+- Refreshed `docs/agents/codebase-map.md` with actual mainline CLI/runtime defaults, module ownership, data ownership, separate diagnostic routes and PR context.
+- Corrected the current authority header in `docs/validation.md`.
+- Updated `docs/audits/README.md` to point readers to the refreshed audit.
+- Updated `AGENTS.md` with the current UI UX Pro Max snapshot and upstream reference/license boundary.
+- This handoff addendum records the actual baseline and verification evidence; earlier dated sections remain historical rather than being silently rewritten.
+
+### Task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Mainline metadata/tree/docs/code/CI inspection | DONE_VERIFIED | Main SHA and hosted Verify #42463921672 inspected |
+| Open PR/branch dependency reconciliation | DONE_VERIFIED | #145/#146/#147 plus older #137–#142 inspected; no branch mutated |
+| Five upstream engineering references and licenses | DONE_VERIFIED | Exact upstream main SHAs and root MIT license files inspected |
+| Codebase map and current audit refresh | PARTIAL | Written on this branch; exact-head Verify for this branch still required |
+| Validation/handoff current-state correction | PARTIAL | Written on this branch; exact-head Verify still required |
+| Independent adjudicated IPA gold | BLOCKED | 0 records; needs qualified independent blind annotation/adjudication and rights-cleared sources |
+| Manual accessibility | PARTIAL | Needs screen-reader, physical-device, actual zoom and human visual/contrast QA |
+| PR #145/#146/#147 mainline integration | TODO / dependency-managed | Review overlap/order; #147 depends on #146; run fresh combined mainline CI after integration |
+
+### Readiness
+
+**Main remains a published engineering-verified research prototype, not a linguistically validated or release-ready system.** This branch is documentation-only; it does not change that readiness classification.
