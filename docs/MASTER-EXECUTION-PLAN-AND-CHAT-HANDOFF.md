@@ -2298,3 +2298,11 @@ The required engine contract is **Lao grapheme element + structural position + p
 ### Readiness
 
 **Main remains a published engineering-verified research prototype, not a linguistically validated or release-ready system.** This branch is documentation-only; it does not change that readiness classification.
+
+
+## Exact-head verification of the documentation refresh — 2026-11-08
+
+- Documentation implementation head `a8f6eedb33da005ecc005ea25dc729daa152baf3` passed exact-head Verify [#42496670248 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42496670248): 262 Python tests, 126 Node tests and 17 Chromium tests; IPA corpus structural validation, repository data/evidence audit, external-G2P CLI, locked `npm ci`, build, generated-data reproducibility and built-page checks passed.
+- Pull-request-triggered exact-head Verify [#42496674892 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42496674892) also passed on the same SHA.
+- The six-file documentation change has 0 missing relative Markdown targets in the inspected tree. It changes no runtime code, source data, generated assets, dependency graph or workflow.
+- Repository documentation/architecture refresh — DONE_VERIFIED (engineering/documentation scope). The separate manual accessibility and independent IPA-gold blockers remain unchanged.

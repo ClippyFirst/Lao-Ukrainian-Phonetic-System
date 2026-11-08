@@ -180,8 +180,8 @@ The four JSONL gold-lifecycle files are intentionally empty; `gold.tsv` is heade
 | Inspect open issues | DONE_VERIFIED | #99 blind IPA gold pilot; #9 external G2P comparison |
 | Inspect five user-supplied upstream repositories | DONE_VERIFIED | Current main SHAs, README/skill references and root MIT license files checked |
 | Preserve coherent repository structure | DONE_VERIFIED | No broad migration or dependency/framework added |
-| Refresh codebase map and stale current audit | PARTIAL | Changes committed on this branch; final exact-head CI is still required |
-| Refresh validation authority and master handoff | PARTIAL | Documentation update is committed; exact-head CI still required |
+| Refresh codebase map and stale current audit | DONE_VERIFIED | Exact-head Verify [#42496670248 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42496670248) on `a8f6eedb33da005ecc005ea25dc729daa152baf3` — 262 Python, 126 Node, 17 Chromium; audit, corpus, clean install, build and generated-data gates passed |
+| Refresh validation authority and master handoff | DONE_VERIFIED | Exact-head Verify [#42496670248 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42496670248) on `a8f6eedb33da005ecc005ea25dc729daa152baf3` — all configured repository checks passed |
 | Manual accessibility QA | PARTIAL | Requires human/device sessions |
 | Independent IPA gold | BLOCKED | 0 adjudicated records; specialist and blind annotation dependencies |
 | Mainline neural-first CLI | PARTIAL | PR #145 not merged |
@@ -205,7 +205,7 @@ Hosted checks actually inspected:
 - PR #146 Verify #42467552887 and benchmark #42467190935 — SUCCESS;
 - PR #147 Verify #42490019054 and benchmark #42490023554 — SUCCESS.
 
-These PR runs are evidence for their own branch heads only. They are not evidence that their changes are merged into main or that this documentation branch has passed CI.
+These PR runs are evidence for their own branch heads only. They are not evidence that their changes are merged into main. This documentation branch also passed exact-head Verify [#42496670248 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42496670248) on `a8f6eedb33da005ecc005ea25dc729daa152baf3` (262 Python, 126 Node, 17 Chromium); the resulting final handoff-only commit is checked separately by the PR status run.
 
 ## 9. Readiness
 
