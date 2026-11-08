@@ -364,7 +364,7 @@ test("unattested preposed ເ◌ຽ remains one unresolved token", () => {
   assert.equal(r.syllables[0].ipa, null);
   assert.equal(r.syllables[0].ukrainian, null);
   assert.ok(r.syllables[0].warnings.length > 0);
-  assert.equal(r.output, "?");
+  assert.equal(r.output, "⟦" + surface + "⟧");
 });
 
 
@@ -501,18 +501,18 @@ test("browser Ukrainian adaptation consumes a typed IPA result", () => {
 });
 
 test("browser hybrid adapter renders uncertain IPA without upgrading its status", () => {
-  const result = analyze("ຣະ");
+  const result = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" });
   const syllable = result.syllables[0];
-  assert.equal(syllable.ipa, "la");
+  assert.equal(syllable.ipa, "ra");
   assert.equal(syllable.phoneticResult.status, "UNCERTAIN");
-  assert.equal(syllable.ukrainian, "ла");
+  assert.equal(syllable.ukrainian, "ра");
   assert.equal(syllable.status, "ANALYSIS DEPENDENT");
 });
 
-test("browser IPA adapter uses a typed placeholder rather than adapting an incomplete prefix", () => {
+test("frozen Vientiane browser adapter withholds incomplete IPA rather than adapting a prefix", () => {
   const result = analyze("ກາລ");
   const syllable = result.syllables[0];
-  assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
+  assert.equal(syllable.phoneticResult.status, "UNSUPPORTED");
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, null);
 });
@@ -600,7 +600,7 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 
 
 test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
-  const syllable = analyze("ກາລ").syllables[0];
+  const syllable = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, "?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
