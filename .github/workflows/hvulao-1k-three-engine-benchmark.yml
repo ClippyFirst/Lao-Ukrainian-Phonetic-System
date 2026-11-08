@@ -8,6 +8,13 @@ on:
       - ".github/workflows/hvulao-1k-three-engine-benchmark.yml"
       - "scripts/benchmark_hvulao_1k_three_engines.py"
       - "src/lao_ukrainian/**"
+  pull_request:
+    branches:
+      - "feat/deterministic-mekongphon-reference-profile-20261108"
+    paths:
+      - ".github/workflows/hvulao-1k-three-engine-benchmark.yml"
+      - "scripts/benchmark_hvulao_1k_three_engines.py"
+      - "src/lao_ukrainian/**"
   workflow_dispatch:
 
 permissions:
