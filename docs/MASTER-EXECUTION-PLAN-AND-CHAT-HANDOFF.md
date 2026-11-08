@@ -2502,3 +2502,34 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 ### Readiness
 
 **PARTIAL implementation under hosted verification; research prototype, not release-ready.** The production default remains unchanged.
+
+
+## Final hybrid-engine checkpoint — exact-head verification, 2026-11-08
+
+- Final code checkpoint: `c705cf8ad782246c2d72c0d789a5e44e5196eca6`. Documentation continuation commits follow this checkpoint.
+- Exact-head Verify [#42508759262 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42508759262): 280 Python tests, 134 Node tests, 17 Chromium tests; corpus validation, evidence/data audit, clean install, build, generated-data reproducibility and built-site checks all passed.
+- Exact-head HVULao 1k benchmark [#42508759241 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42508759241), artifact 13628229661, SHA-256 `145966638988265a8f255163288e48de4fa8a0293941f0ec26643c7211fe7149`.
+- Sentence coverage: Vientiane 669/1,000 (66.9%); MekongPhon-reference 669/1,000 (66.9%); hybrid deterministic 669/1,000 (66.9%); Neural 930/1,000 (93.0%). All engines had zero unexpected runtime errors.
+- All three deterministic profiles constructed IPA for 97.85% of Lao syllables. Hybrid all-attempt latency was 16.28 ms mean / 30.32 ms p95; Neural was 375.98 ms mean / 725.19 ms p95.
+- The new explicit passthrough contract preserves ASCII and corpus-observed punctuation unchanged without assigning IPA. It improves mixed-text input acceptance; it does not reduce the remaining 331 parser-withheld/failed sentences or close the Neural coverage gap.
+- The 100-entry MekongPhon holdout remains reference-relative: hybrid 90/100 exact, 97% coverage; Neural 82/100 exact, 100% coverage. No independent adjudicated IPA gold exists.
+
+### Revised task ledger
+
+| Task | Status | Evidence / next acceptance |
+|---|---|---|
+| Hybrid selector, profile and provenance | DONE_VERIFIED | Exact-head Verify #42508759262 |
+| Python/CLI/browser implementation | DONE_VERIFIED | 280 Python, 134 Node, 17 Chromium tests |
+| Mixed-text passthrough | DONE_VERIFIED | Explicit PASSTHROUGH state, regression tests, benchmark schema 1.2 |
+| MekongPhon 100-entry benchmark | DONE_VERIFIED (reference-relative) | Run #42508691092; 90/100 exact, 97% coverage; non-tonal, dictionary-seeded |
+| HVULao 1k hybrid stress benchmark | DONE_VERIFIED (stress only) | Exact-head run #42508759241; 66.9% deterministic sentence coverage vs 93.0% Neural |
+| Neural-level deterministic sentence coverage | TODO / evidence-limited | Needs evidence-backed parser/orthographic coverage; do not infer pronunciation from text-only data |
+| Context-conditioned phonology beyond 11 rules | TODO / evidence-limited | Require context aggregates, held-out evaluation and primary-source review |
+| Independent adjudicated IPA gold | BLOCKED | 0 adjudicated records; requires qualified independent annotation |
+| Production linguistic sign-off | BLOCKED | No independent accuracy result or specialist acceptance |
+
+### Branch / PR state
+
+- PR #149 remains open as a draft on `feat/hybrid-deterministic-lao-engine-20261108`, based on the existing PR #147 benchmark branch. No merge was performed.
+- PRs #146 and #147 remain unchanged and unmerged. The existing Vientiane default, visible browser UI and production behavior remain unchanged.
+- Repository readiness: **engineering-verified research prototype; not linguistically release-ready**.
