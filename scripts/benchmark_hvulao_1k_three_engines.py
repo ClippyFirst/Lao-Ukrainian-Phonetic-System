@@ -142,6 +142,7 @@ def main() -> int:
         "mekongphon_reference_rules": {
             "predictions": [], "times": [], "errors": Counter(),
             "withheld": Counter(), "syllables": Counter(),
+            "syllable_total": 0, "syllable_with_ipa": 0,
         },
         "mekongphon_neural": {
             "predictions": [], "times": [], "errors": Counter(),
