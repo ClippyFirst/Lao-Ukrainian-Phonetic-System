@@ -6,7 +6,7 @@
 - `parser.py` — Lao graphemic syllable parsing and structural vowel recognition.
 - `phonology.py` — live/dead classification, tone lookup and phonemic IPA construction.
 - `phonetic_result.py` — typed `PhoneticResult` boundary: source-inventory IPA tokenization, syllable offsets, length, tone, provenance and uncertainty; tokenization is independent of target correspondence keys.
-- `target.py` — typed-result-only IPA-to-Ukrainian adapter and candidate ranking.
+- `target.py` — typed-result-only IPA-to-Ukrainian adapter and candidate ranking; only the primary hybrid profile may adapt UNCERTAIN IPA without upgrading its status, and its explicit PROVISIONAL unknown segment renders as ?.
 - `core.py` — public analysis orchestration.
 - `model.py` — serializable analysis dataclasses.
 - `data.py` — registry loading.
@@ -33,7 +33,7 @@ Unknown Unicode, unknown vowel structures, and unsupported phonological combinat
 - `web/romanization-ukrainian.js` — compatibility export for the syllable engine; it no longer contains a letter-by-letter mapping.
 - `web/app.js` — the Ukrainian result selector, selected-result copy action, and method-specific disclosure.
 
-The hybrid deterministic phonetic engine is the default. Its Ukrainian output is produced only from the typed `PhoneticResult`; uncertain or unsupported results are withheld. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
+The hybrid deterministic phonetic engine is the default. Its Ukrainian output is produced only from the typed PhoneticResult: structurally complete UNCERTAIN IPA can be rendered with its uncertainty preserved, while wholly unresolved units use a typed PROVISIONAL unknown segment and a visible ? placeholder. This guarantees rendering coverage without claiming an IPA value or accuracy. Frozen compatibility profiles keep their prior withholding behavior. The second method uses an independent romanized-syllable parser and is not a pronunciation analysis. See [methodology](methodology.md#optional-romanization-to-ukrainian-mode) for the grapheme/romanization/target crosswalk, aspiration policy, and information-loss boundary.
 
 See [the typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md) for the executable boundary, status semantics and verification.
 
@@ -50,7 +50,7 @@ The current web implementation is framework-free: index.html and system.html loa
 
 - `parser.py` performs deterministic dynamic segmentation of unspaced Lao into structurally parsed syllable candidates while preserving unparsed material. It is not a lexical word segmenter; ambiguous or unsupported structures remain visible and phonetic output is withheld.
 - Tone-mark storage-order validation is per syllable. A malformed mark or unresolved structural suffix must not retain a confident tone or a misleading IPA prefix.
-- `phonetic_result.py` tokenizes source IPA against its own IPA inventory, independent of Ukrainian correspondence keys. `target.py` consumes the typed result and withholds unsupported/uncertain material instead of adapting a guessed grapheme prefix.
+- `phonetic_result.py` tokenizes source IPA against its own IPA inventory, independent of Ukrainian correspondence keys. `target.py` consumes the typed result. In hybrid only, uncertain but complete IPA can be rendered with its status intact; unsupported units receive a typed unknown placeholder. No grapheme-preview hint is promoted to IPA or sent directly to the Ukrainian adapter.
 - `grapheme_preview.py` provides a separate provisional segmental preview from registered positional grapheme correspondences and complete parser-confirmed vowel/coda structures. It never infers tone and cannot pass through the accepted Ukrainian target adapter.
 - `mekongphon.py` is an optional, explicitly selected neural provider. The hybrid deterministic engine remains the default; model revisions are immutable, automatic truncation is disabled, raw IPA/provenance are retained, and unknown symbols fail closed.
 - The benchmark scripts and reports are comparative diagnostics. The 100-entry external dictionary reference and training-split aggregates are not independent project IPA gold and must not be used as accuracy claims.
