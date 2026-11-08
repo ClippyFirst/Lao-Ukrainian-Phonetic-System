@@ -31,6 +31,13 @@ test("hybrid mixed-script handling does not weaken frozen compatibility profiles
   assert.equal(result.status, "INVALID");
   assert.equal(result.output, "");
 });
+
+test("hybrid still rejects invisible control characters", () => {
+  const result = analyzeDefault("ກ\\u0085ຂ");
+  assert.equal(result.status, "INVALID");
+  assert.equal(result.output, "");
+  assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
+});
 import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
 
 test("basic long syllable", () => {
