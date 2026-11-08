@@ -13,6 +13,8 @@ def validate_unicode(text: str) -> list[str]:
         cp=ord(ch)
         if (cp < 0x20 and ch not in "\n\t\r") or 0x7F <= cp <= 0x9F:
             problems.append(f"control character U+{cp:04X}")
+        if cp == 0x200B:  # Lao word-boundary zero-width space; normalized to a token boundary by callers.
+            continue
         if 0x0E80 <= cp <= 0x0EFF:
             continue
         if ch.isspace() or ch in PASSTHROUGH_CHARACTERS:
