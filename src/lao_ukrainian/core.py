@@ -2,7 +2,7 @@ from .normalize import normalize_lao, validate_unicode, PASSTHROUGH_CHARACTERS, 
 from .parser import segment_syllables, parse_syllable
 from .phonology import phonologize, classify_syllable_type
 from .target import rank_ukrainian_candidates, practical_from_ipa
-from .phonetic_result import from_phonology, from_unknown_source_unit
+from .phonetic_result import from_phonology, from_unknown_source_unit, from_provisional_preview
 from .model import Analysis, SyllableAnalysis, Candidate
 from .data import load_registry
 from .grapheme_preview import preview_from_graphemes
@@ -185,14 +185,15 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 provenance=tuple(rules),
                 uncertainty=tuple(local_warnings) + (() if tone_status in ESTABLISHED_TONE_STATUSES else ("TONE-UNRESOLVED",)),
             )
+            grapheme_preview = preview_from_graphemes(surface, parsed, registry) if ipa is None else None
             if not phonetic_result.segments and ipa_profile == DEFAULT_ENGINE_PROFILE:
-                # Preserve complete primary-hybrid coverage without fabricating a phone:
-                # the typed result carries one explicit unknown unit and the
-                # target adapter renders a visible low-confidence placeholder.
-                phonetic_result = from_unknown_source_unit(
-                    surface,
-                    provenance=tuple(rules),
-                    uncertainty=tuple(local_warnings),
+                # Use registered grapheme-position hints only as explicitly
+                # PROVISIONAL typed segments; unresolved source groups stay as
+                # unknown markers and all output still crosses the IPA adapter.
+                phonetic_result = (
+                    from_provisional_preview(grapheme_preview, provenance=tuple(rules))
+                    if grapheme_preview is not None
+                    else from_unknown_source_unit(surface, provenance=tuple(rules), uncertainty=tuple(local_warnings))
                 )
             candidates = [
                 Candidate(value, score, [why])
@@ -204,8 +205,7 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
             )
             if practical is None and ipa_profile == DEFAULT_ENGINE_PROFILE:
                 # A typed IPA result can still lack a Ukrainian correspondence.
-                # Keep coverage total without bypassing the adapter or guessing:
-                # replace the unrenderable unit with an explicit typed unknown.
+                # Keep coverage total without bypassing the adapter or guessing.
                 phonetic_result = from_unknown_source_unit(
                     surface,
                     provenance=tuple(rules) + ("FALLBACK:TARGET-UNMAPPED",),
@@ -243,8 +243,8 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                  if tone is not None and row["rule_id"] in rules and row["contour"]),
                 None,
             )
-            # Diagnostic-only fallback: never promote partial grapheme hints to accepted IPA or Ukrainian output.
-            grapheme_preview = preview_from_graphemes(surface, parsed, registry) if ipa is None else None
+            # Diagnostic preview remains inspectable even when its separate
+            # PROVISIONAL typed segments also support a low-confidence fallback.
             analysis_warnings.extend(local_warnings)
             syllables.append(
                 SyllableAnalysis(
