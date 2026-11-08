@@ -2,6 +2,14 @@
 
 > **Current verification authority — 2026-11-08.** PR #150 exact-head Verify [42521697622](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521697622) passed on `5d191ee4dfba03556204128271290fe7ad6db929`: 289 Python, 143 Node and 17 Chromium tests; corpus structural validation; repository data/evidence audit; external-G2P harness syntax/CLI; locked install; build; generated-data reproducibility; and built-page/relative-asset checks. Post-merge main Verify [42521799243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799243) passed on `d0688d325c7450515ef42345ff1f7dec8d14f718`. GitHub Pages deployment [42521799240](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42521799240) completed successfully; deployment record [7641593395](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/deployments/7641593395) reports success. Live site and browser engine were fetched successfully. These checks verify engineering and rendering behavior, not pronunciation accuracy or independent linguistic adjudication. The independently adjudicated IPA gold corpus remains empty.
 
+
+
+## Follow-up verification — PR #152, 2026-11-08
+
+PR [#152](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/152) at `cda9c97c0ef3a6aeae4bb01a41457728befbccf5` passed exact-head Verify [42522532528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42522532528): 289 Python tests, 143 Node tests and 19 Chromium tests. Corpus validation, repository audit, external-G2P harness syntax/CLI, locked dependency installation, build, generated-data reproducibility and built-site checks also passed. Merged to main as `b1e014265c22d9a369ab9fe2cc3da6c2d57dca38`.
+
+The added browser regressions cover Lao numerals interspersed between valid Lao words, crosswalk alignment after numeric tokens, and IPA display without passthrough dashes. Live Pages publication for this commit remains unverified in this run; merge and CI success alone are not treated as deployment evidence.
+
 ## Deterministic structural validation
 
 The test suite covers:

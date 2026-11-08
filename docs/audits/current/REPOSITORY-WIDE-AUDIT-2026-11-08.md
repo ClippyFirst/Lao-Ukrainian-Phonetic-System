@@ -1,3 +1,14 @@
+## Follow-up: Lao numeral alignment and IPA presentation — 2026-11-08
+
+- The long mixed-content test exposed a source-crosswalk index shift when Lao numeral tokens appeared between Lao words. This made subsequent romanized words fail grapheme alignment and appear as unresolved brackets despite valid source Lao.
+- Corrected by treating Lao numeral sequences as passthrough numeric units in the romanization parser and excluding them from the Lao syllable-group alignment array.
+- IPA presentation no longer inserts an em dash for every non-phonetic passthrough unit. It omits those units and displays `?` only where an actual Lao unit has no IPA result.
+- Merged PR [#152](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/152), commit `b1e014265c22d9a369ab9fe2cc3da6c2d57dca38`.
+- Exact-head Verify [42522532528](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42522532528) passed: 289 Python, 143 Node, 19 Chromium; audit, corpus, external-G2P syntax/CLI, build, generated-data reproducibility and built-site checks passed.
+- Pages deployment/live smoke for this particular commit has not yet been independently confirmed. No claim of linguistic accuracy or CLDR completeness is made.
+
+---
+
 ## Follow-up correction: browser hybrid mixed-script rendering — 2026-11-08
 
 - Defect observed on the live instrument: a message containing Lao plus visible foreign-script text/punctuation was globally rejected, hiding valid Lao output and disabling the separate romanization view.
