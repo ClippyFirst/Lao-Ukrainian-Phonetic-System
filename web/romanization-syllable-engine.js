@@ -293,7 +293,7 @@ export function analyzeRomanization(input, options = {}) {
   let sourceGroupIndex = 0;
 
   for (const part of parts) {
-    if (SEPARATORS.test(part) || /^[0-9]+$/u.test(part)) {
+    if (SEPARATORS.test(part) || /^[0-9\u0ED0-\u0ED9]+$/u.test(part)) {
       output += part;
       continue;
     }

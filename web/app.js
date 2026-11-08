@@ -53,7 +53,7 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
     .split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
     .filter(Boolean);
   return parts
-    .filter((part) => !/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u.test(part) && !/^[0-9]+$/u.test(part))
+    .filter((part) => !/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u.test(part) && !/^[0-9\u0ED0-\u0ED9]+$/u.test(part))
     .map((part) => analyze(part).syllables
       .filter((syllable) => !syllable.passthrough)
       .map((syllable) => ({
@@ -141,7 +141,13 @@ function render() {
         : "Український результат формується за структурою романізованого складу, а не побуквеною заміною.");
   romanization.textContent = roman.output;
   romanization.className = "output";
-  ipa.textContent = result.syllables.map((syllable) => syllable.ipa || "—").join(" ");
+  // IPA contains only phonetic units: omit explicit passthrough (digits,
+  // punctuation, foreign-script text) and show a visible unknown marker for
+  // unresolved Lao units instead of a misleading dash run.
+  ipa.textContent = result.syllables
+    .filter((syllable) => !syllable.passthrough)
+    .map((syllable) => syllable.ipa || "?")
+    .join(" ");
 
   copy.disabled = !activeOutput;
   copyRomanization.disabled = !roman.output;

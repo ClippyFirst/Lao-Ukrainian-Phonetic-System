@@ -23,6 +23,22 @@ test("mixed-script input preserves visible text and renders supported Lao spans"
   await expect(page.locator("#output")).not.toBeEmpty();
 });
 
+test("Lao numerals do not desynchronize the romanization-to-Lao crosswalk", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ ໑໕ ຂາ ໑໑ ຂາ");
+  await page.locator("#mode-romanization").click();
+  await expect(page.locator("#output")).toHaveText("к'а ໑໕ к'а ໑໑ к'а");
+  await expect(page.locator("#output")).not.toContainText("⟦");
+});
+
+test("IPA display omits passthrough numerals and marks unresolved Lao explicitly", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ ໑໕ ຂາ");
+  await expect(page.locator("#ipa")).toHaveText("kʰaː kʰaː");
+  await page.locator("#lao-input").fill("ຂາ ເດືອນ");
+  await expect(page.locator("#ipa")).not.toContainText("—");
+});
+
 test("clear control restores the empty state", async ({ page }) => {
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ");
