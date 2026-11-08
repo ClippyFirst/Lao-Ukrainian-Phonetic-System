@@ -2,7 +2,11 @@ import unittest
 from unittest.mock import patch
 
 import lao_ukrainian.core as core_module
-from lao_ukrainian import analyze
+from lao_ukrainian import analyze as _analyze
+
+# Existing linguistic matrix tests pin the Vientiane baseline explicitly.
+def analyze(text, *, ipa_profile="vientiane"):
+    return _analyze(text, ipa_profile=ipa_profile)
 
 
 class TestCore(unittest.TestCase):
@@ -19,7 +23,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(load_once.call_count, 1)
 
     def test_default_profile_is_hybrid_while_vientiane_remains_explicit(self):
-        default = analyze("ວາ").syllables[0]
+        default = core_module.analyze("ວາ").syllables[0]
         vientiane = analyze("ວາ", ipa_profile="vientiane").syllables[0]
         self.assertEqual(default.phonemic_ipa, "waː")
         self.assertEqual(vientiane.phonemic_ipa, "ʋaː")
