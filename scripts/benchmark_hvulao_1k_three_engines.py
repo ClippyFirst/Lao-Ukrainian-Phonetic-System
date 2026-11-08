@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Run a text-domain stress benchmark on the independent HVULao_NLP 1k test set.
-
-This corpus contains raw Lao sentences and word-segmentation annotations, not IPA.
-The report therefore measures engine coverage, runtime, failures and pairwise
-output disagreement only. It must never be presented as G2P accuracy.
-Only aggregate metrics are written; sentence text and predictions are not retained.
-"""
+"""Independent Lao sentence-domain stress benchmark; not an IPA accuracy test."""
 from __future__ import annotations
 
 import argparse
@@ -33,7 +27,7 @@ def nfc(value: str) -> str:
 
 
 def git_blob_sha1(payload: bytes) -> str:
-    header = f"blob {len(payload)}\\0".encode("ascii")
+    header = f"blob {len(payload)}\0".encode("ascii")
     return hashlib.sha1(header + payload).hexdigest()
 
 
@@ -42,7 +36,9 @@ def load_dataset() -> tuple[list[str], str]:
         f"https://raw.githubusercontent.com/{SOURCE_REPO}/"
         f"{SOURCE_REVISION}/{SOURCE_PATH}"
     )
-    request = urllib.request.Request(url, headers={"User-Agent": "ClippyFirst-HVULao-1k-benchmark/1.0"})
+    request = urllib.request.Request(
+        url, headers={"User-Agent": "ClippyFirst-HVULao-1k-benchmark/1.0"}
+    )
     with urllib.request.urlopen(request, timeout=60) as response:
         payload = response.read()
     digest = git_blob_sha1(payload)
@@ -52,7 +48,7 @@ def load_dataset() -> tuple[list[str], str]:
     lines = [line for line in lines if line]
     if len(lines) != SOURCE_ROWS:
         raise ValueError(f"Expected {SOURCE_ROWS} non-empty sentences, got {len(lines)}")
-    if any(not any("\\u0e80" <= ch <= "\\u0eff" for ch in line) for line in lines):
+    if any(not any("\u0e80" <= ch <= "\u0eff" for ch in line) for line in lines):
         raise ValueError("A test row contains no Lao-block character")
     return lines, digest
 
@@ -115,9 +111,17 @@ def main() -> int:
         raise RuntimeError("MekongPhon smoke inference did not resolve the pinned model")
 
     stages = {
-        "vientiane_rules": {"predictions": [], "times": [], "errors": Counter(), "withheld": Counter(), "syllables": Counter()},
-        "mekongphon_reference_rules": {"predictions": [], "times": [], "errors": Counter(), "withheld": Counter(), "syllables": Counter()},
-        "mekongphon_neural": {"predictions": [], "times": [], "errors": Counter()},
+        "vientiane_rules": {
+            "predictions": [], "times": [], "errors": Counter(),
+            "withheld": Counter(), "syllables": Counter(),
+        },
+        "mekongphon_reference_rules": {
+            "predictions": [], "times": [], "errors": Counter(),
+            "withheld": Counter(), "syllables": Counter(),
+        },
+        "mekongphon_neural": {
+            "predictions": [], "times": [], "errors": Counter(),
+        },
     }
 
     for source in rows:
@@ -128,13 +132,18 @@ def main() -> int:
             stage = stages[key]
             try:
                 started = time.perf_counter()
-                result = analyze(source) if profile is None else analyze(source, ipa_profile=profile)
+                result = analyze(source) if profile is None else analyze(
+                    source, ipa_profile=profile
+                )
                 stage["times"].append(time.perf_counter() - started)
-                stage["predictions"].append(complete_rule_ipa(result))
+                prediction = complete_rule_ipa(result)
+                stage["predictions"].append(prediction)
                 stage["syllables"].update(item.status for item in result.syllables)
-                if not stage["predictions"][-1]:
+                if not prediction:
                     for item in result.syllables:
-                        stage["withheld"].update(str(w).split(":", 1)[0] for w in item.warnings)
+                        stage["withheld"].update(
+                            str(w).split(":", 1)[0] for w in item.warnings
+                        )
             except Exception as exc:
                 stage["errors"][type(exc).__name__] += 1
                 stage["predictions"].append("")
@@ -198,9 +207,9 @@ def main() -> int:
             "dataset_license": "CC-BY-4.0 (Mendeley Data version 2)",
             "input_kind": "raw Lao sentences; paired segmentation reference is not IPA",
             "limitations": [
-                "No IPA reference is supplied; CER against a gold IPA transcription is not measurable.",
-                "Pairwise output disagreement is not accuracy and cannot identify which engine is correct.",
-                "This is a sentence-domain stress test, not a replacement for an adjudicated phonetic benchmark.",
+                "No IPA reference is supplied; gold IPA CER is not measurable.",
+                "Pairwise output disagreement is not accuracy and cannot identify the correct engine.",
+                "This is a sentence-domain stress test, not an adjudicated phonetic benchmark.",
             ],
         },
         "engines": {
@@ -219,12 +228,14 @@ def main() -> int:
         "runtime_errors": sum(sum(stage["errors"].values()) for stage in stages.values()),
         "measurement_notes": [
             "One hosted CPU run; model load and initial smoke inference excluded from latency.",
-            "Whitespace is removed only for pairwise IPA comparison; tone and length marks are retained.",
+            "Whitespace is removed for pairwise IPA comparison; tone and length marks are retained.",
             "No source sentences or per-sentence IPA predictions are persisted.",
         ],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if report["runtime_errors"]:
         raise RuntimeError(f"Runtime errors: {report['runtime_errors']}")
