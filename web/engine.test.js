@@ -683,3 +683,11 @@ test("browser engine segments supported passthrough prefixes before Lao syllable
   assert.equal(result.syllables[1].ipa, "kʰaː");
   assert.equal(result.status, "OK");
 });
+
+test("browser engine preserves Lao native digits as non-IPA passthrough", () => {
+  const result = analyze("ຂາ໑໒໓");
+  const digits = result.syllables.filter((item) => /^[\\u0ED0-\\u0ED9]$/u.test(item.surface));
+  assert.equal(digits.map((item) => item.surface).join(""), "໑໒໓");
+  assert.ok(digits.every((item) => item.passthrough && item.ipa === "" && item.ukrainian === item.surface));
+  assert.equal(result.syllables[0].ipa, "kʰaː");
+});
