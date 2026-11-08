@@ -18,6 +18,8 @@ import unicodedata
 import urllib.request
 from pathlib import Path
 
+from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+
 DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
@@ -69,9 +71,7 @@ def complete_ipa(analysis) -> str:
     # PROVISIONAL grapheme hints remain in rendering diagnostics, never CER.
     syllables = [item for item in analysis.syllables if item.status != "PASSTHROUGH"]
     if not syllables or any(
-        not item.phonetic_result
-        or item.phonetic_result.status not in {"SUPPORTED", "UNCERTAIN"}
-        or not item.phonetic_result.phonemic_ipa
+        not accepted_phonetic_ipa(item.phonetic_result)
         for item in syllables
     ):
         return ""
