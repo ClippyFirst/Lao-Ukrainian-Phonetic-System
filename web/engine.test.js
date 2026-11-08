@@ -639,3 +639,31 @@ test("browser MekongPhon-reference profile keeps onset and uncertainty boundarie
 test("browser engine rejects unknown deterministic IPA profiles", () => {
   assert.throws(() => analyze("ຂາ", { ipaProfile: "invented" }), RangeError);
 });
+
+
+test("browser hybrid deterministic profile composes Vientiane baseline with MekongPhon evidence rules", () => {
+  const baseline = analyze("ດວງ");
+  const reference = analyze("ດວງ", { ipaProfile: "mekongphon-reference" });
+  const hybrid = analyze("ດວງ", { ipaProfile: "hybrid-deterministic" });
+  assert.equal(hybrid.syllables[0].ipa, reference.syllables[0].ipa);
+  assert.equal(hybrid.syllables[0].ukrainian, reference.syllables[0].ukrainian);
+  assert.notEqual(hybrid.syllables[0].ipa, baseline.syllables[0].ipa);
+  assert.ok(hybrid.syllables[0].rules.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
+  assert.ok(hybrid.syllables[0].phoneticResult.provenance.includes("HYBRID-RULE:HYB-MPH-VOWEL-UO_LONG_ALT"));
+  assert.equal(hybrid.syllables[0].tone, baseline.syllables[0].tone);
+});
+
+test("browser hybrid profile preserves Vientiane fallthrough and uncertain onset status", () => {
+  const baseline = analyze("ຂາ");
+  const hybrid = analyze("ຂາ", { ipaProfile: "hybrid-deterministic" });
+  assert.equal(hybrid.syllables[0].ipa, baseline.syllables[0].ipa);
+  assert.ok(!hybrid.syllables[0].rules.some((rule) => rule.startsWith("HYBRID-RULE:")));
+  const rhotic = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" });
+  assert.equal(rhotic.syllables[0].ipa, "ra");
+  assert.equal(rhotic.syllables[0].phoneticResult.status, "UNCERTAIN");
+  assert.equal(rhotic.syllables[0].ukrainian, null);
+});
+
+test("browser engine rejects unknown hybrid rule profiles", () => {
+  assert.throws(() => analyze("ຂາ", { ipaProfile: "not-a-profile" }), RangeError);
+});
