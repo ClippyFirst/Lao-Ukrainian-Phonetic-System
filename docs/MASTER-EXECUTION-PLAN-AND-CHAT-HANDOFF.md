@@ -3061,3 +3061,18 @@ At this checkpoint the only open PR is #145, the neural-first proposal. It remai
 The LaoNLP offline audit utility had one small count bug: malformed-width CSV records were skipped during field analysis but still included in `usable_records`. The count now subtracts malformed-width rows. The new regression test initially failed because its Python fixture contained literal backslash-n sequences rather than line breaks; the fixture was corrected in the next commit, and the final exact-head run is green. This failure was in the test fixture, not in the pinned source CSV or production phonology.
 
 For `Module:lo-pron` oldid 88555975, direct dependencies were read from its raw source and pinned to the latest revisions at or before the Kaikki dump cutoff (2026-10-01): `Module:headword/data` 92964027, `Module:languages` 92737865, `Module:rhymes` 92718307, `Module:IPA` 92723663, and `Module:utilities` 88907870. First-level data modules are `Module:rhymes/data` 91981018, `Module:IPA/data` 91333763, and `Module:IPA/data/symbols` 91727113. These revisions and timestamps are in `data/evidence/sources.csv`. The transitive dependency closure of `Module:IPA` and `Module:rhymes` (including formatting, qualifier, syllable, parameter and TemplateStyles modules) is not fully pinned. Do not claim fully reproducible template execution until that closure is captured.
+
+
+## Final implementation verification — 2026-11-09
+
+**Latest verified code/implementation head:** `d6aa703bf0637d65c4a8245ba6cf4d103ae34072`.
+
+**Exact-head Verify:** [#42635842846 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42635842846): 319 Python, 147 Node/browser-engine and 19 Chromium UI tests. IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked browser dependency installation, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+
+The LaoNLP audit utility now subtracts malformed-width rows from the usable-record count; the regression test covers that case. The first CI attempt failed only because the new test fixture encoded literal backslash-n characters instead of actual CSV line breaks. The fixture was corrected and the next exact-head run passed.
+
+The `lo-pron` source record now pins the direct module dependencies and first-level data modules as of the Kaikki dump cutoff. It explicitly leaves the transitive dependency closure unpinned; no fully reproducible Lua execution environment is claimed. The 100-page sample's Lao sections all invoke `lo-pron`, but the whole Kaikki extraction remains non-gold and its per-sound provenance remains unresolved.
+
+The MekongPhon v5 comparison remains diagnostic rather than independent accuracy because the 100-word held-out lexicon also contributed to validation-sentence generation and checkpoint selection; the published 13,442-sentence test split is not available in the pinned repository snapshot.
+
+The only open PR is #145, the neural-first architecture proposal; it remains unmerged. The default production route stays hybrid-deterministic. Research readiness is engineering-only: independent expert-adjudicated IPA gold is 0, contextual lexical boundary gold is absent, full Lua transitive dependency provenance remains incomplete, and manual accessibility QA remains PARTIAL.

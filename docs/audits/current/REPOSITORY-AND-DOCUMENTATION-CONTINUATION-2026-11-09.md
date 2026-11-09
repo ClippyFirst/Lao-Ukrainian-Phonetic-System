@@ -29,7 +29,7 @@ PRs #146 and #147 were closed unmerged only after confirming their benchmark/pro
 
 **Documentation authority remains singular:** root `README.md` orients users; `docs/README.md` is the documentation index; `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` is the canonical execution ledger/handoff; `docs/audits/README.md` indexes current and historical audits; `docs/agents/codebase-map.md` maps implementation. Dated audits are snapshots, not competing specifications. No duplicate master plan or parallel documentation tree was created.
 
-**Remaining blockers:** independent expert-adjudicated IPA gold remains 0; acoustic/prosodic accuracy and linguistic sign-off are not established. Manual screen-reader, physical-device, real zoom and human visual/contrast QA remain PARTIAL. The MIT CSV has been inspected and is used only through a filtered SOFT_HINT_ONLY derivative; lexical boundaries remain unsolved. Kaikki/Wiktionary sample-level generated provenance is verified for 100 pinned pages (all Lao sections call lo-pron), while whole-corpus per-sound provenance remains PARTIAL. No pronunciation dataset has been promoted to gold.
+**Remaining blockers:** independent expert-adjudicated IPA gold remains 0; acoustic/prosodic accuracy and linguistic sign-off are not established. Manual screen-reader, physical-device, real zoom and human visual/contrast QA remain PARTIAL. The MIT CSV has been inspected and is used only through a filtered SOFT_HINT_ONLY derivative; lexical boundaries remain unsolved. Kaikki/Wiktionary sample-level generated provenance is verified for 100 pinned pages (all Lao sections call lo-pron), while whole-corpus per-sound provenance remains PARTIAL; the transitive Lua dependency closure below `Module:IPA` and `Module:rhymes` is not fully pinned. No pronunciation dataset has been promoted to gold.
 
 ---
 
@@ -473,3 +473,13 @@ The Kaikki Lao JSONL contains 2,751 records, 2,378 unique word forms and 2,320 u
 A final review found that `audit_laonlp_dictionary.py` correctly skipped malformed-width CSV rows during field-level analysis but did not subtract those rows from `usable_records`. The count now excludes malformed-width rows, and `test_malformed_width_rows_are_excluded_from_usable_count` covers the regression. The first run of the new test exposed a fixture-escaping mistake (literal backslash-n sequences); that fixture was corrected. Exact-head Verify [#42635460479 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42635460479) on `dd0a22857b126a00404350dc59be7bb99ab83334`: 319 Python, 147 Node/browser and 19 Chromium tests passed; all configured schema, repository-data, external-harness, locked-install, build, generated-data and built-page checks passed.
 
 The `lo-pron` source registry now pins its direct and first-level data dependencies as of the 2026-10-01 Kaikki dump cutoff. The transitive closure below `Module:IPA` and `Module:rhymes` remains incomplete, so a fully reproducible Lua execution snapshot is still not claimed.
+
+
+## Final implementation verification and evidence closeout — 2026-11-09
+
+- Latest verified implementation head: `d6aa703bf0637d65c4a8245ba6cf4d103ae34072`.
+- Exact-head Verify [#42635842846 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42635842846): 319 Python, 147 Node/browser-engine and 19 Chromium UI tests; all configured IPA-gold schema, repository evidence, external-G2P harness, locked install, build, generated-data reproducibility and built-page checks passed.
+- LaoNLP audit utility: malformed-width rows are now excluded from `usable_records`; a regression test covers this. The first test attempt failed because the fixture used literal escaped newline text; the fixture was corrected and the exact-head suite passed.
+- Wiktionary: all 100 exact page revisions and source lengths match the manifest; all 100 Lao sections call `lo-pron`. Direct and first-level dependencies are pinned as of the dump cutoff; the full transitive Lua module closure remains PARTIAL.
+- Benchmark v5: pinned model weights and train/eval disjointness are verified, but the 100-word held-out vocabulary was also used for validation-sentence generation/checkpoint selection. The 100-word result is not independent model-selection-free accuracy.
+- Current open PR: #145 only; not merged because the neural-first proposal conflicts with the adopted hybrid-deterministic architecture.
