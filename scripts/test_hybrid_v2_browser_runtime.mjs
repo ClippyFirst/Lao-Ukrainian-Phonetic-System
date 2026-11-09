@@ -85,7 +85,7 @@ const report = {
 };
 await fs.writeFile(
   path.join(modelRoot, "browser-runtime-parity.json"),
-  JSON.stringify(report, null, 2) + "\\n",
+  JSON.stringify(report, null, 2) + "\n",
   "utf8",
 );
 console.log(JSON.stringify(report, null, 2));
