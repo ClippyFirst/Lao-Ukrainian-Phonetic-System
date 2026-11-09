@@ -443,7 +443,7 @@ A dedicated implementation branch `feat/hybrid-deterministic-lao-engine-20261108
 - Rule application is traced in typed IPA provenance with stable hybrid rule IDs.
 - Python API, rules CLI, browser engine and visible UI now default to `hybrid-deterministic`. Vientiane remains the phonological baseline and an explicit frozen compatibility profile; MekongPhon-reference is frozen for compatibility only. Future engine work targets hybrid only.
 - Python and browser regression tests cover profile output, provenance, baseline fallback, tone preservation, rule specificity and conflict rejection.
-- Existing benchmark scripts retain profile comparisons as historical evidence; no further parallel engine development is planned. The MekongPhon 100-entry hybrid benchmark is complete; the latest exact-head HVULao 1k run is still in progress.
+- Existing benchmark scripts retain profile comparisons as historical evidence; no further parallel engine development is planned. The MekongPhon 100-entry hybrid benchmark is complete; the exact-mainline HVULao 1k run #42591871473 completed successfully: hybrid 34.6% IPA-complete sentences, 100% rendering, 94.21% syllable IPA coverage; this is completeness, not accuracy.
 
 ### Status
 
@@ -451,8 +451,8 @@ A dedicated implementation branch `feat/hybrid-deterministic-lao-engine-20261108
 |---|---|---|
 | Selector and profile implementation | DONE_VERIFIED | Exact-head Verify #42511764559; 283 Python tests passed |
 | Browser parity | DONE_VERIFIED | 136 Node and 17 Chromium tests; build and generated-data checks passed in #42511764559 |
-| MekongPhon 100-entry benchmark | DONE_VERIFIED (reference-relative) | Run #42509799353: hybrid 90/100 exact, CER 6.64%, 97% coverage; zero runtime errors |
-| HVULao 1k stress benchmark | PARTIAL | Prior exact-head run #42508759241: 66.9% deterministic coverage vs 93.0% Neural; latest exact-head run #42512614803 is still running |
+| MekongPhon 100-entry benchmark | DONE_VERIFIED (reference-relative) | Mainline workflow #42592337944: hybrid 85/100 exact, CER 14.45%, 91% typed IPA coverage and 100% Ukrainian rendering; separate reference rules 90/100 exact, CER 6.64%, 97% typed IPA coverage |
+| HVULao 1k stress benchmark | DONE_VERIFIED (text-domain completeness only) | Mainline run #42591871473: hybrid 346/1,000 IPA-complete (34.6%), 100% Ukrainian rendering, 94.21% syllable IPA; Neural 934/1,000 (93.4%); 66 neural input rejections, zero runtime errors; artifact #13662725834 |
 | New context-specific IPA values | TODO / evidence-limited | Need train-split context aggregates and independent evaluation; no guessed rules |
 | Structural coverage expansion | TODO / evidence-limited | Primary orthographic evidence required for each newly accepted parser rule |
 | Independent adjudicated IPA gold | BLOCKED | Still 0 |
