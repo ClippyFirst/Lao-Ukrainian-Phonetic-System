@@ -86,9 +86,9 @@ class LaoNlpDictionaryAuditTests(unittest.TestCase):
 
     def test_malformed_width_rows_are_excluded_from_usable_count(self):
         content = (
-            "ID,LaoWord,English,Pronunciation,Type\\n"
-            "1,ກ,first,ka,n\\n"
-            "2,ຂ,malformed,ka\\n"
+            "ID,LaoWord,English,Pronunciation,Type\n"
+            "1,ກ,first,ka,n\n"
+            "2,ຂ,malformed,ka\n"
         )
         result = self.run_audit(content)
         self.assertEqual(result.returncode, 0, result.stderr)
