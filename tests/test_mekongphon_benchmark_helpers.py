@@ -43,7 +43,7 @@ class MekongPhonBenchmarkHelperTests(unittest.TestCase):
             ["kʰaŋ", "ka", ""],
         )
         self.assertEqual(result["covered_items"], 2)
-        self.assertEqual(result["reference_long_vowel_marker_total"], 2)
+        self.assertEqual(result["reference_long_vowel_marker_total"], 1)
         self.assertEqual(result["prediction_long_vowel_marker_total"], 0)
         self.assertEqual(result["items_with_exact_marker_count"], 1)
 
@@ -75,12 +75,16 @@ class MekongPhonBenchmarkHelperTests(unittest.TestCase):
         stats = validate_lexicon_split(
             [{"orth": "ກ"}, {"orth": "ຂ"}, {"orth": "ກ"}],
             [{"orth": f"ຄ{i}"} for i in range(100)],
+            expected_train_rows=3,
+            expected_train_duplicate_rows=1,
         )
         self.assertEqual(stats["train_eval_overlap"], 0)
         with self.assertRaises(ValueError):
             validate_lexicon_split(
                 [{"orth": "ກ"}],
                 [{"orth": "ກ"}] + [{"orth": f"ຂ{i}"} for i in range(99)],
+                expected_train_rows=1,
+                expected_train_duplicate_rows=0,
             )
 
     def test_unknown_contour_sequence_is_not_guessed(self):

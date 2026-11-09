@@ -43,6 +43,7 @@ EXPECTED_TRAIN_ROWS = 6219
 EXPECTED_TRAIN_DUPLICATE_ROWS = 3
 from lao_ukrainian.mekongphon import MODEL_IDS, MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MAX_SEQUENCE_LENGTH, MekongPhonEngine
 from lao_ukrainian.phonetic_result import from_external_ipa
+from lao_ukrainian.data import load_registry
 
 TONAL_MODEL_ID = MODEL_IDS["tonal"]
 TONAL_MODEL_REVISION = MODEL_REVISIONS["tonal"]
@@ -71,7 +72,11 @@ def levenshtein(a: str, b: str) -> int:
 
 
 def validate_lexicon_split(
-    train_rows: list[dict[str, str]], eval_rows: list[dict[str, str]]
+    train_rows: list[dict[str, str]],
+    eval_rows: list[dict[str, str]],
+    *,
+    expected_train_rows: int = EXPECTED_TRAIN_ROWS,
+    expected_train_duplicate_rows: int = EXPECTED_TRAIN_DUPLICATE_ROWS,
 ) -> dict[str, int]:
     train_forms = {nfc(row["orth"]) for row in train_rows if row.get("orth", "").strip()}
     eval_forms = {nfc(row["orth"]) for row in eval_rows if row.get("orth", "").strip()}
@@ -81,11 +86,11 @@ def validate_lexicon_split(
         raise ValueError(f"Training/evaluation lexicon overlap: {len(overlap)} forms")
     if len(eval_rows) != 100 or len(eval_forms) != 100:
         raise ValueError("Expected 100 unique held-out lexicon forms")
-    if len(train_rows) != EXPECTED_TRAIN_ROWS:
-        raise ValueError(f"Expected {EXPECTED_TRAIN_ROWS} training lexicon rows, received {len(train_rows)}")
-    if train_duplicates != EXPECTED_TRAIN_DUPLICATE_ROWS:
+    if len(train_rows) != expected_train_rows:
+        raise ValueError(f"Expected {expected_train_rows} training lexicon rows, received {len(train_rows)}")
+    if train_duplicates != expected_train_duplicate_rows:
         raise ValueError(
-            f"Expected {EXPECTED_TRAIN_DUPLICATE_ROWS} duplicate training rows, received {train_duplicates}"
+            f"Expected {expected_train_duplicate_rows} duplicate training rows, received {train_duplicates}"
         )
     return {
         "training_rows": len(train_rows),
