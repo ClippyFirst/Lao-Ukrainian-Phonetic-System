@@ -45,9 +45,9 @@ test("Hybrid v2 runs beam-five tonal inference locally from Pages assets", async
 
   const warmStart = Date.now();
   await run.click();
-  await expect(run).toBeDisabled();
-  await expect(run).toBeEnabled({ timeout: 30000 });
-  await expect(status).toContainText("Hybrid v2 завершив аналіз");
+  // A cached WASM inference can complete before Playwright resumes after click;
+  // don't assert a transient disabled state that may already have elapsed.
+  await expect(status).toContainText("Hybrid v2 завершив аналіз", { timeout: 30000 });
   const warmStartMs = Date.now() - warmStart;
 
   expect(externalRequests).toEqual([]);
