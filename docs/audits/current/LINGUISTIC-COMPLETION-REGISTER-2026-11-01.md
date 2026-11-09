@@ -466,3 +466,25 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | Python/browser provisional sound hints for unresolved modern-Lao consonants and selected vowels | DONE_VERIFIED (engineering) | Verify #42524982973: 289 Python, 143 Node, 19 Chromium; exact-head source/data/build/generated-artifact gates passed |
 | Preserve uncertain consonant position and tone; do not guess non-core consonants or unsupported standalone offglides | DONE_VERIFIED (engineering contract) | Python/browser regression tests in Verify #42524982973 |
 | Accuracy of grapheme-only hints in actual Lao words and connected speech | BLOCKED / evidence-limited | Requires independent expert-adjudicated contextual IPA records; project gold remains 0 |
+
+## Written-evidence and lexical-hint continuation — 2026-11-09
+
+**Integration checkpoint:** PR #157 was merged into `main` at `b5a3ea58481152196498d74eebee1c009f445046`. The final documentation/handoff checkpoint `290aca27cb62366d061664aca33a282fcba62dd2` passed exact-head Verify [#42586909319 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586909319): 298 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests; IPA-gold schema, repository data/evidence audit, external-G2P harness, locked install, build, generated-data reproducibility/drift and built-page/relative-asset checks all passed.
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-WRITTEN-EVIDENCE-2026-11-09 | DONE_VERIFIED (source/claim registration) | PR #157 registers written phonology, dialect, syllabification, lexical-history, pronunciation-resource and benchmark-methodology sources/claims with explicit scope and provenance. | Registration makes evidence discoverable; it does not automatically validate a new runtime rule or make a secondary resource gold. |
+| LAO-SYLLABIFICATION-EXAMPLE-2026-11-09 | DONE_VERIFIED (structural regression) | LaoNLP's published example `ພາສາລາວໃນປັດຈຸບັນ` is asserted in Python and browser suites; exact-main Verify #42586909319 passed. | Structural syllable segmentation/parity only; not lexical word segmentation or IPA gold. |
+| LAO-LEXICAL-HINTS-001 | DONE_VERIFIED (diagnostic only) | Attributed 11,208-entry BSD-style LaoNLP `Lao-Dictionary.txt`; `src/lao_ukrainian/lexical_hints.py`; five focused tests. Exact-main Verify #42586909319 passed. | Returns every matching contiguous multi-syllable span, retains overlaps and labels them `SOFT_HINT_ONLY`. It does not select boundaries, change syllable parsing, feed IPA/G2P, alter Ukrainian output, or enter the browser bundle. |
+| LAO-LEXICAL-SEGMENTATION-001 | PARTIAL | The list was created for word wrapping and its header says compounds were mostly reduced to parts. | A validated lexical word segmenter requires independently verified boundary data and context-sensitive evaluation; no automatic segmentation claim is permitted. |
+| LAO-LAONLP-MIT-CSV-001 | BLOCKED | The separate 2.73 MB `lao-eng-dictionary.csv` body/schema could not be reproducibly fetched in this environment. | Reproducibly obtain the complete bytes, inspect schema/rows and field provenance, verify its separate MIT notice, then decide on a diagnostic-only use. Do not infer fields from metadata. |
+| LAO-KAIKKI-IPA-PROVENANCE-001 | TODO | Kaikki/Wiktextract pronunciation fields may include both explicit human entries and Lua-generated outputs. | Classify per-entry provenance, source page, dialect/variant and representation before any import or benchmark use; never treat the full extraction as independent gold. |
+| LAO-IPA-GOLD-001 | BLOCKED | Independent expert-adjudicated project gold remains 0; `data/benchmark/gold.tsv` remains header-only. | Requires rights-cleared source material, qualified independent annotation, blind adjudication, dialect/profile and IPA conventions fixed, and a frozen held-out split. |
+
+### Interpretation and scope
+
+- The user cannot provide audio. Continue useful work from written primary/secondary sources, published examples, attributed orthographic resources and text-only tests; do not claim acoustic fidelity, prosodic naturalness or independent phonetic accuracy.
+- Enfield's broad minor-syllable description remains distinct from the central Vientiane-specific Ueda profile. No broader /a i u/ rule was introduced.
+- Osatananda's underlying lexical-tone analysis, Enfield's phonological feet, Davis's historical `ຣ`, Indic-loan orthography and Yanagimura's contextual tonal effects remain scoped research constraints, not silently converted into unsupported deterministic rules.
+- The lexical-hint file is not a canonical phonological registry. `data/lao/*.csv` remains the authoritative phonological data; the word list is a separate, attributed orthographic research aid.
+- No production phonology, IPA rule, target adapter, browser engine or generated browser data was changed by this continuation.

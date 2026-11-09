@@ -16,6 +16,8 @@ This glossary defines repository terms. It does not replace the cited Lao phonol
 | **Ukrainian practical form** | A project-specific readable Ukrainian rendering derived from established IPA correspondences; not an official national standard. |
 | **Romanization route** | A separate, lower-information orthographic route (CLDR/BGN-oriented) with source-aware syllable checks. It is not a pronunciation substitute and cannot reconstruct tone. |
 | **Structural fixture** | An engineering regression case for parsing, Unicode or source integrity. It is not lexical IPA gold. |
+| **Orthographic lexical hint** | A non-authoritative match between a contiguous syllable span and an attributed word list. It may suggest a candidate span but does not establish a lexical boundary or pronunciation. |
+| **SOFT_HINT_ONLY** | A diagnostic authority label for an orthographic lexical-list match. It must not be promoted to a selected word boundary, IPA result, or production rule. |
 | **Independent IPA gold** | A rights-cleared, source-located, independently annotated and adjudicated record eligible for held-out scoring. The corpus remains empty until the human workflow completes. |
 | **Reference profile** | The bounded pilot target: contemporary central Vientiane Lao, careful citation-form speech (lao-vientiane-careful-citation-v1). It is not a universal Lao dialect claim. |
 
