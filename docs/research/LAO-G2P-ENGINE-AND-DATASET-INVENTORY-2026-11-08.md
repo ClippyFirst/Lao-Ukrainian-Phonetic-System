@@ -63,10 +63,10 @@ Pinned split: `HaHVU/HVULao_NLP` revision `ec8be4f1a541f3a5c76b4ebda39a9b2795d5c
 
 | Engine/profile | IPA-complete sentences | Ukrainian rendering | Syllable IPA coverage | Mean latency |
 |---|---:|---:|---:|---:|
-| Vientiane rules | 676/1,000 · 67.6% | 625/1,000 · 62.5% | 97.85% | 9.12 ms |
-| MekongPhon-reference rules | 676/1,000 · 67.6% | 337/1,000 · 33.7% | 97.85% | 8.66 ms |
-| ClippyFirst hybrid | 341/1,000 · 34.1% | **1,000/1,000 · 100%** | 94.14% | 8.87 ms |
-| MekongPhon Neural | 934/1,000 · 93.4% | Not applicable (IPA-only) | Not reported in this stress harness | 241.42 ms per successful sentence |
+| Vientiane rules | 676/1,000 · 67.6% | 625/1,000 · 62.5% | 97.85% | 9.28 ms |
+| MekongPhon-reference rules | 676/1,000 · 67.6% | 337/1,000 · 33.7% | 97.85% | 8.89 ms |
+| ClippyFirst hybrid | 341/1,000 · 34.1% | **1,000/1,000 · 100%** | 94.14% | 9.07 ms |
+| MekongPhon Neural | 934/1,000 · 93.4% | Not applicable (IPA-only) | Not reported in this stress harness | 251.20 ms per successful sentence |
 
 The neural model rejected 66 rows (61 source-codepoint-limit, 5 unsupported-character). The hybrid rendered all 21,680 analyzed units; 1,025 units were provisional hints. Pairwise disagreement on 332 shared complete sentences: Vientiane vs MekongPhon-reference 7.39% CER; MekongPhon-reference vs Neural 11.78%; Hybrid vs Neural 11.78%; MekongPhon-reference vs Hybrid 0.00%. Disagreement does not identify which output is correct.
 
