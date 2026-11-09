@@ -1,11 +1,11 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** main after PR #157 was merged at `b5a3ea58481152196498d74eebee1c009f445046` (2026-11-09). PR #156 remains a separate Draft benchmark proposal; its scripts/workflows are not part of this mainline map. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** main at `1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31` (2026-11-09), exact-head Verify #42611861847 passed. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 and #145 remain open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
 - Python API: `src/lao_ukrainian/__init__.py`; orchestration in `src/lao_ukrainian/core.py`.
-- CLI: `src/lao_ukrainian/cli.py`; deterministic rules are the default engine.
+- CLI: `src/lao_ukrainian/cli.py`; hybrid-deterministic is the default engine; Vientiane and MekongPhon-reference remain explicit compatibility profiles.
 - Optional neural provider: `src/lao_ukrainian/mekongphon.py`; explicit tonal/non-tonal model selection, immutable model revisions, bounded input, raw IPA provenance and fail-closed unknown-symbol handling. It is not a silent fallback or a replacement for the deterministic engine.
 - Browser instrument: `index.html`, `web/app.js`, `web/engine.js`; methodology page: `system.html`.
 - Optional romanization method: `web/romanization.js` and `web/romanization-syllable-engine.js`; separate from the phonetic route.
@@ -49,8 +49,9 @@ Canonical codepoint inventory: `data/lao/grapheme_inventory.csv` (83 assigned co
 
 - `src/lao_ukrainian/lexical_hints.py` is an optional diagnostic helper; it is not imported by the production parser or G2P path.
 - `data/lao/lexical-hints/Lao-Dictionary.txt` is the attributed LaoNLP orthographic word list (11,208 entries) with its original BSD-style notice. Its authors describe it as a word-wrapping resource and say compounds were mostly reduced to parts.
+- `data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt` is a filtered 34,937-entry derivative of the separate MIT CSV: NFC-normalized unique Lao-block strings only, with the full file-specific MIT notice embedded. The raw 2.86 MB CSV is not bundled.
 - The matcher reports every contiguous multi-syllable match, retains overlaps, and labels each result `SOFT_HINT_ONLY`. It never selects a segmentation, supplies IPA, changes Ukrainian output, or enters the browser bundle.
-- Focused tests live in `tests/test_lexical_boundary_hints.py`; the published LaoNLP syllabification example is tested in both Python and browser suites. These are software/structural checks, not lexical or pronunciation gold.
+- Focused tests live in `tests/test_lexical_boundary_hints.py`; the published LaoNLP syllabification example is tested in both Python and browser suites. The MIT-derived list is loaded only when explicitly passed to the helper. These are software/structural checks, not lexical or pronunciation gold.
 
 ## Separate orthographic romanization route
 
@@ -68,8 +69,10 @@ The optional CLDR/BGN-oriented romanization method is lower-information and sour
 
 - `scripts/benchmark_mekongphon_three_engines.py` — pinned ClippyFirst/Lao2IPA/MekongPhon comparison; aggregates only.
 - `scripts/diagnose_mekongphon_train_split.py` and `scripts/analyze_mekongphon_grapheme_contexts.py` — aggregate training-split diagnostics, not accuracy labels.
-- `scripts/compare_external_g2p.py`, `scripts/benchmark_ipa.py` — external comparator and gold scorer.
+- `scripts/compare_external_g2p.py`, `scripts/benchmark_ipa.py`, `scripts/benchmark_additional_lao_g2p.py` — external comparator and gold scorer; all external engines remain research-only.
 - `scripts/audit.py` — canonical registry, schema and evidence integrity checks.
+- `scripts/audit_laonlp_dictionary.py` — offline, Git-blob-pinned CSV audit; separates exact repeated headers, malformed header-like rows and ID-only placeholders. The raw CSV is supplied by the operator and is never bundled.
+- `scripts/benchmark_ipa_contract.py` — shared typed IPA confidence gate for benchmark metrics.
 
 ## High-risk seams
 

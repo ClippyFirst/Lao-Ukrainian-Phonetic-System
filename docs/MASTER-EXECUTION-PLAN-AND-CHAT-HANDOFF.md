@@ -3009,3 +3009,14 @@ No production code, IPA tables, canonical browser data or generated artifacts we
 ### LaoNLP audit utility precision follow-up
 
 The offline audit utility now reports exact repeated headers separately from malformed header-like rows (e.g. the historical `Pronuciation` spelling and blank LaoWord header cell). It retains the existing `repeated_header_rows` field for exact repeats and adds `malformed_header_like_rows` and `header_like_rows_total`. Regression tests cover the distinction, ID-only placeholders and usable-row counts. This makes the utility's output match the source-level audit instead of conflating malformed header variants with exact copies.
+
+
+## Final source-provenance and PR-stack reconciliation — 2026-11-09
+
+- Main SHA: 1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31.
+- Exact-head Verify: #42611861847 — SUCCESS, 316 Python / 147 Node-browser / 19 Chromium; all configured repository gates passed.
+- LaoNLP MIT CSV: inspected at pinned source commit/blob; 21 exact repeated headers, 3 malformed header-like rows, 3 ID-only rows; 35,078 distinct non-header LaoWord forms; 36 blank Type values; 7 blank Pronunciation values. Pronunciation is romanization, not IPA. The raw CSV is not bundled; its filtered 34,937-entry Lao-only derivative with full notice is available only as an optional SOFT_HINT_ONLY lexical hint.
+- Wiktionary: four exact page revisions and pinned lo-pron module/template revisions prove generated IPA in those four sample entries. Whole-corpus Kaikki provenance remains PARTIAL.
+- PRs: #156, #146 and #147 closed unmerged as superseded after their relevant code/benchmark work was selectively ported and verified on main; their branches remain intact. #148 and #145 remain open and unmerged; #137–#142 were left untouched.
+- Audit utility correction: exact repeated headers are now distinguished from malformed header-like rows; tests cover both classes. Two interim exact-head failures were fixed; final Verify is green.
+- Readiness: research-ready engineering prototype, not linguistically release-ready. Gold IPA 0; manual accessibility PARTIAL; lexical segmentation PARTIAL; whole-corpus Wiktionary provenance PARTIAL.

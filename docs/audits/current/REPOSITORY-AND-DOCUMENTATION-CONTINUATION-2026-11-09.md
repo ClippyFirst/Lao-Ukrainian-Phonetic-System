@@ -2,32 +2,32 @@
 
 # Latest mainline continuation — 2026-11-09 (supersedes earlier checkpoint summaries)
 
-**Current mainline:** `main` includes PR #157 at merge commit `b5a3ea58481152196498d74eebee1c009f445046`, whose first parent is the inspected main baseline `4570c5ff4733476601e02c791517ac36944d6a46`. The merge integrated 24 commits / 12 changed files from the pre-existing research branch; no new working branch was created, and no other branch was deleted or rewritten.
+**Current mainline:** `main` is at `1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31` (2026-11-09). This includes PR #157's merged written-evidence/lexical-hint work, selective benchmark integration from PR #156, and subsequent source-provenance and audit-utility improvements. No user branch was deleted or rewritten.
 
-**Exact merge-head engineering verification:** [Verify #42586199813 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586199813) on the exact merge commit above. It passed 298 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests, plus independent IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked npm install, build, generated browser-data reproducibility/drift and built-page/relative-asset checks. This verifies engineering contracts, not independent phonetic accuracy.
+**Latest exact-head engineering verification:** [Verify #42611861847 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42611861847) on main SHA 1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31. It passed 316 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests, plus independent IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked npm install, build, generated browser-data reproducibility/drift and built-page/relative-asset checks. This verifies engineering contracts, not independent phonetic accuracy.
 
-PR #157 adds written-source/claim records, the published LaoNLP syllabification regression in Python and browser suites, an attributed 11,208-entry BSD-style orthographic word list, and an optional matcher returning overlapping `SOFT_HINT_ONLY` spans. It does not select lexical boundaries and is not imported by production parsing, IPA/G2P, Ukrainian adaptation or the browser engine. The separate 2.73 MB MIT CSV remains excluded because its body/schema has not been reproducibly inspected.
+PR #157 adds written-source/claim records, the published LaoNLP syllabification regression in Python and browser suites, an attributed 11,208-entry BSD-style orthographic word list, and an optional matcher returning overlapping SOFT_HINT_ONLY spans. A later selective continuation added a filtered 34,937-entry derivative from the separate MIT CSV, plus an offline Git-blob-pinned audit utility. Neither list selects lexical boundaries or enters production parsing, IPA/G2P, Ukrainian adaptation or the browser engine. The raw 2.86 MB MIT CSV is excluded from the repository.
 
 **Current PR disposition (2026-11-09):**
 
 | PR | Current state | Disposition |
 |---|---|---|
 | #157 | Merged to main | Integrated; exact merge-head Verify passed. |
-| #156 | Draft/open, not mergeable | Keep separate. Benchmark scripts/workflows overlap the earlier #137–#148 stack; reconcile file-level dependencies before any integration. |
+| #156 | Closed unmerged | Useful benchmark scripts, confidence gate, comparator workflows and tests were selectively ported; exact mainline runs and Verify passed. Branch preserved. |
 | #148 | Open, not mergeable | Stale documentation/architecture branch based on an older mainline; do not merge its snapshot over newer main docs. |
 | #145 | Open, not mergeable | Neural-first proposal conflicts with the adopted deterministic hybrid mainline; not an approved production direction. |
-| #146 | Draft/open, not mergeable | Deterministic reference-profile stack; review dependencies and overlap before integration. |
-| #147 | Draft/open, mergeable | Depends on the #146 benchmark/profile stack; do not merge independently of its dependency and data/metric review. |
+| #146 | Closed unmerged | Deterministic reference-profile implementation and benchmark are superseded by newer mainline versions; mainline benchmark #42591871633 passed. Branch preserved. |
+| #147 | Closed unmerged | HVULao 1k script/workflow and documentation superseded by mainline implementation; exact-mainline run #42591871473 passed. Branch preserved. |
 | #137–#142 | Open; mixed mergeability | Preserve untouched. These are older stacked engine, benchmark, fallback and target work; current main already includes later merged successors for several areas. Require per-PR diff/dependency review before any action. |
 | #149–#155 (excluding #156) | Merged | Their accepted hybrid, mixed-script, numeral, arbitration and grapheme-preview changes are already in main. |
 
-No unrelated PR was merged, closed, retargeted or force-pushed in this continuation. Existing branches were preserved.
+PRs #146 and #147 were closed unmerged only after confirming their benchmark/profile implementations already exist on main in updated forms; closure comments link exact mainline benchmark and Verify evidence. No branch was deleted or rewritten. PR #148 and #145 remain open; #137–#142 remain untouched.
 
 **Five upstream methodology references revalidated:** current upstream `main` commits are Unlazy `16671491f6679ad9378f52604d3bc2415b4120c7`, UI UX Pro Max `4f2dbb67e64969a9a30ab00742f2d55d66ddec2b`, Superpowers `22f0b463e7a5e579904dd6211a520321035526f7`, Matt Pocock Skills `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, and Ponytail `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. All five inspected root `LICENSE` files are MIT. This does not blanket-license embedded assets or third-party data. The project adopts selected workflow, testing, code-review and web-accessibility practices only; no upstream code, skill tree, CLI, dataset, hook or runtime dependency was copied or installed. See `AGENTS.md` for the pinned methodology policy.
 
 **Documentation authority remains singular:** root `README.md` orients users; `docs/README.md` is the documentation index; `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` is the canonical execution ledger/handoff; `docs/audits/README.md` indexes current and historical audits; `docs/agents/codebase-map.md` maps implementation. Dated audits are snapshots, not competing specifications. No duplicate master plan or parallel documentation tree was created.
 
-**Remaining blockers:** independent expert-adjudicated IPA gold remains 0; acoustic/prosodic accuracy and linguistic sign-off are not established. Manual screen-reader, physical-device, real zoom and human visual/contrast QA remain PARTIAL. The separate MIT CSV remains BLOCKED pending complete body/schema retrieval and provenance review. Kaikki/Wiktionary pronunciation provenance classification remains TODO before any diagnostic import. Lexical word boundaries remain unsolved; the LaoNLP list is only a soft hint source.
+**Remaining blockers:** independent expert-adjudicated IPA gold remains 0; acoustic/prosodic accuracy and linguistic sign-off are not established. Manual screen-reader, physical-device, real zoom and human visual/contrast QA remain PARTIAL. The MIT CSV has been inspected and is used only through a filtered SOFT_HINT_ONLY derivative; lexical boundaries remain unsolved. Kaikki/Wiktionary sample-level generated provenance is verified for four pinned pages, while whole-corpus provenance remains PARTIAL. No pronunciation dataset has been promoted to gold.
 
 ---
 
@@ -410,3 +410,31 @@ The repository's documentation hierarchy is coherent and discoverable without a 
 - Exact-head Verify [#42587148792 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42587148792) on that commit: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; all configured IPA-gold schema, repository data/evidence, external-G2P harness, locked install, build, generated-data and built-page checks passed.
 - The register now distinguishes completed source registration, structural segmentation fixtures and diagnostic-only lexical hints from unresolved lexical word segmentation, the inaccessible MIT CSV, unclassified Kaikki/Wiktionary IPA provenance and independent IPA gold (0).
 - This synchronization changes documentation only; no runtime, canonical phonological registry or generated browser asset changed.
+
+
+## Mainline continuation update — 2026-11-09 (latest)
+
+### LaoNLP dictionary and audit utility
+
+The MIT dictionary body was retrieved from immutable LaoNLP commit a914f64e38ff24d67d32e37db40dad5c368ea602; its file-specific 2015 MIT notice and Git blob SHA-1 ded14c7770becfd5c6946c6c1ce75a7dfc4d564c were verified. The raw CSV is not committed. A filtered 34,937-entry Lao-only derivative is committed at data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt with the full notice embedded; it is only an optional SOFT_HINT_ONLY source for the diagnostic matcher.
+
+A quote-aware source audit found 51,257 records after the first header: 21 exact repeated headers, 3 malformed header-like rows, 3 ID-only rows, 35,078 distinct non-header LaoWord forms, 11,195 forms occurring multiple times, 36 non-header blank Type values (33 usable records plus 3 ID-only), and 7 blank Pronunciation values (4 usable plus 3 ID-only). The Pronunciation field is Latin romanization, not IPA. The offline script scripts/audit_laonlp_dictionary.py verifies the Git object hash and now distinguishes exact repeated headers from malformed header-like rows; regression tests cover both cases.
+
+### Wiktionary provenance
+
+Four exact raw source revisions invoke the lo-pron template: ກະດານ (66396667), ການແປ (66459544), ຂໍກະແຈ (68829138), and ຝົນ (85069045). The Lua generator is pinned to Module:lo-pron oldid 88555975, the wrapper to Template:lo-pron oldid 79053402, and its documentation to oldid 76254409. For these four examples the IPA is generated, not manually typed. This is sample evidence only; whole-corpus Kaikki provenance remains PARTIAL because extracted sounds records do not preserve source invocation metadata or all dependency revisions.
+
+### Current PR reconciliation
+
+- #156: closed unmerged after selective benchmark port; branch preserved.
+- #146: closed unmerged as superseded by updated mainline deterministic-profile code and benchmark evidence; branch preserved.
+- #147: closed unmerged as superseded by updated mainline HVULao 1k implementation and exact-mainline run; branch preserved.
+- #148: open, stale documentation branch; not merged.
+- #145: open, neural-first proposal not adopted; the deterministic hybrid remains the production default.
+- #137–#142: open, stacked/diverged; not modified.
+
+### Exact-head verification
+
+Verify #42611861847 — SUCCESS on main SHA 1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31: 316 Python, 147 Node/browser and 19 Chromium tests; all configured schema, repository data/evidence, external harness, locked install, build, generated-data reproducibility and built-page checks passed. Two earlier attempts at the audit utility's new regression test exposed fixture/header-classification errors; both were corrected and this final exact-head run is green.
+
+Readiness remains research-ready engineering prototype, not linguistically release-ready. Independent expert IPA gold remains 0; manual accessibility acceptance remains PARTIAL; contextual lexical segmentation and corpus-wide Wiktionary provenance remain unresolved.
