@@ -148,6 +148,19 @@ def latency_summary(values: list[float]) -> dict:
     }
 
 
+def new_rule_stage() -> dict:
+    """Create independent counters for one deterministic IPA profile."""
+    return {
+        "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
+        "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
+        "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
+        "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
+        "uncertain_ipa_units": 0, "provisional_units": 0,
+        "analysis_statuses": Counter(), "invalid_warnings": Counter(),
+        "invalid_input_rows": [], "empty_analysis_rows": [],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -168,33 +181,9 @@ def main() -> int:
         raise RuntimeError("MekongPhon smoke inference did not resolve the pinned model")
 
     stages = {
-        "vientiane_rules": {
-            "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
-            "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
-            "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
-            "uncertain_ipa_units": 0, "provisional_units": 0,
-            "analysis_statuses": Counter(), "invalid_warnings": Counter(),
-            "invalid_input_rows": [], "empty_analysis_rows": [],
-        },
-        "mekongphon_reference_rules": {
-            "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
-            "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
-            "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
-            "uncertain_ipa_units": 0, "provisional_units": 0,
-            "analysis_statuses": Counter(), "invalid_warnings": Counter(),
-            "invalid_input_rows": [], "empty_analysis_rows": [],
-        },
-        "hybrid_deterministic_rules": {
-            "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
-            "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
-            "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
-            "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
-            "uncertain_ipa_units": 0, "provisional_units": 0,
-            "analysis_statuses": Counter(), "invalid_warnings": Counter(),
-            "invalid_input_rows": [], "empty_analysis_rows": [],
-        },
+        "vientiane_rules": new_rule_stage(),
+        "mekongphon_reference_rules": new_rule_stage(),
+        "hybrid_deterministic_rules": new_rule_stage(),
         "mekongphon_neural": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "input_rejections": Counter(),
