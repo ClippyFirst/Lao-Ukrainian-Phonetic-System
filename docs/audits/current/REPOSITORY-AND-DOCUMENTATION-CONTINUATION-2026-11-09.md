@@ -608,3 +608,30 @@ ClippyFirst is tied for the lowest segmental CER on this split, but has lower se
 - Independent expert-adjudicated IPA gold: BLOCKED (0 records). Contextual lexical-boundary gold, full Kaikki source provenance, acoustic/prosodic evaluation and manual accessibility QA remain PARTIAL/BLOCKED as recorded above.
 
 **Readiness:** engineering-verified research prototype, not linguistically release-ready. The measured segmental result is competitive on one dictionary-seeded split; tonal quality and full coverage still trail competitors, and no independent gold establishes phonetic accuracy.
+
+
+## Non-blocking low-confidence output and schema 6.0 — 2026-11-09
+
+Owner requirement clarified: 97% segmental / 91% tonal must not be presented as output coverage. Low-confidence results must remain visible, with uncertainty marked. The 100-word benchmark now separates output coverage from confidence coverage and includes explicit provisional/unknown output in full-set CER scoring.
+
+- The hybrid target adapter now returns an explicit target-side ? whenever a typed IPA/provisional sequence cannot be fully adapted. It never suppresses a valid source unit merely because target mapping is unavailable; source IPA and confidence metadata remain intact.
+- Benchmark helper renderable_segmental_ipa() emits accepted IPA, provisional grapheme hints and explicit ? unknown positions. renderable_tonal_ipa() emits the contour or a ? marker. render_mekong_tonal() no longer returns an empty result for unresolved tone categories; it renders an explicit ?.
+- Schema 6.0 100-word run [#42654328706 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654328706) verifies 100/100 inputs and 169/169 syllable units with segmental and tonal outputs. Confidence remains separately measured at 97/100 inputs for accepted segmental IPA and 91/100 for accepted tone contours; 160/169 syllables have a tone contour, and the rest are explicitly marked unknown rather than omitted.
+
+| Engine | Segmental CER | Segmental output coverage | Tonal CER | Tonal output coverage |
+|---|---:|---:|---:|---:|
+| ClippyFirst hybrid | 6.15% | 100% | 22.90% native / 11.39% Mekong convention | 100% |
+| MekongPhon Neural | 6.64% | 100% | 8.29% | 100% |
+| Lao2IPA | 8.97% | 100% | 11.97% | 100% |
+
+The provisional/unknown markers are included in the full-set CER; they are not treated as correct IPA. ClippyFirst leads this split on segmental CER, but its tonal CER still trails MekongPhon Neural. Mekong-convention tonal CER is slightly better than Lao2IPA. Tone-category error is 3.81% among covered categories (105/126, 83.33% coverage). The dictionary-seeded reference split is not independently re-adjudicated gold; independent project IPA gold remains 0.
+
+Exact-head Verify [#42654358111 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654358111) on ef58962bd5228ff96acacf8b63c4a6593ca12440 passed 327 Python tests, 147 Node tests and 19 Chromium tests, plus configured build, evidence, data and built-site checks. The subsequent README and benchmark-report documentation updates require exact-head verification.
+
+**Task ledger update:**
+- 100% visible output for the 100-word set — DONE_VERIFIED (100/100 inputs, 169/169 units; schema 6.0 artifact).
+- Explicit low-confidence/unknown tone output — DONE_VERIFIED (tone output 100%; 160/169 units have contours, missing contours marked ?).
+- 100% accepted IPA / tone confidence — not an output gate; remains PARTIAL (97/100 segmental and 91/100 tonal confidence-complete inputs).
+- 1,000-row HVULao schema-1.5 post-fallback benchmark — PARTIAL, still running as [#42653641804](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804); prior accepted schema-1.5 run #42650543096 already verified 1,000/1,000 hybrid renderings and 21,534/21,534 analyzed units.
+
+**Readiness:** engineering-verified research prototype. Output coverage is complete on the named 100-word set; segmental concordance is competitive, but tonal quality and independent phonetic validation remain incomplete. No claim of universal-Lao 100% phonetic accuracy is made.
