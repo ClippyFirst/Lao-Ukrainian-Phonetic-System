@@ -270,6 +270,13 @@ class TestCore(unittest.TestCase):
         self.assertTrue(all(unit.practical_ukrainian is not None for unit in result.syllables))
 
 
+    def test_lao_ellipsis_is_preserved_as_nonphonological_passthrough(self):
+        result = core_module.analyze("ຂາຯ")
+        self.assertEqual(result.syllables[-1].surface, "ຯ")
+        self.assertEqual(result.syllables[-1].status, "PASSTHROUGH")
+        self.assertEqual(result.syllables[-1].practical_ukrainian, "ຯ")
+        self.assertEqual(result.syllables[-1].phonemic_ipa, None)
+
     def test_hybrid_renders_every_assigned_lao_block_codepoint(self):
         for codepoint in range(0x0E80, 0x0F00):
             character = chr(codepoint)
