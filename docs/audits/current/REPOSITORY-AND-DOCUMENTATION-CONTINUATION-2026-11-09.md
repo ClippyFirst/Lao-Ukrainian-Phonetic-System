@@ -314,8 +314,8 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 
 ### Soft lexical-boundary hint prototype — 2026-11-09
 
-- **DONE_VERIFIED after exact-head CI:** retained the complete upstream BSD notice and attribution with the LaoNLP word list at `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- **PARTIAL pending exact-head CI:** retained the complete upstream BSD notice and attribution with the LaoNLP word list at `data/lao/lexical-hints/Lao-Dictionary.txt`.
 - Added optional diagnostic `src/lao_ukrainian/lexical_hints.py`; it reports every multi-syllable lexicon match, preserves overlapping alternatives and labels them `SOFT_HINT_ONLY`. It does not alter syllable segmentation, IPA, Ukrainian rendering, production parser behavior or browser artifacts.
-- Added focused unit tests for list loading/deduplication, overlap preservation, default minimum span, input immutability and invalid arguments.
+- Added focused unit tests for list loading/deduplication, overlap preservation, default minimum span, input immutability and invalid arguments; exact-head CI remains the acceptance gate.
 - This is a candidate-boundary aid only. The source says it was made for line wrapping and compounds are mostly reduced to parts; it is not word-boundary gold.
 - The distinct 2.73 MB MIT CSV remains **BLOCKED** pending a complete reproducible fetch, schema review, field-level provenance and independent decision on its intended use.

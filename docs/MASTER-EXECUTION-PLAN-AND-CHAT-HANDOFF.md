@@ -2833,7 +2833,7 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 ### Soft lexical-boundary hint prototype — 2026-11-09
 
 - User approved continuing with written evidence only; audio is not available and is not a prerequisite for text-only engineering.
-- Fetched the complete 77,274-character LaoNLP BSD word list (11,211 non-comment entries in the inspected snapshot; upstream blob SHA-1 `ca5346a1971a7712ac3c50988140c376859174e3`) and retained its original header/attribution in `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- Fetched the complete 77,274-character LaoNLP BSD word list (11,208 non-comment entries in the inspected snapshot; upstream blob SHA-1 `ca5346a1971a7712ac3c50988140c376859174e3`) and retained its original header/attribution in `data/lao/lexical-hints/Lao-Dictionary.txt`.
 - Added `src/lao_ukrainian/lexical_hints.py`, an optional diagnostic that reports all multi-syllable orthographic list matches with offsets and `SOFT_HINT_ONLY` authority. It retains overlaps and does not select word boundaries or feed the production parser, IPA/G2P, Ukrainian target adapter or browser engine.
 - Added focused tests; exact-head Verify must confirm the final commit before marking the code batch DONE_VERIFIED.
 - The source's own header says it was created for word wrapping and compounds were mostly reduced to parts. Thus the hint list is not a lexical segmentation gold corpus; false positives and incomplete compound coverage are expected.
