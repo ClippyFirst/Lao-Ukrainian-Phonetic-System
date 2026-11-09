@@ -20,7 +20,7 @@ AWW,ໍ,ɔː,long,above,none,core,long ɔ in ◌ໍ,monophthong
 AWW_MEDIAL,ອ,ɔː,long,postposed,none,core,long ɔ in medial ◌ອ,monophthong
 OE,ເິ,ɤ,short,preposed,none,core,,monophthong
 OEE,ເີ,ɤː,long,preposed,none,core,,monophthong
-IA,ເັຍ,iə,short,around,none,core,short IA: ເ◌ັຍ; medial ◌ັຽ,diphthong
+IA,ເັຍ / ◌ັຽ,iə,short,around,none,core,short IA: preposed ເ◌ັຍ and medial ◌ັຽ,diphthong
 IA_LONG,ເຍ,iːə,long,around,none,core,long IA: ເ◌ຍ and ເ◌ັຽ; standalone ◌ຽ in forms such as ວຽງ,diphthong
 UA,ເຶອ,ɯə,short,around,none,core,short ɯə,diphthong
 UA_LONG,ເືອ,ɯːə,long,around,none,core,long ɯːə,diphthong
