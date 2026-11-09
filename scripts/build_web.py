@@ -87,6 +87,12 @@ if ESBUILD.exists() and ORT_DIST.exists():
                 or path.name.lower().startswith("notice")
             )
         )
+        if not license_files and package_name == "onnxruntime-common":
+            # This subpackage shares ONNX Runtime's MIT license; npm omits a
+            # duplicate license file here, while onnxruntime-web carries it.
+            shared_license = ROOT / "node_modules" / "onnxruntime-web" / "LICENSE"
+            if shared_license.is_file():
+                license_files = [shared_license]
         if not license_files:
             raise SystemExit(
                 f"No top-level LICENSE/NOTICE file found for bundled package {package_name}"
