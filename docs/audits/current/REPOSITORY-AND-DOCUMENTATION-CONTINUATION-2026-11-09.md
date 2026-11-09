@@ -133,3 +133,13 @@ Selected practices are already recorded in `AGENTS.md`. Do not vendor these repo
 ## Readiness
 
 **Research-ready as an engineering and evidence-management prototype; not linguistically release-ready.** The repository now exposes the latest comparative research and a clearer documentation authority map. The production hybrid remains unchanged. The genuine next blockers are exact-main verification, PR-stack reconciliation, independent IPA gold/adjudication and human accessibility review.
+
+
+## Final exact-head verification — 2026-11-09
+
+- Documentation continuation final head: 38498099290ede1d8ddc208e64dfcb1315e54c8b.
+- Exact-head Verify [#42577920085 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42577920085) on branch main and the exact final SHA above.
+- Hosted job steps passed: independent IPA-gold schema/structure validation; repository data/evidence audit; 289 Python tests; external-G2P harness compile and CLI check; locked npm ci; 143 Node/browser-engine tests; static build and canonical browser-data regeneration; generated-data drift check; 19 Chromium UI tests; built-page and relative-asset assertions.
+- Separate Markdown-link integrity scan over the seven changed Markdown files against the complete 179-blob repository tree found 0 missing local link targets. This scan checked local path targets, not every external URL or heading anchor.
+- The workflow was triggered by the successive direct-main documentation commits. Earlier intermediate Verify runs also completed successfully; the acceptance result above is the one attached to the final HEAD.
+- No local checkout or local shell execution is claimed. CI is hosted verification; linguistic accuracy and human accessibility acceptance remain outside its scope.
