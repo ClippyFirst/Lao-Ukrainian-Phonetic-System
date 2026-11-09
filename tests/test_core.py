@@ -277,6 +277,25 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.syllables[-1].practical_ukrainian, "ຯ")
         self.assertEqual(result.syllables[-1].phonemic_ipa, None)
 
+    def test_every_inventory_grapheme_has_a_typed_role_or_orthographic_passthrough(self):
+        inventory = core_module.load_registry()["grapheme_inventory"]
+        self.assertEqual(len(inventory), 83)
+        for row in inventory:
+            character = row["grapheme"]
+            with self.subTest(codepoint=row["codepoint"], grapheme=character):
+                result = core_module.analyze(character)
+                self.assertNotEqual(result.status, "INVALID")
+                self.assertEqual(len(result.syllables), 1)
+                unit = result.syllables[0]
+                if unit.status == "PASSTHROUGH":
+                    self.assertEqual(unit.practical_ukrainian, character)
+                    continue
+                preview = unit.grapheme_preview
+                self.assertIsNotNone(preview, "unparsed source codepoint must expose typed grapheme evidence")
+                self.assertEqual(len(preview.graphemes), 1)
+                self.assertEqual(preview.graphemes[0].grapheme, character)
+                self.assertNotEqual(preview.graphemes[0].role, "unregistered-grapheme")
+
     def test_hybrid_renders_every_assigned_lao_block_codepoint(self):
         for codepoint in range(0x0E80, 0x0F00):
             character = chr(codepoint)
