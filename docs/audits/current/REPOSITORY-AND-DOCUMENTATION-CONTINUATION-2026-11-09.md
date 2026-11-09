@@ -563,3 +563,18 @@ The HVULao 1k benchmark has been upgraded to schema 1.4. It now aggregates every
 - Verification on intermediate commit 2434cb946ec54e71a4763ec9c2a8c6a1286ddf2b: Verify #42647429908 SUCCESS; 319 Python tests and 19 Chromium tests passed.
 - Benchmark schema 1.4 exact-head run and latest Verify are pending at the time of this audit update. No coverage improvement or quality gain is claimed from diagnostics alone.
 - Next acceptance: inspect the aggregate failure distribution, prioritize source-grounded fixes for the largest categories, add regression cases, and rerun the same pinned corpus plus the three-engine identical-item comparisons. Independent IPA gold is still required for an accuracy claim.
+
+
+## Benchmark diagnostic regression fix — 2026-11-09
+
+The first schema-1.4 HVULao benchmark runs exposed a bookkeeping defect in the new diagnostics: the Vientiane stage initialized `withheld_statuses`, but the MekongPhon-reference and hybrid stage dictionaries did not. Each sentence was fully analyzed and most metrics were computed, but aggregation then raised `KeyError` once per row in those two profiles. This was a benchmark instrumentation failure, not a linguistic-engine exception or a valid comparison result.
+
+The correction centralizes all deterministic stage counters in `new_rule_stage()`, including independent `withheld_statuses` and `withheld` counters, and exports the typed status distribution alongside warning categories. A regression test verifies the fields exist and that profile counters do not leak between instances.
+
+- Fix commit: `3becf3b3859d1223953d426c34f6bd232a0041d6`.
+- Counter-factory refactor: `bdbe085a030ec54350077f20bcf9b103bca4f077`.
+- Regression test: `60969af2f55d6d83e12bbb0a3d0ec5d37c56119f`.
+- Exact-head Verify [#42649144346 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649144346): 323 Python tests, 147 browser-engine tests, 19 Chromium tests; repository evidence/schema checks, external-G2P syntax/CLI, locked install, build, generated-data reproducibility and built-page checks passed.
+- Corrected schema-1.4 HVULao run [#42649110626](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649110626) was still running when this note was written. The earlier run #42649047666 also remained in progress; neither result is accepted until the benchmark job completes and its zero-runtime-error gate passes.
+
+No engine phonology was changed in this fix. No improvement in IPA coverage or linguistic accuracy is claimed. The prior 34.6% hybrid IPA-complete / 94.21% syllable IPA baseline remains the last accepted benchmark baseline until the corrected run is complete.
