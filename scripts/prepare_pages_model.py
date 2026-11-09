@@ -69,6 +69,8 @@ def main() -> int:
         "model_revision": export_manifest["model_revision"],
         "model_weight_sha256": export_manifest["model_weight_sha256"],
         "architecture": export_manifest["architecture"],
+        "license": "apache-2.0",
+        "model_card_url": "https://huggingface.co/byumatrixlab/lao-ipa-tonal",
         "max_sequence_length": export_manifest["max_sequence_length"],
         "decoder_start_token_id": export_manifest["decoder_start_token_id"],
         "eos_token_id": export_manifest["eos_token_id"],
