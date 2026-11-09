@@ -275,12 +275,9 @@ export function createHybridV2Inference({
         throw new Error("Невідповідна або неперевірена версія моделі Hybrid v2.");
       }
       onProgress?.({ phase: "tokenizer", label: "Завантаження токенізаторів" });
-      // Transformers.js resolves local tokenizer IDs relative to env.localModelPath.
-      // Pass the subdirectory IDs (as in the parity harness), not absolute URLs:
-      // AutoTokenizer treats URL-shaped model IDs as Hub IDs and misses tokenizer_config.json.
       const [encoderTokenizer, decoderTokenizer] = await Promise.all([
-        AutoTokenizer.from_pretrained("encoder_tokenizer"),
-        AutoTokenizer.from_pretrained("decoder_tokenizer"),
+        loadStaticTokenizer(modelRoot, "encoder_tokenizer", suppliedEncoderTokenizer),
+        loadStaticTokenizer(modelRoot, "decoder_tokenizer", suppliedDecoderTokenizer),
       ]);
       const [encoderBytes, decoderBytes] = await Promise.all([
         encoderModelBytes ?? fetchBytes(
