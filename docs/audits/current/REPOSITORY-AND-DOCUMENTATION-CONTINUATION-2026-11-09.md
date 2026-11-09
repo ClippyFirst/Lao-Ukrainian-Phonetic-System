@@ -53,6 +53,12 @@ The five supplied repositories (Unlazy, UI UX Pro Max, Superpowers, Matt Pocock 
 
 **Readiness:** engineering-verified research prototype; **not linguistically release-ready**. The poor benchmark results are reported rather than hidden. A 100% rendering target is met on the named stress sets; a 100% supported-IPA, phonetic-accuracy or universal-Lao-coverage claim is not met and must not appear in user-facing claims.
 
+## Final documentation-head verification — 2026-11-09
+
+The documentation-navigation correction and restored practical-transcription link were committed on `main` at `651d83079f9e141a961530d92613a479c53cfa16`. Exact-head Verify [#42641288101 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42641288101) completed successfully. Repository evidence audit, 319 Python tests, external-G2P harness syntax/CLI, 147 Node/browser-engine tests, locked dependency install, generated-data regeneration/reproducibility, 19 Chromium UI tests and built-page/relative-asset checks all passed. No linguistic accuracy claim follows from this engineering result.
+
+The current documentation set retains one root README, one documentation index, one master execution ledger, one audit index and dated current/historical audit records. The five supplied upstream repositories remain methodology references only. The repository was not split into additional working branches; this continuation used `main` as requested. The latest PR inventory still shows only PR #145 open and unmerged.
+
 ---
 
 # Repository and documentation continuation audit — 2026-11-09
