@@ -2853,3 +2853,69 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Deterministic MekongPhon profile benchmark [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448); no runtime errors, comparative results remain non-independent reference concordance.
 - The new lexical-hint helper and list are code-verified; no runtime phonology or browser artifacts changed. The separate 2.73 MB MIT CSV remains blocked pending full body/schema retrieval.
 - This handoff update is documentation-only and requires a fresh exact-head Verify.
+
+
+## Mainline continuation — PR #157 integration and documentation reconciliation (2026-11-09)
+
+### Mainline integration
+
+- User requested that this continuation work on the single `main` branch. No new working branch was created.
+- Starting main HEAD: `4570c5ff4733476601e02c791517ac36944d6a46`.
+- Inspected PR #157's complete 24-commit / 12-file diff. It was based directly on that exact main HEAD, GitHub reported it mergeable, and its exact PR head `c35358228dfe55c7ba2265b78ace2b05e4aab1de` passed Verify #42585426225 and deterministic-profile benchmark #42585426230.
+- Marked PR #157 ready and merged it to main. Merge commit: `b5a3ea58481152196498d74eebee1c009f445046`; first parent is the inspected main baseline and second parent is the verified PR head.
+- Exact main merge-head Verify [#42586199813 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586199813): 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; IPA-gold schema, repository data/evidence audit, external-G2P harness syntax/CLI, locked install, build, generated-data reproducibility/drift and built-page/relative-asset checks all passed.
+
+### Integrated implementation and evidence boundaries
+
+- Registered the additional written phonology, dialect, syllabification, lexical-history and pronunciation-resource sources/claims with explicit scope and provenance.
+- Added the published LaoNLP syllabification example to Python and browser regression tests. It verifies structural segmentation parity, not lexical segmentation or IPA gold.
+- Added the attributed 11,208-entry LaoNLP BSD-style orthographic list under `data/lao/lexical-hints/`, retaining its original notice and documenting that it was made for word wrapping and compounds were mostly reduced to parts.
+- Added `src/lao_ukrainian/lexical_hints.py` as an optional diagnostic. It preserves overlapping multi-syllable matches and labels them `SOFT_HINT_ONLY`; it does not select word boundaries, feed IPA, change Ukrainian output, run in the production parser, or enter the browser bundle.
+- The separate 2.73 MB MIT `lao-eng-dictionary.csv` remains excluded: full body and schema are not reproducibly available in the inspected environment. Do not infer its fields or use it until the file is inspected.
+- No source phonology rules, production G2P path, Ukrainian target adapter or generated browser data were changed by PR #157.
+
+### Upstream methodology refresh
+
+The five supplied repositories were rechecked against current upstream `main` and their root `LICENSE` files. All inspected root licenses are MIT at the pinned snapshots; this does not cover separately licensed assets/data.
+
+| Reference | Inspected upstream commit | Project practice retained |
+|---|---|---|
+| [Unlazy](https://github.com/Leonxlnx/unlazy/tree/16671491f6679ad9378f52604d3bc2415b4120c7) | `16671491f6679ad9378f52604d3bc2415b4120c7` | Acceptance ledger, observable gates, evidence review and re-verification; no checker/hook runtime copied. |
+| [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/4f2dbb67e64969a9a30ab00742f2d55d66ddec2b) | `4f2dbb67e64969a9a30ab00742f2d55d66ddec2b` | Web accessibility, semantic controls, keyboard/focus, contrast, responsive layout and reduced motion; no CLI/data/token system imported. |
+| [Superpowers](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7) | `22f0b463e7a5e579904dd6211a520321035526f7` | Test-first development, systematic debugging, review and verification-before-completion. |
+| [Matt Pocock Skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d) | `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` | Composable instructions, deep modules, explicit interfaces, behavioral tests and source-backed research. |
+| [Ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846) | `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` | Whole-flow tracing, connected-caller review, trust-boundary/data-integrity checks and residual-risk reporting. |
+
+No upstream source code, skills, CLI, datasets, assets, hooks, workflows or runtime dependencies were copied or installed. The detailed local policy is in `AGENTS.md`.
+
+### PR and branch disposition
+
+- #157: merged; no branch deletion or force-push.
+- #156: Draft/open and currently non-mergeable; keep separate pending file-level reconciliation with #137–#148 benchmark scripts/workflows.
+- #148: open/non-mergeable stale documentation branch; do not merge its older snapshot over current main.
+- #145: open/non-mergeable neural-first proposal; conflicts with the deterministic hybrid direction already adopted on main.
+- #146: Draft/open/non-mergeable. #147: Draft/open/mergeable but stacked on the #146 profile/benchmark work; do not merge independently.
+- #137–#142: remain open and untouched; mixed mergeability, older stacked engine/benchmark/fallback/target changes. Reconcile each full diff and dependencies before any future action.
+- #149–#155 (excluding #156): already merged and present on main.
+
+### Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Integrate the written-evidence and lexical-hint PR on requested mainline | DONE_VERIFIED | PR #157 merged as `b5a3ea5...`; exact-main Verify #42586199813 SUCCESS. |
+| Verify published LaoNLP syllabification example in Python/browser | DONE_VERIFIED (structural fixture) | Covered by exact-main Verify; not lexical segmentation or pronunciation gold. |
+| Keep lexical hint matcher outside production parsing/G2P/target/browser | DONE_VERIFIED | Code path and tests reviewed; helper is diagnostic-only. |
+| Revalidate the five methodology repositories and root licenses | DONE_VERIFIED (snapshot review) | Exact commits and root MIT notices recorded; no third-party assets/data rights inferred. |
+| Reconcile PR #148 and #156 implementation stacks | PARTIAL | Both remain open/non-mergeable; need full file-level diff/dependency reconciliation. |
+| Resolve neural-first PR #145 against adopted hybrid architecture | DEFERRED | Current main already uses hybrid; PR #145 is a competing proposal, not an adopted requirement. |
+| Inspect separate 2.73 MB Lao-English MIT CSV | BLOCKED | Complete body/schema unavailable; acceptance requires reproducible full fetch, schema/field provenance review and separate-use decision. |
+| Classify Kaikki/Wiktionary IPA provenance | TODO | Separate explicit human entries from Lua-generated outputs with per-entry source/dialect metadata before diagnostic use. |
+| Independent expert-adjudicated IPA gold | BLOCKED | 0 records; requires rights-cleared material, qualified independent annotators and adjudication. |
+| Manual accessibility acceptance | PARTIAL | Screen readers, physical devices, actual 200%/400% zoom and human visual/contrast review not performed. |
+| Linguistic production sign-off | BLOCKED | No independent gold or qualified specialist acceptance; engineering CI cannot close this gate. |
+
+### Execution limits
+
+- All GitHub repository inspection, merge, and verification evidence above is remote/hosted. No local checkout, shell command, local test run or local browser session is claimed.
+- The exact merge-head Verify is authoritative for the merged code state. A subsequent documentation-only commit must receive its own exact-head Verify before this handoff can be considered current.
+- Readiness remains an engineering-verified research prototype, not a linguistically validated production release.

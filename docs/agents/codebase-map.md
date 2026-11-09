@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** current main 819c2528b1c726adfd3062be89084fedce7ad84d (2026-11-09), with benchmark implementation in open Draft PR #156 kept separate from production. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** main after PR #157 was merged at `b5a3ea58481152196498d74eebee1c009f445046` (2026-11-09). PR #156 remains a separate Draft benchmark proposal; its scripts/workflows are not part of this mainline map. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
@@ -44,6 +44,13 @@ The browser engine is a separately maintained implementation using generated can
 `grapheme_preview.py` produces a diagnostic `PROVISIONAL` segmental hint from registered positional onset/cluster values and parser-confirmed vowel/coda structures. The primary hybrid may wrap those hints as a separate typed `PROVISIONAL` `PhoneticResult`, append explicit unknown segments for unresolved graphemes, and send that typed result through the ordinary Ukrainian IPA adapter. This is not direct grapheme-to-Ukrainian mapping: provisional IPA runs remain visibly low-confidence, unknown segments render `?`, and none is promoted to `SUPPORTED` IPA. The adapter preserves confidence labels; benchmark accuracy metrics score only `SUPPORTED` / `UNCERTAIN`, never `PROVISIONAL`. Tone is never inferred by the preview. Browser parity lives in `web/engine.js`; both runtimes preserve known vowel length when available.
 
 Canonical codepoint inventory: `data/lao/grapheme_inventory.csv` (83 assigned code points in the Unicode 18 Lao block). Unicode character identity does not itself establish a pronunciation.
+
+## Non-authoritative lexical-boundary hints
+
+- `src/lao_ukrainian/lexical_hints.py` is an optional diagnostic helper; it is not imported by the production parser or G2P path.
+- `data/lao/lexical-hints/Lao-Dictionary.txt` is the attributed LaoNLP orthographic word list (11,208 entries) with its original BSD-style notice. Its authors describe it as a word-wrapping resource and say compounds were mostly reduced to parts.
+- The matcher reports every contiguous multi-syllable match, retains overlaps, and labels each result `SOFT_HINT_ONLY`. It never selects a segmentation, supplies IPA, changes Ukrainian output, or enters the browser bundle.
+- Focused tests live in `tests/test_lexical_boundary_hints.py`; the published LaoNLP syllabification example is tested in both Python and browser suites. These are software/structural checks, not lexical or pronunciation gold.
 
 ## Separate orthographic romanization route
 

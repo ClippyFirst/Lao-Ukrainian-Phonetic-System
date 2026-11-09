@@ -6,7 +6,7 @@
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
-**Current status (2026-11-09):** the default main engine is the deterministic hybrid-deterministic pipeline. Additional G2P engines, including supervised Lao Transphone, have been compared on a shared dictionary-seeded reference split; results and dataset limitations are documented in the [engine and dataset inventory](docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md). These scores are not independent expert accuracy. The independent adjudicated IPA gold corpus remains empty, so this is an engineering-verified research prototype, not a linguistically validated production standard. See the [current repository continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) for exact branch/PR and verification status.
+**Current status (2026-11-09):** `main` contains the deterministic hybrid-deterministic engine and the written-evidence/lexical-hint work integrated by [PR #157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/157). The optional LaoNLP word-list matcher is diagnostic-only: it returns overlapping `SOFT_HINT_ONLY` spans and does not segment words, generate IPA, or affect production output. Additional G2P engines, including supervised Lao Transphone, have been compared on a dictionary-seeded reference split; results and dataset limitations are documented in the [engine and dataset inventory](docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md). These scores are not independent expert accuracy. The independent adjudicated IPA gold corpus remains empty, so this is an engineering-verified research prototype, not a linguistically validated production standard. See the [current repository continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) for exact mainline, PR, and verification status.
 
 ## What this project is
 
@@ -42,6 +42,8 @@ Thus the same Lao character can have different realizations by role: for example
 
 The pinned [MekongPhon grapheme-context study](docs/audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md) aggregates grapheme, position, neighbouring signs, onset class, vowel ID, rhyme and tone-mark environments. The default Vientiane engine does not turn dictionary words into lexical lookup rules. An additional opt-in [MekongPhon-reference IPA profile](docs/research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md) applies a small set of high-frequency aggregate correspondences as deterministic convention overrides; it is experimental, does not use model weights, and is not independent gold.
 
+An optional [orthographic lexical-hint diagnostic](src/lao_ukrainian/lexical_hints.py) checks contiguous syllable spans against the attributed [LaoNLP word-wrapping list](data/lao/lexical-hints/README.md). It preserves overlapping matches and labels them `SOFT_HINT_ONLY`. The source explicitly says compounds were mostly reduced to parts, so this is not lexical word-boundary gold. The helper is not called by the production parser, IPA/G2P pipeline, Ukrainian adapter, or browser engine.
+
 ## Comparative methodology
 
 Russian Lao practical transcription is retained as a genuine historical/practical comparator. It is **not** the source of the Ukrainian output.
@@ -64,10 +66,12 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 ## Repository structure
 
 - src/lao_ukrainian/ — implementation;
-- data/lao/ — authoritative Lao registries;
+- data/lao/*.csv — authoritative Lao phonological registries;
+- data/lao/lexical-hints/ — separately attributed orthographic reference lists, not pronunciation registries;
 - data/comparative/ — Cyrillic comparison;
 - data/evidence/ — claims and source provenance;
-- docs/ — methodology, specification, implementation, limitations and decisions;
+- docs/ — methodology, specification, implementation, limitations, decisions and evidence-backed audits;
+- AGENTS.md — project-specific agent rules and pinned external methodology references;
 - schemas/ — machine-readable output schemas;
 - tests/ — regression and structural tests.
 
@@ -102,7 +106,7 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 
 ## Documentation
 
-Start at the [documentation index](docs/README.md). The latest [repository-wide audit](docs/audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) records the current architecture, branch/PR reconciliation, verification evidence and blockers. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md). The [Ukrainian practical transcription guide](docs/lao-ukrainian-practical-transcription.md) documents the IPA-conditioned target conventions.
+Start at the [documentation index](docs/README.md). The latest [repository and documentation continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) records the current mainline, PR reconciliation, documentation authority, verification evidence and blockers. The [codebase map](docs/agents/codebase-map.md) traces implementation entry points and data ownership. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md). The [Ukrainian practical transcription guide](docs/lao-ukrainian-practical-transcription.md) documents the IPA-conditioned target conventions.
 
 ## Web service
 

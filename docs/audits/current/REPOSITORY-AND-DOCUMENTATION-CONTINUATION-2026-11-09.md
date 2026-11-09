@@ -1,5 +1,37 @@
 # Repository and documentation continuation audit — 2026-11-09
 
+# Latest mainline continuation — 2026-11-09 (supersedes earlier checkpoint summaries)
+
+**Current mainline:** `main` includes PR #157 at merge commit `b5a3ea58481152196498d74eebee1c009f445046`, whose first parent is the inspected main baseline `4570c5ff4733476601e02c791517ac36944d6a46`. The merge integrated 24 commits / 12 changed files from the pre-existing research branch; no new working branch was created, and no other branch was deleted or rewritten.
+
+**Exact merge-head engineering verification:** [Verify #42586199813 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586199813) on the exact merge commit above. It passed 298 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests, plus independent IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked npm install, build, generated browser-data reproducibility/drift and built-page/relative-asset checks. This verifies engineering contracts, not independent phonetic accuracy.
+
+PR #157 adds written-source/claim records, the published LaoNLP syllabification regression in Python and browser suites, an attributed 11,208-entry BSD-style orthographic word list, and an optional matcher returning overlapping `SOFT_HINT_ONLY` spans. It does not select lexical boundaries and is not imported by production parsing, IPA/G2P, Ukrainian adaptation or the browser engine. The separate 2.73 MB MIT CSV remains excluded because its body/schema has not been reproducibly inspected.
+
+**Current PR disposition (2026-11-09):**
+
+| PR | Current state | Disposition |
+|---|---|---|
+| #157 | Merged to main | Integrated; exact merge-head Verify passed. |
+| #156 | Draft/open, not mergeable | Keep separate. Benchmark scripts/workflows overlap the earlier #137–#148 stack; reconcile file-level dependencies before any integration. |
+| #148 | Open, not mergeable | Stale documentation/architecture branch based on an older mainline; do not merge its snapshot over newer main docs. |
+| #145 | Open, not mergeable | Neural-first proposal conflicts with the adopted deterministic hybrid mainline; not an approved production direction. |
+| #146 | Draft/open, not mergeable | Deterministic reference-profile stack; review dependencies and overlap before integration. |
+| #147 | Draft/open, mergeable | Depends on the #146 benchmark/profile stack; do not merge independently of its dependency and data/metric review. |
+| #137–#142 | Open; mixed mergeability | Preserve untouched. These are older stacked engine, benchmark, fallback and target work; current main already includes later merged successors for several areas. Require per-PR diff/dependency review before any action. |
+| #149–#155 (excluding #156) | Merged | Their accepted hybrid, mixed-script, numeral, arbitration and grapheme-preview changes are already in main. |
+
+No unrelated PR was merged, closed, retargeted or force-pushed in this continuation. Existing branches were preserved.
+
+**Five upstream methodology references revalidated:** current upstream `main` commits are Unlazy `16671491f6679ad9378f52604d3bc2415b4120c7`, UI UX Pro Max `4f2dbb67e64969a9a30ab00742f2d55d66ddec2b`, Superpowers `22f0b463e7a5e579904dd6211a520321035526f7`, Matt Pocock Skills `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, and Ponytail `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. All five inspected root `LICENSE` files are MIT. This does not blanket-license embedded assets or third-party data. The project adopts selected workflow, testing, code-review and web-accessibility practices only; no upstream code, skill tree, CLI, dataset, hook or runtime dependency was copied or installed. See `AGENTS.md` for the pinned methodology policy.
+
+**Documentation authority remains singular:** root `README.md` orients users; `docs/README.md` is the documentation index; `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` is the canonical execution ledger/handoff; `docs/audits/README.md` indexes current and historical audits; `docs/agents/codebase-map.md` maps implementation. Dated audits are snapshots, not competing specifications. No duplicate master plan or parallel documentation tree was created.
+
+**Remaining blockers:** independent expert-adjudicated IPA gold remains 0; acoustic/prosodic accuracy and linguistic sign-off are not established. Manual screen-reader, physical-device, real zoom and human visual/contrast QA remain PARTIAL. The separate MIT CSV remains BLOCKED pending complete body/schema retrieval and provenance review. Kaikki/Wiktionary pronunciation provenance classification remains TODO before any diagnostic import. Lexical word boundaries remain unsolved; the LaoNLP list is only a soft hint source.
+
+---
+
+
 ## Executive assessment
 
 **Current state: engineering-verified research prototype; not linguistically release-ready.** The default branch is `main` at `819c2528b1c726adfd3062be89084fedce7ad84d`. The default production route is the deterministic `hybrid-deterministic` engine, with the typed IPA-to-Ukrainian adapter retained as the only phonetic target boundary. The independent expert-adjudicated IPA gold corpus remains empty; dictionary-relative benchmark agreement and full Ukrainian rendering must not be described as phonetic accuracy.

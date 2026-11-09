@@ -156,3 +156,15 @@ The five user-supplied repositories were rechecked as methodology references; th
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/releases/tag/v5.3.3): v5.3.3. Retain codebase/data-flow mapping, connected-code review, reuse before adding abstractions and explicit residual-risk reporting.
 
 These practices supplement, but never weaken, the project's Lao evidence, typed-IPA, source-rights, privacy, fail-closed and exact-head verification requirements. Recheck upstream versions before future adoption; mutable main-branch versions must not be treated as immutable pins.
+
+## Upstream methodology reference revalidation — 2026-11-09
+
+The five owner-supplied repositories were rechecked against their current upstream `main` commits and root `LICENSE` files. All five inspected root licenses are MIT at these snapshots; this does not establish rights for separately licensed datasets, embedded assets, submodules, dependencies, or third-party material.
+
+- [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy/tree/16671491f6679ad9378f52604d3bc2415b4120c7) — current source README targets 2.1.0 but does not identify it as a tagged GitHub release. Adopt the acceptance ledger, explicit observable gates, evidence review and re-verification discipline. Do not copy its checker, hook, approval store or orchestration runtime.
+- [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/4f2dbb67e64969a9a30ab00742f2d55d66ddec2b) — current web UX reference. Use relevant accessibility, semantic-control, keyboard/focus, contrast, responsive-layout, feedback and reduced-motion guidance. Do not import its CLI, generated token system or datasets; native pt/dp guidance is not a CSS-pixel requirement.
+- [obra/superpowers](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7) — v7.0.2 snapshot. Retain genuine RED/GREEN test-first work, systematic debugging, review and verification-before-completion.
+- [mattpocock/skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d) — current main snapshot. Retain composable instructions, deep modules, explicit interfaces, behavior-focused tests and source-backed research.
+- [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846) — current main snapshot. Retain whole-flow/code-path tracing, connected-caller review, trust-boundary and data-integrity checks, and explicit residual-risk reporting.
+
+These are methodology references only. No upstream code, skills, datasets, assets, CLI, hooks, workflow or runtime dependency was copied or installed. Project-specific linguistic evidence, typed IPA, source-rights, privacy, fail-closed and release requirements remain authoritative.

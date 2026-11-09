@@ -39,6 +39,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [Phonology audit notes](PHONOLOGY-AUDIT.md)
 - [Vowel-template coverage](vowel-template-coverage.md)
 - [Comparative Cyrillic analysis](comparative-cyrillic.md)
+- [Attributed LaoNLP lexical-hint list and limitations](../data/lao/lexical-hints/README.md) — orthographic soft hints only; not a segmentation gold set or IPA source.
 
 ### IPA, corpora and evaluation
 - [Typed IPA → Ukrainian adapter contract](ipa-to-ukrainian-adapter.md)
@@ -58,7 +59,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [MekongPhon grapheme-context analysis](audits/current/MEKONGPHON-GRAPHEME-CONTEXT-ANALYSIS-2026-11-07.md)
 
 ### Agent and maintainer context
-- [Agent instructions](../AGENTS.md)
+- [Agent instructions and pinned external methodology references](../AGENTS.md)
 - [Codebase map](agents/codebase-map.md)
 - [Issue tracker conventions](agents/issue-tracker.md)
 - [Superpowers corpus plan](superpowers/plans/2026-11-01-independent-ipa-gold-corpus.md)
@@ -76,5 +77,7 @@ When documents appear to conflict, use this order:
 3. Methodology, source/claim registries and decision log establish the evidence basis and explicit project policy.
 4. The master execution plan and linguistic completion register establish current task status and acceptance evidence.
 5. Dated audit records preserve historical findings; they do not silently override newer code or current status documents.
+
+The CSV files in `data/lao/` are the authoritative phonological registries. The separate `data/lao/lexical-hints/` list is an attributed orthographic research aid and must not be treated as a phonological registry, lexical-boundary gold, or IPA source.
 
 A passing engineering test is not evidence of expert phonetic accuracy. The independent IPA gold corpus remains a separate, rights- and human-review-gated process.
