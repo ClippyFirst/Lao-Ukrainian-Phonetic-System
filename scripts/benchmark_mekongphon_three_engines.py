@@ -57,6 +57,35 @@ def nfc(value: str) -> str:
     return unicodedata.normalize("NFC", value.strip())
 
 
+def renderable_segmental_ipa(result) -> str:
+    """Return a visible segmental sequence, using ? for unknown phones.
+
+    SUPPORTED/UNCERTAIN IPA is preserved verbatim. PROVISIONAL and UNSUPPORTED
+    typed sequences retain known segment hints, while unknown positions become
+    explicit markers. This is output coverage, not accepted-IPA coverage.
+    """
+    if result is None:
+        return "?"
+    if accepted_phonetic_ipa(result):
+        return nfc(result.phonemic_ipa)
+    parts = []
+    for segment in getattr(result, "segments", ()):
+        if segment.kind == "tone":
+            continue
+        if segment.kind in {"vowel", "consonant"} and segment.certainty != "UNSUPPORTED":
+            parts.append(segment.ipa)
+        else:
+            parts.append("?")
+    return nfc("".join(parts)) or "?"
+
+
+def renderable_tonal_ipa(result) -> str:
+    """Return segmental output plus a tone contour or an explicit unknown marker."""
+    segmental = renderable_segmental_ipa(result)
+    contour = getattr(result, "tone_contour_ipa", None) if result is not None else None
+    return nfc(segmental + (contour or "?"))
+
+
 def levenshtein(a: str, b: str) -> int:
     previous = list(range(len(b) + 1))
     for i, ca in enumerate(a, 1):
@@ -160,22 +189,31 @@ def load_project():
                 or vowel_by_id.get(item.vowel or "", {}).get("nucleus_type") == "diphthong"
             )
 
-        segmental_complete = bool(phonetic_syllables) and all(accepted_phonetic_ipa(item.phonetic_result) for item in phonetic_syllables)
-        tonal_complete = segmental_complete and all(item.phonetic_result.tone_contour_ipa for item in phonetic_syllables)
-        segmental_parts = [item.phonetic_result.phonemic_ipa if accepted_phonetic_ipa(item.phonetic_result) else "" for item in phonetic_syllables]
+        segmental_parts = [
+            renderable_segmental_ipa(item.phonetic_result)
+            for item in phonetic_syllables
+        ]
+        # Every parsed phonetic unit contributes either IPA, a provisional
+        # grapheme hint, or an explicit ?. Never drop a word from output
+        # coverage merely because its confidence is below the scoring gate.
+        segmental_complete = bool(phonetic_syllables) and all(segmental_parts)
         segmental = nfc("".join(segmental_parts)) if segmental_complete else ""
-        tonal = (
-            nfc("".join(
-                item.phonetic_result.phonemic_ipa + (item.phonetic_result.tone_contour_ipa or "")
-                for item in phonetic_syllables
-            ))
-            if tonal_complete else ""
-        )
-        tone_categories = [item.phonetic_result.tone_category if accepted_phonetic_ipa(item.phonetic_result) else None for item in phonetic_syllables]
-        mekong_complete = segmental_complete and all(tone_categories)
+        tonal_parts = [
+            renderable_tonal_ipa(item.phonetic_result)
+            for item in phonetic_syllables
+        ]
+        tonal_complete = bool(phonetic_syllables) and all(tonal_parts)
+        tonal = nfc("".join(tonal_parts)) if tonal_complete else ""
+        tone_categories = [
+            item.phonetic_result.tone_category
+            if item.phonetic_result is not None
+            and item.phonetic_result.status in {"SUPPORTED", "UNCERTAIN"}
+            else None
+            for item in phonetic_syllables
+        ]
         mekong_tonal = (
-            render_mekong_tonal(segmental_parts, [str(value) for value in tone_categories])
-            if mekong_complete else ""
+            render_mekong_tonal(segmental_parts, tone_categories)
+            if segmental_complete else ""
         )
         rendering_coverage = {
             "complete_input": bool(syllables) and all(item.practical_ukrainian is not None for item in syllables),
@@ -184,6 +222,10 @@ def load_project():
             "supported_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic_syllables),
             "uncertain_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic_syllables),
             "provisional_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic_syllables),
+            "accepted_ipa_units": sum(accepted_phonetic_ipa(item.phonetic_result) for item in phonetic_syllables),
+            "segmental_output_units": sum(bool(value) for value in segmental_parts),
+            "tone_contour_units": sum(bool(item.phonetic_result and item.phonetic_result.tone_contour_ipa) for item in phonetic_syllables),
+            "tonal_output_units": sum(bool(value) for value in tonal_parts),
             "unknown_marker_units": sum(item.phonetic_result is not None and any(segment.kind == "unknown" for segment in item.phonetic_result.segments) for item in phonetic_syllables),
             "passthrough_units": sum(item.status == "PASSTHROUGH" for item in syllables),
         }
@@ -479,18 +521,17 @@ MEKONG_CATEGORY_TO_CONTOUR = {
 }
 
 
-def render_mekong_tonal(syllable_segmentals: list[str], categories: list[str] | None) -> str:
-    """Interleave each syllable's segments and tone in benchmark notation."""
+def render_mekong_tonal(syllable_segmentals: list[str], categories: list[str | None] | None) -> str:
+    """Interleave tone categories; unknown categories remain explicit '?' markers."""
     if (
         not syllable_segmentals
         or categories is None
         or len(syllable_segmentals) != len(categories)
         or not all(syllable_segmentals)
-        or not all(value in MEKONG_CATEGORY_TO_CONTOUR for value in categories)
     ):
         return ""
     return nfc("".join(
-        segmental + MEKONG_CATEGORY_TO_CONTOUR[category]
+        segmental + (MEKONG_CATEGORY_TO_CONTOUR.get(category, "?") if category else "?")
         for segmental, category in zip(syllable_segmentals, categories)
     ))
 
@@ -1039,7 +1080,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "5.0",
+        "schema_version": "6.0",
         "cross_engine_shared_coverage": shared_comparisons,
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
@@ -1055,8 +1096,8 @@ def main() -> int:
         },
         "method": {
             "normalization": "Unicode NFC and outer whitespace trim only",
-            "segmental_comparison": "typed SUPPORTED/UNCERTAIN IPA only; PROVISIONAL grapheme hints are excluded and reported separately in rendering_coverage",
-            "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
+            "segmental_comparison": "complete rendered output coverage: SUPPORTED/UNCERTAIN IPA, PROVISIONAL grapheme hints, and explicit ? markers for unknown phones; accepted IPA coverage is reported separately",
+            "tonal_comparison": "complete rendered output coverage: segmental IPA/provisional/? plus per-syllable tone contour or explicit ? marker against pron_with_tones; tone-confidence coverage is reported separately",
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
             "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. Secondary IPA scores remove only optional affricate tie bars U+0361/U+035C; raw scores remain primary. Potential minor-syllable tones are withheld and aggregated separately, not guessed. No source words or complete predictions are retained in the artifact.",
