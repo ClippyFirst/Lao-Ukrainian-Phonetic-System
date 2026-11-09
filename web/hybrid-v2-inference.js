@@ -1,4 +1,4 @@
-import { AutoTokenizer, env } from "@huggingface/transformers";
+import { PreTrainedTokenizer, env } from "@huggingface/transformers";
 import * as ort from "onnxruntime-web/wasm";
 import { combineNeuralTones } from "./hybrid-v2.js";
 
@@ -59,6 +59,25 @@ function validateModelInput(value, maxLength = DEFAULT_MAX_LENGTH) {
     throw new RangeError(`Unsupported non-Lao character U+${cp.toString(16).toUpperCase().padStart(4, "0")}`);
   }
   return normalized;
+}
+
+async function fetchJson(url, label) {
+  const response = await fetch(url, { cache: "force-cache" });
+  if (!response.ok) throw new Error(`Не вдалося завантажити ${label}: HTTP ${response.status}`);
+  return response.json();
+}
+
+async function loadStaticTokenizer(modelRoot, directory, supplied) {
+  if (supplied) return supplied;
+  const base = trailingSlash(modelRoot);
+  const directoryUrl = /^https?:\\/\\//u.test(base) || /^file:/u.test(base)
+    ? new URL(directory + "/", base).href
+    : base + directory + "/";
+  const [tokenizerJson, tokenizerConfig] = await Promise.all([
+    fetchJson(new URL("tokenizer.json", directoryUrl), `${directory}/tokenizer.json`),
+    fetchJson(new URL("tokenizer_config.json", directoryUrl), `${directory}/tokenizer_config.json`),
+  ]);
+  return new PreTrainedTokenizer(tokenizerJson, tokenizerConfig);
 }
 
 async function fetchBytes(url, onProgress, label) {
@@ -235,6 +254,8 @@ export function createHybridV2Inference({
   manifest: suppliedManifest = null,
   encoderModelBytes = null,
   decoderModelBytes = null,
+  encoderTokenizer: suppliedEncoderTokenizer = null,
+  decoderTokenizer: suppliedDecoderTokenizer = null,
   onProgress = null,
 } = {}) {
   let loading = null;
@@ -244,8 +265,6 @@ export function createHybridV2Inference({
     if (state) return state;
     if (loading) return loading;
     loading = (async () => {
-      env.localModelPath = trailingSlash(modelRoot);
-      env.allowLocalModels = true;
       env.allowRemoteModels = false;
       env.backends.onnx.wasm.wasmPaths = trailingSlash(wasmRoot);
       env.backends.onnx.wasm.numThreads = 1;
