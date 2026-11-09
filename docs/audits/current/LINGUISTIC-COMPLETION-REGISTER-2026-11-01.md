@@ -505,5 +505,5 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 |---|---|---|---|
 | LAO-BENCH-IPA-GATE-001 | DONE_VERIFIED | Main Verify #42592337943: 304 Python, 147 Node/browser, 19 Chromium; typed confidence tests pass | None for software contract |
 | LAO-BENCH-EXT-ENGINES-001 | DONE_VERIFIED | External G2P workflow #42592337944; deterministic profile #42591871633; aggregate artifacts include exact model/spec hashes | None for comparator reproducibility; all engines remain research-only |
-| LAO-BENCH-HVULAO-001 | DONE_VERIFIED | HVULao run #42574809147 passed; script blob on main is byte-identical; artifact #13654703651 | A duplicate main-branch replay #42591871473 was still running at closeout |
+| LAO-BENCH-HVULAO-001 | DONE_VERIFIED | HVULao run #42574809147 passed; script blob on main is byte-identical; artifact #13654703651 | The main-branch replay #42591871473 passed; aggregate artifact #13662725834 |
 | LAO-BENCH-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; `data/benchmark/gold.tsv` is header-only | Rights-cleared source material plus qualified independent IPA annotation and adjudication |
