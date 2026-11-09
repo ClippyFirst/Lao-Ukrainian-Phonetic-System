@@ -157,6 +157,25 @@ def main() -> int:
 
     results.append(run_engine("orthography2ipa lo spec", o2i_predict, rows))
 
+    # Transphone is a multilingual supervised G2P model. Lao (ISO 639-3: lao)
+    # is explicitly listed in its supervised evaluation table. Use the model
+    # directly, not its lexicon tokenizer, to avoid lexical leakage.
+    from transphone.g2p import read_g2p
+    transphone_model = read_g2p(model_name="latest", device="cpu")
+
+    def transphone_predict(text: str):
+        started = time.perf_counter()
+        phones = transphone_model.inference_word_batch(
+            text, lang_id="lao", num_lang=1, force_approximate=False
+        )
+        elapsed = (time.perf_counter() - started) * 1000
+        if not phones:
+            raise ValueError("Transphone returned an empty IPA sequence")
+        tonal = "".join(phones)
+        return no_tones(tonal), tonal, elapsed, elapsed
+
+    results.append(run_engine("Transphone 1.5.3 supervised Lao G2P", transphone_predict, rows))
+
     report = {
         "schema_version": "1.0",
         "benchmark": "MekongPhon 100-entry held-out lexicon, source-attested comparison only",
@@ -173,6 +192,9 @@ def main() -> int:
             "orthography2ipa_version": importlib.metadata.version("orthography2ipa"),
             "orthography2ipa_commit": O2I_COMMIT,
             "orthography2ipa_lo_spec_sha256": package_file_sha256("orthography2ipa", "data/lo.json"),
+            "transphone_version": importlib.metadata.version("transphone"),
+            "transphone_upstream_commit": "7769dec083b90dab072fc7e4c592744592a35736",
+            "transphone_model_release": "v1.0/latest.tar.gz",
             "normalization": "NFC; trim outer whitespace only; no tone/length/tie-bar normalization for tonal score",
         },
         "results": results,
