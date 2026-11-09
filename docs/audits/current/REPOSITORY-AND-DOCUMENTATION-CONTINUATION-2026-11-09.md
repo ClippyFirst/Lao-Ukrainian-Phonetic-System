@@ -1,6 +1,63 @@
+# Current exact-head continuation — 2026-11-09 (authoritative addendum)
+
+**Repository / branch:** `ClippyFirst/Lao-Ukrainian-Phonetic-System`, `main` only. This addendum supersedes the older checkpoint summaries below wherever their commit, CI or metric values differ.
+
+- **Starting checkpoint reviewed:** `1df6fbf362f051de7433913c7c718662bbf193d8` (current main HEAD at inspection; parent `d6aa703bf0637d65c4a8245ba6cf4d103ae34072`).
+- **Exact-head Verify:** [#42636160154 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42636160154), exact SHA `1df6fbf362f051de7433913c7c718662bbf193d8`. The single job completed successfully: IPA-gold structure validation, repository evidence audit, Python tests, external-G2P harness syntax/CLI, locked npm install, browser-engine tests, generated-data regeneration/drift check, Chromium UI tests, and built-page/relative-asset checks. The preceding exact-head report records 319 Python, 147 Node/browser-engine and 19 Chromium tests; this workflow is engineering verification only.
+- **Current PR state:** only PR #145 is open; it proposes neural-first production and remains unmerged because it conflicts with the adopted deterministic hybrid. The 22 existing branches are preserved; no branch was deleted or rewritten. No PR was merged or closed during this documentation-only continuation.
+
+## Corrected coverage and benchmark interpretation
+
+The phrase “100% coverage” must always name its denominator and output class. The repository has several distinct measures:
+
+| Measure | Latest observed result | What it means / does not mean |
+|---|---:|---|
+| Assigned Lao Unicode codepoint handling | 83/83 (100%) | Each assigned codepoint has a typed role or explicit orthographic/numeric passthrough. Not full phonology. |
+| HVULao sentence rendering | 1,000/1,000 (100%) | Every benchmark input receives a visible Ukrainian-side rendering; provisional/unknown markers and passthrough are included. Not 100% IPA. |
+| HVULao analyzed-unit rendering | 21,534/21,534 (100%) | Visible rendering of analyzed units; not all units have supported IPA. |
+| HVULao hybrid IPA-complete sentences | 346/1,000 (34.6%) | A sentence is complete only when all required Lao phonetic units meet the benchmark's typed IPA confidence gate. |
+| HVULao syllable IPA coverage | 94.21% | Syllable-level typed IPA construction; the corpus has no IPA gold and this is not accuracy. |
+| 100-word dictionary-seeded hybrid typed IPA coverage | 91% segmental; 86% tonal | Missing/withheld outputs remain in the full denominator. |
+| 100-word hybrid concordance | 14.45% segmental CER; 34.06% tonal CER | Reference-relative error, not independently adjudicated phonetic accuracy. |
+
+On the same 100-word reference split, Lao2IPA measured 8.97% segmental and 11.97% tonal CER at 100% coverage; MekongPhon Neural measured 6.64% and 8.29% at 100% coverage. ClippyFirst therefore has materially worse measured concordance on this split and lower typed IPA coverage. The split is dictionary-seeded, not project-certified gold; the held-out vocabulary also contributed to validation-sentence generation/checkpoint selection. These results are diagnostic and cannot establish which system is linguistically correct.
+
+The latest HVULao confidence-gated report supersedes earlier 66.9% / 67.6% complete-sentence figures that counted provisional preview values as accepted IPA. The corrected hybrid result is **34.6% IPA-complete sentences**, **94.21% syllable IPA coverage**, and **100% visible rendering**. Earlier 97.85% syllable coverage is also superseded by the current confidence-gated hybrid report. The difference is a stricter typed-confidence denominator, not a regression in visible rendering.
+
+## Documentation and upstream-methodology reconciliation
+
+The documentation architecture remains intentionally singular:
+
+1. Root `README.md`: user-facing orientation, accurate current status and quick start.
+2. `docs/README.md`: task-oriented documentation routes and subject index.
+3. `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`: one canonical chronological execution ledger.
+4. `docs/audits/README.md`: current/historical audit navigation.
+5. `docs/audits/current/`: dated evidence snapshots; never competing specifications.
+6. `docs/agents/codebase-map.md`: implementation/data-flow map.
+7. `AGENTS.md` and `CONTRIBUTING.md`: agent and contributor execution rules.
+
+The five supplied repositories (Unlazy, UI UX Pro Max, Superpowers, Matt Pocock Skills, Ponytail) are methodology references only. Their useful patterns are adapted as repository-local practices: explicit acceptance evidence and honest handoffs; scoped plans and red/green/refactor; shared glossary and clear decision records; review beyond the diff; accessibility, responsive and interaction checks. No external skill bundle, code, hook, CLI, dataset, asset or runtime dependency is copied or installed. Upstream license files do not automatically license every embedded asset or dataset.
+
+## Current task ledger
+
+| Workstream | Status | Acceptance / blocker |
+|---|---|---|
+| Mainline engineering verification at exact SHA | DONE_VERIFIED | Verify #42636160154 SUCCESS on `1df6fbf...`; counts and gates above. |
+| README and documentation navigation correction | DONE_VERIFIED after exact-head CI | Explicitly distinguish rendering, typed IPA coverage and concordance; remove duplicate navigation entry. |
+| Independent expert-adjudicated IPA gold | BLOCKED | Current corpus has 0 adjudicated items; requires rights-cleared Lao source material, qualified independent annotators and adjudication. |
+| Lexical word-boundary gold | PARTIAL | Orthographic lists are hints only; acceptance requires contextual Lao text with independently annotated lexical boundaries and adjudication. |
+| Whole-Kaikki per-value IPA provenance | PARTIAL | 100-page source-revision sample is verified; whole-corpus per-sound origin and complete transitive Lua dependency closure remain unproven. |
+| Acoustic/prosodic validation | BLOCKED | Requires suitable audio, speaker/dialect metadata, alignment and qualified phonetic evaluation. |
+| Manual accessibility QA | PARTIAL | Automated Chromium checks pass; screen-reader, physical-device, real zoom and human contrast review remain unperformed. |
+| Neural-first PR #145 | DEFERRED | Requires a separate owner architecture decision and independent validation; not silently adopted. |
+
+**Readiness:** engineering-verified research prototype; **not linguistically release-ready**. The poor benchmark results are reported rather than hidden. A 100% rendering target is met on the named stress sets; a 100% supported-IPA, phonetic-accuracy or universal-Lao-coverage claim is not met and must not appear in user-facing claims.
+
+---
+
 # Repository and documentation continuation audit — 2026-11-09
 
-# Latest mainline continuation — 2026-11-09 (supersedes earlier checkpoint summaries)
+# Historical mainline continuation checkpoint — 2026-11-09 (superseded by the current exact-head addendum above)
 
 **Current mainline:** `main` is at `dd0a22857b126a00404350dc59be7bb99ab83334` (2026-11-09). This includes the selective benchmark integration, the PR #157 written-evidence and diagnostic lexical-hint work, the filtered 34,937-entry LaoNLP MIT derivative, and the deterministic 100-page Kaikki source-wikitext manifest. No user branch was deleted or rewritten.
 
