@@ -474,7 +474,7 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 |---|---|---|
 | MekongPhon-reference deterministic rules profile | DONE_VERIFIED | 90/100 exact, 6.64% CER, 97% typed IPA coverage; 90% Ukrainian rendering |
 | Vientiane baseline rules profile | DONE_VERIFIED | 69/100 exact, 11.46% CER, 97% typed IPA coverage; 95% Ukrainian rendering |
-| Transphone 1.5.3 supervised Lao G2P comparator | PARTIAL | Added direct G2P path pinned to upstream commit `7769dec083b90dab072fc7e4c592744592a35736`; published separate Wiktionary PER 0.084; exact same-set MekongPhon score pending CI |
+| Transphone 1.5.3 supervised Lao G2P comparator | DONE_VERIFIED | Same-set MekongPhon: 19/100 exact, 24.25% segmental CER; 2/100 tonal exact, 46.49% CER; 100% output coverage; zero runtime errors; model checkpoint SHA-256 and aggregate artifact recorded |
 | Epitran 1.35.3 same-split segmental/tonal comparison | DONE_VERIFIED | 71/100 exact, 10.96% segmental CER; 4/100 tonal exact, 36.94% CER; aggregate CI artifact |
 | orthography2ipa Lao `lo` spec comparison | DONE_VERIFIED | 32/100 exact, 19.60% segmental CER; 2/100 tonal exact, 37.51% CER; upstream commit pinned |
 | LanguageNet Phonetisaurus Lao FST probe | DONE_VERIFIED | 100/100 outputs; 0/100 exact, 78.90% CER; ephemeral model/container only; no tone |
