@@ -197,3 +197,36 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 ### Final documentation snapshot verification
 
 - Documentation snapshot HEAD `d4d477edea541f6674353a3f459fe7f5032c40af` also passed exact-head Verify [#42579520016 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42579520016): 292 Python, 146 Node and 19 Chromium tests passed; configured data/evidence, generated-artifact, build and built-page checks passed. This confirms the final audit/handoff/index updates did not introduce regressions.
+
+## Additional G2P literature and benchmark continuation — 2026-11-09
+
+### Newly verified sources
+
+- Hansakunbuntheung & Thatphithakkul (O-COCOSDA 2016; DOI 10.1109/ICSDA.2016.7919010) evaluate unsupervised many-to-many graphoneme alignment including Lao and report 91.28% Lao word accuracy on their own dictionary. The accessible paper record does not expose the exact Lao split, dictionary rights, tone convention or executable artifact. Treat this as a research candidate, not a reproduced result.
+- SIGMORPHON 2021 includes Khmer in its low-resource G2P task and Vietnamese (Hanoi) in medium-resource, but not Lao. SIGMORPHON 2022 includes Thai → Eastern Lawa and nine other pairs, but not Lao. Its 100-target/1,000-transfer, 100-target-only and 1,000-target-only settings are useful for a **SIGMORPHON-inspired Lao adaptation**, not an official Lao benchmark.
+- CharsiuG2P / multilingual ByT5 repository at commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4` contains a Lao WikiPron source metadata file, but a recursive inspection of the complete tree found no Lao file in `data/train`, `data/dev` or `data/test`; Khmer is present. It is not a trained/evaluated Lao baseline on that revision and is excluded from supervised Lao benchmarking.
+- Ueda (1994) remains the bounded five-tone central Vientiane source. LDC Babel documentation uses a six-tone analysis because the low-tone phonemic status is disputed. Do not collapse these conventions silently.
+
+### Repository changes
+
+- Added source IDs `SRC-HANSAKUNBUNTHEUNG-GRAPHONEME-2016`, `SRC-SIGMORPHON-2021-G2P`, `SRC-SIGMORPHON-2022-G2P`, `SRC-CHARSUIG2P-2022` and claims for graphoneme alignment, SIGMORPHON-inspired protocol and CharsiuG2P support audit.
+- Added the findings and acceptance gates to `docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md`.
+- Created the Undermind workspace [Lao G2P research](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081) and durable research memo at [benchmark-and-engine-findings-2026-11-09.md](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=%2Fresearch%2Fbenchmark-and-engine-findings-2026-11-09.md). The comprehensive literature search remains in progress.
+
+### Revised task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Add graphoneme paper to source and claim registries | DONE_VERIFIED (registry) | Paper-reported 91.28%; exact original dataset/split/code/licensing still unknown |
+| Add SIGMORPHON 2021/2022 methodological sources | DONE_VERIFIED (registry) | No official Lao target/test set; adaptation must be explicitly labelled |
+| Audit CharsiuG2P Lao model support | DONE_VERIFIED (negative result) | Inspected revision has no Lao train/dev/test split; not a supervised Lao comparator |
+| Reproduce graphoneme paper result | BLOCKED | Full paper/data/split/code and rights not yet established |
+| Run a SIGMORPHON-inspired Lao 100/1,000/transfer study | TODO | Needs a frozen independent test set, reproducible nested splits, and a justified donor language |
+| Independent expert IPA gold and linguistic sign-off | BLOCKED | 0 adjudicated gold records; requires human annotation and adjudication |
+
+### Verification boundary
+
+- No runtime phonology, target adapter, production engine, benchmark outputs or generated browser assets were changed in this research continuation.
+- Exact-head Verify for the first source/claim/doc commits passed; the final research correction and audit/handoff commits are awaiting their own final exact-head Verify. Do not infer a final-head pass from earlier runs.
+- No local shell execution is claimed. Hosted CI is the only code verification evidence in this connector-only session.
+- Readiness remains research-ready evidence/prototype, not linguistically release-ready.
