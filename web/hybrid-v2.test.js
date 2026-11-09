@@ -27,7 +27,7 @@ function deterministic(statuses = ["SUPPORTED", "SUPPORTED"]) {
 }
 
 test("external IPA parser preserves a supported segmental and tonal stream", () => {
-  const parsed = parseExternalIpa("kʰaː˩˧ d aː˧˥");
+  const parsed = parseExternalIpa("kʰaː˩˧daː˧˥");
   assert.equal(parsed.status, "SUPPORTED");
   assert.equal(parsed.phonemicIpa, "kʰaːdaː");
   assert.equal(parsed.toneContourIpa, "˩˧˧˥");
@@ -45,13 +45,13 @@ test("external IPA parser preserves raw text and fails closed on unknown symbols
 
 test("Hybrid v2 attaches only unique order-aligned contours and keeps them UNCERTAIN", () => {
   const source = deterministic();
-  const result = combineNeuralTones(source, "kʰaː˩˧ d aː˧˥", MODEL);
+  const result = combineNeuralTones(source, "kʰaː˩˧daː˧˥", MODEL);
   assert.equal(result.toneAlignmentStatus, "ORDER_ALIGNED");
   assert.equal(result.alignedSyllables, 2);
   assert.equal(result.tonePredictions.length, 2);
   assert.deepEqual(result.tonePredictions.map((item) => item.category), ["low-rising", "high-rising"]);
   assert.ok(result.tonePredictions.every((item) => item.certainty === "UNCERTAIN"));
-  assert.equal(result.tonalIpa, "kʰaː˩˧ d aː˧˥");
+  assert.equal(result.tonalIpa, "kʰaː˩˧daː˧˥");
   assert.equal(result.analysis, source);
   assert.equal(result.ukrainian, source.output);
 });
@@ -64,7 +64,7 @@ test("Hybrid v2 does not associate tones when neural IPA is unsupported", () => 
 });
 
 test("Hybrid v2 does not guess an ambiguous contour decomposition", () => {
-  const result = combineNeuralTones(deterministic(), "kʰaː˩˧˧˥", MODEL);
+  const result = combineNeuralTones(deterministic(), "kʰaː˧˩˧", MODEL);
   assert.equal(result.toneAlignmentStatus, "NOT_ALIGNED");
   assert.equal(result.tonePredictions.length, 0);
   assert.ok(result.warnings.some((warning) => warning.includes("NOT-UNIQUELY-ALIGNED")));
@@ -72,7 +72,7 @@ test("Hybrid v2 does not guess an ambiguous contour decomposition", () => {
 
 test("Hybrid v2 keeps partial associations and marks disagreement", () => {
   const source = deterministic(["SUPPORTED", "UNSUPPORTED"]);
-  const result = combineNeuralTones(source, "kʰaː˧˥ d aː˧˥", MODEL);
+  const result = combineNeuralTones(source, "kʰaː˧˥daː˧˥", MODEL);
   assert.equal(result.toneAlignmentStatus, "PARTIAL");
   assert.equal(result.tonePredictions.length, 1);
   assert.equal(result.tonePredictions[0].certainty, "UNCERTAIN");
