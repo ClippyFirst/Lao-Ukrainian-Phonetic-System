@@ -100,6 +100,22 @@ def main() -> int:
         },
         "browser_runtime_parity": runtime_report,
     }
+    (destination / "NOTICE").write_text(
+        "Third-party model attribution\\n"
+        "==============================\\n\\n"
+        "This directory contains browser-deployable ONNX exports of the Lao IPA "
+        "(Tonal) checkpoint by BYU MATRIX Lab.\\n"
+        "Upstream: https://huggingface.co/byumatrixlab/lao-ipa-tonal\\n"
+        "Pinned revision: " + export_manifest["model_revision"] + "\\n"
+        "Model license: Apache License 2.0 (see LICENSE).\\n"
+        "The FP32 checkpoint was exported to ONNX and dynamically quantized "
+        "to per-channel INT8 for browser deployment.\\n"
+        "Tokenizer files are copied from the same pinned model revision.\\n"
+        "Research citation: Shurtz, Ammon; Richardson, Christian; Richardson, "
+        "Stephen D. (2026), MekongPhon: A Large-Scale Parallel IPA Corpus for "
+        "Lao and Khmer, Proceedings of LREC 2026, 11(16), 1650–1658.\\n",
+        encoding="utf-8",
+    )
     (destination / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
