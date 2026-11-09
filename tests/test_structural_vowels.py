@@ -52,7 +52,7 @@ class TestStructuralVowels(unittest.TestCase):
         cases = {
             "ເກີຍ": ("OEY", "kɤːj", "кей"),
             "ໂກຍ": ("OOY", "koːj", "кой"),
-            "ແກວ": ("AEW", "kɛːw", "кев"),
+            "ແມວ": ("AEW", "mɛːw", "мев"),
             "ກອຍ": ("AOY", "kɔːj", "кой"),
             "ກາຽ": ("AAJ", "kaːj", "кай"),
         }
