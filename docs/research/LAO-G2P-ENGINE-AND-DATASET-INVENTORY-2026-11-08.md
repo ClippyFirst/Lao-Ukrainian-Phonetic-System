@@ -203,7 +203,7 @@ These sources reinforce three conservative implementation principles: (1) mainta
 ### LaoNLP lexical resources: exact scope and access boundary
 
 - Inspected `laonlp/corpus/Lao-Dictionary.txt` from LaoNLP. Its header attributes the 2013 word list to Brian Eugene Wilson and Robert Martin Campbell, with thanks to Arlyta Keosamone and Bualong Nyoukmai. It contains a BSD-style redistribution notice, is about 77 KB, and says it was created for word wrapping with compound words mostly reduced to their component parts. It contains orthographic items, names and borrowed forms but no IPA. Treat it as a candidate lexical hint list, not a complete word-boundary gold set.
-- Separately, `laonlp/corpus/lao-eng-dictionary.csv` has its own MIT notice from the E-Government Center, Ministry of Posts and Telecommunications of Laos. The GitHub contents endpoint does not expose the 2.73 MB file body in this connector session, and the connected Firecrawl account had no credits for the raw-file inspection. Its header/schema/rows therefore remain uninspected; do not integrate it or claim its fields until a reproducible fetch is available.
+- Separately, `laonlp/corpus/lao-eng-dictionary.csv` was fully retrieved through the GitHub contents API at immutable upstream commit `a914f64e38ff24d67d32e37db40dad5c368ea602` (blob SHA-1 `ded14c7770becfd5c6946c6c1ce75a7dfc4d564c`; GitHub reports 2,857,765 bytes). Its explicit file-specific MIT notice names the E-Government Center, Ministry of Posts and Telecommunications of Laos (2015). The schema is `ID,LaoWord,English,Pronunciation,Type`; a quote-aware CSV parse found 51,257 records, 35,079 unique LaoWord forms, 11,196 forms with multiple rows, 36 blank Type values, 24 repeated-header records, and 7 rows with missing Pronunciation (including blank separator records). The `Pronunciation` field contains Latin-script romanization (e.g. `kor`, `ká`, `kákan`), not IPA. Many entries are phrases, duplicate forms map to multiple glosses, and the Type field is inconsistent. It is therefore **not imported** as pronunciation data or lexical-boundary gold. Its MIT license permits reuse subject to retaining the notice, but a diagnostic-only lexical hint import would still need a quality filter and independent boundary evaluation.
 - The two resources have different origins and licenses; neither license should be inferred from the LaoNLP package's Apache-2.0 code license.
 
 
@@ -213,7 +213,7 @@ The upstream BSD word list was fetched in full (77,274 UTF-8 characters; 11,208 
 
 Added an optional diagnostic-only matcher in `src/lao_ukrainian/lexical_hints.py`. It joins contiguous syllable spans and returns every matching orthographic entry with zero-based, end-exclusive offsets. It retains overlapping alternatives, labels them `SOFT_HINT_ONLY`, and never chooses word boundaries. It is not imported by the production parser, IPA/G2P path, target adapter, or browser bundle.
 
-The source list's word-wrapping purpose and compound reduction make it unsuitable as lexical segmentation gold. The diagnostic can expose candidate spans for later review, but cannot establish that a listed string is a lexical word in a given context. Its inclusion is permitted under the retained BSD-style notice. The separate 2.73 MB MIT CSV remains excluded until a complete reproducible fetch and schema inspection are available.
+The BSD source list's word-wrapping purpose and compound reduction make it unsuitable as lexical segmentation gold. The diagnostic can expose candidate spans for later review, but cannot establish that a listed string is a lexical word in a given context. Its inclusion is permitted under the retained BSD-style notice. The MIT CSV has now been inspected but is also excluded: its Pronunciation field is romanized, and its orthographic forms include phrases, repeated headers and inconsistent type metadata. Neither resource establishes contextual lexical boundaries.
 
 Acceptance: unit tests prove multi-match overlap retention, default exclusion of single-syllable entries, and no mutation of the syllable sequence. These are software-contract tests, not linguistic accuracy measurements.
 
@@ -240,3 +240,21 @@ The benchmark suite is now present on `main`; the initial PR branch was not merg
 - The latest mainline 1k sentence stress result is 346/1,000 hybrid IPA-complete sentences (34.6%), 1,000/1,000 Ukrainian renderings (100%), and 94.21% syllable IPA coverage; MekongPhon Neural completes IPA for 934/1,000 sentences (93.4%). This corpus has no IPA reference, so these are completeness metrics only.
 
 The additional runtime-error guard now makes the external-comparator workflow fail if any per-input unexpected error is recorded; regression tests cover both zero-error and error-present cases. The independent expert-adjudicated IPA gold corpus remains empty (0 records).
+
+
+### LaoNLP MIT dictionary — complete inspection, no import (2026-11-09)
+
+The earlier access blocker is superseded. The full file was fetched from immutable upstream snapshot `a914f64e38ff24d67d32e37db40dad5c368ea602`; GitHub blob SHA-1 is `ded14c7770becfd5c6946c6c1ce75a7dfc4d564c`. Its original file-specific MIT notice was read in full. A quote-aware parser verified the five-column schema and 51,257 data records. There are 35,079 unique Lao orthographic forms, 11,196 forms represented in multiple rows, 36 records with blank Type, 24 repeated header rows and 7 rows with missing Pronunciation. The Pronunciation column is Latin-script romanization, not IPA. Since the dataset mixes single forms and phrases, repeats entries for multiple glosses, and has inconsistent type labels, it is not imported into production or used as segmentation gold. Task `LAO-LAONLP-MIT-CSV-001` is complete as an inspection-and-disposition task; future use requires a separately filtered, source-attributed lexical-hint experiment and boundary evaluation.
+
+### Wiktionary / Kaikki template-provenance sample audit — 2026-11-09
+
+Kaikki's Lao index identifies a 2,378-word-form dictionary extracted on 2026-10-30 from the 2026-10-01 English Wiktionary dump with Wiktextract revisions `19f9a30` and `6f96ddf`. The site exposes Vientiane and Luang Prabang IPA variants on individual pages. Four source-page inspections found explicit `{{lo-pron}}` calls in the pronunciation sections:
+
+- `ກະດານ`, Wiktionary oldid `66396667`
+- `ການແປ`, oldid `66459544`
+- `ຂໍກະແຈ`, oldid `68829138`
+- `ຝົນ`, oldid `85069045`
+
+The template documentation describes `lo-pron` as generating pronunciation, rhyming and hyphenation; the four entries therefore demonstrate programmatically generated IPA rather than direct IPA strings in their source wikitext. This is a four-entry sample, not a corpus-wide proportion. Wiktextract explicitly expands templates and Lua modules, while its extracted `sounds` records expose IPA and dialect/qualifier tags but do not identify the original template call. Full classification requires a pinned original dump (or exact page revisions), the relevant template/module revisions, and a reproducible parser that records source provenance. Do not import or score the entire Kaikki set as human IPA gold.
+
+Acceptance boundary: the sample-level generated provenance is verified; corpus-wide provenance remains PARTIAL. Preserve Vientiane and Luang Prabang as separate variants and do not normalize away tone or dialect metadata.
