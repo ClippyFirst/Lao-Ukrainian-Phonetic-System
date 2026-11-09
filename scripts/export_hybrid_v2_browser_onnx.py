@@ -200,11 +200,19 @@ def main() -> int:
         dynamo=False,
     )
 
+    session_options = ort.SessionOptions()
+    # Disable graph fusions in the parity gate first. Quantization / fusions
+    # are separate optimizations and must not obscure numerical equivalence.
+    session_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
     encoder_session = ort.InferenceSession(
-        str(output / "encoder.onnx"), providers=["CPUExecutionProvider"]
+        str(output / "encoder.onnx"),
+        sess_options=session_options,
+        providers=["CPUExecutionProvider"],
     )
     decoder_session = ort.InferenceSession(
-        str(output / "decoder.onnx"), providers=["CPUExecutionProvider"]
+        str(output / "decoder.onnx"),
+        sess_options=session_options,
+        providers=["CPUExecutionProvider"],
     )
     parity_rows = []
     for text in FIXTURES:
