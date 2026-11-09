@@ -11,6 +11,14 @@ function trailingSlash(value) {
   return value.endsWith("/") ? value : value + "/";
 }
 
+function joinModelDirectory(root, child) {
+  const base = trailingSlash(root);
+  if (/^https?:\\/\\//u.test(base) || /^file:/u.test(base)) {
+    return new URL(child + "/", base).href;
+  }
+  return base + child + "/";
+}
+
 function flattenTensor(value) {
   if (value && typeof value.tolist === "function") {
     return value.tolist().flat(Infinity).map(Number);
@@ -237,6 +245,7 @@ export function createHybridV2Inference({
     if (loading) return loading;
     loading = (async () => {
       env.localModelPath = trailingSlash(modelRoot);
+      env.allowLocalModels = true;
       env.allowRemoteModels = false;
       env.backends.onnx.wasm.wasmPaths = trailingSlash(wasmRoot);
       env.backends.onnx.wasm.numThreads = 1;
@@ -256,8 +265,8 @@ export function createHybridV2Inference({
       }
       onProgress?.({ phase: "tokenizer", label: "Завантаження токенізаторів" });
       const [encoderTokenizer, decoderTokenizer] = await Promise.all([
-        AutoTokenizer.from_pretrained("encoder_tokenizer"),
-        AutoTokenizer.from_pretrained("decoder_tokenizer"),
+        AutoTokenizer.from_pretrained(joinModelDirectory(modelRoot, "encoder_tokenizer")),
+        AutoTokenizer.from_pretrained(joinModelDirectory(modelRoot, "decoder_tokenizer")),
       ]);
       const [encoderBytes, decoderBytes] = await Promise.all([
         encoderModelBytes ?? fetchBytes(
