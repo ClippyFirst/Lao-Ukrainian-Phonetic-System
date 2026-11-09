@@ -2968,3 +2968,8 @@ The Kaikki/Wiktionary provenance investigation reached a sample-level result. Fo
 | `LAO-IPA-GOLD-001` | BLOCKED | Two independent qualified annotators, a third adjudicator, rights-cleared items and frozen conventions remain external dependencies. |
 
 No runtime code, canonical phonological data, generated browser data or production G2P behavior changed in this evidence-only continuation. Readiness remains research-ready engineering prototype, not linguistically release-ready.
+
+
+### Reproducible LaoNLP dictionary audit tooling — 2026-11-09
+
+Added `scripts/audit_laonlp_dictionary.py` and `tests/test_audit_laonlp_dictionary.py`. The utility is standard-library-only, does not fetch or bundle the third-party dataset, optionally verifies the immutable Git blob SHA-1, and reports quote-aware CSV structure and quality counts. Its acceptance is software-contract reproducibility only; it does not upgrade the source dictionary into IPA or word-boundary gold. Exact-head Verify is required before marking the utility DONE_VERIFIED.
