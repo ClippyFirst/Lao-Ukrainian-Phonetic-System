@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** current main `c0d7218da907dbe0bae6cadb42824ca0cd09b83a` plus open PRs #146/#147 and the hybrid deterministic continuation branch. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** current main 819c2528b1c726adfd3062be89084fedce7ad84d (2026-11-09), with benchmark implementation in open Draft PR #156 kept separate from production. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
