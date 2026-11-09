@@ -3283,3 +3283,16 @@ Tone alignment status counts: NOT_ALIGNED 920, ORDER_ALIGNED 10, PARTIAL 4. The 
 **Task ledger:** Hybrid v2 1k sentence-domain run DONE_VERIFIED (stress/coverage only); 100% Ukrainian rendering DONE_VERIFIED; complete segmental IPA PARTIAL; parseable tonal IPA PARTIAL; per-syllable tone association PARTIAL; independent IPA accuracy BLOCKED (requires independently adjudicated IPA gold); neural input acceptance TODO/evidence-limited (define safe policy for 66 explicit rejections; never truncate or strip silently). Browser integration remains DEFERRED until a supported inference backend is available.
 
 The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2_hvulao_1k.py` already implement this test. Do not duplicate it inside the older three-engine benchmark workflow.
+
+
+## GitHub Pages Hybrid v2 browser port — 2026-11-09
+
+- Reviewed starting `main`: `673e36fddcbed7f073a448bf54cd1edf44a6b10f`.
+- Work branch: `feat/pages-hybrid-v2-browser`.
+- The currently deployed Pages runtime is still the JavaScript `hybrid-deterministic` engine; it does not load the Python Hybrid v2 neural tonal model.
+- Added a browser-side Hybrid v2 external-IPA parser / conservative tone combiner in `web/hybrid-v2.js`, tests in `web/hybrid-v2.test.js`, and wired the tests into `npm test`. This is only the result-combination boundary: no ONNX checkpoint, tokenizer or browser neural inference is included yet. Status: **PARTIAL** pending CI and Python/browser parity.
+- Latest source benchmark: [Hybrid v2 HVULao 1k run #42680434577](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42680434577), artifact [13701914558](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42680434577/artifacts/13701914558): 1,000/1,000 deterministic rendering rows; 934 raw neural outputs; only 228 parseable tonal IPA rows; 706 parser rejections for unsupported IPA symbols; 10 order-aligned and 4 partial tone-association rows; zero runtime errors. HVULao has no IPA gold, so this is not accuracy.
+- Upstream checkpoint: `byumatrixlab/lao-ipa-tonal`, revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`, Apache-2.0, 33.6M parameters, BERT encoder–decoder, 128-token limit. A browser port needs a proven custom ONNX export / runtime; do not assume Transformers.js supports this exact architecture out of the box.
+- Canonical continuation and acceptance criteria: [GitHub Pages Hybrid v2 browser-port record](research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md).
+- **Remaining:** exact checkpoint + tokenizer ONNX export; Python/browser decoded-output parity; local browser tokenizer and autoregressive decoder; quantized static model assets inside Pages; full UI integration; CPU/WASM and optional WebGPU tests; cold/warm latency, memory, local-only network audit, Pages size and deployment verification.
+- **Do not claim deployment:** this branch has not been merged or deployed. Existing main Pages remains deterministic-only. Full neural Hybrid v2 is not release-ready.
