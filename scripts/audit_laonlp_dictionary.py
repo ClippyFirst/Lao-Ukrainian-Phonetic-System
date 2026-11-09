@@ -31,7 +31,8 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
         raise ValueError(f"unexpected CSV header: {header!r}")
 
     total_rows = 0
-    repeated_headers = 0
+    exact_repeated_headers = 0
+    malformed_header_like_rows = 0
     placeholder_rows = 0
     malformed_width_rows = 0
     missing_pronunciation = 0
@@ -46,7 +47,10 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
         # Historical copies of the header occur mid-file. Some have a blank
         # LaoWord cell or the misspelling "Pronuciation"; Type=Type is stable.
         if row[4].strip() == "Type":
-            repeated_headers += 1
+            if row == EXPECTED_HEADER:
+                exact_repeated_headers += 1
+            else:
+                malformed_header_like_rows += 1
             continue
         if all(not cell.strip() for cell in row[1:]):
             placeholder_rows += 1
@@ -61,7 +65,8 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
             blank_type += 1
 
     counts = list(words.values())
-    usable_records = total_rows - repeated_headers - placeholder_rows
+    header_like_rows = exact_repeated_headers + malformed_header_like_rows
+    usable_records = total_rows - header_like_rows - placeholder_rows
     return {
         "upstream_commit": UPSTREAM_COMMIT,
         "upstream_blob_sha1": UPSTREAM_BLOB_SHA1,
@@ -69,7 +74,9 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
         "git_blob_sha1": git_blob_digest,
         "header": header,
         "rows_after_first_header": total_rows,
-        "repeated_header_rows": repeated_headers,
+        "repeated_header_rows": exact_repeated_headers,
+        "malformed_header_like_rows": malformed_header_like_rows,
+        "header_like_rows_total": header_like_rows,
         "id_only_placeholder_rows": placeholder_rows,
         "usable_records": usable_records,
         "unique_lao_words": len(words),

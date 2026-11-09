@@ -37,12 +37,33 @@ class LaoNlpDictionaryAuditTests(unittest.TestCase):
         report = json.loads(result.stdout)
         self.assertEqual(report["rows_after_first_header"], 4)
         self.assertEqual(report["repeated_header_rows"], 1)
+        self.assertEqual(report["malformed_header_like_rows"], 0)
+        self.assertEqual(report["header_like_rows_total"], 1)
         self.assertEqual(report["id_only_placeholder_rows"], 1)
         self.assertEqual(report["usable_records"], 2)
         self.assertEqual(report["unique_lao_words"], 1)
         self.assertEqual(report["forms_with_multiple_records"], 1)
         self.assertEqual(report["malformed_width_rows"], 0)
         self.assertFalse(report["runtime_imported"])
+
+
+    def test_malformed_header_like_rows_are_separate_from_exact_headers(self):
+        content = (
+            "ID,LaoWord,English,Pronunciation,Type\\n"
+            "1,ກ,gloss,ka,n\\n"
+            "2,,English,Pronuciation,Type\\n"
+            "3,LaoWord,English,Pronunciation,Type\\n"
+            "4,,,,\\n"
+        )
+        result = self.run_audit(content)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["repeated_header_rows"], 1)
+        self.assertEqual(report["malformed_header_like_rows"], 1)
+        self.assertEqual(report["header_like_rows_total"], 2)
+        self.assertEqual(report["id_only_placeholder_rows"], 1)
+        self.assertEqual(report["usable_records"], 1)
+        self.assertEqual(report["unique_lao_words"], 1)
 
     def test_hash_mismatch_fails_closed(self):
         result = self.run_audit(
