@@ -38,7 +38,7 @@ test("hybrid still rejects invisible control characters", () => {
   assert.equal(result.output, "");
   assert.ok(result.warnings.some((warning) => warning.includes("керівний символ")));
 });
-import { CORRESPONDENCES, SPECIAL_TONE_RULES } from "./data.js";
+import { CORRESPONDENCES, SPECIAL_TONE_RULES, GRAPHEME_INVENTORY } from "./data.js";
 
 test("basic long syllable", () => {
   const r = analyze("ຂາ");
@@ -148,6 +148,16 @@ test("Lao ellipsis is preserved as orthographic punctuation", () => {
   const result = analyzeDefault("ຂາຯ");
   assert.equal(result.output, "к'аຯ");
   assert.equal(result.syllables.at(-1).status, "PASSTHROUGH");
+});
+
+test("browser hybrid recognizes every assigned Lao inventory codepoint", () => {
+  for (const grapheme of Object.keys(GRAPHEME_INVENTORY)) {
+    const result = analyzeDefault(grapheme);
+    assert.notEqual(result.status, "INVALID", grapheme);
+    assert.equal(result.syllables.length, 1, grapheme);
+    assert.equal(typeof result.output, "string", grapheme);
+    assert.ok(result.output.length > 0, grapheme);
+  }
 });
 
 test("medial ອ is long ɔ", () => {
