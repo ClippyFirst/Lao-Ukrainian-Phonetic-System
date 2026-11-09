@@ -52,7 +52,7 @@ This is an executable regression coverage matrix for the current Python parser's
 
 | `pre_oe_long_y` | ເ | ີຍ | `OEY` | `ເກີຍ` | Remove the last suffix grapheme; must not resolve to `OEY` |
 | `pre_o_long_y` | ໂ | ຍ | `OOY` | `ໂກຍ` | Remove the last suffix grapheme; must not resolve to `OOY` |
-| `pre_ae_long_y` | ແ | ວ | `AEW` | `ແກວ` | Remove the last suffix grapheme; must not resolve to `AEW` |
+| `pre_ae_long_y` | ແ | ວ | `AEW` | `ແມວ` | Remove the last suffix grapheme; must not resolve to `AEW` |
 | `post_o_long_y` | ∅ | ອຍ | `AOY` | `ກອຍ` | Remove the last suffix grapheme; must not resolve to `AOY` |
 | `post_aa_y` | ∅ | າຽ | `AAJ` | `ກາຽ` | Remove the last suffix grapheme; must not resolve to `AAJ` |
 
