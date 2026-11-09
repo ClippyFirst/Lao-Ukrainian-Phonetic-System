@@ -203,8 +203,12 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 phonetic_result, registry,
                 allow_uncertain=ipa_profile == DEFAULT_ENGINE_PROFILE,
             )
-            target_unmapped = practical is None and bool(phonetic_result.phonemic_ipa)
-            if target_unmapped and ipa_profile == DEFAULT_ENGINE_PROFILE:
+            target_unmapped = (
+                ipa_profile == DEFAULT_ENGINE_PROFILE
+                and practical is None
+                and bool(phonetic_result.phonemic_ipa)
+            )
+            if target_unmapped:
                 # IPA and Ukrainian orthography are separate adapter stages.
                 # Preserve accepted source IPA when its target mapping is absent;
                 # use an explicit target-only marker rather than downgrading the
