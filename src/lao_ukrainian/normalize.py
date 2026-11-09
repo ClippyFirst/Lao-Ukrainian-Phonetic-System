@@ -1,6 +1,6 @@
 import unicodedata
 
-PASSTHROUGH_PUNCTUATION = frozenset(",!?;:()[]{}\"“”&%–…#/`+•")
+PASSTHROUGH_PUNCTUATION = frozenset(",!?;:()[]{}\"“”&%–…#/`+•ຯ")
 LAO_NATIVE_DIGITS = frozenset(chr(cp) for cp in range(0x0ED0, 0x0EDA))
 PASSTHROUGH_CHARACTERS = PASSTHROUGH_PUNCTUATION | frozenset("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.'-") | LAO_NATIVE_DIGITS
 
