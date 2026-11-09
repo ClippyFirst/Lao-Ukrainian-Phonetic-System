@@ -2778,3 +2778,11 @@ The requested portfolio of five distinct evaluation sources is now identified. *
   - `1d4ba48734fc057d28bbe6319ff427129b6c86cb` — correct CharsiuG2P source evidence.
   - `261ee8c11defb6be53c2ab362b9543374e38976d` — correct CharsiuG2P claim.
   - `6a7a919952a1645d958639f4617de4456d9ed7c7` — correct research inventory.
+
+### Final research-correction verification and audit register update — 2026-11-09
+
+- The CharsiuG2P negative support audit was verified in the complete recursive tree at pinned commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4`: no Lao `data/train`, `data/dev` or `data/test` file exists; Khmer is present. Source and claim registry wording was corrected accordingly.
+- Updated current audit register `docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md` with the new research sources, task statuses and acceptance blockers.
+- Exact-head Verify [#42582093631 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42582093631) passed on correction commit `5edc7e1bd25d971dca2aa67d0bf1915b733a31ae`: 292 Python tests, 146 Node/browser-engine tests and 19 Chromium tests; IPA gold schema, repository data/evidence audit, external-G2P CLI, locked npm install, browser tests, build, generated data drift/reproducibility and built-page/relative-asset checks all passed.
+- The current audit register was then updated in commit `731300c66984a1441b223fa5dedeb369703a0004`. This is a later documentation-only commit and needs its own exact-head Verify.
+- No local shell execution is claimed. PR #156 remains open/draft and divergent; PR #148 and PRs #137–#147 remain untouched. No PR was merged or closed.
