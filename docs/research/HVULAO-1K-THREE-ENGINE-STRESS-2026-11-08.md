@@ -127,3 +127,25 @@ All four engines reported zero unexpected runtime errors. Neural explicitly reje
 | Hybrid 1k benchmark | DONE_VERIFIED (stress only) | Exact-head run #42508759241, artifact 13628229661 |
 | Deterministic sentence coverage parity with Neural | TODO | 66.9% vs 93.0%; requires source-grounded structural parsing improvements |
 | Independent IPA accuracy comparison | BLOCKED | No IPA reference in HVULao; independent adjudicated gold remains 0 |
+
+
+## Schema 1.5 — full visible output and separate confidence accounting (2026-11-09)
+
+Latest exact code run: [#42653641804 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804), aggregate artifact [#13691297821](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804/artifacts/13691297821). Pinned 1,000-row corpus, 0 runtime errors.
+
+| Engine | IPA-complete sentences | Complete IPA sentence coverage | Visible rendering coverage | Syllable IPA coverage |
+|---|---:|---:|---:|---:|
+| Vientiane rules | 661/1,000 | 66.1% | 62.5% | 97.71% |
+| MekongPhon-reference rules | 661/1,000 | 66.1% | 34.1% | 97.71% |
+| Hybrid deterministic rules | 661/1,000 | 66.1% | **100% (1,000/1,000)** | 97.71% |
+| MekongPhon Neural | 934/1,000 | 93.4% | not scored in this schema | not comparable |
+
+For the hybrid, all **21,534/21,534 analyzed units** have a visible Ukrainian-side rendering. The source-side distribution is 16,936 SUPPORTED IPA units, 19 UNCERTAIN IPA units and 398 PROVISIONAL units. Of these, 607 units lack a Ukrainian target correspondence and receive an explicit target-side ?; 398 units have provisional grapheme hints/unknown markers. The 607 target-side gaps are not counted as missing source IPA. The hybrid has 0 unrendered or failed valid inputs.
+
+This demonstrates 100% practical rendering on this pinned text-domain set, not 100% accepted IPA: 661/1,000 sentences have a complete accepted IPA result and syllable-level accepted IPA coverage is 97.71%. The neural engine completes 934/1,000 IPA outputs but rejects 66 inputs under its source-length/character limits. The corpus contains no IPA reference, so the run measures input handling, rendering, completeness and runtime only—not pronunciation accuracy.
+
+**Updated ledger:**
+- Hybrid visible output coverage on HVULao 1k: DONE_VERIFIED (1,000/1,000 rows; 21,534/21,534 units; zero runtime errors).
+- Confidence-gated source IPA completeness: PARTIAL (661/1,000 complete sentences; 97.71% syllable coverage).
+- Independent phonetic accuracy: BLOCKED (no IPA gold in this dataset; project-adjudicated gold remains 0).
+- Neural complete-sentence coverage parity: TODO / research task (93.4% neural vs 66.1% hybrid on this set); improvements require source-grounded structural rules, not invented pronunciations.
