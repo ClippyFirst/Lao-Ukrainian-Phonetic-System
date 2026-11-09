@@ -23,7 +23,7 @@ jobs:
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Validate optional external-G2P harness syntax and CLI
         run: |
-          python -m py_compile scripts/compare_external_g2p.py scripts/export_hybrid_v2_browser_onnx.py scripts/prepare_pages_model.py
+          python -m py_compile scripts/compare_external_g2p.py scripts/export_hybrid_v2_browser_onnx.py scripts/prepare_pages_model.py scripts/build_web.py
           PYTHONPATH=src python scripts/compare_external_g2p.py --help >/dev/null
       - uses: actions/setup-node@v7
         with:
@@ -52,6 +52,9 @@ jobs:
           test -d dist/web/vendor
           test -s dist/web/vendor/ort-wasm-simd-threaded.wasm
           test -s dist/web/vendor/ort-wasm-simd-threaded.mjs
+          test -s dist/web/vendor/THIRD-PARTY-NOTICES.md
+          test -d dist/web/vendor/licenses
+          find dist/web/vendor/licenses -maxdepth 1 -type f -print -quit | grep -q .
           grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js' dist/index.html
           grep -q 'href="./system.html"' dist/index.html
