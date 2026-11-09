@@ -27,7 +27,7 @@ function deterministic(statuses = ["SUPPORTED", "SUPPORTED"]) {
 }
 
 test("external IPA parser preserves a supported segmental and tonal stream", () => {
-  const parsed = parseExternalIpa("kʰaː˩˧daː˧˥");
+  const parsed = parseExternalIpa("kʰaː˩˧ daː˧˥");
   assert.equal(parsed.status, "SUPPORTED");
   assert.equal(parsed.phonemicIpa, "kʰaːdaː");
   assert.equal(parsed.toneContourIpa, "˩˧˧˥");
