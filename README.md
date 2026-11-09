@@ -6,6 +6,8 @@
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
+**Current status (2026-11-09):** the default main engine is the deterministic hybrid-deterministic pipeline. Additional G2P engines, including supervised Lao Transphone, have been compared on a shared dictionary-seeded reference split; results and dataset limitations are documented in the [engine and dataset inventory](docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md). These scores are not independent expert accuracy. The independent adjudicated IPA gold corpus remains empty, so this is an engineering-verified research prototype, not a linguistically validated production standard. See the [current repository continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) for exact branch/PR and verification status.
+
 ## What this project is
 
 This repository develops a **project-specific Ukrainian practical transcription / phonetic-graphemic correspondence system** for contemporary Standard Lao, using a Vientiane-oriented reference model where the evidence supports it.
