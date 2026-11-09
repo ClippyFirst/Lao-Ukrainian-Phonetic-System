@@ -43,11 +43,25 @@ test("Hybrid v2 runs beam-five tonal inference locally from Pages assets", async
   await expect(meta).toContainText("beam=5");
   await expect(meta).toContainText("e02608cfcb18abfe6b1916f5f4774bfac9ac788d");
 
+  await page.evaluate(() => {
+    window.__hybridV2StatusChanges = [];
+    const target = document.querySelector("#hybrid-v2-status");
+    new MutationObserver(() => {
+      window.__hybridV2StatusChanges.push(target.textContent);
+    }).observe(target, { childList: true, characterData: true, subtree: true });
+  });
   const warmStart = Date.now();
   await run.click();
-  // A cached WASM inference can complete before Playwright resumes after click;
-  // don't assert a transient disabled state that may already have elapsed.
-  await expect(status).toContainText("Hybrid v2 завершив аналіз", { timeout: 30000 });
+  // Observe the loading transition as well as completion. This remains reliable
+  // when cached WASM inference is faster than Playwright's next assertion.
+  await expect.poll(
+    () => page.evaluate(() => window.__hybridV2StatusChanges),
+    { timeout: 10000, intervals: [50, 100, 250] },
+  ).toContain("Підготовка локальної нейромережі…");
+  await expect.poll(
+    async () => status.textContent(),
+    { timeout: 30000, intervals: [50, 100, 250] },
+  ).toContain("Hybrid v2 завершив аналіз");
   const warmStartMs = Date.now() - warmStart;
 
   expect(externalRequests).toEqual([]);
