@@ -310,3 +310,12 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 - Inspected the 77 KB `Lao-Dictionary.txt` word list. Its own BSD-style header says it was created for word wrapping and that compounds have mostly been reduced to their parts. It has orthographic items but no IPA; it is a candidate hint list, not lexical segmentation gold.
 - Confirmed a separate MIT notice for `lao-eng-dictionary.csv`, distinct from the package Apache-2.0 license. The CSV is 2.73 MB and the connector's GitHub contents endpoint did not expose its body; the connected Firecrawl account had no credits. Its schema and rows remain uninspected, so it is not integrated.
 - Recorded these distinctions in the source/claim registries and research inventory. No lexical resource was copied into the production runtime.
+
+
+### Soft lexical-boundary hint prototype — 2026-11-09
+
+- **DONE_VERIFIED after exact-head CI:** retained the complete upstream BSD notice and attribution with the LaoNLP word list at `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- Added optional diagnostic `src/lao_ukrainian/lexical_hints.py`; it reports every multi-syllable lexicon match, preserves overlapping alternatives and labels them `SOFT_HINT_ONLY`. It does not alter syllable segmentation, IPA, Ukrainian rendering, production parser behavior or browser artifacts.
+- Added focused unit tests for list loading/deduplication, overlap preservation, default minimum span, input immutability and invalid arguments.
+- This is a candidate-boundary aid only. The source says it was made for line wrapping and compounds are mostly reduced to parts; it is not word-boundary gold.
+- The distinct 2.73 MB MIT CSV remains **BLOCKED** pending a complete reproducible fetch, schema review, field-level provenance and independent decision on its intended use.

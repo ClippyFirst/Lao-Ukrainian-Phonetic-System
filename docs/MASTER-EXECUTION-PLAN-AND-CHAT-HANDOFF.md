@@ -2828,3 +2828,13 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Added a separate claim and inventory/audit notes for that word list.
 - The distinct 2.73 MB LaoNLP `lao-eng-dictionary.csv` has a separate MIT notice, but its body/schema could not be inspected: the GitHub contents endpoint did not return the oversized body, and Firecrawl had no credits. Do not import it until a full reproducible fetch and schema review are available.
 - No dictionary or word list was copied into production. The PR remains draft pending exact-head CI.
+
+
+### Soft lexical-boundary hint prototype — 2026-11-09
+
+- User approved continuing with written evidence only; audio is not available and is not a prerequisite for text-only engineering.
+- Fetched the complete 77,274-character LaoNLP BSD word list (11,211 non-comment entries in the inspected snapshot; upstream blob SHA-1 `ca5346a1971a7712ac3c50988140c376859174e3`) and retained its original header/attribution in `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- Added `src/lao_ukrainian/lexical_hints.py`, an optional diagnostic that reports all multi-syllable orthographic list matches with offsets and `SOFT_HINT_ONLY` authority. It retains overlaps and does not select word boundaries or feed the production parser, IPA/G2P, Ukrainian target adapter or browser engine.
+- Added focused tests; exact-head Verify must confirm the final commit before marking the code batch DONE_VERIFIED.
+- The source's own header says it was created for word wrapping and compounds were mostly reduced to parts. Thus the hint list is not a lexical segmentation gold corpus; false positives and incomplete compound coverage are expected.
+- The separate 2.73 MB MIT `lao-eng-dictionary.csv` still cannot be inspected because the connected GitHub file endpoint returns an empty body even for line-range requests and the raw-file fetch rejects the oversized response. Keep it BLOCKED and out of runtime until a complete fetch, schema and provenance audit are available.

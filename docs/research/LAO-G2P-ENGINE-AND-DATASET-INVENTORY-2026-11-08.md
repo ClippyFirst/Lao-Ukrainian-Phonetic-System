@@ -205,3 +205,14 @@ These sources reinforce three conservative implementation principles: (1) mainta
 - Inspected `laonlp/corpus/Lao-Dictionary.txt` from LaoNLP. Its header attributes the 2013 word list to Brian Eugene Wilson and Robert Martin Campbell, with thanks to Arlyta Keosamone and Bualong Nyoukmai. It contains a BSD-style redistribution notice, is about 77 KB, and says it was created for word wrapping with compound words mostly reduced to their component parts. It contains orthographic items, names and borrowed forms but no IPA. Treat it as a candidate lexical hint list, not a complete word-boundary gold set.
 - Separately, `laonlp/corpus/lao-eng-dictionary.csv` has its own MIT notice from the E-Government Center, Ministry of Posts and Telecommunications of Laos. The GitHub contents endpoint does not expose the 2.73 MB file body in this connector session, and the connected Firecrawl account had no credits for the raw-file inspection. Its header/schema/rows therefore remain uninspected; do not integrate it or claim its fields until a reproducible fetch is available.
 - The two resources have different origins and licenses; neither license should be inferred from the LaoNLP package's Apache-2.0 code license.
+
+
+### Soft lexical-boundary hint prototype — 2026-11-09
+
+The upstream BSD word list was fetched in full (77,274 UTF-8 characters; 11,211 non-comment entries in this pinned response; upstream blob SHA-1 `ca5346a1971a7712ac3c50988140c376859174e3`). Its original attribution and BSD-style notice are retained verbatim in `data/lao/lexical-hints/Lao-Dictionary.txt`.
+
+Added an optional diagnostic-only matcher in `src/lao_ukrainian/lexical_hints.py`. It joins contiguous syllable spans and returns every matching orthographic entry with zero-based, end-exclusive offsets. It retains overlapping alternatives, labels them `SOFT_HINT_ONLY`, and never chooses word boundaries. It is not imported by the production parser, IPA/G2P path, target adapter, or browser bundle.
+
+The source list's word-wrapping purpose and compound reduction make it unsuitable as lexical segmentation gold. The diagnostic can expose candidate spans for later review, but cannot establish that a listed string is a lexical word in a given context. Its inclusion is permitted under the retained BSD-style notice. The separate 2.73 MB MIT CSV remains excluded until a complete reproducible fetch and schema inspection are available.
+
+Acceptance: unit tests prove multi-match overlap retention, default exclusion of single-syllable entries, and no mutation of the syllable sequence. These are software-contract tests, not linguistic accuracy measurements.
