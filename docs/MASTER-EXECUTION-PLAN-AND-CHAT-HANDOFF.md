@@ -2934,3 +2934,8 @@ No upstream source code, skills, CLI, datasets, assets, hooks, workflows or runt
 - Updated `GLOSSARY.md` with explicit definitions for orthographic lexical hints and `SOFT_HINT_ONLY`.
 - Updated the existing linguistic completion register in place with evidence-backed statuses for written-source registration, the LaoNLP structural fixture and the diagnostic-only lexical-hint matcher; preserved the unresolved lexical-segmentation, MIT CSV, Kaikki provenance and independent IPA-gold blockers.
 - Exact-head Verify [#42587148792 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42587148792) on commit `114c64bfd4222b0ad19283919d7cacdab7399a85`: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; all configured schema, data/evidence, harness, locked install, build, generated-artifact and built-page checks passed.
+
+
+## Selective PR #156 benchmark continuation — 2026-11-09
+
+PR #156 is not merged because its 93-commit branch is 92 commits behind current main and overlaps workflow/audit history. The first port batch integrates a typed IPA confidence gate into the 100-word, deterministic-profile and HVULao 1k benchmark scripts; `PROVISIONAL` grapheme hints are excluded from IPA scoring while remaining available as rendering diagnostics. Exact-head verification and remaining external comparator integration are pending.

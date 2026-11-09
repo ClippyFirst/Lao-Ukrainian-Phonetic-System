@@ -22,6 +22,11 @@ import unicodedata
 import urllib.request
 from pathlib import Path
 
+try:
+    from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
+except ModuleNotFoundError:
+    from benchmark_ipa_contract import accepted_phonetic_ipa
+
 DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
@@ -83,6 +88,7 @@ def load_project():
         segmental_elapsed = time.perf_counter() - started
 
         syllables = analysis.syllables
+        phonetic_syllables = [item for item in syllables if item.status != "PASSTHROUGH"]
         vowel_by_id = {row["id"]: row for row in load_registry()["vowels"]}
 
         def major_weighted(item) -> bool:
@@ -95,39 +101,38 @@ def load_project():
                 or vowel_by_id.get(item.vowel or "", {}).get("nucleus_type") == "diphthong"
             )
 
-        segmental_complete = bool(syllables) and all(
-            item.phonetic_result and item.phonetic_result.phonemic_ipa
-            for item in syllables
-        )
-        tonal_complete = segmental_complete and all(
-            item.phonetic_result.tone_contour_ipa
-            for item in syllables
-        )
-        segmental_parts = [
-            item.phonetic_result.phonemic_ipa if item.phonetic_result else ""
-            for item in syllables
-        ]
+        segmental_complete = bool(phonetic_syllables) and all(accepted_phonetic_ipa(item.phonetic_result) for item in phonetic_syllables)
+        tonal_complete = segmental_complete and all(item.phonetic_result.tone_contour_ipa for item in phonetic_syllables)
+        segmental_parts = [item.phonetic_result.phonemic_ipa if accepted_phonetic_ipa(item.phonetic_result) else "" for item in phonetic_syllables]
         segmental = nfc("".join(segmental_parts)) if segmental_complete else ""
         tonal = (
             nfc("".join(
                 item.phonetic_result.phonemic_ipa + (item.phonetic_result.tone_contour_ipa or "")
-                for item in syllables
+                for item in phonetic_syllables
             ))
             if tonal_complete else ""
         )
-        tone_categories = [
-            item.phonetic_result.tone_category if item.phonetic_result else None
-            for item in syllables
-        ]
+        tone_categories = [item.phonetic_result.tone_category if accepted_phonetic_ipa(item.phonetic_result) else None for item in phonetic_syllables]
         mekong_complete = segmental_complete and all(tone_categories)
         mekong_tonal = (
             render_mekong_tonal(segmental_parts, [str(value) for value in tone_categories])
             if mekong_complete else ""
         )
+        rendering_coverage = {
+            "complete_input": bool(syllables) and all(item.practical_ukrainian is not None for item in syllables),
+            "analyzed_units": len(syllables),
+            "units_with_rendering": sum(item.practical_ukrainian is not None for item in syllables),
+            "supported_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic_syllables),
+            "uncertain_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic_syllables),
+            "provisional_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic_syllables),
+            "unknown_marker_units": sum(item.phonetic_result is not None and any(segment.kind == "unknown" for segment in item.phonetic_result.segments) for item in phonetic_syllables),
+            "passthrough_units": sum(item.status == "PASSTHROUGH" for item in syllables),
+        }
         return {
             "segmental": segmental,
             "tonal": tonal,
             "mekong_tonal": mekong_tonal,
+            "rendering_coverage": rendering_coverage,
             "status": analysis.status,
             "warnings": [
                 warning
@@ -541,6 +546,7 @@ def main() -> int:
         engine_tone_categories: list[list[str | None] | None] = []
         engine_tone_contexts: list[list[dict[str, str]] | None] = []
         mekong_convention_tonal_outputs: list[str] = []
+        rendering_rows: list[dict[str, int | bool]] = []
 
         for source in sources:
             try:
@@ -566,6 +572,9 @@ def main() -> int:
                     if raw_mekong_tonal is not None else tonal
                 )
                 mekong_convention_tonal_outputs.append(nfc(mekong_tonal))
+                raw_rendering = output.get("rendering_coverage")
+                if isinstance(raw_rendering, dict):
+                    rendering_rows.append(raw_rendering)
                 for shape in output.get("partial_parse_shapes", []):
                     shape_key = "|".join([
                         str(shape.get("onset", "")),
@@ -725,8 +734,22 @@ def main() -> int:
             "tonal": tonal_outputs,
             "mekong_tonal": mekong_convention_tonal_outputs,
         }
+        rendering_summary = None
+        if rendering_rows:
+            rendering_summary = {
+                "complete_inputs": sum(bool(row["complete_input"]) for row in rendering_rows),
+                "input_coverage": sum(bool(row["complete_input"]) for row in rendering_rows) / len(rows),
+                "analyzed_units": sum(int(row["analyzed_units"]) for row in rendering_rows),
+                "units_with_rendering": sum(int(row["units_with_rendering"]) for row in rendering_rows),
+                "supported_ipa_units": sum(int(row["supported_ipa_units"]) for row in rendering_rows),
+                "uncertain_ipa_units": sum(int(row["uncertain_ipa_units"]) for row in rendering_rows),
+                "provisional_ipa_units": sum(int(row["provisional_ipa_units"]) for row in rendering_rows),
+                "unknown_marker_units": sum(int(row["unknown_marker_units"]) for row in rendering_rows),
+                "passthrough_units": sum(int(row["passthrough_units"]) for row in rendering_rows),
+            }
         results[name] = {
             "version_or_revision": version,
+            "rendering_coverage": rendering_summary,
             "segmental_vs_pron_no_tones": segmental_metrics,
             "segmental_edit_profile": alignment_error_profile(
                 segmental_references, segmental_outputs
@@ -818,7 +841,7 @@ def main() -> int:
         },
         "method": {
             "normalization": "Unicode NFC and outer whitespace trim only",
-            "segmental_comparison": "phonemic segments and vowel length against pron_no_tones",
+            "segmental_comparison": "typed SUPPORTED/UNCERTAIN IPA only; PROVISIONAL grapheme hints are excluded and reported separately in rendering_coverage",
             "tonal_comparison": "segmental IPA plus per-syllable tone contour against pron_with_tones",
             "tone_only": "segmental-exact items only; tone symbols are extracted by aligning tonal and segmental strings",
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
