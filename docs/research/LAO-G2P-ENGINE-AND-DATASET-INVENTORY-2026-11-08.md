@@ -216,3 +216,8 @@ Added an optional diagnostic-only matcher in `src/lao_ukrainian/lexical_hints.py
 The source list's word-wrapping purpose and compound reduction make it unsuitable as lexical segmentation gold. The diagnostic can expose candidate spans for later review, but cannot establish that a listed string is a lexical word in a given context. Its inclusion is permitted under the retained BSD-style notice. The separate 2.73 MB MIT CSV remains excluded until a complete reproducible fetch and schema inspection are available.
 
 Acceptance: unit tests prove multi-match overlap retention, default exclusion of single-syllable entries, and no mutation of the syllable sequence. These are software-contract tests, not linguistic accuracy measurements.
+
+
+### Exact-head verification status for the lexical-hint prototype
+
+The lexical-hint helper and tests are committed, but the GitHub connector did not trigger Actions after updating the branch ref. Five isolated behavioral checks passed; this is not repository CI. The implementation remains PARTIAL until the full Verify workflow passes on the branch head. Do not transfer the previous branch-head test counts to this commit.

@@ -2838,3 +2838,10 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Added focused tests; exact-head Verify must confirm the final commit before marking the code batch DONE_VERIFIED.
 - The source's own header says it was created for word wrapping and compounds were mostly reduced to parts. Thus the hint list is not a lexical segmentation gold corpus; false positives and incomplete compound coverage are expected.
 - The separate 2.73 MB MIT `lao-eng-dictionary.csv` still cannot be inspected because the connected GitHub file endpoint returns an empty body even for line-range requests and the raw-file fetch rejects the oversized response. Keep it BLOCKED and out of runtime until a complete fetch, schema and provenance audit are available.
+
+
+### Exact-head CI status for lexical hint prototype
+
+- Current branch HEAD before this note: `c67a0b17f917f2c718044757ea6d6904b0db1e4d`.
+- Added `research/**` to the Verify workflow push branches so research branches are covered. Connector ref updates still did not dispatch a run; exact-head `fetch_commit_workflow_runs` returned no runs. No workflow-dispatch tool is available in this session.
+- Five isolated behavioral checks of the helper passed, but this is not a repository test run. The code batch remains PARTIAL pending exact-head GitHub Actions Verify.

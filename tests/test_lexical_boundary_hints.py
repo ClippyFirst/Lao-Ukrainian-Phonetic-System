@@ -10,7 +10,7 @@ from lao_ukrainian.lexical_hints import (
 
 
 class LexicalBoundaryHintTests(unittest.TestCase):
-    def test_loader_preserves_license_header_and_deduplicates_entries(self):
+    def test_loader_skips_license_header_and_deduplicates_entries(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "words.txt"
             path.write_text("# BSD notice\nສະບາຍ\nສະບາຍ\n\n", encoding="utf-8")
