@@ -50,7 +50,8 @@ jobs:
           test -s dist/web/styles.css
           test -s dist/web/hybrid-v2-inference.bundle.js
           test -d dist/web/vendor
-          find dist/web/vendor -name '*.wasm' -print -quit | grep -q .
+          test -s dist/web/vendor/ort-wasm-simd-threaded.wasm
+          test -s dist/web/vendor/ort-wasm-simd-threaded.mjs
           grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js' dist/index.html
           grep -q 'href="./system.html"' dist/index.html
