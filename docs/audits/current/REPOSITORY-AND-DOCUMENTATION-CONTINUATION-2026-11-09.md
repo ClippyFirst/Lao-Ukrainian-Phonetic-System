@@ -604,7 +604,7 @@ ClippyFirst is tied for the lowest segmental CER on this split, but has lower se
 
 - Exact-head Verify [#42650543260 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650543260) on `444ef7c832150ba92119245b05ae9b8f61c795f9`: 324 Python tests, 147 browser-engine tests, 19 Chromium UI tests; all configured evidence/schema, external-G2P syntax/CLI, locked-install, build, generated-data and built-site checks passed.
 - The subsequent README refresh records the 100-word comparison and clarifies that a target-side mapping failure does not erase supported source IPA. Exact-head verification of that documentation update is pending.
-- Main remains the only work branch; no branch was created, deleted or rewritten. PR #145 remains open and unmerged because its neural-first architecture conflicts with the adopted hybrid deterministic route. Current branch inventory is 21 branches including `main`.
+- Main remains the only work branch; no branch was created, deleted or rewritten. PR #145 remains open and unmerged because its neural-first architecture conflicts with the adopted hybrid deterministic route. Current branch inventory is 22 branches including `main`.
 - Independent expert-adjudicated IPA gold: BLOCKED (0 records). Contextual lexical-boundary gold, full Kaikki source provenance, acoustic/prosodic evaluation and manual accessibility QA remain PARTIAL/BLOCKED as recorded above.
 
 **Readiness:** engineering-verified research prototype, not linguistically release-ready. The measured segmental result is competitive on one dictionary-seeded split; tonal quality and full coverage still trail competitors, and no independent gold establishes phonetic accuracy.
