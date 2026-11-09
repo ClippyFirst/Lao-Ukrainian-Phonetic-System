@@ -4,116 +4,76 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { AutoTokenizer, env } from "@huggingface/transformers";
-import * as ort from "onnxruntime-web/wasm";
+import { createHybridV2Inference } from "../web/hybrid-v2-inference.js";
+import { analyze } from "../web/engine.js";
 
 const modelRoot = path.resolve(process.argv[2] ?? "artifacts/hybrid-v2-browser");
 const manifest = JSON.parse(await fs.readFile(path.join(modelRoot, "manifest.json"), "utf8"));
 env.localModelPath = `${modelRoot}${path.sep}`;
 env.allowRemoteModels = false;
-const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
-const wasmDirectory = path.resolve(scriptDirectory, "../node_modules/onnxruntime-web/dist") + path.sep;
-env.backends.onnx.wasm.wasmPaths = pathToFileURL(wasmDirectory).href;
-env.backends.onnx.wasm.numThreads = 1;
-ort.env.wasm.wasmPaths = pathToFileURL(wasmDirectory).href;
-ort.env.wasm.numThreads = 1;
-
-function values(value) {
-  if (value && typeof value.tolist === "function") return value.tolist().flat(Infinity).map(Number);
-  if (value && value.data) return Array.from(value.data, Number);
-  if (Array.isArray(value)) return value.flat(Infinity).map(Number);
-  return Array.from(value, Number);
-}
-
-function int64(valuesArray, shape) {
-  return new ort.Tensor("int64", BigInt64Array.from(valuesArray, (value) => BigInt(value)), shape);
-}
-
-async function runGraphPair(encoderPath, decoderPath, encoderTokenizer, fixtures, label) {
-  const encoderSession = await ort.InferenceSession.create(
-    await fs.readFile(encoderPath),
-    { executionProviders: ["wasm"], graphOptimizationLevel: "disabled" },
-  );
-  const decoderSession = await ort.InferenceSession.create(
-    await fs.readFile(decoderPath),
-    { executionProviders: ["wasm"], graphOptimizationLevel: "disabled" },
-  );
-  const results = [];
-  for (const fixture of fixtures) {
-    const encoded = encoderTokenizer(fixture.input);
-    const inputIds = values(encoded.input_ids);
-    const attentionMask = values(encoded.attention_mask);
-    const tokenTypeIds = encoded.token_type_ids
-      ? values(encoded.token_type_ids)
-      : inputIds.map(() => 0);
-    assert.deepEqual(inputIds, fixture.encoder_input_ids, `${label}: encoder tokenizer IDs differ for ${fixture.input}`);
-    assert.deepEqual(attentionMask, fixture.encoder_attention_mask, `${label}: encoder attention mask differs for ${fixture.input}`);
-    assert.deepEqual(tokenTypeIds, fixture.encoder_token_type_ids, `${label}: encoder token types differ for ${fixture.input}`);
-    const sourceLength = inputIds.length;
-    assert.ok(sourceLength <= manifest.max_sequence_length, "encoder sequence exceeds the pinned model limit");
-
-    const encoderOutputs = await encoderSession.run({
-      input_ids: int64(inputIds, [1, sourceLength]),
-      attention_mask: int64(attentionMask, [1, sourceLength]),
-      token_type_ids: int64(tokenTypeIds, [1, sourceLength]),
-    });
-    const hidden = encoderOutputs.last_hidden_state;
-    const generated = [manifest.decoder_start_token_id];
-    while (generated.length < manifest.max_sequence_length) {
-      const targetLength = generated.length;
-      const decoderOutputs = await decoderSession.run({
-        decoder_input_ids: int64(generated, [1, targetLength]),
-        decoder_attention_mask: int64(generated.map(() => 1), [1, targetLength]),
-        encoder_hidden_states: new ort.Tensor("float32", new Float32Array(hidden.data), hidden.dims),
-        encoder_attention_mask: int64(attentionMask, [1, sourceLength]),
-      });
-      const logits = decoderOutputs.logits;
-      const vocabSize = logits.dims.at(-1);
-      const offset = (targetLength - 1) * vocabSize;
-      let bestToken = 0;
-      let bestScore = Number.NEGATIVE_INFINITY;
-      for (let token = 0; token < vocabSize; token += 1) {
-        const score = logits.data[offset + token];
-        if (score > bestScore) {
-          bestScore = score;
-          bestToken = token;
-        }
-      }
-      generated.push(bestToken);
-      if (bestToken === manifest.eos_token_id) break;
-    }
-    assert.deepEqual(generated, fixture.expected_ids, `${label}: ONNX Runtime Web output IDs differ for ${fixture.input}`);
-    results.push({ input: fixture.input, generated_ids: generated });
-  }
-  await encoderSession.release();
-  await decoderSession.release();
-  return results;
-}
+const wasmDirectory = path.resolve("node_modules/onnxruntime-web/dist") + path.sep;
+const wasmRoot = pathToFileURL(wasmDirectory).href;
 
 const encoderTokenizer = await AutoTokenizer.from_pretrained("encoder_tokenizer");
 const decoderTokenizer = await AutoTokenizer.from_pretrained("decoder_tokenizer");
 for (const fixture of manifest.parity_fixtures) {
+  const encoded = encoderTokenizer(fixture.input);
+  const inputIds = encoded.input_ids.tolist().flat(Infinity).map(Number);
+  const attentionMask = encoded.attention_mask.tolist().flat(Infinity).map(Number);
+  const tokenTypeIds = encoded.token_type_ids
+    ? encoded.token_type_ids.tolist().flat(Infinity).map(Number)
+    : inputIds.map(() => 0);
+  assert.deepEqual(inputIds, fixture.encoder_input_ids, `encoder tokenizer IDs differ for ${fixture.input}`);
+  assert.deepEqual(attentionMask, fixture.encoder_attention_mask, `encoder attention mask differs for ${fixture.input}`);
+  assert.deepEqual(tokenTypeIds, fixture.encoder_token_type_ids, `encoder token types differ for ${fixture.input}`);
   const decoded = decoderTokenizer.decode(fixture.expected_ids, { skip_special_tokens: true });
   assert.equal(decoded, fixture.decoded, `decoder tokenizer output differs for ${fixture.input}`);
 }
-const fp32 = await runGraphPair(
-  path.join(modelRoot, "encoder.onnx"),
-  path.join(modelRoot, "decoder.onnx"),
-  encoderTokenizer,
-  manifest.parity_fixtures,
-  "FP32",
-);
-const int8 = await runGraphPair(
-  path.join(modelRoot, "encoder.int8.onnx"),
-  path.join(modelRoot, "decoder.int8.onnx"),
-  encoderTokenizer,
-  manifest.parity_fixtures,
-  "INT8",
-);
-assert.equal(manifest.int8_exact_token_parity, true, "Python INT8 parity gate was not passed");
+
+async function verifyPair(encoderName, decoderName, label) {
+  const runner = createHybridV2Inference({
+    modelRoot,
+    wasmRoot,
+    manifest,
+    encoderModelBytes: new Uint8Array(await fs.readFile(path.join(modelRoot, encoderName))),
+    decoderModelBytes: new Uint8Array(await fs.readFile(path.join(modelRoot, decoderName))),
+  });
+  const rows = [];
+  for (const fixture of manifest.parity_fixtures) {
+    const neural = await runner.transcribeRaw(fixture.input);
+    assert.deepEqual(
+      neural.generatedIds,
+      fixture.beam5_expected_ids,
+      `${label}: beam-five ONNX output IDs differ for ${fixture.input}`,
+    );
+    assert.equal(neural.rawIpa, fixture.beam5_decoded, `${label}: decoded IPA differs for ${fixture.input}`);
+    const deterministic = analyze(fixture.input);
+    const hybrid = await runner.run(deterministic, fixture.input);
+    assert.equal(hybrid.neuralRawIpa, neural.rawIpa);
+    assert.equal(hybrid.ukrainian, deterministic.output);
+    assert.ok(hybrid.tonePredictions.every((prediction) => prediction.certainty === "UNCERTAIN"));
+    rows.push({
+      input: fixture.input,
+      sourceTokenCount: neural.sourceTokenCount,
+      generatedTokenCount: neural.generatedIds.length,
+      rawIpa: neural.rawIpa,
+      alignment: hybrid.toneAlignmentStatus,
+      alignedSyllables: hybrid.alignedSyllables,
+    });
+  }
+  await runner.release();
+  return rows;
+}
+
+const fp32 = await verifyPair("encoder.onnx", "decoder.onnx", "FP32");
+const int8 = await verifyPair("encoder.int8.onnx", "decoder.int8.onnx", "INT8");
+assert.equal(manifest.int8_exact_token_parity, true, "Python INT8 greedy parity gate was not passed");
 console.log(JSON.stringify({
-  status: "ONNX_RUNTIME_WEB_WASM_AND_TOKENIZER_PARITY_VERIFIED",
+  status: "TRANSFORMERS_JS_TOKENIZER_AND_ONNX_RUNTIME_WEB_WASM_BEAM5_PARITY_VERIFIED",
   transformersJsVersion: "4.3.2",
   onnxRuntimeWebVersion: "1.31.1",
+  modelRevision: manifest.model_revision,
+  beamSize: 5,
   fixtures: manifest.parity_fixtures.length,
   fp32,
   int8,
