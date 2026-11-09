@@ -2671,3 +2671,32 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Hybrid mean latency in this run: 1.93 ms/input vs Neural 66.72 ms/input; hosted single-run diagnostic, not a guarantee. Zero runtime errors.
 - The fallback now retains known /l/ in malformed `ກາລ` as a provisional segment and outputs `кал?`; unknown position remains marked. Unsupported standalone semivowel `ຽ` is deliberately not guessed.
 - Engineering implementation status: **DONE_VERIFIED**. Linguistic accuracy of isolated grapheme hints remains **BLOCKED / evidence-limited** pending expert-adjudicated contextual IPA gold.
+
+
+## Repository documentation and G2P inventory continuation — 2026-11-09
+
+- Starting main HEAD: 819c2528b1c726adfd3062be89084fedce7ad84d. The user explicitly requested work on the single main branch; this continuation therefore made documentation commits directly to main and created no task branch.
+- Added the confidence-gated engine/dataset inventory from PR #156 as docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md. This ports the research report only; it does not merge PR #156 scripts, tests or workflows.
+- Added the current state snapshot docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md; updated README.md, docs/README.md, docs/audits/README.md and docs/agents/codebase-map.md so users can discover the active hybrid, the comparative report, the current audit and the canonical documentation hierarchy.
+- Reconciled current PR state: #156 is Draft/open and based directly on the starting main HEAD; its exact-head Verify #42576010011 (SUCCESS) applies to 0432a0a..., not to main. PR #148 is open, based on older c0d7218..., and reported non-mergeable; do not merge its documentation snapshot blindly. PRs #137–#147 remain untouched pending file-level stack reconciliation.
+- Preserved the five external methodology references already recorded in AGENTS.md: unlazy, UI UX Pro Max, Superpowers, mattpocock/skills and Ponytail. No upstream code, skills, CLI, dataset, workflow or runtime dependency was imported.
+
+### Task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Current repository and documentation audit | DONE_VERIFIED (inspection and documentation) | Main tree, metadata, recent commits, branch heads, open PR summaries, changed-file lists and canonical docs inspected; see the 2026-11-09 audit. |
+| Port additional Lao G2P engine/dataset research report | DONE_VERIFIED (documentation only) | Report copied from PR #156 branch; implementation remains on PR #156. |
+| Update root and docs navigation / codebase map | DONE_VERIFIED (documentation) | README, docs index, audit index and codebase map point to current authority and report. |
+| PR #148 documentation branch reconciliation | PARTIAL | Stale base and non-mergeable state; compare its full diff against current main before retarget/close. |
+| PR #156 implementation reconciliation | PARTIAL | Overlaps benchmark scripts/workflows and canonical audit/handoff files with #137–#148; keep Draft until reconciled. |
+| Exact-main-head Verify | BLOCKED / not observed | No PR-triggered workflow run was returned for exact main SHA 819c2528...; run Verify on current main or the next documentation commit and record the exact head. |
+| Independent expert-adjudicated IPA gold | BLOCKED | 0 adjudicated records; requires rights-cleared source material, qualified independent annotation and adjudication. |
+| Manual accessibility acceptance | PARTIAL | Screen-reader, physical-device, actual 200%/400% zoom and human visual review remain outstanding. |
+
+### Verification boundary
+
+- PR #156 exact-head Verify #42576010011 is SUCCESS with 293 Python, 143 Node and 19 Chromium tests plus its configured data/audit/build checks. It is not a mainline verification result.
+- This connector-only session did not provide a local checkout or shell runtime. No local tests, benchmarks, Markdown link crawler, browser interaction or deployment smoke test were run or claimed.
+- Research metrics are dictionary-reference concordance or text-domain stress/coverage, not independent phonetic accuracy. The production engine and linguistic registries were not changed.
+- Readiness: research-ready engineering/evidence prototype; not linguistically release-ready.
