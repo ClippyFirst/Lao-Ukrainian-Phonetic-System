@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { AutoTokenizer, env } from "@huggingface/transformers";
 import * as ort from "onnxruntime-web/wasm";
 
@@ -10,10 +10,12 @@ const modelRoot = path.resolve(process.argv[2] ?? "artifacts/hybrid-v2-browser")
 const manifest = JSON.parse(await fs.readFile(path.join(modelRoot, "manifest.json"), "utf8"));
 env.localModelPath = `${modelRoot}${path.sep}`;
 env.allowRemoteModels = false;
-env.backends.onnx.wasm.wasmPaths = pathToFileURL(
-  path.join(path.dirname(new URL(import.meta.url).pathname), "../node_modules/onnxruntime-web/dist") + path.sep,
-).href;
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
+const wasmDirectory = path.resolve(scriptDirectory, "../node_modules/onnxruntime-web/dist") + path.sep;
+env.backends.onnx.wasm.wasmPaths = pathToFileURL(wasmDirectory).href;
 env.backends.onnx.wasm.numThreads = 1;
+ort.env.wasm.wasmPaths = pathToFileURL(wasmDirectory).href;
+ort.env.wasm.numThreads = 1;
 
 function values(value) {
   if (value && typeof value.tolist === "function") return value.tolist().flat(Infinity).map(Number);
