@@ -42,6 +42,10 @@ A grapheme inventory and the fallback's role inventory are different measures. A
 This is an engineering affordance, not an accuracy claim. Independent adjudicated Lao IPA gold remains required for empirical accuracy claims and promotion of new rules.
 
 
+## Expanded grapheme and composite-vowel handling
+
+The canonical Unicode inventory remains the authority for every assigned Lao-block codepoint. The hybrid distinguishes modern-Lao phonetic material from structural marks, repetition, punctuation, digits, Pali/Sanskrit extensions and Khmu-specific letters; recognition is not the same as a standalone phonetic value. `ຽ` is context-sensitive: it can form the /iːə̯/ rhyme or act as a final /j/ glide. The parser now includes five additional source-attested composite patterns (`ເ◌ີຍ` /ɤːj/, `ໂ◌ຍ` /oːj/, `ແ◌ວ` /ɛːw/, `◌ອຍ` /ɔːj/, `◌າຽ` /aːj/) in both Python and browser runtimes. The Lao ellipsis `ຯ` is preserved as punctuation, not misclassified as a phoneme. Pali/Sanskrit, Khmu and obsolete marks remain explicitly out of modern-Lao phonetic scope rather than receiving invented IPA.
+
 ## Automated verification
 
 - Exact-head Verify 42416380324 passed on commit 4d2ebc2c9348ac4952869492095e82d0a22dcdc4: 260 Python tests, 126 Node tests and 10 Chromium tests.
