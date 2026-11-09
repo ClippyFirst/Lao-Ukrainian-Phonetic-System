@@ -123,7 +123,8 @@ def main() -> int:
                     predictions[word] = nfc("".join(phone_parts))
 
         references = [nfc(row["pron_no_tones"]) for row in rows]
-        outputs = [predictions.get(row["orth"], "") for row in rows]
+        raw_outputs = [predictions.get(row["orth"], "") for row in rows]
+        outputs = [value or "?" for value in raw_outputs]
         edits = sum(levenshtein(ref, pred) for ref, pred in zip(references, outputs))
         ref_chars = sum(len(ref) for ref in references)
         exact = sum(ref == pred for ref, pred in zip(references, outputs))
@@ -138,8 +139,10 @@ def main() -> int:
             "exact": exact,
             "exact_rate": exact / len(rows),
             "cer_full_denominator": edits / ref_chars if ref_chars else None,
-            "coverage": covered / len(rows),
-            "missing": len(rows) - covered,
+            "output_coverage": covered / len(rows),
+            "engine_success_coverage": sum(bool(value) for value in raw_outputs) / len(rows),
+            "explicit_unknown_markers": sum(value == "?" for value in outputs),
+            "missing": len(rows) - sum(bool(value) for value in raw_outputs),
             "covered_subset_cer": covered_edits / covered_chars if covered_chars else None,
             "batch_elapsed_ms_including_download_and_docker_start": elapsed_ms,
             "mean_elapsed_ms_per_input_including_startup": elapsed_ms / len(rows),
