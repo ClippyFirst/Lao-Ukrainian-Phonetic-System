@@ -722,3 +722,77 @@ Tone alignment status counts: NOT_ALIGNED 920, ORDER_ALIGNED 10, PARTIAL 4. The 
 **Task ledger:** Hybrid v2 1k sentence-domain run DONE_VERIFIED (stress/coverage only); 100% Ukrainian rendering DONE_VERIFIED; complete segmental IPA PARTIAL; parseable tonal IPA PARTIAL; per-syllable tone association PARTIAL; independent IPA accuracy BLOCKED (requires independently adjudicated IPA gold); neural input acceptance TODO/evidence-limited (define safe policy for 66 explicit rejections; never truncate or strip silently). Browser integration remains DEFERRED until a supported inference backend is available.
 
 The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2_hvulao_1k.py` already implement this test. Do not duplicate it inside the older three-engine benchmark workflow.
+
+
+## GitHub Pages Hybrid v2 port continuation — 2026-11-09
+
+**Starting main:** `673e36fddcbed7f073a448bf54cd1edf44a6b10f`.  
+**Work branch:** `feat/pages-hybrid-v2-browser`.
+
+### Reconciled browser state
+
+The current static Pages application runs `web/app.js` → `web/engine.js` with the deterministic hybrid profile. The optional Python Hybrid v2 tonal model is not currently present in the Pages artifact. No ONNX model, tokenizer assets or ONNX Runtime Web bundle were found in the deployed source tree.
+
+### Branch implementation
+
+- `PARTIAL`: browser-side external IPA parser and unique contour association added in `web/hybrid-v2.js`.
+- `PARTIAL`: regression tests added in `web/hybrid-v2.test.js` and wired into `npm test`.
+- The implementation accepts raw tonal IPA from an explicit inference provider; it does not yet perform inference.
+- A dedicated design/evidence record was added at `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md`.
+
+### Evidence / unresolved work
+
+The latest Hybrid v2 stress run [#42680434577](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42680434577), artifact [13701914558](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42680434577/artifacts/13701914558), reports 934 raw neural outputs / 1,000 rows, 228 parseable outputs, 706 unsupported-IPA parse results, 10 order-aligned rows, 4 partial tone rows and zero unexpected runtime errors. It is not an accuracy benchmark because HVULao has no IPA reference.
+
+**Task ledger**
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Identify current Pages runtime | DONE_VERIFIED | Existing Pages app is deterministic hybrid only |
+| Browser Hybrid v2 combination boundary | PARTIAL | Implemented on work branch; exact CI and parity evidence pending |
+| ONNX export of exact pinned tonal checkpoint | TODO | Custom encoder–decoder export + tokenizer export and parity required |
+| Browser-local inference | TODO | Need tokenizer, decoder, beam search and WASM runtime; no server calls |
+| Pages static model/runtime assets | TODO | Must be included in deployment artifact with checksums and size budget |
+| UI integration and deployment | TODO | Separate raw tonal IPA / parse / alignment / UNCERTAIN output and live Pages smoke test |
+
+The model card reports Apache-2.0, 33.6M parameters and a 128-token limit. Transformers.js supports general text-to-text tasks but its published model architecture support does not establish compatibility with this exact BERT `EncoderDecoderModel`; custom ONNX inference is the working route to validate. See the [canonical port record](../../research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md).
+
+**Readiness:** current main deployment remains deterministic-only. Full neural Hybrid v2 is not yet hosted. Do not merge or deploy the partial branch as a completed neural engine.
+
+
+## GitHub Pages Hybrid v2 browser-port continuation — 2026-11-09
+
+This is an additional workstream on branch `feat/pages-hybrid-v2-browser`, PR [#158](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/158), based on the reviewed `673e36f...` main checkpoint. It does not alter the main default engine until merged.
+
+- **DONE_VERIFIED:** pinned MekongPhon checkpoint export to FP32 and dynamic per-channel INT8 ONNX encoder/decoder graphs; immutable revision and source weight SHA are enforced. Export workflow [#42696469630](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696469630) succeeded; artifact [13709122743](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696469630/artifacts/13709122743).
+- **DONE_VERIFIED:** Transformers.js 4.3.2 tokenizer parity and ONNX Runtime Web 1.31.1 WASM beam-five decoded token/IPA parity on three fixed fixtures, for FP32 and INT8. This is runtime implementation parity, not linguistic accuracy.
+- **DONE_VERIFIED:** browser-side IPA parser / tone association tests preserve raw neural IPA and `UNCERTAIN` status. Deterministic Ukrainian output remains authoritative and unchanged.
+- **PARTIAL:** browser UI and local inference runtime. Preview #42696469101 found `AutoTokenizer.from_pretrained` was given absolute tokenizer URLs; the loader could not resolve `tokenizer_class`. Commit `54063e92b52a476185c09a69947f54fb14afe756` switches to local tokenizer IDs resolved through `env.localModelPath`.
+- **IN_PROGRESS at the last inspected state:** full non-deploying Pages preview [#42696777234](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696777234), including exact model export, WASM parity, Chromium model inference, static artifact size and asset checks. Verify [#42696788826](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696788826) passed on `54063e9...`, including 19 ordinary Chromium tests; it does not substitute for the model-specific preview.
+- **TODO:** check terminal result of preview #42696777234; fix and rerun any model-specific failures; then validate latest exact branch head. Merge PR #158 only after all preview gates pass. After merge, confirm main Pages workflow succeeds and live site serves the manifest, INT8 ONNX graphs and WASM assets from same origin. No deployment is claimed yet.
+- **BLOCKED (linguistic accuracy):** independent expert-adjudicated IPA gold remains unavailable. Three parity fixtures cannot establish phonetic correctness. Neural tone predictions remain `UNCERTAIN`.
+
+Detailed task ledger and architecture are in `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md`; canonical handoff entry is in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+## Hybrid v2 browser runtime verification update — 2026-11-09, 21:07 UTC
+
+- **DONE_VERIFIED:** Full browser-local Hybrid v2 inference, exact ONNX tokenizer/beam-five parity, model packaging, license/attribution, and Chromium run passed in preview [#42699110323](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42699110323) on `e74602e...`.
+- **DONE_VERIFIED:** Browser measurement for `ຂາ`: 1,272 ms cold / 177 ms warm on CI local server, `kʰaː˩˧`, `ORDER_ALIGNED`, zero external requests. This is runtime behavior evidence, not independent phonetic accuracy.
+- **DONE_VERIFIED:** Minimal Pages artifact [13709754651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42698861280/artifacts/13709754651) is 40.4 MB zipped / 56.5 MB unpacked; includes INT8 weights, tokenizers, only the required WASM module/binary, Apache LICENSE and attribution NOTICE.
+- **DONE_VERIFIED:** Native ONNX Node install scripts are skipped in browser-only CI; Verify passed after the change, avoiding intermittent NuGet timeouts from an unused native backend.
+- **PARTIAL at exact latest head:** browser test additionally asserts multi-syllable `ສະບາຍດີ` retains raw IPA while `NOT_ALIGNED` and emits no fabricated tones. Current PR #158 head `057fa8b5c819a022b24469e494684ec34436dbbc`; preview #42699464033 and Verify #42699475181 were running at note time.
+- **TODO:** once exact-head checks pass, update PR #158 from draft, merge it, verify main Pages deployment, and inspect live same-origin UI/model/tokenizer/WASM/license assets. No live deployment is claimed.
+- **BLOCKED (linguistic accuracy):** independent expert-adjudicated IPA gold is still empty. Keep neural tone outputs marked `UNCERTAIN`; do not treat parity fixtures as linguistic gold.
+
+
+
+## Final Hybrid v2 browser verification — 2026-11-09, 21:15 UTC
+
+- **DONE_VERIFIED:** exact-head preview [#42700501740](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740) and repository Verify [#42700510670](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700510670) both SUCCESS on `32a8f27ac2f9229f61a98611828d8d39e12f3d52`.
+- **DONE_VERIFIED:** Chromium run on a non-cross-origin-isolated origin; `crossOriginIsolated === false`, WASM single-thread inference still succeeds. No COOP/COEP headers needed on GitHub Pages.
+- **DONE_VERIFIED:** bundle third-party notices derived from esbuild metafile inputs; included Transformers.js Apache-2.0 and ONNX Runtime common/web MIT license texts. Model Apache-2.0 license and attribution NOTICE included.
+- **DONE_VERIFIED:** preview artifact [13711776359](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740/artifacts/13711776359), 40,383,255 bytes zipped / 56,466,051 unpacked, 34 files.
+- **DONE_VERIFIED:** aligned short Lao test, unaligned multi-syllable raw IPA preservation, no fabricated tone predictions, and zero external runtime requests.
+- **TODO:** PR #158 remains draft. Mark ready, merge, wait for main Pages deploy, verify live site and all static assets. Do not report production deployment until live smoke passes.
+- **BLOCKED (accuracy only):** no independent expert IPA gold; neural tone remains `UNCERTAIN`.
+

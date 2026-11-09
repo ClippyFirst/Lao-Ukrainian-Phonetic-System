@@ -1,0 +1,39 @@
+name: Export Hybrid v2 tonal model for browser runtime
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install pinned CPU model and ONNX export dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
+          python -m pip install transformers==4.49.0 huggingface_hub==0.29.3 safetensors==0.5.3 onnx==1.17.0 onnxruntime==1.20.1
+      - name: Export pinned encoder and decoder and verify greedy parity
+        run: python scripts/export_hybrid_v2_browser_onnx.py --output artifacts/hybrid-v2-browser
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Install browser tokenizer and ONNX Runtime Web
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
+      - name: Verify browser tokenizer and ONNX Runtime Web WASM parity
+        run: node scripts/test_hybrid_v2_browser_runtime.mjs artifacts/hybrid-v2-browser
+      - name: Upload ONNX model, tokenizer and parity manifest
+        uses: actions/upload-artifact@v7
+        with:
+          name: hybrid-v2-tonal-onnx-e02608c
+          path: artifacts/hybrid-v2-browser/
+          if-no-files-found: error
+          retention-days: 7

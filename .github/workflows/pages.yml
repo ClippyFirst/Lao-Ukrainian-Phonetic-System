@@ -7,6 +7,12 @@ on:
       - "system.html"
       - "web/**"
       - "scripts/generate_web_data.py"
+      - "scripts/export_hybrid_v2_browser_onnx.py"
+      - "scripts/test_hybrid_v2_browser_runtime.mjs"
+      - "scripts/prepare_pages_model.py"
+      - "scripts/build_web.py"
+      - "tests/browser/hybrid-v2-model.spec.js"
+      - ".github/workflows/hybrid-v2-browser-model.yml"
       - "data/lao/**"
       - "package.json"
       - ".github/workflows/pages.yml"
@@ -34,11 +40,30 @@ jobs:
           node-version: "22"
       - name: Install browser-test dependencies
         run: npm install --no-audit --no-fund
+      - name: Install pinned browser-local inference runtime dependencies
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund esbuild@0.25.0 @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
       - name: Run browser regression tests
         run: npm test
       - name: Build both public pages and generated data
         run: npm run build
+      - name: Install pinned Python ONNX export dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
+          python -m pip install transformers==4.49.0 huggingface_hub==0.29.3 safetensors==0.5.3 onnx==1.17.0 onnxruntime==1.20.1
+      - name: Export and verify the pinned Hybrid v2 model
+        run: python scripts/export_hybrid_v2_browser_onnx.py --output artifacts/hybrid-v2-browser
+      - name: Verify browser tokenizers and WASM beam-five inference
+        run: node scripts/test_hybrid_v2_browser_runtime.mjs artifacts/hybrid-v2-browser
+      - name: Copy only verified INT8 model assets into Pages
+        run: |
+          python scripts/prepare_pages_model.py --source artifacts/hybrid-v2-browser --destination dist/models/hybrid-v2
+          curl --fail --silent --show-error --retry 3 https://www.apache.org/licenses/LICENSE-2.0.txt -o dist/models/hybrid-v2/LICENSE
+          test -s dist/models/hybrid-v2/NOTICE
+          test -s dist/models/hybrid-v2/LICENSE
       - name: Test actual browser interaction against the built site
+        env:
+          HYBRID_V2_MODEL_AVAILABLE: "1"
         run: |
           npx playwright install --with-deps chromium
           npm run test:browser
@@ -48,9 +73,24 @@ jobs:
           test -s dist/system.html
           test -s dist/web/app.js
           test -s dist/web/styles.css
+          test -s dist/web/hybrid-v2-inference.bundle.js
+          test -s dist/models/hybrid-v2/manifest.json
+          test -s dist/models/hybrid-v2/NOTICE
+          test -s dist/models/hybrid-v2/LICENSE
+          test -s dist/models/hybrid-v2/encoder.int8.onnx
+          test -s dist/models/hybrid-v2/decoder.int8.onnx
+          test -d dist/web/vendor
+          test -s dist/web/vendor/ort-wasm-simd-threaded.wasm
+          test -s dist/web/vendor/ort-wasm-simd-threaded.mjs
+          test -s dist/web/vendor/THIRD-PARTY-NOTICES.md
+          test -d dist/web/vendor/licenses
+          find dist/web/vendor/licenses -maxdepth 1 -type f -print -quit | grep -q .
+          python -c 'from pathlib import Path; assert sum(p.stat().st_size for p in Path("dist").rglob("*") if p.is_file()) < 1_000_000_000'
           grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js' dist/index.html
           grep -q 'hero-specimen' dist/index.html
+          grep -q 'id="run-hybrid-v2"' dist/index.html
+          grep -q 'id="hybrid-v2-ipa"' dist/index.html
           grep -q 'copy-feedback' dist/index.html
           grep -q 'skip-link' dist/index.html
           grep -q 'skip-link' dist/system.html
@@ -81,7 +121,27 @@ jobs:
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/app.js" -o /tmp/app.js
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/data.js" -o /tmp/data.js
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/styles.css" -o /tmp/styles.css
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/hybrid-v2-inference.bundle.js" -o /tmp/hybrid-v2-inference.bundle.js
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/ort-wasm-simd-threaded.mjs" -o /tmp/ort-wasm-simd-threaded.mjs
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/THIRD-PARTY-NOTICES.md" -o /tmp/THIRD-PARTY-NOTICES.md
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/ort-wasm-simd-threaded.wasm" -o /dev/null
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/manifest.json" -o /tmp/hybrid-v2-manifest.json
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/NOTICE" -o /tmp/hybrid-v2-NOTICE
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/LICENSE" -o /tmp/hybrid-v2-LICENSE
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/encoder_tokenizer/tokenizer.json" -o /dev/null
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/decoder_tokenizer/tokenizer.json" -o /dev/null
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/encoder.int8.onnx" -o /dev/null
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/decoder.int8.onnx" -o /dev/null
+          grep -q 'byumatrixlab/lao-ipa-tonal' /tmp/hybrid-v2-manifest.json
+          grep -q 'e02608cfcb18abfe6b1916f5f4774bfac9ac788d' /tmp/hybrid-v2-manifest.json
+          grep -q 'Apache License 2.0' /tmp/hybrid-v2-NOTICE
+          grep -q 'Apache License' /tmp/hybrid-v2-LICENSE
+          test -s /tmp/ort-wasm-simd-threaded.mjs
+          grep -q '@huggingface/transformers' /tmp/THIRD-PARTY-NOTICES.md
+          grep -q 'onnxruntime-web' /tmp/THIRD-PARTY-NOTICES.md
           grep -q 'id="lao-input"' /tmp/index.html
+          grep -q 'id="run-hybrid-v2"' /tmp/index.html
+          grep -q 'id="hybrid-v2-ipa"' /tmp/index.html
           grep -q 'src="./web/app.js' /tmp/index.html
           grep -q '<title>' /tmp/system.html
           test -s /tmp/app.js && test -s /tmp/data.js && test -s /tmp/styles.css
