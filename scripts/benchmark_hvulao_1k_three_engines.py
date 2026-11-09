@@ -337,7 +337,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "1.3",
+        "schema_version": "1.4",
         "status": "independent_text_domain_stress_test_not_ipa_accuracy",
         "benchmark": {
             "name": "HVULao_NLP 1k raw-sentence test split",
