@@ -176,9 +176,9 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 
 | Task | Status | Acceptance evidence |
 |---|---|---|
-| `GRAPHEME-RECOGNITION-001` | DONE_VERIFIED when exact-head Verify succeeds | Python and browser tests iterate all 83 inventory entries; require a typed role or explicit passthrough. |
-| `GLIDE-VOWEL-COVERAGE-001` | DONE_VERIFIED when exact-head Verify succeeds | Six new source-backed forms have shared fixtures and Python/browser tests; registry IDs and parser structures are checked. |
-| `LAO-ELLIPSIS-PASSTHROUGH-001` | DONE_VERIFIED when exact-head Verify succeeds | Python/browser tests assert punctuation is preserved, not treated as phonetic material. |
+| `GRAPHEME-RECOGNITION-001` | DONE_VERIFIED | Python and browser tests iterate all 83 inventory entries; require a typed role or explicit passthrough. |
+| `GLIDE-VOWEL-COVERAGE-001` | DONE_VERIFIED | Six new source-backed forms have shared fixtures and Python/browser tests; registry IDs and parser structures are checked. |
+| `LAO-ELLIPSIS-PASSTHROUGH-001` | DONE_VERIFIED | Python/browser tests assert punctuation is preserved, not treated as phonetic material. |
 | `REPETITION-MARK-EXPANSION-001` | DEFERRED | Requires word/phrase scope resolution; current engine does not claim lexical word segmentation. Acceptance: preserve meaning of U+0EC6 by repeating the correctly scoped Ukrainian unit, with mixed-phrase regressions. |
 | `PALI-PRONUNCIATION-PROFILE-001` | DEFERRED | Outside contemporary Lao profile; requires Pali phonological rules, orthographic conventions and independent review. |
 | `KHMu-PRONUNCIATION-PROFILE-001` | DEFERRED | Khmu is a distinct language; requires a separate language profile and evidence. |
@@ -187,5 +187,8 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 ### Verification history and current head
 
 - Earlier Verify runs failed while the new browser matcher and test controls were being reconciled. Those failures were investigated; they are not presented as passes.
-- The final exact-head Verify result must be recorded below after it completes; no test result is inferred from an in-progress run.
-- Local shell tests were not run in this connector-only session. All claimed verification must cite the exact GitHub Actions run and SHA.
+- Final code-and-test HEAD `dcc363bee42e3ed53c9b1c45c31b336e8483da06`: exact-head Verify [#42579401059 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42579401059).
+- Exact run passed 292 Python tests, 146 Node/browser-engine tests and 19 Chromium UI tests. Independent IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked dependency install, static build, generated browser-data reproducibility and built-page/relative-asset checks all passed.
+- Python and browser coverage tests both iterate all 83 assigned Unicode 18 Lao-block codepoints and require typed grapheme-role evidence or explicit passthrough. The shared vowel fixtures cover all six new forms.
+- The code checkpoint was also deployed through GitHub Pages workflow [#42579237707 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42579237707) at the verified code checkpoint `523a21e8...`; deployment for the later test-only/doc continuation is separately tracked by run #42579401010.
+- Local shell tests were not run in this connector-only session. CI is hosted verification; independent expert IPA gold and manual accessibility/linguistic acceptance remain outside its scope.
