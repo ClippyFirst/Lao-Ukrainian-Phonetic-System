@@ -13,7 +13,7 @@ function trailingSlash(value) {
 
 function joinModelDirectory(root, child) {
   const base = trailingSlash(root);
-  if (/^https?:\\/\\//u.test(base) || /^file:/u.test(base)) {
+  if (/^https?:\/\//u.test(base) || /^file:/u.test(base)) {
     return new URL(child + "/", base).href;
   }
   return base + child + "/";
