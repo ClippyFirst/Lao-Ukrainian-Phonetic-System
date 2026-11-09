@@ -195,7 +195,23 @@ def run_hybrid_v2(
     engine = MekongPhonEngine(
         tonal=True, revision=revision, device=device, num_beams=num_beams
     )
-    neural = engine.transcribe(text)
+    if deterministic.status == "INVALID":
+        return HybridV2Result(
+            deterministic, engine.model_id, engine.revision, "",
+            "INVALID_INPUT", 0, (), 0,
+            ("DETERMINISTIC-INPUT-INVALID", *deterministic.warnings),
+        )
+    try:
+        neural = engine.transcribe(text)
+    except (ValueError, RuntimeError, OSError) as exc:
+        phonetic_syllables = [
+            item for item in deterministic.syllables if item.status != "PASSTHROUGH"
+        ]
+        return HybridV2Result(
+            deterministic, engine.model_id, engine.revision, "",
+            "NEURAL_UNAVAILABLE", 0, (), len(phonetic_syllables),
+            (f"NEURAL-INFERENCE-UNAVAILABLE:{type(exc).__name__}:{exc}",),
+        )
     return combine_neural_tones(
         deterministic,
         neural.raw_ipa,

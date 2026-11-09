@@ -1,7 +1,8 @@
 import unittest
+from unittest.mock import patch
 
 from lao_ukrainian.core import analyze
-from lao_ukrainian.hybrid_v2 import combine_neural_tones
+from lao_ukrainian.hybrid_v2 import combine_neural_tones, run_hybrid_v2
 
 
 class HybridV2Tests(unittest.TestCase):
@@ -71,6 +72,22 @@ class HybridV2Tests(unittest.TestCase):
         )
         self.assertEqual(result.tone_predictions, ())
         self.assertEqual(result.skipped_tone_units, 1)
+
+
+    def test_neural_limit_or_runtime_failure_returns_visible_deterministic_fallback(self):
+        baseline = analyze("ຂາ")
+        with patch(
+            "lao_ukrainian.hybrid_v2.MekongPhonEngine.transcribe",
+            side_effect=ValueError("Input exceeds the model's 128-token limit"),
+        ):
+            result = run_hybrid_v2("ຂາ")
+        self.assertEqual(result.tone_alignment_status, "NEURAL_UNAVAILABLE")
+        self.assertEqual(result.neural_raw_ipa, "")
+        self.assertEqual(result.tone_predictions, ())
+        self.assertEqual(result.ukrainian, "".join(
+            item.practical_ukrainian or "?" for item in baseline.syllables
+        ))
+        self.assertTrue(any("128-token limit" in warning for warning in result.warnings))
 
     def test_input_analysis_is_not_mutated(self):
         baseline = analyze("ຂາ")
