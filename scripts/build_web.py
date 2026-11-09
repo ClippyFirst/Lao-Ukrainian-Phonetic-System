@@ -87,10 +87,10 @@ if ESBUILD.exists() and ORT_DIST.exists():
                 or path.name.lower().startswith("notice")
             )
         )
-        if not license_files and package_name == "onnxruntime-common":
-            # This subpackage shares ONNX Runtime's MIT license; npm omits a
-            # duplicate license file here, while onnxruntime-web carries it.
-            shared_license = ROOT / "node_modules" / "onnxruntime-web" / "LICENSE"
+        if not license_files and package_name in {"onnxruntime-common", "onnxruntime-web"}:
+            # The npm tarballs omit a top-level license file. Use the exact
+            # upstream Microsoft ONNX Runtime MIT text tracked in this repo.
+            shared_license = ROOT / "licenses" / "third-party" / "ONNX-RUNTIME-MIT.txt"
             if shared_license.is_file():
                 license_files = [shared_license]
         if not license_files:
