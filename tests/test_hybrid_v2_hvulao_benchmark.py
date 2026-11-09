@@ -13,4 +13,7 @@ class HybridV2HVULaoBenchmarkTests(unittest.TestCase):
         self.assertEqual(counts["tone_prediction_units"], 0)
         self.assertIsInstance(counts["errors"], Counter)
         self.assertIsInstance(counts["input_rejections"], Counter)
+        self.assertIsInstance(counts["tonal_ipa_parse_statuses"], Counter)
+        self.assertIsInstance(counts["tonal_ipa_parse_warning_categories"], Counter)
+        self.assertIsInstance(counts["tone_alignment_warning_categories"], Counter)
 

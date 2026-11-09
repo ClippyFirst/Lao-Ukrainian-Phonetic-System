@@ -41,6 +41,9 @@ def new_counts() -> dict:
         "input_rejections": Counter(),
         "analysis_statuses": Counter(),
         "tone_alignment_statuses": Counter(),
+        "tonal_ipa_parse_statuses": Counter(),
+        "tonal_ipa_parse_warning_categories": Counter(),
+        "tone_alignment_warning_categories": Counter(),
         "attempt_times": [],
         "deterministic_times": [],
         "neural_times": [],
@@ -121,6 +124,9 @@ def run(output: Path) -> dict:
                 neural.raw_ipa,
                 provenance=("HYBRID-V2", neural.model_id, f"MODEL-REVISION:{neural.model_revision}"),
             )
+            counts["tonal_ipa_parse_statuses"].update([parsed.status])
+            for warning in parsed.uncertainty:
+                counts["tonal_ipa_parse_warning_categories"].update([str(warning).split(":", 1)[0]])
             if parsed.status == "SUPPORTED" and neural.raw_ipa.strip():
                 counts["rows_with_parseable_tonal_ipa"] += 1
             combined = combine_neural_tones(
@@ -130,6 +136,8 @@ def run(output: Path) -> dict:
                 model_revision=neural.model_revision,
             )
             counts["tone_alignment_statuses"].update([combined.tone_alignment_status])
+            for warning in combined.warnings:
+                counts["tone_alignment_warning_categories"].update([str(warning).split(":", 1)[0]])
             counts["tone_prediction_units"] += len(combined.tone_predictions)
             counts["skipped_tone_units"] += combined.skipped_tone_units
             if combined.tone_alignment_status == "ORDER_ALIGNED":
@@ -191,6 +199,9 @@ def run(output: Path) -> dict:
             "order_aligned_tone_rows": counts["rows_with_order_aligned_tones"],
             "partial_tone_association_rows": counts["rows_with_partial_tone_association"],
             "tone_alignment_status_counts": dict(sorted(counts["tone_alignment_statuses"].items())),
+            "tonal_ipa_parse_status_counts": dict(sorted(counts["tonal_ipa_parse_statuses"].items())),
+            "tonal_ipa_parse_warning_categories": dict(sorted(counts["tonal_ipa_parse_warning_categories"].items())),
+            "tone_alignment_warning_categories": dict(sorted(counts["tone_alignment_warning_categories"].items())),
             "analyzed_units": counts["analyzed_units"],
             "phonetic_units": phonetic_units,
             "rendered_units": counts["rendered_units"],
