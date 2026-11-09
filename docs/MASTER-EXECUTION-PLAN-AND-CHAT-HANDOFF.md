@@ -2814,3 +2814,10 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Osatananda's underlying lexical-tone analysis, Enfield's feet, Davis's historical ຣ, Sengsoulin's Indic loans, and Yanagimura's contextual tone effects are documented as scope limits and future lexical/phrase-level work, not silently converted into unsupported rules.
 - LaoNLP package code is Apache-2.0; its bundled Lao-English dictionary has a separate MIT notice. Kaikki/Wiktionary material requires CC BY-SA/GFDL attribution/share-alike; Wiktextract includes programmatically generated pronunciations, so entries are not uniform independent gold. WikiPron Lao coverage is unverified.
 - Remaining feasible next tasks: exact-head CI; inspect and potentially use the MIT LaoNLP lexical dictionary for segmentation only; classify Kaikki/Wiktionary IPA provenance; investigate documented lexeme-specific ຣ and Indic-loan exceptions. Do not claim acoustic accuracy or promote generated pronunciation data as expert gold.
+
+### Final written-evidence continuation checkpoint
+
+- Final code/test checkpoint before audit close: `cc05c0d40954d14fd84c6a716918b3755c1436df`.
+- Exact-head Verify [#42583884292 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42583884292): 293 Python, 147 Node/browser-engine and 19 Chromium tests passed; data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks passed.
+- Audit-register update commit: `b81e509f8c6f36d7a0f48fc988ce30a204644160`.
+- This handoff update is the last documentation change; exact-head Verify for the resulting branch head is still required.
