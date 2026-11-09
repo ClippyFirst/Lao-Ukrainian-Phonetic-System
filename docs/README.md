@@ -7,7 +7,8 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 | Need | Canonical document |
 |---|---|
 | Current work, task status, handoff and blockers | [Master execution plan and chat handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) |
-| Latest repository-wide engineering and documentation audit | [Repository-wide audit — 2026-11-08](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) |
+| Latest repository and documentation continuation | [Repository and documentation audit — 2026-11-09](audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) |
+| Latest integrated engineering audit (historical checkpoint) | [Repository-wide audit — 2026-11-08](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) |
 | Terms and status vocabulary | [Project glossary](../GLOSSARY.md) |
 | Product scope and user-visible requirements | [Product requirements](PRODUCT-REQUIREMENTS.md) |
 | Linguistic pipeline and evidence distinctions | [Methodology](methodology.md) |
@@ -47,6 +48,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [Benchmarking and external IPA](benchmarking-and-external-ipa.md)
 - [External IPA renderers](external-ipa-renderers.md)
 - [Independent G2P comparison](independent-g2p-comparison.md)
+- [Lao G2P engine and dataset inventory — confidence-gated comparison, Transphone and corpus fitness](research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md)
 - [External G2P research](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md)
 - [MekongPhon neural integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md)
 - [Deterministic MekongPhon-reference IPA rule port](research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md)
