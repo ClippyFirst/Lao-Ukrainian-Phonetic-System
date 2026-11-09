@@ -3025,3 +3025,8 @@ The offline audit utility now reports exact repeated headers separately from mal
 ### PR #148 closeout — 2026-11-09
 
 The stale seven-file documentation PR was reconciled against current main. README, audit index, validation, codebase map and handoff content were superseded by newer mainline documentation. Its only useful remaining change, the UI UX Pro Max upstream methodology pin at 4f2dbb67e64969a9a30ab00742f2d55d66ddec2b, was selectively ported to AGENTS.md (commit 5666766a71855929a9f179a95c9587249d81de6f). PR #148 was closed unmerged; its branch was preserved.
+
+
+### Older stacked PR closeout — 2026-11-09
+
+PRs #137, #138, #139, #140, #141 and #142 were closed unmerged after reconciliation against current main. All changed file paths are present on main; representative checks found some diagnostic/test files byte-identical and other core paths superseded by newer accepted implementations. Individual PR comments record the evidence and disposition. All six head branches are preserved; none was force-pushed or deleted. PR #145 remains open and unmerged because its neural-first architecture conflicts with the adopted hybrid-deterministic production pipeline and is not approved for integration.

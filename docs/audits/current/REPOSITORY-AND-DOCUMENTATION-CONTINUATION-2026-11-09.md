@@ -18,10 +18,10 @@ PR #157 adds written-source/claim records, the published LaoNLP syllabification 
 | #145 | Open, not mergeable | Neural-first proposal conflicts with the adopted deterministic hybrid mainline; not an approved production direction. |
 | #146 | Closed unmerged | Deterministic reference-profile implementation and benchmark are superseded by newer mainline versions; mainline benchmark #42591871633 passed. Branch preserved. |
 | #147 | Closed unmerged | HVULao 1k script/workflow and documentation superseded by mainline implementation; exact-mainline run #42591871473 passed. Branch preserved. |
-| #137–#142 | Open; mixed mergeability | Preserve untouched. These are older stacked engine, benchmark, fallback and target work; current main already includes later merged successors for several areas. Require per-PR diff/dependency review before any action. |
+| #137–#142 | Closed unmerged | Each stack was compared with main: all changed file paths exist on main; representative code/tests are either byte-identical or superseded by newer integrated implementations. Branches preserved. |
 | #149–#155 (excluding #156) | Merged | Their accepted hybrid, mixed-script, numeral, arbitration and grapheme-preview changes are already in main. |
 
-PRs #146 and #147 were closed unmerged only after confirming their benchmark/profile implementations already exist on main in updated forms; closure comments link exact mainline benchmark and Verify evidence. No branch was deleted or rewritten. PR #148 was closed unmerged after selectively porting its only still-useful methodology pin; PR #145 remains open; #137–#142 remain untouched.
+PRs #146 and #147 were closed unmerged only after confirming their benchmark/profile implementations already exist on main in updated forms; closure comments link exact mainline benchmark and Verify evidence. No branch was deleted or rewritten. PR #148 was closed unmerged after selectively porting its only still-useful methodology pin; PRs #137–#142 were closed unmerged after file-path and representative implementation reconciliation; PR #145 remains open and unmerged.
 
 **Five upstream methodology references revalidated:** current upstream `main` commits are Unlazy `16671491f6679ad9378f52604d3bc2415b4120c7`, UI UX Pro Max `4f2dbb67e64969a9a30ab00742f2d55d66ddec2b`, Superpowers `22f0b463e7a5e579904dd6211a520321035526f7`, Matt Pocock Skills `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, and Ponytail `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. All five inspected root `LICENSE` files are MIT. This does not blanket-license embedded assets or third-party data. The project adopts selected workflow, testing, code-review and web-accessibility practices only; no upstream code, skill tree, CLI, dataset, hook or runtime dependency was copied or installed. See `AGENTS.md` for the pinned methodology policy.
 
@@ -443,3 +443,8 @@ Readiness remains research-ready engineering prototype, not linguistically relea
 ### Documentation branch reconciliation — PR #148
 
 PR #148's seven-file diff was compared against current main. Its README, audit index, validation page, codebase map and handoff were stale snapshots superseded by newer mainline documentation. The one useful upstream UI UX Pro Max commit pin (4f2dbb67e64969a9a30ab00742f2d55d66ddec2b) was selectively ported to AGENTS.md in commit 5666766a71855929a9f179a95c9587249d81de6f. PR #148 was then closed unmerged with an explanation; its branch remains preserved.
+
+
+### Older PR-stack closeout — #137–#142
+
+The six older stacked PRs were reconciled against current main. Their changed file paths all exist in main. Representative checks found the current MekongPhon grapheme-context diagnostic and tone-rule test files byte-identical to main; benchmark, model-adapter, parser, target and grapheme-preview files are maintained on main in newer forms and covered by the current exact-head suite. Each PR was closed unmerged with an individual explanation; no branch was deleted or rewritten. PR #145 remains open because it proposes a distinct neural-first architecture that has not been adopted.
