@@ -3327,3 +3327,14 @@ A dedicated continuation branch and PR #158 implement the latest Python Hybrid v
 | Independent phonetic accuracy | BLOCKED | No adjudicated IPA gold; implementation parity is not linguistic accuracy |
 
 The detailed evidence and correction history is in `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md`.
+
+
+### Browser Hybrid v2 — verified local runtime update (2026-11-09, 21:07 UTC)
+
+- Successful full Pages preview: [#42699110323](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42699110323), head `e74602ef10ed55a0d6225d4914669c8de979d9f8`. Python ONNX export, FP32/INT8 tokenizer and beam-five parity, model preparation with Apache license/NOTICE, Chromium inference, artifact checks and upload all passed.
+- Chromium measured `ຂາ` at 1,272 ms cold / 177 ms warm on the CI local server; output `kʰaː˩˧`, `ORDER_ALIGNED`, parser `SUPPORTED`, zero external network requests. These are CI/local timings, not general device or internet guarantees.
+- Static preview artifact [13709754651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42698861280/artifacts/13709754651): 40,377,012 bytes compressed, 56,452,048 bytes unpacked. Only the default WASM loader and binary are shipped; model weights are 39.8 MB total INT8. Apache LICENSE and attribution NOTICE are included.
+- Native Node ONNX install scripts are skipped in browser-only workflows; this removes an unused NuGet download path that previously caused intermittent ETIMEDOUT. Verify succeeded after this change.
+- Browser test now also verifies that multi-syllable `ສະບາຍດີ` retains raw IPA while `NOT_ALIGNED` and emits no guessed tone associations. Current PR #158 head: `057fa8b5c819a022b24469e494684ec34436dbbc`. Exact-head preview #42699464033 and Verify #42699475181 were still running at note time; check terminal status.
+- Pages workflow has live smoke checks for UI, manifest, both model weights, both tokenizer JSONs, WASM loader/binary, NOTICE and LICENSE. **No production deployment yet.** Merge PR #158 only after latest exact-head checks pass; then verify the main Pages deployment and live assets.
+
