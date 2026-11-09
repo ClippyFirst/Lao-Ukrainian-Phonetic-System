@@ -50,6 +50,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Use 
 - [External IPA renderers](external-ipa-renderers.md)
 - [Independent G2P comparison](independent-g2p-comparison.md)
 - [Lao G2P engine and dataset inventory — confidence-gated comparison, Transphone and corpus fitness](research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md)
+- [External Lao G2P benchmark workflow](../.github/workflows/external-lao-g2p-benchmarks.yml) — pinned comparators, confidence-gated IPA scoring and aggregate-only artifacts.
 - [External G2P research](research/external-g2p-benchmark-and-engine-coverage-2026-11-02.md)
 - [MekongPhon neural integration guide](research/MEKONGPHON-NEURAL-INTEGRATION.md)
 - [Deterministic MekongPhon-reference IPA rule port](research/MEKONGPHON-DETERMINISTIC-RULE-PORT-2026-11-08.md)

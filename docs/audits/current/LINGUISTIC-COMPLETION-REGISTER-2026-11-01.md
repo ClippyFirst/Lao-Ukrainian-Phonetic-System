@@ -494,6 +494,16 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 
 | ID | Status | Evidence | Acceptance boundary |
 |---|---|---|---|
-| LAO-BENCH-IPA-GATE-001 | PARTIAL | Gate integrated into three benchmark scripts; focused regression tests pending | Exact-head Verify and behavioral tests pass |
-| LAO-BENCH-EXT-ENGINES-001 | TODO | External comparator scripts/workflow not yet ported | Pinned scripts and aggregate-only workflow pass on main |
+| LAO-BENCH-IPA-GATE-001 | DONE_VERIFIED | Typed gate integrated into all three benchmark scripts; 4 focused confidence tests plus full Verify #42592337943 (304 Python) | Regressions for SUPPORTED, UNCERTAIN, PROVISIONAL, unsupported and missing IPA pass; provisional hints excluded from IPA metrics |
+| LAO-BENCH-EXT-ENGINES-001 | DONE_VERIFIED | External workflow #42592337944 and deterministic-profile #42591871633 succeeded on main; aggregate artifacts and source/model hashes recorded | Pinned Epitran, orthography2ipa, Transphone and Phonetisaurus comparators execute with zero runtime errors; Phonetisaurus weak concordance explicitly reported |
 | LAO-BENCH-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0 | Rights-cleared material plus qualified annotation/adjudication |
+
+
+### Final mainline benchmark verification — 2026-11-09
+
+| ID | Status | Evidence | Remaining acceptance |
+|---|---|---|---|
+| LAO-BENCH-IPA-GATE-001 | DONE_VERIFIED | Main Verify #42592337943: 304 Python, 147 Node/browser, 19 Chromium; typed confidence tests pass | None for software contract |
+| LAO-BENCH-EXT-ENGINES-001 | DONE_VERIFIED | External G2P workflow #42592337944; deterministic profile #42591871633; aggregate artifacts include exact model/spec hashes | None for comparator reproducibility; all engines remain research-only |
+| LAO-BENCH-HVULAO-001 | DONE_VERIFIED | HVULao run #42574809147 passed; script blob on main is byte-identical; artifact #13654703651 | A duplicate main-branch replay #42591871473 was still running at closeout |
+| LAO-BENCH-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; `data/benchmark/gold.tsv` is header-only | Rights-cleared source material plus qualified independent IPA annotation and adjudication |

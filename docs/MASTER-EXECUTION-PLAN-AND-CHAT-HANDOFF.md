@@ -2939,3 +2939,16 @@ No upstream source code, skills, CLI, datasets, assets, hooks, workflows or runt
 ## Selective PR #156 benchmark continuation — 2026-11-09
 
 PR #156 is not merged because its 93-commit branch is 92 commits behind current main and overlaps workflow/audit history. The first port batch integrates a typed IPA confidence gate into the 100-word, deterministic-profile and HVULao 1k benchmark scripts; `PROVISIONAL` grapheme hints are excluded from IPA scoring while remaining available as rendering diagnostics. Exact-head verification and remaining external comparator integration are pending.
+
+
+## Final benchmark continuation and handoff — 2026-11-09
+
+Mainline state: `5a17d25e732ca78feae15ff67b5e6774060a9779` at the time of final benchmark verification. PR #156 was closed as superseded after selective integration; no merge or branch deletion.
+
+- Shared IPA confidence gate excludes `PROVISIONAL` grapheme previews from IPA accuracy metrics while preserving separate Ukrainian-rendering coverage.
+- Pinned Epitran, orthography2ipa, Transphone and Phonetisaurus comparators run through the aggregate-only workflow. Runtime-error guard and its regression tests are in main.
+- Exact-head Verify #42592337943: 304 Python, 147 Node/browser and 19 Chromium tests; all configured schema, evidence, build, generated-data reproducibility and built-page checks passed.
+- External comparator workflow #42592337944 and deterministic-profile workflow #42591871633 passed. HVULao 1k passed in #42574809147 with a byte-identical benchmark script on main; duplicate mainline replay #42591871473 remained in progress at closeout.
+- Current 100-word hybrid: 85/100 exact, 14.45% CER, 91% typed IPA coverage, 100% Ukrainian rendering. Nine provisional hint units and nine unknown-marker units are not IPA-verified.
+- Independent expert-adjudicated IPA gold remains 0. MekongPhon results are dictionary-seeded concordance; HVULao is a text-domain completeness test without IPA references. No external engine is promoted and production runtime/phonology was not changed.
+- Readiness: research-ready engineering prototype, not linguistically release-ready. Remaining blockers are independent expert IPA gold, acoustic/prosodic validation, evidence-limited lexical segmentation, Kaikki per-entry IPA provenance, and the uninspected 2.73 MB MIT dictionary CSV schema/content.

@@ -117,10 +117,10 @@ The older 66.9% hybrid IPA-complete sentence figure is superseded: it counted pr
 
 ## Reproducibility and artifacts
 
-- All benchmarks run on dedicated branch `benchmark/additional-lao-g2p-20261108`, based on main `819c2528b1c726adfd3062be89084fedce7ad84d`.
+- Initial benchmark research and engine runs were conducted on `benchmark/additional-lao-g2p-20261108`; the confidence gate and reproducible scripts were selectively ported to `main` and re-run there. No external engine or benchmark dataset is promoted into production.
 - Main benchmark: [workflow run](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/mekongphon-three-engine-benchmark.yml).
 - Deterministic profile and HVULao 1k stress results are uploaded as aggregate-only GitHub Actions artifacts; no raw dataset rows or prediction lists are committed. Latest confidence-gated HVULao 1k run: [#42574809147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147), artifact [#13654703651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147/artifacts/13654703651).
-- The dedicated PR remains draft because active open PRs #137–#148 touch overlapping benchmark workflows/scripts and canonical audit/handoff files. Do not merge this branch until those stacks are reconciled.
+- PR [#156](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/156) was closed as superseded after selective integration; it was not merged. Its branch is preserved. Older stacked PRs #137–#148 remain untouched pending separate reconciliation.
 
 ## Additional literature and protocol findings — 2026-11-09
 
@@ -226,3 +226,17 @@ The lexical-hint helper and tests are committed, but the GitHub connector did no
 ### Lexical hint exact-head verification — 2026-11-09
 
 At code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966`, Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python, 147 Node/browser-engine and 19 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks passed. The deterministic-profile benchmark [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448) also completed without runtime errors. The new lexical-hint layer is diagnostic-only; no production G2P behavior changed. Documentation-only updates below require another exact-head Verify.
+
+
+## Mainline reproducibility and exact-head acceptance — 2026-11-09
+
+The benchmark suite is now present on `main`; the initial PR branch was not merged.
+
+- Final confidence-gated Verify on `main` commit `5a17d25e732ca78feae15ff67b5e6774060a9779`: [run #42592337943 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42592337943), 304 Python tests, 147 Node/browser tests and 19 Chromium UI tests. IPA gold schema, repository evidence audit, external harness syntax, locked dependency install, build, generated-data reproducibility, built pages and assets all passed.
+- External same-set G2P workflow on the same code head: [run #42592337944 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42592337944); aggregate artifacts [#13662395833](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42592337944/artifacts/13662395833) and Phonetisaurus [#13662340693](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42592337944/artifacts/13662340693). Epitran 71/100 exact (10.96% CER), orthography2ipa 32/100 (19.60%), Transphone 19/100 (24.25%); all three had 100% output coverage and zero runtime errors. Phonetisaurus returned 100/100 outputs but 0/100 exact and 78.90% CER.
+- Mainline deterministic-profile run [#42591871633 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42591871633), artifact [#13661616379](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42591871633/artifacts/13661616379): reference profile 90/100 exact, hybrid 85/100, baseline rules 69/100, neural 82/100. These remain dictionary-seeded concordance scores, not independent expert accuracy.
+- The HVULao 1k stress harness passed in [run #42574809147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147), aggregate artifact [#13654703651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147/artifacts/13654703651). The benchmark script blob is byte-identical on main (`cfe8c96d4c76bf76885effd24b1c3d9e3b0e9e2e)); a redundant main-branch replay [#42591871473](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42591871473) was still running at documentation time.
+- The 100-word hybrid result is 85/100 exact, 14.45% CER and 91% typed IPA coverage. All 100 inputs / 169 units render in Ukrainian; 9 units are `PROVISIONAL` and 9 retain unknown markers. The benchmark output reports those separately; they are not IPA predictions.
+- The 1k sentence stress result is 341/1,000 hybrid IPA-complete sentences (34.1%), 1,000/1,000 Ukrainian renderings (100%), and 94.14% syllable IPA coverage; MekongPhon Neural completes IPA for 934/1,000 sentences (93.4%). This corpus has no IPA reference, so these are completeness metrics only.
+
+The additional runtime-error guard now makes the external-comparator workflow fail if any per-input unexpected error is recorded; regression tests cover both zero-error and error-present cases. The independent expert-adjudicated IPA gold corpus remains empty (0 records).

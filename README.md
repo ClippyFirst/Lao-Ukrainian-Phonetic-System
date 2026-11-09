@@ -155,6 +155,8 @@ The repository is a research foundation with explicit provenance and determinist
 
 The research registry records external pronunciation engines, IPA dictionaries, and Unicode IPA display fonts without treating unvalidated output as ground truth. See [`docs/external-ipa-renderers.md`](docs/external-ipa-renderers.md) and the machine-readable [`data/external-ipa-renderers.json`](data/external-ipa-renderers.json). These are candidate inventories only; no third-party engine is enabled by default, and the ClippyFirst IPA → Ukrainian adapter remains the sole target adaptation boundary.
 
+The confidence-gated external benchmark harness can be rerun through the [External Lao G2P research benchmark workflow](.github/workflows/external-lao-g2p-benchmarks.yml). It records aggregate-only reports; the shared [IPA confidence gate](scripts/benchmark_ipa_contract.py) excludes provisional grapheme previews from IPA accuracy. The deterministic-profile and HVULao 1k text-domain workflows are also available from GitHub Actions. All external engines remain research comparators, not production dependencies.
+
 ## Independent IPA gold corpus
 
 The project uses a provenance-backed, double-annotated IPA gold workflow. See [the corpus protocol](docs/ipa-gold-corpus.md) and [the language-specific phonology research workpack](docs/audits/current/PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md). The corpus is currently empty by design; no phonetic accuracy claim is available until expert adjudication is complete.

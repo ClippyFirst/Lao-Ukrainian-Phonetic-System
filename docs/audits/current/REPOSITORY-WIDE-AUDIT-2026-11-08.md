@@ -536,3 +536,14 @@ No PR was merged and mainline/production deployment remains unchanged. The hybri
 - The benchmark IPA scoring contract is being tightened to accept only typed `SUPPORTED` / `UNCERTAIN` results with non-empty phonemic IPA. `PROVISIONAL` grapheme hints remain separate rendering coverage, never IPA accuracy.
 - This batch integrates the gate into the 100-word engine benchmark, deterministic-profile benchmark and HVULao 1k stress benchmark. Reproducibility tests and the pinned external comparator workflow are the next integration batch.
 - No external engine is promoted; dictionary-seeded MekongPhon concordance remains distinct from independent expert IPA accuracy (gold count 0).
+
+
+## Final mainline benchmark integration and verification — 2026-11-09
+
+- PR #156 was selectively ported and then closed as superseded, unmerged. Its 93-commit branch was 92 commits behind main and overlapped canonical workflow/documentation history. No branch was deleted.
+- Main now contains the shared typed IPA confidence gate, integration into the 100-word/deterministic/HVULao benchmark scripts, regression tests, pinned Epitran/orthography2ipa/Transphone/Phonetisaurus comparators, aggregate-only external workflow, and main-push triggers for deterministic and HVULao benchmarks.
+- External comparator workflow [#42592337944 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42592337944); deterministic-profile workflow [#42591871633 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42591871633). HVULao 1k exact script blob matches the previously successful [#42574809147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147); a redundant mainline replay [#42591871473](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42591871473) was still in progress at closeout.
+- Final Verify on commit `5a17d25e732ca78feae15ff67b5e6774060a9779`: [#42592337943 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42592337943), 304 Python, 147 Node/browser and 19 Chromium tests; schema, evidence audit, build, generated-data reproducibility and built-page checks passed.
+- The 100-word hybrid remains 85/100 exact, 14.45% CER, 91% typed IPA coverage and 100% Ukrainian rendering. The 9 provisional units are rendering fallbacks only, never accepted IPA.
+- The Phonetisaurus comparator is operational but unsuitable by measured concordance (0/100 exact, 78.90% CER); Epitran, orthography2ipa and Transphone remain research-only.
+- Readiness: research-ready engineering prototype; not linguistically release-ready. Independent expert-adjudicated IPA gold remains 0, and no acoustic/prosodic validation is claimed.
