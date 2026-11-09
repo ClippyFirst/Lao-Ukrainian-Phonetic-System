@@ -8,6 +8,15 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "data" / "evidence" / "kaikki_lao_ipa_provenance_sample_2026-11-09.csv"
 
 
+def fnv1a32_codepoints(value: str) -> int:
+    """Match the manifest's deterministic FNV-1a ordering over Unicode code points."""
+    result = 0x811C9DC5
+    for character in value:
+        result ^= ord(character)
+        result = (result * 0x01000193) & 0xFFFFFFFF
+    return result
+
+
 class KaikkiProvenanceManifestTests(unittest.TestCase):
     def test_manifest_is_a_complete_deterministic_100_page_sample(self):
         with MANIFEST.open(encoding="utf-8", newline="") as handle:
@@ -24,6 +33,7 @@ class KaikkiProvenanceManifestTests(unittest.TestCase):
             self.assertLessEqual(timestamp, cutoff)
             self.assertIn("lo-pron", row["pronunciation_template_names"].split(";"))
             self.assertGreater(int(row["source_wikitext_chars"]), 0)
+            self.assertEqual(int(row["codepoint_fnv1a32"]), fnv1a32_codepoints(row["word"]))
 
     def test_manifest_hash_order_is_monotonic(self):
         with MANIFEST.open(encoding="utf-8", newline="") as handle:
