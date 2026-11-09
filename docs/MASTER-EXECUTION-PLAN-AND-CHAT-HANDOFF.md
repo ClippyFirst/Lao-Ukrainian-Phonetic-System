@@ -3296,3 +3296,34 @@ The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2
 - Canonical continuation and acceptance criteria: [GitHub Pages Hybrid v2 browser-port record](research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md).
 - **Remaining:** exact checkpoint + tokenizer ONNX export; Python/browser decoded-output parity; local browser tokenizer and autoregressive decoder; quantized static model assets inside Pages; full UI integration; CPU/WASM and optional WebGPU tests; cold/warm latency, memory, local-only network audit, Pages size and deployment verification.
 - **Do not claim deployment:** this branch has not been merged or deployed. Existing main Pages remains deterministic-only. Full neural Hybrid v2 is not release-ready.
+
+
+---
+
+## GitHub Pages browser-local Hybrid v2 — 2026-11-09
+
+A dedicated continuation branch and PR #158 implement the latest Python Hybrid v2 neural tonal channel as a browser-native JavaScript/WASM runtime. This does not replace the existing deterministic default engine or make neural tone authoritative.
+
+- Branch: `feat/pages-hybrid-v2-browser`, based on reviewed main checkpoint `673e36fddcbed7f073a448bf54cd1edf44a6b10f`.
+- PR: [#158 — Add browser Hybrid v2 tone-alignment boundary](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/158). Open; do not merge until full exact-head preview passes.
+- Model: `byumatrixlab/lao-ipa-tonal`, immutable revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d`; upstream model card Apache-2.0. No external inference service.
+- ONNX export: [workflow #42696469630 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696469630), artifact [13709122743](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696469630/artifacts/13709122743). Pinned FP32 encoder/decoder and dynamic per-channel INT8 graphs; Python greedy parity; tokenizer files and checksums.
+- Browser runtime parity: Transformers.js 4.3.2 + ONNX Runtime Web 1.31.1 WASM; three fixed fixtures prove encoder tensor parity and beam-five decoded token/IPA parity for FP32 and INT8. This validates implementation parity only, not phonetic accuracy.
+- Implemented: browser Hybrid v2 IPA/tone adapter, lazy local inference, 5-beam decoder, separate UI panel, WASM bundling, minimal INT8 model packaging guarded by browser parity evidence, non-deploying Pages preview workflow.
+- First Chromium integration test exposed a Transformers.js local tokenizer path issue (`tokenizer_class` undefined). Corrected in commit `54063e92b52a476185c09a69947f54fb14afe756` by using local tokenizer subdirectory IDs resolved against `env.localModelPath`.
+- Exact-head full preview after that correction: [#42696777234](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696777234). At this entry's writing it was still in progress; UI and Pages packaging remain PARTIAL until its terminal result is checked.
+- Latest verify [#42696788826 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42696788826) on runtime-fix commit `54063e9...`: repository data/evidence audit, Python tests, Node tests, generated-data reproducibility, 19 Chromium UI tests and built-page checks passed. This Verify job excludes the model-specific preview test.
+- No production deployment is claimed. Merge to main only after model-specific Chromium inference, artifact size/assets, and deployment workflow all pass. Then verify Pages deployment and live same-origin model/WASM assets.
+- The existing main default remains `hybrid-deterministic`; deterministic Ukrainian output is unchanged; all neural tone predictions remain `UNCERTAIN`. WebGPU acceleration is deferred; WASM is the portable baseline.
+
+| Browser Hybrid v2 task | Status | Remaining acceptance |
+|---|---|---|
+| Pinned ONNX export + Python parity | DONE_VERIFIED | Workflow #42696469630 |
+| Transformers.js tokenizers + WASM beam-five parity | DONE_VERIFIED | Three pinned fixtures; FP32/INT8 |
+| Browser tone parser/adapter | DONE_VERIFIED | Existing adapter tests and provenance contract |
+| Local runtime and separate UI | PARTIAL | Model-specific Chromium test after tokenizer-path fix |
+| Pages static model/runtime packaging | PARTIAL | Latest preview artifact/size/live deploy |
+| Production Pages deployment | TODO | Merge only after all preview gates; successful deployment + live smoke test |
+| Independent phonetic accuracy | BLOCKED | No adjudicated IPA gold; implementation parity is not linguistic accuracy |
+
+The detailed evidence and correction history is in `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md`.
