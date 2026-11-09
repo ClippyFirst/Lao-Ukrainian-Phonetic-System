@@ -179,7 +179,7 @@ def main() -> int:
         },
         "mekongphon_reference_rules": {
             "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
-            "withheld": Counter(), "syllables": Counter(),
+            "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
             "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
             "uncertain_ipa_units": 0, "provisional_units": 0,
@@ -188,7 +188,7 @@ def main() -> int:
         },
         "hybrid_deterministic_rules": {
             "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
-            "withheld": Counter(), "syllables": Counter(),
+            "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
             "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
             "uncertain_ipa_units": 0, "provisional_units": 0,
@@ -310,6 +310,7 @@ def main() -> int:
             summaries[key]["supported_ipa_units"] = stage["supported_ipa_units"]
             summaries[key]["uncertain_ipa_units"] = stage["uncertain_ipa_units"]
             summaries[key]["provisional_placeholder_units"] = stage["provisional_units"]
+            summaries[key]["withheld_ipa_status_counts"] = dict(sorted(stage["withheld_statuses"].items()))
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
 
     shared = [
