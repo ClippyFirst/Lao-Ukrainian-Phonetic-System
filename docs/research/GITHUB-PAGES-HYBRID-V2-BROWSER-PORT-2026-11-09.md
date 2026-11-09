@@ -128,3 +128,33 @@ The exact-head preview after this correction is [run #42696777234](https://githu
 The branch is not yet live on GitHub Pages. The workflow changes are designed so that main-branch Pages deployment rebuilds the exact pinned model, validates browser parity, packages only INT8 model weights plus tokenizers, and deploys them as static assets. Inference stays in the user's browser; there is no API, external inference service or server-side runtime. The model and WASM assets are downloaded from the same Pages origin on first use and cached by the browser.
 
 **Readiness at this checkpoint:** model export and browser-runtime parity are verified; full browser UI/deployment remains pending the latest preview. This is not yet a production deployment.
+
+
+## Verification and packaging update — 2026-11-09, 21:07 UTC
+
+### End-to-end browser proof
+
+- **DONE_VERIFIED — full local inference on Chromium:** Pages preview [#42699110323](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42699110323) completed SUCCESS on head `e74602ef10ed55a0d6225d4914669c8de979d9f8`. It ran the Python export, FP32/INT8 tokenizer and beam-five parity, model preparation including Apache license/NOTICE, Chromium model inference, artifact checks and upload.
+- Browser measurement for `ຂາ`: cold local-server run 1,272 ms; warm run 177 ms; output `kʰaː˩˧`; alignment `ORDER_ALIGNED`; parser `SUPPORTED`; external network requests: zero. These timings are CI/local-server measurements, not a guarantee for every user's download speed or device.
+- **DONE_VERIFIED — static artifact size:** preview artifact [13709754651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42698861280/artifacts/13709754651) is 40,377,012 bytes compressed and 56,452,048 bytes uncompressed. It contains 30 files, including only the required `ort-wasm-simd-threaded.mjs` and `ort-wasm-simd-threaded.wasm` WASM assets, 39.8 MB total INT8 model weights, tokenizer files, attribution NOTICE and Apache LICENSE. This removes unused WebGPU/JSEP, JSPI and Asyncify runtime variants.
+- **DONE_VERIFIED — browser regression suite:** 20 Chromium tests passed on the completed preview run. The dedicated Hybrid v2 test checks cold/warm inference, model revision, beam=5, local-only requests, and tone alignment.
+- **DONE_VERIFIED — package install reliability:** browser workflows install runtime packages with npm lifecycle scripts disabled. The app uses browser WASM, not the native Node ONNX backend; this avoids the unused native `onnxruntime-node` NuGet download that previously caused transient ETIMEDOUT failures. The exact-head Verify workflow passed after this change.
+
+### Final test expansion and current branch state
+
+The final browser test was expanded to submit `ສະບາຍດີ` after the aligned short example and assert that raw IPA `sa˧˥baːɲiː˧˥diː` remains visible while alignment is `NOT_ALIGNED` and no tone predictions are fabricated. Current PR head is `057fa8b5c819a022b24469e494684ec34436dbbc`. Exact-head preview [#42699464033](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42699464033) and Verify [#42699475181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42699475181) were running at the time of this note; check their terminal results before merging.
+
+The main Pages workflow now also smoke-tests the deployed Hybrid v2 UI, model manifest, both ONNX weights, both tokenizer JSONs, the exact WASM loader and binary, attribution NOTICE and Apache LICENSE. The PR is still not live on GitHub Pages. Production deployment remains TODO until exact-head gates pass, PR #158 is merged, the main Pages deployment succeeds, and its live smoke test passes.
+
+### Current acceptance ledger
+
+| Task | Status | Evidence / next acceptance |
+|---|---|---|
+| Pinned FP32/INT8 export and Python parity | DONE_VERIFIED | Export workflow #42696469630 |
+| Transformers.js + WASM tokenizer and beam-five parity | DONE_VERIFIED | Three pinned fixtures; exact FP32/INT8 token parity |
+| Browser-local Hybrid v2 inference | DONE_VERIFIED | Preview #42699110323; 1.272 s cold / 177 ms warm local run; zero external requests |
+| Minimal static model/runtime package and notices | DONE_VERIFIED | Artifact #13709754651; 40.4 MB ZIP / 56.5 MB unpacked |
+| Multi-syllable NOT_ALIGNED UI guard | PARTIAL | New exact-head preview #42699464033 must pass |
+| Production GitHub Pages deployment | TODO | Merge after exact-head tests; verify live same-origin assets and inference |
+| Independent phonetic accuracy | BLOCKED | No adjudicated IPA gold; runtime parity is not linguistic accuracy |
+
