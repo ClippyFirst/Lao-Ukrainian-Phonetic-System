@@ -204,17 +204,21 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 allow_uncertain=ipa_profile == DEFAULT_ENGINE_PROFILE,
             )
             target_unmapped = (
-                ipa_profile == DEFAULT_ENGINE_PROFILE
-                and practical is None
-                and bool(phonetic_result.phonemic_ipa)
+                ipa_profile == DEFAULT_ENGINE_PROFILE and practical is None
             )
             if target_unmapped:
-                # IPA and Ukrainian orthography are separate adapter stages.
-                # Preserve accepted source IPA when its target mapping is absent;
-                # use an explicit target-only marker rather than downgrading the
-                # phonetic result to PROVISIONAL or inventing a correspondence.
+                # Never let low confidence or a missing correspondence suppress
+                # visible output in the default hybrid. Preserve any source IPA
+                # or provisional segments unchanged; when the target adapter
+                # cannot map the complete typed sequence, emit an explicit
+                # target-side marker instead of guessing a Ukrainian spelling.
                 rules = [*rules, "FALLBACK:TARGET-UNMAPPED"]
-                local_warnings = [*local_warnings, "UKRAINIAN-TARGET-UNMAPPED"]
+                warning = (
+                    "UKRAINIAN-TARGET-UNMAPPED"
+                    if phonetic_result.phonemic_ipa
+                    else "UKRAINIAN-TARGET-PROVISIONAL-UNMAPPED"
+                )
+                local_warnings = [*local_warnings, warning]
                 practical = "?"
             syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"), registry)
             consonant_class = parsed.get("onset_class")
