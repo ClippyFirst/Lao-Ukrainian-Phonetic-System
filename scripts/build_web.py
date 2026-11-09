@@ -31,16 +31,19 @@ if ESBUILD.exists() and ORT_DIST.exists():
     )
     vendor = DIST / "web" / "vendor"
     vendor.mkdir(parents=True, exist_ok=True)
-    runtime_files = [
-        path for path in ORT_DIST.rglob("*")
-        if path.is_file() and path.suffix in {".wasm", ".mjs"}
-    ]
-    if not any(path.suffix == ".wasm" for path in runtime_files):
-        raise SystemExit("onnxruntime-web installed but no WASM runtime assets were found")
-    if not any(path.name == "ort-wasm-simd-threaded.mjs" for path in runtime_files):
-        raise SystemExit("onnxruntime-web threaded WASM loader module is missing")
-    for source in runtime_files:
-        shutil.copy2(source, vendor / source.name)
+    # The application pins the WASM execution provider. Ship only its loader
+    # and binary; JSEP/WebGPU, asyncify and JSPI variants are not requested.
+    runtime_names = (
+        "ort-wasm-simd-threaded.mjs",
+        "ort-wasm-simd-threaded.wasm",
+    )
+    for filename in runtime_names:
+        matches = list(ORT_DIST.rglob(filename))
+        if len(matches) != 1:
+            raise SystemExit(
+                f"Expected exactly one ONNX Runtime WASM asset {filename}; found {len(matches)}"
+            )
+        shutil.copy2(matches[0], vendor / filename)
 else:
     # Keep deterministic-only local builds usable without optional model tooling.
     # The deployed Pages and CI workflows install the pinned runtime packages.
