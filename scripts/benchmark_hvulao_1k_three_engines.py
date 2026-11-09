@@ -156,6 +156,7 @@ def new_rule_stage() -> dict:
         "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
         "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
         "uncertain_ipa_units": 0, "provisional_units": 0,
+        "target_unmapped_units": 0,
         "analysis_statuses": Counter(), "invalid_warnings": Counter(),
         "invalid_input_rows": [], "empty_analysis_rows": [],
     }
@@ -218,6 +219,7 @@ def main() -> int:
                 stage["passthrough_total"] += sum(item.status == "PASSTHROUGH" for item in result.syllables)
                 stage["unit_total"] += len(result.syllables)
                 stage["units_rendered"] += sum(item.practical_ukrainian is not None for item in result.syllables)
+                stage["target_unmapped_units"] += sum("UKRAINIAN-TARGET-UNMAPPED" in item.warnings for item in result.syllables)
                 stage["supported_ipa_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic_syllables)
                 stage["uncertain_ipa_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic_syllables)
                 stage["provisional_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic_syllables)
@@ -299,6 +301,7 @@ def main() -> int:
             summaries[key]["supported_ipa_units"] = stage["supported_ipa_units"]
             summaries[key]["uncertain_ipa_units"] = stage["uncertain_ipa_units"]
             summaries[key]["provisional_placeholder_units"] = stage["provisional_units"]
+            summaries[key]["target_mapping_unavailable_units"] = stage["target_unmapped_units"]
             summaries[key]["withheld_ipa_status_counts"] = dict(sorted(stage["withheld_statuses"].items()))
             summaries[key]["withheld_warning_categories"] = dict(sorted(stage["withheld"].items()))
 
