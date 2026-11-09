@@ -208,7 +208,7 @@ def main() -> int:
         "interpretation": (
             "All scores are concordance with the pinned MekongPhon dictionary-seeded reference, "
             "not accuracy or independent gold. Segmental and tonal references are scored separately. "
-            "The two comparators are research baselines only; neither is promoted to production."
+            "The external comparators are research baselines only; none is promoted to production."
         ),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
