@@ -1,0 +1,76 @@
+name: Verify GitHub Pages Hybrid v2 preview
+
+on:
+  push:
+    branches: ["feat/pages-hybrid-v2-browser"]
+    paths:
+      - "index.html"
+      - "system.html"
+      - "web/**"
+      - "scripts/build_web.py"
+      - "scripts/export_hybrid_v2_browser_onnx.py"
+      - "scripts/test_hybrid_v2_browser_runtime.mjs"
+      - "scripts/prepare_pages_model.py"
+      - "tests/browser/hybrid-v2-model.spec.js"
+      - "package.json"
+      - ".github/workflows/pages-hybrid-v2-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Install browser and application dependencies
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --package-lock=false --no-audit --no-fund esbuild@0.25.0 @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
+      - name: Run repository browser-engine tests
+        run: npm test
+      - name: Build static pages and local inference runtime
+        run: npm run build
+      - name: Install pinned Python ONNX export dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
+          python -m pip install transformers==4.49.0 huggingface_hub==0.29.3 safetensors==0.5.3 onnx==1.17.0 onnxruntime==1.20.1
+      - name: Export exact pinned model and run Python parity checks
+        run: python scripts/export_hybrid_v2_browser_onnx.py --output artifacts/hybrid-v2-browser
+      - name: Run tokenizer and ONNX Runtime Web WASM beam-five parity checks
+        run: node scripts/test_hybrid_v2_browser_runtime.mjs artifacts/hybrid-v2-browser
+      - name: Prepare minimal Pages model assets
+        run: python scripts/prepare_pages_model.py --source artifacts/hybrid-v2-browser --destination dist/models/hybrid-v2
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run Chromium UI tests including local Hybrid v2 inference
+        env:
+          HYBRID_V2_MODEL_AVAILABLE: "1"
+        run: npm run test:browser
+      - name: Verify Pages preview artifact
+        run: |
+          test -s dist/index.html
+          test -s dist/system.html
+          test -s dist/web/app.js
+          test -s dist/web/hybrid-v2-inference.bundle.js
+          test -s dist/models/hybrid-v2/manifest.json
+          test -s dist/models/hybrid-v2/encoder.int8.onnx
+          test -s dist/models/hybrid-v2/decoder.int8.onnx
+          find dist/web/vendor -name '*.wasm' -print -quit | grep -q .
+          python -c 'from pathlib import Path; assert sum(p.stat().st_size for p in Path("dist").rglob("*") if p.is_file()) < 1_000_000_000'
+      - name: Upload non-deployed Pages preview artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: pages-hybrid-v2-preview
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
