@@ -143,3 +143,49 @@ Selected practices are already recorded in `AGENTS.md`. Do not vendor these repo
 - Separate Markdown-link integrity scan over the seven changed Markdown files against the complete 179-blob repository tree found 0 missing local link targets. This scan checked local path targets, not every external URL or heading anchor.
 - The workflow was triggered by the successive direct-main documentation commits. Earlier intermediate Verify runs also completed successfully; the acceptance result above is the one attached to the final HEAD.
 - No local checkout or local shell execution is claimed. CI is hosted verification; linguistic accuracy and human accessibility acceptance remain outside its scope.
+
+
+## Subsequent hybrid grapheme-coverage implementation — 2026-11-09
+
+This section supersedes the earlier statement that the 2026-11-09 continuation did not change linguistic/runtime code. The earlier documentation-only work remains intact; this is the later code/data continuation.
+
+### Implemented
+
+- Added five source-attested composite vowel templates to the canonical `data/lao/vowels.csv` and Python parser: `ເ◌ີຍ` /ɤːj/, `ໂ◌ຍ` /oːj/, `ແ◌ວ` /ɛːw/, `◌ອຍ` /ɔːj/, and `◌າຽ` /aːj/.
+- Added medial short IA `◌ັຽ` /iə̯/ as a second spelling of the existing `IA` vowel ID. This is separate from preposed `ເ◌ັຍ` and the long IA variants.
+- Mirrored the new structures in `web/engine.js` and generated `web/data.js`; added shared Python/browser fixtures and near-miss controls. The AEW regression uses `ແມວ`, avoiding a real ambiguity with a labialized onset candidate in synthetic `ແກວ`.
+- Preserved Lao ellipsis `ຯ` as non-phonological passthrough in Python and browser instead of routing it through an unknown phoneme marker.
+- Strengthened coverage gates: all 83 assigned codepoints in the Unicode 18 Lao block must have a typed grapheme role or explicit orthographic/numeric passthrough in Python and browser. Pali/Sanskrit and Khmu characters are recognized but are not assigned invented modern-Lao IPA.
+- Added five specific evidence claims linked to the existing Richard Ishida orthography source for the five glide-vowel templates. The medial IA spelling is already covered by `CLM-LAO-VOWEL-IA-SHORT`.
+- Updated `README.md`, `docs/lao-grapheme-ipa-preview.md`, `docs/vowel-template-coverage.md` and this audit.
+
+### Coverage contract and limitations
+
+| Dimension | Acceptance / current claim |
+|---|---|
+| Assigned Lao-block codepoint recognition | 83/83 assigned Unicode 18 codepoints must be typed as a grapheme role or orthographic/numeric passthrough. |
+| Modern-Lao phonetic interpretation | Contextual, syllable-structure-dependent; no claim that every sign has an independent sound. |
+| Composite vowel coverage | Six newly explicit glide-bearing forms added; the five additional source-attested forms plus medial short IA are regression-tested in Python and browser. |
+| Pali/Sanskrit extensions | Recognized as non-core; no modern-Lao phonetic mapping. A dedicated Pali reading profile would require separate source-language rules and review. |
+| Khmu U+0EDE/U+0EDF | Recognized as out of modern-Lao scope; no Lao IPA mapping. |
+| Repetition mark U+0EC6 | Recognized as orthographic-only. Expansion to a repeated Ukrainian word is not claimed because lexical word segmentation is outside the current parser contract. |
+| Obsolete/cancellation and Pali marks | Structurally recognized, not treated as modern-Lao phonemes. |
+| Independent IPA accuracy | Still blocked by 0 expert-adjudicated gold records. |
+
+### Task ledger
+
+| Task | Status | Acceptance evidence |
+|---|---|---|
+| `GRAPHEME-RECOGNITION-001` | DONE_VERIFIED when exact-head Verify succeeds | Python and browser tests iterate all 83 inventory entries; require a typed role or explicit passthrough. |
+| `GLIDE-VOWEL-COVERAGE-001` | DONE_VERIFIED when exact-head Verify succeeds | Six new source-backed forms have shared fixtures and Python/browser tests; registry IDs and parser structures are checked. |
+| `LAO-ELLIPSIS-PASSTHROUGH-001` | DONE_VERIFIED when exact-head Verify succeeds | Python/browser tests assert punctuation is preserved, not treated as phonetic material. |
+| `REPETITION-MARK-EXPANSION-001` | DEFERRED | Requires word/phrase scope resolution; current engine does not claim lexical word segmentation. Acceptance: preserve meaning of U+0EC6 by repeating the correctly scoped Ukrainian unit, with mixed-phrase regressions. |
+| `PALI-PRONUNCIATION-PROFILE-001` | DEFERRED | Outside contemporary Lao profile; requires Pali phonological rules, orthographic conventions and independent review. |
+| `KHMu-PRONUNCIATION-PROFILE-001` | DEFERRED | Khmu is a distinct language; requires a separate language profile and evidence. |
+| Independent expert IPA gold | BLOCKED | No adjudicated records; requires rights-cleared audio/text and qualified independent annotation/adjudication. |
+
+### Verification history and current head
+
+- Earlier Verify runs failed while the new browser matcher and test controls were being reconciled. Those failures were investigated; they are not presented as passes.
+- The final exact-head Verify result must be recorded below after it completes; no test result is inferred from an in-progress run.
+- Local shell tests were not run in this connector-only session. All claimed verification must cite the exact GitHub Actions run and SHA.
