@@ -3076,3 +3076,46 @@ The `lo-pron` source record now pins the direct module dependencies and first-le
 The MekongPhon v5 comparison remains diagnostic rather than independent accuracy because the 100-word held-out lexicon also contributed to validation-sentence generation and checkpoint selection; the published 13,442-sentence test split is not available in the pinned repository snapshot.
 
 The only open PR is #145, the neural-first architecture proposal; it remains unmerged. The default production route stays hybrid-deterministic. Research readiness is engineering-only: independent expert-adjudicated IPA gold is 0, contextual lexical boundary gold is absent, full Lua transitive dependency provenance remains incomplete, and manual accessibility QA remains PARTIAL.
+
+
+## Exact-main documentation and coverage correction — 2026-11-09
+
+**Inspected main HEAD:** `1df6fbf362f051de7433913c7c718662bbf193d8` (parent `d6aa703bf0637d65c4a8245ba6cf4d103ae34072`). Work for this continuation stayed on `main`; no branch or PR was modified. The exact-head Verify run [#42636160154 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42636160154) passed all configured gates: IPA-gold structure validation, repository evidence audit, Python tests (319), Node/browser-engine tests (147), external-G2P harness syntax/CLI, locked npm install, generated browser-data regeneration/reproducibility, Chromium UI tests (19), and built-page/relative-asset checks.
+
+### Coverage correction — mandatory interpretation
+
+Earlier documentation sometimes presented 100% coverage without a sufficiently prominent denominator. The valid, narrow claim is **100% visible Ukrainian-side rendering on the named stress sets**, including provisional IPA hints, explicit unknown markers and passthrough. It is not 100% supported IPA or accuracy.
+
+The latest confidence-gated HVULao run reports:
+- 1,000/1,000 sentences rendered and 21,534/21,534 analyzed units visibly rendered;
+- 346/1,000 IPA-complete sentences (34.6%);
+- 94.21% syllable-level typed IPA coverage;
+- MekongPhon Neural: 934/1,000 IPA-complete sentences (93.4%) on the same text stress set (not an accuracy result because no IPA gold exists).
+
+The 100-word dictionary-seeded comparison reports ClippyFirst hybrid 85/100 exact, 14.45% segmental CER at 91% typed IPA coverage, and 34.06% tonal CER at 86% coverage. Lao2IPA reports 8.97% / 11.97% CER at 100% coverage; MekongPhon Neural reports 6.64% / 8.29% at 100%. This is materially worse ClippyFirst concordance, not a success to conceal. The reference split is not independent gold and its held-out vocabulary also informed validation-sentence generation/checkpoint selection. Do not call these values expert phonetic accuracy.
+
+The earlier HVULao 66.9% / 67.6% sentence-IPA figures counted provisional preview material as accepted IPA and are superseded by the confidence-gated 34.6% result. The 97.85% syllable figure is likewise superseded by 94.21% in the latest hybrid confidence-gated report. The visible rendering result did not fall; the accepted IPA denominator was corrected.
+
+### Documentation structure and upstream methods
+
+- Root README is the user-facing overview and now reports current confidence-gated results and the distinction between rendering, IPA coverage and accuracy.
+- `docs/README.md` adds task-oriented routes for new readers, code contributors, result interpretation, benchmarking and current status; duplicate navigation was removed.
+- `docs/audits/README.md` identifies the continuation audit as the canonical current-state record and marks older sections as historical snapshots.
+- The leading addendum in `docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md` supersedes stale SHA/CI/metric summaries and records the exact task ledger.
+- Unlazy, UI UX Pro Max, Superpowers, Matt Pocock Skills and Ponytail were inspected as workflow/design references only. Their applicable patterns were adapted into documentation and review practice; no external code, skills, hooks, CLI, assets, datasets or runtime dependencies were imported.
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Exact-main engineering verification | DONE_VERIFIED | Verify #42636160154 SUCCESS on `1df6fbf...`; all configured steps succeeded. |
+| Correct public coverage and benchmark claims | DONE_VERIFIED after exact-head CI | README and current audit explicitly state 34.6% sentence IPA completeness, 94.21% syllable IPA, 100% visible rendering, and weak 100-word concordance. |
+| Documentation navigation and authority | DONE_VERIFIED after exact-head CI | Single index, single master ledger, current-vs-historical audit distinction. |
+| Independent IPA gold | BLOCKED | 0 adjudicated records; requires qualified independent annotators, rights-cleared source material and adjudication. |
+| Lexical boundaries | PARTIAL | Soft word-list hints are not contextual lexical-boundary gold. |
+| Whole-Kaikki IPA provenance | PARTIAL | 100-page sample verified; per-value whole-corpus provenance and full transitive Lua dependency closure absent. |
+| Acoustic/prosodic accuracy | BLOCKED | Requires audio and expert phonetic evaluation. |
+| Manual accessibility | PARTIAL | Automated tests pass; manual screen-reader/device/zoom/contrast checks remain. |
+| PR #145 neural-first | DEFERRED | Conflicts with adopted hybrid-deterministic architecture; requires a separate owner decision. |
+
+**Current readiness:** engineering-verified research prototype; not linguistically release-ready. No linguistic result was promoted to DONE_VERIFIED solely because CI passed.
