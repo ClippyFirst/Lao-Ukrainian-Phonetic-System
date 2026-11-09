@@ -3119,3 +3119,10 @@ The earlier HVULao 66.9% / 67.6% sentence-IPA figures counted provisional previe
 | PR #145 neural-first | DEFERRED | Conflicts with adopted hybrid-deterministic architecture; requires a separate owner decision. |
 
 **Current readiness:** engineering-verified research prototype; not linguistically release-ready. No linguistic result was promoted to DONE_VERIFIED solely because CI passed.
+
+
+## Final documentation-head verification — 2026-11-09
+
+The final navigation correction and restoration of the practical-transcription guide in the product index are committed on `main` at `651d83079f9e141a961530d92613a479c53cfa16`. Exact-head Verify [#42641288101 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42641288101) passed: 319 Python tests, 147 Node/browser-engine tests, 19 Chromium UI tests, IPA-gold structure validation, repository evidence audit, external-G2P harness syntax/CLI, locked npm dependencies, generated browser-data reproducibility, and built-page/relative-asset checks. This confirms the documentation changes did not break engineering gates; it does not validate pronunciation.
+
+The final state remains on `main`; no other branch was created for this continuation, no PR was merged/closed, and no existing branch was deleted or rewritten. PR #145 remains open and unmerged. Latest status and corrected coverage are in the leading addendum of `docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md`.
