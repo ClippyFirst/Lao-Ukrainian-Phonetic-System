@@ -86,7 +86,7 @@ def greedy_onnx(
     generated = [decoder_start_token_id]
     for _ in range(max_length - 1):
         decoder_ids = torch.tensor([generated], dtype=torch.long).numpy()
-        decoder_mask = torch.ones_like(decoder_ids, dtype="int64")
+        decoder_mask = decoder_ids * 0 + 1
         logits = decoder_session.run(
             ["logits"],
             {
