@@ -64,6 +64,18 @@ if ESBUILD.exists() and ORT_DIST.exists():
     for package_name in sorted(package_names):
         package_root = ROOT / "node_modules" / package_name
         if not package_root.is_dir():
+            package_root = None
+            for candidate in (ROOT / "node_modules").rglob("package.json"):
+                try:
+                    candidate_metadata = json.loads(
+                        candidate.read_text(encoding="utf-8")
+                    )
+                except (OSError, json.JSONDecodeError):
+                    continue
+                if candidate_metadata.get("name") == package_name:
+                    package_root = candidate.parent
+                    break
+        if package_root is None:
             raise SystemExit(f"Bundled npm package directory is missing: {package_name}")
         package_metadata = json.loads(
             (package_root / "package.json").read_text(encoding="utf-8")
