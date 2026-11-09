@@ -30,7 +30,12 @@ test("Hybrid v2 runs beam-five tonal inference locally from Pages assets", async
   await expect(run).toBeEnabled();
   const coldStart = Date.now();
   await run.click();
-  await expect(status).toContainText("Hybrid v2 завершив аналіз", { timeout: 110000 });
+  await expect.poll(
+    async () => status.textContent(),
+    { timeout: 60000, intervals: [250, 500, 1000] },
+  ).toMatch(/Hybrid v2 завершив аналіз|Нейромережевий канал не запустився/);
+  const coldStatus = await status.textContent();
+  expect(coldStatus).toContain("Hybrid v2 завершив аналіз");
   const coldStartMs = Date.now() - coldStart;
 
   await expect(ipa).not.toBeEmpty();
@@ -40,7 +45,9 @@ test("Hybrid v2 runs beam-five tonal inference locally from Pages assets", async
 
   const warmStart = Date.now();
   await run.click();
-  await expect(status).toContainText("Hybrid v2 завершив аналіз", { timeout: 30000 });
+  await expect(run).toBeDisabled();
+  await expect(run).toBeEnabled({ timeout: 30000 });
+  await expect(status).toContainText("Hybrid v2 завершив аналіз");
   const warmStartMs = Date.now() - warmStart;
 
   expect(externalRequests).toEqual([]);
