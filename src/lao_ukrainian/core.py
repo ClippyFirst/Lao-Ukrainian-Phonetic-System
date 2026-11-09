@@ -203,15 +203,15 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                 phonetic_result, registry,
                 allow_uncertain=ipa_profile == DEFAULT_ENGINE_PROFILE,
             )
-            if practical is None and ipa_profile == DEFAULT_ENGINE_PROFILE:
-                # A typed IPA result can still lack a Ukrainian correspondence.
-                # Keep coverage total without bypassing the adapter or guessing.
-                phonetic_result = from_unknown_source_unit(
-                    surface,
-                    provenance=tuple(rules) + ("FALLBACK:TARGET-UNMAPPED",),
-                    uncertainty=tuple(local_warnings) + ("UKRAINIAN-TARGET-UNMAPPED",),
-                )
-                practical = practical_from_ipa(phonetic_result, registry)
+            target_unmapped = practical is None and bool(phonetic_result.phonemic_ipa)
+            if target_unmapped and ipa_profile == DEFAULT_ENGINE_PROFILE:
+                # IPA and Ukrainian orthography are separate adapter stages.
+                # Preserve accepted source IPA when its target mapping is absent;
+                # use an explicit target-only marker rather than downgrading the
+                # phonetic result to PROVISIONAL or inventing a correspondence.
+                rules = [*rules, "FALLBACK:TARGET-UNMAPPED"]
+                local_warnings = [*local_warnings, "UKRAINIAN-TARGET-UNMAPPED"]
+                practical = "?"
             syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"), registry)
             consonant_class = parsed.get("onset_class")
             if consonant_class is None and parsed.get("onset"):
@@ -228,6 +228,8 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
 
             if practical is None and ipa:
                 status = "ANALYSIS DEPENDENT" if phonetic_result.status == "UNCERTAIN" else "EVIDENCE LIMITED"
+            if target_unmapped:
+                status = "EVIDENCE LIMITED"
             if (
                 structural_uncertainty or multiple_tone_marks
                 or malformed_tone_mark_order or phonetic_result.status == "PROVISIONAL"
