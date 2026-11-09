@@ -132,7 +132,7 @@ test("source-attested Lao glide-vowel spellings match the Python IPA fixtures", 
   const cases = [
     ["ເກີຍ", "kɤːj", "кей"],
     ["ໂກຍ", "koːj", "кой"],
-    ["ແກວ", "kɛːw", "кев"],
+    ["ແມວ", "mɛːw", "мев"],
     ["ກອຍ", "kɔːj", "кой"],
     ["ກາຽ", "kaːj", "кай"],
   ];
