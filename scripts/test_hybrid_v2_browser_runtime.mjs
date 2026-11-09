@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { AutoTokenizer, env } from "@huggingface/transformers";
 import { createHybridV2Inference } from "../web/hybrid-v2-inference.js";
 import { analyze } from "../web/engine.js";
+import { combineNeuralTones } from "../web/hybrid-v2.js";
 
 const modelRoot = path.resolve(process.argv[2] ?? "artifacts/hybrid-v2-browser");
 const manifest = JSON.parse(await fs.readFile(path.join(modelRoot, "manifest.json"), "utf8"));
@@ -48,7 +49,11 @@ async function verifyPair(encoderName, decoderName, label) {
     );
     assert.equal(neural.rawIpa, fixture.beam5_decoded, `${label}: decoded IPA differs for ${fixture.input}`);
     const deterministic = analyze(fixture.input);
-    const hybrid = await runner.run(deterministic, fixture.input);
+    const hybrid = combineNeuralTones(
+      deterministic,
+      neural.rawIpa,
+      { modelId: neural.modelId, modelRevision: neural.modelRevision },
+    );
     assert.equal(hybrid.neuralRawIpa, neural.rawIpa);
     assert.equal(hybrid.ukrainian, deterministic.output);
     assert.ok(hybrid.tonePredictions.every((prediction) => prediction.certainty === "UNCERTAIN"));
