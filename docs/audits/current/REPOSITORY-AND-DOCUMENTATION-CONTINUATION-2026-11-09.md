@@ -643,3 +643,15 @@ The previously pending post-fallback 1k run is now complete: [#42653641804 — S
 
 The neural comparator completed IPA for 934/1,000 sentences (93.4%), but 66 inputs were rejected by its source-length/character limits. The HVULao corpus has no IPA gold, so these are completeness and rendering metrics only. The 100-word schema-6 comparison separately confirms 100% segmental/tonal output coverage while keeping confidence rates at 97%/91%.
 
+
+
+## Full external-engine benchmark rerun and output-contract closeout — 2026-11-09
+
+- External same-split suite [#42662067748 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748), artifact [#13695780763](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748/artifacts/13695780763).
+- LanguageNet Phonetisaurus sub-job SUCCESS, artifact [#13694282552](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748/artifacts/13694282552).
+- All seven same-split engines (ClippyFirst, MekongPhon Neural, Lao2IPA, Epitran, orthography2ipa, Transphone, Phonetisaurus) produced 100/100 outputs. External comparators now preserve failed/empty results as explicit `?` and separately report `output_coverage` vs `engine_success_coverage`; unexpected runtime errors still fail the workflow. No unknown fallback was required in this successful run.
+- Segmental CER leadership on this 100-word split: ClippyFirst 6.15% (90/100 exact), MekongPhon Neural 6.64% (82/100), Lao2IPA 8.97%, Epitran 10.96%, orthography2ipa 19.60%, Transphone 24.25%, Phonetisaurus 78.90%.
+- Tonal CER leadership remains MekongPhon Neural 8.29% (74/100 exact); Lao2IPA 11.97%; ClippyFirst 22.90% native contour / 11.39% under the evaluation-only Mekong contour convention (25/100 native exact, 69/100 convention exact); Epitran 36.94%, orthography2ipa 37.51%, Transphone 46.49%. Phonetisaurus has no tonal model.
+- Exact-head Verify on the code/test changes [#42662095956 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662095956), commit `ccc0209b27298b82a898269e5063a20c66c4b3e3`. Documentation-only continuation commit follows and requires its own exact-head Verify.
+- Existing independent 1k HVULao coverage result remains 100% rendering. FLORES+, HPLT Lao, FLEURS and Common Voice remain TODO/BLOCKED pending immutable extraction, license/provenance validation and dedicated coverage-only harnesses; none is claimed passed.
+- Readiness remains research prototype: 100% visible output on tested sets is verified, segmental concordance is competitive on one dictionary-seeded split, tonal concordance trails MekongPhon Neural, and project-adjudicated independent IPA gold remains absent.
