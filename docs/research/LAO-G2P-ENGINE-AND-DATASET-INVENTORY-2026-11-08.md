@@ -199,3 +199,9 @@ The completed Undermind review surfaced several useful written studies:
 - **WikiPron (Lee et al., 2020)**: a Wiktionary-derived multilingual pronunciation resource. Lao-specific coverage, annotation provenance and dialect still need verification; do not count it as a Lao baseline or gold set yet.
 
 These sources reinforce three conservative implementation principles: (1) maintain a declared Vientiane profile; (2) preserve lexeme-level uncertainty for historical and Indic loan spellings; and (3) do not infer phrase-level stress or contextual tone contours from isolated orthographic syllables alone.
+
+### LaoNLP lexical resources: exact scope and access boundary
+
+- Inspected `laonlp/corpus/Lao-Dictionary.txt` from LaoNLP. Its header attributes the 2013 word list to Brian Eugene Wilson and Robert Martin Campbell, with thanks to Arlyta Keosamone and Bualong Nyoukmai. It contains a BSD-style redistribution notice, is about 77 KB, and says it was created for word wrapping with compound words mostly reduced to their component parts. It contains orthographic items, names and borrowed forms but no IPA. Treat it as a candidate lexical hint list, not a complete word-boundary gold set.
+- Separately, `laonlp/corpus/lao-eng-dictionary.csv` has its own MIT notice from the E-Government Center, Ministry of Posts and Telecommunications of Laos. The GitHub contents endpoint does not expose the 2.73 MB file body in this connector session, and the connected Firecrawl account had no credits for the raw-file inspection. Its header/schema/rows therefore remain uninspected; do not integrate it or claim its fields until a reproducible fetch is available.
+- The two resources have different origins and licenses; neither license should be inferred from the LaoNLP package's Apache-2.0 code license.
