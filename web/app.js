@@ -102,7 +102,7 @@ function resetHybridV2Panel() {
   hybridV2Meta.textContent = "";
   hybridV2Predictions.replaceChildren();
   hybridV2Warnings.replaceChildren();
-  hybridV2Status.textContent = "Не запускалося. Перший запуск завантажить приблизно 40 МБ ваг із GitHub Pages; інференс виконується локально у браузері.";
+  hybridV2Status.textContent = "Не запускалося. Перший запуск завантажить приблизно 40 МБ ваг моделі та 15 МБ WASM-рушія з GitHub Pages; інференс виконується локально у браузері.";
   runHybridV2Button.textContent = "Завантажити й запустити Hybrid v2";
   copyHybridV2Ipa.disabled = true;
 }
