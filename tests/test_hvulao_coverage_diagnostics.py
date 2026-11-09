@@ -43,6 +43,16 @@ class TestWithheldIpaDiagnostics(unittest.TestCase):
         self.assertEqual(statuses, {"MISSING_RESULT": 1})
         self.assertEqual(reasons, {"NO_STRUCTURED_REASON": 1})
 
+    def test_rule_stage_initializes_independent_withheld_counters(self):
+        first = BENCHMARK.new_rule_stage()
+        second = BENCHMARK.new_rule_stage()
+        self.assertIn("withheld_statuses", first)
+        self.assertIn("withheld", first)
+        first["withheld_statuses"].update({"UNSUPPORTED": 1})
+        first["withheld"].update({"TONE-UNRESOLVED": 1})
+        self.assertEqual(second["withheld_statuses"], {})
+        self.assertEqual(second["withheld"], {})
+
     def test_accepted_ipa_and_passthrough_are_not_withheld(self):
         statuses, reasons = BENCHMARK.withheld_ipa_diagnostics([
             item("OK", "SUPPORTED", ipa="kaː"),
