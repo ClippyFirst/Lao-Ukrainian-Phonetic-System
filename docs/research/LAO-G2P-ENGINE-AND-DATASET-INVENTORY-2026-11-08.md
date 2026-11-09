@@ -319,3 +319,20 @@ Run [#42599911886 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phon
 ### Pinned direct dependencies for Wiktionary `lo-pron` — 2026-11-09
 
 Raw source inspection of `Module:lo-pron` oldid 88555975 identified direct dependencies `Module:headword/data`, `Module:languages`, `Module:rhymes`, `Module:IPA` and `Module:utilities`. Their latest revisions at or before the 2026-10-01 Kaikki source-dump cutoff are pinned in `data/evidence/sources.csv`, along with first-level data modules `Module:rhymes/data`, `Module:IPA/data` and `Module:IPA/data/symbols`. This improves provenance traceability, but it is not the full transitive Lua dependency closure: `Module:IPA` and `Module:rhymes` load further formatting, qualifier, syllable, parameter and TemplateStyles modules whose revisions remain unpinned. Thus the 100-page direct-template sample is verified, but the exact rendered output of the entire Lua dependency graph is not yet independently reproducible.
+
+
+## Owner-directed full-output coverage correction — 2026-11-09
+
+The historical 91% typed-IPA figure for the hybrid and 97%/91% confidence-gated figures in later comparison tables must not be interpreted as visible output coverage. The required behavior is to emit a lower-confidence result with a visible status/marker instead of withholding it. Benchmark schema 6.0 now makes this distinction explicit.
+
+On the 100-word held-out comparison [#42654328706 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654328706):
+- ClippyFirst output coverage: 100/100 inputs and 169/169 syllable units, for both segmental and tonal output.
+- Confidence-complete input coverage: 97/100 segmental IPA and 91/100 tonal contours. These are confidence metrics, not output availability.
+- Unit status: 165 SUPPORTED, 1 UNCERTAIN, 3 PROVISIONAL; unknown positions are explicitly marked. 160/169 units have a tone contour; remaining contours are visible as ? rather than omitted.
+- Full-set segmental CER 6.15% (90/100 exact); native-contour tonal CER 22.90%; evaluation-only Mekong-convention tonal CER 11.39% (69/100 exact). These CERs include the edit cost of provisional/unknown markers.
+- MekongPhon Neural: 6.64% segmental / 8.29% tonal CER, 100% output coverage. Lao2IPA: 8.97% / 11.97%, 100% output coverage.
+
+The hybrid is now best on segmental CER on this particular dictionary-seeded split; it remains behind MekongPhon Neural on tonal CER. This is not an independent phonetic accuracy result. The dictionary split contributed to validation-sentence generation/checkpoint selection, and independent project-adjudicated IPA gold remains 0. No source-language uncertainty is silently upgraded to SUPPORTED.
+
+The Python hybrid target adapter also now emits an explicit Ukrainian-side ? when typed IPA/provisional material cannot be fully adapted. This preserves the typed source result and prevents target-side gaps from suppressing visible output. Exact-head Verify [#42654358111 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654358111) passed 327 Python, 147 Node and 19 Chromium tests plus all configured engineering gates.
+
