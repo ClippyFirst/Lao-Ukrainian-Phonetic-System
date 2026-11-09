@@ -3220,3 +3220,8 @@ The pinned MekongPhon 100-word comparison has now been rerun across ClippyFirst,
 - ClippyFirst segmental CER 6.15% (90/100 exact) leads this split; MekongPhon Neural tonal CER 8.29% (74/100 exact) remains best. ClippyFirst native tonal CER is 22.90%, or 11.39% under the evaluation-only Mekong contour convention.
 - Output coverage is not accuracy. Independent expert-adjudicated IPA gold remains absent. FLORES+, HPLT, FLEURS and Common Voice remain separate TODO coverage/stress expansions pending pinned extraction and license/provenance checks.
 - Current exact main head at this documentation update: `0c2c057fe571582e2c33f95618b56ae7e105d7db`; exact-head Verify is running.
+
+
+## Hybrid v2 — 2026-11-09
+
+Implemented an opt-in second hybrid in `src/lao_ukrainian/hybrid_v2.py` and CLI `--engine hybrid-v2`. It takes segmental IPA and Ukrainian output only from the deterministic ClippyFirst hybrid, and overlays MekongPhon tonal contours only after a clean typed-IPA parse and exact per-syllable alignment. It maps the five registered MekongPhon contours to tone categories, records raw neural IPA/model revision/provenance and any disagreement, and withholds unknown, unsupported, unresolved-minor or misaligned tones. Neural inference failures are not silently replaced by deterministic output. Tests added; exact-head CI and a same-split benchmark are required before default promotion. Browser integration is deferred until a supported inference backend exists.

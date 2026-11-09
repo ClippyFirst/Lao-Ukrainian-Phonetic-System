@@ -13,7 +13,7 @@ def main():
     ap.add_argument("--ipa-profile", choices=("vientiane", "mekongphon-reference", "hybrid-deterministic"), default=DEFAULT_ENGINE_PROFILE, help="deterministic source-IPA convention (default: hybrid-deterministic); vientiane selects the explicit Vientiane baseline and mekongphon-reference selects the compatibility profile")
     ap.add_argument(
         "--engine",
-        choices=("rules", "mekongphon-tonal", "mekongphon-nontonal"),
+        choices=("rules", "mekongphon-tonal", "mekongphon-nontonal", "hybrid-v2"),
         default="rules",
         help="rules is the default; MekongPhon downloads optional neural weights on first use",
     )
@@ -37,6 +37,31 @@ def main():
                 preview = syllable.grapheme_preview
                 unresolved = "".join(preview.unresolved_graphemes) or "none"
                 print(f"  IPA preview={preview.ipa_preview or '—'} [{preview.status}]; unresolved={unresolved}")
+        return
+
+    if args.engine == "hybrid-v2":
+        if args.ipa_profile != DEFAULT_ENGINE_PROFILE:
+            ap.error("--ipa-profile applies only to the deterministic hybrid-v2 base")
+        from .hybrid_v2 import run_hybrid_v2
+        result = run_hybrid_v2(
+            args.text, revision=args.revision, device=args.device,
+            num_beams=max(args.num_beams, 5),
+        )
+        if args.json:
+            print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
+            return
+        print(f"Input: {result.analysis.input}\\nEngine: hybrid-v2")
+        print(f"Neural model: {result.model_id}@{result.model_revision}")
+        print(f"Neural IPA: {result.neural_raw_ipa}")
+        print(f"Tone alignment: {result.tone_alignment_status}; overlays: {result.tone_overlays}")
+        for syllable in result.analysis.syllables:
+            print(
+                f"{syllable.surface}: IPA={syllable.phonemic_ipa} "
+                f"→ UA={syllable.practical_ukrainian} "
+                f"[tone={syllable.tone or '?'}; contour={syllable.tone_contour or '?'}]"
+            )
+        if result.warnings:
+            print("Warnings: " + "; ".join(result.warnings))
         return
 
     if args.ipa_profile != DEFAULT_ENGINE_PROFILE:

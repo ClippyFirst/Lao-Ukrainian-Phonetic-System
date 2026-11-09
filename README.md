@@ -187,3 +187,15 @@ Both runtimes attempt conservative within-token syllable segmentation; Python re
 - GitHub Pages workflow [42463361038](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42463361038): **SUCCESS**. Browser regression tests, static build, built-site Chromium tests, deployment artifact checks, Pages deployment and deployed-asset smoke tests all passed.
 - Live site: https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/ — checked after deployment; HTTP 200.
 - The site is an engineering-verified research prototype, not a linguistically validated production release. Independent adjudicated IPA gold remains 0; manual assistive-technology and physical-device accessibility QA remains partial.
+
+## Hybrid v2 — deterministic segmentals + neural tones (2026-11-09)
+
+A second hybrid candidate is now implemented as an explicit Python/CLI mode, `--engine hybrid-v2`:
+
+- The existing evidence-aware ClippyFirst hybrid remains authoritative for segmental IPA and Ukrainian practical rendering. Neural segmental phones are never substituted.
+- The pinned MekongPhon tonal checkpoint contributes only a registered tone contour, and only when the external IPA parses cleanly and its syllable count exactly matches the deterministic parser.
+- Each accepted contour is converted to the corresponding MekongPhon tone category. The original deterministic category disagreement, model ID/revision, raw neural IPA, and overlay provenance remain inspectable.
+- Unresolved potential-minor syllables, unknown contours, unsupported IPA, and syllable-count mismatches are withheld rather than guessed. Neural dependency/model failures are surfaced; there is no silent fallback.
+- The Ukrainian target output remains the deterministic adapter's output. This is an experimental Python mode; it is not yet the browser default or production default.
+
+Initial acceptance tests cover exact one-/two-syllable alignment, preservation of deterministic segmentals and Ukrainian output, unsupported IPA, unknown contours, count mismatches, and input immutability. The mode is not promoted to the default until same-split benchmark and exact-head CI demonstrate that it improves tonal results without regressing segmental CER or rendering coverage. Independent expert IPA gold remains unavailable.

@@ -655,3 +655,12 @@ The neural comparator completed IPA for 934/1,000 sentences (93.4%), but 66 inpu
 - Exact-head Verify on the code/test changes [#42662095956 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662095956), commit `ccc0209b27298b82a898269e5063a20c66c4b3e3`. Documentation-only continuation commit follows and requires its own exact-head Verify.
 - Existing independent 1k HVULao coverage result remains 100% rendering. FLORES+, HPLT Lao, FLEURS and Common Voice remain TODO/BLOCKED pending immutable extraction, license/provenance validation and dedicated coverage-only harnesses; none is claimed passed.
 - Readiness remains research prototype: 100% visible output on tested sets is verified, segmental concordance is competitive on one dictionary-seeded split, tonal concordance trails MekongPhon Neural, and project-adjudicated independent IPA gold remains absent.
+
+
+## Hybrid v2 implementation continuation — 2026-11-09
+
+- Starting main head: `da4940cea6d1470faf89026d737b03c90a6e2ca0`.
+- Added opt-in `hybrid-v2`: deterministic hybrid remains the source of segmental IPA and Ukrainian rendering; pinned MekongPhon tonal output is used only for tone contours after clean IPA parsing and exact syllable-count alignment.
+- Added explicit mapping for the five MekongPhon contours to tone categories, preserving neural model revision, raw output, provenance, and disagreement notes. Unknown/unsupported contours, unresolved minor syllables, and count mismatches are withheld.
+- Added tests for one-/two-syllable alignment, segmental/target invariance, malformed IPA, unknown contours, count mismatch, and no input mutation.
+- Status before CI: implementation PARTIAL; exact-head Verify and same-split benchmark pending. Not promoted to default or browser UI.

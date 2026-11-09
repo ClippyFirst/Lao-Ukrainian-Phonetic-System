@@ -368,3 +368,13 @@ The updated external comparator JSON reports both `output_coverage` and `engine_
 
 - HVULao 1k remains the executed independent sentence stress test: 1,000/1,000 hybrid inputs and 21,534/21,534 analyzed units rendered; no IPA gold.
 - FLORES+, HPLT Lao, FLEURS Lao and Common Voice Lao remain separate corpus-domain extensions, not silently counted as passed. FLORES+/HPLT are text-only coverage/stress candidates; FLEURS/Common Voice include audio but do not provide IPA labels. A reproducible, immutable text extraction/split and corpus-specific license/provenance validation are still required before their runs can be marked DONE_VERIFIED.
+
+
+## Hybrid v2 implementation status — 2026-11-09
+
+| Item | Status | Acceptance / remaining evidence |
+|---|---|---|
+| Add second hybrid combining deterministic segmental IPA with MekongPhon neural tone | PARTIAL | Implemented as opt-in Python/CLI mode with exact syllable-count gate and typed provenance; requires exact-head CI and same-split score before promotion |
+| Preserve Ukrainian target output through deterministic typed IPA adapter | DONE_VERIFIED by unit contract; CI pending | Tests assert target rendering is unchanged by neural tone overlay |
+| Neural tone category/contour alignment and uncertainty provenance | PARTIAL | Unit tests added; corpus-wide alignment rate and tone CER must be measured |
+| Promote hybrid-v2 to default / browser UI | DEFERRED | Requires benchmark superiority, browser-compatible deployed inference backend, and no regression on HVULao coverage |
