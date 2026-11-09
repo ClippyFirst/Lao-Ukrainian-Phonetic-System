@@ -138,7 +138,7 @@ def combine_neural_tones(
                 f"DETERMINISTIC-NEURAL-TONE-DISAGREEMENT:{current.tone_category}->{category}"
             )
         tone_segments = tuple(
-            PhoneticSegment(symbol, "tone", trace)
+            PhoneticSegment(symbol, "tone", trace, "UNCERTAIN")
             for symbol in contour
         )
         syllable.phonetic_result = replace(

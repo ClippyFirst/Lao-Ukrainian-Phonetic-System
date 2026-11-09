@@ -20,6 +20,7 @@ class HybridV2Tests(unittest.TestCase):
         self.assertEqual(updated.practical_ukrainian, original.practical_ukrainian)
         self.assertEqual(updated.tone_contour, "˧˥")
         self.assertEqual(updated.phonetic_result.tone_category, "high-rising")
+        self.assertTrue(all(segment.certainty == "UNCERTAIN" for segment in updated.phonetic_result.segments if segment.kind == "tone"))
         self.assertEqual(updated.phonetic_result.phonemic_ipa, original.phonetic_result.phonemic_ipa)
         self.assertIn(
             "HYBRID-V2:DETERMINISTIC-SEGMENTAL+NEURAL-TONE",
