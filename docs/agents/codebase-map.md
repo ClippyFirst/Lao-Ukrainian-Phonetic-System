@@ -20,8 +20,9 @@ Lao source text
           └─ parse onset, vowel structure, coda, tone-mark position
               └─ source-language phonology and tone/rhyme analysis
                   └─ typed PhoneticResult (IPA, segments, boundaries,
-                     quantity, tone, provenance, uncertainty)
-                      └─ SUPPORTED-only Ukrainian target adapter
+                     quantity, tone, provenance, confidence)
+                      └─ typed Ukrainian adapter (SUPPORTED / UNCERTAIN IPA;
+                         explicitly PROVISIONAL fallback remains labelled)
                           └─ practical Ukrainian orthography
 ```
 
@@ -40,7 +41,7 @@ The browser engine is a separately maintained implementation using generated can
 
 ## Provisional grapheme hints and hybrid fallback
 
-`grapheme_preview.py` produces a diagnostic `PROVISIONAL` segmental hint from registered positional onset/cluster values and parser-confirmed vowel/coda structures. The primary hybrid may wrap those hints as a separate typed `PROVISIONAL` `PhoneticResult`, append explicit unknown segments for unresolved graphemes, and send that typed result through the ordinary Ukrainian IPA adapter. This is not direct grapheme-to-Ukrainian mapping: provisional IPA runs remain visibly low-confidence, unknown segments render `?`, and none is promoted to `SUPPORTED` IPA. Tone is never inferred by the preview. Browser parity lives in `web/engine.js`; both runtimes preserve known vowel length when available.
+`grapheme_preview.py` produces a diagnostic `PROVISIONAL` segmental hint from registered positional onset/cluster values and parser-confirmed vowel/coda structures. The primary hybrid may wrap those hints as a separate typed `PROVISIONAL` `PhoneticResult`, append explicit unknown segments for unresolved graphemes, and send that typed result through the ordinary Ukrainian IPA adapter. This is not direct grapheme-to-Ukrainian mapping: provisional IPA runs remain visibly low-confidence, unknown segments render `?`, and none is promoted to `SUPPORTED` IPA. The adapter preserves confidence labels; benchmark accuracy metrics score only `SUPPORTED` / `UNCERTAIN`, never `PROVISIONAL`. Tone is never inferred by the preview. Browser parity lives in `web/engine.js`; both runtimes preserve known vowel length when available.
 
 Canonical codepoint inventory: `data/lao/grapheme_inventory.csv` (83 assigned code points in the Unicode 18 Lao block). Unicode character identity does not itself establish a pronunciation.
 
