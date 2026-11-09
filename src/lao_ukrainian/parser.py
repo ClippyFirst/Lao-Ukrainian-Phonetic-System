@@ -59,12 +59,15 @@ STRUCTURES = (
     ("pre_e_long", "ເ", "", "EE"),
     ("pre_ae_short", "ແ", "ະ", "AE"),
     ("pre_ae_short_kan", "ແ", "ັ", "AE"),
+    ("pre_ae_long_y", "ແ", "ວ", "AEW"),
     ("pre_ae_long", "ແ", "", "AEE"),
     ("pre_o_short", "ໂ", "ະ", "O"),
     ("pre_o_short_mai_kon", "ໂ", "ົ", "O"),
+    ("pre_o_long_y", "ໂ", "ຍ", "OOY"),
     ("pre_o_long", "ໂ", "", "OO"),
     ("pre_oe_short", "ເ", "ິ", "OE"),
     ("pre_oe_long", "ເ", "ີ", "OEE"),
+    ("pre_oe_long_y", "ເ", "ີຍ", "OEY"),
     # Source-indexed spelling distinctions from Ishida (2026): ເ◌ັຽ and ເ◌ຍ
     # represent long /iːə̯/, while ເ◌ັຍ represents short /iə̯/.
     # ເ◌ຽ is not listed as a preposed IA spelling and must not be promoted
@@ -79,6 +82,7 @@ STRUCTURES = (
     ("pre_ay", "ໃ", "", "AI2"),
     ("post_a_short", "", "ະ", "A"),
     ("post_a_short_kan", "", "ັ", "A2"),
+    ("post_aa_y", "", "າຽ", "AAJ"),
     ("post_aa", "", "າ", "AA"),
     ("post_i", "", "ິ", "I"),
     ("post_ii", "", "ີ", "II"),
@@ -88,6 +92,7 @@ STRUCTURES = (
     ("post_u", "", "ຸ", "U"),
     ("post_uu", "", "ູ", "UU"),
     ("post_o_short_alt", "", "ັອ", "AWW_SHORT_ALT"),
+    ("post_o_long_y", "", "ອຍ", "AOY"),
     ("post_o_long_medial", "", "ອ", "AWW_MEDIAL"),
     ("post_o_long_open", "", "ໍ", "AWW"),
     ("post_am", "", "ຳ", "AM"),
