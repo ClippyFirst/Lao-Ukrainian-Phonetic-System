@@ -185,3 +185,17 @@ The user cannot provide audio. This does not prevent useful engineering work, bu
 ### Methodological boundary
 
 No-audio does not mean no verification. We can verify orthographic coverage, syllable segmentation, deterministic reproducibility, consistency against multiple written descriptions, and exact concordance with attributed written lexical records. We cannot honestly claim acoustic fidelity, prosodic naturalness, or independent phonetic accuracy from those checks alone.
+
+### Additional dialect, stress and lexical-history evidence
+
+The completed Undermind review surfaced several useful written studies:
+
+- **Lew (2014), DOI 10.1080/17586801.2013.846843**: analyzes Lao grapheme–phoneme correspondences and orthographic structure, while stressing that Lao dialects differ in lexicon, vowels and especially tones. Supports the IPA-first graphemic architecture but also explicit dialect scope.
+- **Lao Language Specific Peculiarities — Dialects (2015)**: reports that ໃ and ໄ are pronounced the same in Vientiane but differently in Luang Prabang. The existing Vientiane vowel registry maps both spellings to the same /ai/ nucleus while retaining distinct source graphemes; this is consistent with that written profile. Do not reuse this equivalence for Luang Prabang.
+- **Enfield (2020), “Word in Lao,” DOI 10.1093/oso/9780198865681.003.0007**: describes phonological feet, each with one stressed tone-bearing syllable and one or more dependent unstressed syllables. Grammatical-word boundaries do not always coincide with phonological-word boundaries. This strengthens the case for keeping phrase/word-level stress and dependent-syllable interpretation separate from syllable parsing.
+- **Davis (2015), “The Story of Lao r”**: describes historical /r/ loss, /r/ becoming /h/ in some conditions and /l/ elsewhere, plus cluster loss and loanword complications. Keep ຣ as analysis-dependent/lexeme-sensitive where the modern reading cannot be resolved from the grapheme alone; do not impose a universal unconditional mapping.
+- **Sengsoulin (2009), “Pali and Sanskrit words in Lao language”**: supports a distinct historical/orthographic loanword layer. Modern native-Lao tone and coda rules should not be mechanically applied to Indic etymological spelling without a word-specific modern reading.
+- **Yanagimura (2011), “Contextual Tonal Variations in Vientiane Lao”**: studies all 25 bitonal sequences from five lexical tones and reports stronger carryover than anticipatory effects in F0 realization. The engine's isolated lexical tone label is not a full phrase-level phonetic contour; keep contextual realization outside the current spelling-only contract.
+- **WikiPron (Lee et al., 2020)**: a Wiktionary-derived multilingual pronunciation resource. Lao-specific coverage, annotation provenance and dialect still need verification; do not count it as a Lao baseline or gold set yet.
+
+These sources reinforce three conservative implementation principles: (1) maintain a declared Vientiane profile; (2) preserve lexeme-level uncertainty for historical and Indic loan spellings; and (3) do not infer phrase-level stress or contextual tone contours from isolated orthographic syllables alone.
