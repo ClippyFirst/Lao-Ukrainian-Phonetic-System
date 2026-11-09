@@ -1039,7 +1039,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "4.0",
+        "schema_version": "5.0",
         "cross_engine_shared_coverage": shared_comparisons,
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
@@ -1072,9 +1072,12 @@ def main() -> int:
             "missing_output": "empty output remains in the denominator and incurs full reference deletion cost",
             "clippyfirst_tone_contract": "tone contour is stored separately in typed PhoneticResult metadata; tonal score composes it after each syllable's segmental IPA",
             "latency": "per-item inference; model loading excluded; CPU runner, sequential items. ClippyFirst emits segmental and tonal fields in one analysis pass, so both availability latencies are equal and must not be summed; Lao2IPA and MekongPhon use separate segmental and tonal calls",
-            "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. It cannot be compared numerically with the paper's sentence-level Table 4.",
+            "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. The same held-out lexicon generated validation sentences and best-checkpoint selection used validation loss, so direct word-level scores are not independent of model-selection vocabulary and cannot be compared numerically with Table 4.",
+            "split_warning": "The paper reports 6,039 Lao seed-lexicon entries; the pinned repository split contains 6,316 unique forms (6,216 training plus 100 held out), a 277-form discrepancy. Exact equivalence to the paper training snapshot is unresolved.",
+            "sentence_test_access": "The paper's 13,442-sentence test split is not present in the pinned repository snapshot; this run scores only the 100-word seed lexicon.",
+            "model_weight_integrity": "Both model.safetensors files are SHA-256 verified against their pinned Hugging Face revisions before inference.",
             "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is not independently re-adjudicated gold for this project.",
-            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 additionally reports covered-subset metrics, isolated tone-symbol metrics, and tone-category metrics. Schema 4.0 scores only known syllable-aligned tone categories and reports unresolved-category coverage separately; unknown tone is never serialized as a literal category. Do not compare CER or tone-category rates across schema versions without accounting for their different scoring contracts.",
+            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 added covered-subset, tone-symbol, and tone-category metrics. Schema 4.0 restricted tone-category scoring to known syllable-aligned categories and reported unresolved coverage. Schema 5.0 pins model-weight SHA-256 values, verifies train/eval lexicon disjointness, and adds word-level vowel-length marker and final-coda diagnostics; syllable boundaries remain explicitly not scorable without annotations. Do not compare CER or tone-category rates across schema versions without accounting for their different scoring contracts.",
         },
         "environment": {
             "python": sys.version,
