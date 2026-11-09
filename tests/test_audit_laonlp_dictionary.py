@@ -49,11 +49,11 @@ class LaoNlpDictionaryAuditTests(unittest.TestCase):
 
     def test_malformed_header_like_rows_are_separate_from_exact_headers(self):
         content = (
-            "ID,LaoWord,English,Pronunciation,Type\\n"
-            "1,ກ,gloss,ka,n\\n"
-            "2,,English,Pronuciation,Type\\n"
-            "3,LaoWord,English,Pronunciation,Type\\n"
-            "4,,,,\\n"
+            "ID,LaoWord,English,Pronunciation,Type\n"
+            "1,ກ,gloss,ka,n\n"
+            "2,,English,Pronuciation,Type\n"
+            "3,LaoWord,English,Pronunciation,Type\n"
+            "4,,,,\n"
         )
         result = self.run_audit(content)
         self.assertEqual(result.returncode, 0, result.stderr)
