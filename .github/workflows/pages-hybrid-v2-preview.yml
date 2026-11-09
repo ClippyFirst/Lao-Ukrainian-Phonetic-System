@@ -71,7 +71,8 @@ jobs:
           test -s dist/models/hybrid-v2/LICENSE
           test -s dist/models/hybrid-v2/encoder.int8.onnx
           test -s dist/models/hybrid-v2/decoder.int8.onnx
-          find dist/web/vendor -name '*.wasm' -print -quit | grep -q .
+          test -s dist/web/vendor/ort-wasm-simd-threaded.wasm
+          test -s dist/web/vendor/ort-wasm-simd-threaded.mjs
           python -c 'from pathlib import Path; assert sum(p.stat().st_size for p in Path("dist").rglob("*") if p.is_file()) < 1_000_000_000'
       - name: Upload non-deployed Pages preview artifact
         uses: actions/upload-artifact@v7
