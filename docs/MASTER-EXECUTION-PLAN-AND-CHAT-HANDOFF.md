@@ -2821,3 +2821,10 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Exact-head Verify [#42583884292 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42583884292): 293 Python, 147 Node/browser-engine and 19 Chromium tests passed; data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks passed.
 - Audit-register update commit: `b81e509f8c6f36d7a0f48fc988ce30a204644160`.
 - This handoff update is the last documentation change; exact-head Verify for the resulting branch head is still required.
+
+### Lexical resource inspection handoff
+
+- Added the BSD-style Lao-Dictionary word list as `SRC-LAONLP-WORDLIST-BSD-2013`. Its own header says it was created for word wrapping and compounds are mostly reduced to parts; it has no IPA. It may be evaluated as a lexical hint list, not as word-boundary gold.
+- Added a separate claim and inventory/audit notes for that word list.
+- The distinct 2.73 MB LaoNLP `lao-eng-dictionary.csv` has a separate MIT notice, but its body/schema could not be inspected: the GitHub contents endpoint did not return the oversized body, and Firecrawl had no credits. Do not import it until a full reproducible fetch and schema review are available.
+- No dictionary or word list was copied into production. The PR remains draft pending exact-head CI.
