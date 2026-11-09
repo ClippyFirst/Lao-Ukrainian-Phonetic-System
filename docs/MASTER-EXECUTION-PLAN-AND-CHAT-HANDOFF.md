@@ -2800,3 +2800,17 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Exact-head Verify [#42582308449 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42582308449) passed on that commit: 292 Python tests, 146 Node/browser-engine tests, 19 Chromium UI tests; IPA-gold schema, repository data/evidence audit, external-G2P syntax/CLI, clean locked npm install, browser tests, build, generated-data reproducibility/drift and built-page/relative-asset checks all passed.
 - No runtime code, phonology rules, target adapter, canonical Lao parser data, generated browser data or benchmark output changed in this research continuation. No local shell test is claimed.
 - Final status: research-ready engineering/evidence prototype; not linguistically release-ready. Remaining blockers: independent expert-adjudicated IPA gold (0 records), graphoneme paper reproduction/data rights, SIGMORPHON-inspired held-out Lao split, and human linguistic sign-off. PR #156 remains open/draft and divergent; other open PRs were left untouched.
+
+## No-audio written-evidence continuation — 2026-11-09
+
+- User cannot provide audio. The continuation therefore uses primary written descriptions, published IPA examples, attributed lexical resources, and deterministic text-only tests. No audio or acoustic accuracy is claimed.
+- Dedicated branch: research/written-evidence-phonology-2026-11-09, based on main 4570c5ff4733476601e02c791517ac36944d6a46.
+- Draft PR #157: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/157. No merge performed.
+- Added written sources and claims: Osatananda 1997, Phissamay et al. 2007, LaoNLP 2022, MIT Lao-English dictionary notice, Kaikki/Wiktextract, Wiktionary lo-pron, Lew 2014, Lao dialect LSP 2015, Enfield 2020, Davis 2015, Sengsoulin 2009, Yanagimura 2011 and WikiPron 2020.
+- Added the published LaoNLP segmentation example ພາສາລາວໃນປັດຈຸບັນ -> ພາ | ສາ | ລາວ | ໃນ | ປັດ | ຈຸ | ບັນ to Python and browser regression tests.
+- The first PR branch head 47d63361ec22a60bf2fb6e3fd6a4f682c86d7fdc passed Verify #42583598265: 293 Python, 147 Node/browser-engine and 19 Chromium tests. All checks passed. This is before later documentation/evidence-only commits; a fresh exact-head run is required.
+- No runtime phonology, IPA rules, target adaptation, or generated browser data were changed. No source dictionary was copied into production.
+- Enfield's wider C0V0 minor-syllable model is not generalized to Vientiane because his sample scope differs from Ueda's central Vientiane profile. Current potential-minor-open-A behavior remains conservative.
+- Osatananda's underlying lexical-tone analysis, Enfield's feet, Davis's historical ຣ, Sengsoulin's Indic loans, and Yanagimura's contextual tone effects are documented as scope limits and future lexical/phrase-level work, not silently converted into unsupported rules.
+- LaoNLP package code is Apache-2.0; its bundled Lao-English dictionary has a separate MIT notice. Kaikki/Wiktionary material requires CC BY-SA/GFDL attribution/share-alike; Wiktextract includes programmatically generated pronunciations, so entries are not uniform independent gold. WikiPron Lao coverage is unverified.
+- Remaining feasible next tasks: exact-head CI; inspect and potentially use the MIT LaoNLP lexical dictionary for segmentation only; classify Kaikki/Wiktionary IPA provenance; investigate documented lexeme-specific ຣ and Indic-loan exceptions. Do not claim acoustic accuracy or promote generated pronunciation data as expert gold.
