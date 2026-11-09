@@ -47,7 +47,7 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
         # Historical copies of the header occur mid-file. Some have a blank
         # LaoWord cell or the misspelling "Pronuciation"; Type=Type is stable.
         if row[4].strip() == "Type":
-            if row == EXPECTED_HEADER:
+            if row[1:] == EXPECTED_HEADER[1:]:
                 exact_repeated_headers += 1
             else:
                 malformed_header_like_rows += 1
