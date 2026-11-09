@@ -48,8 +48,12 @@ jobs:
         run: python scripts/export_hybrid_v2_browser_onnx.py --output artifacts/hybrid-v2-browser
       - name: Run tokenizer and ONNX Runtime Web WASM beam-five parity checks
         run: node scripts/test_hybrid_v2_browser_runtime.mjs artifacts/hybrid-v2-browser
-      - name: Prepare minimal Pages model assets
-        run: python scripts/prepare_pages_model.py --source artifacts/hybrid-v2-browser --destination dist/models/hybrid-v2
+      - name: Prepare minimal Pages model assets and upstream license notices
+        run: |
+          python scripts/prepare_pages_model.py --source artifacts/hybrid-v2-browser --destination dist/models/hybrid-v2
+          curl --fail --silent --show-error --retry 3 https://www.apache.org/licenses/LICENSE-2.0.txt -o dist/models/hybrid-v2/LICENSE
+          test -s dist/models/hybrid-v2/NOTICE
+          test -s dist/models/hybrid-v2/LICENSE
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run Chromium UI tests including local Hybrid v2 inference
@@ -63,6 +67,8 @@ jobs:
           test -s dist/web/app.js
           test -s dist/web/hybrid-v2-inference.bundle.js
           test -s dist/models/hybrid-v2/manifest.json
+          test -s dist/models/hybrid-v2/NOTICE
+          test -s dist/models/hybrid-v2/LICENSE
           test -s dist/models/hybrid-v2/encoder.int8.onnx
           test -s dist/models/hybrid-v2/decoder.int8.onnx
           find dist/web/vendor -name '*.wasm' -print -quit | grep -q .
