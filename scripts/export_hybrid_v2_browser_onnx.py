@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 import onnxruntime as ort
+from onnxruntime.quantization import QuantType, quantize_dynamic
 import torch
 from huggingface_hub import hf_hub_download
 from transformers import AutoTokenizer, EncoderDecoderModel
@@ -226,7 +227,34 @@ def main() -> int:
         sess_options=session_options,
         providers=["CPUExecutionProvider"],
     )
+    encoder_int8 = output / "encoder.int8.onnx"
+    decoder_int8 = output / "decoder.int8.onnx"
+    quantize_dynamic(
+        str(output / "encoder.onnx"),
+        str(encoder_int8),
+        weight_type=QuantType.QInt8,
+        per_channel=True,
+        op_types_to_quantize=["MatMul", "Gemm"],
+    )
+    quantize_dynamic(
+        str(output / "decoder.onnx"),
+        str(decoder_int8),
+        weight_type=QuantType.QInt8,
+        per_channel=True,
+        op_types_to_quantize=["MatMul", "Gemm"],
+    )
+    encoder_int8_session = ort.InferenceSession(
+        str(encoder_int8),
+        sess_options=session_options,
+        providers=["CPUExecutionProvider"],
+    )
+    decoder_int8_session = ort.InferenceSession(
+        str(decoder_int8),
+        sess_options=session_options,
+        providers=["CPUExecutionProvider"],
+    )
     parity_rows = []
+    int8_parity_rows = []
     for text in FIXTURES:
         encoded = encoder_tokenizer(
             text, return_tensors="pt", truncation=False, padding=False,
@@ -268,6 +296,35 @@ def main() -> int:
             "exact_text_parity": expected_text == actual_text,
         })
 
+    for text in FIXTURES:
+        encoded = encoder_tokenizer(
+            text, return_tensors="pt", truncation=False, padding=False,
+        )
+        actual_ids = greedy_onnx(
+            encoder_int8_session,
+            decoder_int8_session,
+            encoded["input_ids"][0].tolist(),
+            encoded["attention_mask"][0].tolist(),
+            encoded.get("token_type_ids", torch.zeros_like(encoded["input_ids"]))[0].tolist(),
+            decoder_start_token_id=int(model.config.decoder_start_token_id),
+            eos_token_id=model.config.eos_token_id,
+            max_length=MAX_SEQUENCE_LENGTH,
+        )
+        with torch.no_grad():
+            expected_ids = model.generate(
+                **encoded,
+                max_length=MAX_SEQUENCE_LENGTH,
+                num_beams=1,
+                early_stopping=True,
+            )[0].tolist()
+        int8_parity_rows.append({
+            "input": text,
+            "expected_ids": expected_ids,
+            "actual_ids": actual_ids,
+            "exact_token_parity": actual_ids == expected_ids,
+            "decoded": decoder_tokenizer.decode(actual_ids, skip_special_tokens=True),
+        })
+
     manifest = {
         "schema_version": "1.0",
         "status": "onnx_greedy_export_parity_verified",
@@ -288,6 +345,14 @@ def main() -> int:
         "decoder_tokenizer_class": type(decoder_tokenizer).__name__,
         "encoder_onnx_bytes": (output / "encoder.onnx").stat().st_size,
         "decoder_onnx_bytes": (output / "decoder.onnx").stat().st_size,
+        "encoder_onnx_sha256": sha256(output / "encoder.onnx"),
+        "decoder_onnx_sha256": sha256(output / "decoder.onnx"),
+        "int8_encoder_onnx_bytes": encoder_int8.stat().st_size,
+        "int8_decoder_onnx_bytes": decoder_int8.stat().st_size,
+        "int8_encoder_onnx_sha256": sha256(encoder_int8),
+        "int8_decoder_onnx_sha256": sha256(decoder_int8),
+        "int8_exact_token_parity": all(row["exact_token_parity"] for row in int8_parity_rows),
+        "int8_parity_fixtures": int8_parity_rows,
         "parity_fixtures": parity_rows,
     }
     (output / "manifest.json").write_text(
