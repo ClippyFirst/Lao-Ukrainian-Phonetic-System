@@ -31,10 +31,15 @@ if ESBUILD.exists() and ORT_DIST.exists():
     )
     vendor = DIST / "web" / "vendor"
     vendor.mkdir(parents=True, exist_ok=True)
-    wasm_files = list(ORT_DIST.rglob("*.wasm"))
-    if not wasm_files:
+    runtime_files = [
+        path for path in ORT_DIST.rglob("*")
+        if path.is_file() and path.suffix in {".wasm", ".mjs"}
+    ]
+    if not any(path.suffix == ".wasm" for path in runtime_files):
         raise SystemExit("onnxruntime-web installed but no WASM runtime assets were found")
-    for source in wasm_files:
+    if not any(path.name == "ort-wasm-simd-threaded.mjs" for path in runtime_files):
+        raise SystemExit("onnxruntime-web threaded WASM loader module is missing")
+    for source in runtime_files:
         shutil.copy2(source, vendor / source.name)
 else:
     # Keep deterministic-only local builds usable without optional model tooling.
