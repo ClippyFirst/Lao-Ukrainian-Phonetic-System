@@ -31,7 +31,7 @@ jobs:
       - name: Install locked browser-test dependencies
         run: npm ci --no-audit --no-fund
       - name: Install pinned browser-local inference runtime dependencies
-        run: npm install --no-save --package-lock=false --no-audit --no-fund esbuild@0.25.0 @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund esbuild@0.25.0 @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
       - name: Browser engine tests
         run: npm test
       - name: Build and regenerate canonical browser data
