@@ -134,7 +134,7 @@ Hansakunbuntheung & Thatphithakkul (O-COCOSDA 2016, DOI 10.1109/ICSDA.2016.79190
 
 Zhu, Zhang & Jurgens (Interspeech 2022, DOI 10.48550/arXiv.2204.03067) describe multilingual ByT5 G2P and release code/models. At inspected upstream commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4`, the repository contains `sources/info/wikipron/lao_laoo_broad_info.txt`, which points to CUNY-CL WikiPron's Lao broad-IPA TSV and declares Apache-2.0 for that source metadata.
 
-This establishes a Lao WikiPron source dictionary in the repository, **not** that Lao is included in the evaluated 100-language model, has a trained Lao checkpoint, or has a held-out Lao test split. It must not yet be counted as a runnable Lao baseline. Next acceptance: verify model language codes, train/dev/test files and tokenizer behavior; if Lao is absent, a zero-shot output is exploratory only.
+A recursive inspection of the same upstream commit's complete tree found no Lao file under `data/train`, `data/dev` or `data/test`, and no Lao entry in the checked-in split inventories; Khmer is present. Thus CharsiuG2P is **not a trained/evaluated Lao G2P baseline on this revision** and must not be counted as a runnable Lao baseline. A future zero-shot output, if inference permits, is exploratory only.
 
 ### SIGMORPHON is a protocol reference, not a Lao benchmark
 
