@@ -772,3 +772,15 @@ This is an additional workstream on branch `feat/pages-hybrid-v2-browser`, PR [#
 - **BLOCKED (linguistic accuracy):** independent expert-adjudicated IPA gold remains unavailable. Three parity fixtures cannot establish phonetic correctness. Neural tone predictions remain `UNCERTAIN`.
 
 Detailed task ledger and architecture are in `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md`; canonical handoff entry is in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+## Hybrid v2 browser runtime verification update — 2026-11-09, 21:07 UTC
+
+- **DONE_VERIFIED:** Full browser-local Hybrid v2 inference, exact ONNX tokenizer/beam-five parity, model packaging, license/attribution, and Chromium run passed in preview [#42699110323](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42699110323) on `e74602e...`.
+- **DONE_VERIFIED:** Browser measurement for `ຂາ`: 1,272 ms cold / 177 ms warm on CI local server, `kʰaː˩˧`, `ORDER_ALIGNED`, zero external requests. This is runtime behavior evidence, not independent phonetic accuracy.
+- **DONE_VERIFIED:** Minimal Pages artifact [13709754651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42698861280/artifacts/13709754651) is 40.4 MB zipped / 56.5 MB unpacked; includes INT8 weights, tokenizers, only the required WASM module/binary, Apache LICENSE and attribution NOTICE.
+- **DONE_VERIFIED:** Native ONNX Node install scripts are skipped in browser-only CI; Verify passed after the change, avoiding intermittent NuGet timeouts from an unused native backend.
+- **PARTIAL at exact latest head:** browser test additionally asserts multi-syllable `ສະບາຍດີ` retains raw IPA while `NOT_ALIGNED` and emits no fabricated tones. Current PR #158 head `057fa8b5c819a022b24469e494684ec34436dbbc`; preview #42699464033 and Verify #42699475181 were running at note time.
+- **TODO:** once exact-head checks pass, update PR #158 from draft, merge it, verify main Pages deployment, and inspect live same-origin UI/model/tokenizer/WASM/license assets. No live deployment is claimed.
+- **BLOCKED (linguistic accuracy):** independent expert-adjudicated IPA gold is still empty. Keep neural tone outputs marked `UNCERTAIN`; do not treat parity fixtures as linguistic gold.
+
