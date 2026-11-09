@@ -53,7 +53,11 @@ def main():
         print(f"Input: {result.analysis.input}\\nEngine: hybrid-v2")
         print(f"Neural model: {result.model_id}@{result.model_revision}")
         print(f"Neural IPA: {result.neural_raw_ipa}")
-        print(f"Tone alignment: {result.tone_alignment_status}; overlays: {result.tone_overlays}")
+        print(f"Tone association: {result.tone_alignment_status}; syllable predictions: {len(result.tone_predictions)}")
+        print(f"Ukrainian (deterministic IPA lane): {result.ukrainian}")
+        print(f"Tonal IPA (untouched neural lane): {result.tonal_ipa}")
+        for prediction in result.tone_predictions:
+            print(f"  syllable {prediction.syllable_index + 1} {prediction.source_surface}: {prediction.contour} ({prediction.category}, {prediction.certainty})")
         for syllable in result.analysis.syllables:
             print(
                 f"{syllable.surface}: IPA={syllable.phonemic_ipa} "
