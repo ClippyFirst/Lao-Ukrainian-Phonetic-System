@@ -13,7 +13,7 @@ This inventory extends the existing ClippyFirst benchmark; it does not replace t
 ## Published external baselines
 
 - The [MekongPhon LREC 2026 paper](https://aclanthology.org/2026.lrec-1.129/) reports 367k Lao orthography–IPA pairs and under 2% CER on its own held-out evaluation. Its published result is not directly comparable to this repository's 100-row `lao_eval.csv` subset; the local 6.64% CER is a distinct evaluation slice and inference configuration.
-- [Transphone's published supervised evaluation](https://github.com/xinjli/transphone/blob/main/doc/performance/supervised.md) lists Lao (`lao`) at PER 0.084 and phonological distance 0.046 on its Wiktionary-derived test split. That score is not comparable to the MekongPhon split; a direct same-set run is being added below.
+- [Transphone's published supervised evaluation](https://github.com/xinjli/transphone/blob/main/doc/performance/supervised.md) lists Lao (`lao`) at PER 0.084 and phonological distance 0.046 on its Wiktionary-derived test split. On our distinct MekongPhon 100-row set, direct supervised-Lao inference scored 19/100 exact (24.25% CER) and 2/100 tonal exact (46.49% CER). This demonstrates substantial dataset/reference-convention sensitivity; neither score is independent expert accuracy.
 
 ## Same-set engine comparison
 
@@ -27,7 +27,8 @@ This inventory extends the existing ClippyFirst benchmark; it does not replace t
 | Epitran 1.35.3 (`lao-Laoo`) | 71/100 · 10.96% | 100% | 4/100 · 36.94% | Segmental baseline; tonal output is not competitive on this convention |
 | orthography2ipa (`lo` spec; upstream commit `32b66b0b1a4b66f7267790d7ec1f346460f8d814`) | 32/100 · 19.60% | 100% | 2/100 · 37.51% | Negative-control baseline; high output coverage does not imply good IPA |
 | LanguageNet Phonetisaurus Lao FST | 0/100 · 78.90% | 100% | Not available | Model loaded successfully; very poor concordance on this split; no tone evaluation |
-| Transphone 1.5.3 supervised Lao G2P | Benchmark pending | Model advertises supervised Lao (`lao`) | Segmental-only comparator pending CI | Multilingual transformer G2P; upstream supervised Lao PER 8.4%, test split differs |
+| Transphone 1.5.3 supervised Lao G2P | 19/100 · 24.25% | 100% | 2/100 · 46.49% | Complete outputs but weak concordance on this reference split |
+| Transphone 1.5.3 supervised Lao G2P | 19/100 · 24.25% | 100% | 2/100 · 46.49% | Full output coverage but weak concordance on this MekongPhon split; zero runtime errors |
 | Goruut runtime | 3–6/100 exact on all three repeats across three exact-head runs; 9–10/100 exact on at least one repeat; 8–12 unstable inputs | 81/100 responses; only 47/100 complete source coverage | Not scored | Runtime is nondeterministic/incomplete; not a production candidate on this evidence |
 
 ### ClippyFirst rendering versus IPA coverage
