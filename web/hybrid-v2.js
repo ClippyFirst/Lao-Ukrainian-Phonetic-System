@@ -9,7 +9,7 @@
  * This module does not load model weights or perform neural inference.
  */
 const IPA_SYMBOLS = [
-  "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕʷ", "tɕ", "tɕ", "dʑ", "ɲ",
+  "t͡ɕ", "t͡ʃ", "t͡s", "d͡z", "d͡ʒ", "d͡ʑ", "tɕʰ", "tɕʷ", "tɕ", "dʑ", "ɲ",
   "kʷʰ", "tʷʰ", "kʷ", "ʔʷ", "sʷ", "ŋʷ", "lʷ",
   "kʰ", "pʰ", "tʰ", "nʲ", "lʲ", "rʲ", "tʲ", "dʲ",
   "aː", "iː", "ɯː", "uː", "eː", "ɛː", "oː", "ɔː", "ɤː", "əː", "ə̯",
@@ -50,7 +50,7 @@ export function parseExternalIpa(rawIpa, { provenance = [] } = {}) {
   const toneLetters = [];
   let unsupported = false;
   for (let index = 0; index < raw.length;) {
-    const char = raw[index];
+    const char = String.fromCodePoint(raw.codePointAt(index));
     if (" .·‧".includes(char)) {
       if (boundaries.at(-1) !== segments.length) boundaries.push(segments.length);
       index += 1;
