@@ -3235,3 +3235,8 @@ The first v2 benchmark revealed that the neural decoder omits explicit syllable 
 ## Hybrid v2 dual-lane contract — 2026-11-09
 
 Do not synthesize one IPA string by appending neural tone contours to deterministic segmental phones: the same-split trial regressed tonal CER to 14.96% (62/100 exact), worse than the original deterministic hybrid's 11.39% (69/100 exact). The current v2 implementation keeps the best measured fields separate: ClippyFirst segmental IPA and Ukrainian output, untouched MekongPhon tonal IPA, plus optional UNCERTAIN per-syllable tone metadata when a unique ordered contour decomposition matches the deterministic syllable count. This is a two-lane result, not a fused IPA string. Same-split score and exact-head CI determine promotion.
+
+
+### Hybrid v2 availability behavior
+
+Expected optional-neural dependency, runtime, model I/O and input-length errors preserve the deterministic Ukrainian lane with explicit `NEURAL_UNAVAILABLE` status and warning. Invalid input remains rejected. Unexpected programming exceptions propagate. This is a visible fallback, not a claimed neural tone result.

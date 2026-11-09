@@ -674,3 +674,8 @@ The first schema-7.0 run exposed that MekongPhon often emits multi-syllable IPA 
 ## Hybrid v2 dual-lane correction — 2026-11-09
 
 The order-aligned synthetic-string benchmark was still worse than the original hybrid (14.96% tonal CER, 62/100 exact versus 11.39%, 69/100). The reason is that tone-symbol order can be associated with syllables, but neural tone placement relative to segmental phones is not recoverable from that count alone. Hybrid v2 has therefore been corrected to preserve two separate lanes: ClippyFirst segmental IPA/Ukrainian output and untouched MekongPhon full tonal IPA. Unique contour decomposition is used only for optional per-syllable metadata, explicitly UNCERTAIN; no artificial merged IPA is generated. The new same-split benchmark reports the best measured per-field results independently.
+
+
+## Hybrid v2 fallback gate — 2026-11-09
+
+Expected model/dependency/128-token-limit failures now return the deterministic Ukrainian output with explicit `NEURAL_UNAVAILABLE` status and warning; they do not silently fall back or fabricate tone. Invalid input is rejected separately. A regression test mocks the model length-limit error and verifies the deterministic target output remains available.

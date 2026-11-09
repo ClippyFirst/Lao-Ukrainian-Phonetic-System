@@ -389,3 +389,8 @@ The corrected v2 contract does not concatenate deterministic segmentals with neu
 - Optional per-syllable neural tone categories: emitted only when the tone-symbol sequence has one unique decomposition into registered contours matching deterministic syllable count; each remains `UNCERTAIN`.
 
 The benchmark now scores the two lanes independently and reports neural tone-association coverage separately from accepted project tone confidence. It does not claim a fused full IPA stream.
+
+
+### Hybrid v2 long-input and dependency fallback
+
+The neural model's 128-token limit and optional dependency boundary are handled explicitly. Expected `ValueError`, `RuntimeError` (including missing optional neural dependencies/CUDA), and `OSError` inference failures return the deterministic Ukrainian lane with `tone_alignment_status=NEURAL_UNAVAILABLE`, no neural tone predictions, and a visible warning containing the failure class/reason. Invalid deterministic input remains `INVALID_INPUT`. Unexpected programming errors are not swallowed. This preserves output coverage without claiming unavailable neural tone.

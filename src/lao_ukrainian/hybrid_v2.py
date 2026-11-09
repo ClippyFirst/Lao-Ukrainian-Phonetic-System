@@ -188,8 +188,9 @@ def run_hybrid_v2(
 ) -> HybridV2Result:
     """Run deterministic segmental analysis plus the pinned tonal model.
 
-    Model/dependency/input failures are intentionally surfaced. This function
-    never silently falls back to the first hybrid.
+    Expected model/dependency/length failures preserve the deterministic
+    Ukrainian lane and return NEURAL_UNAVAILABLE with an explicit warning.
+    Unexpected programming errors still propagate; no fallback is silent.
     """
     deterministic = analyze(text)
     engine = MekongPhonEngine(
