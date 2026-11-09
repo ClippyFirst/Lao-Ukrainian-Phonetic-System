@@ -158,6 +158,13 @@ test("browser hybrid recognizes every assigned Lao inventory codepoint", () => {
     assert.equal(result.syllables.length, 1, grapheme);
     assert.equal(typeof result.output, "string", grapheme);
     assert.ok(result.output.length > 0, grapheme);
+    const unit = result.syllables[0];
+    if (unit.status !== "PASSTHROUGH") {
+      assert.ok(unit.graphemePreview, grapheme);
+      assert.equal(unit.graphemePreview.graphemes.length, 1, grapheme);
+      assert.equal(unit.graphemePreview.graphemes[0].grapheme, grapheme);
+      assert.notEqual(unit.graphemePreview.graphemes[0].role, "unregistered-grapheme", grapheme);
+    }
   }
 });
 
