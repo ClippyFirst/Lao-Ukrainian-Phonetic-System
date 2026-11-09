@@ -34,6 +34,19 @@ class LexicalBoundaryHintTests(unittest.TestCase):
         find_orthographic_word_hints(syllables, ["ພາສາ", "ລາວ"])
         self.assertEqual(syllables, before)
 
+    def test_mit_dictionary_derivative_is_attributed_and_filtered(self):
+        path = ROOT / "data" / "lao" / "lexical-hints" / "LaoNLP-MIT-LaoWord.txt"
+        entries = load_orthographic_hint_entries(path)
+        self.assertEqual(len(entries), 34937)
+        self.assertIn("ກະດານ", entries)
+        self.assertNotIn("LaoWord", entries)
+        self.assertTrue(all(
+            all(0x0E80 <= ord(char) <= 0x0EFF for char in entry)
+            for entry in entries
+        ))
+        matches = find_orthographic_word_hints(["ກະ", "ດານ"], entries)
+        self.assertTrue(any(match["surface"] == "ກະດານ" for match in matches))
+
     def test_invalid_minimum_is_rejected(self):
         with self.assertRaises(ValueError):
             find_orthographic_word_hints(["ກາ"], ["ກາ"], min_syllables=0)

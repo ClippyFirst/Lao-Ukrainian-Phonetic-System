@@ -510,3 +510,6 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 
 
 | LAO-LAONLP-MIT-CSV-REPRO-001 | DONE_VERIFIED | Standard-library CSV audit utility plus subprocess regression tests; exact-head Verify #42596068302 passed before utility addition; fresh exact-head Verify required for the new script. | Script verifies the immutable blob SHA-1 and reproduces row/duplicate/metadata counts without importing the data. |
+
+
+| LAO-LEXICAL-HINTS-MIT-001 | PARTIAL | Derived 34,937-entry LaoNLP MIT LaoWord list with full license notice; tests verify loader/filter/match behavior. | Exact-head Verify must pass; matches remain diagnostic only and do not establish contextual lexical boundaries. |

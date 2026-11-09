@@ -2973,3 +2973,8 @@ No runtime code, canonical phonological data, generated browser data or producti
 ### Reproducible LaoNLP dictionary audit tooling — 2026-11-09
 
 Added `scripts/audit_laonlp_dictionary.py` and `tests/test_audit_laonlp_dictionary.py`. The utility is standard-library-only, does not fetch or bundle the third-party dataset, optionally verifies the immutable Git blob SHA-1, and reports quote-aware CSV structure and quality counts. Its acceptance is software-contract reproducibility only; it does not upgrade the source dictionary into IPA or word-boundary gold. Exact-head Verify is required before marking the utility DONE_VERIFIED.
+
+
+### LaoNLP MIT dictionary: diagnostic-only filtered hint list — 2026-11-09
+
+Added `data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt`, a 34,937-entry derivative of the upstream MIT dictionary. Only the LaoWord field is retained; forms are NFC-normalized, deduplicated, and filtered to strings composed entirely of Lao-block code points. The original MIT notice is embedded verbatim with comment prefixes. This file is an optional lexical-hint source for the existing matcher only; it is not auto-loaded, does not select boundaries, and does not feed the phonology/IPA/target pipeline. The focused tests assert the count, filter, known spelling and hint match. Task remains PARTIAL until exact-head Verify passes; even then, lexical accuracy remains unvalidated.
