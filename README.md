@@ -26,6 +26,8 @@ It is deliberately **not**:
 
 The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation. The primary hybrid aims for 100% rendering coverage on valid input: supported IPA is rendered normally, complete but uncertain IPA is rendered with its uncertainty preserved, and unresolved graphemes receive provisional IPA hints plus explicit ? markers through the same typed adapter. A placeholder is not a pronunciation prediction or an accuracy claim.
 
+**Unicode coverage:** the canonical Unicode 18 Lao-block inventory contains 83 assigned codepoints; Python and browser tests require typed recognition for all 83 (a grapheme role or explicit orthographic/numeric passthrough). This is 100% codepoint handling, not 100% independent IPA: Pali/Sanskrit and Khmu extensions, obsolete marks, and context-dependent signs remain explicitly scoped rather than assigned invented modern-Lao sounds. Six additional source-attested glide-bearing vowel spellings are handled in both runtimes; see [grapheme preview and coverage policy](docs/lao-grapheme-ipa-preview.md) and [vowel-template matrix](docs/vowel-template-coverage.md).
+
 ## Context-sensitive grapheme-to-sound rules
 
 ClippyFirst does **not** store word → IPA dictionary correspondences. It resolves each parsed syllable structurally:
