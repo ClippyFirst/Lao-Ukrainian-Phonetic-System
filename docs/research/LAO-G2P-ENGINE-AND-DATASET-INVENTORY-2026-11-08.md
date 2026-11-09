@@ -54,11 +54,12 @@ Single hosted CPU run, model loading excluded where applicable:
 
 | Engine | Segmental mean | Tonal mean |
 |---|---:|---:|
-| ClippyFirst | 1.292 ms | 1.292 ms |
-| Lao2IPA 1.0.0 | 0.007 ms | 0.014 ms |
-| MekongPhon Neural | 32.017 ms | 37.910 ms |
-| Epitran | 0.022 ms | 0.020 ms |
-| orthography2ipa | 1.104 ms | 1.104 ms |
+| ClippyFirst hybrid | 2.807 ms | 2.807 ms |
+| Lao2IPA 1.0.0 | 0.010 ms | 0.020 ms |
+| MekongPhon Neural | 66.866 ms | 81.786 ms |
+| Epitran 1.35.3 | 0.030 ms | 0.028 ms |
+| orthography2ipa | 1.517 ms | 1.517 ms |
+| Transphone 1.5.3 | 86.299 ms | 86.299 ms |
 
 Phonetisaurus timing includes model download and Docker startup and is not comparable. These are single-run diagnostics, not stable performance guarantees.
 
