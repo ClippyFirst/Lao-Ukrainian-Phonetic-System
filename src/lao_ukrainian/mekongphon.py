@@ -23,6 +23,10 @@ MODEL_REVISIONS = {
     "tonal": "e02608cfcb18abfe6b1916f5f4774bfac9ac788d",
     "nontonal": "d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b",
 }
+MODEL_WEIGHT_SHA256 = {
+    "tonal": "5cf6110fdafd9626e96db128ec580b3da705904e1c0478b727c9dc6a14a7b119",
+    "nontonal": "3f3c452e55646dc124c8dc1dab80754e68290782a9c6e5f40c463e49a05a485c",
+}
 MAX_SEQUENCE_LENGTH = 128
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 

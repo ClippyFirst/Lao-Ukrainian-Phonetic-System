@@ -3,6 +3,7 @@ name: MekongPhon three-engine benchmark
 on:
   push:
     branches:
+      - "main"
       - "benchmark/mekongphon-three-engine"
       - "benchmark/mekongphon-immutable-inference-20261107"
       - "improve/rule-engine-error-analysis-20261107"

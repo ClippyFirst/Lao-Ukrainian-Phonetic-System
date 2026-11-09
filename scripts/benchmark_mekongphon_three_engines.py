@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 from collections import Counter
 import importlib.metadata
 import json
@@ -27,11 +28,21 @@ try:
 except ModuleNotFoundError:
     from benchmark_ipa_contract import accepted_phonetic_ipa
 
+DATA_REVISION = "f80f6c1840c4818b51e05f2e00cded4701a5b662"
 DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
-    "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
+    f"{DATA_REVISION}/data/splits/lao_eval.csv"
 )
-from lao_ukrainian.mekongphon import MODEL_IDS, MODEL_REVISIONS, MAX_SEQUENCE_LENGTH, MekongPhonEngine
+TRAIN_DATA_URL = (
+    "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
+    f"{DATA_REVISION}/data/splits/lao_train.csv"
+)
+EXPECTED_DATA_SHA256 = "5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241"
+EXPECTED_TRAIN_SHA256 = "2d0f68989009620980ced3386f11a640e6167404308eeb6a79efc52bc8e40ee0"
+EXPECTED_TRAIN_ROWS = 6219
+EXPECTED_TRAIN_DUPLICATE_ROWS = 3
+from lao_ukrainian.mekongphon import MODEL_IDS, MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MAX_SEQUENCE_LENGTH, MekongPhonEngine
+from lao_ukrainian.phonetic_result import from_external_ipa
 
 TONAL_MODEL_ID = MODEL_IDS["tonal"]
 TONAL_MODEL_REVISION = MODEL_REVISIONS["tonal"]
@@ -59,23 +70,66 @@ def levenshtein(a: str, b: str) -> int:
     return previous[-1]
 
 
-def load_dataset() -> tuple[list[dict[str, str]], str]:
-    request = urllib.request.Request(DATA_URL, headers={"User-Agent": "LaoG2P-benchmark/2.0"})
+def validate_lexicon_split(
+    train_rows: list[dict[str, str]], eval_rows: list[dict[str, str]]
+) -> dict[str, int]:
+    train_forms = {nfc(row["orth"]) for row in train_rows if row.get("orth", "").strip()}
+    eval_forms = {nfc(row["orth"]) for row in eval_rows if row.get("orth", "").strip()}
+    overlap = train_forms & eval_forms
+    train_duplicates = len(train_rows) - len(train_forms)
+    if overlap:
+        raise ValueError(f"Training/evaluation lexicon overlap: {len(overlap)} forms")
+    if len(eval_rows) != 100 or len(eval_forms) != 100:
+        raise ValueError("Expected 100 unique held-out lexicon forms")
+    if len(train_rows) != EXPECTED_TRAIN_ROWS:
+        raise ValueError(f"Expected {EXPECTED_TRAIN_ROWS} training lexicon rows, received {len(train_rows)}")
+    if train_duplicates != EXPECTED_TRAIN_DUPLICATE_ROWS:
+        raise ValueError(
+            f"Expected {EXPECTED_TRAIN_DUPLICATE_ROWS} duplicate training rows, received {train_duplicates}"
+        )
+    return {
+        "training_rows": len(train_rows),
+        "training_unique_forms": len(train_forms),
+        "training_duplicate_rows": train_duplicates,
+        "held_out_rows": len(eval_rows),
+        "held_out_unique_forms": len(eval_forms),
+        "train_eval_overlap": len(overlap),
+        "combined_unique_forms": len(train_forms | eval_forms),
+    }
+
+
+def fetch_csv_rows(url: str) -> tuple[bytes, list[dict[str, str]]]:
+    request = urllib.request.Request(url, headers={"User-Agent": "LaoG2P-benchmark/2.0"})
     with urllib.request.urlopen(request, timeout=60) as response:
         payload = response.read()
-    digest = hashlib.sha256(payload).hexdigest()
-    rows = list(csv.DictReader(payload.decode("utf-8-sig").splitlines()))
+    rows = list(csv.DictReader(io.StringIO(payload.decode("utf-8-sig"), newline="")))
+    return payload, rows
+
+
+def load_dataset() -> tuple[list[dict[str, str]], dict[str, object]]:
+    eval_payload, rows = fetch_csv_rows(DATA_URL)
+    train_payload, train_rows = fetch_csv_rows(TRAIN_DATA_URL)
+    eval_digest = hashlib.sha256(eval_payload).hexdigest()
+    train_digest = hashlib.sha256(train_payload).hexdigest()
+    if eval_digest != EXPECTED_DATA_SHA256:
+        raise ValueError(f"Held-out dataset SHA-256 mismatch: {eval_digest}")
+    if train_digest != EXPECTED_TRAIN_SHA256:
+        raise ValueError(f"Training lexicon SHA-256 mismatch: {train_digest}")
     required = {"orth", "pron_no_tones", "pron_with_tones"}
     if not rows or not required.issubset(rows[0]):
         raise ValueError("MekongPhon held-out CSV is empty or has an unexpected schema")
-    if len(rows) != 100:
-        raise ValueError(f"Expected the published 100-entry lexicon holdout, received {len(rows)}")
-    if any(not row["orth"].strip() or not row["pron_no_tones"].strip()
-           or not row["pron_with_tones"].strip() for row in rows):
-        raise ValueError("Held-out set contains an empty source or IPA reference")
-    if len({row["orth"] for row in rows}) != len(rows):
-        raise ValueError("Held-out set contains duplicate orthographic forms")
-    return rows, digest
+    split = validate_lexicon_split(train_rows, rows)
+    if any(not row["pron_no_tones"].strip() or not row["pron_with_tones"].strip() for row in rows):
+        raise ValueError("Held-out set contains an empty IPA reference")
+    split.update({
+        "training_sha256": train_digest,
+        "held_out_sha256": eval_digest,
+        "source_revision": DATA_REVISION,
+        "paper_reported_seed_lexicon_entries": 6039,
+        "repository_split_unique_forms": split["combined_unique_forms"],
+        "paper_vs_repository_unique_form_delta": split["combined_unique_forms"] - 6039,
+    })
+    return rows, split
 
 
 def load_project():
@@ -239,7 +293,7 @@ def load_lao2ipa():
 def load_neural():
     """Run both immutable checkpoints through the production MekongPhon adapter."""
     import torch
-    from huggingface_hub import model_info
+    from huggingface_hub import hf_hub_download, model_info
 
     torch.set_num_threads(min(2, os.cpu_count() or 1))
 
@@ -248,6 +302,16 @@ def load_neural():
         if info.sha != pinned_revision:
             raise RuntimeError(
                 f"Hub resolved {model_id}@{pinned_revision} to unexpected SHA {info.sha}"
+            )
+        model_key = "tonal" if tonal else "nontonal"
+        weight_path = hf_hub_download(
+            repo_id=model_id, filename="model.safetensors", revision=pinned_revision
+        )
+        weight_digest = hashlib.sha256(Path(weight_path).read_bytes()).hexdigest()
+        expected_weight_digest = MODEL_WEIGHT_SHA256[model_key]
+        if weight_digest != expected_weight_digest:
+            raise RuntimeError(
+                f"{model_id}: model.safetensors SHA-256 mismatch: {weight_digest}"
             )
         engine = MekongPhonEngine(
             tonal=tonal, revision=pinned_revision, device="cpu",
@@ -264,12 +328,12 @@ def load_neural():
         def generate(text: str) -> str:
             return nfc(engine.predict_raw_ipa(text))
 
-        return generate, pinned_revision
+        return generate, pinned_revision, weight_digest
 
-    tonal_generate, tonal_revision = load_one(
+    tonal_generate, tonal_revision, tonal_weight_sha256 = load_one(
         TONAL_MODEL_ID, TONAL_MODEL_REVISION, tonal=True
     )
-    segmental_generate, segmental_revision = load_one(
+    segmental_generate, segmental_revision, segmental_weight_sha256 = load_one(
         SEGMENTAL_MODEL_ID, SEGMENTAL_MODEL_REVISION, tonal=False
     )
 
@@ -293,6 +357,8 @@ def load_neural():
         "segmental_revision": segmental_revision,
         "tonal_model": TONAL_MODEL_ID,
         "tonal_revision": tonal_revision,
+        "segmental_model_weight_sha256": segmental_weight_sha256,
+        "tonal_model_weight_sha256": tonal_weight_sha256,
         "num_beams": MODEL_NUM_BEAMS,
         "max_input_tokens": MODEL_MAX_LENGTH,
         "truncation": False,
@@ -440,6 +506,125 @@ def parse_mekong_tone_categories(suffix: str) -> list[str] | None:
     return categories
 
 
+
+
+def strip_tone_symbols(ipa: str) -> str:
+    """Remove typed tone segments while preserving all segmental IPA."""
+    if not ipa:
+        return ""
+    return nfc(from_external_ipa(ipa).phonemic_ipa or "")
+
+
+def length_marker_metrics(references: list[str], predictions: list[str]) -> dict[str, object]:
+    covered = [(ref, pred) for ref, pred in zip(references, predictions) if pred]
+    ref_counts = [ref.count("ː") for ref, _ in covered]
+    pred_counts = [pred.count("ː") for _, pred in covered]
+    exact = sum(ref == pred for ref, pred in zip(ref_counts, pred_counts))
+    presence_exact = sum((ref > 0) == (pred > 0) for ref, pred in zip(ref_counts, pred_counts))
+    return {
+        "n": len(references),
+        "coverage": len(covered) / len(references) if references else 0.0,
+        "covered_items": len(covered),
+        "reference_long_vowel_marker_total": sum(ref_counts),
+        "prediction_long_vowel_marker_total": sum(pred_counts),
+        "items_with_exact_marker_count": exact,
+        "marker_count_exact_rate_on_covered": exact / len(covered) if covered else None,
+        "long_vowel_presence_exact_items": presence_exact,
+        "long_vowel_presence_exact_rate_on_covered": presence_exact / len(covered) if covered else None,
+        "absolute_marker_count_error_total": sum(abs(ref - pred) for ref, pred in zip(ref_counts, pred_counts)),
+        "interpretation": "word-level count of ː markers only; not syllable-aligned length accuracy",
+    }
+
+
+def classify_word_final_coda(
+    ipa: str, core_codas: set[str], analysis_dependent_codas: set[str]
+) -> tuple[str, str | None] | None:
+    if not ipa:
+        return None
+    parsed = from_external_ipa(ipa)
+    if parsed.status != "SUPPORTED":
+        return None
+    segments = [segment for segment in parsed.segments if segment.kind != "tone"]
+    if not segments:
+        return None
+    final = segments[-1]
+    if final.kind == "vowel":
+        return ("open", None)
+    if final.ipa in core_codas:
+        return ("closed", final.ipa)
+    if final.ipa in analysis_dependent_codas:
+        return None
+    return None
+
+
+def word_final_coda_metrics(
+    references: list[str],
+    predictions: list[str],
+    core_codas: set[str],
+    analysis_dependent_codas: set[str],
+) -> dict[str, object]:
+    covered = 0
+    presence_correct = 0
+    reference_coda_items = 0
+    coda_identity_scored = 0
+    coda_identity_correct = 0
+    reference_coda_total = 0
+    prediction_coda_total = 0
+    unresolved_reference = 0
+    unresolved_prediction = 0
+    for reference, prediction in zip(references, predictions):
+        ref_class = classify_word_final_coda(reference, core_codas, analysis_dependent_codas)
+        pred_class = classify_word_final_coda(prediction, core_codas, analysis_dependent_codas)
+        if ref_class is None:
+            unresolved_reference += 1
+            continue
+        if ref_class[0] == "closed":
+            reference_coda_total += 1
+        if pred_class is None:
+            unresolved_prediction += 1
+            continue
+        if pred_class[0] == "closed":
+            prediction_coda_total += 1
+        covered += 1
+        if ref_class[0] == pred_class[0]:
+            presence_correct += 1
+        if ref_class[0] == "closed":
+            reference_coda_items += 1
+            coda_identity_scored += 1
+            if pred_class[0] == "closed" and pred_class[1] == ref_class[1]:
+                coda_identity_correct += 1
+    return {
+        "n": len(references),
+        "scorable_items": covered,
+        "coverage": covered / len(references) if references else 0.0,
+        "reference_word_final_coda_items": reference_coda_total,
+        "prediction_word_final_coda_items": prediction_coda_total,
+        "word_final_coda_presence_exact_items": presence_correct,
+        "word_final_coda_presence_accuracy": presence_correct / covered if covered else None,
+        "reference_coda_identity_items": reference_coda_items,
+        "coda_identity_exact_items": coda_identity_correct,
+        "coda_identity_accuracy": coda_identity_correct / coda_identity_scored if coda_identity_scored else None,
+        "unresolved_reference_items": unresolved_reference,
+        "unresolved_prediction_items": unresolved_prediction,
+        "interpretation": "word-final coda only; core inventory only; analysis-dependent l/r and unknown IPA are unresolved",
+    }
+
+
+def syllable_boundary_availability(
+    segmental_references: list[str], tonal_references: list[str]
+) -> dict[str, object]:
+    separators = frozenset(" .·‧")
+    segmental_annotated = sum(any(char in separators for char in value) for value in segmental_references)
+    tonal_annotated = sum(any(char in separators for char in value) for value in tonal_references)
+    return {
+        "status": "NOT_SCORABLE",
+        "n": len(segmental_references),
+        "segmental_reference_items_with_explicit_boundaries": segmental_annotated,
+        "tonal_reference_items_with_explicit_boundaries": tonal_annotated,
+        "reason": "The 100-word reference IPA strings contain no explicit syllable-boundary delimiters or annotations. Tone contours are not a reliable boundary proxy.",
+    }
+
+
 def score_tone_categories(
     references: list[list[str]],
     predictions: list[list[str | None]],
@@ -517,12 +702,19 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    rows, dataset_sha = load_dataset()
+    rows, dataset_provenance = load_dataset()
+    dataset_sha = str(dataset_provenance['held_out_sha256'])
     sources = [nfc(row["orth"]) for row in rows]
     segmental_references = [nfc(row["pron_no_tones"]) for row in rows]
     tonal_references = [nfc(row["pron_with_tones"]) for row in rows]
 
     neural_predict, neural_provenance = load_neural()
+    coda_registry = load_registry()["codas"]
+    core_codas = {row["ipa"] for row in coda_registry.values() if row["status"] == "core"}
+    analysis_dependent_codas = {row["ipa"] for row in coda_registry.values() if row["status"] != "core"}
+    boundary_availability = syllable_boundary_availability(
+        segmental_references, tonal_references
+    )
     engines = {
         "clippyfirst_rule_engine": (load_project(), "repository source"),
         "lao2ipa": (load_lao2ipa(), importlib.metadata.version("lao2ipa")),
@@ -632,6 +824,16 @@ def main() -> int:
 
         segmental_metrics = score(segmental_references, segmental_outputs)
         tonal_metrics = score(tonal_references, tonal_outputs)
+        tonal_segmental_outputs = [strip_tone_symbols(value) for value in tonal_outputs]
+        tonal_segmental_metrics = score(segmental_references, tonal_segmental_outputs)
+        segmental_length_metrics = length_marker_metrics(segmental_references, segmental_outputs)
+        tonal_length_metrics = length_marker_metrics(segmental_references, tonal_segmental_outputs)
+        segmental_coda_metrics = word_final_coda_metrics(
+            segmental_references, segmental_outputs, core_codas, analysis_dependent_codas
+        )
+        tonal_coda_metrics = word_final_coda_metrics(
+            segmental_references, tonal_segmental_outputs, core_codas, analysis_dependent_codas
+        )
         mekong_convention_tonal_metrics = score(
             tonal_references, mekong_convention_tonal_outputs
         )
@@ -751,6 +953,12 @@ def main() -> int:
             "version_or_revision": version,
             "rendering_coverage": rendering_summary,
             "segmental_vs_pron_no_tones": segmental_metrics,
+            "tonal_model_segmental_vs_pron_no_tones": tonal_segmental_metrics,
+            "segmental_vowel_length_markers": segmental_length_metrics,
+            "tonal_model_vowel_length_markers": tonal_length_metrics,
+            "segmental_word_final_coda": segmental_coda_metrics,
+            "tonal_model_word_final_coda": tonal_coda_metrics,
+            "syllable_boundary_evaluation": boundary_availability,
             "segmental_edit_profile": alignment_error_profile(
                 segmental_references, segmental_outputs
             ),
@@ -831,8 +1039,9 @@ def main() -> int:
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
             "url": DATA_URL,
-            "source_revision": "f80f6c1840c4818b51e05f2e00cded4701a5b662",
+            "source_revision": DATA_REVISION,
             "sha256": dataset_sha,
+            "split_audit": dataset_provenance,
             "n": len(rows),
             "segmental_reference_column": "pron_no_tones",
             "tonal_reference_column": "pron_with_tones",
@@ -852,6 +1061,9 @@ def main() -> int:
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
             "chrf++": "SacreBLEU CHRF with word_order=2, corpus-level",
             "exact_match": "strict full-string IPA comparison",
+            "vowel_length": "word-level count/presence of IPA ː markers; no syllable-aligned positions are available",
+            "word_final_coda": "word-final open/closed status and core-coda identity from the project IPA/coda inventories; analysis-dependent l/r excluded",
+            "syllable_boundaries": "not scorable: neither reference column contains explicit syllable-boundary annotations; tone marks are not used as boundary proxies",
             "missing_output": "empty output remains in the denominator and incurs full reference deletion cost",
             "clippyfirst_tone_contract": "tone contour is stored separately in typed PhoneticResult metadata; tonal score composes it after each syllable's segmental IPA",
             "latency": "per-item inference; model loading excluded; CPU runner, sequential items. ClippyFirst emits segmental and tonal fields in one analysis pass, so both availability latencies are equal and must not be summed; Lao2IPA and MekongPhon use separate segmental and tonal calls",
@@ -876,6 +1088,11 @@ def main() -> int:
         "engines": {
             name: {
                 "segmental_cer": result["segmental_vs_pron_no_tones"]["cer"],
+                "tonal_model_segmental_cer": result["tonal_model_segmental_vs_pron_no_tones"]["cer"],
+                "segmental_length_marker_count_exact": result["segmental_vowel_length_markers"]["marker_count_exact_rate_on_covered"],
+                "tonal_model_length_marker_count_exact": result["tonal_model_vowel_length_markers"]["marker_count_exact_rate_on_covered"],
+                "segmental_word_final_coda_presence_accuracy": result["segmental_word_final_coda"]["word_final_coda_presence_accuracy"],
+                "tonal_word_final_coda_presence_accuracy": result["tonal_model_word_final_coda"]["word_final_coda_presence_accuracy"],
                 "segmental_tie_bar_normalized_cer": result["segmental_optional_tie_bar_normalized"]["cer"],
                 "segmental_tie_bar_normalized_exact": result["segmental_optional_tie_bar_normalized"]["exact_matches"],
                 "segmental_coverage": result["segmental_vs_pron_no_tones"]["coverage"],

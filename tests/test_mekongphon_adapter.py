@@ -1,6 +1,6 @@
 import unittest
 
-from lao_ukrainian.mekongphon import MODEL_REVISIONS, MekongPhonEngine, build_result
+from lao_ukrainian.mekongphon import MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MekongPhonEngine, build_result
 from lao_ukrainian.phonetic_result import from_external_ipa
 
 
@@ -15,6 +15,18 @@ class MekongPhonAdapterTests(unittest.TestCase):
         self.assertRegex(nontonal.revision, r"^[0-9a-f]{40}$")
         self.assertIsNone(tonal._loaded)
         self.assertIsNone(nontonal._loaded)
+
+    def test_pinned_model_weight_sha256_values_are_immutable(self):
+        self.assertEqual(
+            MODEL_WEIGHT_SHA256["tonal"],
+            "5cf6110fdafd9626e96db128ec580b3da705904e1c0478b727c9dc6a14a7b119",
+        )
+        self.assertEqual(
+            MODEL_WEIGHT_SHA256["nontonal"],
+            "3f3c452e55646dc124c8dc1dab80754e68290782a9c6e5f40c463e49a05a485c",
+        )
+        for digest in MODEL_WEIGHT_SHA256.values():
+            self.assertRegex(digest, r"^[0-9a-f]{64}$")
 
     def test_external_ipa_preserves_raw_output_and_terminal_tone(self):
         result = from_external_ipa(
