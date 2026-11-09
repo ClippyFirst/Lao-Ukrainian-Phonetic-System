@@ -409,3 +409,31 @@ The dual-lane v2 benchmark completed successfully on the pinned MekongPhon 100-w
 The previous deterministic hybrid's Mekong-convention tonal CER was 11.39% (69/100 exact), so v2 improves the selected tonal lane while preserving the best segmental lane. The model's full tonal IPA remains separate; no artificial segmental+tone string is synthesized. Ordered tone contours could be associated with 112/169 syllable units (66.27%); those per-syllable predictions remain UNCERTAIN. Accepted project-adjudicated tonal confidence is 0 because the project has no independent tone gold. Runtime errors: 0. The dictionary-seeded 100-word benchmark is not independent expert gold and must not be described as whole-language accuracy.
 
 **Task ledger:** same-split dual-lane comparison DONE_VERIFIED; explicit neural-unavailable fallback regression test DONE_VERIFIED; 1k sentence-domain v2 stress benchmark TODO (existing HVULao 1k results apply to the prior deterministic hybrid and neural comparator, not v2); browser integration DEFERRED pending a separately deployed inference backend. Hybrid v2 remains opt-in and does not replace the browser/default engine.
+
+
+## Hybrid v2 — independent HVULao 1k sentence-domain stress result (2026-11-09)
+
+Exact-head run: [Hybrid v2 HVULao 1k #42676571999 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42676571999), on code head `89311c56b89dfbaaecc40bac9eaa500304a26647`. Aggregate-only artifact [#13701372050](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42676571999/artifacts/13701372050), SHA-256 `2adad0071919f499900c37c36bf3c80f827db1c89bc0eae012cf086a29400991`.
+
+| Hybrid v2 measure | Result |
+|---|---:|
+| Ukrainian rendering | **1,000/1,000 rows (100%)** |
+| Rendered source units | **21,534/21,534 (100%)** |
+| Complete segmental IPA sentences | 661/1,000 (66.1%) |
+| Segmental IPA units | 16,955/17,353 (97.706%) |
+| SUPPORTED segmental units | 16,936 |
+| UNCERTAIN segmental units | 19 |
+| Raw neural tonal IPA outputs | 934/1,000 (93.4%) |
+| Parseable tonal IPA outputs | 228/1,000 (22.8%) |
+| Rows with fully order-aligned tone associations | 10/1,000 (1.0%) |
+| Rows with partial tone associations | 4/1,000 (0.4%) |
+| Neural tone predictions | 200/17,353 phonetic units (1.153%) |
+| Unexpected runtime errors | **0** |
+
+Tone alignment status counts: NOT_ALIGNED 920, ORDER_ALIGNED 10, PARTIAL 4. The neural model explicitly rejected 66 inputs (61 source-codepoint-limit; 5 unsupported-character). Tone predictions remain UNCERTAIN; no tone category is promoted to adjudicated truth.
+
+**Interpretation:** Hybrid v2 preserves 100% Ukrainian-side rendering on this corpus, but this is not 100% accepted IPA or 100% pronunciation coverage. Complete sentence IPA is 66.1%; syllable-level segmental IPA coverage is 97.706%. Parseable full tonal IPA is only 22.8%, and per-syllable tone association is sparse (200 units). The HVULao split contains no IPA gold, so these are engineering coverage/parseability metrics, not phonetic accuracy. The 100% rendering count includes typed PROVISIONAL units and explicit unknown target markers; it must never be represented as 100% verified phonetic transcription.
+
+**Task ledger:** Hybrid v2 1k sentence-domain run DONE_VERIFIED (stress/coverage only); 100% Ukrainian rendering DONE_VERIFIED; complete segmental IPA PARTIAL; parseable tonal IPA PARTIAL; per-syllable tone association PARTIAL; independent IPA accuracy BLOCKED (requires independently adjudicated IPA gold); neural input acceptance TODO/evidence-limited (define safe policy for 66 explicit rejections; never truncate or strip silently). Browser integration remains DEFERRED until a supported inference backend is available.
+
+The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2_hvulao_1k.py` already implement this test. Do not duplicate it inside the older three-engine benchmark workflow.

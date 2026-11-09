@@ -204,3 +204,8 @@ Initial acceptance tests cover exact one-/two-syllable alignment, preservation o
 ## Hybrid v2 measured result
 
 On the pinned 100-word MekongPhon split, the opt-in dual-lane hybrid combines the best measured fields: ClippyFirst segmental IPA CER **6.15% (90/100 exact)** and MekongPhon Neural tonal IPA CER **8.29% (74/100 exact)**, while deterministic Ukrainian rendering remains **100/100 inputs and 169/169 units**. The tonal stream is preserved separately rather than forced into a synthetic fused IPA string. Per-syllable neural tone associations are marked uncertain. This is dictionary-seeded concordance, not independent expert validation. See the engine inventory for the full methodology and caveats.
+
+
+### Hybrid v2 HVULao 1k stress result
+
+On the pinned 1,000-row HVULao sentence split, Hybrid v2 achieved **100% Ukrainian rendering (1,000/1,000 rows; 21,534/21,534 units)**, **66.1% complete segmental IPA sentences**, **97.706% segmental IPA unit coverage**, and **22.8% parseable tonal IPA rows**. Only 10 rows were fully order-aligned for syllable-level tone association and 4 partially aligned; 200 tone predictions were emitted and remain UNCERTAIN. There were zero unexpected runtime errors. This is engineering coverage, not phonetic accuracy; HVULao has no IPA gold. Exact run and artifact details are recorded in the research inventory.

@@ -7,7 +7,6 @@ on:
     paths:
       - ".github/workflows/hvulao-1k-three-engine-benchmark.yml"
       - "scripts/benchmark_hvulao_1k_three_engines.py"
-      - "src/lao_ukrainian/hybrid_v2.py"
       - "src/lao_ukrainian/**"
   pull_request:
     branches:
