@@ -131,6 +131,7 @@ test("shared Lao labialized onset cluster fixture", () => {
 test("source-attested Lao glide-vowel spellings match the Python IPA fixtures", () => {
   const cases = [
     ["ເກີຍ", "kɤːj", "кей"],
+    ["ກັຽ", "kiə", "кіа"],
     ["ໂກຍ", "koːj", "кой"],
     ["ແມວ", "mɛːw", "мев"],
     ["ກອຍ", "kɔːj", "кой"],
