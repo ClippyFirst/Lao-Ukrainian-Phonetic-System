@@ -48,6 +48,7 @@ class TestWithheldIpaDiagnostics(unittest.TestCase):
         second = BENCHMARK.new_rule_stage()
         self.assertIn("withheld_statuses", first)
         self.assertIn("withheld", first)
+        self.assertEqual(first["target_unmapped_units"], 0)
         first["withheld_statuses"].update({"UNSUPPORTED": 1})
         first["withheld"].update({"TONE-UNRESOLVED": 1})
         self.assertEqual(second["withheld_statuses"], {})
