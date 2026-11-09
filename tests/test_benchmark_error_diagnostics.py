@@ -42,6 +42,11 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
         predict = BENCHMARK.load_project()
         result = predict("ຄະຄາ")
         self.assertEqual(result["status"], "PARTIAL")
+        self.assertTrue(result["segmental"])
+        self.assertTrue(result["tonal"])
+        self.assertIn("?", result["tonal"])
+        self.assertFalse(result["segmental_confidence_complete"])
+        self.assertFalse(result["tonal_confidence_complete"])
         self.assertIsNone(result["tone_categories"][0])
         context = result["tone_contexts"][0]
         self.assertTrue(context["candidate_minor_shape"])
