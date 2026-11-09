@@ -1,8 +1,13 @@
+import json
+import sys
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from unittest.mock import patch
 
 from lao_ukrainian.core import analyze
 from lao_ukrainian.hybrid_v2 import combine_neural_tones, run_hybrid_v2
+from lao_ukrainian.cli import main as cli_main
 
 
 class HybridV2Tests(unittest.TestCase):
@@ -73,6 +78,27 @@ class HybridV2Tests(unittest.TestCase):
         self.assertEqual(result.tone_predictions, ())
         self.assertEqual(result.skipped_tone_units, 1)
 
+
+
+    def test_cli_exposes_dual_lane_json_contract(self):
+        result = combine_neural_tones(
+            analyze("ຂາ"), "kʰaː˧˥",
+            model_id="byumatrixlab/lao-ipa-tonal",
+            model_revision="a" * 40,
+        )
+        output = StringIO()
+        with patch(
+            "sys.argv",
+            ["lao-ua", "ຂາ", "--engine", "hybrid-v2", "--json"],
+        ), patch(
+            "lao_ukrainian.hybrid_v2.run_hybrid_v2",
+            return_value=result,
+        ), redirect_stdout(output):
+            cli_main()
+        payload = json.loads(output.getvalue())
+        self.assertEqual(payload["tonal_ipa"], "kʰaː˧˥")
+        self.assertEqual(payload["ukrainian"], result.ukrainian)
+        self.assertEqual(payload["tone_predictions"][0]["certainty"], "UNCERTAIN")
 
     def test_neural_limit_or_runtime_failure_returns_visible_deterministic_fallback(self):
         baseline = analyze("ຂາ")
