@@ -304,3 +304,9 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 - Results: 293 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests; all passed. IPA gold schema, repository data/evidence audit, external-G2P harness syntax/CLI, locked install, build, generated browser-data reproducibility/drift, and built-page/relative-asset checks also passed.
 - No runtime phonology or target-adapter code changed. The new segmentation example is a written-source structural parity test only.
 - The final handoff update that follows this audit commit is documentation-only and will receive a fresh exact-head Verify.
+
+### LaoNLP lexical resource inspection boundary
+
+- Inspected the 77 KB `Lao-Dictionary.txt` word list. Its own BSD-style header says it was created for word wrapping and that compounds have mostly been reduced to their parts. It has orthographic items but no IPA; it is a candidate hint list, not lexical segmentation gold.
+- Confirmed a separate MIT notice for `lao-eng-dictionary.csv`, distinct from the package Apache-2.0 license. The CSV is 2.73 MB and the connector's GitHub contents endpoint did not expose its body; the connected Firecrawl account had no credits. Its schema and rows remain uninspected, so it is not integrated.
+- Recorded these distinctions in the source/claim registries and research inventory. No lexical resource was copied into the production runtime.
