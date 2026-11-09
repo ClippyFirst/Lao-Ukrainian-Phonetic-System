@@ -3,21 +3,24 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { AutoTokenizer, env } from "@huggingface/transformers";
+import { PreTrainedTokenizer, env } from "@huggingface/transformers";
 import { createHybridV2Inference } from "../web/hybrid-v2-inference.js";
 import { analyze } from "../web/engine.js";
 import { combineNeuralTones } from "../web/hybrid-v2.js";
 
 const modelRoot = path.resolve(process.argv[2] ?? "artifacts/hybrid-v2-browser");
 const manifest = JSON.parse(await fs.readFile(path.join(modelRoot, "manifest.json"), "utf8"));
-env.localModelPath = `${modelRoot}${path.sep}`;
-env.allowLocalModels = true;
 env.allowRemoteModels = false;
 const wasmDirectory = path.resolve("node_modules/onnxruntime-web/dist") + path.sep;
 const wasmRoot = pathToFileURL(wasmDirectory).href;
 
-const encoderTokenizer = await AutoTokenizer.from_pretrained(path.join(modelRoot, "encoder_tokenizer"));
-const decoderTokenizer = await AutoTokenizer.from_pretrained(path.join(modelRoot, "decoder_tokenizer"));
+async function loadTokenizer(directory) {
+  const tokenizerJson = JSON.parse(await fs.readFile(path.join(modelRoot, directory, "tokenizer.json"), "utf8"));
+  const tokenizerConfig = JSON.parse(await fs.readFile(path.join(modelRoot, directory, "tokenizer_config.json"), "utf8"));
+  return new PreTrainedTokenizer(tokenizerJson, tokenizerConfig);
+}
+const encoderTokenizer = await loadTokenizer("encoder_tokenizer");
+const decoderTokenizer = await loadTokenizer("decoder_tokenizer");
 for (const fixture of manifest.parity_fixtures) {
   const encoded = encoderTokenizer(fixture.input);
   const inputIds = encoded.input_ids.tolist().flat(Infinity).map(Number);
@@ -39,6 +42,8 @@ async function verifyPair(encoderName, decoderName, label) {
     manifest,
     encoderModelBytes: new Uint8Array(await fs.readFile(path.join(modelRoot, encoderName))),
     decoderModelBytes: new Uint8Array(await fs.readFile(path.join(modelRoot, decoderName))),
+    encoderTokenizer,
+    decoderTokenizer,
   });
   const rows = [];
   for (const fixture of manifest.parity_fixtures) {
