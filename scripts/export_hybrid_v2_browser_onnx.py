@@ -167,7 +167,9 @@ def main() -> int:
         start_id = model.config.decoder_start_token_id
         if start_id is None:
             raise SystemExit("Model config has no decoder_start_token_id")
-        decoder_ids = torch.tensor([[start_id]], dtype=torch.long)
+        # Trace with a nontrivial target length so the BERT decoder causal
+        # attention mask is not frozen to a one-token graph during ONNX export.
+        decoder_ids = torch.full((1, 16), int(start_id), dtype=torch.long)
         decoder_mask = torch.ones_like(decoder_ids)
         logits = decoder(
             decoder_ids, decoder_mask, hidden, source["attention_mask"]
