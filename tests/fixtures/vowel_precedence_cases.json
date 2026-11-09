@@ -211,6 +211,11 @@
       "id": "VOWEL-AA-LONG-NYO-GLIDE",
       "surface": "ກາຽ",
       "phonemic_ipa": "kaːj"
+    },
+    {
+      "id": "VOWEL-IA-SHORT-MEDIAL-NYO",
+      "surface": "ກັຽ",
+      "phonemic_ipa": "kiə"
     }
   ]
 }
