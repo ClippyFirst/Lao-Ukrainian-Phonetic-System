@@ -64,6 +64,19 @@ test("Hybrid v2 runs beam-five tonal inference locally from Pages assets", async
   ).toContain("Hybrid v2 завершив аналіз");
   const warmStartMs = Date.now() - warmStart;
 
+  // Multi-syllable IPA remains visible even when the external parser cannot
+  // uniquely associate tone contours; the UI must not invent associations.
+  await input.fill("ສະບາຍດີ");
+  await expect(run).toBeEnabled();
+  await run.click();
+  await expect.poll(
+    async () => status.textContent(),
+    { timeout: 30000, intervals: [50, 100, 250] },
+  ).toContain("Сирий нейромережевий IPA збережено");
+  await expect(ipa).toContainText("sa˧˥baːɲiː˧˥diː");
+  await expect(alignment).toContainText("NOT_ALIGNED");
+  await expect(page.locator("#hybrid-v2-predictions p")).toHaveCount(0);
+
   expect(externalRequests).toEqual([]);
   expect(pageErrors).toEqual([]);
   console.log(JSON.stringify({
