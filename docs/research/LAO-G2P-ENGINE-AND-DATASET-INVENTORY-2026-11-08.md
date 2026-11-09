@@ -264,3 +264,8 @@ The review is reproducible with `python scripts/audit_laonlp_dictionary.py /path
 
 
 The MIT-derived list is covered by `tests/test_lexical_boundary_hints.py`: the test checks its 34,937-entry inventory, Lao-only filter, retained example `ກະດານ`, and a multi-syllable hint match. The list is loaded only when a caller explicitly passes it to the diagnostic helper.
+
+
+### Exact-head verification of MIT-derived lexical hints — 2026-11-09
+
+The filtered list and offline CSV audit utility were verified on main. Verify [#42597327636 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42597327636) passed 309 Python, 147 Node/browser and 19 Chromium tests, plus all configured schema, evidence, build, generated-data and built-page checks. The audit script computes the canonical Git blob object SHA-1 (the `blob <size>\0` prefix plus file bytes), not a plain file-content SHA-1. The derived list remains diagnostic-only and does not establish lexical segmentation accuracy.

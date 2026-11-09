@@ -2977,7 +2977,7 @@ Added `scripts/audit_laonlp_dictionary.py` and `tests/test_audit_laonlp_dictiona
 
 ### LaoNLP MIT dictionary: diagnostic-only filtered hint list — 2026-11-09
 
-Added `data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt`, a 34,937-entry derivative of the upstream MIT dictionary. Only the LaoWord field is retained; forms are NFC-normalized, deduplicated, and filtered to strings composed entirely of Lao-block code points. The original MIT notice is embedded verbatim with comment prefixes. This file is an optional lexical-hint source for the existing matcher only; it is not auto-loaded, does not select boundaries, and does not feed the phonology/IPA/target pipeline. The focused tests assert the count, filter, known spelling and hint match. Task remains PARTIAL until exact-head Verify passes; even then, lexical accuracy remains unvalidated.
+Added `data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt`, a 34,937-entry derivative of the upstream MIT dictionary. Only the LaoWord field is retained; forms are NFC-normalized, deduplicated, and filtered to strings composed entirely of Lao-block code points. The original MIT notice is embedded verbatim with comment prefixes. This file is an optional lexical-hint source for the existing matcher only; it is not auto-loaded, does not select boundaries, and does not feed the phonology/IPA/target pipeline. The focused tests assert the count, filter, known spelling and hint match. Exact-head Verify #42597327636 passed with 309 Python, 147 Node/browser and 19 Chromium tests; status is DONE_VERIFIED for the diagnostic-only software contract. Lexical accuracy and contextual word-boundary correctness remain unvalidated.
 
 
 The first exact-head run after adding the MIT-derived hint list exposed a test-only defect: the new test referenced an undefined ROOT constant. The test was corrected to resolve the repository root from `__file__`; the production matcher and dataset were not implicated. Re-run exact-head Verify before marking the new list complete.
@@ -2987,3 +2987,11 @@ A follow-up code review caught that the first audit-script implementation compar
 
 
 The first Git-blob hash correction itself contained an over-escaped NUL literal; the implementation now constructs the canonical Git object prefix with an explicit zero byte, and the regression test uses the same byte-level Git object format. This correction is covered by the next exact-head run.
+
+
+### Exact-head closeout for LaoNLP lexical-hint derivative — 2026-11-09
+
+- Final implementation commit `6bb35ecd9de85547498e6895361ff69b19e47678` includes the filtered 34,937-entry MIT-derived list, license notice, regression tests, offline audit utility, and a correct Git blob SHA-1 verifier.
+- Verify [#42597327636 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42597327636): 309 Python, 147 Node/browser, 19 Chromium; schema, data/evidence, external harness, locked dependencies, build, generated-data drift and built-page checks passed.
+- The initial dataset-test run #42596900066 failed only because the new test referenced undefined `ROOT`; fixed in the following commit. A subsequent review caught and fixed an incorrect plain-SHA versus Git-blob-SHA comparison; the final suite includes a positive Git object hash test.
+- The optional helper and new file remain outside production analysis. All hints retain `SOFT_HINT_ONLY`; no lexical boundary is asserted and no IPA/G2P or Ukrainian rendering is affected.
