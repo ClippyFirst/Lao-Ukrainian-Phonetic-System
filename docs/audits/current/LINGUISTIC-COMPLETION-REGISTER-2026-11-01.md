@@ -509,7 +509,13 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | LAO-BENCH-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; `data/benchmark/gold.tsv` is header-only | Rights-cleared source material plus qualified independent IPA annotation and adjudication |
 
 
-| LAO-LAONLP-MIT-CSV-REPRO-001 | DONE_VERIFIED | `scripts/audit_laonlp_dictionary.py` and four subprocess regression tests; exact-head Verify #42597327636 passed (309 Python, 147 Node, 19 Chromium). | Script verifies the Git blob SHA-1 and audits CSV structure without importing the source data. |
 
 
+
+
+### LaoNLP MIT dictionary follow-up — 2026-11-09
+
+| ID | Status | Evidence | Acceptance boundary |
+|---|---|---|---|
+| LAO-LAONLP-MIT-CSV-REPRO-001 | DONE_VERIFIED | `scripts/audit_laonlp_dictionary.py` and four subprocess regression tests; exact-head Verify #42597327636 passed (309 Python, 147 Node, 19 Chromium). | Script verifies the Git blob SHA-1 and audits CSV structure without importing the raw source data. |
 | LAO-LEXICAL-HINTS-MIT-001 | DONE_VERIFIED (diagnostic only) | Derived 34,937-entry LaoNLP MIT LaoWord list with full notice; exact-head Verify #42597327636 passed (309 Python, 147 Node, 19 Chromium). | Matches remain SOFT_HINT_ONLY, are not auto-loaded, and do not establish contextual lexical boundaries. |
