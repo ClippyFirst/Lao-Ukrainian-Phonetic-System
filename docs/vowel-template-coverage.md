@@ -50,6 +50,12 @@ This is an executable regression coverage matrix for the current Python parser's
 | `post_ia_long_standalone` | ∅ | ຽ | `IA_LONG` | `ກຽ` | Remove the last suffix grapheme (or prefix for empty suffix); must not resolve to `IA_LONG` |
 | `short_o_around` | ເ | າະ | `AW` | `ເກາະ` | Remove the last suffix grapheme (or prefix for empty suffix); must not resolve to `AW` |
 
+| `pre_oe_long_y` | ເ | ີຍ | `OEY` | `ເກີຍ` | Remove the last suffix grapheme; must not resolve to `OEY` |
+| `pre_o_long_y` | ໂ | ຍ | `OOY` | `ໂກຍ` | Remove the last suffix grapheme; must not resolve to `OOY` |
+| `pre_ae_long_y` | ແ | ວ | `AEW` | `ແກວ` | Remove the last suffix grapheme; must not resolve to `AEW` |
+| `post_o_long_y` | ∅ | ອຍ | `AOY` | `ກອຍ` | Remove the last suffix grapheme; must not resolve to `AOY` |
+| `post_aa_y` | ∅ | າຽ | `AAJ` | `ກາຽ` | Remove the last suffix grapheme; must not resolve to `AAJ` |
+
 ## High-risk precedence contrasts
 
 The hand-authored contrast test also verifies that adjacent spellings which overlap under generic-prefix matching remain distinct:
@@ -78,4 +84,4 @@ The hand-authored contrast test also verifies that adjacent spellings which over
 
 ## Scope and limitations
 
-The browser engine has its own explicit matcher rather than consuming Python's `STRUCTURES` table. Shared IPA fixtures keep both engines aligned on the same expected outputs, but the per-template synthetic matrix directly enumerates Python structures. Browser-specific near-neighbour and malformed-input controls remain separate tests in `web/engine.test.js`. Passing deterministic tests does not prove that every pattern is licensed in every Lao dialect or lexical context.
+The browser engine has its own explicit matcher rather than consuming Python's `STRUCTURES` table. Five additional glide-bearing composites are now represented in both implementations, using the documented `ເ◌ີຍ`, `ໂ◌ຍ`, `ແ◌ວ`, `◌ອຍ`, and `◌າຽ` spellings. Shared IPA fixtures keep both engines aligned on the same expected outputs, but the per-template synthetic matrix directly enumerates Python structures. Browser-specific near-neighbour and malformed-input controls remain separate tests in `web/engine.test.js`. Passing deterministic tests does not prove that every pattern is licensed in every Lao dialect or lexical context.
