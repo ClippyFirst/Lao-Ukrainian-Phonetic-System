@@ -18,11 +18,6 @@ import unicodedata
 import urllib.request
 from pathlib import Path
 
-try:
-    from scripts.benchmark_ipa_contract import accepted_phonetic_ipa
-except ModuleNotFoundError:
-    from benchmark_ipa_contract import accepted_phonetic_ipa
-
 DATA_URL = (
     "https://raw.githubusercontent.com/byu-matrix-lab/MekongPhon/"
     "f80f6c1840c4818b51e05f2e00cded4701a5b662/data/splits/lao_eval.csv"
@@ -71,9 +66,9 @@ def load_dataset():
 
 def complete_ipa(analysis) -> str:
     syllables = [item for item in analysis.syllables if item.status != "PASSTHROUGH"]
-    if not syllables or any(not accepted_phonetic_ipa(item.phonetic_result) for item in syllables):
+    if not syllables or any(not item.phonemic_ipa for item in syllables):
         return ""
-    return nfc("".join(item.phonetic_result.phonemic_ipa for item in syllables))
+    return nfc("".join(item.phonemic_ipa for item in syllables))
 
 
 def rendering_diagnostics(analysis) -> dict:
@@ -85,7 +80,7 @@ def rendering_diagnostics(analysis) -> dict:
         "rendered_units": sum(item.practical_ukrainian is not None for item in units),
         "supported_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic),
         "uncertain_ipa_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic),
-        "provisional_ipa_hint_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic),
+        "provisional_placeholder_units": sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic),
         "passthrough_units": sum(item.status == "PASSTHROUGH" for item in units),
     }
 
@@ -295,7 +290,7 @@ def main() -> int:
                 "units_with_rendering": values["rendered_units"],
                 "supported_ipa_units": values["supported_ipa_units"],
                 "uncertain_ipa_units": values["uncertain_ipa_units"],
-                "provisional_ipa_hint_units": values["provisional_ipa_hint_units"],
+                "provisional_placeholder_units": values["provisional_placeholder_units"],
                 "passthrough_units": values["passthrough_units"],
             }
             for key, values in rendering_by_stage.items()

@@ -1,0 +1,71 @@
+name: External Lao G2P research benchmarks
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/benchmark_ipa_contract.py"
+      - "scripts/benchmark_additional_lao_g2p.py"
+      - "scripts/benchmark_phonetisaurus_lao.py"
+      - "scripts/benchmark_mekongphon_three_engines.py"
+      - ".github/workflows/external-lao-g2p-benchmarks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  additional-engines:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU PyTorch
+        run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
+      - name: Install pinned project and comparator dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install lao2ipa==1.0.0 transformers==4.49.0 huggingface_hub==0.29.3 sacrebleu==2.5.1 epitran==1.35.3
+          python -m pip install "git+https://github.com/TigreGotico/orthography2ipa.git@32b66b0b1a4b66f7267790d7ec1f346460f8d814"
+          python -m pip install "git+https://github.com/xinjli/transphone.git@7769dec083b90dab072fc7e4c592744592a35736"
+      - name: Run pinned same-set comparator suite
+        run: |
+          mkdir -p artifacts
+          python scripts/benchmark_mekongphon_three_engines.py --output artifacts/mekongphon-100-word-benchmark.json
+          python scripts/benchmark_additional_lao_g2p.py --output artifacts/additional-lao-g2p-benchmark.json
+      - name: Upload aggregate-only research artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lao-external-g2p-aggregate
+          path: |
+            artifacts/*benchmark.json
+            artifacts/*benchmark.json.sha256
+          if-no-files-found: warn
+          retention-days: 90
+
+  phonetisaurus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Run ephemeral LanguageNet Phonetisaurus comparator
+        run: python scripts/benchmark_phonetisaurus_lao.py --output artifacts/phonetisaurus-lao-benchmark.json
+      - name: Upload aggregate-only research artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: phonetisaurus-lao-aggregate
+          path: |
+            artifacts/phonetisaurus-lao-benchmark.json
+            artifacts/phonetisaurus-lao-benchmark.json.sha256
+          if-no-files-found: warn
+          retention-days: 90
