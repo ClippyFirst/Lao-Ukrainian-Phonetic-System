@@ -2981,3 +2981,6 @@ Added `data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt`, a 34,937-entry derivative
 
 
 The first exact-head run after adding the MIT-derived hint list exposed a test-only defect: the new test referenced an undefined ROOT constant. The test was corrected to resolve the repository root from `__file__`; the production matcher and dataset were not implicated. Re-run exact-head Verify before marking the new list complete.
+
+
+A follow-up code review caught that the first audit-script implementation compared a plain content SHA-1 with a Git blob SHA-1. This was corrected to hash the canonical Git object header plus file bytes, and a regression test now verifies successful matching against a computed Git blob object hash as well as fail-closed mismatch behavior. Re-run exact-head Verify before marking the audit utility complete.

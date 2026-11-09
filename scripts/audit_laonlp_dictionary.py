@@ -19,8 +19,9 @@ UPSTREAM_BLOB_SHA1 = "ded14c7770becfd5c6946c6c1ce75a7dfc4d564c"
 def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
     raw = path.read_bytes()
     digest = hashlib.sha1(raw).hexdigest()
-    if expected_sha1 and digest.lower() != expected_sha1.lower():
-        raise ValueError(f"SHA-1 mismatch: expected {expected_sha1}, got {digest}")
+    git_blob_digest = hashlib.sha1(f"blob {len(raw)}\\0".encode("ascii") + raw).hexdigest()
+    if expected_sha1 and git_blob_digest.lower() != expected_sha1.lower():
+        raise ValueError(f"Git blob SHA-1 mismatch: expected {expected_sha1}, got {git_blob_digest}")
 
     text = raw.decode("utf-8-sig")
     reader = csv.reader(io.StringIO(text, newline=""))
@@ -64,6 +65,7 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
         "upstream_commit": UPSTREAM_COMMIT,
         "upstream_blob_sha1": UPSTREAM_BLOB_SHA1,
         "file_sha1": digest,
+        "git_blob_sha1": git_blob_digest,
         "header": header,
         "rows_after_first_header": total_rows,
         "repeated_header_rows": repeated_headers,

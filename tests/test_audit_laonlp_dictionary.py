@@ -1,5 +1,6 @@
 """Regression tests for the offline LaoNLP dictionary audit utility."""
 import csv
+import hashlib
 import json
 import subprocess
 import sys
@@ -50,7 +51,16 @@ class LaoNlpDictionaryAuditTests(unittest.TestCase):
             "0000000000000000000000000000000000000000",
         )
         self.assertEqual(result.returncode, 2)
-        self.assertIn("SHA-1 mismatch", result.stderr)
+        self.assertIn("Git blob SHA-1 mismatch", result.stderr)
+
+    def test_expected_hash_uses_git_blob_object_sha1(self):
+        content = "ID,LaoWord,English,Pronunciation,Type\n1,ກ,first,ka,n\n"
+        raw = content.encode("utf-8")
+        expected = hashlib.sha1(f"blob {len(raw)}\\0".encode("ascii") + raw).hexdigest()
+        result = self.run_audit(content, "--expected-sha1", expected)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["git_blob_sha1"], expected)
 
     def test_wrong_header_fails_closed(self):
         result = self.run_audit("id,word,gloss,pron,type\n1,ກ,first,ka,n\n")
