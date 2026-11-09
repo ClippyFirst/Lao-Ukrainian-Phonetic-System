@@ -35,7 +35,7 @@ class LexicalBoundaryHintTests(unittest.TestCase):
         self.assertEqual(syllables, before)
 
     def test_mit_dictionary_derivative_is_attributed_and_filtered(self):
-        path = ROOT / "data" / "lao" / "lexical-hints" / "LaoNLP-MIT-LaoWord.txt"
+        path = Path(__file__).resolve().parents[1] / "data" / "lao" / "lexical-hints" / "LaoNLP-MIT-LaoWord.txt"
         entries = load_orthographic_hint_entries(path)
         self.assertEqual(len(entries), 34937)
         self.assertIn("ກະດານ", entries)

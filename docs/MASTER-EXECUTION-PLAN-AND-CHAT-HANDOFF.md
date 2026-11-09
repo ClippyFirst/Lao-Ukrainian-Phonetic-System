@@ -2978,3 +2978,6 @@ Added `scripts/audit_laonlp_dictionary.py` and `tests/test_audit_laonlp_dictiona
 ### LaoNLP MIT dictionary: diagnostic-only filtered hint list — 2026-11-09
 
 Added `data/lao/lexical-hints/LaoNLP-MIT-LaoWord.txt`, a 34,937-entry derivative of the upstream MIT dictionary. Only the LaoWord field is retained; forms are NFC-normalized, deduplicated, and filtered to strings composed entirely of Lao-block code points. The original MIT notice is embedded verbatim with comment prefixes. This file is an optional lexical-hint source for the existing matcher only; it is not auto-loaded, does not select boundaries, and does not feed the phonology/IPA/target pipeline. The focused tests assert the count, filter, known spelling and hint match. Task remains PARTIAL until exact-head Verify passes; even then, lexical accuracy remains unvalidated.
+
+
+The first exact-head run after adding the MIT-derived hint list exposed a test-only defect: the new test referenced an undefined ROOT constant. The test was corrected to resolve the repository root from `__file__`; the production matcher and dataset were not implicated. Re-run exact-head Verify before marking the new list complete.
