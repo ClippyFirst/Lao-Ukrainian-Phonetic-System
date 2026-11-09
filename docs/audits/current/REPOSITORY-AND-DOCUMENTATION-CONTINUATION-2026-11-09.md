@@ -448,3 +448,8 @@ PR #148's seven-file diff was compared against current main. Its README, audit i
 ### Older PR-stack closeout — #137–#142
 
 The six older stacked PRs were reconciled against current main. Their changed file paths all exist in main. Representative checks found the current MekongPhon grapheme-context diagnostic and tone-rule test files byte-identical to main; benchmark, model-adapter, parser, target and grapheme-preview files are maintained on main in newer forms and covered by the current exact-head suite. Each PR was closed unmerged with an individual explanation; no branch was deleted or rewritten. PR #145 remains open because it proposes a distinct neural-first architecture that has not been adopted.
+
+
+### Expanded Kaikki source-wikitext sample — 2026-11-09
+
+The Kaikki Lao JSONL contains 2,751 records, 2,378 unique word forms and 2,320 unique forms with IPA. A deterministic 100-form sample (32-bit FNV-1a ordering over Unicode code points) was checked against exact raw Wiktionary source revisions. All 100 pages existed, all 100 selected revisions predate the 2026-10-01 dump date, and all 100 contain a direct lo-pron call. The page/revision manifest is committed in data/evidence/kaikki_lao_ipa_provenance_sample_2026-11-09.csv. This is stronger sample-level evidence, not whole-corpus classification: Kaikki says post-processing may merge additional sources, and the sounds records do not preserve per-value source provenance. The whole-corpus task remains PARTIAL.

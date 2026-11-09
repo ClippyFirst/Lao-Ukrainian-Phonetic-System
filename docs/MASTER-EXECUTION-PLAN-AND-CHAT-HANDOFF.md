@@ -3030,3 +3030,8 @@ The stale seven-file documentation PR was reconciled against current main. READM
 ### Older stacked PR closeout — 2026-11-09
 
 PRs #137, #138, #139, #140, #141 and #142 were closed unmerged after reconciliation against current main. All changed file paths are present on main; representative checks found some diagnostic/test files byte-identical and other core paths superseded by newer accepted implementations. Individual PR comments record the evidence and disposition. All six head branches are preserved; none was force-pushed or deleted. PR #145 remains open and unmerged because its neural-first architecture conflicts with the adopted hybrid-deterministic production pipeline and is not approved for integration.
+
+
+### Kaikki provenance sample expansion — 2026-11-09
+
+The postprocessed Kaikki Lao JSONL was parsed as 2,751 records, 2,378 unique words and 2,320 unique IPA-bearing forms. Its 5,392 IPA values include 2,695 Vientiane-labelled, 2,695 Luang Prabang-labelled and two unlabelled values. A deterministic 100-form sample was selected by ascending 32-bit FNV-1a over Unicode code points. MediaWiki API source revisions for all 100 titles were on or before the 2026-10-01 dump date; all 100 raw page wikitexts directly invoke lo-pron. The manifest is data/evidence/kaikki_lao_ipa_provenance_sample_2026-11-09.csv. This proves generated template provenance for the sample, not exclusive provenance of every normalized sound record: Kaikki documents additional-source merging and drops template/source metadata. The whole-corpus task remains PARTIAL.
