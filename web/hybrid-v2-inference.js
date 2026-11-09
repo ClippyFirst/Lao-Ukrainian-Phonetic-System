@@ -29,25 +29,26 @@ function int64Tensor(values, shape) {
 }
 
 function normalizeModelInput(value) {
-  return String(value ?? "").normalize("NFC").replace(/^\uFEFF/, "");
+  return String(value ?? "").normalize("NFC");
 }
 
 function validateModelInput(value, maxLength = DEFAULT_MAX_LENGTH) {
   const normalized = normalizeModelInput(value);
-  if (!normalized.trim()) throw new RangeError("Порожній лаоський текст.");
+  if (!normalized.trim()) throw new RangeError("Lao input must be a non-empty string.");
   const codepoints = Array.from(normalized);
   if (codepoints.length > maxLength) {
-    throw new RangeError(`Вхід перевищує ліміт моделі: ${codepoints.length}/${maxLength} символів.`);
+    throw new RangeError(`Input is ${codepoints.length} code points; model limit is ${maxLength}. Automatic truncation is disabled.`);
   }
   for (const character of codepoints) {
     const cp = character.codePointAt(0);
     if ((cp < 0x20 && !["\n", "\t", "\r"].includes(character)) || (cp >= 0x7f && cp <= 0x9f)) {
-      throw new RangeError("Вхід містить керівний символ.");
+      throw new RangeError("Input contains a control character.");
     }
-    if (cp === 0x200b || (cp >= 0x0e80 && cp <= 0x0eff) || /\s/u.test(character) || cp < 0x80) {
+    if (cp === 0x200b || (cp >= 0x0e80 && cp <= 0x0eff) ||
+        /\s/u.test(character) || cp < 0x80 || PASSTHROUGH_PUNCTUATION.has(character)) {
       continue;
     }
-    throw new RangeError(`Непідтримуваний символ поза лаоським Unicode-діапазоном: U+${cp.toString(16).toUpperCase().padStart(4, "0")}`);
+    throw new RangeError(`Unsupported non-Lao character U+${cp.toString(16).toUpperCase().padStart(4, "0")}`);
   }
   return normalized;
 }
