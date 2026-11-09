@@ -232,6 +232,15 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.status, "SUPPORTED")
         self.assertEqual(syllable.practical_ukrainian, "к'а")
 
+    def test_hybrid_emits_explicit_marker_when_any_target_mapping_fails(self):
+        with patch("lao_ukrainian.core.practical_from_ipa", return_value=None):
+            syllable = core_module.analyze("ຂາ").syllables[0]
+        self.assertEqual(syllable.phonetic_result.phonemic_ipa, "kʰaː")
+        self.assertEqual(syllable.phonetic_result.status, "SUPPORTED")
+        self.assertEqual(syllable.practical_ukrainian, "?")
+        self.assertEqual(syllable.status, "EVIDENCE LIMITED")
+        self.assertIn("UKRAINIAN-TARGET-UNMAPPED", syllable.warnings)
+
     def test_hybrid_preserves_accepted_ipa_when_target_mapping_is_unavailable(self):
         syllable = core_module.analyze("ເກີ").syllables[0]
         self.assertEqual(syllable.phonemic_ipa, "kəː")
