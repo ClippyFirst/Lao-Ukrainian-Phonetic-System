@@ -51,6 +51,7 @@ function matchVowel(before, after) {
   }
   if (before.endsWith("ໄ")) return push("AI");
   if (before.endsWith("ໃ")) return push("AI2");
+  if (after.startsWith("ັຽ")) return push("IA", "ັຽ");
   if (after.startsWith("ັວ")) return push("UO_SHORT_ALT", "ັວ");
   if (after.startsWith("ົວະ")) return push("UO", "ົວະ");
   if (after.startsWith("ົວ")) return push("UO_LONG", "ົວ");
