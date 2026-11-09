@@ -281,3 +281,19 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 - Connector-only changes; no local shell was available.
 - A draft PR will be opened to trigger the repository's PR Verify workflow because the current push trigger does not include research/**.
 - No runtime data/generated browser artifact changed. Final acceptance depends on hosted CI for the exact branch head.
+
+### Additional written evidence from completed literature review
+
+- Added Lew (2014), Enfield (2020), Lao dialect LSP (2015), Davis (2015), Sengsoulin (2009), Yanagimura (2011) and WikiPron (2020) to the source registry and claims.
+- The Vientiane LSP supports the existing same-/ai/ mapping for ໃ and ໄ in Vientiane while warning against applying it to Luang Prabang.
+- Enfield (2020) supports a foot-based model: one stressed tone-bearing syllable with dependent unstressed syllables; grammatical and phonological word boundaries may differ. This argues against inferring phrase prosody from the current isolated-syllable parser.
+- Davis (2015) supports treating historical ຣ as context/lexeme-sensitive (/h/ in some historical conditions, /l/ elsewhere), not as a universal phoneme mapping.
+- Yanagimura (2011) documents contextual F0 effects across 25 Vientiane bitonal sequences. Current IPA tone categories remain lexical/word-level; phrase-level realization is explicitly outside this engine's current contract.
+- WikiPron Lao coverage/provenance remains unverified; it is not admitted as a benchmark or gold source.
+- Updated research inventory with these source findings and implementation implications.
+
+### Verification checkpoint for first test batch
+
+- PR #157 initial exact branch head 47d63361ec22a60bf2fb6e3fd6a4f682c86d7fdc passed Verify #42583598265 — SUCCESS: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42583598265
+- Results on that head: 293 Python tests, 147 Node/browser-engine tests, 19 Chromium UI tests; all pass. Repository data/evidence audit, IPA gold schema, external-G2P harness syntax/CLI, locked npm install, build, generated-data reproducibility/drift and built-page/relative-asset checks passed.
+- Subsequent commits add only evidence registry and research documentation; they still require a fresh exact-head PR Verify.
