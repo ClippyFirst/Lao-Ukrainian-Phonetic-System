@@ -3338,3 +3338,14 @@ The detailed evidence and correction history is in `docs/research/GITHUB-PAGES-H
 - Browser test now also verifies that multi-syllable `ສະບາຍດີ` retains raw IPA while `NOT_ALIGNED` and emits no guessed tone associations. Current PR #158 head: `057fa8b5c819a022b24469e494684ec34436dbbc`. Exact-head preview #42699464033 and Verify #42699475181 were still running at note time; check terminal status.
 - Pages workflow has live smoke checks for UI, manifest, both model weights, both tokenizer JSONs, WASM loader/binary, NOTICE and LICENSE. **No production deployment yet.** Merge PR #158 only after latest exact-head checks pass; then verify the main Pages deployment and live assets.
 
+
+
+### Final browser-runtime package gate — 2026-11-09, 21:15 UTC
+
+- Latest exact-head preview [#42700501740](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740) SUCCESS and latest exact-head Verify [#42700510670](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700510670) SUCCESS on `32a8f27ac2f9229f61a98611828d8d39e12f3d52`.
+- Chromium explicitly tested `crossOriginIsolated === false`; WASM inference still passes with `numThreads=1`. GitHub Pages does not require COOP/COEP headers.
+- Bundle license scanner now derives npm packages from esbuild metafile inputs and copies license texts. The preview includes notices for Transformers.js 4.3.2 (Apache-2.0), ONNX Runtime common 1.30.0 (MIT), ONNX Runtime Web 1.31.1 (MIT), plus model Apache-2.0 LICENSE/NOTICE.
+- Final preview artifact [13711776359](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740/artifacts/13711776359): 40.38 MB ZIP / 56.47 MB unpacked, 34 files.
+- Browser test verifies aligned `ຂາ` and unaligned multi-syllable `ສະບາຍດີ`, no invented tone associations, zero external requests. Prior measured local-server cold/warm times: 1.27 s / 177 ms (later run 1.115 s / 198 ms).
+- **Only remaining deployment gate:** PR #158 remains draft. Mark ready and merge after this successful exact-head verification; then wait for main Pages workflow and confirm live same-origin UI, model, tokenizers, WASM and licenses. No production deployment claimed yet.
+
