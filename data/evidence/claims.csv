@@ -55,3 +55,8 @@ CLM-LAO-UNICODE-INVENTORY-2026,"The Unicode Lao block contains modern Lao graphe
 CLM-MEKONGPHON-REFERENCE-PROFILE,"An opt-in deterministic IPA profile applies high-frequency aggregate segmental correspondences observed in the pinned MekongPhon training split; it is a reference-compatibility experiment, not a universal Lao phonology claim",methodology,SRC-MEKONGPHON-2026
 CLM-LAO-NATIVE-DIGITS,Lao native digits are part of the script and are commonly used,established,SRC-W3C-LAO-LREQ
 CLM-LAO-DIGITS-PASSTHROUGH,Native Lao digits are preserved unchanged as non-phonetic passthrough and are not assigned IPA,methodology,SRC-W3C-LAO-LREQ
+CLM-LAO-VOWEL-OE-GLIDE,The preposed spelling ເ◌ີຍ represents the long /ɤːj/ rhyme,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-O-GLIDE,The preposed spelling ໂ◌ຍ represents the long /oːj/ rhyme,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-AE-GLIDE,The preposed spelling ແ◌ວ represents the long /ɛːw/ rhyme,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-AO-GLIDE,The postposed spelling ◌ອຍ represents the long /ɔːj/ rhyme,established,SRC-ISHIDA-ORTHO-2026
+CLM-LAO-VOWEL-AA-GLIDE,The postposed spelling ◌າຽ represents the long /aːj/ rhyme,established,SRC-ISHIDA-ORTHO-2026
