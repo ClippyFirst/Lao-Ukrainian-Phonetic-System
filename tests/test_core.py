@@ -232,6 +232,16 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.status, "SUPPORTED")
         self.assertEqual(syllable.practical_ukrainian, "к'а")
 
+    def test_hybrid_preserves_accepted_ipa_when_target_mapping_is_unavailable(self):
+        syllable = core_module.analyze("ເກີ").syllables[0]
+        self.assertEqual(syllable.phonemic_ipa, "kəː")
+        self.assertEqual(syllable.phonetic_result.phonemic_ipa, "kəː")
+        self.assertEqual(syllable.phonetic_result.status, "SUPPORTED")
+        self.assertEqual(syllable.practical_ukrainian, "?")
+        self.assertEqual(syllable.status, "EVIDENCE LIMITED")
+        self.assertIn("FALLBACK:TARGET-UNMAPPED", syllable.rules)
+        self.assertIn("UKRAINIAN-TARGET-UNMAPPED", syllable.warnings)
+
     def test_analysis_dependent_segmental_ipa_is_rendered_with_uncertain_status(self):
         syllable = analyze("ຣະ").syllables[0]
         self.assertEqual(syllable.phonemic_ipa, "la")
