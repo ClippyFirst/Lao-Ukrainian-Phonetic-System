@@ -2768,3 +2768,13 @@ The requested portfolio of five distinct evaluation sources is now identified. *
   - `7b96f3445c784d2d4f2887ed7f175d8e2968ee84` — research inventory addendum.
 - Verification boundary: no local checkout/shell execution was available in this connector-only pass. No tests or benchmark were run here. A fresh exact-head Verify on the final main commit is still required before calling this continuation engineering-verified.
 - Readiness: research-ready evidence/prototype; not linguistically release-ready.
+
+### CharsiuG2P support audit correction — 2026-11-09
+
+- A recursive Git tree inspection of `lingjzhu/CharsiuG2P` at `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4` found no Lao file under `data/train`, `data/dev` or `data/test`, and no Lao entry in its checked-in split inventories; Khmer is present. The earlier discovery of `sources/info/wikipron/lao_laoo_broad_info.txt` is source metadata only, not a Lao trained model or benchmark split.
+- Corrected the evidence record: `SRC-CHARSUIG2P-2022` now records the negative support audit; `CLM-LAO-CHARSUIG2P-CANDIDATE` now states that this revision is not a trained/evaluated Lao baseline.
+- Updated the research inventory and Undermind memo accordingly. CharsiuG2P is excluded from the current supervised Lao benchmark candidate list. A zero-shot probe, if attempted later, must be labelled exploratory.
+- Additional commits:
+  - `1d4ba48734fc057d28bbe6319ff427129b6c86cb` — correct CharsiuG2P source evidence.
+  - `261ee8c11defb6be53c2ab362b9543374e38976d` — correct CharsiuG2P claim.
+  - `6a7a919952a1645d958639f4617de4456d9ed7c7` — correct research inventory.
