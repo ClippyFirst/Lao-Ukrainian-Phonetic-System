@@ -3153,3 +3153,24 @@ A regression test checks that all required counters exist and remain independent
 
 The corrected schema-1.4 HVULao benchmark [#42649110626](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649110626) was still running at the time of this handoff update. The previous failed run is invalid for comparative conclusions. Until the corrected run finishes with zero runtime errors, retain the prior accepted baseline (hybrid 346/1,000 IPA-complete sentences; 94.21% syllable IPA coverage; 1,000/1,000 visible renderings). No linguistic improvement is claimed from instrumentation alone.
 
+
+
+## Preserve source IPA across missing Ukrainian target mappings — 2026-11-09
+
+The successful HVULao schema-1.4 diagnostic run [#42649047666](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649047666) completed with zero runtime errors and revealed that 607 of 1,005 provisional hybrid units were actually `UKRAINIAN-TARGET-UNMAPPED`. The core had been replacing a supported typed IPA result with an unknown PROVISIONAL result when the Ukrainian adapter lacked a correspondence. That conflated source phonetic confidence with target orthographic availability.
+
+The default hybrid now keeps accepted `PhoneticResult` IPA and provenance intact, marks the Ukrainian target as `?`, and records `EVIDENCE LIMITED` / `UKRAINIAN-TARGET-UNMAPPED`; it does not invent a mapping. The Vientiane compatibility profile still withholds uncertain IPA. Regression coverage checks `ເກີ` → retained `/kəː/` (SUPPORTED) with target-only `?`.
+
+The pinned 100-word MekongPhon comparison [#42650433708 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650433708) on `74748de4684ddb02ba8b95db442ec3079e3893db` reports:
+- ClippyFirst hybrid: 6.64% segmental CER at 97% coverage; 29.23% tonal CER at 91% coverage.
+- MekongPhon Neural: 6.64% segmental CER and 8.29% tonal CER, both at 100% coverage.
+- Lao2IPA: 8.97% segmental CER and 11.97% tonal CER, both at 100% coverage.
+
+Thus ClippyFirst ties MekongPhon on segmental CER on this split, but lags both competitors on coverage and tonal CER. This is dictionary-seeded concordance, not independently adjudicated accuracy; the vocabulary also informed validation-sentence generation/checkpoint selection. Tone-category error on covered categories is 3.81% with 83.33% category coverage, but tonal IPA CER remains the stricter result.
+
+A source/target boundary correction is now included in the mainline. The HVULao schema-1.5 run [#42650543096](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650543096) is in progress and separately reports target-mapping gaps from IPA-withheld statuses. Until it completes with zero runtime errors and passes the 100% rendering gate, retain the prior accepted HVULao metrics only as the pre-correction baseline; do not claim updated 1k coverage yet.
+
+Exact-head Verify [#42650543260 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650543260) on `444ef7c832150ba92119245b05ae9b8f61c795f9` passed 324 Python tests, 147 browser-engine tests and 19 Chromium tests, plus all configured evidence/schema, external-G2P, locked-install, build, generated-data and built-site gates. README and current audit have been refreshed; this handoff update and subsequent documentation commits require their own exact-head verification.
+
+**Current status:** rendering target remains 100% on the named stress set; best-in-class segmental concordance is tied on one non-gold split, but tonal quality and coverage do not lead. Independent adjudicated IPA gold remains 0. Readiness remains engineering-verified research prototype, not linguistically release-ready.
+
