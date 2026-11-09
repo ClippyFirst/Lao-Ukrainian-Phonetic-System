@@ -42,9 +42,11 @@ A grapheme inventory and the fallback's role inventory are different measures. A
 This is an engineering affordance, not an accuracy claim. Independent adjudicated Lao IPA gold remains required for empirical accuracy claims and promotion of new rules.
 
 
+The acceptance target for the Unicode 18 Lao block is **100% codepoint recognition and visible handling**: every assigned inventory character must either receive a typed grapheme role or be explicitly passed through as orthographic/numeric punctuation. This does not mean 100% of codepoints have an independent sound, nor that all combinations have a confirmed pronunciation. Pali/Sanskrit and Khmu characters remain recognized but outside the modern-Lao phonetic profile.
+
 ## Expanded grapheme and composite-vowel handling
 
-The canonical Unicode inventory remains the authority for every assigned Lao-block codepoint. The hybrid distinguishes modern-Lao phonetic material from structural marks, repetition, punctuation, digits, Pali/Sanskrit extensions and Khmu-specific letters; recognition is not the same as a standalone phonetic value. `ຽ` is context-sensitive: it can form the /iːə̯/ rhyme or act as a final /j/ glide. The parser now includes five additional source-attested composite patterns (`ເ◌ີຍ` /ɤːj/, `ໂ◌ຍ` /oːj/, `ແ◌ວ` /ɛːw/, `◌ອຍ` /ɔːj/, `◌າຽ` /aːj/) in both Python and browser runtimes. The Lao ellipsis `ຯ` is preserved as punctuation, not misclassified as a phoneme. Pali/Sanskrit, Khmu and obsolete marks remain explicitly out of modern-Lao phonetic scope rather than receiving invented IPA.
+The canonical Unicode inventory remains the authority for every assigned Lao-block codepoint. The hybrid distinguishes modern-Lao phonetic material from structural marks, repetition, punctuation, digits, Pali/Sanskrit extensions and Khmu-specific letters; recognition is not the same as a standalone phonetic value. `ຽ` is context-sensitive: it can form the /iːə̯/ rhyme or act as a final /j/ glide. The parser now includes five additional source-attested composite patterns (`ເ◌ີຍ` /ɤːj/, `ໂ◌ຍ` /oːj/, `ແ◌ວ` /ɛːw/, `◌ອຍ` /ɔːj/, `◌າຽ` /aːj/) in both Python and browser runtimes. The Lao ellipsis `ຯ` is preserved as punctuation, not misclassified as a phoneme. Source: [Richard Ishida, Lao Orthography Notes (28 April 2026)](https://r12a.github.io/scripts/laoo/lo), especially the character index, composite-vowel list and IPA mapping tables. Pali/Sanskrit, Khmu and obsolete marks remain explicitly out of modern-Lao phonetic scope rather than receiving invented IPA.
 
 ## Automated verification
 
