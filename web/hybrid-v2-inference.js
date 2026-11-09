@@ -274,7 +274,7 @@ export function createHybridV2Inference({
       onProgress?.({ phase: "runtime", label: "Ініціалізація локального WASM-рушія" });
       const sessionOptions = {
         executionProviders: ["wasm"],
-        graphOptimizationLevel: "all",
+        graphOptimizationLevel: "disabled",
       };
       const [encoderSession, decoderSession] = await Promise.all([
         ort.InferenceSession.create(encoderBytes, sessionOptions),
