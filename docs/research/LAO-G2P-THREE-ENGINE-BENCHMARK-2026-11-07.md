@@ -384,3 +384,33 @@ ClippyFirst emits segmental and tonal fields from one analysis pass, so its equa
 Python 3.12.16; CPU PyTorch 2.6.0; Transformers 4.49.0; SacreBLEU 2.5.1. MekongPhon uses immutable tonal revision `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal revision `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`, beam=5, 128-token maximum and truncation disabled.
 
 **Conclusion:** MekongPhon neural is the best measured system on this reference set; Lao2IPA is fastest; ClippyFirst is inspectable and fail-closed, and on this particular run slightly outperforms Lao2IPA on identical-coverage subsets but still trails MekongPhon. No engine default should be changed on this evidence alone. Independent project IPA gold remains 0, so empirical linguistic accuracy remains unvalidated.
+
+
+## Full-output coverage contract and schema 6.0 results — 2026-11-09
+
+The previous 97% segmental / 91% tonal figures described **confidence-gated complete IPA availability**, not whether the engine returned a visible result. This distinction did not align with the product requirement that lower-confidence output must still be emitted and visibly marked. Schema 6.0 therefore changes the comparison contract:
+
+- Every parsed syllable emits a segmental result: accepted IPA, an explicitly PROVISIONAL grapheme-derived hint, or ? at an unknown position.
+- Every parsed syllable emits a tonal result: the available contour or an explicit ? when no tone contour can responsibly be supplied.
+- ? is not a tone or phone prediction. It is a visible unknown marker and is included in the full-set CER denominator as an edit-bearing output.
+- Output coverage and confidence coverage are both reported. A provisional result or ? satisfies output coverage but never upgrades accepted-IPA confidence or tone-category coverage.
+
+The pinned 100-word benchmark [run #42654328706 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654328706), schema 6.0, reports:
+
+| Engine | Segmental CER | Segmental exact | Segmental output coverage | Tonal CER | Tonal exact | Tonal output coverage |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst hybrid | **6.15%** | **90/100** | **100%** | 22.90% native contour; 11.39% Mekong convention | 25/100 native; 69/100 Mekong convention | **100%** |
+| MekongPhon Neural | 6.64% | 82/100 | 100% | **8.29%** | **74/100** | 100% |
+| Lao2IPA | 8.97% | 68/100 | 100% | 11.97% | 56/100 | 100% |
+
+ClippyFirst rendered **100/100 inputs and 169/169 syllable units**. Of the 169 units, 165 were SUPPORTED, 1 UNCERTAIN and 3 PROVISIONAL; 3 units include explicit unknown segment markers. Fully accepted segmental IPA was available for 97/100 inputs and fully accepted tone contours for 91/100 inputs. The remaining inputs nevertheless receive visible output. Tone contour data was present for 160/169 units; missing contours are rendered as ?, not guessed.
+
+On this dictionary-seeded split, ClippyFirst now has the lowest full-set segmental CER, even with provisional and unknown markers included. Its Mekong-convention tonal CER is slightly better than Lao2IPA, but its native-contour tonal CER remains much worse and it still trails MekongPhon Neural on tonal CER. Tone-category error is 3.81% over 105 covered categories, with 105/126 (83.33%) category coverage. This is not evidence of independent phonetic accuracy: the reference lexicon contributed to validation-sentence generation/checkpoint selection and has not been independently re-adjudicated by this project. Independent adjudicated IPA gold remains 0.
+
+Implementation and tests:
+- renderable_segmental_ipa() and renderable_tonal_ipa() keep provisional sequences and explicit unknown markers in the output path.
+- render_mekong_tonal() emits ? for unresolved tone categories instead of returning an empty string.
+- The core hybrid target adapter now emits ? when any typed result cannot be adapted, while preserving source IPA and confidence metadata.
+- Exact-head Verify [#42654358111 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654358111) on ef58962bd5228ff96acacf8b63c4a6593ca12440: 327 Python tests, 147 Node tests and 19 Chromium tests passed; all configured build, evidence, data and site checks passed.
+
+**Acceptance:** 100% output coverage is DONE_VERIFIED on this 100-word set. 97% segmental and 91% tonal confidence coverage remain explicit quality metrics, not output blockers. Phonetic accuracy remains research-limited until independent expert-adjudicated IPA gold is available.
