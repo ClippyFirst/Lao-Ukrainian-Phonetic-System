@@ -336,3 +336,35 @@ The hybrid is now best on segmental CER on this particular dictionary-seeded spl
 
 The Python hybrid target adapter also now emits an explicit Ukrainian-side ? when typed IPA/provisional material cannot be fully adapted. This preserves the typed source result and prevents target-side gaps from suppressing visible output. Exact-head Verify [#42654358111 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654358111) passed 327 Python, 147 Node and 19 Chromium tests plus all configured engineering gates.
 
+
+
+## Full external-engine rerun with explicit output coverage — 2026-11-09
+
+The external comparator suite was rerun from main after changing its rendering contract: every one of the 100 inputs now has a visible prediction field. Empty or failed external predictions are represented by an explicit `?`, included in full-denominator CER, and counted separately from `engine_success_coverage`. This prevents a missing output from disappearing from the report or being mistaken for a correct phonetic result. In this run all external engines returned predictions for all 100 inputs, so no `?` fallback was needed.
+
+- External suite: [GitHub Actions #42662067748 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748), aggregate artifact [#13695780763](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748/artifacts/13695780763).
+- Phonetisaurus sub-job: same run, SUCCESS; aggregate artifact [#13694282552](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748/artifacts/13694282552).
+- Exact final-head Verify: [#42662095956 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662095956), commit `ccc0209b27298b82a898269e5063a20c66c4b3e3`.
+
+### Same 100-word MekongPhon split: latest full comparison
+
+All rows below use the same pinned 100-entry dictionary-seeded reference split. CER is segmental `pron_no_tones` and tonal `pron_with_tones`; tone and length remain significant. All engines below emitted 100/100 outputs. ClippyFirst's explicit provisional/unknown symbols are included in its CER; they are not accepted IPA.
+
+| Engine | Segmental exact | Segmental CER | Tonal exact | Tonal CER | Output coverage |
+|---|---:|---:|---:|---:|---:|
+| ClippyFirst hybrid | 90/100 | **6.15%** | 25/100 native | 22.90% native; 11.39% Mekong convention | 100% |
+| MekongPhon Neural | 82/100 | 6.64% | **74/100** | **8.29%** | 100% |
+| Lao2IPA 1.0.0 | 68/100 | 8.97% | 56/100 | 11.97% | 100% |
+| Epitran 1.35.3 | 71/100 | 10.96% | 4/100 | 36.94% | 100% |
+| orthography2ipa (lo) | 32/100 | 19.60% | 2/100 | 37.51% | 100% |
+| Transphone 1.5.3 supervised Lao | 19/100 | 24.25% | 2/100 | 46.49% | 100% |
+| LanguageNet Phonetisaurus Lao FST | 0/100 | 78.90% | not available | not available | 100% |
+
+ClippyFirst remains the best segmental comparator on this particular split, but MekongPhon Neural remains materially better on tonal IPA. This is not an overall engine victory: no independent project IPA gold exists, and the reference split was dictionary-seeded and contributed to validation/checkpoint selection. Phonetisaurus is a segmental-only model; its 100/100 outputs were parsed with 0 exact matches and 78.90% CER.
+
+The updated external comparator JSON reports both `output_coverage` and `engine_success_coverage`. `output_coverage=100%` is a rendering contract, not an accuracy claim. The benchmark's failure gate still fails the job on unexpected per-input exceptions even though the output report would retain an explicit `?` for each affected input.
+
+### Coverage-only corpus disposition
+
+- HVULao 1k remains the executed independent sentence stress test: 1,000/1,000 hybrid inputs and 21,534/21,534 analyzed units rendered; no IPA gold.
+- FLORES+, HPLT Lao, FLEURS Lao and Common Voice Lao remain separate corpus-domain extensions, not silently counted as passed. FLORES+/HPLT are text-only coverage/stress candidates; FLEURS/Common Voice include audio but do not provide IPA labels. A reproducible, immutable text extraction/split and corpus-specific license/provenance validation are still required before their runs can be marked DONE_VERIFIED.
