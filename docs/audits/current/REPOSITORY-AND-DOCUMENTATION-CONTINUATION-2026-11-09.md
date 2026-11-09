@@ -14,14 +14,14 @@ PR #157 adds written-source/claim records, the published LaoNLP syllabification 
 |---|---|---|
 | #157 | Merged to main | Integrated; exact merge-head Verify passed. |
 | #156 | Closed unmerged | Useful benchmark scripts, confidence gate, comparator workflows and tests were selectively ported; exact mainline runs and Verify passed. Branch preserved. |
-| #148 | Open, not mergeable | Stale documentation/architecture branch based on an older mainline; do not merge its snapshot over newer main docs. |
+| #148 | Closed unmerged | Stale documentation branch superseded by current mainline docs; the useful UI UX Pro Max pin was selectively ported in commit 5666766a71855929a9f179a95c9587249d81de6f. Branch preserved. |
 | #145 | Open, not mergeable | Neural-first proposal conflicts with the adopted deterministic hybrid mainline; not an approved production direction. |
 | #146 | Closed unmerged | Deterministic reference-profile implementation and benchmark are superseded by newer mainline versions; mainline benchmark #42591871633 passed. Branch preserved. |
 | #147 | Closed unmerged | HVULao 1k script/workflow and documentation superseded by mainline implementation; exact-mainline run #42591871473 passed. Branch preserved. |
 | #137–#142 | Open; mixed mergeability | Preserve untouched. These are older stacked engine, benchmark, fallback and target work; current main already includes later merged successors for several areas. Require per-PR diff/dependency review before any action. |
 | #149–#155 (excluding #156) | Merged | Their accepted hybrid, mixed-script, numeral, arbitration and grapheme-preview changes are already in main. |
 
-PRs #146 and #147 were closed unmerged only after confirming their benchmark/profile implementations already exist on main in updated forms; closure comments link exact mainline benchmark and Verify evidence. No branch was deleted or rewritten. PR #148 and #145 remain open; #137–#142 remain untouched.
+PRs #146 and #147 were closed unmerged only after confirming their benchmark/profile implementations already exist on main in updated forms; closure comments link exact mainline benchmark and Verify evidence. No branch was deleted or rewritten. PR #148 was closed unmerged after selectively porting its only still-useful methodology pin; PR #145 remains open; #137–#142 remain untouched.
 
 **Five upstream methodology references revalidated:** current upstream `main` commits are Unlazy `16671491f6679ad9378f52604d3bc2415b4120c7`, UI UX Pro Max `4f2dbb67e64969a9a30ab00742f2d55d66ddec2b`, Superpowers `22f0b463e7a5e579904dd6211a520321035526f7`, Matt Pocock Skills `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, and Ponytail `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. All five inspected root `LICENSE` files are MIT. This does not blanket-license embedded assets or third-party data. The project adopts selected workflow, testing, code-review and web-accessibility practices only; no upstream code, skill tree, CLI, dataset, hook or runtime dependency was copied or installed. See `AGENTS.md` for the pinned methodology policy.
 
@@ -438,3 +438,8 @@ Four exact raw source revisions invoke the lo-pron template: ກະດານ (66
 Verify #42611861847 — SUCCESS on main SHA 1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31: 316 Python, 147 Node/browser and 19 Chromium tests; all configured schema, repository data/evidence, external harness, locked install, build, generated-data reproducibility and built-page checks passed. Two earlier attempts at the audit utility's new regression test exposed fixture/header-classification errors; both were corrected and this final exact-head run is green.
 
 Readiness remains research-ready engineering prototype, not linguistically release-ready. Independent expert IPA gold remains 0; manual accessibility acceptance remains PARTIAL; contextual lexical segmentation and corpus-wide Wiktionary provenance remain unresolved.
+
+
+### Documentation branch reconciliation — PR #148
+
+PR #148's seven-file diff was compared against current main. Its README, audit index, validation page, codebase map and handoff were stale snapshots superseded by newer mainline documentation. The one useful upstream UI UX Pro Max commit pin (4f2dbb67e64969a9a30ab00742f2d55d66ddec2b) was selectively ported to AGENTS.md in commit 5666766a71855929a9f179a95c9587249d81de6f. PR #148 was then closed unmerged with an explanation; its branch remains preserved.

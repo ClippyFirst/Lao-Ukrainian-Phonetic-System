@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** main at `1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31` (2026-11-09), exact-head Verify #42611861847 passed. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 and #145 remain open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** main at `1c0ad1a5ac4455830f87a177b13f6ddbb3d0de31` (2026-11-09), exact-head Verify #42611861847 passed. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 is closed unmerged after a selective methodology-pin port; PR #145 remains open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 

@@ -3020,3 +3020,8 @@ The offline audit utility now reports exact repeated headers separately from mal
 - PRs: #156, #146 and #147 closed unmerged as superseded after their relevant code/benchmark work was selectively ported and verified on main; their branches remain intact. #148 and #145 remain open and unmerged; #137–#142 were left untouched.
 - Audit utility correction: exact repeated headers are now distinguished from malformed header-like rows; tests cover both classes. Two interim exact-head failures were fixed; final Verify is green.
 - Readiness: research-ready engineering prototype, not linguistically release-ready. Gold IPA 0; manual accessibility PARTIAL; lexical segmentation PARTIAL; whole-corpus Wiktionary provenance PARTIAL.
+
+
+### PR #148 closeout — 2026-11-09
+
+The stale seven-file documentation PR was reconciled against current main. README, audit index, validation, codebase map and handoff content were superseded by newer mainline documentation. Its only useful remaining change, the UI UX Pro Max upstream methodology pin at 4f2dbb67e64969a9a30ab00742f2d55d66ddec2b, was selectively ported to AGENTS.md (commit 5666766a71855929a9f179a95c9587249d81de6f). PR #148 was closed unmerged; its branch was preserved.
