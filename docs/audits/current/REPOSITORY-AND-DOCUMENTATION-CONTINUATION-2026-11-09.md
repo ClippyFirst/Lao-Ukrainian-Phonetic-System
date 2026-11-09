@@ -578,3 +578,33 @@ The correction centralizes all deterministic stage counters in `new_rule_stage()
 - Corrected schema-1.4 HVULao run [#42649110626](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649110626) was still running when this note was written. The earlier run #42649047666 also remained in progress; neither result is accepted until the benchmark job completes and its zero-runtime-error gate passes.
 
 No engine phonology was changed in this fix. No improvement in IPA coverage or linguistic accuracy is claimed. The prior 34.6% hybrid IPA-complete / 94.21% syllable IPA baseline remains the last accepted benchmark baseline until the corrected run is complete.
+
+
+## IPA / Ukrainian-target boundary correction and updated comparative evidence — 2026-11-09
+
+The successful schema-1.4 diagnostic run [#42649047666](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649047666) (commit `3becf3b3859d1223953d426c34f6bd232a0041d6`) completed with **0 runtime errors**. It reported 1,005 provisional hybrid units, including 607 tagged `UKRAINIAN-TARGET-UNMAPPED` and 398 genuinely provisional/unknown IPA hints. This exposed a pipeline defect: `core.analyze()` replaced a supported `PhoneticResult` with an unknown PROVISIONAL result whenever the Ukrainian target adapter lacked a correspondence. That incorrectly made a target-side mapping gap look like source-side phonetic uncertainty and reduced accepted IPA coverage.
+
+The core now preserves the accepted typed source IPA and its provenance, emits a target-only `?` marker when the Ukrainian mapping is absent, and marks the syllable `EVIDENCE LIMITED`. It does not invent a Ukrainian correspondence. Regression test: `ເກີ` retains `/kəː/` with `PhoneticResult.status=SUPPORTED`, while Ukrainian output is `?` and the syllable records `UKRAINIAN-TARGET-UNMAPPED`. The compatibility Vientiane profile continues to withhold uncertain IPA as before; target fallback applies only to the default hybrid.
+
+The schema-1.5 HVULao benchmark now reports target-mapping gaps separately from IPA-withheld statuses. It is running at [#42650543096](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650543096) on `444ef7c832150ba92119245b05ae9b8f61c795f9`; no updated 1k coverage figures are accepted until that run completes with zero runtime errors and passes the 100% rendering gate.
+
+### New completed 100-word comparison
+
+The exact pinned 100-word MekongPhon held-out run [#42650433708 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650433708) on `74748de4684ddb02ba8b95db442ec3079e3893db` completed with zero runtime errors. On the same dictionary-seeded reference split:
+
+| Engine | Segmental CER | Segmental coverage | Tonal CER | Tonal coverage |
+|---|---:|---:|---:|---:|
+| ClippyFirst hybrid | 6.64% | 97% | 29.23% | 91% |
+| MekongPhon Neural | 6.64% | 100% | 8.29% | 100% |
+| Lao2IPA | 8.97% | 100% | 11.97% | 100% |
+
+ClippyFirst is tied for the lowest segmental CER on this split, but has lower segmental coverage and substantially worse tonal CER/coverage than both external systems. The benchmark also reports a 3.81% tone-category error rate on covered categories, with 83.33% tone-category coverage; this does not negate the tonal IPA CER result. The 100-word vocabulary is dictionary-seeded, not independently adjudicated gold, and contributed to validation-sentence generation/checkpoint selection. These are diagnostic concordance measures, not independent accuracy.
+
+### Verification and current ledger
+
+- Exact-head Verify [#42650543260 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42650543260) on `444ef7c832150ba92119245b05ae9b8f61c795f9`: 324 Python tests, 147 browser-engine tests, 19 Chromium UI tests; all configured evidence/schema, external-G2P syntax/CLI, locked-install, build, generated-data and built-site checks passed.
+- The subsequent README refresh records the 100-word comparison and clarifies that a target-side mapping failure does not erase supported source IPA. Exact-head verification of that documentation update is pending.
+- Main remains the only work branch; no branch was created, deleted or rewritten. PR #145 remains open and unmerged because its neural-first architecture conflicts with the adopted hybrid deterministic route. Current branch inventory is 21 branches including `main`.
+- Independent expert-adjudicated IPA gold: BLOCKED (0 records). Contextual lexical-boundary gold, full Kaikki source provenance, acoustic/prosodic evaluation and manual accessibility QA remain PARTIAL/BLOCKED as recorded above.
+
+**Readiness:** engineering-verified research prototype, not linguistically release-ready. The measured segmental result is competitive on one dictionary-seeded split; tonal quality and full coverage still trail competitors, and no independent gold establishes phonetic accuracy.
