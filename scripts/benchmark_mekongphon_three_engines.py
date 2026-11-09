@@ -197,12 +197,20 @@ def load_project():
         # grapheme hint, or an explicit ?. Never drop a word from output
         # coverage merely because its confidence is below the scoring gate.
         segmental_complete = bool(phonetic_syllables) and all(segmental_parts)
+        segmental_confidence_complete = bool(phonetic_syllables) and all(
+            accepted_phonetic_ipa(item.phonetic_result)
+            for item in phonetic_syllables
+        )
         segmental = nfc("".join(segmental_parts)) if segmental_complete else ""
         tonal_parts = [
             renderable_tonal_ipa(item.phonetic_result)
             for item in phonetic_syllables
         ]
         tonal_complete = bool(phonetic_syllables) and all(tonal_parts)
+        tonal_confidence_complete = (
+            segmental_confidence_complete
+            and all(item.phonetic_result.tone_contour_ipa for item in phonetic_syllables)
+        )
         tonal = nfc("".join(tonal_parts)) if tonal_complete else ""
         tone_categories = [
             item.phonetic_result.tone_category
@@ -234,6 +242,8 @@ def load_project():
             "tonal": tonal,
             "mekong_tonal": mekong_tonal,
             "rendering_coverage": rendering_coverage,
+            "segmental_confidence_complete": segmental_confidence_complete,
+            "tonal_confidence_complete": tonal_confidence_complete,
             "status": analysis.status,
             "warnings": [
                 warning
@@ -785,6 +795,7 @@ def main() -> int:
         engine_tone_contexts: list[list[dict[str, str]] | None] = []
         mekong_convention_tonal_outputs: list[str] = []
         rendering_rows: list[dict[str, int | bool]] = []
+        confidence_rows: list[tuple[bool, bool]] = []
 
         for source in sources:
             try:
@@ -813,6 +824,10 @@ def main() -> int:
                 raw_rendering = output.get("rendering_coverage")
                 if isinstance(raw_rendering, dict):
                     rendering_rows.append(raw_rendering)
+                confidence_rows.append((
+                    bool(output.get("segmental_confidence_complete", False)),
+                    bool(output.get("tonal_confidence_complete", False)),
+                ))
                 for shape in output.get("partial_parse_shapes", []):
                     shape_key = "|".join([
                         str(shape.get("onset", "")),
@@ -862,6 +877,7 @@ def main() -> int:
                 engine_tone_categories.append(None)
                 engine_tone_contexts.append(None)
                 mekong_convention_tonal_outputs.append("")
+                confidence_rows.append((False, False))
             segmental_outputs.append(segmental)
             tonal_outputs.append(tonal)
             segmental_withheld += not bool(segmental)
@@ -993,7 +1009,15 @@ def main() -> int:
                 "uncertain_ipa_units": sum(int(row["uncertain_ipa_units"]) for row in rendering_rows),
                 "provisional_ipa_units": sum(int(row["provisional_ipa_units"]) for row in rendering_rows),
                 "unknown_marker_units": sum(int(row["unknown_marker_units"]) for row in rendering_rows),
+                "accepted_ipa_units": sum(int(row["accepted_ipa_units"]) for row in rendering_rows),
+                "segmental_output_units": sum(int(row["segmental_output_units"]) for row in rendering_rows),
+                "tone_contour_units": sum(int(row["tone_contour_units"]) for row in rendering_rows),
+                "tonal_output_units": sum(int(row["tonal_output_units"]) for row in rendering_rows),
                 "passthrough_units": sum(int(row["passthrough_units"]) for row in rendering_rows),
+                "accepted_segmental_inputs": sum(segmental for segmental, _ in confidence_rows),
+                "segmental_confidence_coverage": sum(segmental for segmental, _ in confidence_rows) / len(rows),
+                "accepted_tonal_inputs": sum(tonal for _, tonal in confidence_rows),
+                "tonal_confidence_coverage": sum(tonal for _, tonal in confidence_rows) / len(rows),
             }
         results[name] = {
             "version_or_revision": version,
@@ -1110,7 +1134,7 @@ def main() -> int:
             "vowel_length": "word-level count/presence of IPA ː markers; no syllable-aligned positions are available",
             "word_final_coda": "word-final open/closed status and core-coda identity from the project IPA/coda inventories; analysis-dependent l/r excluded",
             "syllable_boundaries": "not scorable: neither reference column contains explicit syllable-boundary annotations; tone marks are not used as boundary proxies",
-            "missing_output": "empty output remains in the denominator and incurs full reference deletion cost",
+            "missing_output": "explicit ? placeholders count as output coverage and incur edit costs against the reference; only truly empty output incurs full reference deletion cost",
             "clippyfirst_tone_contract": "tone contour is stored separately in typed PhoneticResult metadata; tonal score composes it after each syllable's segmental IPA",
             "latency": "per-item inference; model loading excluded; CPU runner, sequential items. ClippyFirst emits segmental and tonal fields in one analysis pass, so both availability latencies are equal and must not be summed; Lao2IPA and MekongPhon use separate segmental and tonal calls",
             "scope_warning": "This is the 100 held-out seed-lexicon word set, not the paper's 13,442-sentence test. The same held-out lexicon generated validation sentences and best-checkpoint selection used validation loss, so direct word-level scores are not independent of model-selection vocabulary and cannot be compared numerically with Table 4.",
@@ -1118,7 +1142,7 @@ def main() -> int:
             "sentence_test_access": "The paper's 13,442-sentence test split is not present in the pinned repository snapshot; this run scores only the 100-word seed lexicon.",
             "model_weight_integrity": "Both model.safetensors files are SHA-256 verified against their pinned Hugging Face revisions before inference.",
             "gold_warning": "The source paper describes the seed lexicon as derived from human-annotated IPA in Kerr (1972), with a 500-entry manual review; it also reports 14/500 Lao inaccuracies. This benchmark is not independently re-adjudicated gold for this project.",
-            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 added covered-subset, tone-symbol, and tone-category metrics. Schema 4.0 restricted tone-category scoring to known syllable-aligned categories and reported unresolved coverage. Schema 5.0 pins model-weight SHA-256 values, verifies train/eval lexicon disjointness, and adds word-level vowel-length marker and final-coda diagnostics; syllable boundaries remain explicitly not scorable without annotations. Do not compare CER or tone-category rates across schema versions without accounting for their different scoring contracts.",
+            "historical_note": "Schema 1.0 compared ClippyFirst segmental IPA to the tonal reference and mixed output contracts. Schema 2.0 separated segmental and tonal scoring. Schema 3.0 added covered-subset, tone-symbol, and tone-category metrics. Schema 4.0 restricted tone-category scoring to known syllable-aligned categories and reported unresolved coverage. Schema 5.0 pins model-weight SHA-256 values, verifies train/eval lexicon disjointness, and adds word-level vowel-length marker and final-coda diagnostics; schema 6.0 includes provisional/unknown markers in output coverage while separately reporting confidence-gated accepted-IPA coverage; syllable boundaries remain explicitly not scorable without annotations. Do not compare CER or tone-category rates across schema versions without accounting for their different scoring contracts.",
         },
         "environment": {
             "python": sys.version,
