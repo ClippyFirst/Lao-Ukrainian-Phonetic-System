@@ -3208,3 +3208,15 @@ The post-fallback HVULao 1k run [#42653641804](https://github.com/ClippyFirst/La
 The pending post-fallback 1k run completed successfully: [#42653641804 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804), artifact [#13691297821](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804/artifacts/13691297821). It processed 1,000/1,000 rows with zero runtime errors. Hybrid rendering is 1,000/1,000 inputs and 21,534/21,534 analyzed units (100%). The source-side distribution is 16,936 SUPPORTED IPA, 19 UNCERTAIN IPA and 398 PROVISIONAL units; 607 Ukrainian target mappings are unavailable and are marked with target-side ? rather than suppressed. Accepted IPA completeness is 661/1,000 sentences (66.1%) and 97.71% syllable IPA coverage. Neural completes 934/1,000 IPA sentences (93.4%) but rejects 66 inputs under its source limits. HVULao contains no IPA reference, so no accuracy claim follows.
 
 **Current completion state:** the output-coverage target is DONE_VERIFIED on both the 100-word comparison (100/100 inputs, 169/169 units) and the HVULao 1k set (1,000/1,000 inputs, 21,534/21,534 units). Confidence remains visible separately; no unknown marker is promoted to accepted IPA or tone. Independent adjudicated IPA gold remains BLOCKED at 0 project-adjudicated records.
+
+
+## External Lao engine suite — 2026-11-09 continuation
+
+The pinned MekongPhon 100-word comparison has now been rerun across ClippyFirst, MekongPhon Neural, Lao2IPA, Epitran, orthography2ipa, Transphone and LanguageNet Phonetisaurus. All seven produced 100/100 output rows. Empty/failed external predictions now render as explicit `?`, are included in full-set CER, and are tracked separately from engine-success coverage. Unexpected runtime exceptions still fail CI.
+
+- External suite: [#42662067748 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748); aggregate artifact [#13695780763](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748/artifacts/13695780763).
+- Phonetisaurus aggregate: [#13694282552](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662067748/artifacts/13694282552).
+- Exact-head code/test Verify: [#42662095956 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42662095956).
+- ClippyFirst segmental CER 6.15% (90/100 exact) leads this split; MekongPhon Neural tonal CER 8.29% (74/100 exact) remains best. ClippyFirst native tonal CER is 22.90%, or 11.39% under the evaluation-only Mekong contour convention.
+- Output coverage is not accuracy. Independent expert-adjudicated IPA gold remains absent. FLORES+, HPLT, FLEURS and Common Voice remain separate TODO coverage/stress expansions pending pinned extraction and license/provenance checks.
+- Current exact main head at this documentation update: `0c2c057fe571582e2c33f95618b56ae7e105d7db`; exact-head Verify is running.
