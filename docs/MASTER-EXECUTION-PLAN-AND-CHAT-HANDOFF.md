@@ -3143,3 +3143,13 @@ The immediate engineering step adds schema 1.4 diagnostics to the pinned HVULao 
 - preserve the distinction between accepted IPA, provisional placeholders, and passthrough.
 
 This is diagnostic instrumentation, not a coverage or accuracy improvement. The next code changes must be driven by the newly measured dominant failure categories and verified against the existing regression suite and fixed benchmark sets. The competitive target must compare ClippyFirst, Lao2IPA and MekongPhon on identical items and report both full-denominator coverage and shared-covered-subset error. Independent IPA adjudication remains necessary before claiming linguistic accuracy.
+
+
+## HVULao schema-1.4 diagnostic fix and verification — 2026-11-09
+
+The initial benchmark run found a `KeyError` in the newly added withheld-IPA diagnostic aggregation: two deterministic profile stages lacked their `withheld_statuses` counter. This was a benchmark harness defect, not a phonological runtime failure. The deterministic stage state is now created by one `new_rule_stage()` factory, ensuring every profile receives isolated counters. The output includes typed withheld-result statuses as well as uncertainty categories.
+
+A regression test checks that all required counters exist and remain independent between profile instances. Exact-head Verify [#42649144346 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649144346) on `60969af2f55d6d83e12bbb0a3d0ec5d37c56119f` passed 323 Python tests, 147 browser-engine tests and 19 Chromium tests, plus all configured repository evidence/schema, external-G2P, locked-install, build, generated-data and built-site gates.
+
+The corrected schema-1.4 HVULao benchmark [#42649110626](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42649110626) was still running at the time of this handoff update. The previous failed run is invalid for comparative conclusions. Until the corrected run finishes with zero runtime errors, retain the prior accepted baseline (hybrid 346/1,000 IPA-complete sentences; 94.21% syllable IPA coverage; 1,000/1,000 visible renderings). No linguistic improvement is claimed from instrumentation alone.
+
