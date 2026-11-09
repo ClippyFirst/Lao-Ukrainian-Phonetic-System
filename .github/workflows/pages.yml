@@ -55,6 +55,8 @@ jobs:
       - name: Copy only verified INT8 model assets into Pages
         run: python scripts/prepare_pages_model.py --source artifacts/hybrid-v2-browser --destination dist/models/hybrid-v2
       - name: Test actual browser interaction against the built site
+        env:
+          HYBRID_V2_MODEL_AVAILABLE: "1"
         run: |
           npx playwright install --with-deps chromium
           npm run test:browser
