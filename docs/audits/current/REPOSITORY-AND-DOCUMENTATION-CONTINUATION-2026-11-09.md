@@ -635,3 +635,11 @@ Exact-head Verify [#42654358111 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - 1,000-row HVULao schema-1.5 post-fallback benchmark — PARTIAL, still running as [#42653641804](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804); prior accepted schema-1.5 run #42650543096 already verified 1,000/1,000 hybrid renderings and 21,534/21,534 analyzed units.
 
 **Readiness:** engineering-verified research prototype. Output coverage is complete on the named 100-word set; segmental concordance is competitive, but tonal quality and independent phonetic validation remain incomplete. No claim of universal-Lao 100% phonetic accuracy is made.
+
+
+### HVULao schema 1.5 completed — 2026-11-09
+
+The previously pending post-fallback 1k run is now complete: [#42653641804 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804), artifact [#13691297821](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804/artifacts/13691297821). It processed 1,000/1,000 rows with 0 runtime errors. Hybrid visible rendering is 1,000/1,000 inputs and 21,534/21,534 analyzed units (100%). Source IPA completeness is separately 661/1,000 sentences (66.1%) and 97.71% syllable IPA coverage. The hybrid has 16,936 SUPPORTED, 19 UNCERTAIN and 398 PROVISIONAL units; 607 target correspondences are unavailable and now remain visible as target-side ?. These are not source-IPA omissions.
+
+The neural comparator completed IPA for 934/1,000 sentences (93.4%), but 66 inputs were rejected by its source-length/character limits. The HVULao corpus has no IPA gold, so these are completeness and rendering metrics only. The 100-word schema-6 comparison separately confirms 100% segmental/tonal output coverage while keeping confidence rates at 97%/91%.
+
