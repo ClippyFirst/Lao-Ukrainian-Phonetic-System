@@ -722,3 +722,38 @@ Tone alignment status counts: NOT_ALIGNED 920, ORDER_ALIGNED 10, PARTIAL 4. The 
 **Task ledger:** Hybrid v2 1k sentence-domain run DONE_VERIFIED (stress/coverage only); 100% Ukrainian rendering DONE_VERIFIED; complete segmental IPA PARTIAL; parseable tonal IPA PARTIAL; per-syllable tone association PARTIAL; independent IPA accuracy BLOCKED (requires independently adjudicated IPA gold); neural input acceptance TODO/evidence-limited (define safe policy for 66 explicit rejections; never truncate or strip silently). Browser integration remains DEFERRED until a supported inference backend is available.
 
 The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2_hvulao_1k.py` already implement this test. Do not duplicate it inside the older three-engine benchmark workflow.
+
+
+## GitHub Pages Hybrid v2 port continuation — 2026-11-09
+
+**Starting main:** `673e36fddcbed7f073a448bf54cd1edf44a6b10f`.  
+**Work branch:** `feat/pages-hybrid-v2-browser`.
+
+### Reconciled browser state
+
+The current static Pages application runs `web/app.js` → `web/engine.js` with the deterministic hybrid profile. The optional Python Hybrid v2 tonal model is not currently present in the Pages artifact. No ONNX model, tokenizer assets or ONNX Runtime Web bundle were found in the deployed source tree.
+
+### Branch implementation
+
+- `PARTIAL`: browser-side external IPA parser and unique contour association added in `web/hybrid-v2.js`.
+- `PARTIAL`: regression tests added in `web/hybrid-v2.test.js` and wired into `npm test`.
+- The implementation accepts raw tonal IPA from an explicit inference provider; it does not yet perform inference.
+- A dedicated design/evidence record was added at `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md`.
+
+### Evidence / unresolved work
+
+The latest Hybrid v2 stress run [#42680434577](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42680434577), artifact [13701914558](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42680434577/artifacts/13701914558), reports 934 raw neural outputs / 1,000 rows, 228 parseable outputs, 706 unsupported-IPA parse results, 10 order-aligned rows, 4 partial tone rows and zero unexpected runtime errors. It is not an accuracy benchmark because HVULao has no IPA reference.
+
+**Task ledger**
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Identify current Pages runtime | DONE_VERIFIED | Existing Pages app is deterministic hybrid only |
+| Browser Hybrid v2 combination boundary | PARTIAL | Implemented on work branch; exact CI and parity evidence pending |
+| ONNX export of exact pinned tonal checkpoint | TODO | Custom encoder–decoder export + tokenizer export and parity required |
+| Browser-local inference | TODO | Need tokenizer, decoder, beam search and WASM runtime; no server calls |
+| Pages static model/runtime assets | TODO | Must be included in deployment artifact with checksums and size budget |
+| UI integration and deployment | TODO | Separate raw tonal IPA / parse / alignment / UNCERTAIN output and live Pages smoke test |
+
+The model card reports Apache-2.0, 33.6M parameters and a 128-token limit. Transformers.js supports general text-to-text tasks but its published model architecture support does not establish compatibility with this exact BERT `EncoderDecoderModel`; custom ONNX inference is the working route to validate. See the [canonical port record](../../research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md).
+
+**Readiness:** current main deployment remains deterministic-only. Full neural Hybrid v2 is not yet hosted. Do not merge or deploy the partial branch as a completed neural engine.
