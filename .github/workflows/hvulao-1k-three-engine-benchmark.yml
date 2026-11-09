@@ -1,6 +1,13 @@
 name: HVULao 1k three-engine stress benchmark
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/hvulao-1k-three-engine-benchmark.yml"
+      - "scripts/benchmark_hvulao_1k_three_engines.py"
+      - "src/lao_ukrainian/**"
   pull_request:
     branches:
       - "feat/deterministic-mekongphon-reference-profile-20261108"

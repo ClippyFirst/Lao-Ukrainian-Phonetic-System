@@ -3,6 +3,7 @@ name: MekongPhon deterministic rule-profile benchmark
 on:
   push:
     branches:
+      - main
       - "feat/deterministic-mekongphon-reference-profile-20261108"
       - "feat/hybrid-deterministic-lao-engine-20261108"
     paths:
