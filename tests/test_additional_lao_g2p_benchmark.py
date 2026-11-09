@@ -1,9 +1,14 @@
 import unittest
 
-from scripts.benchmark_additional_lao_g2p import has_runtime_errors
+from scripts.benchmark_additional_lao_g2p import has_runtime_errors, renderable_external_prediction
 
 
 class AdditionalLaoG2PBenchmarkTests(unittest.TestCase):
+    def test_empty_or_missing_external_prediction_is_explicit_unknown(self):
+        self.assertEqual(renderable_external_prediction(""), "?")
+        self.assertEqual(renderable_external_prediction(None), "?")
+        self.assertEqual(renderable_external_prediction("kʰa"), "kʰa")
+
     def test_zero_runtime_errors_is_successful(self):
         self.assertFalse(has_runtime_errors([{"unexpected_errors": 0}]))
 
