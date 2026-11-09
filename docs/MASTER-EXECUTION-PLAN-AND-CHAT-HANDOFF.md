@@ -2722,3 +2722,11 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Temporary failed Verify runs during implementation were investigated: one exposed the AEW synthetic example's real labialized-onset ambiguity; another exposed a missing browser matcher branch for medial `◌ັຽ`. Both were corrected and the code checkpoint above passed. Do not count the earlier failures as passes.
 - 100% coverage claim is deliberately bounded: 83/83 assigned codepoints have a typed role or passthrough, and valid input is rendered with explicit provisional/unknown handling. This is not 100% standalone IPA coverage or phonetic accuracy. Pali/Sanskrit and Khmu are recognized but remain outside modern-Lao phonology; U+0EC6 repetition expansion is deferred until lexical word/phrase scope can be resolved.
 - Remaining research blocker: independent expert-adjudicated IPA gold remains 0 records. Manual accessibility QA also remains open.
+
+
+### Final grapheme coverage verification — 2026-11-09
+
+- Exact code/test head `dcc363bee42e3ed53c9b1c45c31b336e8483da06` passed Verify [#42579401059](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42579401059).
+- Results: 292 Python tests passed; 146 Node/browser tests passed; 19 Chromium UI tests passed. Repository data/evidence and independent IPA gold schema audits passed; external G2P harness syntax/CLI passed; locked npm install, build, canonical browser-data generation, generated-artifact drift and built-page/relative-asset checks passed.
+- All 83 assigned Lao Unicode 18 codepoints are asserted in both runtimes to have a typed grapheme role or explicit orthographic/numeric passthrough. Six added composite-vowel spellings have shared test coverage. Lao ellipsis is preserved as punctuation.
+- No local shell run is claimed. Exact-head hosted CI is the verification evidence. Expert IPA gold remains 0 records; repetition-marker expansion and separate Pali/Khmu profiles remain deferred.
