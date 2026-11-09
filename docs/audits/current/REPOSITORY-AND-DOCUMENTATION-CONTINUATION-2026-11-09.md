@@ -551,3 +551,15 @@ The `lo-pron` source registry now pins its direct and first-level data dependenc
 - Wiktionary: all 100 exact page revisions and source lengths match the manifest; all 100 Lao sections call `lo-pron`. Direct and first-level dependencies are pinned as of the dump cutoff; the full transitive Lua module closure remains PARTIAL.
 - Benchmark v5: pinned model weights and train/eval disjointness are verified, but the 100-word held-out vocabulary was also used for validation-sentence generation/checkpoint selection. The 100-word result is not independent model-selection-free accuracy.
 - Current open PR: #145 only; not merged because the neural-first proposal conflicts with the adopted hybrid-deterministic architecture.
+
+## Coverage-quality objective and diagnostic instrumentation — 2026-11-09
+
+The product objective is 100% practical rendering coverage on supported real-world inputs and best-in-class measured transcription quality against competing Lao G2P engines on identical inputs. These must not be conflated: provisional placeholders/passthrough can satisfy a rendering contract but never count as accepted IPA or phonetic accuracy.
+
+The HVULao 1k benchmark has been upgraded to schema 1.4. It now aggregates every syllable withheld from accepted IPA (including withheld syllables inside otherwise partially successful sentences), typed IPA-result status, and parser/phonology uncertainty categories. Aggregates only are retained; source sentences and per-item predictions remain unpersisted. Regression tests cover accepted IPA, provisional/unsupported IPA, passthrough and missing typed results.
+
+- Implementation: scripts/benchmark_hvulao_1k_three_engines.py.
+- Tests: tests/test_hvulao_coverage_diagnostics.py.
+- Verification on intermediate commit 2434cb946ec54e71a4763ec9c2a8c6a1286ddf2b: Verify #42647429908 SUCCESS; 319 Python tests and 19 Chromium tests passed.
+- Benchmark schema 1.4 exact-head run and latest Verify are pending at the time of this audit update. No coverage improvement or quality gain is claimed from diagnostics alone.
+- Next acceptance: inspect the aggregate failure distribution, prioritize source-grounded fixes for the largest categories, add regression cases, and rerun the same pinned corpus plus the three-engine identical-item comparisons. Independent IPA gold is still required for an accuracy claim.
