@@ -86,6 +86,8 @@ jobs:
           grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js' dist/index.html
           grep -q 'hero-specimen' dist/index.html
+          grep -q 'id="run-hybrid-v2"' dist/index.html
+          grep -q 'id="hybrid-v2-ipa"' dist/index.html
           grep -q 'copy-feedback' dist/index.html
           grep -q 'skip-link' dist/index.html
           grep -q 'skip-link' dist/system.html
@@ -132,6 +134,8 @@ jobs:
           grep -q 'Apache License' /tmp/hybrid-v2-LICENSE
           test -s /tmp/ort-wasm-simd-threaded.mjs
           grep -q 'id="lao-input"' /tmp/index.html
+          grep -q 'id="run-hybrid-v2"' /tmp/index.html
+          grep -q 'id="hybrid-v2-ipa"' /tmp/index.html
           grep -q 'src="./web/app.js' /tmp/index.html
           grep -q '<title>' /tmp/system.html
           test -s /tmp/app.js && test -s /tmp/data.js && test -s /tmp/styles.css
