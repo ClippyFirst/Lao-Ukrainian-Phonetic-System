@@ -286,8 +286,18 @@ def main() -> int:
                 f"ONNX token parity failed for {text!r}: "
                 f"PyTorch={expected_ids!r}; ONNX={actual_ids!r}"
             )
+        with torch.no_grad():
+            beam5_expected_ids = model.generate(
+                **encoded,
+                max_length=MAX_SEQUENCE_LENGTH,
+                num_beams=5,
+                early_stopping=True,
+            )[0].tolist()
+        beam5_decoded = decoder_tokenizer.decode(beam5_expected_ids, skip_special_tokens=True)
         parity_rows.append({
             "input": text,
+            "beam5_expected_ids": beam5_expected_ids,
+            "beam5_decoded": beam5_decoded,
             "token_count": token_count,
             "encoder_input_ids": encoded["input_ids"][0].tolist(),
             "encoder_attention_mask": encoded["attention_mask"][0].tolist(),
