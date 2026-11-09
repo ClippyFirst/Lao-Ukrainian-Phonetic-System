@@ -11,14 +11,6 @@ function trailingSlash(value) {
   return value.endsWith("/") ? value : value + "/";
 }
 
-function joinModelDirectory(root, child) {
-  const base = trailingSlash(root);
-  if (/^https?:\/\//u.test(base) || /^file:/u.test(base)) {
-    return new URL(child + "/", base).href;
-  }
-  return base + child + "/";
-}
-
 function flattenTensor(value) {
   if (value && typeof value.tolist === "function") {
     return value.tolist().flat(Infinity).map(Number);
@@ -70,7 +62,7 @@ async function fetchJson(url, label) {
 async function loadStaticTokenizer(modelRoot, directory, supplied) {
   if (supplied) return supplied;
   const base = trailingSlash(modelRoot);
-  const directoryUrl = /^https?:\\/\\//u.test(base) || /^file:/u.test(base)
+  const directoryUrl = base.startsWith("http://") || base.startsWith("https://") || base.startsWith("file:")
     ? new URL(directory + "/", base).href
     : base + directory + "/";
   const [tokenizerJson, tokenizerConfig] = await Promise.all([
