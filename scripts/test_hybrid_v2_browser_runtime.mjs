@@ -11,12 +11,13 @@ import { combineNeuralTones } from "../web/hybrid-v2.js";
 const modelRoot = path.resolve(process.argv[2] ?? "artifacts/hybrid-v2-browser");
 const manifest = JSON.parse(await fs.readFile(path.join(modelRoot, "manifest.json"), "utf8"));
 env.localModelPath = `${modelRoot}${path.sep}`;
+env.allowLocalModels = true;
 env.allowRemoteModels = false;
 const wasmDirectory = path.resolve("node_modules/onnxruntime-web/dist") + path.sep;
 const wasmRoot = pathToFileURL(wasmDirectory).href;
 
-const encoderTokenizer = await AutoTokenizer.from_pretrained("encoder_tokenizer");
-const decoderTokenizer = await AutoTokenizer.from_pretrained("decoder_tokenizer");
+const encoderTokenizer = await AutoTokenizer.from_pretrained(path.join(modelRoot, "encoder_tokenizer"));
+const decoderTokenizer = await AutoTokenizer.from_pretrained(path.join(modelRoot, "decoder_tokenizer"));
 for (const fixture of manifest.parity_fixtures) {
   const encoded = encoderTokenizer(fixture.input);
   const inputIds = encoded.input_ids.tolist().flat(Infinity).map(Number);
