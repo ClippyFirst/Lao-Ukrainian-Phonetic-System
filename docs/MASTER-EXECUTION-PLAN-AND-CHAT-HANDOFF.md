@@ -2995,3 +2995,12 @@ The first Git-blob hash correction itself contained an over-escaped NUL literal;
 - Verify [#42597327636 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42597327636): 309 Python, 147 Node/browser, 19 Chromium; schema, data/evidence, external harness, locked dependencies, build, generated-data drift and built-page checks passed.
 - The initial dataset-test run #42596900066 failed only because the new test referenced undefined `ROOT`; fixed in the following commit. A subsequent review caught and fixed an incorrect plain-SHA versus Git-blob-SHA comparison; the final suite includes a positive Git object hash test.
 - The optional helper and new file remain outside production analysis. All hints retain `SOFT_HINT_ONLY`; no lexical boundary is asserted and no IPA/G2P or Ukrainian rendering is affected.
+
+
+## Provenance follow-up — raw Wiktionary source and corrected LaoNLP counts (2026-11-09)
+
+The four Wiktionary sample items have now been verified from raw source wikitext at exact revisions: ກະດານ 66396667 (`{{lo-pron|ກະ-ດານ}}`), ການແປ 66459544 (`{{lo-pron|ການ-ແປ}}`), ຂໍກະແຈ 68829138 (`{{lo-pron|ຂໍ-ກະ-ແຈ}}`), and ຝົນ 85069045 (`{{lo-pron}}`). Pinned generator: Module:lo-pron oldid 88555975 (2025-12-13T03:19:42Z); wrapper Template:lo-pron oldid 79053402 (2024-04-27T13:31:09Z); documentation oldid 76254409. The Lua module maps graphemes to segmental IPA and separate Vientiane/Luang Prabang tone patterns. Thus these four IPA records are template-generated, not manually entered. This is sample evidence only, not a corpus-wide estimate. Full provenance still needs per-item original wikitext and dependency revision pins.
+
+Correction to previous CSV shorthand: 51,257 LaoNLP records comprise 21 exact repeated headers, 3 malformed header-like rows, and 3 ID-only rows. There are 35,078 distinct non-header LaoWord forms, 11,195 repeated forms, 36 non-header blank Type values, and 7 blank Pronunciation values (3 ID-only). The previous statement “24 repeated headers” is replaced by this breakdown. The CSV remains excluded because Pronunciation is Latin romanization, and it is unsuitable as word-boundary gold.
+
+No production code, IPA tables, canonical browser data or generated artifacts were changed. Readiness remains research-ready engineering prototype, not linguistically release-ready.
