@@ -2736,3 +2736,35 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 
 - Documentation snapshot `d4d477edea541f6674353a3f459fe7f5032c40af` passed exact-head Verify [#42579520016 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42579520016): 292 Python, 146 Node, 19 Chromium; data/evidence audit, generated-data reproducibility, build and built-page checks all passed.
 - The final follow-on commit contains only the audit/handoff evidence update; its own exact-head Verify is required before calling the repository's final HEAD fully verified.
+
+
+## Lao G2P literature and benchmark protocol continuation — 2026-11-09
+
+- Continued from current `main` after the grapheme coverage checkpoint. No runtime phonology, production adapter, benchmark predictions or generated browser assets were changed in this research-only continuation.
+- Updated `data/evidence/sources.csv` with:
+  - `SRC-HANSAKUNBUNTHEUNG-GRAPHONEME-2016`: O-COCOSDA 2016 many-to-many graphoneme alignment; paper reports 91.28% Lao word accuracy on its own dictionary. Exact data/split/tone/license/code details remain unverified.
+  - `SRC-SIGMORPHON-2021-G2P` and `SRC-SIGMORPHON-2022-G2P`: official shared-task protocol sources; methodological references, not Lao test sets.
+  - `SRC-CHARSUIG2P-2022`: multilingual ByT5 G2P; inspected source metadata shows a Lao WikiPron broad-IPA source TSV with Apache-2.0 metadata, but this does not establish that Lao is included in the trained/evaluated model.
+- Updated `data/evidence/claims.csv` with evidence-gated candidate claims for graphoneme alignment, SIGMORPHON protocol adaptation and CharsiuG2P support uncertainty.
+- Appended research findings and acceptance gates to `docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md`.
+- Research workspace created: [Undermind Lao G2P research](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081). Durable memo: [benchmark and engine findings](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=%2Fresearch%2Fbenchmark-and-engine-findings-2026-11-09.md). Comprehensive literature search remains in progress: [Lao G2P engines and benchmark datasets](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=%2FLao%20G2P%20engines%20and%20benchmark%20datasets).
+- Relevant research:
+  - Hansakunbuntheung & Thatphithakkul report 91.28% Lao word accuracy for graphoneme alignment, DOI 10.1109/ICSDA.2016.7919010. This is a candidate result on their own dictionary, not independently reproduced.
+  - SIGMORPHON 2022 defines 100-example, 1,000-example and cross-lingual-transfer conditions; Lao is not an official target language. Any Lao use must be labelled SIGMORPHON-inspired.
+  - CharsiuG2P's repository has Lao WikiPron source metadata at inspected commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4`; actual Lao model coverage is not yet established.
+  - Ueda (1994) supports a five-tone central Vientiane profile; LDC Babel documentation uses a six-tone analysis because low-tone phonemic status is disputed. Benchmark tone conventions must remain explicit.
+- Existing engine inventory remains intact: MekongPhon Neural, Lao2IPA, Epitran, Transphone, LanguageNet/Phonetisaurus, orthography2ipa, Goruut, deterministic Vientiane/MekongPhon-reference profiles. Existing 100-word results are dictionary-reference concordance, not independent accuracy. Existing HVULao 1k results are coverage/stress only, not IPA accuracy.
+- PR reconciliation: PR #156 is still open/draft and its branch has diverged from current main (93 ahead / 50 behind; merge base `819c2528...`). Its file list includes benchmark scripts/workflows and overlapping canonical audit/handoff files. Do not merge blindly. PR #148 and PRs #137–#147 remain open; no PR or branch was modified/closed in this pass.
+- Task ledger:
+  - DONE_VERIFIED: source registry entries and research claims added; research inventory addendum written.
+  - PARTIAL: CharsiuG2P repository-level Lao source discovery; model language support and inference not yet verified.
+  - BLOCKED: reproduce graphoneme paper result; original data/code/split and licensing details unavailable from inspected abstract.
+  - TODO: design a SIGMORPHON-inspired Lao 100/1,000/transfer split, contingent on a truly held-out and rights-cleared test set.
+  - BLOCKED: independent expert IPA gold remains 0 adjudicated records; issue #99 requires human annotators/adjudicator.
+  - BLOCKED: production linguistic sign-off remains unavailable without independent expert evidence.
+- GitHub commits created on `main` in this continuation:
+  - `da04f984d751e3ec5be5c8d273c0ec8c8b94640a` — source registry additions.
+  - `85dd6b29d1ddc9096c024aaf57f4eee344598ac8` — claim registry additions.
+  - `7b96f3445c784d2d4f2887ed7f175d8e2968ee84` — research inventory addendum.
+- Verification boundary: no local checkout/shell execution was available in this connector-only pass. No tests or benchmark were run here. A fresh exact-head Verify on the final main commit is still required before calling this continuation engineering-verified.
+- Readiness: research-ready evidence/prototype; not linguistically release-ready.
