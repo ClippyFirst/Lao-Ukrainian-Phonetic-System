@@ -186,6 +186,31 @@
       "id": "VOWEL-AM",
       "surface": "ກຳ",
       "phonemic_ipa": "kam"
+    },
+    {
+      "id": "VOWEL-OE-LONG-GLIDE",
+      "surface": "ເກີຍ",
+      "phonemic_ipa": "kɤːj"
+    },
+    {
+      "id": "VOWEL-O-LONG-GLIDE",
+      "surface": "ໂກຍ",
+      "phonemic_ipa": "koːj"
+    },
+    {
+      "id": "VOWEL-AE-LONG-GLIDE",
+      "surface": "ແກວ",
+      "phonemic_ipa": "kɛːw"
+    },
+    {
+      "id": "VOWEL-AO-LONG-GLIDE",
+      "surface": "ກອຍ",
+      "phonemic_ipa": "kɔːj"
+    },
+    {
+      "id": "VOWEL-AA-LONG-NYO-GLIDE",
+      "surface": "ກາຽ",
+      "phonemic_ipa": "kaːj"
     }
   ]
 }
