@@ -378,3 +378,14 @@ The updated external comparator JSON reports both `output_coverage` and `engine_
 | Preserve Ukrainian target output through deterministic typed IPA adapter | DONE_VERIFIED by unit contract; CI pending | Tests assert target rendering is unchanged by neural tone overlay |
 | Neural tone category/contour alignment and uncertainty provenance | PARTIAL | Unit tests added; corpus-wide alignment rate and tone CER must be measured |
 | Promote hybrid-v2 to default / browser UI | DEFERRED | Requires benchmark superiority, browser-compatible deployed inference backend, and no regression on HVULao coverage |
+
+
+## Hybrid v2 dual-lane result — 2026-11-09
+
+The corrected v2 contract does not concatenate deterministic segmentals with neural contours into a synthetic IPA string. The 100-word benchmark showed that such fusion damaged tonal CER because neural tone placement is not equivalent to appending contours after deterministic phones. Hybrid v2 therefore reports separate, provenance-preserving lanes:
+
+- Segmental IPA and Ukrainian target output: ClippyFirst deterministic hybrid.
+- Full tonal IPA: untouched pinned MekongPhon Neural output.
+- Optional per-syllable neural tone categories: emitted only when the tone-symbol sequence has one unique decomposition into registered contours matching deterministic syllable count; each remains `UNCERTAIN`.
+
+The benchmark now scores the two lanes independently and reports neural tone-association coverage separately from accepted project tone confidence. It does not claim a fused full IPA stream.

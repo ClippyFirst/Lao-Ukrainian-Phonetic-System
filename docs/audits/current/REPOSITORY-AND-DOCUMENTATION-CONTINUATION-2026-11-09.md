@@ -669,3 +669,8 @@ The neural comparator completed IPA for 934/1,000 sentences (93.4%), but 66 inpu
 ### Hybrid v2 alignment correction
 
 The first schema-7.0 run exposed that MekongPhon often emits multi-syllable IPA without explicit dot delimiters. The original parser-boundary gate therefore withheld tones on 51/100 words and scored worse than the deterministic baseline (tonal CER 19.91%, 46/100 exact versus 11.39%, 69/100 for the baseline's Mekong-convention contours). The v2 aligner now extracts the ordered tone-symbol stream and accepts it only when there is exactly one decomposition into registered MekongPhon contours matching the deterministic syllable count. Multiple/no decompositions remain withheld. This is order-based syllable alignment, not an acoustic or expert-adjudicated boundary claim. New same-split benchmark pending.
+
+
+## Hybrid v2 dual-lane correction — 2026-11-09
+
+The order-aligned synthetic-string benchmark was still worse than the original hybrid (14.96% tonal CER, 62/100 exact versus 11.39%, 69/100). The reason is that tone-symbol order can be associated with syllables, but neural tone placement relative to segmental phones is not recoverable from that count alone. Hybrid v2 has therefore been corrected to preserve two separate lanes: ClippyFirst segmental IPA/Ukrainian output and untouched MekongPhon full tonal IPA. Unique contour decomposition is used only for optional per-syllable metadata, explicitly UNCERTAIN; no artificial merged IPA is generated. The new same-split benchmark reports the best measured per-field results independently.

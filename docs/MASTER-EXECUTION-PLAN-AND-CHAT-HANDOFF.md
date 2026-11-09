@@ -3230,3 +3230,8 @@ Implemented an opt-in second hybrid in `src/lao_ukrainian/hybrid_v2.py` and CLI 
 ### Hybrid v2 alignment correction
 
 The first v2 benchmark revealed that the neural decoder omits explicit syllable delimiters on many multi-syllable outputs. The strict parser-boundary gate withheld 51/100 words and regressed tonal CER to 19.91% (46/100 exact). The aligner was changed to parse the ordered tone-symbol stream into a unique sequence of registered contours with length exactly equal to the deterministic syllable count. This supports multi-syllable output without guessing boundaries; ambiguous contour decompositions are still withheld. The corrected same-split benchmark and exact-head Verify are pending.
+
+
+## Hybrid v2 dual-lane contract — 2026-11-09
+
+Do not synthesize one IPA string by appending neural tone contours to deterministic segmental phones: the same-split trial regressed tonal CER to 14.96% (62/100 exact), worse than the original deterministic hybrid's 11.39% (69/100 exact). The current v2 implementation keeps the best measured fields separate: ClippyFirst segmental IPA and Ukrainian output, untouched MekongPhon tonal IPA, plus optional UNCERTAIN per-syllable tone metadata when a unique ordered contour decomposition matches the deterministic syllable count. This is a two-lane result, not a fused IPA string. Same-split score and exact-head CI determine promotion.

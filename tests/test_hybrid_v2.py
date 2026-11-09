@@ -5,29 +5,27 @@ from lao_ukrainian.hybrid_v2 import combine_neural_tones
 
 
 class HybridV2Tests(unittest.TestCase):
-    def test_neural_tone_overlay_keeps_deterministic_segmental_ipa_and_target(self):
+    def test_two_lanes_preserve_deterministic_target_and_full_neural_tonal_ipa(self):
         baseline = analyze("ຂາ")
         original = baseline.syllables[0]
+        raw = "kʰaː˧˥"
         result = combine_neural_tones(
-            baseline, "kʰaː˧˥",
+            baseline, raw,
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
-        updated = result.analysis.syllables[0]
         self.assertEqual(result.tone_alignment_status, "ORDER_ALIGNED")
-        self.assertEqual(result.tone_overlays, 1)
-        self.assertEqual(updated.phonemic_ipa, original.phonemic_ipa)
-        self.assertEqual(updated.practical_ukrainian, original.practical_ukrainian)
-        self.assertEqual(updated.tone_contour, "˧˥")
-        self.assertEqual(updated.phonetic_result.tone_category, "high-rising")
-        self.assertTrue(all(segment.certainty == "UNCERTAIN" for segment in updated.phonetic_result.segments if segment.kind == "tone"))
-        self.assertEqual(updated.phonetic_result.phonemic_ipa, original.phonetic_result.phonemic_ipa)
-        self.assertIn(
-            "HYBRID-V2:DETERMINISTIC-SEGMENTAL+NEURAL-TONE",
-            updated.rules,
-        )
+        self.assertEqual(len(result.tone_predictions), 1)
+        prediction = result.tone_predictions[0]
+        self.assertEqual(prediction.contour, "˧˥")
+        self.assertEqual(prediction.category, "high-rising")
+        self.assertEqual(prediction.certainty, "UNCERTAIN")
+        self.assertEqual(result.tonal_ipa, raw)
+        self.assertEqual(result.analysis.syllables[0].phonemic_ipa, original.phonemic_ipa)
+        self.assertEqual(result.analysis.syllables[0].tone_contour, original.tone_contour)
+        self.assertEqual(result.analysis.syllables[0].practical_ukrainian, original.practical_ukrainian)
 
-    def test_two_syllables_require_exact_alignment_and_preserve_per_syllable_tones(self):
+    def test_multisyllable_tones_are_associated_by_unique_order_without_delimiters(self):
         result = combine_neural_tones(
             analyze("ຂາຢາ"),
             "kʰaː˩˧jaː˧˥",
@@ -36,32 +34,34 @@ class HybridV2Tests(unittest.TestCase):
         )
         self.assertEqual(result.tone_alignment_status, "ORDER_ALIGNED")
         self.assertEqual(result.aligned_syllables, 2)
-        self.assertEqual(result.tone_overlays, 2)
         self.assertEqual(
-            [item.tone_contour for item in result.analysis.syllables],
-            ["˩˧", "˧˥"],
+            [(item.syllable_index, item.contour) for item in result.tone_predictions],
+            [(0, "˩˧"), (1, "˧˥")],
         )
 
-    def test_syllable_count_mismatch_withholds_all_neural_tones(self):
-        baseline = analyze("ຂາຢາ")
+    def test_syllable_count_mismatch_withholds_association_but_preserves_raw_tonal_ipa(self):
+        raw = "kʰaː˧˥"
         result = combine_neural_tones(
-            baseline, "kʰaː˧˥",
+            analyze("ຂາຢາ"), raw,
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
         self.assertEqual(result.tone_alignment_status, "NOT_ALIGNED")
-        self.assertEqual(result.tone_overlays, 0)
+        self.assertEqual(result.tone_predictions, ())
+        self.assertEqual(result.tonal_ipa, raw)
         self.assertTrue(any("SEQUENCE-NOT-UNIQUELY-ALIGNED" in warning for warning in result.warnings))
 
-    def test_unsupported_neural_ipa_withholds_tones(self):
+    def test_unsupported_neural_ipa_withholds_association_and_preserves_raw(self):
+        raw = "ɕaː˧˥"
         result = combine_neural_tones(
-            analyze("ຂາ"), "ɕaː˧˥",
+            analyze("ຂາ"), raw,
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
         self.assertEqual(result.tone_alignment_status, "NOT_ALIGNED")
-        self.assertEqual(result.tone_overlays, 0)
-        self.assertIn("NEURAL-IPA-UNSUPPORTED; tone overlay withheld", result.warnings)
+        self.assertEqual(result.tone_predictions, ())
+        self.assertEqual(result.tonal_ipa, raw)
+        self.assertTrue(any("NEURAL-IPA-UNSUPPORTED" in warning for warning in result.warnings))
 
     def test_unknown_contour_is_not_promoted(self):
         result = combine_neural_tones(
@@ -69,18 +69,18 @@ class HybridV2Tests(unittest.TestCase):
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
-        self.assertEqual(result.tone_overlays, 0)
+        self.assertEqual(result.tone_predictions, ())
         self.assertEqual(result.skipped_tone_units, 1)
 
     def test_input_analysis_is_not_mutated(self):
         baseline = analyze("ຂາ")
-        original_contour = baseline.syllables[0].tone_contour
+        before = baseline.syllables[0].phonetic_result
         combine_neural_tones(
             baseline, "kʰaː˧˥",
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
-        self.assertEqual(baseline.syllables[0].tone_contour, original_contour)
+        self.assertEqual(baseline.syllables[0].phonetic_result, before)
 
 
 if __name__ == "__main__":

@@ -1,19 +1,19 @@
-"""Second evidence-gated Lao G2P hybrid.
+"""Second evidence-gated Lao G2P hybrid with separate best-in-class lanes.
 
-The deterministic ClippyFirst engine remains authoritative for segmental IPA
-and Ukrainian rendering. The pinned MekongPhon tonal model contributes only a
-syllable-aligned tone contour. No neural segmental output is substituted into
-the deterministic IPA stream.
+ClippyFirst remains authoritative for segmental IPA and Ukrainian rendering.
+The pinned MekongPhon tonal model supplies an untouched full tonal IPA stream.
+Tone contours are associated with deterministic syllables only when a unique
+ordered contour decomposition matches the deterministic syllable count.
+No artificial mixed IPA string is constructed.
 """
 from __future__ import annotations
 
-from copy import deepcopy
-from dataclasses import asdict, dataclass, replace
+from dataclasses import asdict, dataclass
 from typing import Any
 
 from .core import analyze
 from .mekongphon import MekongPhonEngine
-from .model import Analysis, PhoneticSegment
+from .model import Analysis
 from .phonetic_result import from_external_ipa
 
 MEKONG_CONTOUR_TO_CATEGORY = {
@@ -49,8 +49,20 @@ def _unique_tone_sequence(symbols: str, syllable_count: int) -> tuple[str, ...] 
 
 
 @dataclass(frozen=True)
+class NeuralTonePrediction:
+    """A model-supplied contour associated with one deterministic syllable."""
+
+    syllable_index: int
+    source_surface: str
+    contour: str
+    category: str
+    certainty: str = "UNCERTAIN"
+    provenance: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class HybridV2Result:
-    """Inspectable result with independent provenance for both stages."""
+    """Two independent IPA lanes plus optional order-aligned tone metadata."""
 
     analysis: Analysis
     model_id: str
@@ -58,12 +70,24 @@ class HybridV2Result:
     neural_raw_ipa: str
     tone_alignment_status: str
     aligned_syllables: int
-    tone_overlays: int
+    tone_predictions: tuple[NeuralTonePrediction, ...]
     skipped_tone_units: int
     warnings: tuple[str, ...] = ()
 
+    @property
+    def tonal_ipa(self) -> str:
+        """Return the neural tonal IPA unchanged; never rebuild it from phones."""
+        return self.neural_raw_ipa
+
+    @property
+    def ukrainian(self) -> str:
+        return "".join(item.practical_ukrainian or "?" for item in self.analysis.syllables)
+
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        payload["tonal_ipa"] = self.tonal_ipa
+        payload["ukrainian"] = self.ukrainian
+        return payload
 
 
 def combine_neural_tones(
@@ -73,16 +97,16 @@ def combine_neural_tones(
     model_id: str,
     model_revision: str,
 ) -> HybridV2Result:
-    """Overlay only recognized neural tone contours with exact syllable alignment.
+    """Keep deterministic output intact and attach uniquely aligned tone predictions.
 
-    The neural model's segmental phones are deliberately ignored. A contour is
-    accepted only when the whole neural IPA string is parseable and its ordered
-    tone-symbol stream has exactly one decomposition into registered contours
-    whose count matches the deterministic syllable count. Potential minor
-    syllables with unresolved deterministic tone are not assigned a neural
-    tone from orthography alone.
+    The neural model's segmental phones and their positions are never used to
+    rewrite deterministic IPA. Its raw tonal IPA is preserved byte-for-byte
+    (after the adapter's NFC parse only for diagnostics). A tone sequence is
+    associated with syllables only if it has exactly one decomposition into
+    registered MekongPhon contours matching the deterministic syllable count.
+    Potential minor syllables with unresolved deterministic tone are not
+    assigned a neural category from orthography alone.
     """
-    analysis = deepcopy(deterministic_analysis)
     trace = (
         "HYBRID-V2",
         "TONE-SOURCE:MEKONGPHON-TONAL",
@@ -91,79 +115,67 @@ def combine_neural_tones(
     )
     parsed = from_external_ipa(neural_raw_ipa, provenance=trace)
     phonetic_syllables = [
-        item for item in analysis.syllables if item.status != "PASSTHROUGH"
+        item for item in deterministic_analysis.syllables
+        if item.status != "PASSTHROUGH"
     ]
     tone_symbols = "".join(
         segment.ipa for segment in parsed.segments if segment.kind == "tone"
     )
-
     warnings: list[str] = []
     if parsed.status != "SUPPORTED":
-        warnings.append("NEURAL-IPA-UNSUPPORTED; tone overlay withheld")
+        warnings.append("NEURAL-IPA-UNSUPPORTED; raw tonal IPA preserved; tone association withheld")
         return HybridV2Result(
-            analysis, model_id, model_revision, neural_raw_ipa,
-            "NOT_ALIGNED", 0, 0, len(phonetic_syllables), tuple(warnings),
+            deterministic_analysis, model_id, model_revision, neural_raw_ipa,
+            "NOT_ALIGNED", 0, (), len(phonetic_syllables), tuple(warnings),
         )
+
     contours = _unique_tone_sequence(tone_symbols, len(phonetic_syllables))
     if contours is None:
         warnings.append(
-            "NEURAL-TONE-SEQUENCE-NOT-UNIQUELY-ALIGNED; tone overlay withheld "
+            "NEURAL-TONE-SEQUENCE-NOT-UNIQUELY-ALIGNED; raw tonal IPA preserved; "
+            "syllable-level association withheld "
             f"({len(tone_symbols)} tone symbols for {len(phonetic_syllables)} deterministic syllables)"
         )
         return HybridV2Result(
-            analysis, model_id, model_revision, neural_raw_ipa,
-            "NOT_ALIGNED", 0, 0, len(phonetic_syllables), tuple(warnings),
+            deterministic_analysis, model_id, model_revision, neural_raw_ipa,
+            "NOT_ALIGNED", 0, (), len(phonetic_syllables), tuple(warnings),
         )
-    warnings.append("NEURAL-TONE-SEQUENCE-ALIGNED-BY-ORDER; no explicit syllable delimiters required")
 
-    overlays = 0
+    warnings.append(
+        "NEURAL-TONE-SEQUENCE-ALIGNED-BY-ORDER; raw tonal IPA remains a separate lane"
+    )
+    predictions: list[NeuralTonePrediction] = []
     skipped = 0
-    for syllable, contour in zip(phonetic_syllables, contours):
-        category = MEKONG_CONTOUR_TO_CATEGORY.get(contour)
+    for index, (syllable, contour) in enumerate(zip(phonetic_syllables, contours)):
         current = syllable.phonetic_result
+        category = MEKONG_CONTOUR_TO_CATEGORY[contour]
         if (
-            category is None
-            or current is None
+            current is None
             or current.status not in _ACCEPTED_SEGMENTAL_STATUSES
             or current.tone_category is None
         ):
             skipped += 1
             continue
-
-        uncertainty = list(current.uncertainty)
-        uncertainty.append("NEURAL-TONE-PREDICTION-NOT-INDEPENDENTLY-ADJUDICATED")
-        uncertainty.append("NEURAL-TONE-SEQUENCE-ALIGNED-BY-ORDER")
+        predictions.append(NeuralTonePrediction(
+            syllable_index=index,
+            source_surface=syllable.surface,
+            contour=contour,
+            category=category,
+            certainty="UNCERTAIN",
+            provenance=trace + ("ALIGNMENT:ORDER-ONLY",),
+        ))
         if current.tone_category != category:
-            uncertainty.append(
-                f"DETERMINISTIC-NEURAL-TONE-DISAGREEMENT:{current.tone_category}->{category}"
+            warnings.append(
+                f"DETERMINISTIC-NEURAL-TONE-DISAGREEMENT:{index}:"
+                f"{current.tone_category}->{category}"
             )
-        tone_segments = tuple(
-            PhoneticSegment(symbol, "tone", trace, "UNCERTAIN")
-            for symbol in contour
-        )
-        syllable.phonetic_result = replace(
-            current,
-            segments=(*current.segments, *tone_segments),
-            syllable_boundaries=(0, len(current.segments) + len(tone_segments)),
-            tone_category=category,
-            tone_contour_ipa=contour,
-            provenance=tuple(dict.fromkeys((*current.provenance, *trace))),
-            uncertainty=tuple(dict.fromkeys(uncertainty)),
-        )
-        syllable.tone = category
-        syllable.tone_contour = contour
-        syllable.rules = [
-            *syllable.rules,
-            "HYBRID-V2:DETERMINISTIC-SEGMENTAL+NEURAL-TONE",
-        ]
-        overlays += 1
 
     if skipped:
-        warnings.append(f"NEURAL-TONE-UNUSED-OR-UNRESOLVED:{skipped}")
+        warnings.append(f"NEURAL-TONE-UNASSOCIATED-UNRESOLVED-SYLLABLES:{skipped}")
     status = "ORDER_ALIGNED" if skipped == 0 else "PARTIAL"
     return HybridV2Result(
-        analysis, model_id, model_revision, neural_raw_ipa,
-        status, len(contours), overlays, skipped, tuple(warnings),
+        deterministic_analysis, model_id, model_revision, neural_raw_ipa,
+        status, len(contours), tuple(predictions), skipped, tuple(warnings),
     )
 
 
