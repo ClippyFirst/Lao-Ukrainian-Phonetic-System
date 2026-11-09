@@ -153,3 +153,76 @@ A Lao adaptation must be named **SIGMORPHON-inspired**, never official SIGMORPHO
 | Add CharsiuG2P as same-split benchmark engine | BLOCKED / evidence-limited | Need proof Lao is supported by the selected model/checkpoint and a reproducible inference route |
 | Create SIGMORPHON-inspired Lao 100/1,000/transfer experiment | TODO / design-gated | Requires a frozen test set independent of tuning and an auditable nested split; transfer donor must be justified |
 
+## Written-evidence continuation — no-audio improvement path (2026-11-09)
+
+The user cannot provide audio. This does not prevent useful engineering work, but it changes the acceptance contract: improve the deterministic hybrid using inspectable written evidence, and do not claim acoustic or independently adjudicated accuracy.
+
+### New written sources and what they can support
+
+- **Enfield (2007), *A Grammar of Lao*, §3.1, pp. 33–34**: gives the C0V0C1V1V2C2 word template. Optional minor C0V0 has no distinctive tone independent of its major syllable; in Enfield's described variety V0 is short /a, i, u/ with no length contrast, and C0 is a restricted onset subset. However, the preface describes everyday informal speech from semi-rural villagers, not a narrowly defined standard Vientiane sample. This is strong phonological structure evidence but must not be copied wholesale into the Vientiane-specific tone engine.
+- **Ueda (1994)**: central Vientiane-specific description reports five tones and one exceptional non-final open /a/ minor syllable that is unstressed and tone-neutral. The current implementation's narrow potential-minor-open-A warning is consistent with this bounded statement; do not expand it to all /a i u/ merely from Enfield's distinct sample.
+- **Osatananda (1997), *Tone in Vientiane Lao***: analyzes one Vientiane variety with five lexical tones, final stress and underlying lexical tone on every syllable, rather than tone mechanically derived by grapheme-class rules. This is a serious alternative phonological analysis. It means the current orthographic tone table should be described as a deterministic spelling-to-tone prediction convention/profile, not a complete universal account of lexical tone. It supports conservative uncertainty and lexical overrides where independently documented; it does not justify changing every existing rule without an aligned lexicon.
+- **Phissamay et al. (2007), *Syllabification of Lao Script for Line Breaking***: documents a rule-based orthographic syllable segmentation procedure and reports more than 98% results, but the accessible paper does not provide enough split/evaluation detail for reproduction. It is about syllable boundaries for line breaking, not lexical word segmentation or IPA. LaoNLP implements a related regex method based on this paper.
+- **LaoNLP 1.3.0**: package code is Apache-2.0. Its syllable tokenizer publishes the exact example 'ພາສາລາວໃນປັດຈຸບັນ' → 'ພາ | ສາ | ລາວ | ໃນ | ປັດ | ຈຸ | ບັນ'; this is now a regression fixture for segmentation parity, not pronunciation gold. The bundled lao-eng-dictionary.csv has a separate MIT license notice from the E-Government Center, Ministry of Posts and Telecommunications of Laos. It is a lexical resource, not an IPA dictionary.
+- **Kaikki/Wiktextract Lao dictionary**: the current page reports a 5.2 MB machine-readable Lao dictionary extracted from the 2026-10-01 English Wiktionary dump. It contains pronunciation fields, but Wiktextract explicitly expands programmatic Lua pronunciation modules as well as manually entered pronunciations. Therefore it is a secondary diagnostic source, not a uniform independent IPA gold set. Underlying Wiktionary content is CC BY-SA 4.0/GFDL; attribution and share-alike obligations apply to redistributed derivative material.
+- **Wiktionary lo-pron**: a Lao pronunciation/rhyme/hyphenation generator. Compare its behavior only as a second implementation; do not treat agreement with it as independent evidence because it is rule-generated.
+
+### Practical changes made
+
+- Added source records for Osatananda, Phissamay et al., LaoNLP, the separately licensed LaoNLP dictionary, Kaikki/Wiktextract, and Wiktionary lo-pron.
+- Added evidence claims that explicitly preserve dialect, analysis, and provenance boundaries.
+- Added the LaoNLP-published segmentation example to tests/test_multisyllable_segmentation.py. The test requires both the parser segmentation and full analysis to retain all seven syllables with IPA output. It is a structural parity fixture only.
+- No new IPA values, tone categories, Ukrainian outputs, or lexical pronunciations were invented or copied from non-reusable dictionaries.
+
+### Next useful text-only engineering steps
+
+1. Run the new published-example regression against Python and browser implementations; fix only reproducible segmentation defects.
+2. Inspect the MIT LaoNLP dictionary as a candidate lexical word-boundary resource after verifying its file-specific license and schema. Do not treat its headwords as pronunciation records.
+3. Extract a small Wiktionary/Kaikki diagnostic sample and classify each IPA record by provenance: explicit human IPA vs lo-pron template-generated vs other. Keep these as secondary concordance only, not gold.
+4. Add lexical exceptions only when the spelling-to-pronunciation mapping is explicitly supported by a reusable source and its dialect/variant is known.
+5. Keep phrase-level tone sandhi, stress and reduced-minor-syllable behavior analysis-dependent unless the written source gives an exact, testable condition.
+
+### Methodological boundary
+
+No-audio does not mean no verification. We can verify orthographic coverage, syllable segmentation, deterministic reproducibility, consistency against multiple written descriptions, and exact concordance with attributed written lexical records. We cannot honestly claim acoustic fidelity, prosodic naturalness, or independent phonetic accuracy from those checks alone.
+
+### Additional dialect, stress and lexical-history evidence
+
+The completed Undermind review surfaced several useful written studies:
+
+- **Lew (2014), DOI 10.1080/17586801.2013.846843**: analyzes Lao grapheme–phoneme correspondences and orthographic structure, while stressing that Lao dialects differ in lexicon, vowels and especially tones. Supports the IPA-first graphemic architecture but also explicit dialect scope.
+- **Lao Language Specific Peculiarities — Dialects (2015)**: reports that ໃ and ໄ are pronounced the same in Vientiane but differently in Luang Prabang. The existing Vientiane vowel registry maps both spellings to the same /ai/ nucleus while retaining distinct source graphemes; this is consistent with that written profile. Do not reuse this equivalence for Luang Prabang.
+- **Enfield (2020), “Word in Lao,” DOI 10.1093/oso/9780198865681.003.0007**: describes phonological feet, each with one stressed tone-bearing syllable and one or more dependent unstressed syllables. Grammatical-word boundaries do not always coincide with phonological-word boundaries. This strengthens the case for keeping phrase/word-level stress and dependent-syllable interpretation separate from syllable parsing.
+- **Davis (2015), “The Story of Lao r”**: describes historical /r/ loss, /r/ becoming /h/ in some conditions and /l/ elsewhere, plus cluster loss and loanword complications. Keep ຣ as analysis-dependent/lexeme-sensitive where the modern reading cannot be resolved from the grapheme alone; do not impose a universal unconditional mapping.
+- **Sengsoulin (2009), “Pali and Sanskrit words in Lao language”**: supports a distinct historical/orthographic loanword layer. Modern native-Lao tone and coda rules should not be mechanically applied to Indic etymological spelling without a word-specific modern reading.
+- **Yanagimura (2011), “Contextual Tonal Variations in Vientiane Lao”**: studies all 25 bitonal sequences from five lexical tones and reports stronger carryover than anticipatory effects in F0 realization. The engine's isolated lexical tone label is not a full phrase-level phonetic contour; keep contextual realization outside the current spelling-only contract.
+- **WikiPron (Lee et al., 2020)**: a Wiktionary-derived multilingual pronunciation resource. Lao-specific coverage, annotation provenance and dialect still need verification; do not count it as a Lao baseline or gold set yet.
+
+These sources reinforce three conservative implementation principles: (1) maintain a declared Vientiane profile; (2) preserve lexeme-level uncertainty for historical and Indic loan spellings; and (3) do not infer phrase-level stress or contextual tone contours from isolated orthographic syllables alone.
+
+### LaoNLP lexical resources: exact scope and access boundary
+
+- Inspected `laonlp/corpus/Lao-Dictionary.txt` from LaoNLP. Its header attributes the 2013 word list to Brian Eugene Wilson and Robert Martin Campbell, with thanks to Arlyta Keosamone and Bualong Nyoukmai. It contains a BSD-style redistribution notice, is about 77 KB, and says it was created for word wrapping with compound words mostly reduced to their component parts. It contains orthographic items, names and borrowed forms but no IPA. Treat it as a candidate lexical hint list, not a complete word-boundary gold set.
+- Separately, `laonlp/corpus/lao-eng-dictionary.csv` has its own MIT notice from the E-Government Center, Ministry of Posts and Telecommunications of Laos. The GitHub contents endpoint does not expose the 2.73 MB file body in this connector session, and the connected Firecrawl account had no credits for the raw-file inspection. Its header/schema/rows therefore remain uninspected; do not integrate it or claim its fields until a reproducible fetch is available.
+- The two resources have different origins and licenses; neither license should be inferred from the LaoNLP package's Apache-2.0 code license.
+
+
+### Soft lexical-boundary hint prototype — 2026-11-09
+
+The upstream BSD word list was fetched in full (77,274 UTF-8 characters; 11,208 non-comment entries in this pinned response; upstream blob SHA-1 `ca5346a1971a7712ac3c50988140c376859174e3`). Its original attribution and BSD-style notice are retained verbatim in `data/lao/lexical-hints/Lao-Dictionary.txt`.
+
+Added an optional diagnostic-only matcher in `src/lao_ukrainian/lexical_hints.py`. It joins contiguous syllable spans and returns every matching orthographic entry with zero-based, end-exclusive offsets. It retains overlapping alternatives, labels them `SOFT_HINT_ONLY`, and never chooses word boundaries. It is not imported by the production parser, IPA/G2P path, target adapter, or browser bundle.
+
+The source list's word-wrapping purpose and compound reduction make it unsuitable as lexical segmentation gold. The diagnostic can expose candidate spans for later review, but cannot establish that a listed string is a lexical word in a given context. Its inclusion is permitted under the retained BSD-style notice. The separate 2.73 MB MIT CSV remains excluded until a complete reproducible fetch and schema inspection are available.
+
+Acceptance: unit tests prove multi-match overlap retention, default exclusion of single-syllable entries, and no mutation of the syllable sequence. These are software-contract tests, not linguistic accuracy measurements.
+
+
+### Exact-head verification status for the lexical-hint prototype
+
+The lexical-hint helper and tests are committed, but the GitHub connector did not trigger Actions after updating the branch ref. Five isolated behavioral checks passed; this is not repository CI. The implementation remains PARTIAL until the full Verify workflow passes on the branch head. Do not transfer the previous branch-head test counts to this commit.
+
+
+### Lexical hint exact-head verification — 2026-11-09
+
+At code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966`, Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python, 147 Node/browser-engine and 19 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks passed. The deterministic-profile benchmark [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448) also completed without runtime errors. The new lexical-hint layer is diagnostic-only; no production G2P behavior changed. Documentation-only updates below require another exact-head Verify.

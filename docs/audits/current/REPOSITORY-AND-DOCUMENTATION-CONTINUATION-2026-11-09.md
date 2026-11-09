@@ -237,3 +237,102 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 - Results: 292 Python tests, 146 Node/browser-engine tests, 19 Chromium UI tests; IPA gold schema, repository data/evidence audit, external-G2P harness syntax/CLI, locked npm install, build, generated browser-data reproducibility/drift and built-page/relative-asset checks all passed.
 - The research-only continuation changed no runtime code, parser data or generated browser assets. This Verify is engineering/regression evidence only; it does not close the independent IPA gold or expert sign-off blockers.
 - The audit/handoff update after this checkpoint is documentation-only; the final handoff commit still receives its own exact-head Verify.
+
+## No-audio written-evidence continuation — 2026-11-09
+
+### Decision and scope
+
+- User cannot provide audio. Do not make audio delivery or new expert listening a prerequisite for continued engineering.
+- Accepted evidence classes: primary written phonological descriptions, published IPA examples, attributed lexicons, Unicode/orthographic specifications, source-code inspection of published deterministic analyzers, and reproducible text-only tests.
+- Not accepted as established by this evidence alone: acoustic fidelity, prosodic naturalness, independent IPA accuracy, or unqualified claims about all Lao dialects.
+
+### New source findings
+
+- Enfield (2007) §3.1 describes an optional minor C0V0 before the major syllable, with no independent tone, and V0 short /a i u/ in his sample. His preface characterizes informal semi-rural speech; do not silently transplant this whole analysis to the project's Vientiane profile.
+- Ueda (1994) specifically documents the central Vientiane exceptional non-final open /a/ minor syllable. Existing conservative potential-minor-open-A withholding remains bounded to that evidence.
+- Osatananda (1997) describes one Vientiane variety with five lexical tones and an underlying lexical-tone analysis rather than mechanical tone derivation. This reinforces that grapheme-class rules are an orthographic prediction profile, not a universal explanation of lexical tone.
+- Phissamay et al. (2007) provide a rule-based Lao orthographic syllabification algorithm for line breaking and report >98%, but accessible material does not give enough benchmark detail to reproduce the figure.
+- LaoNLP 1.3.0 code is Apache-2.0 and includes a regex syllable tokenizer based on Phissamay et al.; its bundled lao-eng-dictionary.csv has a distinct MIT license notice. The dictionary is lexical, not IPA.
+- Kaikki/Wiktextract's 2026-10-01 English Wiktionary extraction includes a machine-readable Lao dictionary with IPA fields, but programmatically expanded Lua pronunciation modules are included alongside manual entries. Use only as secondary diagnostics after provenance classification; underlying Wiktionary data is CC BY-SA 4.0/GFDL.
+- Wiktionary lo-pron is a generated pronunciation module, not independent IPA gold.
+
+### Changes on dedicated branch
+
+- Branch: research/written-evidence-phonology-2026-11-09, based on main SHA 4570c5ff4733476601e02c791517ac36944d6a46.
+- Added source and claim records for the written phonology, Lao syllabification, LaoNLP, MIT dictionary, Kaikki/Wiktextract and Wiktionary lo-pron.
+- Added the published LaoNLP segmentation example ພາສາລາວໃນປັດຈຸບັນ → ພາ | ສາ | ລາວ | ໃນ | ປັດ | ຈຸ | ບັນ as a Python and browser regression fixture. This is structural implementation parity, not pronunciation gold.
+- Added a research inventory addendum describing the no-audio improvement path and licensing/provenance limits.
+- No runtime phonology or target adaptation changes were made because the newly found sources do not justify a safe unambiguous rule change. In particular, Enfield's broader minor-syllable template is not substituted for Ueda's narrower Vientiane-specific evidence.
+
+### Task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Register new written sources and evidence claims | DONE_VERIFIED (registry edits; CI pending) | Each source's dialect, scope and rights limits recorded |
+| Add LaoNLP published segmentation fixture to Python and browser tests | PARTIAL | Exact-head PR Verify required; fix any failing boundary or IPA outputs |
+| Expand minor-syllable tone rule from /a/ to /a i u/ | DEFERRED | Enfield sample differs in scope from central Vientiane; exact C0 onset inventory and mapping not established |
+| Add LaoNLP word dictionary to production segmentation | BLOCKED pending data inspection | Need schema, size, exact word-boundary semantics, and clean reproducible import; not an IPA source |
+| Use Kaikki/Wiktionary IPA as diagnostic data | TODO | Need classify manual vs Lua-generated records and record per-entry provenance/licensing |
+| Add lexical pronunciation exceptions | TODO | Only with explicit reusable source, dialect/variant and IPA provenance |
+| Independent acoustic validation | DEFERRED | User cannot provide audio; no claims of acoustic fidelity will be made |
+
+### Verification
+
+- Connector-only changes; no local shell was available.
+- A draft PR will be opened to trigger the repository's PR Verify workflow because the current push trigger does not include research/**.
+- No runtime data/generated browser artifact changed. Final acceptance depends on hosted CI for the exact branch head.
+
+### Additional written evidence from completed literature review
+
+- Added Lew (2014), Enfield (2020), Lao dialect LSP (2015), Davis (2015), Sengsoulin (2009), Yanagimura (2011) and WikiPron (2020) to the source registry and claims.
+- The Vientiane LSP supports the existing same-/ai/ mapping for ໃ and ໄ in Vientiane while warning against applying it to Luang Prabang.
+- Enfield (2020) supports a foot-based model: one stressed tone-bearing syllable with dependent unstressed syllables; grammatical and phonological word boundaries may differ. This argues against inferring phrase prosody from the current isolated-syllable parser.
+- Davis (2015) supports treating historical ຣ as context/lexeme-sensitive (/h/ in some historical conditions, /l/ elsewhere), not as a universal phoneme mapping.
+- Yanagimura (2011) documents contextual F0 effects across 25 Vientiane bitonal sequences. Current IPA tone categories remain lexical/word-level; phrase-level realization is explicitly outside this engine's current contract.
+- WikiPron Lao coverage/provenance remains unverified; it is not admitted as a benchmark or gold source.
+- Updated research inventory with these source findings and implementation implications.
+
+### Verification checkpoint for first test batch
+
+- PR #157 initial exact branch head 47d63361ec22a60bf2fb6e3fd6a4f682c86d7fdc passed Verify #42583598265 — SUCCESS: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42583598265
+- Results on that head: 293 Python tests, 147 Node/browser-engine tests, 19 Chromium UI tests; all pass. Repository data/evidence audit, IPA gold schema, external-G2P harness syntax/CLI, locked npm install, build, generated-data reproducibility/drift and built-page/relative-asset checks passed.
+- Subsequent commits add only evidence registry and research documentation; they still require a fresh exact-head PR Verify.
+
+### Final exact-head verification of written-evidence branch
+
+- Final audit/handoff branch checkpoint `cc05c0d40954d14fd84c6a716918b3755c1436df` passed exact-head Verify [#42583884292 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42583884292).
+- Results: 293 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests; all passed. IPA gold schema, repository data/evidence audit, external-G2P harness syntax/CLI, locked install, build, generated browser-data reproducibility/drift, and built-page/relative-asset checks also passed.
+- No runtime phonology or target-adapter code changed. The new segmentation example is a written-source structural parity test only.
+- The final handoff update that follows this audit commit is documentation-only and will receive a fresh exact-head Verify.
+
+### LaoNLP lexical resource inspection boundary
+
+- Inspected the 77 KB `Lao-Dictionary.txt` word list. Its own BSD-style header says it was created for word wrapping and that compounds have mostly been reduced to their parts. It has orthographic items but no IPA; it is a candidate hint list, not lexical segmentation gold.
+- Confirmed a separate MIT notice for `lao-eng-dictionary.csv`, distinct from the package Apache-2.0 license. The CSV is 2.73 MB and the connector's GitHub contents endpoint did not expose its body; the connected Firecrawl account had no credits. Its schema and rows remain uninspected, so it is not integrated.
+- Recorded these distinctions in the source/claim registries and research inventory. No lexical resource was copied into the production runtime.
+
+
+### Soft lexical-boundary hint prototype — 2026-11-09
+
+- **DONE_VERIFIED — exact-head Verify passed on `4637aeabd2d2d8b317ccdfe736f8185c9dcad966`; documentation-only follow-up below still needs exact-head Verify.** retained the complete upstream BSD notice and attribution with the LaoNLP word list at `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- Added optional diagnostic `src/lao_ukrainian/lexical_hints.py`; it reports every multi-syllable lexicon match, preserves overlapping alternatives and labels them `SOFT_HINT_ONLY`. It does not alter syllable segmentation, IPA, Ukrainian rendering, production parser behavior or browser artifacts.
+- Added focused unit tests for list loading/deduplication, overlap preservation, default minimum span, input immutability and invalid arguments; exact-head CI remains the acceptance gate.
+- This is a candidate-boundary aid only. The source says it was made for line wrapping and compounds are mostly reduced to parts; it is not word-boundary gold.
+- The distinct 2.73 MB MIT CSV remains **BLOCKED** pending a complete reproducible fetch, schema review, field-level provenance and independent decision on its intended use.
+
+
+### Exact-head verification blocker — lexical hint commit
+
+- Branch HEAD: `c67a0b17f917f2c718044757ea6d6904b0db1e4d` (CI trigger-path adjustment included).
+- The `verify.yml` push filter now includes `research/**`, but the GitHub connector's ref updates did not create a workflow run; `fetch_commit_workflow_runs` returned an empty list for the exact head. No workflow-dispatch action is available through the connected GitHub tools.
+- Exact-head Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests passed; IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked npm install, build, generated-data reproducibility/drift and built-page/relative-asset checks passed.
+- Five isolated behavioral checks also passed before CI; repository CI is the authoritative acceptance evidence.
+- A related deterministic-profile benchmark workflow [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448) completed with no runtime errors and retained the previously documented held-out comparison profile (not independent accuracy).
+- Code batch is DONE_VERIFIED for the exact head above. Any subsequent documentation-only commit still needs its own exact-head Verify.
+
+
+### Exact-head completion — lexical hint prototype
+
+- Code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966` passed Verify #42585140497 — SUCCESS: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks all passed.
+- Deterministic-profile benchmark #42585140448 also passed; no runtime errors. Its 100-row held-out scores are comparative concordance, not independent phonetic accuracy.
+- The code batch is DONE_VERIFIED. This audit update itself is documentation-only and will receive a new exact-head Verify.

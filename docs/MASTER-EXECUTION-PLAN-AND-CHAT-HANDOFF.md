@@ -2800,3 +2800,56 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Exact-head Verify [#42582308449 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42582308449) passed on that commit: 292 Python tests, 146 Node/browser-engine tests, 19 Chromium UI tests; IPA-gold schema, repository data/evidence audit, external-G2P syntax/CLI, clean locked npm install, browser tests, build, generated-data reproducibility/drift and built-page/relative-asset checks all passed.
 - No runtime code, phonology rules, target adapter, canonical Lao parser data, generated browser data or benchmark output changed in this research continuation. No local shell test is claimed.
 - Final status: research-ready engineering/evidence prototype; not linguistically release-ready. Remaining blockers: independent expert-adjudicated IPA gold (0 records), graphoneme paper reproduction/data rights, SIGMORPHON-inspired held-out Lao split, and human linguistic sign-off. PR #156 remains open/draft and divergent; other open PRs were left untouched.
+
+## No-audio written-evidence continuation — 2026-11-09
+
+- User cannot provide audio. The continuation therefore uses primary written descriptions, published IPA examples, attributed lexical resources, and deterministic text-only tests. No audio or acoustic accuracy is claimed.
+- Dedicated branch: research/written-evidence-phonology-2026-11-09, based on main 4570c5ff4733476601e02c791517ac36944d6a46.
+- Draft PR #157: https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/157. No merge performed.
+- Added written sources and claims: Osatananda 1997, Phissamay et al. 2007, LaoNLP 2022, MIT Lao-English dictionary notice, Kaikki/Wiktextract, Wiktionary lo-pron, Lew 2014, Lao dialect LSP 2015, Enfield 2020, Davis 2015, Sengsoulin 2009, Yanagimura 2011 and WikiPron 2020.
+- Added the published LaoNLP segmentation example ພາສາລາວໃນປັດຈຸບັນ -> ພາ | ສາ | ລາວ | ໃນ | ປັດ | ຈຸ | ບັນ to Python and browser regression tests.
+- The first PR branch head 47d63361ec22a60bf2fb6e3fd6a4f682c86d7fdc passed Verify #42583598265: 293 Python, 147 Node/browser-engine and 19 Chromium tests. All checks passed. This is before later documentation/evidence-only commits; a fresh exact-head run is required.
+- No runtime phonology, IPA rules, target adaptation, or generated browser data were changed. No source dictionary was copied into production.
+- Enfield's wider C0V0 minor-syllable model is not generalized to Vientiane because his sample scope differs from Ueda's central Vientiane profile. Current potential-minor-open-A behavior remains conservative.
+- Osatananda's underlying lexical-tone analysis, Enfield's feet, Davis's historical ຣ, Sengsoulin's Indic loans, and Yanagimura's contextual tone effects are documented as scope limits and future lexical/phrase-level work, not silently converted into unsupported rules.
+- LaoNLP package code is Apache-2.0; its bundled Lao-English dictionary has a separate MIT notice. Kaikki/Wiktionary material requires CC BY-SA/GFDL attribution/share-alike; Wiktextract includes programmatically generated pronunciations, so entries are not uniform independent gold. WikiPron Lao coverage is unverified.
+- Remaining feasible next tasks: exact-head CI; inspect and potentially use the MIT LaoNLP lexical dictionary for segmentation only; classify Kaikki/Wiktionary IPA provenance; investigate documented lexeme-specific ຣ and Indic-loan exceptions. Do not claim acoustic accuracy or promote generated pronunciation data as expert gold.
+
+### Final written-evidence continuation checkpoint
+
+- Final code/test checkpoint before audit close: `cc05c0d40954d14fd84c6a716918b3755c1436df`.
+- Exact-head Verify [#42583884292 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42583884292): 293 Python, 147 Node/browser-engine and 19 Chromium tests passed; data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks passed.
+- Audit-register update commit: `b81e509f8c6f36d7a0f48fc988ce30a204644160`.
+- This handoff update is the last documentation change; exact-head Verify for the resulting branch head is still required.
+
+### Lexical resource inspection handoff
+
+- Added the BSD-style Lao-Dictionary word list as `SRC-LAONLP-WORDLIST-BSD-2013`. Its own header says it was created for word wrapping and compounds are mostly reduced to parts; it has no IPA. It may be evaluated as a lexical hint list, not as word-boundary gold.
+- Added a separate claim and inventory/audit notes for that word list.
+- The distinct 2.73 MB LaoNLP `lao-eng-dictionary.csv` has a separate MIT notice, but its body/schema could not be inspected: the GitHub contents endpoint did not return the oversized body, and Firecrawl had no credits. Do not import it until a full reproducible fetch and schema review are available.
+- No dictionary or word list was copied into production. The PR remains draft pending exact-head CI.
+
+
+### Soft lexical-boundary hint prototype — 2026-11-09
+
+- User approved continuing with written evidence only; audio is not available and is not a prerequisite for text-only engineering.
+- Fetched the complete 77,274-character LaoNLP BSD word list (11,208 non-comment entries in the inspected snapshot; upstream blob SHA-1 `ca5346a1971a7712ac3c50988140c376859174e3`) and retained its original header/attribution in `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- Added `src/lao_ukrainian/lexical_hints.py`, an optional diagnostic that reports all multi-syllable orthographic list matches with offsets and `SOFT_HINT_ONLY` authority. It retains overlaps and does not select word boundaries or feed the production parser, IPA/G2P, Ukrainian target adapter or browser engine.
+- Added focused tests; exact-head Verify must confirm the final commit before marking the code batch DONE_VERIFIED.
+- The source's own header says it was created for word wrapping and compounds were mostly reduced to parts. Thus the hint list is not a lexical segmentation gold corpus; false positives and incomplete compound coverage are expected.
+- The separate 2.73 MB MIT `lao-eng-dictionary.csv` still cannot be inspected because the connected GitHub file endpoint returns an empty body even for line-range requests and the raw-file fetch rejects the oversized response. Keep it BLOCKED and out of runtime until a complete fetch, schema and provenance audit are available.
+
+
+### Exact-head CI status for lexical hint prototype
+
+- Current branch HEAD before this note: `c67a0b17f917f2c718044757ea6d6904b0db1e4d`.
+- Added `research/**` to the Verify workflow push branches so research branches are covered. Connector ref updates still did not dispatch a run; exact-head `fetch_commit_workflow_runs` returned no runs. No workflow-dispatch tool is available in this session.
+- Five isolated behavioral checks of the helper passed, but this is not a repository test run. The code batch remains PARTIAL pending exact-head GitHub Actions Verify.
+
+
+### Exact-head verification result — lexical hint prototype
+
+- Code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966` passed Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python tests, 147 Node/browser-engine tests, 19 Chromium UI tests; schema, data/evidence audit, external-G2P harness, locked install, build, generated-data reproducibility/drift and built-page checks passed.
+- Deterministic MekongPhon profile benchmark [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448); no runtime errors, comparative results remain non-independent reference concordance.
+- The new lexical-hint helper and list are code-verified; no runtime phonology or browser artifacts changed. The separate 2.73 MB MIT CSV remains blocked pending full body/schema retrieval.
+- This handoff update is documentation-only and requires a fresh exact-head Verify.
