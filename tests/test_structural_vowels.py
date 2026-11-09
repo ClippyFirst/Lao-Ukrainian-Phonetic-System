@@ -48,6 +48,22 @@ class TestStructuralVowels(unittest.TestCase):
         self.assertEqual(result.syllables[0].vowel, "IA")
         self.assertEqual(result.syllables[0].phonemic_ipa, "kiə")
 
+    def test_source_attested_glide_vowel_spellings_are_parsed(self):
+        cases = {
+            "ເກີຍ": ("OEY", "kɤːj", "кей"),
+            "ໂກຍ": ("OOY", "koːj", "кой"),
+            "ແກວ": ("AEW", "kɛːw", "кев"),
+            "ກອຍ": ("AOY", "kɔːj", "кой"),
+            "ກາຽ": ("AAJ", "kaːj", "кай"),
+        }
+        for surface, (vowel_id, ipa, ukrainian) in cases.items():
+            with self.subTest(surface=surface):
+                syllable = analyze(surface).syllables[0]
+                self.assertEqual(syllable.vowel, vowel_id)
+                self.assertEqual(syllable.phonemic_ipa, ipa)
+                self.assertEqual(syllable.practical_ukrainian, ukrainian)
+                self.assertIsNotNone(syllable.tone)
+
     def test_unattested_preposed_e_plus_ya_withholds_phonetic_output(self):
         result = analyze("ເກຽ")
         self.assertIsNone(result.syllables[0].phonemic_ipa)
