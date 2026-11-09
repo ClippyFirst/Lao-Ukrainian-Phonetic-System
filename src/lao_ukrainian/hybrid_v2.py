@@ -13,7 +13,7 @@ from typing import Any
 
 from .core import analyze
 from .mekongphon import MekongPhonEngine
-from .model import Analysis
+from .model import Analysis, PhoneticSegment
 from .phonetic_result import from_external_ipa
 
 MEKONG_CONTOUR_TO_CATEGORY = {
@@ -76,11 +76,11 @@ def combine_neural_tones(
     """Overlay only recognized neural tone contours with exact syllable alignment.
 
     The neural model's segmental phones are deliberately ignored. A contour is
-    accepted only when the whole neural IPA string is parseable, the number of
-    dot/space-delimited neural syllables exactly matches the deterministic
-    parser, and that syllable contains one registered MekongPhon contour.
-    Potential minor syllables with unresolved deterministic tone are not
-    assigned a neural tone from orthography alone.
+    accepted only when the whole neural IPA string is parseable and its ordered
+    tone-symbol stream has exactly one decomposition into registered contours
+    whose count matches the deterministic syllable count. Potential minor
+    syllables with unresolved deterministic tone are not assigned a neural
+    tone from orthography alone.
     """
     analysis = deepcopy(deterministic_analysis)
     trace = (
@@ -138,8 +138,8 @@ def combine_neural_tones(
                 f"DETERMINISTIC-NEURAL-TONE-DISAGREEMENT:{current.tone_category}->{category}"
             )
         tone_segments = tuple(
-            replace(segment, provenance=tuple(dict.fromkeys((*segment.provenance, *trace))))
-            for segment in neural_segments if segment.kind == "tone"
+            PhoneticSegment(symbol, "tone", trace)
+            for symbol in contour
         )
         syllable.phonetic_result = replace(
             current,
@@ -163,7 +163,7 @@ def combine_neural_tones(
     status = "ORDER_ALIGNED" if skipped == 0 else "PARTIAL"
     return HybridV2Result(
         analysis, model_id, model_revision, neural_raw_ipa,
-        status, len(spans), overlays, skipped, tuple(warnings),
+        status, len(contours), overlays, skipped, tuple(warnings),
     )
 
 

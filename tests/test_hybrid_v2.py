@@ -33,7 +33,7 @@ class HybridV2Tests(unittest.TestCase):
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
-        self.assertEqual(result.tone_alignment_status, "ALIGNED")
+        self.assertEqual(result.tone_alignment_status, "ORDER_ALIGNED")
         self.assertEqual(result.aligned_syllables, 2)
         self.assertEqual(result.tone_overlays, 2)
         self.assertEqual(
