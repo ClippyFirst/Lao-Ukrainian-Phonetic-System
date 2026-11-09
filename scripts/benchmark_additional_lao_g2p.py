@@ -124,6 +124,11 @@ def run_engine(name: str, predict, rows: list[dict[str, str]]) -> dict[str, obje
     }
 
 
+def has_runtime_errors(results: list[dict[str, object]]) -> bool:
+    """Make unexpected per-input comparator failures fail the benchmark job."""
+    return any(int(result.get("unexpected_errors", 0)) > 0 for result in results)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
@@ -223,7 +228,7 @@ def main() -> int:
         "results": results,
         "accuracy_claim": None,
     }, ensure_ascii=False, indent=2))
-    return 0
+    return 1 if has_runtime_errors(results) else 0
 
 
 if __name__ == "__main__":
