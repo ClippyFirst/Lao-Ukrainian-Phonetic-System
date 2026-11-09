@@ -2845,3 +2845,11 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - Current branch HEAD before this note: `c67a0b17f917f2c718044757ea6d6904b0db1e4d`.
 - Added `research/**` to the Verify workflow push branches so research branches are covered. Connector ref updates still did not dispatch a run; exact-head `fetch_commit_workflow_runs` returned no runs. No workflow-dispatch tool is available in this session.
 - Five isolated behavioral checks of the helper passed, but this is not a repository test run. The code batch remains PARTIAL pending exact-head GitHub Actions Verify.
+
+
+### Exact-head verification result — lexical hint prototype
+
+- Code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966` passed Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python tests, 147 Node/browser-engine tests, 19 Chromium UI tests; schema, data/evidence audit, external-G2P harness, locked install, build, generated-data reproducibility/drift and built-page checks passed.
+- Deterministic MekongPhon profile benchmark [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448); no runtime errors, comparative results remain non-independent reference concordance.
+- The new lexical-hint helper and list are code-verified; no runtime phonology or browser artifacts changed. The separate 2.73 MB MIT CSV remains blocked pending full body/schema retrieval.
+- This handoff update is documentation-only and requires a fresh exact-head Verify.

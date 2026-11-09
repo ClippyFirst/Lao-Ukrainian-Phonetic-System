@@ -221,3 +221,8 @@ Acceptance: unit tests prove multi-match overlap retention, default exclusion of
 ### Exact-head verification status for the lexical-hint prototype
 
 The lexical-hint helper and tests are committed, but the GitHub connector did not trigger Actions after updating the branch ref. Five isolated behavioral checks passed; this is not repository CI. The implementation remains PARTIAL until the full Verify workflow passes on the branch head. Do not transfer the previous branch-head test counts to this commit.
+
+
+### Lexical hint exact-head verification — 2026-11-09
+
+At code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966`, Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python, 147 Node/browser-engine and 19 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks passed. The deterministic-profile benchmark [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448) also completed without runtime errors. The new lexical-hint layer is diagnostic-only; no production G2P behavior changed. Documentation-only updates below require another exact-head Verify.

@@ -314,7 +314,7 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 
 ### Soft lexical-boundary hint prototype — 2026-11-09
 
-- **PARTIAL — exact-head CI not triggered by connector ref update:** retained the complete upstream BSD notice and attribution with the LaoNLP word list at `data/lao/lexical-hints/Lao-Dictionary.txt`.
+- **DONE_VERIFIED — exact-head Verify passed on `4637aeabd2d2d8b317ccdfe736f8185c9dcad966`; documentation-only follow-up below still needs exact-head Verify.** retained the complete upstream BSD notice and attribution with the LaoNLP word list at `data/lao/lexical-hints/Lao-Dictionary.txt`.
 - Added optional diagnostic `src/lao_ukrainian/lexical_hints.py`; it reports every multi-syllable lexicon match, preserves overlapping alternatives and labels them `SOFT_HINT_ONLY`. It does not alter syllable segmentation, IPA, Ukrainian rendering, production parser behavior or browser artifacts.
 - Added focused unit tests for list loading/deduplication, overlap preservation, default minimum span, input immutability and invalid arguments; exact-head CI remains the acceptance gate.
 - This is a candidate-boundary aid only. The source says it was made for line wrapping and compounds are mostly reduced to parts; it is not word-boundary gold.
@@ -325,5 +325,14 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 
 - Branch HEAD: `c67a0b17f917f2c718044757ea6d6904b0db1e4d` (CI trigger-path adjustment included).
 - The `verify.yml` push filter now includes `research/**`, but the GitHub connector's ref updates did not create a workflow run; `fetch_commit_workflow_runs` returned an empty list for the exact head. No workflow-dispatch action is available through the connected GitHub tools.
-- Five focused behavioral checks were executed in an isolated Python reproduction of the new helper and passed. This is not repository CI and does not validate packaging, imports, audit, or the full suite.
-- Keep the code batch PARTIAL until GitHub Actions Verify runs on this exact head and passes. Do not claim the previous 293/147/19 test results apply to this new head.
+- Exact-head Verify [#42585140497 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140497): 298 Python tests, 147 Node/browser-engine tests and 19 Chromium UI tests passed; IPA-gold schema validation, repository data/evidence audit, external-G2P harness syntax/CLI, locked npm install, build, generated-data reproducibility/drift and built-page/relative-asset checks passed.
+- Five isolated behavioral checks also passed before CI; repository CI is the authoritative acceptance evidence.
+- A related deterministic-profile benchmark workflow [#42585140448 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42585140448) completed with no runtime errors and retained the previously documented held-out comparison profile (not independent accuracy).
+- Code batch is DONE_VERIFIED for the exact head above. Any subsequent documentation-only commit still needs its own exact-head Verify.
+
+
+### Exact-head completion — lexical hint prototype
+
+- Code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966` passed Verify #42585140497 — SUCCESS: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks all passed.
+- Deterministic-profile benchmark #42585140448 also passed; no runtime errors. Its 100-row held-out scores are comparative concordance, not independent phonetic accuracy.
+- The code batch is DONE_VERIFIED. This audit update itself is documentation-only and will receive a new exact-head Verify.
