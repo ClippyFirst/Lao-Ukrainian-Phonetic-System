@@ -313,6 +313,15 @@ test("multisyllabic Lao text is segmented without dropping syllables", () => {
   assert.equal(r.syllables.every((s) => s.ipa), true);
 });
 
+test("LaoNLP published syllable-tokenizer example has browser parity", () => {
+  const r = analyze("ພາສາລາວໃນປັດຈຸບັນ");
+  assert.equal(
+    r.syllables.map((s) => s.surface).join("|"),
+    "ພາ|ສາ|ລາວ|ໃນ|ປັດ|ຈຸ|ບັນ",
+  );
+  assert.equal(r.syllables.every((s) => s.ipa), true);
+});
+
 test("unclosed short vowels withhold IPA, Ukrainian output and tone", () => {
   for (const surface of ["ກັ", "ກັອ"]) {
     const result = analyze(surface);
