@@ -5,6 +5,7 @@ import { combineNeuralTones } from "./hybrid-v2.js";
 const DEFAULT_BEAM_SIZE = 5;
 const DEFAULT_MAX_LENGTH = 128;
 const MODEL_SUBDIRECTORY = "hybrid-v2";
+const PASSTHROUGH_PUNCTUATION = new Set([",", "!", "?", ";", ":", "(", ")", "[", "]", "{", "}", "\"", "“", "”", "&", "%", "–", "…", "#", "/", "`", "+", "•", "ຯ"]);
 
 function trailingSlash(value) {
   return value.endsWith("/") ? value : value + "/";
