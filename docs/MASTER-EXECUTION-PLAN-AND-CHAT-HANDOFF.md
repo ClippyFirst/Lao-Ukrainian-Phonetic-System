@@ -3131,3 +3131,15 @@ The final state remains on `main`; no other branch was created for this continua
 ## Verified documentation closeout checkpoint — 2026-11-09
 
 Latest fully verified repository checkpoint before this handoff synchronization: `28556d4cab596b4dc96085d3d709a9bef44f20e2`. Exact-head Verify [#42641467759 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42641467759) passed on that SHA: 319 Python, 147 Node/browser-engine and 19 Chromium UI tests, plus all configured corpus, repository evidence, external harness, locked-install, generated-data and built-site gates. The leading addendum in `docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md` is the latest audit authority. This final synchronization changes documentation only; no production engine, phonological registry, benchmark result or external PR was changed.
+
+## Coverage and competitive-quality objective — 2026-11-09
+
+The product objective is not merely to avoid unsupported IPA. ClippyFirst must pursue (1) 100% practical output coverage on supported real-world input domains, with explicit uncertainty where needed, and (2) best-in-class measured transcription quality against competing engines on the same independently evaluated inputs. These are separate acceptance dimensions; a visible fallback is not counted as phonetic accuracy.
+
+The immediate engineering step adds schema 1.4 diagnostics to the pinned HVULao 1k stress benchmark:
+- count every syllable withheld from accepted IPA, even when other syllables in the same sentence have valid IPA;
+- report typed-result status and parser/phonology uncertainty categories separately;
+- retain aggregate counts only; do not persist source sentences or per-item IPA;
+- preserve the distinction between accepted IPA, provisional placeholders, and passthrough.
+
+This is diagnostic instrumentation, not a coverage or accuracy improvement. The next code changes must be driven by the newly measured dominant failure categories and verified against the existing regression suite and fixed benchmark sets. The competitive target must compare ClippyFirst, Lao2IPA and MekongPhon on identical items and report both full-denominator coverage and shared-covered-subset error. Independent IPA adjudication remains necessary before claiming linguistic accuracy.
