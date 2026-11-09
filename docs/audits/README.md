@@ -4,7 +4,7 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository and documentation continuation — 2026-11-09](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) — current main HEAD, documentation authority, PR #148/#156 reconciliation, G2P research port and remaining acceptance gates.
+- [Repository and documentation continuation — 2026-11-09](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) — current main HEAD, documentation authority, PR #148/#156 reconciliation, G2P research port, 83/83 Lao codepoint handling and exact-head verification.
 
 - [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — historical integrated PR #143 branch state and earlier architecture/PR checkpoint; superseded for current main/PR status.
 - [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.
