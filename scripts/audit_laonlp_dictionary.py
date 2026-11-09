@@ -66,7 +66,7 @@ def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
 
     counts = list(words.values())
     header_like_rows = exact_repeated_headers + malformed_header_like_rows
-    usable_records = total_rows - header_like_rows - placeholder_rows
+    usable_records = total_rows - header_like_rows - placeholder_rows - malformed_width_rows
     return {
         "upstream_commit": UPSTREAM_COMMIT,
         "upstream_blob_sha1": UPSTREAM_BLOB_SHA1,

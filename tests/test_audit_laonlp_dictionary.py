@@ -83,6 +83,21 @@ class LaoNlpDictionaryAuditTests(unittest.TestCase):
         report = json.loads(result.stdout)
         self.assertEqual(report["git_blob_sha1"], expected)
 
+
+    def test_malformed_width_rows_are_excluded_from_usable_count(self):
+        content = (
+            "ID,LaoWord,English,Pronunciation,Type\\n"
+            "1,ກ,first,ka,n\\n"
+            "2,ຂ,malformed,ka\\n"
+        )
+        result = self.run_audit(content)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["rows_after_first_header"], 2)
+        self.assertEqual(report["malformed_width_rows"], 1)
+        self.assertEqual(report["usable_records"], 1)
+        self.assertEqual(report["unique_lao_words"], 1)
+
     def test_wrong_header_fails_closed(self):
         result = self.run_audit("id,word,gloss,pron,type\n1,ກ,first,ka,n\n")
         self.assertEqual(result.returncode, 2)
