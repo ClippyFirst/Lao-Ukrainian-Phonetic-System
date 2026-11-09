@@ -324,6 +324,121 @@ def load_project():
     return predict
 
 
+
+def load_hybrid_v2(neural_predict):
+    """Benchmark deterministic segmentals with exact-aligned neural tone overlays."""
+    from lao_ukrainian.core import analyze
+    from lao_ukrainian.hybrid_v2 import combine_neural_tones
+
+    def predict(text: str) -> dict[str, object]:
+        started = time.perf_counter()
+        analysis = analyze(text)
+        segmental_elapsed = time.perf_counter() - started
+        started = time.perf_counter()
+        neural = neural_predict(text)
+        combined = combine_neural_tones(
+            analysis,
+            str(neural["tonal"]),
+            model_id=TONAL_MODEL_ID,
+            model_revision=TONAL_MODEL_REVISION,
+        )
+        tonal_elapsed = time.perf_counter() - started
+        syllables = combined.analysis.syllables
+        phonetic = [item for item in syllables if item.status != "PASSTHROUGH"]
+        segmental_parts = [renderable_segmental_ipa(item.phonetic_result) for item in phonetic]
+        tonal_parts = [
+            part + (item.phonetic_result.tone_contour_ipa or "?")
+            if item.phonetic_result is not None else part + "?"
+            for item, part in zip(phonetic, segmental_parts)
+        ]
+        segmental_complete = bool(phonetic) and all(segmental_parts)
+        segmental_confidence = bool(phonetic) and all(
+            accepted_phonetic_ipa(item.phonetic_result) for item in phonetic
+        )
+        tonal_confidence = segmental_confidence and all(
+            item.phonetic_result is not None
+            and item.phonetic_result.tone_contour_ipa is not None
+            for item in phonetic
+        )
+        categories = [
+            item.phonetic_result.tone_category
+            if item.phonetic_result is not None
+            and item.phonetic_result.status in {"SUPPORTED", "UNCERTAIN"}
+            else None
+            for item in phonetic
+        ]
+        rendering = {
+            "complete_input": bool(syllables) and all(
+                item.practical_ukrainian is not None for item in syllables
+            ),
+            "analyzed_units": len(syllables),
+            "units_with_rendering": sum(
+                item.practical_ukrainian is not None for item in syllables
+            ),
+            "supported_ipa_units": sum(
+                item.phonetic_result is not None
+                and item.phonetic_result.status == "SUPPORTED" for item in phonetic
+            ),
+            "uncertain_ipa_units": sum(
+                item.phonetic_result is not None
+                and item.phonetic_result.status == "UNCERTAIN" for item in phonetic
+            ),
+            "provisional_ipa_units": sum(
+                item.phonetic_result is not None
+                and item.phonetic_result.status == "PROVISIONAL" for item in phonetic
+            ),
+            "accepted_ipa_units": sum(
+                accepted_phonetic_ipa(item.phonetic_result) for item in phonetic
+            ),
+            "segmental_output_units": sum(bool(value) for value in segmental_parts),
+            "tone_contour_units": sum(
+                bool(item.phonetic_result and item.phonetic_result.tone_contour_ipa)
+                for item in phonetic
+            ),
+            "tonal_output_units": sum(bool(value) for value in tonal_parts),
+            "unknown_marker_units": sum(
+                item.phonetic_result is not None
+                and any(segment.kind == "unknown" for segment in item.phonetic_result.segments)
+                for item in phonetic
+            ),
+            "passthrough_units": sum(item.status == "PASSTHROUGH" for item in syllables),
+        }
+        return {
+            "segmental": nfc("".join(segmental_parts)) if segmental_complete else "",
+            "tonal": nfc("".join(tonal_parts)) if segmental_complete else "",
+            "mekong_tonal": nfc("".join(tonal_parts)) if segmental_complete else "",
+            "status": combined.tone_alignment_status,
+            "warnings": [
+                *[warning for item in syllables for warning in item.warnings],
+                *combined.warnings,
+            ],
+            "tone_categories": categories,
+            "tone_contexts": [],
+            "rendering_coverage": rendering,
+            "segmental_confidence_complete": segmental_confidence,
+            "tonal_confidence_complete": tonal_confidence,
+            "partial_parse_shapes": [
+                {
+                    "onset": item.onset or "",
+                    "vowel": item.vowel or "",
+                    "coda": item.coda or "",
+                    "tone_mark": item.tone_mark or "",
+                    "syllable_type": item.syllable_type or "",
+                    "rules": item.rules,
+                }
+                for item in syllables if item.status != "OK"
+            ],
+            "segmental_seconds": segmental_elapsed,
+            "tonal_seconds": tonal_elapsed,
+            "tone_alignment_status": combined.tone_alignment_status,
+            "aligned_syllables": combined.aligned_syllables,
+            "tone_overlays": combined.tone_overlays,
+            "skipped_tone_units": combined.skipped_tone_units,
+        }
+
+    return predict
+
+
 def load_lao2ipa():
     from lao2ipa import transliterate
 
@@ -773,6 +888,10 @@ def main() -> int:
     )
     engines = {
         "clippyfirst_rule_engine": (load_project(), "repository source"),
+        "clippyfirst_hybrid_v2": (
+            load_hybrid_v2(neural_predict),
+            {"segmental": "ClippyFirst hybrid", "tone": TONAL_MODEL_ID, "revision": TONAL_MODEL_REVISION},
+        ),
         "lao2ipa": (load_lao2ipa(), importlib.metadata.version("lao2ipa")),
         "mekongphon_neural": (neural_predict, neural_provenance),
     }
@@ -1103,8 +1222,38 @@ def main() -> int:
             ),
         }
 
+    hybrid_v2 = engine_predictions["clippyfirst_hybrid_v2"]
+    base_shared = [
+        i for i in range(len(sources))
+        if clippy["segmental"][i] and hybrid_v2["segmental"][i]
+    ]
+    hybrid_tonal_shared = [
+        i for i in range(len(sources))
+        if clippy["mekong_tonal"][i] and hybrid_v2["mekong_tonal"][i]
+    ]
+    shared_comparisons["clippyfirst_hybrid_v2"] = {
+        "segmental_shared_n": len(base_shared),
+        "clippyfirst_segmental": score(
+            [segmental_references[i] for i in base_shared],
+            [clippy["segmental"][i] for i in base_shared],
+        ),
+        "hybrid_v2_segmental": score(
+            [segmental_references[i] for i in base_shared],
+            [hybrid_v2["segmental"][i] for i in base_shared],
+        ),
+        "tonal_shared_n": len(hybrid_tonal_shared),
+        "clippyfirst_mekong_convention_tonal": score(
+            [tonal_references[i] for i in hybrid_tonal_shared],
+            [clippy["mekong_tonal"][i] for i in hybrid_tonal_shared],
+        ),
+        "hybrid_v2_tonal": score(
+            [tonal_references[i] for i in hybrid_tonal_shared],
+            [hybrid_v2["mekong_tonal"][i] for i in hybrid_tonal_shared],
+        ),
+    }
+
     report = {
-        "schema_version": "6.0",
+        "schema_version": "7.0",
         "cross_engine_shared_coverage": shared_comparisons,
         "benchmark": "MekongPhon held-out Lao lexicon, 100 words",
         "dataset": {
@@ -1126,6 +1275,7 @@ def main() -> int:
             "tone_category": "segmental-exact items only; MekongPhon baseline contours ˩˧, ˧˥, ˧, ˧˩, ˥˨ map to named tone categories and are compared as syllable-level tokens",
             "error_analysis": "Top segmental insertions/deletions/substitutions are aggregate NFC code-point alignments; tone disagreements include syllable position and a non-operative candidate-minor-shape diagnostic. Secondary IPA scores remove only optional affricate tie bars U+0361/U+035C; raw scores remain primary. Potential minor-syllable tones are withheld and aggregated separately, not guessed. No source words or complete predictions are retained in the artifact.",
             "contour_convention": "ClippyFirst production contours follow the source-scoped Ueda (1994) numeric-to-IPA conversion; raw contour CER is convention-sensitive and is reported separately from category accuracy",
+            "hybrid_v2_contract": "Segmental IPA is generated by the deterministic ClippyFirst hybrid. Pinned MekongPhon tonal output contributes only a registered per-syllable contour after clean typed-IPA parsing and exact syllable-count alignment; unsupported symbols, unknown contours, unresolved deterministic tone and count mismatches are withheld. Neural segmental phones are never substituted.",
         "potential_minor_syllable_tone": "An initial unmarked short open /a/ shape may be a minor syllable; because orthography alone cannot prove that status, the engine withholds tone rather than inventing a neutral contour.",
             "mekong_convention_conversion": "For comparison only, ClippyFirst tone categories are re-rendered with the MekongPhon rule-baseline contour notation; this does not change production IPA or tone rules",
             "cer": "Unicode code-point Levenshtein distance summed over all items, divided by total reference code points",
