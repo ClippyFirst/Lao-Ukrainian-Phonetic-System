@@ -128,6 +128,28 @@ test("shared Lao labialized onset cluster fixture", () => {
   }
 });
 
+test("source-attested Lao glide-vowel spellings match the Python IPA fixtures", () => {
+  const cases = [
+    ["ເກີຍ", "kɤːj", "кей"],
+    ["ໂກຍ", "koːj", "кой"],
+    ["ແກວ", "kɛːw", "кев"],
+    ["ກອຍ", "kɔːj", "кой"],
+    ["ກາຽ", "kaːj", "кай"],
+  ];
+  for (const [surface, ipa, ukrainian] of cases) {
+    const result = analyze(surface);
+    assert.equal(result.syllables.length, 1, surface);
+    assert.equal(result.syllables[0].ipa, ipa, surface);
+    assert.equal(result.syllables[0].ukrainian, ukrainian, surface);
+  }
+});
+
+test("Lao ellipsis is preserved as orthographic punctuation", () => {
+  const result = analyzeDefault("ຂາຯ");
+  assert.equal(result.output, "к'аຯ");
+  assert.equal(result.syllables.at(-1).status, "PASSTHROUGH");
+});
+
 test("medial ອ is long ɔ", () => {
   const r = analyze("ຈອກ");
   assert.equal(r.syllables[0].ipa, "t͡ɕɔːk");
