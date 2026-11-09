@@ -19,7 +19,7 @@ def main():
     )
     ap.add_argument("--revision", help="Hugging Face model commit SHA (recommended for reproducibility)")
     ap.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
-    ap.add_argument("--num-beams", type=int, default=4)
+    ap.add_argument("--num-beams", type=int, default=5)
     args = ap.parse_args()
 
     if args.engine == "rules":
@@ -45,7 +45,7 @@ def main():
         from .hybrid_v2 import run_hybrid_v2
         result = run_hybrid_v2(
             args.text, revision=args.revision, device=args.device,
-            num_beams=max(args.num_beams, 5),
+            num_beams=args.num_beams,
         )
         if args.json:
             print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
