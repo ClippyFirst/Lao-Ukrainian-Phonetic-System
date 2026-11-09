@@ -88,6 +88,25 @@ def complete_rule_rendering(analysis) -> str:
     return "".join(item.practical_ukrainian for item in analysis.syllables)
 
 
+def withheld_ipa_diagnostics(items) -> tuple[Counter, Counter]:
+    """Aggregate why syllables lack accepted IPA without retaining source text."""
+    statuses = Counter()
+    reasons = Counter()
+    for item in items:
+        if item.status == "PASSTHROUGH" or accepted_phonetic_ipa(item.phonetic_result):
+            continue
+        result = item.phonetic_result
+        statuses[getattr(result, "status", None) or "MISSING_RESULT"] += 1
+        warnings = tuple(item.warnings or ()) + tuple(
+            getattr(result, "uncertainty", ()) if result is not None else ()
+        )
+        if not warnings:
+            reasons["NO_STRUCTURED_REASON"] += 1
+        for warning in warnings:
+            reasons[str(warning).split(":", 1)[0]] += 1
+    return statuses, reasons
+
+
 def levenshtein(a: str, b: str) -> int:
     previous = list(range(len(b) + 1))
     for i, ca in enumerate(a, 1):
@@ -151,7 +170,7 @@ def main() -> int:
     stages = {
         "vientiane_rules": {
             "predictions": [], "rendered_predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
-            "withheld": Counter(), "syllables": Counter(),
+            "withheld": Counter(), "withheld_statuses": Counter(), "syllables": Counter(),
             "syllable_total": 0, "syllable_with_ipa": 0, "passthrough_total": 0,
             "unit_total": 0, "units_rendered": 0, "supported_ipa_units": 0,
             "uncertain_ipa_units": 0, "provisional_units": 0,
@@ -213,11 +232,9 @@ def main() -> int:
                 stage["supported_ipa_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "SUPPORTED" for item in phonetic_syllables)
                 stage["uncertain_ipa_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "UNCERTAIN" for item in phonetic_syllables)
                 stage["provisional_units"] += sum(item.phonetic_result is not None and item.phonetic_result.status == "PROVISIONAL" for item in phonetic_syllables)
-                if not prediction:
-                    for item in result.syllables:
-                        stage["withheld"].update(
-                            str(w).split(":", 1)[0] for w in item.warnings
-                        )
+                missing_statuses, missing_reasons = withheld_ipa_diagnostics(result.syllables)
+                stage["withheld_statuses"].update(missing_statuses)
+                stage["withheld"].update(missing_reasons)
             except Exception as exc:
                 stage["errors"][type(exc).__name__] += 1
                 stage["predictions"].append("")
