@@ -71,9 +71,14 @@ def package_file_sha256(package: str, relative_path: str) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def renderable_external_prediction(value: str | None) -> str:
+    """Keep every benchmark input visible without treating ? as a phone."""
+    return nfc(value or "") or "?"
+
+
 def run_engine(name: str, predict, rows: list[dict[str, str]]) -> dict[str, object]:
-    segmental_predictions: list[str] = []
-    tonal_predictions: list[str] = []
+    raw_segmental_predictions: list[str] = []
+    raw_tonal_predictions: list[str] = []
     segmental_times: list[float] = []
     tonal_times: list[float] = []
     errors = 0
@@ -81,16 +86,23 @@ def run_engine(name: str, predict, rows: list[dict[str, str]]) -> dict[str, obje
     for row in rows:
         try:
             segmental, tonal, segmental_ms, tonal_ms = predict(row["orth"])
-            segmental_predictions.append(nfc(segmental))
-            tonal_predictions.append(nfc(tonal))
+            raw_segmental_predictions.append(nfc(segmental))
+            raw_tonal_predictions.append(nfc(tonal))
             segmental_times.append(segmental_ms)
             tonal_times.append(tonal_ms)
         except Exception:
             errors += 1
-            segmental_predictions.append("")
-            tonal_predictions.append("")
+            raw_segmental_predictions.append("")
+            raw_tonal_predictions.append("")
 
-    def metrics(reference_key: str, predictions: list[str]) -> dict[str, object]:
+    segmental_predictions = [
+        renderable_external_prediction(value) for value in raw_segmental_predictions
+    ]
+    tonal_predictions = [
+        renderable_external_prediction(value) for value in raw_tonal_predictions
+    ]
+
+    def metrics(reference_key: str, predictions: list[str], raw_predictions: list[str]) -> dict[str, object]:
         refs = [nfc(row[reference_key]) for row in rows]
         edits = sum(levenshtein(ref, pred) for ref, pred in zip(refs, predictions))
         chars = sum(len(ref) for ref in refs)
@@ -105,15 +117,17 @@ def run_engine(name: str, predict, rows: list[dict[str, str]]) -> dict[str, obje
             "exact": exact,
             "exact_rate": exact / len(refs),
             "cer_full_denominator": edits / chars if chars else None,
-            "coverage": covered / len(refs),
+            "output_coverage": covered / len(refs),
+            "engine_success_coverage": sum(bool(value) for value in raw_predictions) / len(refs),
+            "explicit_unknown_markers": sum(value == "?" for value in predictions),
             "covered_subset_cer": covered_edits / covered_chars if covered_chars else None,
             "missing": len(refs) - covered,
         }
 
     return {
         "engine": name,
-        "segmental": metrics("pron_no_tones", segmental_predictions),
-        "tonal": metrics("pron_with_tones", tonal_predictions),
+        "segmental": metrics("pron_no_tones", segmental_predictions, raw_segmental_predictions),
+        "tonal": metrics("pron_with_tones", tonal_predictions, raw_tonal_predictions),
         "unexpected_errors": errors,
         "latency_ms": {
             "segmental_mean": statistics.mean(segmental_times) if segmental_times else None,
