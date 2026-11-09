@@ -35,8 +35,8 @@ class TestBenchmarkErrorDiagnostics(unittest.TestCase):
         self.assertEqual(result["total_deletions"], 0)
         self.assertEqual(result["total_insertions"], 0)
 
-    def test_unresolved_tone_categories_do_not_render_tonal_output(self):
-        self.assertEqual(BENCHMARK.render_mekong_tonal(["kʰa"], [None]), "")
+    def test_unresolved_tone_categories_render_an_explicit_unknown_marker(self):
+        self.assertEqual(BENCHMARK.render_mekong_tonal(["kʰa"], [None]), "kʰa?")
 
     def test_project_predict_emits_minor_syllable_diagnostics_without_runtime_error(self):
         predict = BENCHMARK.load_project()
