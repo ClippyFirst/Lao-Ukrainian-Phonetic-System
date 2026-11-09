@@ -144,6 +144,7 @@ def main() -> int:
     encoder_tokenizer.save_pretrained(output / "encoder_tokenizer")
     decoder_tokenizer.save_pretrained(output / "decoder_tokenizer")
     model.config.save_pretrained(output)
+    model.generation_config.save_pretrained(output)
 
     encoder = EncoderGraph(model.encoder).eval()
     decoder = DecoderGraph(model.decoder).eval()
@@ -152,7 +153,7 @@ def main() -> int:
     )
     if source["input_ids"].shape[-1] > MAX_SEQUENCE_LENGTH:
         raise SystemExit("Export fixture exceeds the pinned 128-token model limit")
-    with torch.inference_mode():
+    with torch.no_grad():
         hidden = encoder(source["input_ids"], source["attention_mask"])
         start_id = model.config.decoder_start_token_id
         if start_id is None:
@@ -213,7 +214,7 @@ def main() -> int:
         token_count = int(encoded["input_ids"].shape[-1])
         if token_count > MAX_SEQUENCE_LENGTH:
             raise SystemExit(f"Fixture exceeds model token limit: {text!r}")
-        with torch.inference_mode():
+        with torch.no_grad():
             expected_ids = model.generate(
                 **encoded,
                 max_length=MAX_SEQUENCE_LENGTH,
@@ -259,6 +260,9 @@ def main() -> int:
         "onnx_opset": 17,
         "torch_version": torch.__version__,
         "onnxruntime_version": ort.__version__,
+        "decoder_start_token_id": model.config.decoder_start_token_id,
+        "eos_token_id": model.config.eos_token_id,
+        "pad_token_id": model.config.pad_token_id,
         "encoder_tokenizer_class": type(encoder_tokenizer).__name__,
         "decoder_tokenizer_class": type(decoder_tokenizer).__name__,
         "encoder_onnx_bytes": (output / "encoder.onnx").stat().st_size,
