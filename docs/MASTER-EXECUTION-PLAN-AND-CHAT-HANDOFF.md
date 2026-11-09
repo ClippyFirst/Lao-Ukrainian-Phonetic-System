@@ -2700,3 +2700,12 @@ The requested portfolio of five distinct evaluation sources is now identified. *
 - This connector-only session did not provide a local checkout or shell runtime. No local tests, benchmarks, Markdown link crawler, browser interaction or deployment smoke test were run or claimed.
 - Research metrics are dictionary-reference concordance or text-domain stress/coverage, not independent phonetic accuracy. The production engine and linguistic registries were not changed.
 - Readiness: research-ready engineering/evidence prototype; not linguistically release-ready.
+
+
+### Final exact-head verification — 2026-11-09
+
+- Final documentation HEAD: 38498099290ede1d8ddc208e64dfcb1315e54c8b on main.
+- Exact-head Verify [#42577920085 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42577920085): 289 Python tests, 143 Node tests, 19 Chromium tests; independent IPA corpus structure validation, repository data/evidence audit, external-G2P harness syntax/CLI, clean locked npm ci, static build, generated-data reproducibility and built-page/relative-asset checks all passed.
+- Local-path Markdown link scan: 0 missing targets across the seven changed Markdown files and the complete repository tree. External URLs and all heading anchors were not exhaustively checked.
+- The earlier statement that no run was found for starting main SHA 819c2528 remains accurate; this final run verifies the successor documentation head 38498099.
+- Engineering verification is complete for this documentation-only continuation. Independent expert IPA gold remains 0; manual accessibility and linguistic sign-off remain open.
