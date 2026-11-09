@@ -16,6 +16,17 @@ class MultisyllableSegmentationTests(unittest.TestCase):
             with self.subTest(source=source):
                 self.assertEqual(segment_syllables(source), expected)
 
+    def test_published_lao_nlp_syllable_tokenizer_examples(self):
+        # LaoNLP documents this exact segmentation example in its public
+        # syllable_tokenize API. It is an implementation-parity fixture,
+        # not an independently adjudicated pronunciation gold set.
+        source = "ພາສາລາວໃນປັດຈຸບັນ"
+        expected = ["ພາ", "ສາ", "ລາວ", "ໃນ", "ປັດ", "ຈຸ", "ບັນ"]
+        self.assertEqual(segment_syllables(source), expected)
+        result = analyze(source)
+        self.assertEqual([item.surface for item in result.syllables], expected)
+        self.assertTrue(all(item.phonemic_ipa for item in result.syllables))
+
     def test_every_recognized_syllable_is_analyzed_in_sequence(self):
         result = analyze("ສະບາຍດີ")
         self.assertEqual([item.surface for item in result.syllables], ["ສະ", "ບາຍ", "ດີ"])
