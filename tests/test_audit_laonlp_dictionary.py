@@ -56,7 +56,7 @@ class LaoNlpDictionaryAuditTests(unittest.TestCase):
     def test_expected_hash_uses_git_blob_object_sha1(self):
         content = "ID,LaoWord,English,Pronunciation,Type\n1,ກ,first,ka,n\n"
         raw = content.encode("utf-8")
-        expected = hashlib.sha1(f"blob {len(raw)}\\0".encode("ascii") + raw).hexdigest()
+        expected = hashlib.sha1(f"blob {len(raw)}".encode("ascii") + bytes([0]) + raw).hexdigest()
         result = self.run_audit(content, "--expected-sha1", expected)
         self.assertEqual(result.returncode, 0, result.stderr)
         report = json.loads(result.stdout)

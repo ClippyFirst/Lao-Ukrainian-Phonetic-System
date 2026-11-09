@@ -19,7 +19,8 @@ UPSTREAM_BLOB_SHA1 = "ded14c7770becfd5c6946c6c1ce75a7dfc4d564c"
 def audit_file(path: Path, expected_sha1: str | None = None) -> dict:
     raw = path.read_bytes()
     digest = hashlib.sha1(raw).hexdigest()
-    git_blob_digest = hashlib.sha1(f"blob {len(raw)}\\0".encode("ascii") + raw).hexdigest()
+    git_blob_prefix = f"blob {len(raw)}".encode("ascii") + bytes([0])
+    git_blob_digest = hashlib.sha1(git_blob_prefix + raw).hexdigest()
     if expected_sha1 and git_blob_digest.lower() != expected_sha1.lower():
         raise ValueError(f"Git blob SHA-1 mismatch: expected {expected_sha1}, got {git_blob_digest}")
 

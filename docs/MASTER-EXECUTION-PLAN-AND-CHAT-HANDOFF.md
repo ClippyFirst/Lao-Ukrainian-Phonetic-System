@@ -2984,3 +2984,6 @@ The first exact-head run after adding the MIT-derived hint list exposed a test-o
 
 
 A follow-up code review caught that the first audit-script implementation compared a plain content SHA-1 with a Git blob SHA-1. This was corrected to hash the canonical Git object header plus file bytes, and a regression test now verifies successful matching against a computed Git blob object hash as well as fail-closed mismatch behavior. Re-run exact-head Verify before marking the audit utility complete.
+
+
+The first Git-blob hash correction itself contained an over-escaped NUL literal; the implementation now constructs the canonical Git object prefix with an explicit zero byte, and the regression test uses the same byte-level Git object format. This correction is covered by the next exact-head run.
