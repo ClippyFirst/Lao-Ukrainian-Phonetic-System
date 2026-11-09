@@ -119,5 +119,5 @@ The older 66.9% hybrid IPA-complete sentence figure is superseded: it counted pr
 
 - All benchmarks run on dedicated branch `benchmark/additional-lao-g2p-20261108`, based on main `819c2528b1c726adfd3062be89084fedce7ad84d`.
 - Main benchmark: [workflow run](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/mekongphon-three-engine-benchmark.yml).
-- Deterministic profile and HVULao 1k stress results are uploaded as aggregate-only GitHub Actions artifacts; no raw dataset rows or prediction lists are committed.
+- Deterministic profile and HVULao 1k stress results are uploaded as aggregate-only GitHub Actions artifacts; no raw dataset rows or prediction lists are committed. Latest confidence-gated HVULao 1k run: [#42574809147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147), artifact [#13654703651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147/artifacts/13654703651).
 - The dedicated PR remains draft because active open PRs #137–#148 touch overlapping benchmark workflows/scripts and canonical audit/handoff files. Do not merge this branch until those stacks are reconciled.
