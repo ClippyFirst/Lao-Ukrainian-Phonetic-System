@@ -82,6 +82,9 @@ jobs:
           test -d dist/web/vendor
           test -s dist/web/vendor/ort-wasm-simd-threaded.wasm
           test -s dist/web/vendor/ort-wasm-simd-threaded.mjs
+          test -s dist/web/vendor/THIRD-PARTY-NOTICES.md
+          test -d dist/web/vendor/licenses
+          find dist/web/vendor/licenses -maxdepth 1 -type f -print -quit | grep -q .
           python -c 'from pathlib import Path; assert sum(p.stat().st_size for p in Path("dist").rglob("*") if p.is_file()) < 1_000_000_000'
           grep -q 'href="./web/styles.css' dist/index.html
           grep -q 'src="./web/app.js' dist/index.html
@@ -120,6 +123,7 @@ jobs:
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/styles.css" -o /tmp/styles.css
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/hybrid-v2-inference.bundle.js" -o /tmp/hybrid-v2-inference.bundle.js
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/ort-wasm-simd-threaded.mjs" -o /tmp/ort-wasm-simd-threaded.mjs
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/THIRD-PARTY-NOTICES.md" -o /tmp/THIRD-PARTY-NOTICES.md
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/ort-wasm-simd-threaded.wasm" -o /dev/null
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/manifest.json" -o /tmp/hybrid-v2-manifest.json
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/NOTICE" -o /tmp/hybrid-v2-NOTICE
@@ -133,6 +137,8 @@ jobs:
           grep -q 'Apache License 2.0' /tmp/hybrid-v2-NOTICE
           grep -q 'Apache License' /tmp/hybrid-v2-LICENSE
           test -s /tmp/ort-wasm-simd-threaded.mjs
+          grep -q '@huggingface/transformers' /tmp/THIRD-PARTY-NOTICES.md
+          grep -q 'onnxruntime-web' /tmp/THIRD-PARTY-NOTICES.md
           grep -q 'id="lao-input"' /tmp/index.html
           grep -q 'id="run-hybrid-v2"' /tmp/index.html
           grep -q 'id="hybrid-v2-ipa"' /tmp/index.html
