@@ -10,6 +10,11 @@ This inventory extends the existing ClippyFirst benchmark; it does not replace t
 - Accuracy metrics accept only typed `SUPPORTED` or `UNCERTAIN` IPA. `PROVISIONAL` grapheme hints are **excluded** from IPA CER/exact-match scoring and counted separately in rendering coverage. A unit can therefore render in Ukrainian without being counted as verified IPA.
 - All 100-row figures below are dictionary-seeded source concordance, **not independent expert accuracy**. Independent expert-adjudicated Lao IPA gold in this repository remains 0.
 
+## Published external baselines
+
+- The [MekongPhon LREC 2026 paper](https://aclanthology.org/2026.lrec-1.129/) reports 367k Lao orthography–IPA pairs and under 2% CER on its own held-out evaluation. Its published result is not directly comparable to this repository's 100-row `lao_eval.csv` subset; the local 6.64% CER is a distinct evaluation slice and inference configuration.
+- [Transphone's published supervised evaluation](https://github.com/xinjli/transphone/blob/main/doc/performance/supervised.md) lists Lao (`lao`) at PER 0.084 and phonological distance 0.046 on its Wiktionary-derived test split. That score is not comparable to the MekongPhon split; a direct same-set run is being added below.
+
 ## Same-set engine comparison
 
 | Engine | Segmental exact / CER | Segmental coverage | Tonal exact / CER | Interpretation |
