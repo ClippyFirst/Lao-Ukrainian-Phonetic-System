@@ -158,3 +158,19 @@ The main Pages workflow now also smoke-tests the deployed Hybrid v2 UI, model ma
 | Production GitHub Pages deployment | TODO | Merge after exact-head tests; verify live same-origin assets and inference |
 | Independent phonetic accuracy | BLOCKED | No adjudicated IPA gold; runtime parity is not linguistic accuracy |
 
+
+
+## Final browser-runtime package gate — 2026-11-09, 21:15 UTC
+
+- **DONE_VERIFIED — latest exact-head preview:** [#42700501740](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740) SUCCESS on `32a8f27ac2f9229f61a98611828d8d39e12f3d52`. All steps passed: build, export, Python parity, Transformers.js tokenizer/ONNX Runtime Web WASM beam-five parity, model packaging, Chromium, preview artifact validation and upload.
+- **DONE_VERIFIED — latest exact-head repository Verify:** [#42700510670](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700510670) SUCCESS on the same SHA. Python, repository evidence/data audit, Node/browser engine tests, generated-data reproducibility and ordinary Chromium tests passed.
+- **DONE_VERIFIED — no cross-origin isolation required:** the model-specific Chromium test asserts `self.crossOriginIsolated === false` and still completes both aligned and unaligned local inference. The runtime pins WASM `numThreads=1`; GitHub Pages does not need COOP/COEP headers or SharedArrayBuffer.
+- **DONE_VERIFIED — bundle third-party notices:** esbuild metafile inputs are parsed to enumerate packages actually bundled. The preview contains `web/vendor/THIRD-PARTY-NOTICES.md` plus license texts for `@huggingface/transformers@4.3.2` (Apache-2.0), `onnxruntime-common@1.30.0` (MIT), and `onnxruntime-web@1.31.1` (MIT). ONNX Runtime's MIT text is included from the upstream Microsoft license. Build fails if a bundled package's license cannot be found or supplied.
+- **DONE_VERIFIED — model attribution:** model directory includes its Apache-2.0 LICENSE and NOTICE with immutable revision and research citation.
+- Final preview artifact [13711776359](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740/artifacts/13711776359): 40,383,255 bytes compressed; 56,466,051 bytes uncompressed; 34 files. It contains 39.8 MB INT8 weights, one 14.8 MB WASM binary, its small loader module, tokenizers, browser bundle, and license/notice files.
+- The browser test covers both a short aligned case (`ຂາ` → `kʰaː˩˧`, `ORDER_ALIGNED`) and multi-syllable `ສະບາຍດີ` (raw IPA retained, `NOT_ALIGNED`, zero fabricated tone predictions). The test also asserts zero external requests.
+
+### Deployment status
+
+The implementation and exact-head preview gates are now DONE_VERIFIED on PR head `32a8f27ac2f9229f61a98611828d8d39e12f3d52`. The PR is still a draft and the live Pages site has not yet been changed. Remaining release action: mark PR #158 ready, merge it, wait for main-branch Pages deployment, and verify the live site and all same-origin UI/model/tokenizer/WASM/license assets. Do not call this deployed until the Pages workflow and live smoke test succeed.
+
