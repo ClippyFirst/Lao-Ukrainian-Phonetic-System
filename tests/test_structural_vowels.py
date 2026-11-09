@@ -207,7 +207,7 @@ class TestEveryVowelStructureHasPositiveAndNegativeControls(unittest.TestCase):
         # Exercise every declarative parser template, including variants not
         # represented by the smaller hand-adjudicated-by-source fixture set.
         for name, prefix, suffix, vowel_id in STRUCTURES:
-            positive_onset = "ດ" if name == "post_ua_long_open_alt" else "ກ"
+            positive_onset = "ດ" if name == "post_ua_long_open_alt" else "ມ" if name == "pre_ae_long_y" else "ກ"
             positive = prefix + positive_onset + suffix
             if suffix:
                 negative = prefix + "ກ" + suffix[:-1]
