@@ -173,11 +173,16 @@ def main() -> int:
     rows, blob_sha, rows_without_lao = load_dataset()
     from lao_ukrainian.core import analyze
     from lao_ukrainian.mekongphon import MekongPhonEngine
+    from lao_ukrainian.hybrid_v2 import combine_neural_tones
 
     neural = MekongPhonEngine(
         tonal=False, revision=MODEL_REVISION, device="cpu", num_beams=NUM_BEAMS
     )
+    neural_tonal = MekongPhonEngine(tonal=True, device="cpu", num_beams=NUM_BEAMS)
     smoke = neural.transcribe("ຂາ")
+    tonal_smoke = neural_tonal.transcribe("ຂາ")
+    if not tonal_smoke.raw_ipa:
+        raise RuntimeError("Pinned tonal MekongPhon smoke inference returned empty IPA")
     if smoke.model_id != MODEL_ID or smoke.model_revision != MODEL_REVISION:
         raise RuntimeError("MekongPhon smoke inference did not resolve the pinned model")
 
@@ -185,6 +190,13 @@ def main() -> int:
         "vientiane_rules": new_rule_stage(),
         "mekongphon_reference_rules": new_rule_stage(),
         "hybrid_deterministic_rules": new_rule_stage(),
+        "hybrid_v2": {
+            "predictions": [], "rendered_predictions": [], "tonal_predictions": [],
+            "times": [], "attempt_times": [], "errors": Counter(),
+            "tone_alignment_statuses": Counter(), "tone_predictions": 0,
+            "tone_units_aligned": 0, "tone_units_skipped": 0,
+            "deterministic_neural_tone_disagreements": 0,
+        },
         "mekongphon_neural": {
             "predictions": [], "times": [], "attempt_times": [], "errors": Counter(),
             "input_rejections": Counter(),
@@ -232,6 +244,37 @@ def main() -> int:
                 stage["rendered_predictions"].append("")
             finally:
                 stage["attempt_times"].append(time.perf_counter() - started)
+
+        # Keep one persistent model instance; do not reload weights per sentence.
+        stage = stages["hybrid_v2"]
+        try:
+            started = time.perf_counter()
+            deterministic = analyze(source, ipa_profile="hybrid-deterministic")
+            neural_result = neural_tonal.transcribe(source)
+            combined = combine_neural_tones(
+                deterministic, neural_result.raw_ipa,
+                model_id=neural_result.model_id,
+                model_revision=neural_result.model_revision,
+            )
+            stage["times"].append(time.perf_counter() - started)
+            stage["predictions"].append(complete_rule_ipa(deterministic))
+            stage["rendered_predictions"].append(complete_rule_rendering(deterministic))
+            stage["tonal_predictions"].append(compact_ipa(combined.tonal_ipa))
+            stage["tone_alignment_statuses"].update([combined.tone_alignment_status])
+            stage["tone_predictions"] += len(combined.tone_predictions)
+            stage["tone_units_aligned"] += combined.aligned_syllables
+            stage["tone_units_skipped"] += combined.skipped_tone_units
+            stage["deterministic_neural_tone_disagreements"] += sum(
+                warning.startswith("DETERMINISTIC-NEURAL-TONE-DISAGREEMENT:")
+                for warning in combined.warnings
+            )
+        except Exception as exc:
+            stage["errors"][type(exc).__name__] += 1
+            stage["predictions"].append("")
+            stage["rendered_predictions"].append("")
+            stage["tonal_predictions"].append("")
+        finally:
+            stage["attempt_times"].append(time.perf_counter() - started)
 
         stage = stages["mekongphon_neural"]
         try:
@@ -316,6 +359,7 @@ def main() -> int:
         ("mekongphon_reference_rules", "mekongphon_neural"),
         ("hybrid_deterministic_rules", "mekongphon_neural"),
         ("mekongphon_reference_rules", "hybrid_deterministic_rules"),
+        ("hybrid_v2", "mekongphon_neural"),
     ):
         edits = sum(
             levenshtein(stages[left]["predictions"][i], stages[right]["predictions"][i])
@@ -330,7 +374,7 @@ def main() -> int:
         }
 
     report = {
-        "schema_version": "1.5",
+        "schema_version": "1.6",
         "status": "independent_text_domain_stress_test_not_ipa_accuracy",
         "benchmark": {
             "name": "HVULao_NLP 1k raw-sentence test split",
@@ -353,6 +397,12 @@ def main() -> int:
             "vientiane_rules": {"implementation": "ClippyFirst deterministic default"},
             "mekongphon_reference_rules": {"implementation": "ClippyFirst legacy deterministic compatibility profile"},
             "hybrid_deterministic_rules": {"implementation": "Vientiane baseline plus deterministic evidence-rule selector"},
+            "hybrid_v2": {
+                "segmental_lane": "hybrid-deterministic ClippyFirst IPA",
+                "tonal_lane_model_id": neural_tonal.model_id,
+                "tonal_lane_revision": neural_tonal.revision,
+                "tone_alignment": "unique ordered contour decomposition; associations remain UNCERTAIN",
+            },
             "mekongphon_neural": {
                 "model_id": MODEL_ID,
                 "revision": MODEL_REVISION,
@@ -368,6 +418,8 @@ def main() -> int:
             "One hosted CPU run; model load and initial smoke inference excluded from both latency measures.",
             "successful_inference_latency covers only completed inference calls; all_attempt_latency covers all 1,000 calls including explicit input rejections and unexpected errors.",
             "Whitespace is removed for pairwise IPA comparison; tone and length marks are retained.",
+            "Hybrid v2 model loading and tonal smoke inference are excluded from per-row latency.",
+            "Hybrid v2 segmental IPA and tonal IPA remain separate lanes; no fused string is constructed.",
             "No source sentences or per-sentence IPA predictions are persisted.",
         ],
     }
@@ -377,6 +429,7 @@ def main() -> int:
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     hybrid_rendering = summaries["hybrid_deterministic_rules"]
+    hybrid_v2_rendering = summaries["hybrid_v2"]
     if (
         hybrid_rendering["rendering_coverage"] != 1.0
         or hybrid_rendering["unrendered_or_failed_inputs"] != 0
@@ -385,6 +438,15 @@ def main() -> int:
         raise RuntimeError(
             "Hybrid 100% rendering-coverage gate failed: "
             + json.dumps(hybrid_rendering, ensure_ascii=False, sort_keys=True)
+        )
+    if (
+        hybrid_v2_rendering["dataset_row_rendering_coverage"] != 1.0
+        or hybrid_v2_rendering["complete_renderings"] != len(rows)
+        or hybrid_v2_rendering["runtime_errors_by_type"]
+    ):
+        raise RuntimeError(
+            "Hybrid v2 100% rendering-coverage/runtime gate failed: "
+            + json.dumps(hybrid_v2_rendering, ensure_ascii=False, sort_keys=True)
         )
     if report["runtime_errors"]:
         raise RuntimeError(f"Runtime errors: {report['runtime_errors']}")
