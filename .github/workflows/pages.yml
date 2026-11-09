@@ -11,7 +11,6 @@ on:
       - "scripts/test_hybrid_v2_browser_runtime.mjs"
       - "scripts/prepare_pages_model.py"
       - "scripts/build_web.py"
-      - "scripts/test_hybrid_v2_browser_runtime.mjs"
       - "tests/browser/hybrid-v2-model.spec.js"
       - ".github/workflows/hybrid-v2-browser-model.yml"
       - "data/lao/**"
