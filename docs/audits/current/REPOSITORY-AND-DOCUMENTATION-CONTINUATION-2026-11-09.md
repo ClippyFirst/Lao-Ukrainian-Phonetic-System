@@ -664,3 +664,8 @@ The neural comparator completed IPA for 934/1,000 sentences (93.4%), but 66 inpu
 - Added explicit mapping for the five MekongPhon contours to tone categories, preserving neural model revision, raw output, provenance, and disagreement notes. Unknown/unsupported contours, unresolved minor syllables, and count mismatches are withheld.
 - Added tests for one-/two-syllable alignment, segmental/target invariance, malformed IPA, unknown contours, count mismatch, and no input mutation.
 - Status before CI: implementation PARTIAL; exact-head Verify and same-split benchmark pending. Not promoted to default or browser UI.
+
+
+### Hybrid v2 alignment correction
+
+The first schema-7.0 run exposed that MekongPhon often emits multi-syllable IPA without explicit dot delimiters. The original parser-boundary gate therefore withheld tones on 51/100 words and scored worse than the deterministic baseline (tonal CER 19.91%, 46/100 exact versus 11.39%, 69/100 for the baseline's Mekong-convention contours). The v2 aligner now extracts the ordered tone-symbol stream and accepts it only when there is exactly one decomposition into registered MekongPhon contours matching the deterministic syllable count. Multiple/no decompositions remain withheld. This is order-based syllable alignment, not an acoustic or expert-adjudicated boundary claim. New same-split benchmark pending.

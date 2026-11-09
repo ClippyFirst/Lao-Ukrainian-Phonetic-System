@@ -26,6 +26,28 @@ MEKONG_CONTOUR_TO_CATEGORY = {
 _ACCEPTED_SEGMENTAL_STATUSES = frozenset({"SUPPORTED", "UNCERTAIN"})
 
 
+def _unique_tone_sequence(symbols: str, syllable_count: int) -> tuple[str, ...] | None:
+    """Split an ordered tone-symbol stream into one unique contour per syllable."""
+    contours = tuple(sorted(MEKONG_CONTOUR_TO_CATEGORY, key=lambda value: (-len(value), value)))
+    solutions: list[tuple[str, ...]] = []
+
+    def visit(offset: int, remaining: int, chosen: tuple[str, ...]) -> None:
+        if len(solutions) > 1:
+            return
+        if remaining == 0:
+            if offset == len(symbols):
+                solutions.append(chosen)
+            return
+        for contour in contours:
+            if symbols.startswith(contour, offset):
+                visit(offset + len(contour), remaining - 1, (*chosen, contour))
+
+    if syllable_count < 1 or not symbols:
+        return None
+    visit(0, syllable_count, ())
+    return solutions[0] if len(solutions) == 1 else None
+
+
 @dataclass(frozen=True)
 class HybridV2Result:
     """Inspectable result with independent provenance for both stages."""
@@ -71,8 +93,9 @@ def combine_neural_tones(
     phonetic_syllables = [
         item for item in analysis.syllables if item.status != "PASSTHROUGH"
     ]
-    boundaries = parsed.syllable_boundaries
-    spans = list(zip(boundaries[:-1], boundaries[1:])) if len(boundaries) > 1 else []
+    tone_symbols = "".join(
+        segment.ipa for segment in parsed.segments if segment.kind == "tone"
+    )
 
     warnings: list[str] = []
     if parsed.status != "SUPPORTED":
@@ -81,23 +104,21 @@ def combine_neural_tones(
             analysis, model_id, model_revision, neural_raw_ipa,
             "NOT_ALIGNED", 0, 0, len(phonetic_syllables), tuple(warnings),
         )
-    if len(spans) != len(phonetic_syllables):
+    contours = _unique_tone_sequence(tone_symbols, len(phonetic_syllables))
+    if contours is None:
         warnings.append(
-            "NEURAL-SYLLABLE-COUNT-MISMATCH; tone overlay withheld "
-            f"({len(spans)} neural vs {len(phonetic_syllables)} deterministic)"
+            "NEURAL-TONE-SEQUENCE-NOT-UNIQUELY-ALIGNED; tone overlay withheld "
+            f"({len(tone_symbols)} tone symbols for {len(phonetic_syllables)} deterministic syllables)"
         )
         return HybridV2Result(
             analysis, model_id, model_revision, neural_raw_ipa,
             "NOT_ALIGNED", 0, 0, len(phonetic_syllables), tuple(warnings),
         )
+    warnings.append("NEURAL-TONE-SEQUENCE-ALIGNED-BY-ORDER; no explicit syllable delimiters required")
 
     overlays = 0
     skipped = 0
-    for syllable, (start, end) in zip(phonetic_syllables, spans):
-        neural_segments = parsed.segments[start:end]
-        contour = "".join(
-            segment.ipa for segment in neural_segments if segment.kind == "tone"
-        )
+    for syllable, contour in zip(phonetic_syllables, contours):
         category = MEKONG_CONTOUR_TO_CATEGORY.get(contour)
         current = syllable.phonetic_result
         if (
@@ -111,6 +132,7 @@ def combine_neural_tones(
 
         uncertainty = list(current.uncertainty)
         uncertainty.append("NEURAL-TONE-PREDICTION-NOT-INDEPENDENTLY-ADJUDICATED")
+        uncertainty.append("NEURAL-TONE-SEQUENCE-ALIGNED-BY-ORDER")
         if current.tone_category != category:
             uncertainty.append(
                 f"DETERMINISTIC-NEURAL-TONE-DISAGREEMENT:{current.tone_category}->{category}"
@@ -138,7 +160,7 @@ def combine_neural_tones(
 
     if skipped:
         warnings.append(f"NEURAL-TONE-UNUSED-OR-UNRESOLVED:{skipped}")
-    status = "ALIGNED" if skipped == 0 else "PARTIAL"
+    status = "ORDER_ALIGNED" if skipped == 0 else "PARTIAL"
     return HybridV2Result(
         analysis, model_id, model_revision, neural_raw_ipa,
         status, len(spans), overlays, skipped, tuple(warnings),

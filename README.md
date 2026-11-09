@@ -193,7 +193,7 @@ Both runtimes attempt conservative within-token syllable segmentation; Python re
 A second hybrid candidate is now implemented as an explicit Python/CLI mode, `--engine hybrid-v2`:
 
 - The existing evidence-aware ClippyFirst hybrid remains authoritative for segmental IPA and Ukrainian practical rendering. Neural segmental phones are never substituted.
-- The pinned MekongPhon tonal checkpoint contributes only a registered tone contour, and only when the external IPA parses cleanly and its syllable count exactly matches the deterministic parser.
+- The pinned MekongPhon tonal checkpoint contributes only a registered tone contour, and only when the external IPA parses cleanly and the ordered tone-symbol stream has one unique decomposition into exactly the deterministic parser's syllable count of registered contours.
 - Each accepted contour is converted to the corresponding MekongPhon tone category. The original deterministic category disagreement, model ID/revision, raw neural IPA, and overlay provenance remain inspectable.
 - Unresolved potential-minor syllables, unknown contours, unsupported IPA, and syllable-count mismatches are withheld rather than guessed. Neural dependency/model failures are surfaced; there is no silent fallback.
 - The Ukrainian target output remains the deterministic adapter's output. This is an experimental Python mode; it is not yet the browser default or production default.

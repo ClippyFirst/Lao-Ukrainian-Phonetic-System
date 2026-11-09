@@ -14,7 +14,7 @@ class HybridV2Tests(unittest.TestCase):
             model_revision="a" * 40,
         )
         updated = result.analysis.syllables[0]
-        self.assertEqual(result.tone_alignment_status, "ALIGNED")
+        self.assertEqual(result.tone_alignment_status, "ORDER_ALIGNED")
         self.assertEqual(result.tone_overlays, 1)
         self.assertEqual(updated.phonemic_ipa, original.phonemic_ipa)
         self.assertEqual(updated.practical_ukrainian, original.practical_ukrainian)
@@ -29,7 +29,7 @@ class HybridV2Tests(unittest.TestCase):
     def test_two_syllables_require_exact_alignment_and_preserve_per_syllable_tones(self):
         result = combine_neural_tones(
             analyze("ຂາຢາ"),
-            "kʰaː˩˧.jaː˧˥",
+            "kʰaː˩˧jaː˧˥",
             model_id="byumatrixlab/lao-ipa-tonal",
             model_revision="a" * 40,
         )
@@ -50,7 +50,7 @@ class HybridV2Tests(unittest.TestCase):
         )
         self.assertEqual(result.tone_alignment_status, "NOT_ALIGNED")
         self.assertEqual(result.tone_overlays, 0)
-        self.assertTrue(any("COUNT-MISMATCH" in warning for warning in result.warnings))
+        self.assertTrue(any("SEQUENCE-NOT-UNIQUELY-ALIGNED" in warning for warning in result.warnings))
 
     def test_unsupported_neural_ipa_withholds_tones(self):
         result = combine_neural_tones(
