@@ -82,6 +82,7 @@ STRUCTURES = (
     ("pre_ay", "ໃ", "", "AI2"),
     ("post_a_short", "", "ະ", "A"),
     ("post_a_short_kan", "", "ັ", "A2"),
+    ("post_ia_short", "", "ັຽ", "IA"),
     ("post_aa_y", "", "າຽ", "AAJ"),
     ("post_aa", "", "າ", "AA"),
     ("post_i", "", "ິ", "I"),
