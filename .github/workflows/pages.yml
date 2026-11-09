@@ -117,11 +117,20 @@ jobs:
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/data.js" -o /tmp/data.js
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/styles.css" -o /tmp/styles.css
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/hybrid-v2-inference.bundle.js" -o /tmp/hybrid-v2-inference.bundle.js
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/ort-wasm-simd-threaded.mjs" -o /tmp/ort-wasm-simd-threaded.mjs
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/web/vendor/ort-wasm-simd-threaded.wasm" -o /dev/null
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/manifest.json" -o /tmp/hybrid-v2-manifest.json
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/NOTICE" -o /tmp/hybrid-v2-NOTICE
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/LICENSE" -o /tmp/hybrid-v2-LICENSE
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/encoder_tokenizer/tokenizer.json" -o /dev/null
+          curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/decoder_tokenizer/tokenizer.json" -o /dev/null
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/encoder.int8.onnx" -o /dev/null
           curl --fail --silent --show-error --retry 8 --retry-delay 5 --retry-all-errors "$base/models/hybrid-v2/decoder.int8.onnx" -o /dev/null
           grep -q 'byumatrixlab/lao-ipa-tonal' /tmp/hybrid-v2-manifest.json
           grep -q 'e02608cfcb18abfe6b1916f5f4774bfac9ac788d' /tmp/hybrid-v2-manifest.json
+          grep -q 'Apache License 2.0' /tmp/hybrid-v2-NOTICE
+          grep -q 'Apache License' /tmp/hybrid-v2-LICENSE
+          test -s /tmp/ort-wasm-simd-threaded.mjs
           grep -q 'id="lao-input"' /tmp/index.html
           grep -q 'src="./web/app.js' /tmp/index.html
           grep -q '<title>' /tmp/system.html
