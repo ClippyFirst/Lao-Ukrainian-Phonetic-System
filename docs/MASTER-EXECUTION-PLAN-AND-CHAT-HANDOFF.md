@@ -3174,3 +3174,30 @@ Exact-head Verify [#42650543260 — SUCCESS](https://github.com/ClippyFirst/Lao-
 
 **Current status:** rendering target remains 100% on the named stress set; best-in-class segmental concordance is tied on one non-gold split, but tonal quality and coverage do not lead. Independent adjudicated IPA gold remains 0. Readiness remains engineering-verified research prototype, not linguistically release-ready.
 
+
+
+## Owner acceptance: no output withholding for low confidence — 2026-11-09
+
+97% segmental / 91% tonal were confidence-gated complete-IPA rates, not acceptable output-coverage rates. The product contract is now explicit: lower confidence must not block output. Every parsed unit emits a supported/uncertain IPA result, a PROVISIONAL grapheme-derived hint, or an explicit ? marker. Tone is emitted as a contour when available; otherwise the result contains a visible ? marker. Unknown markers are not phonetic guesses and remain separately counted.
+
+Implementation:
+- The default hybrid core always supplies a Ukrainian-side marker when the typed target adapter cannot map a complete result. It preserves the original source IPA and confidence status.
+- Benchmark schema 6.0 now composes segmental output from accepted IPA, provisional segments and unknown markers, and composes tonal output from contours or explicit unknown markers. The 100-word CER includes these markers in the full-set denominator.
+- The benchmark artifact reports 100/100 input output coverage and 169/169 syllable units. Accepted segmental IPA confidence remains 97/100 inputs; accepted tone-contour confidence remains 91/100 inputs. These confidence rates are not output blockers.
+
+Schema 6.0 comparison [#42654328706 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654328706):
+- ClippyFirst: 6.15% segmental CER, 90/100 exact, 100% output coverage; 22.90% native-contour tonal CER or 11.39% Mekong-convention evaluation CER, 100% output coverage.
+- MekongPhon Neural: 6.64% segmental CER and 8.29% tonal CER, both at 100% output coverage.
+- Lao2IPA: 8.97% segmental CER and 11.97% tonal CER, both at 100% output coverage.
+- ClippyFirst leads on segmental CER on this reference split, but MekongPhon Neural remains best on tonal CER. The comparison is dictionary-seeded and not independent expert gold.
+
+Exact-head Verify [#42654358111 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42654358111): 327 Python, 147 Node and 19 Chromium tests passed, plus configured build/data/evidence/site gates. README, benchmark report, audit and this handoff have been refreshed; documentation commits after the code verification require a new exact-head run.
+
+The post-fallback HVULao 1k run [#42653641804](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804) remains in progress. The prior accepted schema-1.5 HVULao run verified 1,000/1,000 hybrid renderings and all 21,534 analyzed units. Do not claim the new run's final result until it completes.
+
+**Acceptance ledger:**
+- Visible output coverage on 100-word set: DONE_VERIFIED (100/100 inputs, 169/169 units).
+- Provisional IPA and explicit unknown tone markers: DONE_VERIFIED; low confidence remains marked.
+- Accepted IPA/tone confidence rates: PARTIAL (97% segmental, 91% tonal); these are quality indicators, not rendering gates.
+- Independent adjudicated IPA gold: BLOCKED (0 project-adjudicated records); requires qualified Lao phonetics review.
+
