@@ -121,3 +121,35 @@ The older 66.9% hybrid IPA-complete sentence figure is superseded: it counted pr
 - Main benchmark: [workflow run](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/workflows/mekongphon-three-engine-benchmark.yml).
 - Deterministic profile and HVULao 1k stress results are uploaded as aggregate-only GitHub Actions artifacts; no raw dataset rows or prediction lists are committed. Latest confidence-gated HVULao 1k run: [#42574809147](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147), artifact [#13654703651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42574809147/artifacts/13654703651).
 - The dedicated PR remains draft because active open PRs #137–#148 touch overlapping benchmark workflows/scripts and canonical audit/handoff files. Do not merge this branch until those stacks are reconciled.
+
+## Additional literature and protocol findings — 2026-11-09
+
+### Graphoneme alignment is a real Lao G2P research candidate
+
+Hansakunbuntheung & Thatphithakkul (O-COCOSDA 2016, DOI 10.1109/ICSDA.2016.7919010) evaluate unsupervised many-to-many graphoneme alignment on four Asian-language pronunciation dictionaries, including Lao. The abstract reports **91.28% Lao word accuracy** on that paper's own dictionary. Its method explicitly addresses cross-syllable and intra-syllable grapheme–phoneme alignment and implicit tone assignment, making it structurally relevant to Lao.
+
+**Disposition: RESEARCH_CANDIDATE, not runnable baseline.** The accessible publication record does not establish the Lao dictionary size, exact train/test split, dialect, tone convention, data rights, released predictions or executable implementation. Do not compare 91.28% directly with the repository's MekongPhon 100-word results. Next acceptance: obtain full paper and cited dataset/code; recover exact evaluation protocol; reproduce on a rights-cleared split before adding an engine adapter.
+
+### CharsiuG2P / multilingual ByT5 requires a support check
+
+Zhu, Zhang & Jurgens (Interspeech 2022, DOI 10.48550/arXiv.2204.03067) describe multilingual ByT5 G2P and release code/models. At inspected upstream commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4`, the repository contains `sources/info/wikipron/lao_laoo_broad_info.txt`, which points to CUNY-CL WikiPron's Lao broad-IPA TSV and declares Apache-2.0 for that source metadata.
+
+This establishes a Lao WikiPron source dictionary in the repository, **not** that Lao is included in the evaluated 100-language model, has a trained Lao checkpoint, or has a held-out Lao test split. It must not yet be counted as a runnable Lao baseline. Next acceptance: verify model language codes, train/dev/test files and tokenizer behavior; if Lao is absent, a zero-shot output is exploratory only.
+
+### SIGMORPHON is a protocol reference, not a Lao benchmark
+
+SIGMORPHON 2022 defines three resource settings: cross-lingual transfer (100 target training examples plus 1,000 donor-language examples), very-low-resource (100 target examples), and low-resource (1,000 target examples), using a common target test set. The official task's published languages do not provide a Lao target evaluation. The 2021 task paper is likewise a methodological source, not a Lao gold set.
+
+A Lao adaptation must be named **SIGMORPHON-inspired**, never official SIGMORPHON. It requires a fixed held-out Lao test split, nested 100/1,000 target training subsets, explicit donor-language rationale, immutable data/model revisions and separate strict/convention-normalized IPA metrics. Thai transfer is a distinct experiment: typological relatedness does not make Thai graphemes identical to Lao graphemes.
+
+### New evidence-gated task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Register graphoneme alignment paper and reported Lao result | DONE_VERIFIED (source registry) | Source and claim IDs `SRC-HANSAKUNBUNTHEUNG-GRAPHONEME-2016`, `CLM-LAO-GRAPHONEME-ALIGNMENT-RESEARCH); 91.28% remains paper-reported, not reproduced |
+| Register SIGMORPHON 2021/2022 protocol sources | DONE_VERIFIED (source registry) | Source IDs `SRC-SIGMORPHON-2021-G2P`, `SRC-SIGMORPHON-2022-G2P`; no official Lao test set |
+| Register CharsiuG2P multilingual ByT5 candidate | DONE_VERIFIED (source registry) | Source/claim record captures Lao WikiPron metadata; actual model-language support remains BLOCKED pending manifest/model inspection |
+| Implement graphoneme candidate | BLOCKED / evidence-limited | Full paper, original Lao dictionary, rights and runnable implementation not yet verified |
+| Add CharsiuG2P as same-split benchmark engine | BLOCKED / evidence-limited | Need proof Lao is supported by the selected model/checkpoint and a reproducible inference route |
+| Create SIGMORPHON-inspired Lao 100/1,000/transfer experiment | TODO / design-gated | Requires a frozen test set independent of tuning and an auditable nested split; transfer donor must be justified |
+
