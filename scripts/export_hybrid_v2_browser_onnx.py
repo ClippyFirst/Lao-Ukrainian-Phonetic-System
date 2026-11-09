@@ -29,10 +29,16 @@ class EncoderGraph(torch.nn.Module):
         super().__init__()
         self.encoder = encoder
 
-    def forward(self, input_ids: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        input_ids: torch.Tensor,
+        attention_mask: torch.Tensor,
+        token_type_ids: torch.Tensor,
+    ) -> torch.Tensor:
         return self.encoder(
             input_ids=input_ids,
             attention_mask=attention_mask,
+            token_type_ids=token_type_ids,
             return_dict=False,
         )[0]
 
@@ -72,6 +78,7 @@ def greedy_onnx(
     decoder_session: ort.InferenceSession,
     encoder_ids: list[int],
     encoder_mask: list[int],
+    encoder_token_type_ids: list[int],
     *,
     decoder_start_token_id: int,
     eos_token_id: int | None,
@@ -79,9 +86,10 @@ def greedy_onnx(
 ) -> list[int]:
     ids = torch.tensor([encoder_ids], dtype=torch.long).numpy()
     mask = torch.tensor([encoder_mask], dtype=torch.long).numpy()
+    token_types = torch.tensor([encoder_token_type_ids], dtype=torch.long).numpy()
     hidden = encoder_session.run(
         ["last_hidden_state"],
-        {"input_ids": ids, "attention_mask": mask},
+        {"input_ids": ids, "attention_mask": mask, "token_type_ids": token_types},
     )[0]
     generated = [decoder_start_token_id]
     for _ in range(max_length - 1):
@@ -151,10 +159,11 @@ def main() -> int:
     source = encoder_tokenizer(
         "ສະບາຍດີ", return_tensors="pt", truncation=False, padding=False,
     )
+    source_token_types = source.get("token_type_ids", torch.zeros_like(source["input_ids"]))
     if source["input_ids"].shape[-1] > MAX_SEQUENCE_LENGTH:
         raise SystemExit("Export fixture exceeds the pinned 128-token model limit")
     with torch.no_grad():
-        hidden = encoder(source["input_ids"], source["attention_mask"])
+        hidden = encoder(source["input_ids"], source["attention_mask"], source_token_types)
         start_id = model.config.decoder_start_token_id
         if start_id is None:
             raise SystemExit("Model config has no decoder_start_token_id")
@@ -166,13 +175,14 @@ def main() -> int:
 
     torch.onnx.export(
         encoder,
-        (source["input_ids"], source["attention_mask"]),
+        (source["input_ids"], source["attention_mask"], source_token_types),
         output / "encoder.onnx",
-        input_names=["input_ids", "attention_mask"],
+        input_names=["input_ids", "attention_mask", "token_type_ids"],
         output_names=["last_hidden_state"],
         dynamic_axes={
             "input_ids": {0: "batch", 1: "source_sequence"},
             "attention_mask": {0: "batch", 1: "source_sequence"},
+            "token_type_ids": {0: "batch", 1: "source_sequence"},
             "last_hidden_state": {0: "batch", 1: "source_sequence"},
         },
         opset_version=17,
@@ -234,6 +244,7 @@ def main() -> int:
             decoder_session,
             encoded["input_ids"][0].tolist(),
             encoded["attention_mask"][0].tolist(),
+            encoded.get("token_type_ids", torch.zeros_like(encoded["input_ids"]))[0].tolist(),
             decoder_start_token_id=int(model.config.decoder_start_token_id),
             eos_token_id=model.config.eos_token_id,
             max_length=MAX_SEQUENCE_LENGTH,
