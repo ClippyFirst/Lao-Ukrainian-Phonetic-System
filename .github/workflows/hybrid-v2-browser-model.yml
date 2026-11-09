@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: "22"
       - name: Install browser tokenizer and ONNX Runtime Web
-        run: npm install --no-save --package-lock=false --no-audit --no-fund @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
       - name: Verify browser tokenizer and ONNX Runtime Web WASM parity
         run: node scripts/test_hybrid_v2_browser_runtime.mjs artifacts/hybrid-v2-browser
       - name: Upload ONNX model, tokenizer and parity manifest
