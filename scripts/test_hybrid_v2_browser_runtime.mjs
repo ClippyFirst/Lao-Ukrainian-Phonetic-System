@@ -73,7 +73,7 @@ async function verifyPair(encoderName, decoderName, label) {
 const fp32 = await verifyPair("encoder.onnx", "decoder.onnx", "FP32");
 const int8 = await verifyPair("encoder.int8.onnx", "decoder.int8.onnx", "INT8");
 assert.equal(manifest.int8_exact_token_parity, true, "Python INT8 greedy parity gate was not passed");
-console.log(JSON.stringify({
+const report = {
   status: "TRANSFORMERS_JS_TOKENIZER_AND_ONNX_RUNTIME_WEB_WASM_BEAM5_PARITY_VERIFIED",
   transformersJsVersion: "4.3.2",
   onnxRuntimeWebVersion: "1.31.1",
@@ -82,4 +82,10 @@ console.log(JSON.stringify({
   fixtures: manifest.parity_fixtures.length,
   fp32,
   int8,
-}, null, 2));
+};
+await fs.writeFile(
+  path.join(modelRoot, "browser-runtime-parity.json"),
+  JSON.stringify(report, null, 2) + "\\n",
+  "utf8",
+);
+console.log(JSON.stringify(report, null, 2));
