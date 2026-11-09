@@ -11,6 +11,8 @@ from scripts.benchmark_mekongphon_three_engines import (
     syllable_boundary_availability,
     strip_tone_symbols,
     validate_lexicon_split,
+    renderable_segmental_ipa,
+    renderable_tonal_ipa,
 )
 
 
@@ -34,8 +36,28 @@ class MekongPhonBenchmarkHelperTests(unittest.TestCase):
             render_mekong_tonal(["kaː", "pa"], ["low-rising", "high-mid"]),
             "kaː˩˧pa˧",
         )
-        self.assertEqual(render_mekong_tonal(["kaː"], ["unknown"]), "")
+        self.assertEqual(render_mekong_tonal(["kaː"], ["unknown"]), "kaː?")
         self.assertEqual(render_mekong_tonal([], ["low-rising"]), "")
+
+    def test_renderable_segmental_ipa_keeps_provisional_hints_and_marks_unknowns(self):
+        from lao_ukrainian.model import PhoneticResult, PhoneticSegment
+
+        provisional = PhoneticResult(
+            phonemic_ipa=None,
+            segments=(
+                PhoneticSegment("kʰ", "consonant", (), "PROVISIONAL"),
+                PhoneticSegment("?", "unknown", (), "PROVISIONAL"),
+                PhoneticSegment("aː", "vowel", (), "PROVISIONAL"),
+            ),
+            syllable_boundaries=(0, 3),
+            status="PROVISIONAL",
+        )
+        self.assertEqual(renderable_segmental_ipa(provisional), "kʰ?aː")
+        self.assertEqual(renderable_tonal_ipa(provisional), "kʰ?aː?")
+
+    def test_renderable_output_never_returns_empty_for_missing_typed_result(self):
+        self.assertEqual(renderable_segmental_ipa(None), "?")
+        self.assertEqual(renderable_tonal_ipa(None), "??")
 
     def test_length_marker_metrics_are_word_level_and_keep_coverage(self):
         result = length_marker_metrics(
