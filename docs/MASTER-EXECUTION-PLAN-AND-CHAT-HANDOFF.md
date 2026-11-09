@@ -2919,3 +2919,12 @@ No upstream source code, skills, CLI, datasets, assets, hooks, workflows or runt
 - All GitHub repository inspection, merge, and verification evidence above is remote/hosted. No local checkout, shell command, local test run or local browser session is claimed.
 - The exact merge-head Verify is authoritative for the merged code state. A subsequent documentation-only commit must receive its own exact-head Verify before this handoff can be considered current.
 - Readiness remains an engineering-verified research prototype, not a linguistically validated production release.
+
+## Documentation refresh closeout — 2026-11-09
+
+- Documentation reconciliation batch: `416e1c0e5bc4a984a78b32e98cc309432c7abdd6`; it updated the project agent instructions, root README, documentation index, audit index, codebase map, current continuation audit and this canonical handoff.
+- Exact-head Verify [#42586638191 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586638191) on that commit: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; all configured schema, data/evidence, external-G2P harness, locked install, build, generated-data reproducibility and built-page checks passed.
+- Markdown local-target integrity scan across the seven updated Markdown files and all 208 repository tree entries: 0 missing local file targets. External URLs and all heading anchors were not exhaustively crawled.
+- PR #148/#156/#145/#146/#147 and the older #137–#142 stack were compared against main. They remain untouched because they are divergent/stale, stacked, conflicting with the adopted hybrid, or overlap current mainline changes. Exact ahead/behind counts and changed-file scope are recorded in the current continuation audit.
+- GitHub Pages deployment for PR #157's merge commit succeeded in run #42586199760. The later documentation refresh changes no generated browser assets.
+- Final readiness remains research-ready engineering prototype, not linguistically release-ready. Independent expert IPA gold is 0; manual accessibility acceptance is partial.

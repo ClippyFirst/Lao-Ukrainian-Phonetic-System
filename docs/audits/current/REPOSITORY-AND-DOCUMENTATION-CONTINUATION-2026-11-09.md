@@ -368,3 +368,38 @@ This section supersedes the earlier statement that the 2026-11-09 continuation d
 - Code head `4637aeabd2d2d8b317ccdfe736f8185c9dcad966` passed Verify #42585140497 — SUCCESS: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data drift and built-page checks all passed.
 - Deterministic-profile benchmark #42585140448 also passed; no runtime errors. Its 100-row held-out scores are comparative concordance, not independent phonetic accuracy.
 - The code batch is DONE_VERIFIED. This audit update itself is documentation-only and will receive a new exact-head Verify.
+
+## PR-stack comparison and documentation exact-head closeout — 2026-11-09
+
+### Branch comparison against main
+
+The following comparisons use the current mainline after the PR #157 merge and the documentation refresh. Ahead/behind counts are Git commit-graph comparisons, not an assessment that every changed commit should be ported.
+
+| PR | Compare status | Ahead / behind | Changed files | Finding |
+|---|---:|---:|---:|---|
+| #148 | Diverged | 7 / 96 | 7 | Documentation-only refresh based on old main; its audit/code-map/handoff snapshot is superseded by current main docs. |
+| #156 | Diverged | 93 / 89 | 16 | Additional benchmark scripts/workflows and reports; substantial overlap with the older benchmark stack. Keep Draft and reconcile selectively. |
+| #145 | Diverged | 24 / 96 | 13 | Neural-first runtime/CLI proposal; conflicts with the deterministic hybrid direction already on main. |
+| #146 | Diverged | 43 / 96 | 17 | Deterministic reference-profile stack; non-mergeable and not needed to restore main's current hybrid. |
+| #147 | Diverged | 81 / 96 | 7 | Stacked on #146, not a standalone mainline change; despite GitHub's mergeable flag, retain the dependency review gate. |
+| #137 | Diverged | 79 / 98 | 21 | Older parser/tone/benchmark stack; substantial overlap with later mainline work. |
+| #138 | Diverged | 88 / 98 | 22 | Older neural-provider and rights audit stack; based on an older benchmark branch. |
+| #139 | Diverged | 84 / 98 | 5 | Immutable-model benchmark stack based on #137. |
+| #140 | Diverged | 294 / 98 | 44 | Large stacked rule-engine diagnostics/tone changes; not safe to merge as a standalone PR. |
+| #141 | Diverged | 317 / 98 | 19 | Stacked target/transcription work on #140. |
+| #142 | Diverged | 337 / 98 | 18 | Stacked grapheme-preview work on #141; later mainline work includes newer successors. |
+
+The older PRs #137–#142 remain untouched because they are heavily stacked and diverged, and later merged work has superseded parts of their scope. Any future reuse should be a narrowly scoped port with current tests and evidence, not a wholesale merge. PRs #148, #145, #146, #147 and #156 likewise remain open and unmodified.
+
+### Documentation refresh and verification
+
+- Documentation reconciliation commit: `416e1c0e5bc4a984a78b32e98cc309432c7abdd6`.
+- Updated `AGENTS.md` with the revalidated upstream methodology snapshots and root-license caveat; clarified README lexical-hint scope and current audit navigation; updated the docs index, audit index, codebase map, this audit and the canonical master handoff.
+- Exact-head Verify [#42586638191 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586638191) on that documentation commit: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; IPA-gold schema, repository data/evidence audit, external-G2P harness syntax/CLI, locked install, build, generated-data reproducibility/drift and built-page/relative-asset checks all passed.
+- A local-path Markdown-link integrity scan over the seven updated Markdown files against the complete 208-entry recursive main tree found **0 missing local targets**. External URLs and every heading-anchor target were not exhaustively crawled.
+- GitHub Pages deployment for the PR #157 merge commit succeeded: [#42586199760 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42586199760). The documentation-only refresh does not alter generated browser assets.
+- No local checkout, shell commands or local browser run are claimed; verification was hosted GitHub Actions plus the repository-tree link scan above.
+
+### Final status
+
+The repository's documentation hierarchy is coherent and discoverable without a second master plan or directory-wide migration. The latest mainline is engineering-verified and research-ready as a prototype. It is not linguistically release-ready: independent adjudicated IPA gold remains 0, expert linguistic sign-off is absent, and manual accessibility QA remains partial. The lexical list improves optional research diagnostics only; lexical word segmentation remains unsolved.
