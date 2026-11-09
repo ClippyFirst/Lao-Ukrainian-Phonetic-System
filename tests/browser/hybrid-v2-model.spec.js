@@ -19,6 +19,8 @@ test("Hybrid v2 runs beam-five tonal inference locally from Pages assets", async
   page.on("pageerror", (error) => pageErrors.push(error.message));
 
   await page.goto("/");
+  const isolation = await page.evaluate(() => self.crossOriginIsolated);
+  expect(isolation).toBe(false);
   const input = page.locator("#lao-input");
   const run = page.locator("#run-hybrid-v2");
   const status = page.locator("#hybrid-v2-status");
