@@ -2928,3 +2928,9 @@ No upstream source code, skills, CLI, datasets, assets, hooks, workflows or runt
 - PR #148/#156/#145/#146/#147 and the older #137–#142 stack were compared against main. They remain untouched because they are divergent/stale, stacked, conflicting with the adopted hybrid, or overlap current mainline changes. Exact ahead/behind counts and changed-file scope are recorded in the current continuation audit.
 - GitHub Pages deployment for PR #157's merge commit succeeded in run #42586199760. The later documentation refresh changes no generated browser assets.
 - Final readiness remains research-ready engineering prototype, not linguistically release-ready. Independent expert IPA gold is 0; manual accessibility acceptance is partial.
+
+## Completion register and glossary synchronization — 2026-11-09
+
+- Updated `GLOSSARY.md` with explicit definitions for orthographic lexical hints and `SOFT_HINT_ONLY`.
+- Updated the existing linguistic completion register in place with evidence-backed statuses for written-source registration, the LaoNLP structural fixture and the diagnostic-only lexical-hint matcher; preserved the unresolved lexical-segmentation, MIT CSV, Kaikki provenance and independent IPA-gold blockers.
+- Exact-head Verify [#42587148792 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42587148792) on commit `114c64bfd4222b0ad19283919d7cacdab7399a85`: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; all configured schema, data/evidence, harness, locked install, build, generated-artifact and built-page checks passed.

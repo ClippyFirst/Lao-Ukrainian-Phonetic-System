@@ -403,3 +403,10 @@ The older PRs #137–#142 remain untouched because they are heavily stacked and 
 ### Final status
 
 The repository's documentation hierarchy is coherent and discoverable without a second master plan or directory-wide migration. The latest mainline is engineering-verified and research-ready as a prototype. It is not linguistically release-ready: independent adjudicated IPA gold remains 0, expert linguistic sign-off is absent, and manual accessibility QA remains partial. The lexical list improves optional research diagnostics only; lexical word segmentation remains unsolved.
+
+## Completion-register and glossary synchronization — 2026-11-09
+
+- Commit `114c64bfd4222b0ad19283919d7cacdab7399a85` updates `GLOSSARY.md` with `Orthographic lexical hint` and `SOFT_HINT_ONLY`, and appends the written-evidence/lexical-hint acceptance rows to `docs/audits/current/LINGUISTIC-COMPLETION-REGISTER-2026-11-01.md`.
+- Exact-head Verify [#42587148792 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42587148792) on that commit: 298 Python, 147 Node/browser-engine and 19 Chromium UI tests; all configured IPA-gold schema, repository data/evidence, external-G2P harness, locked install, build, generated-data and built-page checks passed.
+- The register now distinguishes completed source registration, structural segmentation fixtures and diagnostic-only lexical hints from unresolved lexical word segmentation, the inaccessible MIT CSV, unclassified Kaikki/Wiktionary IPA provenance and independent IPA gold (0).
+- This synchronization changes documentation only; no runtime, canonical phonological registry or generated browser asset changed.
