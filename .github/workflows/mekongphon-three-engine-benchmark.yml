@@ -41,6 +41,7 @@ jobs:
           python -m pip install -e .
           python -m pip install lao2ipa==1.0.0 transformers==4.49.0 huggingface_hub==0.29.3 sacrebleu==2.5.1 epitran==1.35.3
           python -m pip install "git+https://github.com/TigreGotico/orthography2ipa.git@32b66b0b1a4b66f7267790d7ec1f346460f8d814"
+          python -m pip install transphone==1.5.3
       - name: Run pinned 100-word held-out benchmark (both MekongPhon models)
         run: python scripts/benchmark_mekongphon_three_engines.py --output artifacts/mekongphon-100-word-benchmark.json
       - name: Run pinned additional Epitran and orthography2ipa comparators
