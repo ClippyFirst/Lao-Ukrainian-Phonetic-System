@@ -341,11 +341,16 @@ export function createHybridV2Inference({
 
   async function run(deterministicAnalysis, text) {
     const neural = await transcribeRaw(text);
-    return combineNeuralTones(
+    const combined = combineNeuralTones(
       deterministicAnalysis,
       neural.rawIpa,
       { modelId: neural.modelId, modelRevision: neural.modelRevision },
     );
+    return {
+      ...combined,
+      numBeams: neural.numBeams,
+      sourceTokenCount: neural.sourceTokenCount,
+    };
   }
 
   async function release() {
