@@ -289,6 +289,9 @@ def main() -> int:
         parity_rows.append({
             "input": text,
             "token_count": token_count,
+            "encoder_input_ids": encoded["input_ids"][0].tolist(),
+            "encoder_attention_mask": encoded["attention_mask"][0].tolist(),
+            "encoder_token_type_ids": encoded.get("token_type_ids", torch.zeros_like(encoded["input_ids"]))[0].tolist(),
             "expected_ids": expected_ids,
             "actual_ids": actual_ids,
             "decoded": actual_text,
