@@ -3201,3 +3201,10 @@ The post-fallback HVULao 1k run [#42653641804](https://github.com/ClippyFirst/La
 - Accepted IPA/tone confidence rates: PARTIAL (97% segmental, 91% tonal); these are quality indicators, not rendering gates.
 - Independent adjudicated IPA gold: BLOCKED (0 project-adjudicated records); requires qualified Lao phonetics review.
 
+
+
+### HVULao schema 1.5 final result — 2026-11-09
+
+The pending post-fallback 1k run completed successfully: [#42653641804 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804), artifact [#13691297821](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42653641804/artifacts/13691297821). It processed 1,000/1,000 rows with zero runtime errors. Hybrid rendering is 1,000/1,000 inputs and 21,534/21,534 analyzed units (100%). The source-side distribution is 16,936 SUPPORTED IPA, 19 UNCERTAIN IPA and 398 PROVISIONAL units; 607 Ukrainian target mappings are unavailable and are marked with target-side ? rather than suppressed. Accepted IPA completeness is 661/1,000 sentences (66.1%) and 97.71% syllable IPA coverage. Neural completes 934/1,000 IPA sentences (93.4%) but rejects 66 inputs under its source limits. HVULao contains no IPA reference, so no accuracy claim follows.
+
+**Current completion state:** the output-coverage target is DONE_VERIFIED on both the 100-word comparison (100/100 inputs, 169/169 units) and the HVULao 1k set (1,000/1,000 inputs, 21,534/21,534 units). Confidence remains visible separately; no unknown marker is promoted to accepted IPA or tone. Independent adjudicated IPA gold remains BLOCKED at 0 project-adjudicated records.
