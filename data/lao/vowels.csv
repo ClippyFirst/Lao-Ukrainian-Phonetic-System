@@ -33,3 +33,8 @@ AI,ໄ,ai,short,preposed,none,core,preposed ai,diphthong
 AI2,ໃ,ai,short,preposed,none,core,preposed ai variant,diphthong
 AW_LONG,ເົາ,aw,short,around,none,core,orthographic /aw/,diphthong
 AM,ຳ,am,short,postposed,nasal,core,Sara Am structural vowel unit,monophthong
+OEY,ເ◌ີຍ,ɤːj,long,preposed,none,core,Preposed OE with final palatal glide; documented as ເ◌ີຍ,diphthong
+OOY,ໂ◌ຍ,oːj,long,preposed,none,core,Preposed O with final palatal glide; documented as ໂ◌ຍ,diphthong
+AEW,ແ◌ວ,ɛːw,long,preposed,none,core,Preposed AE with final labial glide; documented as ແ◌ວ,diphthong
+AOY,◌ອຍ,ɔːj,long,postposed,none,core,Medial O plus final palatal glide; documented as ◌ອຍ,diphthong
+AAJ,◌າຽ,aːj,long,postposed,none,core,AA plus semivowel NYO as final palatal glide; documented as ◌າຽ,diphthong
