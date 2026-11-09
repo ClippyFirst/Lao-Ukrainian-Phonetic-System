@@ -51,6 +51,7 @@ class TestStructuralVowels(unittest.TestCase):
     def test_source_attested_glide_vowel_spellings_are_parsed(self):
         cases = {
             "ເກີຍ": ("OEY", "kɤːj", "кей"),
+            "ກັຽ": ("IA", "kiə", "кіа"),
             "ໂກຍ": ("OOY", "koːj", "кой"),
             "ແມວ": ("AEW", "mɛːw", "мев"),
             "ກອຍ": ("AOY", "kɔːj", "кой"),
