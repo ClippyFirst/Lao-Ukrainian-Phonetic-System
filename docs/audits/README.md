@@ -4,7 +4,7 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository and documentation continuation — 2026-11-09](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) — latest mainline state after PR #157 merge; documents lexical-hint scope, exact-head Verify, upstream methodology snapshots, open PR-stack disposition, documentation authority and remaining research/accessibility blockers.
+- [Repository and documentation continuation — 2026-11-09](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) — canonical continuation record. Its leading addendum tracks current `main` SHA and exact-head CI; earlier sections are dated historical snapshots. Records PR reconciliation, lexical-hint scope, provenance, corrected confidence-gated coverage, methodology references and remaining research/accessibility blockers.
 
 - [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — historical integrated PR #143 branch state and earlier architecture/PR checkpoint; superseded for current main/PR status.
 - [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.
