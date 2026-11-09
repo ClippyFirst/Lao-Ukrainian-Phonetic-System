@@ -31,17 +31,20 @@ function matchVowel(before, after) {
     if (after.startsWith("ົາ")) return push("AW_LONG", "ົາ");
     if (after.startsWith("າະ")) return push("AW", "າະ");
     if (after.startsWith("ິ")) return push("OE", "ິ");
+    if (after.startsWith("ີຍ")) return push("OEY", "ີຍ");
     if (after.startsWith("ີ")) return push("OEE", "ີ");
     if (after.startsWith("ະ")) return push("E", "ະ");
     if (after.startsWith("ັ")) return push("E", "ັ");
     return push("EE");
   }
   if (before.endsWith("ແ")) {
+    if (after.startsWith("ວ")) return push("AEW", "ວ");
     if (after.startsWith("ະ")) return push("AE", "ະ");
     if (after.startsWith("ັ")) return push("AE", "ັ");
     return push("AEE");
   }
   if (before.endsWith("ໂ")) {
+    if (after.startsWith("ຍ")) return push("OOY", "ຍ");
     if (after.startsWith("ະ")) return push("O", "ະ");
     if (after.startsWith("ົ")) return push("O", "ົ");
     return push("OO");
@@ -56,10 +59,12 @@ function matchVowel(before, after) {
   if (after.startsWith("ຳ")) return push("AM", "ຳ");
   if (after.startsWith("ໍ")) return push("AWW", "ໍ");
   if (after.startsWith("ັອ")) return push("AWW_SHORT_ALT", "ັອ");
+  if (after.startsWith("ອຍ")) return push("AOY", "ອຍ");
   if (after.startsWith("ອ")) return push("AWW_MEDIAL", "ອ");
   if (after.startsWith("ົ")) return push("O", "ົ");
   if (after.startsWith("ະ")) return push("A", "ະ");
   if (after.startsWith("ັ")) return push("A2", "ັ");
+  if (after.startsWith("າຽ")) return push("AAJ", "າຽ");
   if (after.startsWith("າ")) return push("AA", "າ");
   if (after.startsWith("ິ")) return push("I", "ິ");
   if (after.startsWith("ີ")) return push("II", "ີ");
@@ -340,7 +345,7 @@ function previewFromGraphemes(surface, parsed) {
   };
 }
 
-const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•"));
+const PASSTHROUGH_PUNCTUATION = new Set(Array.from(",!?;:()[]{}\"“”&%–…#/`+•ຯ"));
 
 function isPassthroughChar(ch) {
   if (PASSTHROUGH_PUNCTUATION.has(ch) || /^[0-9A-Za-z.'-]$/u.test(ch) || /^[\u0ED0-\u0ED9]$/u.test(ch)) return true;
