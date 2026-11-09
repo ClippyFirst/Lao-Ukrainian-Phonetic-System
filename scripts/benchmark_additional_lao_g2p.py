@@ -162,6 +162,11 @@ def main() -> int:
     # directly, not its lexicon tokenizer, to avoid lexical leakage.
     from transphone.g2p import read_g2p
     transphone_model = read_g2p(model_name="latest", device="cpu")
+    if "lao" not in transphone_model.supervised_langs:
+        raise RuntimeError("Transphone model does not contain supervised Lao; refusing zero-shot fallback")
+    transphone_checkpoint_sha256 = hashlib.sha256(
+        Path(transphone_model.checkpoint).read_bytes()
+    ).hexdigest()
 
     def transphone_predict(text: str):
         started = time.perf_counter()
@@ -195,6 +200,8 @@ def main() -> int:
             "transphone_version": importlib.metadata.version("transphone"),
             "transphone_upstream_commit": "7769dec083b90dab072fc7e4c592744592a35736",
             "transphone_model_release": "v1.0/latest.tar.gz",
+            "transphone_checkpoint_sha256": transphone_checkpoint_sha256,
+            "transphone_language_mode": "supervised Lao; zero-shot fallback explicitly rejected",
             "normalization": "NFC; trim outer whitespace only; no tone/length/tie-bar normalization for tonal score",
         },
         "results": results,
