@@ -42,7 +42,7 @@ jobs:
       - name: Install browser-test dependencies
         run: npm install --no-audit --no-fund
       - name: Install pinned browser-local inference runtime dependencies
-        run: npm install --no-save --package-lock=false --no-audit --no-fund esbuild@0.25.0 @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund esbuild@0.25.0 @huggingface/transformers@4.3.2 onnxruntime-web@1.31.1
       - name: Run browser regression tests
         run: npm test
       - name: Build both public pages and generated data
