@@ -199,3 +199,8 @@ A second hybrid candidate is now implemented as an explicit Python/CLI mode, `--
 - The Ukrainian target output remains the deterministic adapter's output. This is an experimental Python mode; it is not yet the browser default or production default.
 
 Initial acceptance tests cover exact one-/two-syllable alignment, preservation of deterministic segmentals and Ukrainian output, unsupported IPA, unknown contours, count mismatches, and input immutability. The mode is not promoted to the default until same-split benchmark and exact-head CI demonstrate that it improves tonal results without regressing segmental CER or rendering coverage. Independent expert IPA gold remains unavailable.
+
+
+## Hybrid v2 measured result
+
+On the pinned 100-word MekongPhon split, the opt-in dual-lane hybrid combines the best measured fields: ClippyFirst segmental IPA CER **6.15% (90/100 exact)** and MekongPhon Neural tonal IPA CER **8.29% (74/100 exact)**, while deterministic Ukrainian rendering remains **100/100 inputs and 169/169 units**. The tonal stream is preserved separately rather than forced into a synthetic fused IPA string. Per-syllable neural tone associations are marked uncertain. This is dictionary-seeded concordance, not independent expert validation. See the engine inventory for the full methodology and caveats.

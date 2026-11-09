@@ -394,3 +394,18 @@ The benchmark now scores the two lanes independently and reports neural tone-ass
 ### Hybrid v2 long-input and dependency fallback
 
 The neural model's 128-token limit and optional dependency boundary are handled explicitly. Expected `ValueError`, `RuntimeError` (including missing optional neural dependencies/CUDA), and `OSError` inference failures return the deterministic Ukrainian lane with `tone_alignment_status=NEURAL_UNAVAILABLE`, no neural tone predictions, and a visible warning containing the failure class/reason. Invalid deterministic input remains `INVALID_INPUT`. Unexpected programming errors are not swallowed. This preserves output coverage without claiming unavailable neural tone.
+
+
+### Hybrid v2 same-split results — 2026-11-09
+
+The dual-lane v2 benchmark completed successfully on the pinned MekongPhon 100-word split: [Verify #42673479442 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42673479442) and [benchmark #42673479457 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42673479457), aggregate artifact [#13698843728](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42673479457/artifacts/13698843728). Benchmark code commit: `dd425ae5458ed1ed840fd7eaa13c373e80073cfa`.
+
+| Hybrid v2 lane | CER | Exact | Coverage |
+|---|---:|---:|---:|
+| Segmental IPA — ClippyFirst hybrid | **6.15%** | **90/100** | 100/100 |
+| Tonal IPA — untouched MekongPhon Neural output | **8.29%** | **74/100** | 100/100 |
+| Ukrainian rendering — deterministic IPA adapter | n/a | n/a | **100/100 inputs; 169/169 units** |
+
+The previous deterministic hybrid's Mekong-convention tonal CER was 11.39% (69/100 exact), so v2 improves the selected tonal lane while preserving the best segmental lane. The model's full tonal IPA remains separate; no artificial segmental+tone string is synthesized. Ordered tone contours could be associated with 112/169 syllable units (66.27%); those per-syllable predictions remain UNCERTAIN. Accepted project-adjudicated tonal confidence is 0 because the project has no independent tone gold. Runtime errors: 0. The dictionary-seeded 100-word benchmark is not independent expert gold and must not be described as whole-language accuracy.
+
+**Task ledger:** same-split dual-lane comparison DONE_VERIFIED; explicit neural-unavailable fallback regression test DONE_VERIFIED; 1k sentence-domain v2 stress benchmark TODO (existing HVULao 1k results apply to the prior deterministic hybrid and neural comparator, not v2); browser integration DEFERRED pending a separately deployed inference backend. Hybrid v2 remains opt-in and does not replace the browser/default engine.

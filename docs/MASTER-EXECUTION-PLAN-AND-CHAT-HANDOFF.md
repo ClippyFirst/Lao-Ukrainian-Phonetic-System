@@ -3240,3 +3240,18 @@ Do not synthesize one IPA string by appending neural tone contours to determinis
 ### Hybrid v2 availability behavior
 
 Expected optional-neural dependency, runtime, model I/O and input-length errors preserve the deterministic Ukrainian lane with explicit `NEURAL_UNAVAILABLE` status and warning. Invalid input remains rejected. Unexpected programming exceptions propagate. This is a visible fallback, not a claimed neural tone result.
+
+
+### Hybrid v2 same-split results — 2026-11-09
+
+The dual-lane v2 benchmark completed successfully on the pinned MekongPhon 100-word split: [Verify #42673479442 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42673479442) and [benchmark #42673479457 SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42673479457), aggregate artifact [#13698843728](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42673479457/artifacts/13698843728). Benchmark code commit: `dd425ae5458ed1ed840fd7eaa13c373e80073cfa`.
+
+| Hybrid v2 lane | CER | Exact | Coverage |
+|---|---:|---:|---:|
+| Segmental IPA — ClippyFirst hybrid | **6.15%** | **90/100** | 100/100 |
+| Tonal IPA — untouched MekongPhon Neural output | **8.29%** | **74/100** | 100/100 |
+| Ukrainian rendering — deterministic IPA adapter | n/a | n/a | **100/100 inputs; 169/169 units** |
+
+The previous deterministic hybrid's Mekong-convention tonal CER was 11.39% (69/100 exact), so v2 improves the selected tonal lane while preserving the best segmental lane. The model's full tonal IPA remains separate; no artificial segmental+tone string is synthesized. Ordered tone contours could be associated with 112/169 syllable units (66.27%); those per-syllable predictions remain UNCERTAIN. Accepted project-adjudicated tonal confidence is 0 because the project has no independent tone gold. Runtime errors: 0. The dictionary-seeded 100-word benchmark is not independent expert gold and must not be described as whole-language accuracy.
+
+**Task ledger:** same-split dual-lane comparison DONE_VERIFIED; explicit neural-unavailable fallback regression test DONE_VERIFIED; 1k sentence-domain v2 stress benchmark TODO (existing HVULao 1k results apply to the prior deterministic hybrid and neural comparator, not v2); browser integration DEFERRED pending a separately deployed inference backend. Hybrid v2 remains opt-in and does not replace the browser/default engine.
