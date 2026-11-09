@@ -784,3 +784,15 @@ Detailed task ledger and architecture are in `docs/research/GITHUB-PAGES-HYBRID-
 - **TODO:** once exact-head checks pass, update PR #158 from draft, merge it, verify main Pages deployment, and inspect live same-origin UI/model/tokenizer/WASM/license assets. No live deployment is claimed.
 - **BLOCKED (linguistic accuracy):** independent expert-adjudicated IPA gold is still empty. Keep neural tone outputs marked `UNCERTAIN`; do not treat parity fixtures as linguistic gold.
 
+
+
+## Final Hybrid v2 browser verification — 2026-11-09, 21:15 UTC
+
+- **DONE_VERIFIED:** exact-head preview [#42700501740](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740) and repository Verify [#42700510670](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700510670) both SUCCESS on `32a8f27ac2f9229f61a98611828d8d39e12f3d52`.
+- **DONE_VERIFIED:** Chromium run on a non-cross-origin-isolated origin; `crossOriginIsolated === false`, WASM single-thread inference still succeeds. No COOP/COEP headers needed on GitHub Pages.
+- **DONE_VERIFIED:** bundle third-party notices derived from esbuild metafile inputs; included Transformers.js Apache-2.0 and ONNX Runtime common/web MIT license texts. Model Apache-2.0 license and attribution NOTICE included.
+- **DONE_VERIFIED:** preview artifact [13711776359](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740/artifacts/13711776359), 40,383,255 bytes zipped / 56,466,051 unpacked, 34 files.
+- **DONE_VERIFIED:** aligned short Lao test, unaligned multi-syllable raw IPA preservation, no fabricated tone predictions, and zero external runtime requests.
+- **TODO:** PR #158 remains draft. Mark ready, merge, wait for main Pages deploy, verify live site and all static assets. Do not report production deployment until live smoke passes.
+- **BLOCKED (accuracy only):** no independent expert IPA gold; neural tone remains `UNCERTAIN`.
+
