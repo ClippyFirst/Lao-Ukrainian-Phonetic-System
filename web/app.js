@@ -355,13 +355,21 @@ function render() {
       preview.className = "grapheme-preview";
       preview.setAttribute("role", "note");
       const label = document.createElement("strong");
-      label.textContent = "Попередній IPA-прев’ю (PROVISIONAL; не підтверджена вимова): ";
+      label.textContent = "Попередній IPA (низька впевненість; вимова не підтверджена): ";
       const value = document.createElement("code");
       value.textContent = syllable.graphemePreview.ipaPreview || "—";
       const unresolved = document.createElement("span");
       unresolved.textContent = " · Невизначені графеми: " + (syllable.graphemePreview.unresolvedGraphemes.join("") || "немає");
       preview.append(label, value, unresolved);
       element.append(preview);
+
+      const confidence = document.createElement("p");
+      confidence.className = "grapheme-confidence";
+      confidence.setAttribute("role", "note");
+      confidence.textContent =
+        "Низька впевненість: український результат сформовано за доступними графемними підказками; " +
+        "невирішені позиції позначено «?». Тон не виводився.";
+      element.append(confidence);
     }
     rows.append(element);
   });
