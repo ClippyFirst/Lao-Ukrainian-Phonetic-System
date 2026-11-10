@@ -3527,8 +3527,8 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 
 ## Meta-Hybrid v3 implementation continuation — 2026-11-10
 
-**Base:** PR #160 benchmark/documentation branch head `3fff8b0dd484fb1769bc73b20fe798ce2e5d6bac` (its Verify run #42815881237 completed SUCCESS).  
-**Working branch:** `benchmark/meta-hybrid-v3-multiengine-20261110`.  
+**Base:** PR #160 updated benchmark/documentation branch head `477e8ddfc2b2e08a4268f2dc1abed134034f68f1` (its Verify run #42815881237 completed SUCCESS).  
+**Working branch:** `benchmark/meta-hybrid-v3-multiengine-r2-20261110`.  
 **Implementation scope:** add a non-default Python comparison orchestrator that runs the existing deterministic engine, pinned MekongPhon non-tonal model and pinned MekongPhon tonal model; preserve separate IPA lanes; compare accepted segmental IPA; reuse the existing v2 tone-alignment gate; keep deterministic IPA → Ukrainian adaptation authoritative.
 
 ### Task ledger
@@ -3536,7 +3536,7 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 | Work item | Status | Evidence / acceptance |
 |---|---|---|
 | Inspect existing hybrid v2 and neural model adapters | DONE_VERIFIED | `hybrid_v2.py`, `mekongphon.py`, `core.py`, `test_hybrid_v2.py` inspected on base |
-| Add opt-in three-lane Meta-Hybrid v3 orchestrator | PARTIAL | `meta_hybrid_v3.py` added; exact-head CI pending |
+| Add opt-in three-lane Meta-Hybrid v3 orchestrator | PARTIAL | `meta_hybrid_v3.py` added; exact-head CI pending; local clone unavailable and exact-head workflow run not yet observable |
 | Add exact segmental agreement/disagreement gate | PARTIAL | Accepted IPA only; provisional/unsupported units unscorable; tests added, CI pending |
 | Preserve neural tone as separate raw IPA and existing alignment metadata | PARTIAL | Reuses `combine_neural_tones`; tests added, CI pending |
 | CLI and public API exposure | PARTIAL | `--engine meta-hybrid-v3`, public exports added; CI pending |
@@ -3551,3 +3551,11 @@ Meta-Hybrid v3 is deliberately a **comparison orchestrator**, not a validated ma
 ### Verification and next gate
 
 Run the exact-head Verify workflow, external comparator workflow (where the branch-triggered run is available), Python unit tests, `npm test`, build, generated-data drift check and browser tests. Report actual terminal results only. Do not deploy this CLI-only diagnostic feature to GitHub Pages or claim linguistic accuracy. If CI reveals code defects, fix and rerun before handoff.
+
+
+### Final exact-head status — 2026-11-10
+
+- Current implementation branch: `benchmark/meta-hybrid-v3-multiengine-r2-20261110`; PR [#162](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/162), head `2571a01b1ebaba9ebd434a3c4b109c998cee531f`, base PR #160 branch head `477e8ddfc2b2e08a4268f2dc1abed134034f68f1`.
+- PR #161 was closed as superseded; its branch was left intact. PR #145 and PR #160 remain open and untouched.
+- The local clone attempt failed because the execution container could not resolve github.com. GitHub workflow-run/status lookup returned no runs/checks for the exact head at the time of this checkpoint. Therefore no Python, Node, build, browser, or exact-head CI pass is claimed for PR #162; code and tests remain PARTIAL pending an observable hosted Verify run.
+- PR #160's Verify #42815881237 is a base-branch result only and does not verify PR #162.
