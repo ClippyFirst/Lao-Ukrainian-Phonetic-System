@@ -26,7 +26,7 @@ test("result cards prioritize Ukrainian, then romanization, then IPA", () => {
 test("empty state yields to results and detailed syllable analysis is collapsed", () => {
   assert.match(html, /id="empty-state"/);
   assert.match(html, /id="results"[^>]*hidden/);
-  assert.match(html, /<details class="trace-panel trace-disclosure">\s*<summary[^>]*>.*?Поскладовий розбір/s);
+  assert.match(html, /<details class="trace-panel trace-disclosure">\s*<summary[^>]*>.*?Як побудовано читання/s);
   assert.match(app, /emptyState\.hidden = false/);
   assert.match(app, /emptyState\.hidden = true/);
   assert.match(app, /results\.hidden = false/);
@@ -63,7 +63,7 @@ test("public research status reflects the merged 2026-10-31 implementation", asy
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(html, /СТАН ДОСЛІДЖЕННЯ · 10\.11\.2026/);
   assert.match(html, /\/ʃt͡ʃ\/.{0,80}→ щ/);
-  assert.match(html, /романізац[ія].{0,100}складов/i);
+  assert.match(html, /режим за романізацією.{0,100}окремим складовим методом/i);
   assert.match(methodology, /Станом на 10 листопада 2026 року/);
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
   assert.match(methodology, /незалежна фонетична точність ще не виміряна/i);
@@ -141,7 +141,7 @@ test("all public site copy explains the product contract and honest uncertainty"
   assert.match(html, /невідомі позиції позначаються «\?»/);
   assert.match(html, /IPA-адаптер/);
   assert.match(methodology, /Незалежний експертно ад'юдикований IPA gold corpus наразі містить 0 еталонів/);
-  assert.match(methodology, /романізація може втрачати тон, довготу/);
+  assert.match(methodology, /романізація може втрачати тон, довготу та відмінності між голосними/);
   assert.match(methodology, /не вибирає варіант навмання/);
 });
 
