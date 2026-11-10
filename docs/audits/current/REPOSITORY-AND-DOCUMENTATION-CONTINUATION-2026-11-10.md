@@ -396,3 +396,5 @@ The final input-field implementation, static/browser regression tests and update
 - Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. The first Chromium run caught a test setup issue: the mode switch was still inside the hidden empty-results panel, so the click could not run. The test now enters a sample first. Acceptance awaits a fresh exact-head Verify; visual review on physical displays remains separate.
 
 - Follow-up check also found the secondary “Очистити” action used muted text on the paper surface at 4.41:1. Its foreground is now darkened to `#505D55` and its border to `#68716A`; static tests check text and boundary contrast against both paper and silk surfaces.
+
+- The browser test now waits for the results panel to become visible before measuring or clicking the method buttons, matching the actual asynchronous UI lifecycle.
