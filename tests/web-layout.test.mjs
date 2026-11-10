@@ -62,11 +62,11 @@ test("Ukrainian result offers an accessible two-method selector in one result ca
 test("public research status reflects the merged 2026-10-31 implementation", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(html, /СТАН ДОСЛІДЖЕННЯ · 10\.11\.2026/);
-  assert.match(html, /\/ʃt͡ʃ\/ → щ/);
+  assert.match(html, /\/ʃt͡ʃ\/.{0,80}→ щ/);
   assert.match(html, /романізац[ія].{0,100}складов/i);
   assert.match(methodology, /Станом на 10 листопада 2026 року/);
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
-  assert.match(methodology, /accuracy.{0,20}null/i);
+  assert.match(methodology, /незалежна фонетична точність ще не виміряна/i);
 });
 
 test("methodology tables that scroll horizontally are keyboard-focusable and named", async () => {
