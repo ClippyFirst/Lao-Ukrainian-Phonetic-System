@@ -372,3 +372,11 @@ The README's prior schema-6/2026-11-09 benchmark paragraph was stale. It now sum
 Exact documentation-complete Verify [#42871983082 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871983082): 350 Python, 152 Node and 22 Chromium tests passed; repository audit, IPA schema, external-G2P CLI, locked install, build, generated-data reproducibility and built-page checks passed. Mainline Verify [#42872275176](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42872275176) was triggered by the merge; its exact-main result remains pending at this audit checkpoint.
 
 No engine, model, IPA mapping, deterministic default or browser runtime behavior changed. Independent adjudicated IPA gold remains 0.
+
+
+## Remove instructional copy from the Lao input — PARTIAL, 2026-11-10
+
+- Removed the in-field Lao-script placeholder so the writing area opens clean, without a prefilled instruction or example phrase.
+- Renamed the visually hidden accessible label from “Лаоський текст” to “Текст для аналізу”; the field remains programmatically named for assistive technology.
+- Updated browser and static regression coverage, and removed the now-unused placeholder styling. Existing field ID, Lao language metadata, input behavior, examples and engine contracts are unchanged.
+- Acceptance: exact-head Verify must pass static and Chromium tests. Manual device/screen-reader review remains separate.
