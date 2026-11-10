@@ -241,3 +241,12 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 | research/written-evidence-phonology-2026-11-09 | #157 merged | Already integrated |
 
 **Result:** all 28 refs have a disposition. 12 are from merged PRs; 3 branch-only/open-PR workstreams have been selectively ported (benchmark reconciliation, Meta-Hybrid v3 research comparator, Laonetics research benchmark); 11 closed-unmerged branches are superseded snapshots; one duplicate Meta-Hybrid branch is behind main; one neural-first architecture PR remains open as a deliberate decision blocker. No branch refs were deleted.
+
+
+## Research CLI text formatting regression — 2026-11-10
+
+**Status: DONE_VERIFIED.** PR [#164](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/164), starting from main 2b492771785564247ad26f6d911e7c36204817f0; implementation/test head 6cf650ff892ff8bf82d455cb665d38427eb6c256; documentation-complete head e5af9e5462ec57ec6d858fa25824cd517a7646c6.
+
+The human-readable hybrid-v2 and meta-hybrid-v3 CLI branches emitted a literal backslash-n in the input/engine header. Two output-level regression tests reproduced the issue and failed in test-first Verify [#42859192089](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42859192089). The implementation now emits an actual newline. Implementation-head Verify [#42859285823 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42859285823) and documentation-complete exact-head Verify [#42859601706 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42859601706): 346 Python, 152 Node and 22 Chromium tests passed on both heads; IPA-gold structure validation, repository data/evidence audit, optional external-G2P syntax/CLI, locked install, build, generated-data reproducibility, Chromium and built-page checks passed.
+
+Scope is limited to research CLI presentation. No engine defaults, linguistic rules, browser assets or deployment behavior changed. PR #145 remains unmerged because its neural-first CLI default conflicts with the current system specification's deterministic default; the branch is retained for an explicit architecture decision. Independent adjudicated IPA gold remains 0.
