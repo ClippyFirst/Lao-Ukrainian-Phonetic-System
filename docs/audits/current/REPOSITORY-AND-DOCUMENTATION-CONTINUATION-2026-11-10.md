@@ -148,3 +148,14 @@ Adopt the transferable documentation principles, not their product-specific plug
 5. Keep PR #145 deferred unless the owner explicitly reopens the production-architecture decision.
 
 No IPA labels, phonological correspondences, source permissions, benchmark scores or accuracy values were fabricated in this continuation.
+
+
+## Meta-Hybrid v3 continuation — 2026-11-10
+
+- Base branch checkpoint: PR #160 head `3fff8b0dd484fb1769bc73b20fe798ce2e5d6bac`; Verify #42815881237 SUCCESS.
+- Working branch: `benchmark/meta-hybrid-v3-multiengine-20261110`.
+- Added `src/lao_ukrainian/meta_hybrid_v3.py`, `tests/test_meta_hybrid_v3.py`, CLI option `--engine meta-hybrid-v3`, and public API exports.
+- Design: deterministic hybrid remains selected segmental/Ukrainian lane; pinned MekongPhon non-tonal is an exact segmental comparator; pinned MekongPhon tonal remains a separate raw IPA lane and uses existing unique-order tone association only.
+- The comparison gate refuses incomplete/provisional/unsupported IPA and records disagreement without voting. Neural lane failures are isolated.
+- Current state: implementation committed to branch; exact-head CI not yet observed at the time this entry was drafted. Mark code/test acceptance PARTIAL until CI completes.
+- Linguistic selection remains BLOCKED: independent expert-adjudicated IPA gold is 0. Cross-engine agreement is not accuracy.
