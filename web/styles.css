@@ -28,9 +28,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-a { color: inherit; }
+a { color: inherit; -webkit-tap-highlight-color: transparent; }
 button, textarea { font: inherit; }
-button { cursor: pointer; }
+button { cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 [hidden], .hidden { display: none !important; }
 ::selection { background: var(--mekong); color: var(--silk); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
@@ -631,10 +631,10 @@ main {
 .analysis-grid div { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
 .analysis-grid small {
   color: var(--muted);
-  font-size: .68rem;
-  font-weight: 750;
-  letter-spacing: .035em;
-  text-transform: uppercase;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
 }
 .analysis-grid strong { font-size: .87rem; overflow-wrap: anywhere; }
 .rules {

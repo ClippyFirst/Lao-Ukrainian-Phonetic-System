@@ -168,10 +168,10 @@ function render() {
 
   status.textContent =
     result.status === "OK"
-      ? "ГОТОВО"
+      ? "Готово"
       : result.status === "PARTIAL"
-        ? "ЧАСТКОВИЙ АНАЛІЗ"
-        : "НЕ ВСТАНОВЛЕНО";
+        ? "Частковий аналіз"
+        : "Не визначено";
   status.dataset.state = result.status;
 
   warnings.replaceChildren();
@@ -182,7 +182,7 @@ function render() {
     warnings.append(paragraph);
   });
 
-  romanizationStatus.textContent = romanized.status === "OK" ? "ГОТОВО" : "ЧАСТКОВИЙ АНАЛІЗ";
+  romanizationStatus.textContent = romanized.status === "OK" ? "Готово" : "Частковий аналіз";
   romanizationStatus.dataset.state = romanized.status === "OK" ? "OK" : "PARTIAL";
   romanizationWarnings.replaceChildren();
   romanized.warnings.forEach((warning) => {
@@ -263,7 +263,7 @@ function render() {
       preview.className = "grapheme-preview";
       preview.setAttribute("role", "note");
       const label = document.createElement("strong");
-      label.textContent = "Попередня IPA-підказка (PROVISIONAL · низька впевненість; вимову не підтверджено): ";
+      label.textContent = "Попередня IPA-підказка (попередній результат із низькою впевненістю; вимову не підтверджено): ";
       const value = document.createElement("code");
       value.textContent = syllable.graphemePreview.ipaPreview || "—";
       const unresolved = document.createElement("span");
