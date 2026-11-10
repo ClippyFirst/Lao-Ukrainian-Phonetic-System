@@ -25,17 +25,6 @@ let outputMode = "phonetic";
 const copyFeedback = document.querySelector("#copy-feedback");
 const count = document.querySelector("#count");
 const status = document.querySelector("#analysis-status");
-const runHybridV2Button = document.querySelector("#run-hybrid-v2");
-const hybridV2Status = document.querySelector("#hybrid-v2-status");
-const hybridV2Ipa = document.querySelector("#hybrid-v2-ipa");
-const hybridV2Alignment = document.querySelector("#hybrid-v2-alignment");
-const hybridV2Meta = document.querySelector("#hybrid-v2-meta");
-const hybridV2Predictions = document.querySelector("#hybrid-v2-predictions");
-const hybridV2Warnings = document.querySelector("#hybrid-v2-warnings");
-const copyHybridV2Ipa = document.querySelector("#copy-hybrid-v2-ipa");
-let hybridV2Runner = null;
-let hybridV2Running = false;
-let hybridV2Input = null;
 
 async function copyWithFeedback(button, value) {
   const defaultLabel = button.dataset.defaultLabel || button.textContent;
@@ -95,93 +84,6 @@ function setOutputMode(mode) {
   render();
 }
 
-function resetHybridV2Panel() {
-  hybridV2Input = null;
-  hybridV2Ipa.textContent = "";
-  hybridV2Alignment.textContent = "";
-  hybridV2Meta.textContent = "";
-  hybridV2Predictions.replaceChildren();
-  hybridV2Warnings.replaceChildren();
-  hybridV2Status.textContent = "Не запускалося. Перший запуск завантажить приблизно 40 МБ ваг моделі та 15 МБ WASM-рушія з GitHub Pages; інференс виконується локально у браузері.";
-  runHybridV2Button.textContent = "Завантажити й запустити Hybrid v2";
-  copyHybridV2Ipa.disabled = true;
-}
-
-async function runHybridV2() {
-  const submittedText = input.value;
-  const deterministic = analyze(submittedText, { ipaProfile: "hybrid-deterministic" });
-  if (!submittedText.trim() || deterministic.status === "INVALID") return;
-  hybridV2Running = true;
-  runHybridV2Button.disabled = true;
-  hybridV2Status.textContent = "Підготовка локальної нейромережі…";
-  try {
-    if (!hybridV2Runner) {
-      const { createHybridV2Inference } = await import("./hybrid-v2-inference.bundle.js");
-      hybridV2Runner = createHybridV2Inference({
-        onProgress(progress) {
-          if (input.value !== submittedText) return;
-          if (progress.phase === "download") {
-            const loaded = (progress.loaded / 1048576).toFixed(1);
-            const total = progress.total ? (progress.total / 1048576).toFixed(1) : "?";
-            hybridV2Status.textContent = `Завантаження ${progress.label}: ${loaded}/${total} МБ…`;
-          } else {
-            hybridV2Status.textContent = progress.label || "Підготовка моделі…";
-          }
-        },
-      });
-    }
-    const result = await hybridV2Runner.run(deterministic, submittedText);
-    if (input.value !== submittedText) return;
-    hybridV2Input = submittedText;
-    hybridV2Ipa.textContent = result.neuralRawIpa || "—";
-    hybridV2Alignment.textContent =
-      "Вирівнювання тонів: " + result.toneAlignmentStatus +
-      " · розбір зовнішнього IPA: " + (result.neuralIpaParse?.status || "невідомо") + ".";
-    hybridV2Meta.textContent =
-      result.modelId + "@" + result.modelRevision +
-      " · beam=" + (result.numBeams || 5) +
-      " · токенів у вході: " + (result.sourceTokenCount ?? "—") +
-      " · усі тонові прогнози залишаються UNCERTAIN.";
-    hybridV2Status.textContent = result.toneAlignmentStatus === "ORDER_ALIGNED"
-      ? "Hybrid v2 завершив аналіз; тонові послідовності вирівняно за порядком."
-      : result.toneAlignmentStatus === "PARTIAL"
-        ? "Hybrid v2 завершив аналіз із частковим вирівнюванням."
-        : "Сирий нейромережевий IPA збережено; тонове зіставлення не підтверджено.";
-    hybridV2Predictions.replaceChildren();
-    result.tonePredictions.forEach((prediction) => {
-      const paragraph = document.createElement("p");
-      paragraph.className = "hybrid-v2-prediction";
-      paragraph.textContent =
-        "Склад " + (prediction.syllableIndex + 1) + " (" + prediction.sourceSurface + "): " +
-        prediction.contour + " → " + prediction.category + " · UNCERTAIN";
-      hybridV2Predictions.append(paragraph);
-    });
-    hybridV2Warnings.replaceChildren();
-    result.warnings.forEach((warning) => {
-      const paragraph = document.createElement("p");
-      paragraph.className = "warning";
-      paragraph.textContent = warning;
-      hybridV2Warnings.append(paragraph);
-    });
-    copyHybridV2Ipa.disabled = !result.neuralRawIpa;
-    runHybridV2Button.textContent = "Оновити Hybrid v2";
-  } catch (error) {
-    if (input.value === submittedText) {
-      hybridV2Status.textContent = "Нейромережевий канал не запустився: " + (error?.message || String(error));
-      hybridV2Alignment.textContent = "Детермінований результат не змінено; мовчазного fallback немає.";
-      hybridV2Ipa.textContent = "";
-      hybridV2Meta.textContent = "";
-      hybridV2Predictions.replaceChildren();
-      hybridV2Warnings.replaceChildren();
-      copyHybridV2Ipa.disabled = true;
-    }
-  } finally {
-    hybridV2Running = false;
-    if (input.value !== submittedText) render();
-    else runHybridV2Button.disabled = analyze(input.value, { ipaProfile: "hybrid-deterministic" }).status === "INVALID";
-  }
-}
-
 function render() {
   const result = analyze(input.value, { ipaProfile: "hybrid-deterministic" });
   const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
@@ -191,8 +93,6 @@ function render() {
       sourceSyllableGroups: sourceSyllableGroupsForCrosswalk(input.value),
     });
   count.textContent = [...input.value].length + " символів";
-  if (hybridV2Input !== input.value && !hybridV2Running) resetHybridV2Panel();
-  runHybridV2Button.disabled = !input.value.trim() || result.status === "INVALID" || hybridV2Running;
 
   if (!input.value.trim()) {
     output.textContent = "Введіть лаоський текст, щоб отримати аналіз.";
@@ -213,7 +113,6 @@ function render() {
       : "Режим за романізацією: складовий аналіз зі звіркою початкової графеми, голосної структури й підтримуваної фіналі; придихове h відрізняється від окремого /h/.";
     copyRomanization.disabled = true;
     copyIpa.disabled = true;
-    runHybridV2Button.disabled = true;
     copyFeedback.textContent = "";
     return;
   }
@@ -385,7 +284,6 @@ function render() {
 }
 
 input.addEventListener("input", render);
-runHybridV2Button.addEventListener("click", runHybridV2);
 modePhonetic.addEventListener("click", () => setOutputMode("phonetic"));
 modeRomanization.addEventListener("click", () => setOutputMode("romanization"));
 
@@ -420,11 +318,6 @@ copyRomanization.addEventListener("click", () => {
 copyIpa.addEventListener("click", () => {
   const value = ipa.textContent;
   if (value) copyWithFeedback(copyIpa, value);
-});
-
-copyHybridV2Ipa.addEventListener("click", () => {
-  const value = hybridV2Ipa.textContent;
-  if (value) copyWithFeedback(copyHybridV2Ipa, value);
 });
 
 render();
