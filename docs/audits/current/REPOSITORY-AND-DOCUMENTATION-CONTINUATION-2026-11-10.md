@@ -95,7 +95,7 @@ No IPA labels, phonological correspondences, source permissions, benchmark score
 
 The owner supplied `ພຣະຣາຊອານາຈັກຣ໌ລາວ` and reported that the IPA field showed only `?` while the Ukrainian output ended in a long repeated question-mark sequence.
 
-Root cause: the main IPA summary ignored `graphemePreview.ipaPreview`; the fallback also emitted one unknown marker per unresolved grapheme. Code changes in `main` now display the provisional IPA hint when the full parser has no accepted IPA, and cap each contiguous unresolved run at three markers in both Python and browser fallback builders. The confidence status remains provisional; no tone is inferred.
+Root cause: the main IPA summary ignored `graphemePreview.ipaPreview`; the fallback also emitted one unknown marker per unresolved grapheme. Code changes in `main` now display the provisional IPA hint when the full parser has no accepted IPA, and cap the unresolved positions within each fallback unit at three markers in both Python and browser fallback builders. The confidence status remains provisional; no tone is inferred.
 
 | Task | Status | Acceptance / evidence |
 |---|---|---|
