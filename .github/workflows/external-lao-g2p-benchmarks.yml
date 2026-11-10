@@ -3,7 +3,7 @@ name: External Lao G2P research benchmarks
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, 'benchmark/**']
     paths:
       - "scripts/benchmark_ipa_contract.py"
       - "scripts/benchmark_additional_lao_g2p.py"
