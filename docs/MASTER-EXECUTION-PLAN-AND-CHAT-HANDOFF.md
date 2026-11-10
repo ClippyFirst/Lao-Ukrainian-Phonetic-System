@@ -1,3 +1,40 @@
+## Complete public website copy rewrite — 2026-11-10
+
+**Branch:** `docs/site-copy-rewrite-lao-editorial-20261110`  
+**Base main:** `ee4dee5f6c6e8abfdb47069fca3894617648684d`  
+**Implementation scope:** `index.html`, `system.html`, browser/static content tests, README and this handoff.  
+**Plan:** [2026-11-10 Lao site content rewrite](../superpowers/plans/2026-11-10-lao-site-content-rewrite.md) (relative link in audit is `../../superpowers/plans/2026-11-10-lao-site-content-rewrite.md`).
+
+### What changed
+
+- Rewrote the service page's Ukrainian copy, labels, action names, metadata, helper text, empty state, output descriptions and research-status explanation. The primary heading and all JS-facing IDs remain stable; the service remains action-first.
+- Rewrote all 13 existing methodology sections in plain, evidence-aware Ukrainian and added section 14, which explains why the visual identity is called **Woven Editorial**.
+- The design explanation distinguishes the abstract rhythm/structure of weaving from any single Lao community or textile motif; explains paper/silk, Mekong green, indigo, lac-red, and the roles of Noto Sans Lao, Manrope and IBM Plex Mono; and links the design system and source research.
+- Updated the visible research date to 10 November 2026 and clarified that schema-8 benchmark concordance is dictionary-seeded, not independent phonetic accuracy. The independent expert-adjudicated IPA gold corpus remains 0.
+- Rephrased the fallback contract: known provisional fragments pass through the ordinary IPA → Ukrainian adapter, unresolved positions remain `?`, low confidence stays visible, and tone is not guessed.
+- Updated accessible names in browser tests and static content checks for the new labels, date, section count and design rationale.
+- Refreshed the service app script cache key. No engine code, linguistic rule, benchmark data, source registry, model, dependency or inference runtime changed.
+
+### Skill and source review
+
+Searched GitHub for suitable skill references and read the relevant guides from Anthropic frontend-design, UI UX Pro Max, Impeccable, Emil Kowalski design engineering and taste-skill. Applied subject-grounded copy, clear user vocabulary, accessibility-first controls, restrained motion and non-template visual voice. Process guidance reviewed: Superpowers brainstorming, writing-plans, TDD, executing-plans and verification-before-completion; Product Design get-context.
+
+The page copy links to W3C Lao Script Resources, Ueda's Vientiane phonology study, Global InCH's account of Lao textile technique variation, CLDR/BGN-PCGN documentation and repository research. These sources support the descriptions; the design does not claim that all Lao textiles share one visual grammar.
+
+### Verification ledger
+
+| Item | Status | Evidence |
+|---|---|---|
+| Complete service-page copy rewrite | DONE_IMPLEMENTED / CI_PENDING | `index.html`; all existing UI IDs retained |
+| Complete methodology rewrite and concept section | DONE_IMPLEMENTED / CI_PENDING | `system.html`; sections `s1`–`s14`; 3 tables retained |
+| Browser accessibility labels | DONE_IMPLEMENTED / CI_PENDING | `tests/browser/site.spec.js` |
+| Static copy/design contract tests | DONE_IMPLEMENTED / CI_PENDING | `tests/web-layout.test.mjs` |
+| README and plan/handoff documentation | DONE_IMPLEMENTED | README and plan created; handoff/audit update in this branch |
+| Linguistic accuracy | UNCHANGED / EVIDENCE_LIMITED | No new gold labels or accuracy claims; independent IPA gold remains 0 |
+| Live visual/device review | PARTIAL | Automated browser tests cannot replace physical-device and screen-reader review |
+
+**CI and deployment:** pending exact-branch workflow results at the time this entry was written. Do not merge or claim publication until Verify and Pages deployment pass.
+
 ## Website visual redesign — DONE_VERIFIED, 2026-11-10
 
 **PR:** [#163 — Lao woven editorial website redesign](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/163), squash-merged.  
