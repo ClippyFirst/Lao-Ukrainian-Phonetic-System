@@ -631,10 +631,10 @@ main {
 .analysis-grid div { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
 .analysis-grid small {
   color: var(--muted);
-  font-size: .68rem;
-  font-weight: 750;
-  letter-spacing: .035em;
-  text-transform: uppercase;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
 }
 .analysis-grid strong { font-size: .87rem; overflow-wrap: anywhere; }
 .rules {
