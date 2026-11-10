@@ -1,6 +1,6 @@
 ## Current status reconciliation — 2026-11-10
 
-**Current main:** `68aa563ebc13da7e49da533e46301d43c13b5810`; PR #159 merged.  
+**Implementation merge commit:** `68aa563ebc13da7e49da533e46301d43c13b5810`; PR #159 merged. Documentation checkpoint `ee6ced771fd5be553443741fb6007681bd4d2f31` passed Verify #42809109496.  
 **Exact-head Verify:** [#42796863636 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796863636).  
 **Pages deployment and live smoke-test:** [#42797184810 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42797184810).
 

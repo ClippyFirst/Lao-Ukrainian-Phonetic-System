@@ -1,6 +1,6 @@
 ## Post-merge and Pages deployment closeout — 2026-11-10
 
-**Current main:** `68aa563ebc13da7e49da533e46301d43c13b5810` (PR #159 squash-merged).  
+**Implementation merge commit:** `68aa563ebc13da7e49da533e46301d43c13b5810` (PR #159 squash-merged). **Documentation checkpoint:** `ee6ced771fd5be553443741fb6007681bd4d2f31`; exact-head Verify [#42809109496 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42809109496).  
 **Starting main:** `0a91bb62d48a6110d5129460fae4efee580863f2`.  
 **Implementation commit:** `8c7fffe99746e21769ee40e92818f5e10fa5081c`.  
 **Final PR branch head:** `24463a385a78a3182a23ef760fb9fe2c2e023450`.  

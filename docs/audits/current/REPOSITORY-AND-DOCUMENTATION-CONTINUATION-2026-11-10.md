@@ -2,7 +2,8 @@
 
 **Repository:** `ClippyFirst/Lao-Ukrainian-Phonetic-System`  
 **Current default branch:** `main`  
-**Current main SHA:** `68aa563ebc13da7e49da533e46301d43c13b5810`  
+**Implementation merge SHA:** `68aa563ebc13da7e49da533e46301d43c13b5810`  
+**Documentation checkpoint verified:** `ee6ced771fd5be553443741fb6007681bd4d2f31` — Verify [#42809109496 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42809109496)  
 **Starting main SHA:** `0a91bb62d48a6110d5129460fae4efee580863f2`  
 **Implementation commit:** `8c7fffe99746e21769ee40e92818f5e10fa5081c`  
 **Final PR branch head:** `24463a385a78a3182a23ef760fb9fe2c2e023450`  
@@ -37,7 +38,7 @@ No direct Lao-grapheme → Ukrainian-character shortcut was introduced. The fall
 - Deployment job completed successfully. The live same-origin smoke-test fetched both HTML pages, app/data/CSS, Hybrid v2 JS bundle, WASM loader/binary, ONNX encoder/decoder, both tokenizer JSON files, model manifest, model LICENSE/NOTICE and third-party notices. It checked the pinned model ID/revision and Apache license notices.
 - Live site: [https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/).
 
-The earlier Pages `syncing_files` delay is historical; it is not the final deployment status. The final mainline deployment and live smoke-test passed.
+The earlier Pages `syncing_files` delay is historical; it is not the final deployment status. The final mainline deployment and live smoke-test passed. The subsequent documentation-only checkpoint `ee6ced771fd5be553443741fb6007681bd4d2f31` also passed exact-head Verify #42809109496: 337 Python, 155 Node and 19 Chromium tests, plus the repository audit, corpus validation, build, generated-data reproducibility and built-site checks.
 
 ## Task ledger
 
