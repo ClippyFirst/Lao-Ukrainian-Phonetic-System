@@ -23,7 +23,6 @@ const modeRomanization = document.querySelector("#mode-romanization");
 const outputMethodNote = document.querySelector("#output-method-note");
 let outputMode = "phonetic";
 const copyFeedback = document.querySelector("#copy-feedback");
-const count = document.querySelector("#count");
 const status = document.querySelector("#analysis-status");
 
 async function copyWithFeedback(button, value) {
@@ -92,7 +91,6 @@ function render() {
     : analyzeRomanization(roman.output, {
       sourceSyllableGroups: sourceSyllableGroupsForCrosswalk(input.value),
     });
-  count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
     output.textContent = "Введіть лаоський текст, щоб розпочати аналіз.";
