@@ -16,6 +16,26 @@ This benchmark runs the ClippyFirst default Vientiane rules, the opt-in determin
 
 The benchmark preserves all 1,000 source rows, verifies the exact Git blob bytes, and writes aggregate metrics only. No source rows or per-row IPA predictions are persisted.
 
+
+## Latest schema 1.5 rerun — 2026-11-10
+
+**Mainline run:** [#42860130098 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42860130098), aggregate-only artifact [13785715183](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42860130098/artifacts/13785715183), main commit 795aa159dce25477491f71d23c03f11fc48801db. The immutable HVULao_NLP source revision, file blob and 1,000 raw sentences are unchanged.
+
+| Engine | IPA-complete sentences | Ukrainian-side rendering coverage | Mean latency, all attempts | p95 latency, all attempts |
+|---|---:|---:|---:|---:|
+| Vientiane rules | 661/1,000 (66.1%) | 625/1,000 (62.5%) | 9.50 ms | 17.16 ms |
+| MekongPhon-reference rules | 661/1,000 (66.1%) | 341/1,000 (34.1%) | 9.04 ms | 16.56 ms |
+| Hybrid deterministic rules | 661/1,000 (66.1%) | **1,000/1,000 (100%)** | 9.21 ms | 17.19 ms |
+| MekongPhon non-tonal neural | **934/1,000 (93.4%)** | Not measured in this source-IPA benchmark | 233.81 ms | 457.22 ms |
+
+All four paths reported zero unexpected runtime errors. The neural model explicitly rejected 66 rows (61 source-codepoint-limit and 5 unsupported-character rejections); it did not silently truncate. Successful neural calls averaged 250.32 ms (p95 463.01 ms). Deterministic hybrid visible rendering includes 398 typed provisional placeholders and 607 target-mapping-unavailable units; it is not equivalent to 100% accepted IPA. The deterministic engines produced accepted IPA for 16,936/17,353 analyzed syllable units (97.71%). The neural model produced 934 complete source-IPA sentences but does not provide Ukrainian rendering in this benchmark.
+
+There were 631 sentences with complete outputs from all three compared engine families. Pairwise disagreement is reported as a diagnostic only: Vientiane-vs-neural CER 18.73%; MekongPhon-reference-vs-neural 11.73%; hybrid-deterministic-vs-neural 11.73%. These are not correctness scores. HVULao supplies no IPA gold, so neither 93.4% neural IPA coverage nor 100% hybrid rendering can establish phonetic accuracy.
+
+**Pinned neural model:** byumatrixlab/lao-ipa-nontonal at d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b, beam width 5, CPU. The dataset is CC BY 4.0 (Mendeley Data v2). Schema 1.5 separates IPA-complete sentence coverage from target rendering coverage and explicitly reports provisional placeholders and unknown markers; do not compare those columns with earlier schema 1.1 values as if they shared the same contract.
+
+---
+
 ## Reproducibility
 
 - Corrected-metric executions on the same code commit `61b21237d57fc519dfff40ee22ed0649df2050e0`:
