@@ -1,12 +1,12 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** implementation merge commit `68aa563ebc13da7e49da533e46301d43c13b5810` (PR #159 merged); documentation checkpoint `ee6ced771fd5be553443741fb6007681bd4d2f31` passed Verify #42809109496. No engine/data changes were made in that documentation-only checkpoint. Exact-head Verify [#42796863636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796863636) passed, and Pages deployment/live smoke-test [#42797184810](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42797184810) passed. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 is closed unmerged after a selective methodology-pin port; PR #145 remains open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** current `main` commit `20a44ab4c3730434bd0176a699853b796fa8fd1d` (PR #165 merged); exact-main Verify [#42863119435](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42863119435) passed **349 Python, 152 Node and 22 Chromium tests**. The same mainline commit passed the MekongPhon three-engine, deterministic-profile, external-G2P, HVULao 1k and Hybrid v2 HVULao 1k workflows (#42863119499, #42863119522, #42863119460, #42863119212, #42863119174). The static site remains deployed by the previously verified Pages workflow [#42847422106](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42847422106); PR #164 fixed research CLI line breaks and PR #165 added the standalone typed MekongPhon IPA API. PR #145 remains open and unmerged because its neural-first default conflicts with the current deterministic default. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 is closed unmerged after a selective methodology-pin port; PR #145 remains open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 
 - Python API: `src/lao_ukrainian/__init__.py`; orchestration in `src/lao_ukrainian/core.py`.
 - CLI: `src/lao_ukrainian/cli.py`; hybrid-deterministic is the default engine; Vientiane and MekongPhon-reference remain explicit compatibility profiles.
-- Optional neural provider: `src/lao_ukrainian/mekongphon.py`; explicit tonal/non-tonal model selection, immutable model revisions, bounded input, raw IPA provenance and fail-closed unknown-symbol handling. It is not a silent fallback or a replacement for the deterministic engine.
+- Optional neural provider: `src/lao_ukrainian/mekongphon.py`; `transcribe_ipa()` / `MekongPhonEngine.transcribe_ipa()` return `MekongPhonIPAResult` at the source IPA boundary, while `transcribe_lao()` / `.transcribe()` explicitly continue through Ukrainian adaptation. Tonal/non-tonal models use immutable revisions, bounded input and raw IPA provenance; unknown symbols fail closed. This is opt-in Python research tooling, not the deterministic default or browser runtime.
 - Browser instrument: `index.html`, `web/app.js`, `web/engine.js`; methodology page: `system.html`.
 - Optional romanization method: `web/romanization.js` and `web/romanization-syllable-engine.js`; separate from the phonetic route.
 - Static build: `scripts/build_web.py`; native browser ES modules, no Vite/Webpack bundler.
@@ -38,6 +38,24 @@ Python implementation:
 - `model.py` / `data.py` — result types and canonical registry loading.
 
 The browser engine is a separately maintained implementation using generated canonical data. Its API and visible UI default to `hybrid-deterministic`, matching Python. Explicit `vientiane` and `mekongphon-reference` profiles remain frozen for compatibility only; future engine development targets hybrid. Python and browser implementations both retain the baseline fallback and record applied hybrid rule IDs in IPA provenance. Shared fixtures and CI test the explicitly shared contracts; do not assume every phrase-level normalization or segmentation detail is identical across runtimes.
+
+## Optional neural IPA stage
+
+The optional BYU MATRIX Lab provider is a separate source-G2P route, not an alternate implementation of the deterministic parser and not a website dependency:
+
+```text
+Lao orthography
+  → pinned MekongPhon tonal / non-tonal checkpoint
+  → untouched raw IPA + model revision
+  → typed MekongPhonIPAResult / PhoneticResult
+  → (only for transcribe() / transcribe_lao()) Ukrainian target adapter
+```
+
+- `MekongPhonEngine.transcribe_ipa()` and package-level `transcribe_ipa()` stop after stage 1; they do not call `adapt_phonetic_result()`.
+- `MekongPhonEngine.transcribe()` and `transcribe_lao()` explicitly run both stages.
+- The public package exports `MekongPhonIPAResult`, `MekongPhonResult`, `transcribe_ipa` and `transcribe_lao` from `src/lao_ukrainian/__init__.py`.
+- Offline boundary and provenance regressions live in `tests/test_mekongphon_adapter.py`; CLI-stage tests live in `tests/test_mekongphon_cli.py`. Actual pinned-model execution is separately exercised by the MekongPhon benchmark workflow.
+- Neural dependencies and weights are opt-in. No silent deterministic fallback is performed, and the static GitHub Pages service remains browser-native deterministic JavaScript.
 
 ## Provisional grapheme hints and hybrid fallback
 
