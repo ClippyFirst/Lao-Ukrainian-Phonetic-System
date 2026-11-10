@@ -151,6 +151,22 @@ lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device cpu --json
 lao-ua 'ຂາ' --engine meta-hybrid-v3 --device cpu --json
 ```
 
+The Python package also exposes the model's source-side stage independently:
+
+```python
+from lao_ukrainian import transcribe_ipa, transcribe_lao
+
+# Stage 1 only: Lao orthography → typed IPA; no Ukrainian mapping runs.
+ipa = transcribe_ipa("ສະບາຍດີ", device="cpu")
+print(ipa.raw_ipa, ipa.phonetic_result, ipa.model_revision)
+
+# Explicit two-stage path: typed IPA → Ukrainian practical output.
+result = transcribe_lao("ສະບາຍດີ", device="cpu")
+print(result.raw_ipa, result.ukrainian)
+```
+
+Both entry points require the optional `.[neural]` dependencies and use the pinned model revisions by default. `transcribe_ipa()` returns `MekongPhonIPAResult`; `transcribe_lao()` continues through the existing typed IPA → Ukrainian adapter. Neither changes the deterministic `analyze()` default or the static website. See the [full integration and provenance contract](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md).
+
 Both engines default to immutable model revisions recorded in [the integration guide](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result. MekongPhon project rights are owner-confirmed as resolved; independent adjudicated Lao IPA gold remains 0.
 
 ## Status
