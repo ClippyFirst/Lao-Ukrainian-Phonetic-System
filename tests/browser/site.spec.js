@@ -241,9 +241,9 @@ test("screen-reader roles expose the service controls and output state", async (
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Від лаоського складу — до українського читання." })).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Спробувати ຂາ" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Спробувати ເຂົ້າໜຽວ" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Очистити поле" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Приклад: ຂາ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Приклад: ເຂົ້າໜຽວ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
   await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.getByRole("button", { name: "За вимовою" })).toHaveAttribute("aria-pressed", "true");
@@ -326,7 +326,7 @@ test("methodology reading rail remains usable without page overflow at every tar
     await page.goto("/system.html");
     const rail = page.getByRole("navigation", { name: "Навігація методологією" });
     await expect(rail).toBeVisible();
-    await expect(page.getByRole("heading", { level: 1, name: /Авторська система/ })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Від лаоського письма/ })).toBeVisible();
     const layout = await page.evaluate(() => ({
       viewport: window.innerWidth,
       document: document.documentElement.scrollWidth,
