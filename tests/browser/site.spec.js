@@ -239,14 +239,14 @@ test("forced-colors and reduced-motion preferences retain visible focus and supp
 
 test("screen-reader roles expose the service controls and output state", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1, name: "Лаоське письмо. Українське читання." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Від лаоського складу — до українського читання." })).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "ຂາ · простий склад" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "ເຂົ້າໜຽວ · складні форми" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Спробувати ຂາ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Спробувати ເຂົ້າໜຽວ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Очистити поле" })).toBeVisible();
   await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Фонетичний" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "За вимовою" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
   await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
   await expect(page.locator("#copy")).toBeEnabled();
