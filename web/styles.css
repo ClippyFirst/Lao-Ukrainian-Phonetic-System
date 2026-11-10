@@ -540,12 +540,12 @@ main {
   border-color: var(--mekong);
   color: var(--mekong);
 }
-.method-button.is-active {
+.method-button[aria-pressed="true"] {
   border-color: var(--mekong);
   background: var(--mekong);
   color: var(--silk);
 }
-.method-button.is-active:hover:not(:disabled) { background: #24554E; }
+.method-button[aria-pressed="true"]:hover:not(:disabled) { background: #24554E; }
 .method-note {
   margin: 8px 0 0;
   color: var(--muted);
