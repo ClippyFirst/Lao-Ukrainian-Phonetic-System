@@ -84,7 +84,7 @@ test("copy and quick-example controls meet the 44px minimum target size", () => 
     const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const match = css.match(new RegExp("(?:^|\n)" + escaped + "\{([^}]*)\}"));
     assert.ok(match, "missing CSS rule for " + selector);
-    assert.match(match[1], /min-height:\\s*44px/, selector + " must meet the 44px target minimum");
+    assert.match(match[1], /min-height:\s*44px/, selector + " must meet the 44px target minimum");
   }
 });
 
@@ -124,7 +124,7 @@ test("shared design system includes responsive, keyboard, and reduced-motion tre
 
 test("methodology page uses an editorial reading rail and keeps all thirteen sections", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(methodology, /class="reading-rail(?:\\s|")/);
+  assert.match(methodology, /class="reading-rail(?:\s|")/);
   assert.match(methodology, /class="weave-band"/);
   for (let index = 1; index <= 13; index += 1) {
     assert.match(methodology, new RegExp('id="s' + index + '"'));
