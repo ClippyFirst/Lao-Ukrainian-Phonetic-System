@@ -95,10 +95,10 @@ function render() {
   count.textContent = [...input.value].length + " символів";
 
   if (!input.value.trim()) {
-    output.textContent = "Введіть лаоський текст, щоб отримати аналіз.";
+    output.textContent = "Введіть лаоський текст, щоб розпочати аналіз.";
     output.className = "output muted";
     ipa.textContent = "";
-    romanization.textContent = "Введіть лаоський текст, щоб отримати романізацію.";
+    romanization.textContent = "Тут з'явиться латинський запис лаоського тексту.";
     romanization.className = "output muted";
     emptyState.hidden = false;
     results.hidden = true;
@@ -109,8 +109,8 @@ function render() {
     romanizationStatus.textContent = "";
     copy.disabled = true;
     outputMethodNote.textContent = outputMode === "phonetic"
-      ? "Фонетичний режим: IPA → українська практична адаптація."
-      : "Режим за романізацією: складовий аналіз зі звіркою початкової графеми, голосної структури й підтримуваної фіналі; придихове h відрізняється від окремого /h/.";
+      ? "Фонетичний метод: аналіз письма → IPA → українське читання."
+      : "Метод за романізацією: розбір складу та звірка з лаоським написанням. Це окремий спосіб, не проміжний етап фонетичного аналізу.";
     copyRomanization.disabled = true;
     copyIpa.disabled = true;
     copyFeedback.textContent = "";
@@ -121,26 +121,26 @@ function render() {
   const activeOutput = outputMode === "phonetic" ? result.output : (fallbackBlocked ? "" : romanized.output);
   output.textContent = activeOutput || (outputMode === "phonetic"
     ? (result.status === "INVALID"
-      ? "Вхідний текст не пройшов перевірку. Виправте його перед повторним аналізом."
-      : "Фонетичний результат не встановлено. Спробуйте режим за романізацією.")
+      ? "У введеному тексті є непідтримувана структура. Перевірте написання й спробуйте ще раз."
+      : "Не вдалося встановити фонетичний результат. Дивіться позначки невизначеності в аналізі.")
     : (fallbackBlocked
-      ? "Романізаційний результат не сформовано для некоректного вхідного тексту."
-      : "Немає доступного романізованого запису для адаптації."));
+      ? "Для цього введення не вдалося побудувати романізаційний результат."
+      : "Немає романізованої форми, яку можна зіставити з українською."));
   output.className = activeOutput ? "result-body output" : "result-body output muted";
   outputMethodNote.textContent = outputMode === "phonetic"
     ? (result.output
       ? (result.syllables.some((syllable) => syllable.graphemePreview?.ipaPreview)
-        ? "Фонетичний режим: український запис побудовано через IPA → адаптер; у полі IPA показано також попередню підказку низької впевненості."
-        : "Фонетичний режим: результат побудовано через IPA → українську практичну адаптацію.")
+        ? "Фонетичний метод: відомі фрагменти пройшли через IPA → український адаптер; у полі IPA також показано попередню підказку з низькою впевненістю."
+        : "Фонетичний метод: результат побудовано через IPA → українську практичну адаптацію.")
       : (result.status === "INVALID"
-        ? "Вхідний текст не пройшов перевірку. Спочатку виправте його; романізаційний режим для такого вводу недоступний."
-        : "Фонетичний аналіз не сформував надійного українського результату. Режим за романізацією доступний як менш точна графічна альтернатива."))
+        ? "Введення містить непідтримувану структуру. Виправте його; метод за романізацією для такого введення недоступний."
+        : "Фонетичний аналіз не підтвердив повний результат. Романізацію можна переглянути окремо, але вона не замінює фонетичний метод."))
     : fallbackBlocked
-      ? "Романізаційний режим недоступний: виправте вхідний текст, який не пройшов перевірку."
-      : "За романізацією: CLDR Lao-Latin (provisional; BGN/PCGN basis) → звірка початку, голосного комплексу й підтримуваної фіналі з лаоським складом → складовий рушій. kh/th/ph передають придиховість, окреме h — /h/ → г, а ໜ/ໝ — беззвучний висококласовий маркер перед /n,m/. " +
+      ? "Метод за романізацією недоступний: спершу виправте лаоське введення."
+      : "Метод за романізацією: CLDR Lao-Latin (попередній профіль) → зіставлення початку, голосного комплексу й фіналі з лаоською структурою → український склад. kh/th/ph позначають придих; окреме h відповідає /h/; ໜ/ໝ передають /n/ та /m/ без додаткового звука h. " +
       (roman.status === "PARTIAL" || romanized.status === "PARTIAL"
-        ? "Частину запису не вдалося розібрати однозначно; вона позначена в дужках."
-        : "Український результат формується за структурою романізованого складу, а не побуквеною заміною.");
+        ? "Частину латинського запису не вдалося однозначно зіставити; її залишено в дужках."
+        : "Український результат складається за будовою романізованого складу, а не через заміну латинських літер по одній.");
   romanization.textContent = roman.output;
   romanization.className = "output";
   // IPA contains only phonetic units: omit explicit passthrough (digits,
@@ -198,15 +198,15 @@ function render() {
     const grid = document.createElement("div");
     grid.className = "analysis-grid";
     [
-      ["Лаоська початкова графема", syllable.sourceOnset || "—"],
-      ["Лаоська голосна структура", syllable.sourceVowelId || "—"],
-      ["Лаоська фінальна графема", syllable.sourceCoda || "—"],
-      ["Романізований склад", syllable.surface],
-      ["Звірка джерельної структури", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
-      ["Початковий елемент", syllable.onset || "∅"],
+      ["Початкова графема", syllable.sourceOnset || "—"],
+      ["Голосний шаблон", syllable.sourceVowelId || "—"],
+      ["Кінцева графема", syllable.sourceCoda || "—"],
+      ["Склад у романізації", syllable.surface],
+      ["Зіставлення з оригіналом", syllable.crosswalk ? "Підтверджено" : "Не підтверджено"],
+      ["Початок", syllable.onset || "∅"],
       ["Голосний комплекс", syllable.nucleus || "—"],
-      ["Фіналь", syllable.coda || "∅"],
-      ["Український склад", syllable.ukrainian],
+      ["Кінцівка", syllable.coda || "∅"],
+      ["Український запис складу", syllable.ukrainian],
       ["Статус", syllable.status],
     ].forEach(([label, value]) => {
       const cell = document.createElement("div");
@@ -235,13 +235,13 @@ function render() {
     const grid = document.createElement("div");
     grid.className = "analysis-grid";
     [
-      ["Лао", syllable.surface],
+      ["Лаоський склад", syllable.surface],
       ["IPA", syllable.ipa || "—"],
-      ["Клас", syllable.class || "—"],
+      ["Клас приголосного", syllable.class || "—"],
       ["Голосний", syllable.vowel || "—"],
       ["Тип складу", syllable.syllableType || "—"],
       ["Тон", syllable.tone ? syllable.tone + " " + syllable.toneContour : "—"],
-      ["Український · фонетичний", syllable.ukrainian || "—"],
+      ["Український запис", syllable.ukrainian || "—"],
       ["Статус", syllable.status],
     ].forEach(([label, value]) => {
       const cell = document.createElement("div");
@@ -263,11 +263,11 @@ function render() {
       preview.className = "grapheme-preview";
       preview.setAttribute("role", "note");
       const label = document.createElement("strong");
-      label.textContent = "Попередній IPA (PROVISIONAL; низька впевненість; вимова не підтверджена): ";
+      label.textContent = "Попередня IPA-підказка (PROVISIONAL · низька впевненість; вимову не підтверджено): ";
       const value = document.createElement("code");
       value.textContent = syllable.graphemePreview.ipaPreview || "—";
       const unresolved = document.createElement("span");
-      unresolved.textContent = " · Невизначені графеми: " + (syllable.graphemePreview.unresolvedGraphemes.join("") || "немає");
+      unresolved.textContent = " · Графеми без підтвердженого розбору: " + (syllable.graphemePreview.unresolvedGraphemes.join("") || "немає");
       preview.append(label, value, unresolved);
       element.append(preview);
 
@@ -275,8 +275,8 @@ function render() {
       confidence.className = "grapheme-confidence";
       confidence.setAttribute("role", "note");
       confidence.textContent =
-        "Низька впевненість: український результат сформовано за доступними графемними підказками; " +
-        "невирішені позиції позначено «?». Тон не виводився.";
+        "Низька впевненість: український запис побудовано за доступними графемними підказками; " +
+        "знаки «?» позначають невизначені позиції. Тон не визначався.";
       element.append(confidence);
     }
     rows.append(element);

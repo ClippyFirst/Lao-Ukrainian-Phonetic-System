@@ -29,7 +29,7 @@ test("GitHub Pages navigation stays inside the repository site",()=>{
  const service=readFileSync(new URL("../index.html",import.meta.url),"utf8");
  const system=readFileSync(new URL("../system.html",import.meta.url),"utf8");
  for (const html of [service,system]) {
-  assert.ok(html.includes('href="./">Сервіс</a>'));
+  assert.ok(html.includes('href="./">Інструмент</a>'));
   assert.equal(html.includes('href="/">Сервіс</a>'),false);
  }
  assert.ok(system.includes('aria-current="page" href="./system.html"'));
@@ -128,12 +128,12 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  assert.match(app,/onsetForm:\s*syllable\.onsetForm/u);
  assert.match(app,/vowelId:\s*syllable\.rules\?\.find/u);
  assert.match(app,/romanization-syllable-engine\.js\?v=20261031-source-vowel-crosswalk/u);
- assert.ok(app.includes("Лаоська голосна структура"));
+ assert.ok(app.includes("Голосний шаблон"));
  assert.equal(app.includes("sourceOnsetsForCrosswalk"),false);
  assert.equal(app.includes("sourceOnsetGroupsForCrosswalk"),false);
- assert.ok(app.includes("Лаоська початкова графема"));
- assert.ok(app.includes("Лаоська фінальна графема"));
- assert.ok(app.includes("Звірка джерельної структури"));
+ assert.ok(app.includes("Початкова графема"));
+ assert.ok(app.includes("Кінцева графема"));
+ assert.ok(app.includes("Зіставлення з оригіналом"));
 });
 
 

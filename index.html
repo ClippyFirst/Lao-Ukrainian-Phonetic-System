@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Введіть лаоський текст і отримайте українське читання з окремим IPA-аналізом та поскладовим поясненням.">
+  <meta name="description" content="Лаосько-український фонетичний інструмент: аналізуйте лаоський текст, переглядайте IPA та отримуйте практичний запис українською з позначенням невизначеності.">
   <meta name="theme-color" content="#F4EFE5">
-  <title>Лаоська → українською · Практичне читання</title>
+  <title>Лаоська українською — фонетичне читання та IPA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./web/styles.css?v=20261110-lao-woven-1">
+  <link rel="stylesheet" href="./web/styles.css?v=20261110-lao-copy-2">
 </head>
 <body class="service-page">
   <a class="skip-link" href="#lao-input">Перейти до інструмента</a>
@@ -19,8 +19,8 @@
       <span class="brand-wordmark">Lao <span aria-hidden="true">→</span> Українська</span>
     </a>
     <nav aria-label="Основна навігація">
-      <a class="active" aria-current="page" href="./">Сервіс</a>
-      <a href="./system.html">Як це працює</a>
+      <a class="active" aria-current="page" href="./">Інструмент</a>
+      <a href="./system.html">Метод і принципи</a>
     </nav>
   </header>
 
@@ -29,16 +29,16 @@
       <div class="hero-copy">
         <p class="hero-origin"><span lang="lo">ພາສາລາວ</span><span aria-hidden="true"> / </span>Лаоська мова</p>
         <h1>Від лаоського складу — до українського читання.</h1>
-        <p class="lead">Введіть текст лаоською. Система аналізує його звучання через IPA й передає результат українською кирилицею.</p>
-        <div class="hero-route" aria-label="Послідовність аналізу">
-          <span>Лаоське письмо</span><span aria-hidden="true">→</span><span>IPA</span><span aria-hidden="true">→</span><strong>Українською</strong>
+        <p class="lead">Вставте слово, фразу або цілий уривок лаоською. Інструмент розбере письмо, побудує доступне фонетичне представлення IPA й адаптує його українською кирилицею.</p>
+        <div class="hero-route" aria-label="Послідовність фонетичного аналізу">
+          <span>Лаоське письмо</span><span aria-hidden="true">→</span><span>IPA</span><span aria-hidden="true">→</span><strong>Українське читання</strong>
         </div>
       </div>
-      <aside class="hero-specimen" aria-label="Приклад відповідності для складу ຂາ">
-        <p class="specimen-label">Один склад · три шари</p>
+      <aside class="hero-specimen" aria-label="Приклад фонетичної адаптації складу ຂາ">
+        <p class="specimen-label">Один склад · три представлення</p>
         <div class="specimen-lao" lang="lo">ຂາ</div>
         <div class="specimen-flow"><span>IPA</span><strong>kʰaː</strong></div>
-        <div class="specimen-flow specimen-final"><span>ЧИТАННЯ</span><strong>к'а</strong></div>
+        <div class="specimen-flow specimen-final"><span>УКРАЇНСЬКОЮ</span><strong>к'а</strong></div>
       </aside>
     </section>
 
@@ -48,24 +48,24 @@
       <section class="workbench" aria-labelledby="input-heading">
         <div class="section-title">
           <div>
-            <p class="section-kicker">Почнімо з вашого тексту</p>
-            <h2 id="input-heading">Лаоський текст</h2>
+            <p class="section-kicker">Ваш текст — початок аналізу</p>
+            <h2 id="input-heading">Введіть лаоською</h2>
           </div>
-          <span class="local-note"><span class="local-dot" aria-hidden="true"></span>Обробка у браузері</span>
+          <span class="local-note"><span class="local-dot" aria-hidden="true"></span>Обробка у вашому браузері</span>
         </div>
         <div class="input-shell">
           <label class="sr-only" for="lao-input">Лаоський текст</label>
           <textarea id="lao-input" lang="lo" spellcheck="false" placeholder="ພິມພາສາລາວທີ່ນີ້…" aria-describedby="input-help"></textarea>
-          <div class="input-hint"><span id="count">0 символів</span><span>Слово, речення або уривок</span></div>
+          <div class="input-hint"><span id="count">0 символів</span><span>Слово · речення · уривок</span></div>
         </div>
-        <p class="input-guidance" id="input-help">Результат з'являється автоматично. Відкрийте поскладовий розбір, щоб побачити шлях від написання до IPA й української форми.</p>
+        <p class="input-guidance" id="input-help">Результат оновлюється автоматично. Розгорніть поскладовий аналіз, щоб побачити написання, доступне IPA, український відповідник і рівень упевненості.</p>
         <div class="action-row">
           <div class="chip-row" role="group" aria-label="Швидкі приклади">
-            <button class="mini-button" id="example" type="button">Спробувати ຂາ</button>
-            <button class="mini-button" id="example-complex" type="button">Спробувати ເຂົ້າໜຽວ</button>
+            <button class="mini-button" id="example" type="button">Приклад: ຂາ</button>
+            <button class="mini-button" id="example-complex" type="button">Приклад: ເຂົ້າໜຽວ</button>
           </div>
           <div class="action-cell">
-            <button id="clear" class="button button-secondary" type="button">Очистити поле</button>
+            <button id="clear" class="button button-secondary" type="button">Очистити</button>
           </div>
         </div>
       </section>
@@ -74,38 +74,38 @@
         <section id="empty-state" class="empty-state" aria-live="polite">
           <div class="empty-glyph" lang="lo" aria-hidden="true">ລາວ</div>
           <div>
-            <strong>Українське читання з'явиться тут</strong>
-            <span>Введіть лаоський текст або почніть із короткого прикладу вище.</span>
+            <strong>Тут з'явиться український запис</strong>
+            <span>Введіть лаоський текст або перевірте роботу на одному з прикладів.</span>
           </div>
         </section>
 
         <section id="results" class="results" aria-labelledby="results-heading" hidden>
           <div class="results-bar">
             <div class="section-title">
-              <div><p class="section-kicker">Ваш результат</p><h2 id="results-heading">Українське читання</h2></div>
+              <div><p class="section-kicker">Результат аналізу</p><h2 id="results-heading">Українське читання</h2></div>
             </div>
             <span id="status" class="results-note" role="status" aria-live="polite" aria-atomic="true">Очікування</span>
           </div>
 
           <div class="result-grid">
             <article class="result-card result-card-primary" data-result-panel="ukrainian">
-              <div class="result-meta"><span>UA</span><strong>Практичний запис</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="result-meta"><span>UA</span><strong>Практичний український запис</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
               <div class="method-switch" role="group" aria-label="Метод українського запису">
                 <button id="mode-phonetic" class="method-button is-active" type="button" aria-pressed="true">За вимовою</button>
                 <button id="mode-romanization" class="method-button" type="button" aria-pressed="false">За романізацією</button>
               </div>
-              <p id="output" class="result-body output muted" role="status" aria-live="polite" aria-atomic="true">Введіть лаоський текст, щоб отримати українське читання.</p>
-              <p id="output-method-note" class="method-note" aria-live="polite">За вимовою: IPA → українська практична адаптація.</p>
+              <p id="output" class="result-body output muted" role="status" aria-live="polite" aria-atomic="true">Введіть лаоський текст, щоб побачити українське читання.</p>
+              <p id="output-method-note" class="method-note" aria-live="polite">За вимовою: структурний аналіз → IPA → українська практична адаптація.</p>
             </article>
 
             <article class="result-card" data-result-panel="romanization">
               <div class="result-meta"><span>LAT</span><strong>Латинський запис · CLDR Lao-Latin</strong><button id="copy-romanization" class="copy-button" type="button" disabled>Копіювати</button></div>
-              <p id="romanization" class="result-body romanization muted" lang="en">Введіть лаоський текст, щоб отримати романізацію.</p>
-              <p class="romanization-note">Попередній CLDR Lao-Latin профіль на основі BGN/PCGN. Це окремий метод адаптації; він не бере участі у фонетичному режимі.</p>
+              <p id="romanization" class="result-body romanization muted" lang="en">Тут відобразиться окремий латинський запис.</p>
+              <p class="romanization-note">Режим за романізацією — окремий складовий метод на основі CLDR Lao-Latin / BGN-PCGN, а не проміжний етап фонетичного шляху. Це допоміжний латинський запис, не транскрипція українською.</p>
             </article>
 
             <article class="result-card" data-result-panel="ipa">
-              <div class="result-meta"><span>IPA</span><strong>Фонетичний аналіз</strong><button id="copy-ipa" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="result-meta"><span>IPA</span><strong>Фонетичний шар</strong><button id="copy-ipa" class="copy-button" type="button" disabled>Копіювати</button></div>
               <p id="ipa" class="result-body ipa" lang="und-fonipa"></p>
             </article>
           </div>
@@ -113,7 +113,7 @@
 
           <section id="analysis-section" class="analysis hidden" aria-label="Пояснення аналізу">
             <details class="trace-panel trace-disclosure">
-              <summary class="trace-summary"><span class="trace-summary-index">A</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Лаоське написання, фонетичне представлення та український запис для кожного складу.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+              <summary class="trace-summary"><span class="trace-summary-index">A</span><span class="trace-summary-copy"><strong>Як побудовано читання</strong><small>Розбір лаоських графем, складів, фонетичних значень і українських відповідників.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
               <div class="trace-details">
                 <div class="analysis-status"><span class="section-kicker">СТАН ФОНЕТИЧНОГО АНАЛІЗУ</span><strong id="analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
                 <div id="warnings"></div>
@@ -121,7 +121,7 @@
               </div>
             </details>
             <details id="romanization-trace" class="trace-panel trace-disclosure" hidden>
-              <summary class="trace-summary"><span class="trace-summary-index">B</span><span class="trace-summary-copy"><strong>Розбір романізації</strong><small>Зіставлення початкової графеми, голосного комплексу та підтримуваної фіналі. Придиховість kh/th/ph відокремлено від самостійного /h/.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+              <summary class="trace-summary"><span class="trace-summary-index">B</span><span class="trace-summary-copy"><strong>Як побудовано запис за романізацією</strong><small>Зіставлення латинського початку, повного голосного комплексу й фіналі з вихідною лаоською структурою.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
               <div class="trace-details">
                 <div class="analysis-status"><span class="section-kicker">СТАН РОМАНІЗАЦІЙНОГО АНАЛІЗУ</span><strong id="romanization-analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
                 <div id="romanization-warnings"></div>
@@ -133,20 +133,21 @@
       </section>
     </div>
 
-    <section class="research-progress" aria-label="Поточний стан дослідження">
+    <section class="research-progress" aria-label="Стан і межі дослідження">
       <div class="research-progress-head">
-        <p class="eyebrow">ДОСЛІДНИЦЬКИЙ СТАТУС · 31.10.2026</p>
-        <a href="./system.html#s12">Метод, статус і обмеження <span aria-hidden="true">↗</span></a>
+        <p class="eyebrow">СТАН ДОСЛІДЖЕННЯ · 10.11.2026</p>
+        <a href="./system.html#s12">Як читати результати й обмеження <span aria-hidden="true">↗</span></a>
       </div>
-      <p><strong>Український цільовий шар:</strong> придих позначається апострофом (к', т', п'), /h/ і /ɦ/ → г, /ɡ/ → ґ, /x/ → х; африкати розрізняються за IPA, а точна послідовність /ʃt͡ʃ/ → щ має окреме правило. Фонетичний режим IPA-first лишається типовим; романізація залишається окремим складовим методом.</p>
-      <p class="research-note">Це дослідницька система з в'єнтьянською орієнтацією, не офіційний стандарт. Повне фонологічне й тонове опрацювання всіх структур та лексична сегментація ще потребують перевірки. Незалежний експертний IPA gold corpus наразі має 0 еталонів; емпірична точність не виміряна.</p>
+      <p><strong>Як працює результат:</strong> фонетичний режим спершу аналізує лаоську структуру й формує IPA, а тоді застосовує українські відповідники. Якщо повний розбір не підтверджено, відомі фрагменти все одно передаються через той самий IPA-адаптер; невідомі позиції позначаються «?», а результат має низьку впевненість. Тон у непідтверджених місцях не вгадується.</p>
+      <p><strong>Практичні орієнтири:</strong> придих /kʰ tʰ pʰ/ → к' т' п'; /h/ та /ɦ/ → г; /ɡ/ → ґ; /x/ → х; /ŋ/ → нг; /ɯ/ → и. Точна послідовність /ʃt͡ʃ/ має окреме правило → щ. Повна таблиця та пояснення — у <a href="./system.html#s9">методології</a>.</p>
+      <p class="research-note">Система орієнтується на сучасну стандартну лаоську з в'єнтьянським фонологічним профілем там, де це підтверджено. Вона не є офіційним стандартом. Незалежний експертно ад'юдикований IPA gold corpus наразі містить 0 еталонів, тому незалежна фонетична точність ще не виміряна.</p>
     </section>
   </main>
 
   <footer>
     <span>ClippyFirst <span aria-hidden="true">·</span> Lao → Українська</span>
-    <span>Мова, звучання, практичне читання</span>
+    <span>Письмо → звучання → українське читання</span>
   </footer>
-  <script type="module" src="./web/app.js?v=20261110-lao-woven-1"></script>
+  <script type="module" src="./web/app.js?v=20261110-lao-copy-2"></script>
 </body>
 </html>
