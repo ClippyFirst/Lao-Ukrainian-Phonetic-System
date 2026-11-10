@@ -8,6 +8,7 @@ on:
       - "benchmark/mekongphon-immutable-inference-20261107"
       - "improve/rule-engine-error-analysis-20261107"
       - "audit/repository-docs-structure-20261107"
+      - "feat/mekongphon-ipa-only-api-20261110"
     paths:
       - ".github/workflows/mekongphon-three-engine-benchmark.yml"
       - "scripts/benchmark_mekongphon_three_engines.py"

@@ -27,6 +27,21 @@ Non-tonal IPA:
 
     lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device auto
 
+The Python API exposes the source-side IPA stage independently from Ukrainian adaptation:
+
+```python
+from lao_ukrainian import transcribe_ipa, transcribe_lao
+
+ipa = transcribe_ipa("ສະບາຍດີ", device="cpu")
+print(ipa.raw_ipa, ipa.phonetic_result, ipa.model_revision)
+
+# Explicitly run both stages: typed IPA → Ukrainian target adapter.
+result = transcribe_lao("ສະບາຍດີ", device="cpu")
+print(result.raw_ipa, result.ukrainian)
+```
+
+MekongPhonEngine.transcribe_ipa() and transcribe_ipa() stop after the typed IPA result. They preserve the untouched decoded string, typed segments, tone metadata, model revision and warnings, and never call the Ukrainian adapter. MekongPhonEngine.transcribe() / transcribe_lao() explicitly run both stages. This API addition does not change the deterministic CLI/API default, and the website remains browser-native deterministic JavaScript.
+
 The adapter defaults to immutable revisions: tonal `e02608cfcb18abfe6b1916f5f4774bfac9ac788d` and non-tonal `d6ea20cb73eaab8f3adc4eb044e61bdb9bef3f5b`. The loaded model config revision is checked against the requested SHA when available. You may explicitly override it with `--revision`; a non-SHA revision is marked `MODEL-REVISION-NOT-IMMUTABLE`. The resolved revision is included in JSON output. First use downloads the model files into the normal Hugging Face cache; no model weights are checked into Git.
 
 The published models accept at most 128 input tokens. ClippyFirst disables truncation and rejects over-limit input rather than silently dropping text. Use an explicit input chunking strategy only when the user intends separate inference units; automatic phrase segmentation is not claimed.
