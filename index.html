@@ -55,7 +55,7 @@
         </div>
         <div class="input-shell">
           <label class="sr-only" for="lao-input">Лаоський текст</label>
-          <textarea id="lao-input" lang="lo" spellcheck="false" placeholder="ພິມພາສາລາວທີ່ນີ້…" aria-describedby="input-help"></textarea>
+          <textarea id="lao-input" name="lao-text" autocomplete="off" lang="lo" spellcheck="false" placeholder="ພິມພາສາລາວທີ່ນີ້…" aria-describedby="input-help"></textarea>
           <div class="input-hint"><span id="count">0 символів</span><span>Слово · речення · уривок</span></div>
         </div>
         <p class="input-guidance" id="input-help">Результат оновлюється автоматично. Розгорніть поскладовий аналіз, щоб побачити написання, доступне IPA, український відповідник і рівень упевненості.</p>
@@ -115,7 +115,7 @@
             <details class="trace-panel trace-disclosure">
               <summary class="trace-summary"><span class="trace-summary-index">A</span><span class="trace-summary-copy"><strong>Як побудовано читання</strong><small>Розбір лаоських графем, складів, фонетичних значень і українських відповідників.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
               <div class="trace-details">
-                <div class="analysis-status"><span class="section-kicker">СТАН ФОНЕТИЧНОГО АНАЛІЗУ</span><strong id="analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
+                <div class="analysis-status"><span class="section-kicker">Стан фонетичного аналізу</span><strong id="analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
                 <div id="warnings"></div>
                 <div id="rows" class="analysis-list"></div>
               </div>
@@ -123,7 +123,7 @@
             <details id="romanization-trace" class="trace-panel trace-disclosure" hidden>
               <summary class="trace-summary"><span class="trace-summary-index">B</span><span class="trace-summary-copy"><strong>Як побудовано запис за романізацією</strong><small>Зіставлення латинського початку, повного голосного комплексу й фіналі з вихідною лаоською структурою.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
               <div class="trace-details">
-                <div class="analysis-status"><span class="section-kicker">СТАН РОМАНІЗАЦІЙНОГО АНАЛІЗУ</span><strong id="romanization-analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
+                <div class="analysis-status"><span class="section-kicker">Стан аналізу романізації</span><strong id="romanization-analysis-status" class="status" role="status" aria-live="polite" aria-atomic="true"></strong></div>
                 <div id="romanization-warnings"></div>
                 <div id="romanization-rows" class="analysis-list"></div>
               </div>
@@ -135,7 +135,7 @@
 
     <section class="research-progress" aria-label="Стан і межі дослідження">
       <div class="research-progress-head">
-        <p class="eyebrow">СТАН ДОСЛІДЖЕННЯ · 10.11.2026</p>
+        <p class="eyebrow">Стан дослідження · 10.11.2026</p>
         <a href="./system.html#s12">Як читати результати й обмеження <span aria-hidden="true">↗</span></a>
       </div>
       <p><strong>Як працює результат:</strong> фонетичний режим спершу аналізує лаоську структуру й формує IPA, а тоді застосовує українські відповідники. Якщо повний розбір не підтверджено, відомі фрагменти все одно передаються через той самий IPA-адаптер; невідомі позиції позначаються «?», а результат має низьку впевненість. Тон у непідтверджених місцях не вгадується.</p>
