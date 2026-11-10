@@ -218,3 +218,11 @@ test("editorial copy keeps the named visual concept while avoiding unexplained E
   assert.match(methodology, /переривчаст.{0,30}уток/i);
   assert.match(methodology, /Адаптація IPA українською/);
 });
+
+
+test("input starts without instructional placeholder text and keeps a concise accessible name", () => {
+  const input = html.match(/<textarea\\b([^>]*)>/)?.[1] || "";
+  assert.doesNotMatch(input, /\\bplaceholder=/);
+  assert.match(html, /<label class="sr-only" for="lao-input">Текст для аналізу<\\/label>/);
+  assert.doesNotMatch(html, /<label class="sr-only" for="lao-input">Лаоський текст<\\/label>/);
+});
