@@ -140,7 +140,7 @@ test("all public site copy explains the product contract and honest uncertainty"
   assert.match(html, /Вставте слово, фразу або цілий уривок лаоською/);
   assert.match(html, /невідомі позиції позначаються «\?»/);
   assert.match(html, /IPA-адаптер/);
-  assert.match(methodology, /Незалежна експертно перевірена еталонна вибірка IPA наразі містить 0 еталонів/);
+  assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
   assert.match(methodology, /романізація може втрачати тон, довготу та відмінності між голосними/i);
   assert.match(methodology, /не вибирає варіант навмання/);
 });
@@ -195,6 +195,15 @@ test("the Ukrainian editorial standard defines language, evidence, and contextua
   assert.match(guide, /lang="lo-Latn"/);
   assert.match(guide, /Це редакторський список, а не автоматичний заборонний словник/);
   assert.match(guide, /Не змінюємо числа, дати, одиниці/);
+});
+
+test("public prose states the pipeline and research limits directly", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(html, /побудує фонетичний запис у IPA/);
+  assert.match(methodology, /IPA стоїть між фонологічним аналізом і українською адаптацією/);
+  assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
+  assert.doesNotMatch(methodology, /Це не косметична заміна однієї традиції іншою/);
+  assert.doesNotMatch(methodology, /Це поєднання культурної обережності та сучасної вебпрактики/);
 });
 
 test("editorial copy keeps the named visual concept while avoiding unexplained English craft terms", async () => {
