@@ -123,7 +123,14 @@ Do not close this item until exact-head Verify and Pages deployment workflows co
 | Bound long unresolved runs to at most three markers | DONE_VERIFIED | Python and browser fallback implementations; 338 Python + 156 Node tests |
 | Long user phrase regression | DONE_VERIFIED | Python, Node and Chromium tests passed in Verify #42830796088 |
 | Canonical fallback guide, master handoff and changelog | DONE_VERIFIED | Updated in place; no duplicate plan created |
-| Publish exact main head to GitHub Pages | PARTIAL | Pages workflow #42830796208 is still building; wait for artifact/deploy/live smoke success |
+| Publish Hybrid v2 fallback fix to GitHub Pages | DONE_VERIFIED | Pages workflow [#42830796208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208); deployed application SHA `85c0581726c4de659bfe002b61b2bdfdaecfe024`; artifact `13771951564`; live same-origin smoke passed |
 | Independent expert IPA for the phrase | BLOCKED / evidence-limited | Exact phrase not found in the two bundled orthographic lexical-hint lists; those lists are not IPA resources. No expert-adjudicated source-located IPA is available. |
 
 The engineering behavior is verified. Linguistic accuracy of the phrase remains unverified and no IPA string has been invented or labelled as gold.
+
+
+### Pages deployment completion — 2026-11-10
+
+Pages workflow [#42830796208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208) deployed application SHA `85c0581726c4de659bfe002b61b2bdfdaecfe024`. Artifact `13771951564` (`github-pages`, 40,375,698 bytes) was uploaded and deployed. The live smoke-test successfully fetched both pages, app/data/CSS, Hybrid v2 inference bundle, WASM runtime, model manifest, ONNX encoder/decoder, both tokenizer files and license/notice assets; model ID and immutable revision checks passed. The deployed browser interaction test passed.
+
+The final README/audit/handoff edits after that deployment are documentation-only; no application asset changed after the deployed application SHA. The independent expert IPA blocker remains open.
