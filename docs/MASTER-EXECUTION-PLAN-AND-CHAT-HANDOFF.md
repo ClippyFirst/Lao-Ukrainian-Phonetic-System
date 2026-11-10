@@ -3517,3 +3517,36 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 - **Latest documentation-only main update before this final handoff edit:** `e4a6018fcc5fd862c98aa41b2eab9d5a1560ff04`. README, canonical fallback guide, changelog, current audit and this master handoff now agree. The final handoff edit itself is committed immediately after this base; its resulting SHA is reported in the execution summary.
 
 **Outcome:** the user's reported UI defect is fixed and deployed. The main IPA field shows available provisional IPA hints; uncertainty remains explicitly low-confidence; unresolved marker runs are bounded to three. The supplied long phrase is an engineering regression target only. Its exact expert IPA remains **BLOCKED / evidence-limited** because the bundled orthographic lexical hints do not contain the phrase and are not pronunciation sources. The independent adjudicated Lao IPA gold corpus remains 0. Do not call this linguistically validated or claim an expert-confirmed reading.
+
+## Public web service simplification — 2026-11-10
+
+**User decision:** remove the browser Hybrid v2 neural tonal IPA panel and its first-run model/WASM download from the public service. The website remains deterministic IPA → Ukrainian, with the separate romanization mode. Python Hybrid v2/MekongPhon engines, benchmark scripts, evidence and CLI research are retained; no research capability or historical evidence is silently discarded.
+
+### Implementation changes
+
+- Removed the neural result card and all corresponding browser DOM bindings, lazy inference imports, button/copy handlers and panel styles.
+- Simplified scripts/build_web.py to copy only the two static pages and browser assets; it no longer bundles Transformers.js, ONNX Runtime Web, WASM binaries or runtime license notices.
+- Simplified Pages workflow to npm ci → Node tests → deterministic static build → Chromium UI tests → artifact check → Pages deployment → same-origin smoke test. The artifact explicitly rejects model directories, vendor WASM and neural bundle outputs and is capped at 20 MB.
+- Removed browser-only ONNX export/runtime verification/Pages model staging scripts, web neural modules/tests, model-specific browser test, ONNX model export workflow, preview workflow and unused ONNX Runtime license file.
+- Added a Chromium regression ensuring the public site exposes no model panel, 40 MB model download note or Hybrid v2 run button while deterministic transcription still works.
+
+### Branch / PR reconciliation
+
+- 28 branches were inventoried and compared with main; 3 open PRs were inspected (#145, #160, #162).
+- PR #145 proposes a neural-first default and conflicts with the retained deterministic IPA-first public contract; it is not merged.
+- PR #160 contains benchmark workflow/docs reconciliation and is a candidate for integration after exact-head CI and conflict review.
+- PR #162 is a Python-only experimental multi-engine comparator based on #160; it is not a browser engine and is not required by the public service. Keep it research-only and integrate only after its exact final head is verified.
+- Numerous older branches are divergent snapshots of already merged features or superseded architecture. Their unique commits are to be reconciled by content and evidence, not merged wholesale over current main. Do not delete branch refs; preserve provenance/history.
+
+### Acceptance ledger
+
+| Item | Status | Acceptance |
+|---|---|---|
+| Remove neural panel and lazy browser inference from HTML/JS/CSS | DONE_VERIFIED (implementation) | Code changes committed; exact-head Chromium regression pending |
+| Remove ONNX/WASM/model export from Pages build and workflow | DONE_VERIFIED (implementation) | Static-only build/workflow committed; exact-head Pages workflow pending |
+| Preserve Python Hybrid v2/MekongPhon research code | DONE_VERIFIED (scope) | Python model adapters and benchmark assets retained |
+| Full regression, build, browser and live Pages smoke | TODO | Exact-head Verify and Pages runs must reach SUCCESS |
+| Reconcile open benchmark PRs and branch-only evidence | PARTIAL | #160/#162 pending exact merge-gate decision; #145 architecture conflict |
+| Independent expert-adjudicated IPA gold | BLOCKED / evidence-limited | Gold corpus remains 0; requires rights-cleared expert annotation and adjudication |
+
+**Current implementation checkpoint:** after the cleanup batch, verify the exact current main head and update this ledger with real run IDs/results. Do not claim the new website deployment until Pages live smoke-test passes.
