@@ -204,6 +204,9 @@ test("public prose states the pipeline and research limits directly", async () =
   assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
   assert.doesNotMatch(methodology, /Це не косметична заміна однієї традиції іншою/);
   assert.doesNotMatch(methodology, /Це поєднання культурної обережності та сучасної вебпрактики/);
+  assert.doesNotMatch(methodology, /Pali\\/Sanskrit|Language Standardisation in Laos|IPA gold corpus/);
+  assert.match(methodology, /палійські й санскритські структури/);
+  assert.match(methodology, /Мовна стандартизація в Лаосі/);
   assert.equal((methodology.match(/<p\b/g) || []).length, (methodology.match(/<\/p>/g) || []).length);
   assert.equal((html.match(/<p\b/g) || []).length, (html.match(/<\/p>/g) || []).length);
 });
