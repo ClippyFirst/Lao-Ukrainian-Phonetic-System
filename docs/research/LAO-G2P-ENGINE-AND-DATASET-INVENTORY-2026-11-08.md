@@ -498,3 +498,18 @@ Tone alignment status counts: NOT_ALIGNED 920, ORDER_ALIGNED 10, PARTIAL 4. The 
 **Task ledger:** Hybrid v2 1k sentence-domain run DONE_VERIFIED (stress/coverage only); 100% Ukrainian rendering DONE_VERIFIED; complete segmental IPA PARTIAL; parseable tonal IPA PARTIAL; per-syllable tone association PARTIAL; independent IPA accuracy BLOCKED (requires independently adjudicated IPA gold); neural input acceptance TODO/evidence-limited (define safe policy for 66 explicit rejections; never truncate or strip silently). Browser integration remains DEFERRED until a supported inference backend is available.
 
 The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2_hvulao_1k.py` already implement this test. Do not duplicate it inside the older three-engine benchmark workflow.
+
+
+## Meta-Hybrid v3 multi-engine comparison layer — 2026-11-10
+
+The new opt-in Python orchestrator runs three source-side lanes on the same input:
+
+1. ClippyFirst `hybrid-deterministic`: selected segmental IPA and the only lane used for Ukrainian rendering.
+2. Pinned MekongPhon non-tonal: segmental comparison only; it cannot supply tone.
+3. Pinned MekongPhon tonal: raw tonal IPA is retained separately and syllable tone metadata is associated only through the existing unique-order alignment gate.
+
+The non-tonal comparison reports `EXACT_AGREEMENT`, `DISAGREEMENT`, `UNSCORABLE` or `UNAVAILABLE`. It compares exact normalized IPA strings only when both sides contain complete accepted IPA; provisional, unsupported or missing units are excluded. Agreement is concordance, not correctness. Disagreement is preserved as evidence and never triggers a majority vote or automatic engine switch.
+
+**No production default changed.** `rules` and the deployed browser Hybrid v2 remain unchanged. The v3 CLI/API path is opt-in (`--engine meta-hybrid-v3`); both neural lanes are optional and independently fail. No synthetic IPA stream is constructed, and all Ukrainian output still crosses the deterministic typed IPA → Ukrainian adapter.
+
+**Acceptance still pending:** run exact-head Python and repository Verify CI; inspect both neural lanes on the same fixed input inventory; compare segmental and tonal outputs against independent adjudicated IPA gold before any per-input selection policy is considered. Independent gold remains 0, so v3 is a comparison orchestrator, not a validated voting ensemble or accuracy improvement claim.
