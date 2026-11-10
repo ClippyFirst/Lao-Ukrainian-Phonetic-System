@@ -184,7 +184,7 @@ test("long unresolved Lao input still exposes provisional IPA and bounded uncert
   const ukrainian = await page.locator("#output").textContent();
   expect(ukrainian).not.toMatch(/\?{4,}/u);
   await expect(page.locator("#ipa")).not.toHaveText("?");
-  await expect(page.locator("#output-method-note")).toContainText("попередню підказку низької впевненості");
+  await expect(page.locator("#output-method-note")).toContainText("попередню підказку з низькою впевненістю");
 });
 
 test("every interactive control has a programmatic accessible name", async ({ page }) => {
