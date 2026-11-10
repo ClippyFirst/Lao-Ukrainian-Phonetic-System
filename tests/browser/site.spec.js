@@ -176,6 +176,16 @@ test("browser UI renders provisional Ukrainian output and labels its low confide
 });
 
 
+test("long unresolved Lao input still exposes provisional IPA and bounded uncertainty", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ພຣະຣາຊອານາຈັກຣ໌ລາວ");
+  const ipaText = await page.locator("#ipa").textContent();
+  expect(ipaText).toMatch(/[a-zɐ-ʔːə̯]/u);
+  const ukrainian = await page.locator("#output").textContent();
+  expect(ukrainian).not.toMatch(/\\?{4,}/u);
+  await expect(page.locator(".grapheme-preview").first()).toBeVisible();
+});
+
 test("every interactive control has a programmatic accessible name", async ({ page }) => {
   await page.goto("/");
   const unnamed = await page.locator("button, a, textarea, summary").evaluateAll((elements) =>
