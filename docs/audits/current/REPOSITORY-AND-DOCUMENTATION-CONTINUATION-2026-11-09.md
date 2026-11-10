@@ -793,18 +793,20 @@ Detailed task ledger and architecture are in `docs/research/GITHUB-PAGES-HYBRID-
 - **DONE_VERIFIED:** bundle third-party notices derived from esbuild metafile inputs; included Transformers.js Apache-2.0 and ONNX Runtime common/web MIT license texts. Model Apache-2.0 license and attribution NOTICE included.
 - **DONE_VERIFIED:** preview artifact [13711776359](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740/artifacts/13711776359), 40,383,255 bytes zipped / 56,466,051 unpacked, 34 files.
 - **DONE_VERIFIED:** aligned short Lao test, unaligned multi-syllable raw IPA preservation, no fabricated tone predictions, and zero external runtime requests.
-- **TODO:** PR #158 remains draft. Mark ready, merge, wait for main Pages deploy, verify live site and all static assets. Do not report production deployment until live smoke passes.
+Deployment is verified and live; see the final 2026-11-10 status entry below.
 - **BLOCKED (accuracy only):** no independent expert IPA gold; neural tone remains `UNCERTAIN`.
 
 
 
-## 2026-11-10 main-branch merge and live deployment gate
 
-PR #158 is merged; merge commit `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`. Current main includes cache-busting for the Hybrid v2 browser bundle/styles and a 30-minute Pages deployment polling timeout (`4cb1ff727c3bdd8365c8a95d8bde7d42e10fffec`).
 
-- **DONE_VERIFIED:** main Verify [#42775378045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775378045) passed.
-- **DONE_VERIFIED:** Pages build/export/parity/packaging/Chromium checks on [#42775377983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983) passed; 20 Chromium tests; cold/warm local inference 1,062 ms / 167 ms; zero external requests. Pages artifact [13744046012](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983/artifacts/13744046012), 40,375,099 bytes.
-- **PARTIAL:** GitHub Pages deploy job is still in progress; smoke test has not run. The prior deployment timed out while Pages reported `syncing_files` at the default 10-minute limit. Timeout is now 30 minutes. Another run was cancelled because a cache-busting index commit superseded it; the currently active run is #42775377983.
-- **BLOCKED (linguistic accuracy):** no independent adjudicated IPA gold corpus; model output and tone association remain experimental/UNCERTAIN.
+## 2026-11-10 — final deployment and readiness
 
-Acceptance to close deployment: #42775377983 must finish successfully and the workflow's live smoke test must fetch the UI, runtime bundle, WASM, tokenizers, ONNX weights, model LICENSE/NOTICE and runtime third-party notices from the same Pages origin.
+- **DONE_VERIFIED:** PR #158 merged to main at `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`; latest main at this audit update: `5bb6d16a95158f6918b8ceab8735869709d4c4d9`.
+- **DONE_VERIFIED:** main Verify [#42776069925](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069925) SUCCESS.
+- **DONE_VERIFIED:** GitHub Pages deployment [#42776069784](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069784) SUCCESS, including live same-origin smoke checks for both pages, app/data/CSS, browser bundle, WASM loader/binary, runtime notices, model manifest, model LICENSE/NOTICE, both tokenizer JSON files and INT8 encoder/decoder. Public URL: https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/.
+- **DONE_VERIFIED:** deployment artifact [13743688308](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069784/artifacts/13743688308), 40,375,107 bytes. Browser run: 20 passed; latest cold/warm local inference 1,601 ms / 237 ms; zero external requests.
+- **DONE_VERIFIED:** cache-busting for the new app bundle and CSS. Deployment timeout is explicitly set to the action's maximum supported 600,000 ms; do not claim 30 minutes (the action clamps larger values).
+- **PARTIAL / BLOCKED (linguistic accuracy):** no independent expert-adjudicated IPA gold corpus; neural IPA is an experimental comparator and neural tone predictions remain `UNCERTAIN`. Multi-syllable tone association may be `NOT_ALIGNED`; no unsupported mapping is guessed.
+
+Deployment acceptance is closed. The next acceptance criterion is an independently annotated/adjudicated IPA gold corpus with documented provenance, then per-language/phoneme/tone error metrics. Until then, classify this as a deployed technical prototype, not a phonetic-accuracy-validated production release.
