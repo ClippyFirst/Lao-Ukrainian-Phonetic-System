@@ -3347,17 +3347,21 @@ The detailed evidence and correction history is in `docs/research/GITHUB-PAGES-H
 - Bundle license scanner now derives npm packages from esbuild metafile inputs and copies license texts. The preview includes notices for Transformers.js 4.3.2 (Apache-2.0), ONNX Runtime common 1.30.0 (MIT), ONNX Runtime Web 1.31.1 (MIT), plus model Apache-2.0 LICENSE/NOTICE.
 - Final preview artifact [13711776359](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42700501740/artifacts/13711776359): 40.38 MB ZIP / 56.47 MB unpacked, 34 files.
 - Browser test verifies aligned `ຂາ` and unaligned multi-syllable `ສະບາຍດີ`, no invented tone associations, zero external requests. Prior measured local-server cold/warm times: 1.27 s / 177 ms (later run 1.115 s / 198 ms).
-- **Only remaining deployment gate:** PR #158 remains draft. Mark ready and merge after this successful exact-head verification; then wait for main Pages workflow and confirm live same-origin UI, model, tokenizers, WASM and licenses. No production deployment claimed yet.
+Deployment is verified and live; see the final 2026-11-10 status entry below.
 
 
 
-### 2026-11-10 deployment continuation
 
-PR #158 was merged into `main` at `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`. The follow-up cache-busting and Pages timeout change is `4cb1ff727c3bdd8365c8a95d8bde7d42e10fffec` (current main at this update). The merged branch contains the pinned browser-local ONNX Hybrid v2 implementation described above; it is not an external-service or Java applet deployment.
 
-- Main Verify [#42775378045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775378045): SUCCESS on `4cb1ff7...`.
-- Pages build [#42775377983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983): build and upload steps SUCCESS; artifact [13744046012](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983/artifacts/13744046012), 40,375,099 bytes. Model export and browser parity pass; 20 Chromium tests pass; local cold/warm inference 1,062 ms / 167 ms; external request list empty.
-- The deployment job for #42775377983 is still waiting on the GitHub Pages service after the artifact upload. Its timeout was increased to 1,800,000 ms (30 minutes) because the previous first attempt on the merged commit remained in `syncing_files` until its 10-minute default timeout. A separate attempt #42774956163 was cancelled by the cache-busting follow-up commit; it was not a deployment failure.
-- Cache-busting query strings were updated in `index.html` for `web/app.js` and `web/styles.css` so existing visitors do not retain the pre-Hybrid browser bundle.
+### 2026-11-10 — final GitHub Pages deployment state
 
-**Deployment remains PARTIAL until** workflow #42775377983 completes its deploy step and its smoke test retrieves the live UI, bundle, tokenizer JSON, INT8 ONNX encoder/decoder, WASM runtime, model license, and notices from the GitHub Pages origin. Do not call it deployed before that.
+**DEPLOYED and live:** [Lao–Ukrainian Phonetic System](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/). The latest main commit at this handoff update is `5bb6d16a95158f6918b8ceab8735869709d4c4d9`; PR [#158](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/158) merged at `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`.
+
+- Main Verify [#42776069925](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069925): SUCCESS on final main SHA `5bb6d16...`.
+- Pages deployment [#42776069784](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069784): SUCCESS, including live smoke-test. It fetched both HTML pages, app/data/CSS, Hybrid v2 JS bundle, WASM loader and binary, runtime third-party notices, model manifest, Apache LICENSE/NOTICE, both tokenizer JSON files, and INT8 ONNX encoder/decoder from `https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/`. Manifest model ID and immutable revision were checked; all requests succeeded.
+- Pages artifact [13743688308](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069784/artifacts/13743688308): 40,375,107 bytes.
+- Browser Chromium run: 20 passed. Latest measured local inference: 1,601 ms cold / 237 ms warm; `externalRequests=[]`. The browser uses ONNX Runtime Web WASM, beam size 5, no API/backend/CDN. The short aligned and multi-syllable ambiguous alignment cases remain separately represented.
+- Cache-busting query strings for `web/app.js` and `web/styles.css` are present in `index.html`.
+- `actions/deploy-pages@v5` caps its timeout at 600,000 ms. An attempted 1,800,000 ms value was clamped by the action and emitted a warning; the workflow is corrected to the supported 600,000 ms maximum in `5bb6d16...`. The corrected deployment run succeeded without the clamp warning.
+
+**Readiness:** the browser-local Hybrid v2 implementation is deployed and operational as a technical prototype. It is **not yet a phonetic-accuracy-validated release**: the independent adjudicated IPA gold corpus is still empty, multi-syllable tone alignment can be `NOT_ALIGNED`, and all neural tone predictions remain `UNCERTAIN`. Deterministic Ukrainian output remains authoritative. The next genuine acceptance gate is expert IPA annotation/adjudication and an independently measured accuracy benchmark, not more deployment work.
