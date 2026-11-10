@@ -749,6 +749,14 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   assert.ok(syllable.phoneticResult.segments.every((segment) => segment.certainty === "PROVISIONAL"));
 });
 
+test("hybrid fallback bounds unresolved marker runs for long unsupported units", () => {
+  const result = analyze("ພຣະຣາຊອານາຈັກຣ໌ລາວ", { ipaProfile: "hybrid-deterministic" });
+  const markerRuns = result.output.match(/\\?+/g) || [];
+  assert.ok(markerRuns.every((run) => run.length <= 3), JSON.stringify({ output: result.output, markerRuns }));
+  assert.ok(result.syllables.some((unit) => unit.graphemePreview?.ipaPreview),
+    "the fallback should retain any registered provisional IPA hints");
+});
+
 test("hybrid renders uncertain phonetic readings without upgrading confidence", () => {
   const syllable = analyze("ຣະ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, "ra");
