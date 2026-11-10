@@ -3497,3 +3497,12 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 - Earlier verification attempts on intermediate commits failed because a newly added test regex was incorrectly escaped. That test-only syntax defect was corrected in later commits; those earlier failures are not counted as successful verification.
 - Exact-head Verify and Pages runs for the corrected code must be checked to terminal state before marking implementation `DONE_VERIFIED` or claiming a new deployment. The previously deployed site remains the last known successful production artifact until the new Pages workflow succeeds.
 - Required acceptance: full Python suite, full Node suite, Chromium UI regression, build, generated-data drift check, and Pages artifact/deployment smoke tests. Do not infer linguistic correctness from these engineering checks.
+
+
+### Exact-head engineering verification — 2026-11-10
+
+- Final implementation/cache-bust head: `85c0581726c4de659bfe002b61b2bdfdaecfe024` on `main`.
+- Exact-head Verify [#42830796088 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796088).
+- Results: 338 Python tests passed; 156 Node tests passed; 20 Chromium UI tests passed. The exact supplied long Lao phrase regression passed, including provisional IPA visibility in the main IPA field, explicit low-confidence disclosure, and no question-mark run longer than three.
+- Repository data/evidence audit, independent IPA gold structure validation, external-G2P syntax/CLI validation, build, generated browser-data reproducibility, built-page/relative-asset checks all passed.
+- Pages workflow [#42830796208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208) is building the same exact main head. Do not mark publication complete until artifact upload, deployment and live smoke checks pass.
