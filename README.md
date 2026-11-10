@@ -134,7 +134,7 @@ The web layer is intentionally conservative and does not claim to replace the re
 
 ## Optional MekongPhon neural inference
 
-The deterministic rule engine remains the default. Optional tonal and non-tonal neural inference is available through the separately published BYU MATRIX Lab model artifacts; weights are downloaded at first use and are not committed to this repository.
+The deterministic rule engine remains the default. Optional tonal and non-tonal neural inference is available through the separately published BYU MATRIX Lab model artifacts for Python research/CLI use only; weights are downloaded at first use and are not committed to this repository. The public web service does not download or execute these models.
 
 Install the optional dependencies and select a model explicitly:
 
@@ -142,6 +142,7 @@ Install the optional dependencies and select a model explicitly:
 pip install -e '.[neural]'
 lao-ua 'ສະບາຍດີ' --engine mekongphon-tonal --device cpu --json
 lao-ua 'ສະບາຍດີ' --engine mekongphon-nontonal --device cpu --json
+lao-ua 'ຂາ' --engine meta-hybrid-v3 --device cpu --json
 ```
 
 Both engines default to immutable model revisions recorded in [the integration guide](docs/research/MEKONGPHON-NEURAL-INTEGRATION.md). The raw model IPA and typed tone segments are preserved; unknown IPA symbols or incomplete Ukrainian mappings fail closed. Neural inference never silently replaces or falls back to the deterministic result. MekongPhon project rights are owner-confirmed as resolved; independent adjudicated Lao IPA gold remains 0.
@@ -211,3 +212,8 @@ On the pinned 100-word MekongPhon split, the opt-in dual-lane hybrid combines th
 ### Hybrid v2 HVULao 1k stress result
 
 On the pinned 1,000-row HVULao sentence split, Hybrid v2 achieved **100% Ukrainian rendering (1,000/1,000 rows; 21,534/21,534 units)**, **66.1% complete segmental IPA sentences**, **97.706% segmental IPA unit coverage**, and **22.8% parseable tonal IPA rows**. Only 10 rows were fully order-aligned for syllable-level tone association and 4 partially aligned; 200 tone predictions were emitted and remain UNCERTAIN. There were zero unexpected runtime errors. This is engineering coverage, not phonetic accuracy; HVULao has no IPA gold. Exact run and artifact details are recorded in the research inventory.
+
+
+## Meta-Hybrid v3 — opt-in research comparator (2026-11-10)
+
+The Python/CLI-only Meta-Hybrid v3 orchestrator runs the deterministic engine alongside the pinned MekongPhon non-tonal and tonal models. It reports exact segmental agreement/disagreement, preserves the raw tonal lane separately, and reuses the conservative tone-alignment gate. It never votes, rewrites raw IPA, or changes the selected Ukrainian result: the deterministic IPA → Ukrainian lane remains authoritative. Cross-engine agreement is concordance, not accuracy. The public GitHub Pages service does not load this module, model weights, ONNX or WASM assets. Exact branch verification passed in [#42822261651](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42822261651); the external comparator workflow [#42822253479](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42822253479) also passed. Independent expert IPA gold remains 0.
