@@ -3748,3 +3748,5 @@ The public Lao input no longer displays instructional placeholder text. Its acce
 ## Contrast improvement for method buttons — 2026-11-10
 
 The “За вимовою” / “За романізацією” switch had an inactive text contrast of 4.18:1 on its group surface, below the 4.5:1 WCAG AA normal-text threshold. The inactive state now uses a silk surface, darker foreground and a visible border; the active state keeps the dark Mekong fill and silk foreground. Static assertions and a Chromium contrast-ratio test cover both states and selection changes. Exact-head Verify is pending; do not mark this work DONE_VERIFIED until it passes.
+
+A related secondary action (“Очистити”) also had insufficient text contrast on the paper background (4.41:1). It now uses `#505D55` text and a `#68716A` border, with static contrast checks against paper and silk. The first Chromium attempt timed out because the results panel was still hidden; the test setup now enters a sample before interacting with the mode switch. Fresh exact-head verification is pending.
