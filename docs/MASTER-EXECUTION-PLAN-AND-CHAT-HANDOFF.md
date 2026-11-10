@@ -3603,3 +3603,14 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 - All 28 branch refs were inventoried. Already merged branches remain represented in main; unique verified work was ported; superseded snapshots were not merged wholesale. Branch refs were preserved; no force-push or branch deletion.
 
 **Readiness:** public static service cleanup is engineering-verified and deployed. The repository remains a research prototype rather than a linguistically validated release because independent adjudicated Lao IPA gold remains 0; manual assistive-technology/device QA also remains outside these automated checks.
+
+## Research CLI line-break regression — DONE_VERIFIED, 2026-11-10
+
+- **PR:** [#164 — Fix research CLI line breaks](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/164).
+- **Starting main:** 2b492771785564247ad26f6d911e7c36204817f0; **final branch head:** 6cf650ff892ff8bf82d455cb665d38427eb6c256.
+- Test-first regression run [#42859192089 — expected RED](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42859192089): both new tests failed because the text CLI printed a literal backslash-n between the input and engine label.
+- Exact-head Verify [#42859285823 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42859285823): **346 Python, 152 Node and 22 Chromium tests passed**. IPA-gold structure validation, repository data/evidence audit, optional external-G2P syntax/CLI, clean locked npm install, static build, generated-data reproducibility, real Chromium tests and built-page/relative-asset checks passed.
+- Corrected the hybrid-v2 and meta-hybrid-v3 human-readable CLI headers to use actual line breaks. Added two observable CLI regression tests. No engine selection/default, IPA mapping, model, browser asset or Pages deployment behavior changed.
+- PR #145 remains open and unmerged: it changes the Python CLI default to neural-first, whereas the current system specification explicitly retains deterministic rules as the default and neural models as opt-in research tooling. Its branch is preserved for a separate architecture decision; no unrelated branch work was imported.
+
+**Acceptance:** CLI formatting fix — DONE_VERIFIED. Linguistic readiness is unchanged: independent adjudicated IPA gold remains 0; this engineering fix makes no pronunciation-accuracy claim.
