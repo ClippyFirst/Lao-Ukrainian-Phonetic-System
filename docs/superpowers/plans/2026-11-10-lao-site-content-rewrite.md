@@ -80,3 +80,15 @@ Process guidance: Superpowers brainstorming, writing-plans, TDD, executing-plans
 - `tests/browser/site.spec.js`: updated accessible names for revised action labels and the methodology heading.
 - `tests/web-layout.test.mjs`: updated current-date assertions, 14-section check, and added content/uncertainty/design-concept checks.
 - Verification and deployment status will be added after exact-branch CI completes.
+
+
+## Final verification and publication
+
+- **PR #168:** merged by squash on 2026-11-10.
+- **Merge commit:** `a052b5b97fe2518497cddda8a45c76d80cb864a0`.
+- **Exact-PR-head Verify:** [#42875206898 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42875206898): 350 Python tests, 155 Node tests, 22 Chromium tests; repository data/evidence audit, IPA gold schema validation, external-G2P syntax/CLI checks, build, generated-data reproducibility and built-page/asset checks passed.
+- **Exact-main Verify:** [#42875399018 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42875399018): 350 Python tests, 155 Node tests, 22 Chromium tests and all repository verification gates passed on the merge commit.
+- **GitHub Pages:** [#42875399023 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42875399023). Build, 155 Node tests, 22 Chromium tests, deterministic-only artifact checks, artifact upload, Pages deployment and live smoke test of the public home page, methodology page, app bundle and stylesheet passed.
+- **Published service:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/
+- **Manual QA limitation:** no physical-device or dedicated screen-reader review was performed in this run. Automated checks cover the tested viewports, zoom, keyboard, touch, focus, reduced-motion and accessible-name contracts, but do not certify every assistive-technology combination.
+- **Linguistic evidence limitation:** independent expert-adjudicated IPA gold remains 0. The copy makes no independent phonetic-accuracy claim.

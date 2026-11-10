@@ -1,8 +1,9 @@
 ## Complete public website copy rewrite — 2026-11-10
 
+**PR:** [#168 — merged](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/168)  
 **Branch:** `docs/site-copy-rewrite-lao-editorial-20261110`  
 **Base main:** `ee4dee5f6c6e8abfdb47069fca3894617648684d`  
-**Implementation scope:** `index.html`, `system.html`, browser/static content tests, README and this handoff.  
+**Implementation scope:** `index.html`, `system.html`, `web/app.js`, browser/static content tests, README and canonical handoff/audit.  
 **Plan:** [2026-11-10 Lao site content rewrite](../superpowers/plans/2026-11-10-lao-site-content-rewrite.md) (relative link in audit is `../../superpowers/plans/2026-11-10-lao-site-content-rewrite.md`).
 
 ### What changed
@@ -25,15 +26,15 @@ The page copy links to W3C Lao Script Resources, Ueda's Vientiane phonology stud
 
 | Item | Status | Evidence |
 |---|---|---|
-| Complete service-page copy rewrite | DONE_IMPLEMENTED / CI_PENDING | `index.html`; all existing UI IDs retained |
-| Complete methodology rewrite and concept section | DONE_IMPLEMENTED / CI_PENDING | `system.html`; sections `s1`–`s14`; 3 tables retained |
-| Browser accessibility labels | DONE_IMPLEMENTED / CI_PENDING | `tests/browser/site.spec.js` |
-| Static copy/design contract tests | DONE_IMPLEMENTED / CI_PENDING | `tests/web-layout.test.mjs` |
+| Complete service-page copy rewrite | DONE_VERIFIED | `index.html`; all existing UI IDs retained |
+| Complete methodology rewrite and concept section | DONE_VERIFIED | `system.html`; sections `s1`–`s14`; 3 tables retained |
+| Browser accessibility labels | DONE_VERIFIED | `tests/browser/site.spec.js` |
+| Static copy/design contract tests | DONE_VERIFIED | `tests/web-layout.test.mjs` |
 | README and plan/handoff documentation | DONE_IMPLEMENTED | README and plan created; handoff/audit update in this branch |
 | Linguistic accuracy | UNCHANGED / EVIDENCE_LIMITED | No new gold labels or accuracy claims; independent IPA gold remains 0 |
 | Live visual/device review | PARTIAL | Automated browser tests cannot replace physical-device and screen-reader review |
 
-**CI and deployment:** pending exact-branch workflow results at the time this entry was written. Do not merge or claim publication until Verify and Pages deployment pass.
+**Merged main:** `a052b5b97fe2518497cddda8a45c76d80cb864a0`. **Exact-PR-head Verify:** [#42875206898 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42875206898). **Exact-main Verify:** [#42875399018 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42875399018), with 350 Python, 155 Node and 22 Chromium tests. **Pages deployment:** [#42875399023 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42875399023); build, 155 Node, 22 Chromium, deterministic-only artifact checks, deployment and live smoke test of both pages plus app/CSS succeeded. **Live:** https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/. Manual physical-device/screen-reader QA remains partial; independent IPA gold remains 0.
 
 ## Website visual redesign — DONE_VERIFIED, 2026-11-10
 
