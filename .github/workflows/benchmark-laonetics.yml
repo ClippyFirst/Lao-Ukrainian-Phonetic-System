@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - benchmark/laonetics-same-set-20261110
-    paths:
-      - "scripts/benchmark_laonetics.py"
-      - ".github/workflows/benchmark-laonetics.yml"
   workflow_dispatch:
 
 permissions:
