@@ -34,10 +34,10 @@
 **Files:**
 - Modify: `tests/web-layout.test.mjs`
 
-- [ ] Assert new design tokens, typography declarations, woven-rule treatment, and page structure.
-- [ ] Assert existing functional IDs remain present.
-- [ ] Assert mobile and reduced-motion rules exist.
-- [ ] Verify the new tests fail against the current visual system.
+- [x] Assert new design tokens, typography declarations, woven-rule treatment, and page structure.
+- [x] Assert existing functional IDs remain present.
+- [x] Assert mobile and reduced-motion rules exist.
+- [x] Verify the new tests fail against the current visual system.
 
 ### Task 2: Document the shared design system
 
@@ -45,34 +45,34 @@
 - Create: `DESIGN.md`
 - Create: `docs/superpowers/specs/2026-11-10-lao-editorial-redesign.md`
 
-- [ ] Record palette, type roles, spacing, layout, motif use, motion, and accessibility rules.
+- [x] Record palette, type roles, spacing, layout, motif use, motion, and accessibility rules.
 
 ### Task 3: Redesign the service page
 
 **Files:**
 - Modify: `index.html`
 
-- [ ] Replace the generic hero copy and visual hierarchy with a compact Lao editorial masthead.
-- [ ] Keep all JavaScript-facing IDs and the current tool/result order.
-- [ ] Preserve factual project-status copy and caveats.
+- [x] Replace the generic hero copy and visual hierarchy with a compact Lao editorial masthead.
+- [x] Keep all JavaScript-facing IDs and the current tool/result order.
+- [x] Preserve factual project-status copy and caveats.
 
 ### Task 4: Redesign the methodology page
 
 **Files:**
 - Modify: `system.html`
 
-- [ ] Retain all 13 methodology sections and their content.
-- [ ] Improve reading hierarchy and navigation without changing linguistic claims.
-- [ ] Keep tables named and keyboard-focusable.
+- [x] Retain all 13 methodology sections and their content.
+- [x] Improve reading hierarchy and navigation without changing linguistic claims.
+- [x] Keep tables named and keyboard-focusable.
 
 ### Task 5: Replace the shared stylesheet
 
 **Files:**
 - Modify: `web/styles.css`
 
-- [ ] Implement the Woven editorial token system and responsive page compositions.
-- [ ] Style input, empty/results, analysis disclosures, methodology, tables, and footer consistently.
-- [ ] Add restrained motion, focus, selection, and reduced-motion behavior.
+- [x] Implement the Woven editorial token system and responsive page compositions.
+- [x] Style input, empty/results, analysis disclosures, methodology, tables, and footer consistently.
+- [x] Add restrained motion, focus, selection, and reduced-motion behavior.
 
 ### Task 6: Verify and deploy
 
@@ -82,5 +82,15 @@
 - Verify: `npm run test:browser`
 - Verify: GitHub Actions PR checks and Pages deployment.
 
-- [ ] Confirm all tests pass and generated artifacts remain deterministic.
-- [ ] Confirm both pages deploy and the browser-only engine still operates.
+- [x] Confirm all tests pass and generated artifacts remain deterministic.
+- [x] Confirm both pages deploy and the browser-only engine still operates.
+
+
+## Completion evidence
+
+- **Merge:** PR #163, squash commit `9254bd4ecf014a6a5634ac05cebf0d227077977d`.
+- **Exact-main Verify:** [#42847422102 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42847422102): 344 Python, 152 Node, 22 Chromium tests; repository audit, IPA gold schema, optional external-G2P CLI/syntax, build, generated-data reproducibility, and built-page checks passed.
+- **Pages deployment:** [#42847422106 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42847422106): 152 Node, 22 Chromium tests, deterministic-only artifact checks, upload, deployment, and live same-origin smoke-test passed.
+- **Automated responsive coverage:** service at 320, 390, 640, 768, 1024, 1440px; methodology at 320, 390, 768, 1024, 1440px; 200% text zoom, keyboard, touch, reduced-motion and 44px target checks.
+- **Manual QA limitation:** no human visual review on physical devices or screen-reader hardware was performed in this run. CI establishes tested layout and interaction contracts, not a subjective pixel-perfect design review.
+- **Superdesign limitation:** `npx --yes @superdesign/cli@latest` preflight timed out in the local shell because public hosts could not be resolved. Per user instruction, no switch to Work mode was made; the design was implemented directly in the repository with the other supplied design skills and the documented Woven Editorial brief.
