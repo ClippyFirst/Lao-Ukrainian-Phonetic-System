@@ -106,3 +106,24 @@ Root cause: the main IPA summary ignored `graphemePreview.ipaPreview`; the fallb
 | Exact expert IPA for supplied phrase | BLOCKED | No independently adjudicated, source-located IPA evidence; do not replace with a guessed reading |
 
 Do not close this item until exact-head Verify and Pages deployment workflows complete successfully. The prior deployed artifact remains the production reference until the new Pages run is successful.
+
+
+### Exact-head verification update — 2026-11-10
+
+**Implementation head:** `85c0581726c4de659bfe002b61b2bdfdaecfe024` (`main`). **Verify [#42830796088 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796088).**
+
+- Python: 338 passed.
+- Node: 156 passed.
+- Chromium: 20 passed, including the exact supplied phrase regression and primary IPA-field provisional-hint disclosure.
+- IPA-gold structure validation, repository data/evidence audit, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks: passed.
+
+| Task | Status | Evidence |
+|---|---|---|
+| Show provisional IPA in the main IPA summary | DONE_VERIFIED | `web/app.js`; exact-head Chromium test in Verify #42830796088 |
+| Bound long unresolved runs to at most three markers | DONE_VERIFIED | Python and browser fallback implementations; 338 Python + 156 Node tests |
+| Long user phrase regression | DONE_VERIFIED | Python, Node and Chromium tests passed in Verify #42830796088 |
+| Canonical fallback guide, master handoff and changelog | DONE_VERIFIED | Updated in place; no duplicate plan created |
+| Publish exact main head to GitHub Pages | PARTIAL | Pages workflow #42830796208 is still building; wait for artifact/deploy/live smoke success |
+| Independent expert IPA for the phrase | BLOCKED / evidence-limited | Exact phrase not found in the two bundled orthographic lexical-hint lists; those lists are not IPA resources. No expert-adjudicated source-located IPA is available. |
+
+The engineering behavior is verified. Linguistic accuracy of the phrase remains unverified and no IPA string has been invented or labelled as gold.
