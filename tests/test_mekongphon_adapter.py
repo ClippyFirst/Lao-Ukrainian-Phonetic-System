@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from lao_ukrainian.mekongphon import MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MekongPhonEngine, build_result
+from lao_ukrainian.mekongphon import MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MekongPhonEngine, MekongPhonIPAResult, build_result
 from lao_ukrainian.phonetic_result import from_external_ipa
 
 
@@ -137,6 +137,32 @@ class MekongPhonAdapterTests(unittest.TestCase):
         self.assertEqual(result.phonetic_result.phonemic_ipa, "kʰaː")
         self.assertEqual(result.status, "OK")
         self.assertEqual(result.num_beams, 4)
+
+    def test_full_transcribe_continues_from_typed_ipa_through_target_adapter(self):
+        engine = MekongPhonEngine(tonal=False)
+        revision = MODEL_REVISIONS["nontonal"]
+        raw_ipa = "kʰaː"
+        ipa_result = MekongPhonIPAResult(
+            input="ຂາ",
+            normalized_input="ຂາ",
+            model_id=engine.model_id,
+            model_revision=revision,
+            tonal=False,
+            num_beams=engine.num_beams,
+            raw_ipa=raw_ipa,
+            phonetic_result=from_external_ipa(
+                raw_ipa,
+                provenance=("MEKONGPHON", engine.model_id, f"MODEL-REVISION:{revision}"),
+            ),
+            status="OK",
+        )
+        with patch.object(engine, "transcribe_ipa", return_value=ipa_result):
+            result = engine.transcribe("ຂາ")
+
+        self.assertEqual(result.raw_ipa, raw_ipa)
+        self.assertEqual(result.phonetic_result.external_ipa, raw_ipa)
+        self.assertEqual(result.ukrainian, "к'а")
+        self.assertEqual(result.status, "OK")
 
 
 if __name__ == "__main__":
