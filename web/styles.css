@@ -369,7 +369,7 @@ main {
 }
 .chip-row, .action-cell { display: flex; flex-wrap: wrap; gap: 8px; }
 .action-cell { justify-content: flex-end; }
-.mini-button,.button {
+.mini-button,.button{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -388,7 +388,7 @@ main {
 }
 .mini-button:active, .button:active, .copy-button:active, .method-button:active { transform: scale(.98); }
 .button-secondary { background: transparent; color: var(--muted); }
-.copy { min-height: 44px; }
+.copy{min-height:44px}
 
 .output-workspace { min-width: 0; }
 .empty-state {
@@ -478,7 +478,7 @@ main {
   color: var(--silk);
 }
 .result-meta strong { font-weight: 800; }
-.copy-button {
+.copy-button{
   display: inline-flex;
   align-items: center;
   justify-content: center;
