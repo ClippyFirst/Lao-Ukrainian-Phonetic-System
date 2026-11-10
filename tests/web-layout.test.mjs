@@ -61,7 +61,7 @@ test("Ukrainian result offers an accessible two-method selector in one result ca
 
 test("public research status reflects the merged 2026-10-31 implementation", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /СТАН ДОСЛІДЖЕННЯ · 10\.11\.2026/);
+  assert.match(html, /Стан дослідження · 10\.11\.2026/);
   assert.match(html, /\/ʃt͡ʃ\/.{0,80}→ щ/);
   assert.match(html, /режим за романізацією.{0,100}окрем.{0,12}складов.{0,8}метод/i);
   assert.match(methodology, /Станом на 10 листопада 2026 року/);
