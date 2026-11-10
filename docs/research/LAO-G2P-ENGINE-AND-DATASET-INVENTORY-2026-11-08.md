@@ -1,5 +1,27 @@
 # Lao G2P engine and dataset inventory — 2026-11-08
 
+
+## Fresh common-set rerun — schema 8.0 — 2026-11-10
+
+**Run:** [#42860129937 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42860129937); aggregate-only artifact [13785375583](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42860129937/artifacts/13785375583). This rerun uses the pinned 100-word MekongPhon held-out lexicon, the same immutable dataset revision and SHA-256 recorded below, and the schema-8 scoring contract.
+
+| Engine/lane | Segmental exact | Segmental CER | chrF++ | Tonal exact | Tonal CER |
+|---|---:|---:|---:|---:|---:|
+| ClippyFirst deterministic | **90/100** | **5.48%** | **89.13** | 25/100 native contour; 69/100 Mekong convention | 22.78% native; 11.28% converted |
+| ClippyFirst Hybrid v2 | **90/100** | **5.48%** | **89.13** | **74/100** | **8.29%** |
+| MekongPhon Neural | 82/100 | 6.64% | 87.42 | **74/100** | **8.29%** |
+| Lao2IPA 1.0.0 | 68/100 | 8.97% | 72.95 | 56/100 | 11.97% |
+
+All four engines returned visible output for 100/100 words. ClippyFirst's 100% visible-output coverage is distinct from confidence-gated accepted IPA: 97/100 input rows had accepted segmental IPA. Schema 8 scores the complete visible output, including provisional grapheme hints and explicit unknown markers; it reports accepted IPA coverage separately. These output-concordance scores are not independent accuracy.
+
+The tonal rows require convention-aware reading. ClippyFirst's native production contours are not string-identical to MekongPhon's contour convention; converting only for comparison raises ClippyFirst's tonal exact matches from 25/100 to 69/100. Hybrid v2 keeps the untouched MekongPhon tonal lane separate and reaches 74/100 on the same reference, without constructing a synthetic fused IPA string.
+
+**Provenance and limitations:** held-out dataset revision f80f6c1840c4818b51e05f2e00cded4701a5b662; held-out SHA-256 5351af5ed545f68886a99f0e8d88c91fdbdf46c4df885d40e166b8a3b32cd241; 100 unique held-out forms; 6,219 training rows / 6,216 unique training forms; zero train/eval overlap. The pinned repository split contains 6,316 unique forms, 277 more than the paper-reported 6,039 seed entries. Model-weight hashes were verified at immutable model revisions. The paper's 13,442-sentence test set is not present in this repository snapshot, and the 100-word seed lexicon was used in model validation/checkpoint selection. Do not compare these numbers directly with the paper's sentence-level Table 4 or call them independently adjudicated accuracy. Project IPA gold remains 0.
+
+Schema 8 uses an updated complete-visible-output scoring contract; do not compare its CER directly with earlier schema 6 figures without accounting for the different scoring contract. The earlier schema-6 table below is retained as a historical checkpoint, not silently overwritten.
+
+---
+
 ## Comparative benchmark reconciliation — 2026-11-10
 
 **Latest completed common-set evidence** on the pinned 100-word MekongPhon split (schema 6.0):
