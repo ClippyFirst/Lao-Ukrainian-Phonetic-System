@@ -165,3 +165,31 @@ test("dynamic service copy uses the same clear Ukrainian vocabulary as the stati
   assert.match(app, /Зіставлення з оригіналом/);
   assert.match(app, /Тон не визначався/);
 });
+
+
+test("public interface keeps Ukrainian as its language and labels Lao romanization correctly", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(html, /Лаоська\\s*<span[^>]*>→<\\/span>\\s*Українська/);
+  assert.match(methodology, /Лаоська\\s*<span[^>]*>→<\\/span>\\s*Українська/);
+  assert.match(html, /id="romanization"[^>]*lang="lo-Latn"/);
+  assert.doesNotMatch(html, /id="romanization"[^>]*lang="en"/);
+  assert.doesNotMatch(html + methodology, /IPA gold corpus/i);
+  assert.doesNotMatch(html + methodology, /Lao → Українська/);
+});
+
+test("visible interface labels use sentence case and explain technical terms in Ukrainian", () => {
+  assert.doesNotMatch(css, /\\.analysis-grid small\\s*\\{[^}]*text-transform:\\s*uppercase/s);
+  assert.doesNotMatch(app, /ГОТОВО|ЧАСТКОВИЙ АНАЛІЗ|НЕ ВСТАНОВЛЕНО/);
+  assert.doesNotMatch(app, /PROVISIONAL/);
+  assert.match(app, /Попередня IPA-підказка/);
+  assert.match(app, /Частковий аналіз/);
+  assert.match(app, /Не визначено/);
+});
+
+test("editorial copy keeps the named visual concept while avoiding unexplained English craft terms", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(methodology, /Woven Editorial/);
+  assert.match(methodology, /додатков.{0,20}основ/i);
+  assert.match(methodology, /переривчаст.{0,30}уток/i);
+  assert.match(methodology, /Адаптація IPA українською/);
+});
