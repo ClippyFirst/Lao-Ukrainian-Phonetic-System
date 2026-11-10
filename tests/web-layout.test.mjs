@@ -204,8 +204,8 @@ test("public prose states the pipeline and research limits directly", async () =
   assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
   assert.doesNotMatch(methodology, /Це не косметична заміна однієї традиції іншою/);
   assert.doesNotMatch(methodology, /Це поєднання культурної обережності та сучасної вебпрактики/);
-  assert.equal((methodology.match(/<p\\b/g) || []).length, (methodology.match(/<\\/p>/g) || []).length);
-  assert.equal((html.match(/<p\\b/g) || []).length, (html.match(/<\\/p>/g) || []).length);
+  assert.equal((methodology.match(/<p\b/g) || []).length, (methodology.match(/<\/p>/g) || []).length);
+  assert.equal((html.match(/<p\b/g) || []).length, (html.match(/<\/p>/g) || []).length);
 });
 
 test("editorial copy keeps the named visual concept while avoiding unexplained English craft terms", async () => {
