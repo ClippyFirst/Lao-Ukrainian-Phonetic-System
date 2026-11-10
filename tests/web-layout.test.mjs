@@ -63,7 +63,7 @@ test("public research status reflects the merged 2026-10-31 implementation", asy
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(html, /СТАН ДОСЛІДЖЕННЯ · 10\.11\.2026/);
   assert.match(html, /\/ʃt͡ʃ\/.{0,80}→ щ/);
-  assert.match(html, /режим за романізацією.{0,100}окремим складовим методом/i);
+  assert.match(html, /режим за романізацією.{0,100}окрем.{0,12}складов.{0,8}метод/i);
   assert.match(methodology, /Станом на 10 листопада 2026 року/);
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
   assert.match(methodology, /незалежна фонетична точність ще не виміряна/i);
