@@ -29,7 +29,7 @@ test("GitHub Pages navigation stays inside the repository site",()=>{
  const service=readFileSync(new URL("../index.html",import.meta.url),"utf8");
  const system=readFileSync(new URL("../system.html",import.meta.url),"utf8");
  for (const html of [service,system]) {
-  assert.ok(html.includes('href="./">Сервіс</a>'));
+  assert.ok(html.includes('href="./">Інструмент</a>'));
   assert.equal(html.includes('href="/">Сервіс</a>'),false);
  }
  assert.ok(system.includes('aria-current="page" href="./system.html"'));
