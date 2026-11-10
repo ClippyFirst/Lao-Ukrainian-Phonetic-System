@@ -163,5 +163,5 @@ test("dynamic service copy uses the same clear Ukrainian vocabulary as the stati
   assert.match(app, /Попередня IPA-підказка/);
   assert.match(app, /Низька впевненість/);
   assert.match(app, /Зіставлення з оригіналом/);
-  assert.match(app, /Тон не виводився/);
+  assert.match(app, /Тон не визначався/);
 });
