@@ -107,9 +107,12 @@ def from_provisional_preview(
                     (*segment.provenance, *trace), "PROVISIONAL",
                 ))
     unresolved = tuple(getattr(preview, "unresolved_graphemes", ()))
+    # A contiguous unresolved tail is one uncertainty region, not one
+    # placeholder per source grapheme. Keep a single marker for a small gap
+    # and cap emphatic display at three markers for a longer gap.
     segments.extend(
         PhoneticSegment("?", "unknown", trace, "PROVISIONAL")
-        for _ in unresolved
+        for _ in range(min(3, len(unresolved)))
     )
     if not segments:
         segments.append(PhoneticSegment("?", "unknown", trace, "PROVISIONAL"))
