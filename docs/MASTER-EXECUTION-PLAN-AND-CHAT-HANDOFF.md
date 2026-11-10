@@ -1,3 +1,23 @@
+## Website visual redesign — in progress, 2026-11-10
+
+**PR:** [#163 — Lao woven editorial website redesign](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/163)  
+**Branch:** `design/lao-editorial-redesign-2026-11-10`  
+**Base:** `main` at `2a7c8fe95394bfd587f2ff24086eac1a16ddd4eb`  
+**Current branch head at this checkpoint:** `0dd5ae50222ab85f847d7d2e5d0279a5fefccb8d`
+
+The visual system is documented in `DESIGN.md`; the design brief and execution plan are in `docs/superpowers/specs/2026-11-10-lao-editorial-redesign.md` and `docs/superpowers/plans/2026-11-10-lao-editorial-redesign.md`. Cultural research notes are in `docs/research/LAO-VISUAL-CULTURE-AND-WEB-DESIGN-REFERENCES-2026-11-10.md`.
+
+The service page and methodology page have been restyled. The service page retains all JS-facing IDs and output order; the methodology page retains all 13 sections and all 3 tables. The shared stylesheet is replaced with the Woven Editorial tokens, typography, reading rail, input/results hierarchy, responsive breakpoints, keyboard focus, and reduced-motion treatment. The deterministic IPA-first engine, separate romanization engine, generated data, and neural research code are untouched.
+
+**Design decision:** use the construction logic of woven Lao textiles (rhythm, crossings, repeated bands, material palette) as an abstract visual grammar. Do not use the Naga as a generic logo, badge, or wallpaper. Source notes distinguish specific regional/community motifs and avoid treating one textile palette as universal.
+
+**Task ledger**
+- DONE_VERIFIED (design source/documentation): design brief, plan, `DESIGN.md`, and research notes created.
+- PARTIAL (implementation): `index.html`, `system.html`, and `web/styles.css` updated; existing functional contracts preserved by inspection.
+- PARTIAL (regression): four new design tests were added first and were observed failing against the old UI in Verify run [#42845130201](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42845130201); the first run reported 148 passed and 4 expected new design assertions failing. A fresh full run on the completed implementation is still required.
+- TODO: verify current PR head in Node/Chromium, verify responsive rendering at 1440/1024/768/390/320, then merge and confirm Pages deployment.
+- BLOCKED: visual-generation CLI preflight timed out because this environment could not resolve npm/GitHub hosts from the local shell. The user explicitly ruled out switching to Work mode; implementation therefore proceeds directly through the connected GitHub repository tools. No claim of a Superdesign canvas review is made.
+
 ## Post-merge and Pages deployment closeout — 2026-11-10
 
 **Implementation merge commit:** `68aa563ebc13da7e49da533e46301d43c13b5810` (PR #159 squash-merged). **Documentation checkpoint:** `ee6ced771fd5be553443741fb6007681bd4d2f31`; exact-head Verify [#42809109496 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42809109496).  

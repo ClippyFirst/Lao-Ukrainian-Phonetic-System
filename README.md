@@ -5,10 +5,16 @@
 - [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
 - [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — target orthography conventions.
 - [Графемний fallback і низька впевненість](docs/lao-grapheme-ipa-preview.md) — typed provisional IPA → Ukrainian adapter behavior, unresolved `?` markers and confidence disclosure.
+- [Візуальна система сайту](DESIGN.md) — Lao Woven Editorial design tokens and interaction rules.
+- [Дослідження лаоської візуальної культури](docs/research/LAO-VISUAL-CULTURE-AND-WEB-DESIGN-REFERENCES-2026-11-10.md) — sourced textile and visual-identity references.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
 **Current status (2026-11-10):** the static web application is live on [GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/) and runs the deterministic `hybrid-deterministic` IPA-first pipeline. The public service intentionally does not ship or download neural model weights, ONNX graphs, tokenizers or a WASM inference runtime. The optional neural models, Hybrid v2 and Meta-Hybrid v3 comparison remain Python research/CLI functionality only; they are not part of the website. The browser Hybrid v2 panel and its 40 MB model / 15 MB WASM first-run download were removed. Pages deployment [#42839499385 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42839499385) passed build, 148 Node tests, 21 Chromium tests, deterministic-only artifact checks, deployment and live same-origin smoke-test; the compressed artifact is 48,002 bytes versus 40,375,698 bytes for the prior browser-model deployment. Exact-main Verify [#42840912136 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42840912136) passed 344 Python, 148 Node and 21 Chromium tests, repository data/evidence audit, IPA-gold schema validation, generated-data reproducibility and built-page checks. When full structural parsing cannot establish a complete reading, the main IPA field exposes the available typed `PROVISIONAL` grapheme-position IPA hint and labels it low-confidence; the same IPA → Ukrainian adapter is used, and unresolved positions are summarized with at most three question marks per fallback unit. Independent adjudicated IPA gold remains 0, so this is an engineering-verified research prototype, not a linguistically validated production standard. See the [current continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md).
+
+## Website visual direction
+
+A complete visual redesign is in progress on [PR #163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/163). The selected direction is a restrained Lao woven-editorial system: paper and silk grounds, Mekong green, indigo, a controlled lac-red accent, Lao-script typography, and an abstract woven rule. It changes presentation only; the deterministic IPA-first engine and separate romanization method remain untouched.
 
 ## What this project is
 

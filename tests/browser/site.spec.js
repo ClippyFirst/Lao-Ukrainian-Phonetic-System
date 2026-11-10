@@ -93,7 +93,7 @@ test("the service exposes named landmarks, controls, and live result announcemen
 });
 
 test("mobile and tablet reflow layouts do not overflow horizontally", async ({ page }) => {
-  for (const width of [320, 390, 640, 768]) {
+  for (const width of [320, 390, 640, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await page.locator("#lao-input").fill("ຂາ");
@@ -239,14 +239,14 @@ test("forced-colors and reduced-motion preferences retain visible focus and supp
 
 test("screen-reader roles expose the service controls and output state", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1, name: "Лаоське письмо. Українське читання." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Від лаоського складу — до українського читання." })).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "ຂາ · простий склад" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "ເຂົ້າໜຽວ · складні форми" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Спробувати ຂາ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Спробувати ເຂົ້າໜຽວ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Очистити поле" })).toBeVisible();
   await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Фонетичний" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "За вимовою" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
   await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
   await expect(page.locator("#copy")).toBeEnabled();
@@ -317,4 +317,25 @@ test("the public service does not expose a neural model download or run panel", 
   await expect(page.getByText(/40 МБ ваг моделі|WASM-рушія|Завантажити й запустити Hybrid v2/)).toHaveCount(0);
   await page.locator("#lao-input").fill("ຂາ");
   await expect(page.locator("#output")).toHaveText("к'а");
+});
+
+
+test("methodology reading rail remains usable without page overflow at every target width", async ({ page }) => {
+  for (const width of [320, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/system.html");
+    const rail = page.getByRole("navigation", { name: "Навігація методологією" });
+    await expect(rail).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Авторська система/ })).toBeVisible();
+    const layout = await page.evaluate(() => ({
+      viewport: window.innerWidth,
+      document: document.documentElement.scrollWidth,
+      body: document.body.scrollWidth,
+      rail: document.querySelector(".reading-rail").getBoundingClientRect()
+    }));
+    expect(layout.document, `methodology document overflows at ${width}px`).toBeLessThanOrEqual(layout.viewport);
+    expect(layout.body, `methodology body overflows at ${width}px`).toBeLessThanOrEqual(layout.viewport);
+    expect(layout.rail.width).toBeGreaterThan(0);
+    expect(layout.rail.right).toBeLessThanOrEqual(layout.viewport);
+  }
 });

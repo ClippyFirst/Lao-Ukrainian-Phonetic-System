@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — Lao woven editorial website redesign
+
+- Replaced the public service and methodology pages' generic red/blue technical-panel appearance with a Lao-grounded editorial system informed by woven textile construction.
+- Added a shared design system, source notes for Lao visual references, and regression checks for typography, palette, responsive behavior, and preserved tool controls.
+- Preserved the deterministic IPA-first browser engine, the independent romanization method, all 13 methodology sections, and all existing JavaScript-facing IDs.
+- No sacred Naga figure is used as a generic logo or decorative wallpaper; the visual motif abstracts the rhythm and structure of weaving.
+
 ## Unreleased — branch research consolidation
 
 - Integrated the opt-in Python Meta-Hybrid v3 comparator and tests; it reports cross-engine agreement without voting or changing deterministic Ukrainian output.
