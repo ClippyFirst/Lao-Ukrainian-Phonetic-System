@@ -226,3 +226,14 @@ test("input starts without instructional placeholder text and keeps a concise ac
   assert.match(html, /<label class="sr-only" for="lao-input">Текст для аналізу<\/label>/);
   assert.doesNotMatch(html, /<label class="sr-only" for="lao-input">Лаоський текст<\/label>/);
 });
+
+
+test("pronunciation and romanization mode buttons have explicit high-contrast states", () => {
+  const method = css.match(/\.method-button\s*\{([^}]*)\}/)?.[1] || "";
+  const active = css.match(/\.method-button\.is-active\s*\{([^}]*)\}/)?.[1] || "";
+  assert.match(method, /border:\s*1px solid var\(--muted\)/);
+  assert.match(method, /background:\s*var\(--silk\)/);
+  assert.match(method, /color:\s*#505D55/i);
+  assert.match(active, /background:\s*var\(--mekong\)/);
+  assert.match(active, /color:\s*var\(--silk\)/);
+});
