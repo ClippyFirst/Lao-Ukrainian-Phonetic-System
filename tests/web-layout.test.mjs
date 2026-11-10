@@ -137,7 +137,7 @@ test("methodology page uses an editorial reading rail and keeps all fourteen sec
 
 test("all public site copy explains the product contract and honest uncertainty", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /Вставте слово, фразу або цілий уривок лаоською/);
+  assert.match(html, /Вставте лаоське слово, фразу або уривок/);
   assert.match(html, /невідомі позиції позначаються «\?»/);
   assert.match(html, /IPA-адаптер/);
   assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
@@ -148,7 +148,7 @@ test("all public site copy explains the product contract and honest uncertainty"
 test("methodology documents the culturally grounded Woven Editorial design rationale", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(methodology, /Woven Editorial/);
-  assert.match(methodology, /не копія конкретного етнічного орнаменту/);
+  assert.match(methodology, /Ми не відтворюємо конкретний етнічний візерунок/);
   assert.match(methodology, /Global InCH/);
   assert.match(methodology, /ресурси W3C щодо лаоського письма/);
   assert.match(methodology, /Noto Sans Lao/);
@@ -199,7 +199,7 @@ test("the Ukrainian editorial standard defines language, evidence, and contextua
 
 test("public prose states the pipeline and research limits directly", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /побудує фонетичний запис у IPA/);
+  assert.match(html, /запише вимову в IPA/);
   assert.match(methodology, /IPA стоїть між фонологічним аналізом і українською адаптацією/);
   assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
   assert.doesNotMatch(methodology, /Це не косметична заміна однієї традиції іншою/);
