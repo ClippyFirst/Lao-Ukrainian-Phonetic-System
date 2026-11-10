@@ -3752,3 +3752,5 @@ The “За вимовою” / “За романізацією” switch had a
 A related secondary action (“Очистити”) also had insufficient text contrast on the paper background (4.41:1). It now uses `#505D55` text and a `#68716A` border, with static contrast checks against paper and silk. The first Chromium attempt timed out because the results panel was still hidden; the test setup now enters a sample before interacting with the mode switch. Fresh exact-head verification is pending.
 
 The Chromium test now explicitly waits for the asynchronous results panel to become visible before asserting contrast and switching modes.
+
+A subsequent Chromium run confirmed the contrast thresholds but found the selected romanization button's computed background did not match its selected state. The selected styling now keys directly off `aria-pressed="true"`, keeping visual and accessibility state on one source of truth. Re-run exact-head verification before marking complete.
