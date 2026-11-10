@@ -529,14 +529,17 @@ main {
 .method-button {
   min-height: 44px;
   padding: 6px 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--muted);
+  border: 1px solid var(--muted);
+  background: var(--silk);
+  color: #505D55;
   font-size: .75rem;
   font-weight: 800;
-  transition: color 150ms ease, background-color 150ms ease, transform 140ms var(--ease-out);
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, transform 140ms var(--ease-out);
 }
-.method-button:hover:not(:disabled) { color: var(--mekong); }
+.method-button:hover:not(:disabled) {
+  border-color: var(--mekong);
+  color: var(--mekong);
+}
 .method-button.is-active {
   border-color: var(--mekong);
   background: var(--mekong);
