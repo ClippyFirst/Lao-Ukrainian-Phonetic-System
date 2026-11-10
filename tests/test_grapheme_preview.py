@@ -20,6 +20,13 @@ class GraphemePreviewTests(unittest.TestCase):
         self.assertEqual(preview.phonetic_result.status, "PROVISIONAL")
         self.assertTrue(all(s.certainty == "PROVISIONAL" for s in preview.phonetic_result.segments))
 
+    def test_long_unresolved_runs_are_bounded_to_three_markers(self):
+        syllable = analyze("ພຣະຣາຊອານາຈັກຣ໌ລາວ").syllables
+        rendered = "".join(unit.practical_ukrainian or "" for unit in syllable)
+        import re
+        self.assertTrue(all(len(run) <= 3 for run in re.findall(r"\\?+", rendered)), rendered)
+        self.assertTrue(any(unit.grapheme_preview and unit.grapheme_preview.ipa_preview for unit in syllable))
+
     def test_multiple_tone_marks_show_segmental_preview_without_tone(self):
         syllable = analyze("ຂ່້າ").syllables[0]
         self.assertIsNone(syllable.phonemic_ipa)
