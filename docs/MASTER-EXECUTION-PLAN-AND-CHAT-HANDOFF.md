@@ -3731,3 +3731,8 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 - Mainline Verify [#42872275176](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42872275176) was triggered by the squash merge; its exact-main completion is tracked separately. No engine defaults, model settings, linguistic mappings, inference behavior, browser runtime or Pages artifact changed.
 
 **Acceptance:** public API documentation, package-export regression and README benchmark reconciliation — DONE_VERIFIED (engineering/documentation). No phonetic-accuracy claim is added.
+
+
+## Input-field placeholder removal — 2026-11-10
+
+The public Lao input no longer displays instructional placeholder text. Its accessible name is now “Текст для аналізу” rather than the visible-language label “Лаоський текст”; the visually hidden label is retained so the textarea remains named for assistive technology. Static and Chromium regressions assert the empty placeholder state and accessible name. This is presentation-only: input IDs, Lao language metadata, examples, engine behavior and output contracts are unchanged. Verification is pending the exact-head GitHub Actions run; do not mark DONE_VERIFIED until it succeeds.
