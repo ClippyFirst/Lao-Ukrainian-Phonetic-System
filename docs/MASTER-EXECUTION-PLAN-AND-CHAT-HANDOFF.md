@@ -3639,3 +3639,14 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 - No engine default, model configuration, linguistic mapping, neural runtime, browser code or Pages artifact changed. The neural API remains opt-in Python research tooling; the public site remains deterministic.
 
 **Acceptance:** public API documentation and package-export regression — DONE_VERIFIED. Independent adjudicated IPA gold remains 0; no phonetic-accuracy claim is added.
+
+## Public MekongPhon API, codebase map and benchmark-summary refresh — DONE_VERIFIED, 2026-11-10
+
+- **PR:** [#167 — Document typed MekongPhon API and refresh benchmark summary](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/167), based on main `20a44ab4c3730434bd0176a699853b796fa8fd1d`.
+- README now demonstrates package-level `transcribe_ipa()` (stage 1: Lao → typed IPA only) and `transcribe_lao()` (explicit stage 1 + Ukrainian adapter). The codebase map now documents `MekongPhonIPAResult`, both API paths, test locations, current mainline and research-only scope.
+- Added an offline regression that asserts `MekongPhonIPAResult` and `transcribe_ipa` are exported from the package root; it does not download model weights.
+- Replaced the stale README schema-6 benchmark summary with schema-8 evidence and current HVULao/Hybrid v2 stress runs. The summary explicitly distinguishes dictionary-reference concordance, visible coverage, accepted IPA coverage and no-gold stress measurements; independent adjudicated IPA gold remains 0.
+- Implementation-head Verify [#42871293571 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871293571): **350 Python, 152 Node and 22 Chromium tests passed**; IPA schema, repository data/evidence audit, external-G2P syntax/CLI, locked install, build, generated-data reproducibility and built-page checks passed. The final documentation-complete PR head has a separate Verify run triggered by the final handoff/audit update.
+- No engine defaults, model settings, linguistic mappings, inference behavior, browser runtime or Pages artifact changed. Neural inference remains opt-in Python research tooling; the public web service remains deterministic.
+
+**Acceptance:** public API documentation, package-export regression and README benchmark reconciliation — DONE_VERIFIED (engineering/documentation). No phonetic-accuracy claim is added.
