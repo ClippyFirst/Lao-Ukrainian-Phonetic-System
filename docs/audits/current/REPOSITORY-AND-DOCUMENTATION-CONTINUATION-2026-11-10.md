@@ -197,3 +197,38 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 - All 28 branch refs were inventoried. Already merged branches remain represented in main; unique verified work was ported; superseded snapshots were not merged wholesale. Branch refs were preserved; no force-push or branch deletion.
 
 **Readiness:** public static service cleanup is engineering-verified and deployed. The repository remains a research prototype rather than a linguistically validated release because independent adjudicated Lao IPA gold remains 0; manual assistive-technology/device QA also remains outside these automated checks.
+
+### Branch-by-branch disposition (28 refs inspected)
+
+| Branch | Related PR | Disposition on current main |
+|---|---:|---|
+| audit/docs-architecture-refresh-20261108 | #148 closed unmerged | Superseded audit snapshot; newer canonical audit/handoff retained |
+| audit/repository-docs-structure-20261107 | #143 merged | Already integrated |
+| audit/repository-documentation-and-mekongphon-rights-20261107 | #138 closed unmerged | Rights/provenance work superseded by current source registry and rights review; no distinct production code needed |
+| benchmark/additional-lao-g2p-20261108 | #156 closed unmerged | Comparator results already reconciled into current research inventory; do not merge stale workflow snapshot |
+| benchmark/current-main-comparative-20261110 | #160 closed after port | Workflow branch triggers and benchmark reconciliation ported; superseded PR closed |
+| benchmark/hvulao-1k-three-engine-20261108 | #147 closed unmerged | Stress-test evidence already represented in current inventory; older branch snapshot |
+| benchmark/laonetics-same-set-20261110 | — | Script, isolated workflow and report ported; NC-licensed candidate remains research-only |
+| benchmark/mekongphon-immutable-inference-20261107 | #139 closed unmerged | Pinned model revisions and inference evidence already present in main |
+| benchmark/mekongphon-three-engine | #137 closed unmerged | Same-set benchmark implementation/results superseded by current benchmark harness and inventory |
+| benchmark/meta-hybrid-v3-multiengine-20261110 | #161 closed unmerged | Superseded by r2 branch; no separate merge |
+| benchmark/meta-hybrid-v3-multiengine-r2-20261110 | #162 closed after port | Comparator module, tests, CLI/API and research-only workflow ported to main |
+| docs/hybrid-mixed-script-input-coverage-20261108 | #151 merged | Already integrated |
+| docs/post-deploy-benchmark-20261108 | #144 merged | Already integrated |
+| docs/romanization-numeric-crosswalk-20261108 | #153 merged | Already integrated |
+| feat/deterministic-mekongphon-reference-profile-20261108 | #146 closed unmerged | Profile and benchmark evidence already represented by main's deterministic profiles |
+| feat/grapheme-first-provisional-fallback-20261108 | #155 merged | Already integrated |
+| feat/hybrid-deterministic-lao-engine-20261108 | #149 merged | Already integrated |
+| feat/ipa-hybrid-engine-arbitration-20261108 | #154 merged | Already integrated |
+| feat/mekongphon-first-stage | #145 open | Not merged: changes CLI/Python default to neural-first; explicit architecture decision remains outstanding |
+| feat/pages-hybrid-v2-browser | #158 merged | Browser neural runtime has now been deliberately retired from the public service; Python research model retained |
+| feature/grapheme-fallback-ipa-preview-20261107 | #142 closed unmerged | Superseded by merged grapheme-preview/fallback work (#155/#159) |
+| feature/lao-ukrainian-practical-system-20261107 | #141 closed unmerged | Superseded by later merged integrated system and audits (#143/#149) |
+| feature/meta-hybrid-v3-multiengine-20261110 | — | Behind main; duplicate/older Meta-Hybrid branch, no unique commits to port |
+| fix/hybrid-partial-input-rendering-20261108 | #150 merged | Already integrated |
+| fix/provisional-grapheme-output-docs-20261110 | #159 merged | Already integrated |
+| fix/romanization-numeric-crosswalk-20261108 | #152 merged | Already integrated |
+| improve/rule-engine-error-analysis-20261107 | #140 closed unmerged | Diagnostics and rule protections are represented in current engine/tests; no stale snapshot merge |
+| research/written-evidence-phonology-2026-11-09 | #157 merged | Already integrated |
+
+**Result:** all 28 refs have a disposition. 12 are from merged PRs; 3 branch-only/open-PR workstreams have been selectively ported (benchmark reconciliation, Meta-Hybrid v3 research comparator, Laonetics research benchmark); 11 closed-unmerged branches are superseded snapshots; one duplicate Meta-Hybrid branch is behind main; one neural-first architecture PR remains open as a deliberate decision blocker. No branch refs were deleted.
