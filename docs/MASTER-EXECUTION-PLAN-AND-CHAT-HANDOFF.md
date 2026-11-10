@@ -3747,14 +3747,22 @@ The public Lao input no longer displays instructional placeholder text. Its acce
 
 ## Contrast improvement for method buttons — 2026-11-10
 
-The “За вимовою” / “За романізацією” switch had an inactive text contrast of 4.18:1 on its group surface, below the 4.5:1 WCAG AA normal-text threshold. The inactive state now uses a silk surface, darker foreground and a visible border; the active state keeps the dark Mekong fill and silk foreground. Static assertions and a Chromium contrast-ratio test cover both states and selection changes. Exact-head Verify is pending; do not mark this work DONE_VERIFIED until it passes.
+The “За вимовою” / “За романізацією” switch had an inactive text contrast of 4.18:1 on its group surface, below the 4.5:1 WCAG AA normal-text threshold. The inactive state now uses a silk surface, darker foreground and a visible border; the active state keeps the dark Mekong fill and silk foreground. Static assertions and a Chromium contrast-ratio test cover both states and selection changes. Exact-head Verify #42888772138 passed on `5a028ce91f5c836c42bbd71153c97a844cbe36cb`; the contrast repair is DONE_VERIFIED.
 
-A related secondary action (“Очистити”) also had insufficient text contrast on the paper background (4.41:1). It now uses `#505D55` text and a `#68716A` border, with static contrast checks against paper and silk. The first Chromium attempt timed out because the results panel was still hidden; the test setup now enters a sample before interacting with the mode switch. Fresh exact-head verification is pending.
+A related secondary action (“Очистити”) also had insufficient text contrast on the paper background (4.41:1). It now uses `#505D55` text and a `#68716A` border, with static contrast checks against paper and silk. The first Chromium attempt timed out because the results panel was still hidden; the test setup now enters a sample before interacting with the mode switch. Fresh exact-head verification subsequently passed; see the final checkpoint below.
 
 The Chromium test now explicitly waits for the asynchronous results panel to become visible before asserting contrast and switching modes.
 
-A subsequent Chromium run confirmed the contrast thresholds but found the selected romanization button's computed background did not match its selected state. The selected styling now keys directly off `aria-pressed="true"`, keeping visual and accessibility state on one source of truth. Re-run exact-head verification before marking complete.
+A subsequent Chromium run confirmed the contrast thresholds but found the selected romanization button's computed background did not match its selected state. The selected styling now keys directly off `aria-pressed="true"`, keeping visual and accessibility state on one source of truth. Exact-head verification subsequently passed; see the final checkpoint below.
 
 The stylesheet URL now has a new cache key (`20261110-contrast-1`) to prevent stale deployed CSS. The Chromium check also verifies the selected state class and rejects the inactive silk background after toggling.
 
 The latest failure was a test-timing issue: the selected class was present, but the browser assertion read the color during the 150 ms transition. The test now polls the computed background until the selected treatment is applied; stylesheet cache key remains versioned.
+
+
+## Contrast verification checkpoint — DONE_VERIFIED, 2026-11-10
+
+- Implementation/test head: `5a028ce91f5c836c42bbd71153c97a844cbe36cb`.
+- [Verify #42888772138 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42888772138): 350 Python, 163 Node and 24 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+- Method buttons now have AA text contrast in both selected and unselected states, visible control borders, and selected styling driven by `aria-pressed`. Chromium checks computed ratios, selection changes and transition completion. “Очистити” also has improved text and border contrast.
+- The stylesheet cache key changed to `20261110-contrast-1`. No linguistic or engine behavior changed. Manual physical-display/device review remains separate.
