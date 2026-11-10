@@ -3462,3 +3462,38 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 - `actions/deploy-pages@v5` caps its timeout at 600,000 ms. An attempted 1,800,000 ms value was clamped by the action and emitted a warning; the workflow is corrected to the supported 600,000 ms maximum in `5bb6d16...`. The corrected deployment run succeeded without the clamp warning.
 
 **Readiness:** the browser-local Hybrid v2 implementation is deployed and operational as a technical prototype. It is **not yet a phonetic-accuracy-validated release**: the independent adjudicated IPA gold corpus is still empty, multi-syllable tone alignment can be `NOT_ALIGNED`, and all neural tone predictions remain `UNCERTAIN`. Deterministic Ukrainian output remains authoritative. The next genuine acceptance gate is expert IPA annotation/adjudication and an independently measured accuracy benchmark, not more deployment work.
+
+
+---
+
+## Long-form fallback and IPA visibility correction — 2026-11-10
+
+**Starting main:** `0834f2f4fd3caaa6dc2924ef3dafb93ed29eee41` (the preceding Pages republish trigger). **Implementation was applied directly to `main`**, as explicitly requested; it consists of focused sequential commits. The final code/test commit at the time of this handoff update is `7ea3de1826c164f517f325f36d916d0d9fe31aef`; subsequent documentation commits are recorded by their resulting SHA in GitHub.
+
+### Reproduced root causes
+
+- The main IPA summary in `web/app.js` displayed only `syllable.ipa`; when that field was absent it rendered `?`, even when the typed grapheme preview already held provisional IPA in `syllable.graphemePreview.ipaPreview`.
+- The fallback assembled one unknown marker per unresolved grapheme. Long unresolved runs therefore became long repeated question-mark tails.
+
+### Changes
+
+- The IPA summary now prefers supported/uncertain `syllable.ipa`, then displays the available provisional grapheme IPA hint, and falls back to `?` only when neither exists. The provisional uncertainty is retained as a marker.
+- Python and browser typed fallback builders cap a contiguous unresolved run at three `?` markers; a single unresolved unit remains one `?`. This is an uncertainty indicator, not a one-to-one grapheme encoding.
+- Added regressions for the supplied `ພຣະຣາຊອານາຈັກຣ໌ລາວ` input across Python, browser engine and actual site UI. Assertions intentionally cover availability of provisional IPA and bounded uncertainty, not a fabricated gold transcription.
+- Updated the canonical fallback guide in place.
+
+### Task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Expose provisional IPA in the main IPA summary | PARTIAL pending exact-head CI | `web/app.js`; browser UI regression checks that a provisional IPA hint is displayed |
+| Bound unresolved marker runs | PARTIAL pending exact-head CI | Python `from_provisional_preview()` and browser hybrid fallback cap at three markers; Python/Node regression cases |
+| Long Lao phrase regression | PARTIAL pending exact-head CI | `tests/test_grapheme_preview.py`, `web/engine.test.js`, `tests/browser/site.spec.js` |
+| Canonical fallback documentation | DONE_VERIFIED as a documentation edit | `docs/lao-grapheme-ipa-preview.md` explains the display priority, confidence markers and test boundary |
+| Independent IPA for the supplied phrase | BLOCKED / evidence-limited | No source-located, rights-cleared, independently adjudicated expert IPA for this exact phrase; tests must not invent it |
+
+### Verification state at handoff update
+
+- Earlier verification attempts on intermediate commits failed because a newly added test regex was incorrectly escaped. That test-only syntax defect was corrected in later commits; those earlier failures are not counted as successful verification.
+- Exact-head Verify and Pages runs for the corrected code must be checked to terminal state before marking implementation `DONE_VERIFIED` or claiming a new deployment. The previously deployed site remains the last known successful production artifact until the new Pages workflow succeeds.
+- Required acceptance: full Python suite, full Node suite, Chromium UI regression, build, generated-data drift check, and Pages artifact/deployment smoke tests. Do not infer linguistic correctness from these engineering checks.
