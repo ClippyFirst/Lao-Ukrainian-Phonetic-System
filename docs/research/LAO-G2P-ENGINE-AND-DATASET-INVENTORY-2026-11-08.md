@@ -1,5 +1,27 @@
 # Lao G2P engine and dataset inventory — 2026-11-08
 
+## Comparative benchmark reconciliation — 2026-11-10
+
+**Latest completed common-set evidence** on the pinned 100-word MekongPhon split (schema 6.0):
+
+| Engine/lane | Segmental CER | Segmental exact | Tonal CER | Tonal exact | Output coverage |
+|---|---:|---:|---:|---:|---:|
+| ClippyFirst deterministic hybrid | **6.15%** | **90/100** | 22.90% native contour; 11.39% Mekong evaluation convention | 25/100 native; 69/100 converted | 100% visible; 97/100 fully accepted segmental IPA |
+| MekongPhon Neural | 6.64% | 82/100 | **8.29%** | **74/100** | 100% |
+| Lao2IPA 1.0.0 | 8.97% | 68/100 | 11.97% | 56/100 | 100% |
+
+The ClippyFirst visible-output count includes provisional hints and explicit unknown markers; those are not accepted IPA. This is dictionary-seeded reference concordance, not independently adjudicated accuracy. Project IPA gold remains 0.
+
+**Hybrid v2 dual-lane result:** deterministic segmental IPA contributes 6.15% CER / 90 exact; pinned MekongPhon tonal IPA contributes 8.29% CER / 74 exact. Ukrainian rendering remains 100/100 inputs and 169/169 syllable units. Neural tone contours were associated with 112/169 syllables (66.27%) and remain UNCERTAIN; no synthetic fused IPA string is produced.
+
+**HVULao 1k stress result** [#42676571999](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42676571999): 1,000/1,000 rows; 21,534/21,534 visible units; 661/1,000 complete segmental IPA sentences (66.1%); 16,955/17,353 accepted segmental IPA units (97.706%); 228/1,000 parseable tonal IPA outputs (22.8%); 10 fully aligned and 4 partially aligned tone-association rows; zero unexpected runtime errors. The model rejected 66 rows (61 token-limit, 5 unsupported-character); no silent truncation. HVULao has no IPA gold, so these are coverage and runtime measurements only.
+
+**Wider same-set comparators:** Epitran 1.35.3 — 10.96% segmental CER / 71 exact; orthography2ipa — 19.60% / 32 exact; Phonetisaurus Lao — 78.90% / 0 exact; Transphone 1.5.3 — 24.25% / 19 exact. MekongPhon's LREC 2026 paper reports under 2% CER on its own 13,442-sentence held-out evaluation; that protocol and dataset differ and are not directly rank-comparable to this 100-word subset.
+
+**Verdict:** ClippyFirst leads this specific 100-word set on segmental CER; MekongPhon Neural leads on tonal CER. Hybrid v2 preserves those strongest measured lanes separately. No evidence supports a global “best Lao engine” claim. Independent, rights-cleared, expert-adjudicated IPA gold and a frozen untouched test split remain required for an accuracy/leadership claim.
+
+---
+
 ## Scope and scoring contract
 
 This inventory extends the existing ClippyFirst benchmark; it does not replace the production engine or promote any external engine.
