@@ -31,6 +31,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Star
 ## Documentation by subject
 
 ### Product and interface
+- [Український редакційний стандарт сайту](UKRAINIAN-EDITORIAL-STYLE.md) — мова інтерфейсу, правила редактури, локалізація та перевірка ознак шаблонного тексту.
 - [Design system](DESIGN-SYSTEM.md)
 - [Web architecture](web-architecture.md)
 - [Author's system page content contract](SYSTEM-PAGE.md)
