@@ -1,3 +1,42 @@
+## Ukrainian editorial and interface-quality pass — PARTIAL, 2026-11-10
+
+**Branch:** `quality/ukrainian-editorial-and-design-audit-2026-11-10`  
+**Base main:** `3dd77a4ea080ce700cb0a131114470ad43de0b94`  
+**Scope:** apply selected guidance from Vercel Web Interface Guidelines, blader/humanizer, Anthropic frontend-design and obra/superpowers to the existing Woven Editorial site. No runtime dependency or copied skill tree is added.
+
+### Changes made
+
+- Added [the Ukrainian editorial standard](../UKRAINIAN-EDITORIAL-STYLE.md): Ukrainian-first interface language, when English identifiers remain, localized language tags, natural copy, contextual review of AI-writing patterns, evidence preservation and design restraint.
+- Replaced the English-facing `Lao → Українська` brand wording with `Лаоська → Українська` on both public pages.
+- Corrected the romanization output language from `lang="en"` to `lang="lo-Latn"`; kept IPA as `und-fonipa` and Lao input as `lo`.
+- Replaced user-facing `IPA gold corpus`, `PROVISIONAL`, unexplained craft terms and English link labels with Ukrainian explanations while retaining exact model, standard, font and source identifiers.
+- Changed all-caps UI and methodology labels to sentence case; removed forced uppercase from analysis captions.
+- Added explicit `name` and `autocomplete="off"` to the local Lao text field, plus intentional tap feedback and `touch-action: manipulation`.
+- Added static regression assertions for Ukrainian branding, language metadata, sentence-case labels, English leakage, technical-term explanations and touch behavior.
+- Preserved all input/output element IDs, the 14 methodology anchors, all 3 tables, the Woven Editorial concept, the IPA-first product contract and the engine implementation.
+
+### Methodology applied
+
+- **Vercel Web Interface Guidelines:** checked semantics, labels, language metadata, focus, reduced motion, touch targets, typography, input behavior, responsive overflow and state feedback. Fixed the concrete language-tag, input-metadata, uppercase-label and touch-feedback issues identified in the current code.
+- **Humanizer:** applied its structural review (staged contrasts, repeated closers, forced triads, inflated language, decorative formatting and chat residue) as editorial prompts, not as a mechanical denylist. Kept real technical distinctions and all evidence-bearing claims.
+- **Anthropic frontend-design:** retained a subject-specific visual identity, one restrained woven motif, purposeful typography and motion, and rejected generic SaaS-card/gradient decoration.
+- **Superpowers:** scoped changes to existing seams, added acceptance tests before implementation, and will use exact-head CI for full verification.
+
+### Task ledger
+
+| Item | Status | Acceptance evidence |
+|---|---|---|
+| Ukrainian editorial standard and source mapping | DONE_IMPLEMENTED | `docs/UKRAINIAN-EDITORIAL-STYLE.md`; docs index and AGENTS reference |
+| Public language and terminology cleanup | DONE_IMPLEMENTED | `index.html`, `system.html`, `web/app.js` |
+| UI language metadata and input semantics | DONE_IMPLEMENTED | `lang="lo-Latn"`, named textarea, autocomplete policy |
+| Sentence-case and touch presentation | DONE_IMPLEMENTED | `web/styles.css`, static tests |
+| Regression coverage | PARTIAL | Added to `tests/web-layout.test.mjs`; exact-head CI still required |
+| Full Vercel guideline review | PARTIAL | Source rules fetched and relevant files inspected; exact-head browser/CI verification pending |
+| Manual screenshot, physical-device and screen-reader review | BLOCKED | No browser capture/physical device/screen-reader session available in this connector-only run |
+| Linguistic accuracy | UNCHANGED / EVIDENCE-LIMITED | No phonological code or corpus changed; independent adjudicated IPA gold remains 0 |
+
+**Verification note:** local shell access cannot resolve `github.com`, so repository cloning and local test execution are blocked by DNS/network access. Do not mark tests green from file inspection. Exact-branch GitHub Actions Verify and Pages checks are required before this task can be closed.
+
 ## Complete public website copy rewrite — 2026-11-10
 
 **PR:** [#168 — merged](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/168)  
