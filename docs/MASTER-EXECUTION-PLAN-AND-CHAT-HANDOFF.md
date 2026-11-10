@@ -3349,3 +3349,15 @@ The detailed evidence and correction history is in `docs/research/GITHUB-PAGES-H
 - Browser test verifies aligned `ຂາ` and unaligned multi-syllable `ສະບາຍດີ`, no invented tone associations, zero external requests. Prior measured local-server cold/warm times: 1.27 s / 177 ms (later run 1.115 s / 198 ms).
 - **Only remaining deployment gate:** PR #158 remains draft. Mark ready and merge after this successful exact-head verification; then wait for main Pages workflow and confirm live same-origin UI, model, tokenizers, WASM and licenses. No production deployment claimed yet.
 
+
+
+### 2026-11-10 deployment continuation
+
+PR #158 was merged into `main` at `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`. The follow-up cache-busting and Pages timeout change is `4cb1ff727c3bdd8365c8a95d8bde7d42e10fffec` (current main at this update). The merged branch contains the pinned browser-local ONNX Hybrid v2 implementation described above; it is not an external-service or Java applet deployment.
+
+- Main Verify [#42775378045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775378045): SUCCESS on `4cb1ff7...`.
+- Pages build [#42775377983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983): build and upload steps SUCCESS; artifact [13744046012](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983/artifacts/13744046012), 40,375,099 bytes. Model export and browser parity pass; 20 Chromium tests pass; local cold/warm inference 1,062 ms / 167 ms; external request list empty.
+- The deployment job for #42775377983 is still waiting on the GitHub Pages service after the artifact upload. Its timeout was increased to 1,800,000 ms (30 minutes) because the previous first attempt on the merged commit remained in `syncing_files` until its 10-minute default timeout. A separate attempt #42774956163 was cancelled by the cache-busting follow-up commit; it was not a deployment failure.
+- Cache-busting query strings were updated in `index.html` for `web/app.js` and `web/styles.css` so existing visitors do not retain the pre-Hybrid browser bundle.
+
+**Deployment remains PARTIAL until** workflow #42775377983 completes its deploy step and its smoke test retrieves the live UI, bundle, tokenizer JSON, INT8 ONNX encoder/decoder, WASM runtime, model license, and notices from the GitHub Pages origin. Do not call it deployed before that.
