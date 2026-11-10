@@ -18,7 +18,7 @@ A first-time visitor should understand what to paste, what the Ukrainian output 
 
 ## Scope
 
-- Rewrite all visible copy and page metadata in `index.html` and `system.html`.
+- Rewrite all visible copy and page metadata in `index.html` and `system.html`, including runtime-generated labels, trace rows, confidence notes and errors in `web/app.js`.
 - Preserve every JavaScript-facing element ID, form control, output panel, result order, live region, and interaction contract.
 - Keep the deterministic IPA-first path as the public default and romanization as a separate method.
 - Explain typed provisional IPA fallback: known fragments still pass through the IPA-to-Ukrainian adapter; unresolved positions use `?`; confidence remains low; tone is not guessed.
@@ -75,6 +75,7 @@ Process guidance: Superpowers brainstorming, writing-plans, TDD, executing-plans
 ## Implementation record
 
 - `index.html`: rewritten service copy and metadata; retained all engine-facing IDs; updated app script cache key.
+- `web/app.js`: rewrote runtime-generated status notes, empty/error states, romanization explanation, trace labels and low-confidence disclosure without changing engine logic.
 - `system.html`: rewritten all 13 methodological topics in plain Ukrainian and added section 14 on design rationale.
 - `tests/browser/site.spec.js`: updated accessible names for revised action labels and the methodology heading.
 - `tests/web-layout.test.mjs`: updated current-date assertions, 14-section check, and added content/uncertainty/design-concept checks.
