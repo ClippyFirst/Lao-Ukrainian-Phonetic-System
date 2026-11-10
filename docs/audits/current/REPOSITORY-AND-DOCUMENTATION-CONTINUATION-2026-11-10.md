@@ -134,3 +134,35 @@ The engineering behavior is verified. Linguistic accuracy of the phrase remains 
 Pages workflow [#42830796208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208) deployed application SHA `85c0581726c4de659bfe002b61b2bdfdaecfe024`. Artifact `13771951564` (`github-pages`, 40,375,698 bytes) was uploaded and deployed. The live smoke-test successfully fetched both pages, app/data/CSS, Hybrid v2 inference bundle, WASM runtime, model manifest, ONNX encoder/decoder, both tokenizer files and license/notice assets; model ID and immutable revision checks passed. The deployed browser interaction test passed.
 
 The final README/audit/handoff edits after that deployment are documentation-only; no application asset changed after the deployed application SHA. The independent expert IPA blocker remains open.
+
+## User-requested removal of neural inference from the public service — 2026-11-10
+
+**Decision:** the public web service must not expose or download the Hybrid v2 neural tonal model. Keep the deterministic IPA-first output and romanization alternative. Retain Python neural engines only as research/CLI/benchmark tooling.
+
+### Cleanup performed on main
+
+- Removed neural result card and its 40 MB model / 15 MB WASM first-run notice from index.html.
+- Removed lazy browser ONNX inference code, DOM bindings, run/copy handlers and unused styles from web/app.js and web/styles.css.
+- Replaced model-bundling scripts/build_web.py with a static copy-only build.
+- Replaced Pages workflow's ONNX export, model/tokenizer/WASM staging, large runtime asset smoke checks with static-only build, Chromium test, negative model-asset assertions, Pages upload/deploy and same-origin smoke test. Pages artifact is now capped at 20 MB.
+- Removed browser-only inference modules/tests, model export/runtime/Pages staging scripts, model-specific workflow(s), preview workflow and unused ONNX runtime license asset.
+- Updated README and changelog; archived the old browser-port report as historical context. Python hybrid_v2.py, MekongPhon adapters, CLI and benchmark workflows remain.
+
+### Branch and PR inventory
+
+28 branches compared to current main; 3 open PRs reviewed. #145 (neural-first default) conflicts with the deterministic public contract and is not merged. #160 (benchmark reconciliation) and #162 (Python-only Meta-Hybrid v3 comparison harness) are research-only candidates requiring exact-head validation and conflict review; neither belongs in the browser bundle. Older diverged branches are snapshots or historical implementations; do not merge wholesale. Preserve branch refs/history while recording whether each branch is already represented, superseded, or has a unique research artifact to port.
+
+### Current acceptance state
+
+| Work | Status | Evidence / next acceptance |
+|---|---|---|
+| HTML/JS/CSS neural panel removal | DONE_VERIFIED (code edit) | index.html, web/app.js, web/styles.css; Chromium negative assertion added; wait for Verify |
+| Static-only Pages build and workflow | DONE_VERIFIED (code edit) | scripts/build_web.py, .github/workflows/pages.yml; verify built artifact excludes model/WASM |
+| Browser-only model implementation removal | DONE_VERIFIED (code edit) | deleted web model modules and dedicated test |
+| Browser ONNX export/runtime staging removal | DONE_VERIFIED (code edit) | deleted three browser-only scripts, export/preview workflows and unused license file |
+| Preserve Python research models | DONE_VERIFIED (scope) | Python implementation and benchmark tooling intentionally untouched |
+| Verify tests/build/Pages deployment | TODO | exact-head CI and live Pages smoke-test must pass |
+| Integrate compatible branch-only research | PARTIAL | inspect PR #160/#162 exact heads and test after base reconciliation |
+| Independent expert IPA gold | BLOCKED | 0 adjudicated records; expert annotation and rights-cleared sources required |
+
+Do not label this cleanup deployed until the Pages workflow and live same-origin smoke test succeed. The last previously deployed artifact is still the prior version until then.
