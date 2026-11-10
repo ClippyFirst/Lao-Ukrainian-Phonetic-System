@@ -393,4 +393,6 @@ The final input-field implementation, static/browser regression tests and update
 - The inactive method button previously used `#68716A` text on `#E8EBE1`, a **4.18:1** contrast ratio, below WCAG AA's 4.5:1 normal-text threshold.
 - Updated the inactive state to use a silk surface (`#FFFCF5`), darker text (`#505D55`) and a visible muted border (`#68716A`). The active state remains Mekong green (`#173F3A`) with silk text (`#FFFCF5`); its distinction is also preserved in `aria-pressed`.
 - Added static CSS contract assertions and a Chromium test that computes text and boundary contrast for both states, then toggles the selected method to check state behavior.
-- Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. Acceptance awaits exact-head Verify; visual review on physical displays remains separate.
+- Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. The first Chromium run caught a test setup issue: the mode switch was still inside the hidden empty-results panel, so the click could not run. The test now enters a sample first. Acceptance awaits a fresh exact-head Verify; visual review on physical displays remains separate.
+
+- Follow-up check also found the secondary “Очистити” action used muted text on the paper surface at 4.41:1. Its foreground is now darkened to `#505D55` and its border to `#68716A`; static tests check text and boundary contrast against both paper and silk surfaces.
