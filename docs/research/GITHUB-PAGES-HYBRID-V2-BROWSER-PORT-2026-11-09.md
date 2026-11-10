@@ -1,4 +1,7 @@
-# GitHub Pages Hybrid v2 browser port — 2026-11-09
+# ARCHIVED — GitHub Pages Hybrid v2 browser port (2026-11-09)
+
+> **Retired 2026-11-10 by explicit user decision.** The browser neural tonal panel, ONNX/WASM inference bundle, model asset publication and preview/export workflows have been removed from the public service. This document is retained only as historical implementation and licensing evidence. The Python Hybrid v2 research/CLI implementation remains separate and is not part of the website.
+
 
 ## Scope and exact starting point
 
