@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from lao_ukrainian.mekongphon import MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MekongPhonEngine, build_result
 from lao_ukrainian.phonetic_result import from_external_ipa
@@ -104,6 +105,38 @@ class MekongPhonAdapterTests(unittest.TestCase):
         )
         self.assertIsNone(result.ukrainian)
         self.assertEqual(result.status, "IPA_UNSUPPORTED")
+
+    def test_stage_one_returns_typed_ipa_without_running_ukrainian_adapter(self):
+        engine = MekongPhonEngine(tonal=True)
+        revision = MODEL_REVISIONS["tonal"]
+        with patch.object(engine, "_generate_raw_ipa", return_value="kʰaː˩˥"), \
+             patch.object(engine, "_load", return_value=(None, None, None, None, "cpu", revision)), \
+             patch("lao_ukrainian.mekongphon.adapt_phonetic_result",
+                   side_effect=AssertionError("stage 2 must not run")):
+            result = engine.transcribe_ipa("ຂາ")
+
+        self.assertEqual(result.input, "ຂາ")
+        self.assertEqual(result.normalized_input, "ຂາ")
+        self.assertEqual(result.raw_ipa, "kʰaː˩˥")
+        self.assertEqual(result.model_revision, revision)
+        self.assertEqual(result.status, "OK")
+        self.assertEqual(result.phonetic_result.external_ipa, result.raw_ipa)
+        self.assertEqual(result.phonetic_result.tone_contour_ipa, "˩˥")
+
+    def test_convenience_ipa_api_exposes_stage_one_result(self):
+        from lao_ukrainian.mekongphon import transcribe_ipa
+
+        revision = MODEL_REVISIONS["tonal"]
+        with patch.object(MekongPhonEngine, "_generate_raw_ipa", return_value="kʰaː"), \
+             patch.object(MekongPhonEngine, "_load", return_value=(
+                 None, None, None, None, "cpu", revision
+             )):
+            result = transcribe_ipa("ຂາ", device="cpu")
+
+        self.assertEqual(result.raw_ipa, "kʰaː")
+        self.assertEqual(result.phonetic_result.phonemic_ipa, "kʰaː")
+        self.assertEqual(result.status, "OK")
+        self.assertEqual(result.num_beams, 4)
 
 
 if __name__ == "__main__":
