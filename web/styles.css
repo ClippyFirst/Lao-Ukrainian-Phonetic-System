@@ -340,7 +340,6 @@ main {
   font: 1.45rem/1.85 var(--font-lao);
 }
 .input-shell textarea:focus { outline: 0; box-shadow: none; }
-.input-shell textarea::placeholder { color: #8A918A; opacity: 1; }
 .input-hint {
   display: flex;
   justify-content: space-between;
