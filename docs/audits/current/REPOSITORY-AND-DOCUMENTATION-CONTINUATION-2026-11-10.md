@@ -374,9 +374,10 @@ Exact documentation-complete Verify [#42871983082 — SUCCESS](https://github.co
 No engine, model, IPA mapping, deterministic default or browser runtime behavior changed. Independent adjudicated IPA gold remains 0.
 
 
-## Remove instructional copy from the Lao input — PARTIAL, 2026-11-10
+## Remove instructional copy from the Lao input — DONE_VERIFIED, 2026-11-10
 
 - Removed the in-field Lao-script placeholder so the writing area opens clean, without a prefilled instruction or example phrase.
 - Renamed the visually hidden accessible label from “Лаоський текст” to “Текст для аналізу”; the field remains programmatically named for assistive technology.
 - Updated browser and static regression coverage, and removed the now-unused placeholder styling. Existing field ID, Lao language metadata, input behavior, examples and engine contracts are unchanged.
-- Acceptance: exact-head Verify must pass static and Chromium tests. Manual device/screen-reader review remains separate.
+- Exact-head Verify [#42885560300 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42885560300) on `777c2e5baa620132b76ddceb323b361aae9b2886`: **350 Python, 161 Node and 23 Chromium tests passed**. Repository data/evidence audit, IPA-gold schema validation, optional external-G2P syntax/CLI, static build, generated-data reproducibility and built-page/relative-asset checks also passed.
+- Acceptance: clean input field and accessible name — DONE_VERIFIED. Manual device/screen-reader review remains separate; this change makes no phonetic-accuracy claim.
