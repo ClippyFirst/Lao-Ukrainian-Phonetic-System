@@ -237,3 +237,22 @@ test("pronunciation and romanization mode buttons have explicit high-contrast st
   assert.match(active, /background:\s*var\(--mekong\)/);
   assert.match(active, /color:\s*var\(--silk\)/);
 });
+
+
+test("secondary action buttons use readable text and a visible boundary", () => {
+  const secondary = css.match(/\.button-secondary\s*\{([^}]*)\}/)?.[1] || "";
+  assert.match(secondary, /border-color:\s*var\(--muted\)/);
+  assert.match(secondary, /color:\s*#505D55/i);
+  const luminance = (hex) => {
+    const channels = hex.match(/[0-9a-f]{2}/gi).map((value) => parseInt(value, 16) / 255).map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+  };
+  const contrast = (first, second) => {
+    const a = luminance(first), b = luminance(second);
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  };
+  for (const surface of ["#F4EFE5", "#FFFCF5"]) {
+    assert.ok(contrast("#505D55", surface) >= 4.5, "secondary button text must meet WCAG AA");
+    assert.ok(contrast("#68716A", surface) >= 3, "secondary button boundary must be visible");
+  }
+});
