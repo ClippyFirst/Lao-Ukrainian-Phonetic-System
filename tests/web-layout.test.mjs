@@ -106,7 +106,7 @@ test("Lao editorial design system replaces the old national-flag palette with te
 test("service page keeps the working tool visible and exposes the new Lao editorial identity", () => {
   assert.match(html, /class="hero-service[^"]*"/);
   assert.match(html, /class="weave-band"/);
-  assert.match(html, /Лаоська.*Українська/);
+  assert.match(html, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
   for (const id of ["lao-input", "count", "example", "example-complex", "clear", "empty-state", "results", "output", "romanization", "ipa", "copy", "copy-romanization", "copy-ipa", "mode-phonetic", "mode-romanization", "analysis-status", "rows", "warnings"]) {
     assert.match(html, new RegExp('id="' + id + '"'));
   }
@@ -169,8 +169,8 @@ test("dynamic service copy uses the same clear Ukrainian vocabulary as the stati
 
 test("public interface keeps Ukrainian as its language and labels Lao romanization correctly", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /Лаоська\\s*<span[^>]*>→<\\/span>\\s*Українська/);
-  assert.match(methodology, /Лаоська\\s*<span[^>]*>→<\\/span>\\s*Українська/);
+  assert.match(html, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
+  assert.match(methodology, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
   assert.match(html, /id="romanization"[^>]*lang="lo-Latn"/);
   assert.doesNotMatch(html, /id="romanization"[^>]*lang="en"/);
   assert.doesNotMatch(html + methodology, /IPA gold corpus/i);
@@ -181,7 +181,7 @@ test("public interface keeps Ukrainian as its language and labels Lao romanizati
 });
 
 test("visible interface labels use sentence case and explain technical terms in Ukrainian", () => {
-  assert.doesNotMatch(css, /\\.analysis-grid small\\s*\\{[^}]*text-transform:\\s*uppercase/s);
+  assert.doesNotMatch(css, /\.analysis-grid small\s*\{[^}]*text-transform:\s*uppercase/s);
   assert.doesNotMatch(app, /ГОТОВО|ЧАСТКОВИЙ АНАЛІЗ|НЕ ВСТАНОВЛЕНО/);
   assert.doesNotMatch(app, /PROVISIONAL/);
   assert.match(app, /Попередня IPA-підказка/);
