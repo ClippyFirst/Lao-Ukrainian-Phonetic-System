@@ -1,6 +1,6 @@
 ## Ukrainian editorial and interface-quality pass — PARTIAL, 2026-11-10
 
-**Branch:** `quality/ukrainian-editorial-and-design-audit-2026-11-10`  
+**Branch:** `quality/ukrainian-editorial-audit-2026-11-10`  
 **Base main:** `3dd77a4ea080ce700cb0a131114470ad43de0b94`  
 **Scope:** apply selected guidance from Vercel Web Interface Guidelines, blader/humanizer, Anthropic frontend-design and obra/superpowers to the existing Woven Editorial site. No runtime dependency or copied skill tree is added.
 
@@ -10,6 +10,7 @@
 - Replaced the English-facing `Lao → Українська` brand wording with `Лаоська → Українська` on both public pages.
 - Corrected the romanization output language from `lang="en"` to `lang="lo-Latn"`; kept IPA as `und-fonipa` and Lao input as `lo`.
 - Replaced user-facing `IPA gold corpus`, `PROVISIONAL`, unexplained craft terms and English link labels with Ukrainian explanations while retaining exact model, standard, font and source identifiers.
+- Re-read the complete public copy and rewrote staged contrasts, abstract closers, repeated explanations and marketing-like claims into direct Ukrainian. Preserved all figures, benchmark caveats, dialect scope, IPA uncertainty and source references.
 - Changed all-caps UI and methodology labels to sentence case; removed forced uppercase from analysis captions.
 - Added explicit `name` and `autocomplete="off"` to the local Lao text field, plus intentional tap feedback and `touch-action: manipulation`.
 - Added static regression assertions for Ukrainian branding, language metadata, sentence-case labels, English leakage, technical-term explanations and touch behavior.
@@ -30,7 +31,7 @@
 | Public language and terminology cleanup | DONE_IMPLEMENTED | `index.html`, `system.html`, `web/app.js` |
 | UI language metadata and input semantics | DONE_IMPLEMENTED | `lang="lo-Latn"`, named textarea, autocomplete policy |
 | Sentence-case and touch presentation | DONE_IMPLEMENTED | `web/styles.css`, static tests |
-| Regression coverage | PARTIAL | Added to `tests/web-layout.test.mjs`; exact-head CI still required |
+| Regression coverage | PARTIAL | Added language, copy, paragraph-structure and touch assertions to `tests/web-layout.test.mjs`; exact-head CI still required |
 | Full Vercel guideline review | PARTIAL | Source rules fetched and relevant files inspected; exact-head browser/CI verification pending |
 | Manual screenshot, physical-device and screen-reader review | BLOCKED | No browser capture/physical device/screen-reader session available in this connector-only run |
 | Linguistic accuracy | UNCHANGED / EVIDENCE-LIMITED | No phonological code or corpus changed; independent adjudicated IPA gold remains 0 |
