@@ -308,3 +308,13 @@ test("primary navigation, buttons, and analysis disclosures meet 44-pixel touch-
     }
   }
 });
+
+
+test("the public service does not expose a neural model download or run panel", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#run-hybrid-v2")).toHaveCount(0);
+  await expect(page.locator("[data-result-panel='hybrid-v2']")).toHaveCount(0);
+  await expect(page.getByText(/40 МБ ваг моделі|WASM-рушія|Завантажити й запустити Hybrid v2/)).toHaveCount(0);
+  await page.locator("#lao-input").fill("ຂາ");
+  await expect(page.locator("#output")).toHaveText("к'а");
+});
