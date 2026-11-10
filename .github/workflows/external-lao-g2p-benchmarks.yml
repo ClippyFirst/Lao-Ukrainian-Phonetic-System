@@ -1,5 +1,7 @@
 name: External Lao G2P research benchmarks
 
+# Meta-Hybrid v3 keeps these pinned external engines as research comparators only; agreement is not independent IPA gold.
+
 on:
   workflow_dispatch:
   push:
