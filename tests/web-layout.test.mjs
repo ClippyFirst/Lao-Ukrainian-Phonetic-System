@@ -61,10 +61,10 @@ test("Ukrainian result offers an accessible two-method selector in one result ca
 
 test("public research status reflects the merged 2026-10-31 implementation", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /ДОСЛІДНИЦЬКИЙ СТАТУС · 31\.10\.2026/);
+  assert.match(html, /СТАН ДОСЛІДЖЕННЯ · 10\.11\.2026/);
   assert.match(html, /\/ʃt͡ʃ\/ → щ/);
   assert.match(html, /романізац[ія].{0,100}складов/i);
-  assert.match(methodology, /Оновлено 31 жовтня 2026/);
+  assert.match(methodology, /Станом на 10 листопада 2026 року/);
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
   assert.match(methodology, /accuracy.{0,20}null/i);
 });
@@ -126,10 +126,32 @@ test("methodology page uses an editorial reading rail and keeps all thirteen sec
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(methodology, /class="reading-rail(?:\s|")/);
   assert.match(methodology, /class="weave-band"/);
-  for (let index = 1; index <= 13; index += 1) {
+  for (let index = 1; index <= 14; index += 1) {
     assert.match(methodology, new RegExp('id="s' + index + '"'));
   }
   const visualResearch = await readFile(new URL("../docs/research/LAO-VISUAL-CULTURE-AND-WEB-DESIGN-REFERENCES-2026-11-10.md", import.meta.url), "utf8");
   assert.match(visualResearch, /Naga|наґа/i);
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
+});
+
+
+test("all public site copy explains the product contract and honest uncertainty", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(html, /Вставте слово, фразу або цілий уривок лаоською/);
+  assert.match(html, /невідомі позиції позначаються «\?»/);
+  assert.match(html, /IPA-адаптер/);
+  assert.match(methodology, /Незалежний експертно ад'юдикований IPA gold corpus наразі містить 0 еталонів/);
+  assert.match(methodology, /романізація може втрачати тон, довготу/);
+  assert.match(methodology, /не вибирає варіант навмання/);
+});
+
+test("methodology documents the culturally grounded Woven Editorial design rationale", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(methodology, /Woven Editorial/);
+  assert.match(methodology, /не копія конкретного етнічного орнаменту/);
+  assert.match(methodology, /Global InCH/);
+  assert.match(methodology, /W3C Lao Script Resources/);
+  assert.match(methodology, /Noto Sans Lao/);
+  assert.match(methodology, /DESIGN\.md/);
+  assert.match(methodology, /id="s14"/);
 });
