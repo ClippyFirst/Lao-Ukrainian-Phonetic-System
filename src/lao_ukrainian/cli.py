@@ -37,6 +37,7 @@ def main():
                 preview = syllable.grapheme_preview
                 unresolved = "".join(preview.unresolved_graphemes) or "none"
                 print(f"  IPA preview={preview.ipa_preview or '—'} [{preview.status}]; unresolved={unresolved}")
+                print("  Confidence=LOW; Ukrainian fallback is provisional, unresolved positions use ?, and tone is not inferred.")
         return
 
     if args.engine == "hybrid-v2":
