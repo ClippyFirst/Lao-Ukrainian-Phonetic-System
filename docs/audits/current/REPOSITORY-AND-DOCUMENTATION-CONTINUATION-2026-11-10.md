@@ -270,3 +270,25 @@ The 100-word schema-8 result reports 90/100 segmental exact output matches for C
 The HVULao 1k three-engine report shows 66.1% IPA-complete sentences for deterministic engines, 93.4% for the neural source-IPA engine, and 100% Ukrainian-side rendering for the hybrid deterministic engine. The separate Hybrid v2 report shows 100% Ukrainian rendering, 66.1% complete segmental IPA sentences, 22.8% parseable tonal IPA rows, 10 fully and 4 partially aligned tone rows, 0 runtime errors, 61 token-limit rejections and 5 unsupported-character rejections. HVULao has no IPA reference; these are stress/coverage/runtime measures, not accuracy.
 
 PR #145 remains open: compare against main showed 292 commits behind and 24 ahead; it changes the CLI default to neural-first, contrary to the current deterministic-default specification. The stage-one API was selectively implemented without importing that change.
+
+
+## Public MekongPhon IPA API documentation and export contract — 2026-11-10
+
+**Status: DONE_VERIFIED.** PR [#167](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/167), based on main `20a44ab4c3730434bd0176a699853b796fa8fd1d`; implementation/test head `1c029b841651b11283f0e19b1f5358078e0bfb4c`.
+
+README usage now demonstrates the package-root `transcribe_ipa()` source-stage API and the full `transcribe_lao()` two-stage path. The codebase map is refreshed to mainline and documents the standalone typed IPA result, explicit target-adaptation continuation, tests and research-only scope. A new offline regression asserts that `MekongPhonIPAResult` and `transcribe_ipa` are actually exported from `lao_ukrainian`.
+
+Exact-head Verify [#42871293571 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871293571): 350 Python, 152 Node and 22 Chromium tests passed; IPA-gold schema validation, repository data/evidence audit, external-G2P syntax/CLI, locked install, browser tests, build, generated-data reproducibility and built-page checks passed. This documentation/test-only update does not change the deterministic default, model inference, Ukrainian mappings or public website. Independent adjudicated IPA gold remains 0.
+
+
+## Public MekongPhon API and current benchmark-summary reconciliation — 2026-11-10
+
+**Status: DONE_VERIFIED.** PR [#167](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/167), based on main `20a44ab4c3730434bd0176a699853b796fa8fd1d`.
+
+README now documents the public `transcribe_ipa()` source-stage API and the full `transcribe_lao()` path. The codebase map is current to mainline and describes the typed IPA stage, result types, test locations and separation from the deterministic default/browser runtime. A new offline test checks the package-root exports of `MekongPhonIPAResult` and `transcribe_ipa`.
+
+The README's prior schema-6/2026-11-09 benchmark paragraph was stale. It now summarizes the 2026-11-10 schema-8 100-word common-set comparison and the latest HVULao 1k stress workflows, with explicit caveats that dictionary-seeded concordance and no-IPA-gold stress coverage do not establish independent phonetic accuracy.
+
+Implementation-head Verify [#42871293571 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871293571): 350 Python, 152 Node and 22 Chromium tests passed; repository audit, IPA schema, external-G2P CLI, locked install, build, generated-data reproducibility and built-page checks passed. A separate exact-head Verify was triggered after the final master/audit documentation update.
+
+No engine, model, IPA mapping, deterministic default or browser runtime behavior changed. Independent adjudicated IPA gold remains 0.

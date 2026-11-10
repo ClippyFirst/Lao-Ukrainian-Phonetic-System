@@ -2,10 +2,20 @@ import unittest
 from unittest.mock import patch
 
 from lao_ukrainian.mekongphon import MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MekongPhonEngine, MekongPhonIPAResult, build_result
+from lao_ukrainian import (
+    MekongPhonIPAResult as PublicMekongPhonIPAResult,
+    transcribe_ipa as public_transcribe_ipa,
+)
 from lao_ukrainian.phonetic_result import from_external_ipa
 
 
 class MekongPhonAdapterTests(unittest.TestCase):
+
+    def test_package_exports_the_standalone_ipa_result_and_function(self):
+        from lao_ukrainian.mekongphon import transcribe_ipa
+
+        self.assertIs(PublicMekongPhonIPAResult, MekongPhonIPAResult)
+        self.assertIs(public_transcribe_ipa, transcribe_ipa)
 
     def test_default_engines_use_the_verified_immutable_model_revisions(self):
         tonal = MekongPhonEngine(tonal=True)
