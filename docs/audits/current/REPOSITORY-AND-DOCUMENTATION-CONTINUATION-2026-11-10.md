@@ -87,3 +87,22 @@ Adopt the transferable documentation principles, not their product-specific plug
 5. Keep PR #145 deferred unless the owner explicitly reopens the production-architecture decision.
 
 No IPA labels, phonological correspondences, source permissions, benchmark scores or accuracy values were fabricated in this continuation.
+
+
+---
+
+## Long-form provisional IPA fallback correction — 2026-11-10
+
+The owner supplied `ພຣະຣາຊອານາຈັກຣ໌ລາວ` and reported that the IPA field showed only `?` while the Ukrainian output ended in a long repeated question-mark sequence.
+
+Root cause: the main IPA summary ignored `graphemePreview.ipaPreview`; the fallback also emitted one unknown marker per unresolved grapheme. Code changes in `main` now display the provisional IPA hint when the full parser has no accepted IPA, and cap each contiguous unresolved run at three markers in both Python and browser fallback builders. The confidence status remains provisional; no tone is inferred.
+
+| Task | Status | Acceptance / evidence |
+|---|---|---|
+| Main IPA summary uses provisional preview before unknown placeholder | PARTIAL | `web/app.js`; exact-head browser UI test pending |
+| Unknown-marker run capped at 3 in Python and browser | PARTIAL | `phonetic_result.py`, `web/engine.js`; focused Python/Node tests pending exact-head CI |
+| Exact user phrase regression across runtimes and UI | PARTIAL | Added to Python, Node and Chromium suites; exact-head run pending |
+| Fallback contract documentation | DONE_VERIFIED | `docs/lao-grapheme-ipa-preview.md` updated with IPA display priority and uncertainty grouping |
+| Exact expert IPA for supplied phrase | BLOCKED | No independently adjudicated, source-located IPA evidence; do not replace with a guessed reading |
+
+Do not close this item until exact-head Verify and Pages deployment workflows complete successfully. The prior deployed artifact remains the production reference until the new Pages run is successful.
