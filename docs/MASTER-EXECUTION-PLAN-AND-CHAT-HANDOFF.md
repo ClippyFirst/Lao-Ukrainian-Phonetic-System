@@ -7,7 +7,7 @@
 
 ### What changed
 
-- Rewrote the service page's Ukrainian copy, labels, action names, metadata, helper text, empty state, output descriptions and research-status explanation. The primary heading and all JS-facing IDs remain stable; the service remains action-first.
+- Rewrote the service page's Ukrainian copy, labels, action names, metadata, helper text, empty state, output descriptions and research-status explanation. Rewrote runtime-generated trace labels, copy feedback, error/empty states, romanization explanation and low-confidence notes in `web/app.js`. The primary heading and all JS-facing IDs remain stable; the service remains action-first.
 - Rewrote all 13 existing methodology sections in plain, evidence-aware Ukrainian and added section 14, which explains why the visual identity is called **Woven Editorial**.
 - The design explanation distinguishes the abstract rhythm/structure of weaving from any single Lao community or textile motif; explains paper/silk, Mekong green, indigo, lac-red, and the roles of Noto Sans Lao, Manrope and IBM Plex Mono; and links the design system and source research.
 - Updated the visible research date to 10 November 2026 and clarified that schema-8 benchmark concordance is dictionary-seeded, not independent phonetic accuracy. The independent expert-adjudicated IPA gold corpus remains 0.
