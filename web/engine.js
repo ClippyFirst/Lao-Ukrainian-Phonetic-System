@@ -829,7 +829,7 @@ export function analyze(text, options = {}) {
       const hinted = graphemePreview.phoneticResult?.segments || [];
       const provisionalSegments = [
         ...hinted.map((segment) => ({ ...segment, certainty: "PROVISIONAL" })),
-        ...(graphemePreview.unresolvedGraphemes || []).map(() => ({
+        ...Array.from({ length: Math.min(3, (graphemePreview.unresolvedGraphemes || []).length) }, () => ({
           ipa: "?", kind: "unknown", provenance: ["FALLBACK:UNRESOLVED-GRAPHEME"], certainty: "PROVISIONAL"
         })),
       ];
