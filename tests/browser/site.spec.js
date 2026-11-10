@@ -402,7 +402,7 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
     }))
   );
   expect(toggled.find((button) => button.name === "За романізацією").activeClass).toBe(true);
-  expect(toggled.find((button) => button.name === "За романізацією").background).not.toBe("rgb(255, 252, 245)");
+  await expect.poll(() => page.locator("#mode-romanization").evaluate((button) => getComputedStyle(button).backgroundColor)).not.toBe("rgb(255, 252, 245)");
   expect(toggled.find((button) => button.name === "За романізацією").pressed).toBe("true");
   expect(toggled.find((button) => button.name === "За вимовою").pressed).toBe("false");
 });
