@@ -386,3 +386,11 @@ No engine, model, IPA mapping, deterministic default or browser runtime behavior
 ## Exact-head verification after handoff reconciliation — DONE_VERIFIED, 2026-11-10
 
 The final input-field implementation, static/browser regression tests and updated master handoff/audit were verified together on `17d97f0de2070dabc15774289a26bdbd9b9561bc` by [Verify run #42885768390 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42885768390). Results: **350 Python tests, 161 Node tests and 23 Chromium tests passed**; repository data/evidence audit, IPA-gold schema validation, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. No failures.
+
+
+## Contrast repair: pronunciation / romanization mode switch — PARTIAL, 2026-11-10
+
+- The inactive method button previously used `#68716A` text on `#E8EBE1`, a **4.18:1** contrast ratio, below WCAG AA's 4.5:1 normal-text threshold.
+- Updated the inactive state to use a silk surface (`#FFFCF5`), darker text (`#505D55`) and a visible muted border (`#68716A`). The active state remains Mekong green (`#173F3A`) with silk text (`#FFFCF5`); its distinction is also preserved in `aria-pressed`.
+- Added static CSS contract assertions and a Chromium test that computes text and boundary contrast for both states, then toggles the selected method to check state behavior.
+- Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. Acceptance awaits exact-head Verify; visual review on physical displays remains separate.
