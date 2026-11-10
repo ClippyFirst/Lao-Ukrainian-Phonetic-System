@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — remove neural inference from public web service
+
+- Removed the Hybrid v2 neural tonal IPA panel and its first-run download/run controls from the public website.
+- Removed browser-only ONNX export, tokenizer/WASM runtime packaging, model assets and preview workflows from the Pages build; deployment now contains only the deterministic browser engine and static data.
+- Kept Python Hybrid v2/MekongPhon research and CLI implementations intact; this change does not delete benchmark evidence or alter the deterministic IPA → Ukrainian production path.
+- Added a Chromium regression asserting that no neural model download or run panel is exposed by the public service.
+
 ## Unreleased — provisional IPA fallback visibility
 
 - Show the available typed provisional IPA hint in the main IPA summary when full structural parsing cannot establish a complete reading.
