@@ -63,6 +63,19 @@ For a provisional result, the detailed result panel must show:
 
 The Python text CLI must similarly print the Ukrainian result, provisional IPA preview, unresolved graphemes and a low-confidence note. JSON/API results retain typed status, segment certainty, provenance and uncertainty fields.
 
+
+## Long unresolved spans and IPA summary behavior
+
+The main IPA field must not discard a typed provisional preview merely because the full syllable parser did not establish a complete phonemic IPA result. For each non-passthrough unit, display in this order:
+
+1. accepted `syllable.ipa` when present;
+2. otherwise `graphemePreview.ipaPreview`, explicitly labelled provisional in the detailed analysis;
+3. otherwise a single `?`.
+
+When a provisional preview also contains unresolved source positions, the IPA summary appends a visible uncertainty marker. The Ukrainian adapter likewise retains the provisional IPA-derived material and adds an uncertainty marker. A contiguous unresolved region is represented by one `?` for a single unresolved grapheme, or at most `???` for a longer unresolved run. The marker count is deliberately not a grapheme count: it communicates confidence, not source length. This prevents long unsupported names from producing visually meaningless tails of dozens of question marks while preserving a clear distinction between provisional IPA and confirmed IPA.
+
+Regression target: `ພຣະຣາຊອານາຈັກຣ໌ລາວ`. The test contract is that available registered hints remain visible in the IPA field, the Ukrainian result does not contain a run longer than three question marks, and the result remains low-confidence with no inferred tone. This is a rendering/uncertainty contract, not an adjudicated pronunciation of the phrase.
+
 ## Inventory scope
 
 The canonical Unicode inventory is `data/lao/grapheme_inventory.csv`. It catalogs assigned characters in the Unicode 18 Lao block while distinguishing modern Lao core letters from Pali/Sanskrit extensions, Khmu-specific letters, punctuation, repetition marks, digits and structural signs. Unicode recognition is not proof of a modern-Lao phonetic value. The [Unicode 18 Lao Names List](https://www.unicode.org/Public/18.0.0/charts/nameslist/0e80/) establishes codepoint identities and names; the [W3C Lao script overview](https://www.w3.org/International/sealreq/lao/) describes composite vowels, tone classes and script structure.
