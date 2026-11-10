@@ -6,14 +6,14 @@ test("Lao input produces visible Ukrainian and IPA results", async ({ page }) =>
   await expect(page.locator("#results")).toBeVisible();
   await expect(page.locator("#output")).toHaveText("к'а");
   await expect(page.locator("#ipa")).toHaveText("kʰaː");
-  await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
+  await expect(page.locator("#analysis-status")).toContainText("Готово");
 });
 
 test("mixed-script input preserves visible text and renders supported Lao spans", async ({ page }) => {
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ — українська 08:05 🙂");
   await expect(page.locator("#results")).toBeVisible();
-  await expect(page.locator("#analysis-status")).toContainText("ЧАСТКОВИЙ АНАЛІЗ");
+  await expect(page.locator("#analysis-status")).toContainText("Частковий аналіз");
   await expect(page.locator("#output")).toHaveText("к'а — українська 08:05 🙂");
   await expect(page.locator("#warnings")).toContainText("Непідтримуваний символ");
   await page.locator("#mode-romanization").click();
@@ -167,7 +167,7 @@ test("browser UI renders provisional Ukrainian output and labels its low confide
   });
   expect(directEngineResult.output, JSON.stringify(directEngineResult)).toBe("кал?");
   await page.locator("#lao-input").fill("ກາລ");
-  await expect(page.locator(".grapheme-preview")).toContainText("PROVISIONAL");
+  await expect(page.locator(".grapheme-preview")).toContainText("Попередня IPA-підказка");
   await expect(page.locator(".grapheme-preview")).toContainText("kaː");
   await expect(page.locator("#output")).toHaveText("кал?");
   await expect(page.locator(".grapheme-preview")).toContainText("ລ");
@@ -248,7 +248,7 @@ test("screen-reader roles expose the service controls and output state", async (
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.getByRole("button", { name: "За вимовою" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
-  await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
+  await expect(page.locator("#analysis-status")).toContainText("Готово");
   await expect(page.locator("#copy")).toBeEnabled();
   await expect(page.locator("#copy")).toHaveAccessibleName("Копіювати");
   await expect(page.locator("#output")).toHaveAttribute("aria-atomic", "true");
