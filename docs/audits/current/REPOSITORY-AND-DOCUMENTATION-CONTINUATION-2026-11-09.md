@@ -796,3 +796,15 @@ Detailed task ledger and architecture are in `docs/research/GITHUB-PAGES-HYBRID-
 - **TODO:** PR #158 remains draft. Mark ready, merge, wait for main Pages deploy, verify live site and all static assets. Do not report production deployment until live smoke passes.
 - **BLOCKED (accuracy only):** no independent expert IPA gold; neural tone remains `UNCERTAIN`.
 
+
+
+## 2026-11-10 main-branch merge and live deployment gate
+
+PR #158 is merged; merge commit `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`. Current main includes cache-busting for the Hybrid v2 browser bundle/styles and a 30-minute Pages deployment polling timeout (`4cb1ff727c3bdd8365c8a95d8bde7d42e10fffec`).
+
+- **DONE_VERIFIED:** main Verify [#42775378045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775378045) passed.
+- **DONE_VERIFIED:** Pages build/export/parity/packaging/Chromium checks on [#42775377983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983) passed; 20 Chromium tests; cold/warm local inference 1,062 ms / 167 ms; zero external requests. Pages artifact [13744046012](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983/artifacts/13744046012), 40,375,099 bytes.
+- **PARTIAL:** GitHub Pages deploy job is still in progress; smoke test has not run. The prior deployment timed out while Pages reported `syncing_files` at the default 10-minute limit. Timeout is now 30 minutes. Another run was cancelled because a cache-busting index commit superseded it; the currently active run is #42775377983.
+- **BLOCKED (linguistic accuracy):** no independent adjudicated IPA gold corpus; model output and tone association remain experimental/UNCERTAIN.
+
+Acceptance to close deployment: #42775377983 must finish successfully and the workflow's live smoke test must fetch the UI, runtime bundle, WASM, tokenizers, ONNX weights, model LICENSE/NOTICE and runtime third-party notices from the same Pages origin.
