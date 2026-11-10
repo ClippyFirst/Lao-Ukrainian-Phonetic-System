@@ -2,6 +2,7 @@
 
 **Repository:** `ClippyFirst/Lao-Ukrainian-Phonetic-System`.  
 **Starting main SHA:** `0a91bb62d48a6110d5129460fae4efee580863f2`.  
+**Implementation commit verified:** `8c7fffe99746e21769ee40e92818f5e10fa5081c`.  
 **Starting-main Verify:** [#42776630426 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776630426). All listed jobs/steps completed successfully: gold-corpus structure, repository data/evidence audit, Python, external-G2P syntax/CLI, locked browser dependencies, browser engine, browser-local inference runtime install, static build, generated-data reproducibility, real Chromium UI, built pages and relative assets.
 
 This addendum supersedes older statements below wherever they conflict with the 2026-11-10 mainline state or the fallback contract.
@@ -23,13 +24,21 @@ The existing mainline engine already satisfies the core typed architecture:
 
 ## User-facing confidence presentation
 
-The browser detail panel and text CLI are being made explicit about:
+The browser detail panel and text CLI now explicitly disclose:
 - low confidence / provisional reading;
 - the Ukrainian output actually produced;
 - unresolved graphemes or positions and visible `?` markers;
 - the fact that tone was not inferred.
 
-The browser regression is updated to expect a Ukrainian provisional result for `ກາລ`, not an empty/withheld result. This change does not modify canonical Lao rules or the target correspondence table.
+The browser regression asserts both the browser-native engine output and the rendered UI output `кал?` for `ກາລ`. The Python CLI regression asserts its low-confidence note. Canonical Lao rules and the target correspondence table are unchanged.
+
+## Browser aggregate-output defect found and fixed
+
+The first real Chromium run exposed a defect that the existing Node engine tests had not asserted: the syllable-level fallback correctly returned `ukrainian: "кал?"`, but the top-level browser `output` string was assembled from the original, pre-transformation `words` array. Consequently the details contained the provisional Ukrainian result while the visible main output remained `⟦ກາລ⟧`.
+
+The fix transforms each word's syllable objects first, retains the transformed word groups, derives the flattened details array from those groups, and builds the final output from the transformed groups. This preserves whitespace/word boundaries and ensures the UI displays the exact adapted result. The app and engine module URLs are cache-busted together.
+
+**Exact branch-head Verify:** [#42796566811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796566811), implementation commit `8c7fffe99746e21769ee40e92818f5e10fa5081c`. Python tests, Node browser-engine tests, build, generated-data reproducibility, real Chromium UI tests and built-page/relative-asset checks all passed.
 
 ## Task ledger
 
@@ -37,8 +46,8 @@ The browser regression is updated to expect a Ukrainian provisional result for `
 |---|---|---|
 | Python provisional IPA → ordinary Ukrainian adapter fallback | DONE_VERIFIED (existing mainline) | Source modules and tests exist; exact starting-main Verify #42776630426 passed |
 | Browser provisional IPA → ordinary Ukrainian adapter fallback | DONE_VERIFIED (existing mainline) | Browser engine and tests exist; exact starting-main Verify #42776630426 passed |
-| Browser and CLI low-confidence details | PARTIAL pending branch CI | Updated UI/CLI and corresponding tests must pass on exact branch head |
-| Canonical fallback documentation/navigation | PARTIAL pending branch CI | Conflicting preview-only wording replaced; exact branch-head CI required |
+| Browser aggregate output plus browser/CLI low-confidence details | DONE_VERIFIED | Updated UI/CLI and corresponding tests must pass on exact branch head |
+| Canonical fallback documentation/navigation | DONE_VERIFIED | Conflicting preview-only wording replaced; exact branch-head CI required |
 | Independent pronunciation accuracy | BLOCKED / evidence-limited | Independent adjudicated IPA gold remains 0; qualified annotators and adjudication required |
 | Non-core Indic/Khmu graphemes | DEFERRED from modern-Lao phonetic scope | Preserve/mark unknown; do not invent a modern-Lao reading |
 
@@ -47,7 +56,7 @@ The browser regression is updated to expect a Ukrainian provisional result for `
 - Working branch: `fix/provisional-grapheme-output-docs-20261110`, created from `0a91bb62d48a6110d5129460fae4efee580863f2`.
 - Existing branches are preserved; no force-push or branch deletion.
 - PR #145 remains open and untouched because it proposes a distinct production architecture.
-- Exact branch-head Verify and PR state will be appended after CI; the starting-main success is not evidence for untested edits.
+- Exact branch-head Verify [#42796566811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796566811) passed on implementation commit `8c7fffe99746e21769ee40e92818f5e10fa5081c`. PR #159 remains open and unmerged; no Pages deployment is claimed.
 
 **Readiness:** engineering-verified research prototype. The fallback rendering contract is implemented; linguistic accuracy remains unvalidated. A visible low-confidence answer must not be marketed as a confirmed pronunciation.
 
