@@ -3628,3 +3628,14 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 - PR #145 remains open and unmerged. It is 292 commits behind main and 24 commits ahead, and proposes a neural-first CLI default that conflicts with the current deterministic-default specification. The stage-one API was selectively implemented without importing that default change.
 
 **Acceptance:** API stage separation and full two-stage adaptation path — DONE_VERIFIED. No production website or default engine behavior changes.
+
+## Public MekongPhon IPA API documentation and export contract — DONE_VERIFIED, 2026-11-10
+
+- **PR:** [#167 — Document and test the public MekongPhon IPA API](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/167).
+- **Base main:** `20a44ab4c3730434bd0176a699853b796fa8fd1d`; implementation/test head: `1c029b841651b11283f0e19b1f5358078e0bfb4c`.
+- README now documents both package-level paths: `transcribe_ipa()` stops at typed source IPA, while `transcribe_lao()` explicitly continues through the Ukrainian target adapter. The codebase map now reflects the current implementation, stage boundary, result types, test locations and mainline verification evidence.
+- Added a regression proving that `MekongPhonIPAResult` and `transcribe_ipa` are exported from the package root. This checks the documented public import path without downloading neural weights.
+- Exact-head Verify [#42871293571 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871293571): **350 Python, 152 Node and 22 Chromium tests passed**. IPA-gold schema validation, repository data/evidence audit, external-G2P syntax/CLI, locked npm install, browser tests, static build, generated-data reproducibility and built-page/relative-asset checks all passed.
+- No engine default, model configuration, linguistic mapping, neural runtime, browser code or Pages artifact changed. The neural API remains opt-in Python research tooling; the public site remains deterministic.
+
+**Acceptance:** public API documentation and package-export regression — DONE_VERIFIED. Independent adjudicated IPA gold remains 0; no phonetic-accuracy claim is added.
