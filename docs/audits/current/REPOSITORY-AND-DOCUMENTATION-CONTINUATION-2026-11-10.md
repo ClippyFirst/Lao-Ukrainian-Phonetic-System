@@ -166,3 +166,24 @@ The final README/audit/handoff edits after that deployment are documentation-onl
 | Independent expert IPA gold | BLOCKED | 0 adjudicated records; expert annotation and rights-cleared sources required |
 
 Do not label this cleanup deployed until the Pages workflow and live same-origin smoke test succeed. The last previously deployed artifact is still the prior version until then.
+## Branch consolidation — 2026-11-10
+
+### Ported and verified research work
+
+- PR #162 branch code was ported selectively to main: `meta_hybrid_v3.py`, its unit tests, CLI option and public API exports. The exact branch head passed Verify [#42822261651 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42822261651) and external benchmark [#42822253479 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42822253479). Meta-Hybrid v3 remains Python/CLI research-only; it never votes and never changes deterministic Ukrainian output.
+- PR #160's external benchmark workflow branch-trigger support was ported to main. Its benchmark reconciliation is now documented in the research inventory and README; its old workflow verification edits were not copied over the new static-only Pages/Verify gates.
+- The unique Laonetics branch-only benchmark was ported: aggregate-only script, isolated workflow and report. Final run [#42828308429 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42828308429), artifact [13768874616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42828308429/artifacts/13768874616): 47/100 exact, 13.95% CER, 100/100 output coverage. Upstream declares CC-BY-NC-4.0; no code/weights enter the product and production promotion is DEFERRED.
+
+### Branch disposition
+
+| Branch / PR | Disposition | Reason / evidence |
+|---|---|---|
+| `benchmark/current-main-comparative-20261110` / #160 | PARTIALLY PORTED; PR ready to close as superseded | External workflow branch triggers and comparative evidence are now in main; do not copy stale verify workflow over static-only gates |
+| `benchmark/meta-hybrid-v3-multiengine-r2-20261110` / #162 | CODE PORTED; PR ready to close as superseded | New comparator module, CLI/API and tests integrated; branch exact-head Verify and external benchmark passed; current main Verify pending |
+| `benchmark/laonetics-same-set-20261110` | PORTED | Script/workflow/report integrated; final run and artifact cited above; research-only due NC license and weaker result |
+| `feat/mekongphon-first-stage` / #145 | BLOCKED / not merged | Would change the deterministic default to neural-first; keep separate until production architecture is explicitly reconsidered |
+| 12 branches with merged PRs | ALREADY IN MAIN | Their merge commits and later mainline tests establish integration; retained branch refs are historical provenance |
+| 11 closed-unmerged historical branches | SUPERSEDED / evidence review | Old snapshots of features now present in main or research alternatives superseded by later work; no wholesale merge into current code |
+| `feature/meta-hybrid-v3-multiengine-20261110` | SUPERSEDED | Older duplicate branch is behind main; r2 branch work is ported |
+
+Branch refs are retained to preserve provenance; no force-push or branch deletion was performed. The user request to consolidate work is handled by porting unique, verified changes and marking superseded/conflicting snapshots, not by merging stale histories blindly.
