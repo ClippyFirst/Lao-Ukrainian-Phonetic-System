@@ -182,7 +182,7 @@ test("long unresolved Lao input still exposes provisional IPA and bounded uncert
   const ipaText = await page.locator("#ipa").textContent();
   expect(ipaText).toMatch(/[a-zɐ-ʔːə̯]/u);
   const ukrainian = await page.locator("#output").textContent();
-  expect(ukrainian).not.toMatch(/\\?{4,}/u);
+  expect(ukrainian).not.toMatch(/\?{4,}/u);
   await expect(page.locator(".grapheme-preview").first()).toBeVisible();
 });
 
