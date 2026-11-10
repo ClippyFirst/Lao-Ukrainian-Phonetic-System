@@ -52,7 +52,7 @@ def main():
         if args.json:
             print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
             return
-        print(f"Input: {result.analysis.input}\\nEngine: meta-hybrid-v3")
+        print(f"Input: {result.analysis.input}\nEngine: meta-hybrid-v3")
         print(f"Ukrainian (selected deterministic lane): {result.ukrainian}")
         comparison = result.segmental_comparison
         print(f"Segmental comparison: {comparison.status}")
@@ -77,7 +77,7 @@ def main():
         if args.json:
             print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
             return
-        print(f"Input: {result.analysis.input}\\nEngine: hybrid-v2")
+        print(f"Input: {result.analysis.input}\nEngine: hybrid-v2")
         print(f"Neural model: {result.model_id}@{result.model_revision}")
         print(f"Neural IPA: {result.neural_raw_ipa}")
         print(f"Tone association: {result.tone_alignment_status}; syllable predictions: {len(result.tone_predictions)}")
