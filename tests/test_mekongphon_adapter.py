@@ -2,7 +2,10 @@ import unittest
 from unittest.mock import patch
 
 from lao_ukrainian.mekongphon import MODEL_REVISIONS, MODEL_WEIGHT_SHA256, MekongPhonEngine, MekongPhonIPAResult, build_result
-from lao_ukrainian import MekongPhonIPAResult as PublicMekongPhonIPAResult, transcribe_ipa as public_transcribe_ipa
+from lao_ukrainian import (
+    MekongPhonIPAResult as PublicMekongPhonIPAResult,
+    transcribe_ipa as public_transcribe_ipa,
+)
 from lao_ukrainian.phonetic_result import from_external_ipa
 
 
