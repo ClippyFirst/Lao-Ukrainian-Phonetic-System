@@ -200,7 +200,7 @@ test("the Ukrainian editorial standard defines language, evidence, and contextua
 test("public prose states the pipeline and research limits directly", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(html, /запише вимову в IPA/);
-  assert.match(methodology, /Між лаоським аналізом і українським записом стоїть Міжнародний фонетичний алфавіт \\(IPA\\)/);
+  assert.match(methodology, /Між лаоським аналізом і українським записом стоїть Міжнародний фонетичний алфавіт \(IPA\)/);
   assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
   assert.doesNotMatch(methodology, /Це не косметична заміна однієї традиції іншою/);
   assert.doesNotMatch(methodology, /Це поєднання культурної обережності та сучасної вебпрактики/);
