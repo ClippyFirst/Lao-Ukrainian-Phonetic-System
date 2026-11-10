@@ -1,9 +1,12 @@
 name: External Lao G2P research benchmarks
 
+# Meta-Hybrid v3 keeps these pinned external engines as research comparators only; agreement is not independent IPA gold.
+# This workflow intentionally runs the complete pinned comparator suite on benchmark branches.
+
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, 'benchmark/**']
     paths:
       - "scripts/benchmark_ipa_contract.py"
       - "scripts/benchmark_additional_lao_g2p.py"
