@@ -480,13 +480,13 @@ def load_neural():
             tonal=tonal, revision=pinned_revision, device="cpu",
             num_beams=MODEL_NUM_BEAMS,
         )
-        smoke = engine.transcribe("ຂາ")
+        smoke = engine.transcribe_ipa("ຂາ")
         if smoke.model_revision != pinned_revision:
-            raise RuntimeError(f"{model_id}: adapter returned unexpected model revision")
+            raise RuntimeError(f"{model_id}: IPA stage returned unexpected model revision")
         if not smoke.raw_ipa.strip() or smoke.phonetic_result.external_ipa != smoke.raw_ipa:
-            raise RuntimeError(f"{model_id}: adapter failed to preserve non-empty raw IPA")
-        if smoke.status == "IPA_UNSUPPORTED" and smoke.ukrainian is not None:
-            raise RuntimeError(f"{model_id}: unsupported IPA must not produce Ukrainian output")
+            raise RuntimeError(f"{model_id}: IPA stage failed to preserve non-empty raw IPA")
+        if smoke.status not in {"OK", "IPA_UNSUPPORTED"}:
+            raise RuntimeError(f"{model_id}: unexpected IPA-stage status {smoke.status}")
 
         def generate(text: str) -> str:
             return nfc(engine.predict_raw_ipa(text))
@@ -525,7 +525,7 @@ def load_neural():
         "num_beams": MODEL_NUM_BEAMS,
         "max_input_tokens": MODEL_MAX_LENGTH,
         "truncation": False,
-        "inference_adapter": "lao_ukrainian.mekongphon.MekongPhonEngine",
+        "inference_adapter": "lao_ukrainian.mekongphon.MekongPhonEngine.transcribe_ipa (stage 1 only)",
     }
 
 
