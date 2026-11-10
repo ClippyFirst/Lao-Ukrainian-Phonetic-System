@@ -3523,3 +3523,31 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 - `actions/deploy-pages@v5` caps its timeout at 600,000 ms. An attempted 1,800,000 ms value was clamped by the action and emitted a warning; the workflow is corrected to the supported 600,000 ms maximum in `5bb6d16...`. The corrected deployment run succeeded without the clamp warning.
 
 **Readiness:** the browser-local Hybrid v2 implementation is deployed and operational as a technical prototype. It is **not yet a phonetic-accuracy-validated release**: the independent adjudicated IPA gold corpus is still empty, multi-syllable tone alignment can be `NOT_ALIGNED`, and all neural tone predictions remain `UNCERTAIN`. Deterministic Ukrainian output remains authoritative. The next genuine acceptance gate is expert IPA annotation/adjudication and an independently measured accuracy benchmark, not more deployment work.
+
+
+## Meta-Hybrid v3 implementation continuation — 2026-11-10
+
+**Base:** PR #160 benchmark/documentation branch head `3fff8b0dd484fb1769bc73b20fe798ce2e5d6bac` (its Verify run #42815881237 completed SUCCESS).  
+**Working branch:** `benchmark/meta-hybrid-v3-multiengine-20261110`.  
+**Implementation scope:** add a non-default Python comparison orchestrator that runs the existing deterministic engine, pinned MekongPhon non-tonal model and pinned MekongPhon tonal model; preserve separate IPA lanes; compare accepted segmental IPA; reuse the existing v2 tone-alignment gate; keep deterministic IPA → Ukrainian adaptation authoritative.
+
+### Task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Inspect existing hybrid v2 and neural model adapters | DONE_VERIFIED | `hybrid_v2.py`, `mekongphon.py`, `core.py`, `test_hybrid_v2.py` inspected on base |
+| Add opt-in three-lane Meta-Hybrid v3 orchestrator | PARTIAL | `meta_hybrid_v3.py` added; exact-head CI pending |
+| Add exact segmental agreement/disagreement gate | PARTIAL | Accepted IPA only; provisional/unsupported units unscorable; tests added, CI pending |
+| Preserve neural tone as separate raw IPA and existing alignment metadata | PARTIAL | Reuses `combine_neural_tones`; tests added, CI pending |
+| CLI and public API exposure | PARTIAL | `--engine meta-hybrid-v3`, public exports added; CI pending |
+| Preserve production default and browser behavior | DONE_VERIFIED by design review; runtime verification pending | No existing default, web module, target adapter or model weights changed |
+| Independent per-input engine selection / best-engine arbitration | BLOCKED / evidence-limited | No independent adjudicated Lao IPA gold; cross-engine agreement alone cannot identify the correct reading |
+| Benchmark all three lanes on a blinded expert gold set | BLOCKED | Gold set currently 0; requires qualified annotators, adjudicator, fixed dialect/IPA convention and rights-cleared sources |
+
+### Important interpretation
+
+Meta-Hybrid v3 is deliberately a **comparison orchestrator**, not a validated majority-vote ensemble. The existing 100-word reference-concordance result favors ClippyFirst on segmental exact matches and MekongPhon Neural on tone, but it is not independent gold. The deterministic result therefore remains selected for Ukrainian output; neural disagreement is exposed rather than silently overwritten. A future selector requires adjudicated per-item gold and a pre-registered selection rule.
+
+### Verification and next gate
+
+Run the exact-head Verify workflow, external comparator workflow (where the branch-triggered run is available), Python unit tests, `npm test`, build, generated-data drift check and browser tests. Report actual terminal results only. Do not deploy this CLI-only diagnostic feature to GitHub Pages or claim linguistic accuracy. If CI reveals code defects, fix and rerun before handoff.
