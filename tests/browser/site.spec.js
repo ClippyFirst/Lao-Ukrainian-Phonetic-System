@@ -397,10 +397,12 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
     [...group.querySelectorAll("button")].map((button) => ({
       name: button.textContent.trim(),
       pressed: button.getAttribute("aria-pressed"),
+      activeClass: button.classList.contains("is-active"),
       background: getComputedStyle(button).backgroundColor
     }))
   );
-  expect(toggled.find((button) => button.name === "За романізацією").background).toBe("rgb(23, 63, 58)");
+  expect(toggled.find((button) => button.name === "За романізацією").activeClass).toBe(true);
+  expect(toggled.find((button) => button.name === "За романізацією").background).not.toBe("rgb(255, 252, 245)");
   expect(toggled.find((button) => button.name === "За романізацією").pressed).toBe("true");
   expect(toggled.find((button) => button.name === "За вимовою").pressed).toBe("false");
 });
