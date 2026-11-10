@@ -3754,3 +3754,5 @@ A related secondary action (“Очистити”) also had insufficient text c
 The Chromium test now explicitly waits for the asynchronous results panel to become visible before asserting contrast and switching modes.
 
 A subsequent Chromium run confirmed the contrast thresholds but found the selected romanization button's computed background did not match its selected state. The selected styling now keys directly off `aria-pressed="true"`, keeping visual and accessibility state on one source of truth. Re-run exact-head verification before marking complete.
+
+The stylesheet URL now has a new cache key (`20261110-contrast-1`) to prevent stale deployed CSS. The Chromium check also verifies the selected state class and rejects the inactive silk background after toggling.
