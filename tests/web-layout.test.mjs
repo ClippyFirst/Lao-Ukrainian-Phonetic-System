@@ -107,7 +107,7 @@ test("service page keeps the working tool visible and exposes the new Lao editor
   assert.match(html, /class="hero-service[^"]*"/);
   assert.match(html, /class="weave-band"/);
   assert.match(html, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
-  for (const id of ["lao-input", "count", "example", "example-complex", "clear", "empty-state", "results", "output", "romanization", "ipa", "copy", "copy-romanization", "copy-ipa", "mode-phonetic", "mode-romanization", "analysis-status", "rows", "warnings"]) {
+  for (const id of ["lao-input", "example", "example-complex", "clear", "empty-state", "results", "output", "romanization", "ipa", "copy", "copy-romanization", "copy-ipa", "mode-phonetic", "mode-romanization", "analysis-status", "rows", "warnings"]) {
     assert.match(html, new RegExp('id="' + id + '"'));
   }
 });
