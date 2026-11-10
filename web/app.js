@@ -1,4 +1,4 @@
-import { analyze } from "./engine.js?v=20261110-grapheme-confidence-2";
+import { analyze } from "./engine.js?v=20261110-provisional-ipa-fallback-1";
 import { romanizeLao } from "./romanization.js";
 import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261031-source-vowel-crosswalk";
 
