@@ -247,7 +247,14 @@ function render() {
   // unresolved Lao units instead of a misleading dash run.
   ipa.textContent = result.syllables
     .filter((syllable) => !syllable.passthrough)
-    .map((syllable) => syllable.ipa || "?")
+    .map((syllable) => {
+      if (syllable.ipa) return syllable.ipa;
+      const preview = syllable.graphemePreview;
+      if (!preview?.ipaPreview) return "?";
+      const unresolvedCount = preview.unresolvedGraphemes?.length || 0;
+      const marker = unresolvedCount ? "?".repeat(Math.min(3, unresolvedCount)) : "";
+      return preview.ipaPreview + marker;
+    })
     .join(" ");
 
   copy.disabled = !activeOutput;
