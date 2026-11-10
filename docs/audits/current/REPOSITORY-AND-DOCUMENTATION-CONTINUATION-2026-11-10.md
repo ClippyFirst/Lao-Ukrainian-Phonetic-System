@@ -6,7 +6,7 @@
 
 ### Changes made
 
-- Added [the Ukrainian editorial standard](../UKRAINIAN-EDITORIAL-STYLE.md): Ukrainian-first interface language, when English identifiers remain, localized language tags, natural copy, contextual review of AI-writing patterns, evidence preservation and design restraint.
+- Added [the Ukrainian editorial standard](../../UKRAINIAN-EDITORIAL-STYLE.md): Ukrainian-first interface language, when English identifiers remain, localized language tags, natural copy, contextual review of AI-writing patterns, evidence preservation and design restraint.
 - Replaced the English-facing `Lao → Українська` brand wording with `Лаоська → Українська` on both public pages.
 - Corrected the romanization output language from `lang="en"` to `lang="lo-Latn"`; kept IPA as `und-fonipa` and Lao input as `lo`.
 - Replaced user-facing `IPA gold corpus`, `PROVISIONAL`, unexplained craft terms and English link labels with Ukrainian explanations while retaining exact model, standard, font and source identifiers.
