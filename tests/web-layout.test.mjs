@@ -175,6 +175,9 @@ test("public interface keeps Ukrainian as its language and labels Lao romanizati
   assert.doesNotMatch(html, /id="romanization"[^>]*lang="en"/);
   assert.doesNotMatch(html + methodology, /IPA gold corpus/i);
   assert.doesNotMatch(html + methodology, /Lao → Українська/);
+  assert.doesNotMatch(html + methodology, /[А-ЯІЇЄҐ]{4,}/);
+  assert.match(html, /name="lao-text" autocomplete="off"/);
+  assert.match(css, /touch-action:\s*manipulation/);
 });
 
 test("visible interface labels use sentence case and explain technical terms in Ukrainian", () => {
