@@ -141,7 +141,7 @@ test("all public site copy explains the product contract and honest uncertainty"
   assert.match(html, /невідомі позиції позначаються «\?»/);
   assert.match(html, /IPA-адаптер/);
   assert.match(methodology, /Незалежний експертно ад'юдикований IPA gold corpus наразі містить 0 еталонів/);
-  assert.match(methodology, /романізація може втрачати тон, довготу та відмінності між голосними/);
+  assert.match(methodology, /романізація може втрачати тон, довготу та відмінності між голосними/i);
   assert.match(methodology, /не вибирає варіант навмання/);
 });
 
