@@ -129,6 +129,7 @@ test("methodology page uses an editorial reading rail and keeps all thirteen sec
   for (let index = 1; index <= 13; index += 1) {
     assert.match(methodology, new RegExp('id="s' + index + '"'));
   }
-  assert.match(methodology, /Naga|наґа/i);
+  const visualResearch = await readFile(new URL("../docs/research/LAO-VISUAL-CULTURE-AND-WEB-DESIGN-REFERENCES-2026-11-10.md", import.meta.url), "utf8");
+  assert.match(visualResearch, /Naga|наґа/i);
   assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
 });
