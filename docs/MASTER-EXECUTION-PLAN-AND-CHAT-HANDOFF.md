@@ -3486,9 +3486,9 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 
 | Work item | Status | Evidence / acceptance |
 |---|---|---|
-| Expose provisional IPA in the main IPA summary | PARTIAL pending exact-head CI | `web/app.js`; browser UI regression checks that a provisional IPA hint is displayed |
-| Bound unresolved marker runs | PARTIAL pending exact-head CI | Python `from_provisional_preview()` and browser hybrid fallback cap at three markers; Python/Node regression cases |
-| Long Lao phrase regression | PARTIAL pending exact-head CI | `tests/test_grapheme_preview.py`, `web/engine.test.js`, `tests/browser/site.spec.js` |
+| Expose provisional IPA in the main IPA summary | DONE_VERIFIED | `web/app.js`; exact-head Chromium assertion in Verify #42830796088 |
+| Bound unresolved marker runs | DONE_VERIFIED | Python `from_provisional_preview()` and browser hybrid fallback cap at three markers; 338 Python + 156 Node tests passed |
+| Long Lao phrase regression | DONE_VERIFIED | `tests/test_grapheme_preview.py`, `web/engine.test.js`, `tests/browser/site.spec.js`; all passed in Verify #42830796088 |
 | Canonical fallback documentation | DONE_VERIFIED as a documentation edit | `docs/lao-grapheme-ipa-preview.md` explains the display priority, confidence markers and test boundary |
 | Independent IPA for the supplied phrase | BLOCKED / evidence-limited | No source-located, rights-cleared, independently adjudicated expert IPA for this exact phrase; tests must not invent it |
 
@@ -3505,4 +3505,15 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 - Exact-head Verify [#42830796088 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796088).
 - Results: 338 Python tests passed; 156 Node tests passed; 20 Chromium UI tests passed. The exact supplied long Lao phrase regression passed, including provisional IPA visibility in the main IPA field, explicit low-confidence disclosure, and no question-mark run longer than three.
 - Repository data/evidence audit, independent IPA gold structure validation, external-G2P syntax/CLI validation, build, generated browser-data reproducibility, built-page/relative-asset checks all passed.
-- Pages workflow [#42830796208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208) is building the same exact main head. Do not mark publication complete until artifact upload, deployment and live smoke checks pass.
+- Pages workflow [#42830796208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208) deployed application SHA `85c0581726c4de659bfe002b61b2bdfdaecfe024`; artifact upload, deployment and live same-origin smoke checks all passed.
+
+
+### Final publication and handoff — 2026-11-10
+
+- **Deployed site:** [https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/)
+- **Application commit deployed:** `85c0581726c4de659bfe002b61b2bdfdaecfe024`.
+- **Pages workflow:** [#42830796208 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796208). Artifact `13771951564`, 40,375,698 bytes. Build, browser regression, actual built-site Hybrid v2 interaction, artifact validation/upload, deployment and live smoke-test all passed.
+- **Exact application verification:** [#42830796088 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42830796088): 338 Python, 156 Node and 20 Chromium tests passed; repository data/evidence audit, IPA-gold schema validation, generated-data reproducibility and built-page checks passed.
+- **Latest documentation-only main update before this final handoff edit:** `e4a6018fcc5fd862c98aa41b2eab9d5a1560ff04`. README, canonical fallback guide, changelog, current audit and this master handoff now agree. The final handoff edit itself is committed immediately after this base; its resulting SHA is reported in the execution summary.
+
+**Outcome:** the user's reported UI defect is fixed and deployed. The main IPA field shows available provisional IPA hints; uncertainty remains explicitly low-confidence; unresolved marker runs are bounded to three. The supplied long phrase is an engineering regression target only. Its exact expert IPA remains **BLOCKED / evidence-limited** because the bundled orthographic lexical hints do not contain the phrase and are not pronunciation sources. The independent adjudicated Lao IPA gold corpus remains 0. Do not call this linguistically validated or claim an expert-confirmed reading.
