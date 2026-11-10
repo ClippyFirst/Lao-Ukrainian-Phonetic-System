@@ -348,3 +348,57 @@ test("input has no placeholder copy and retains its accessible label", async ({ 
   await expect(input).not.toHaveAttribute("placeholder", /.+/);
   await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
 });
+
+
+
+test("mode switch buttons meet WCAG AA text and control-boundary contrast in both states", async ({ page }) => {
+  await page.goto("/");
+  const result = await page.locator(".method-switch").evaluate((group) => {
+    const luminance = (value) => {
+      const channels = value.match(/[\d.]+/g).slice(0, 3).map(Number).map((channel) => {
+        const normalized = channel / 255;
+        return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+      });
+      return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    };
+    const contrast = (first, second) => {
+      const a = luminance(first);
+      const b = luminance(second);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    };
+    const parentBackground = getComputedStyle(group).backgroundColor;
+    return [...group.querySelectorAll("button")].map((button) => {
+      const style = getComputedStyle(button);
+      return {
+        name: button.textContent.trim(),
+        pressed: button.getAttribute("aria-pressed"),
+        textContrast: contrast(style.color, style.backgroundColor),
+        boundaryContrast: contrast(style.borderTopColor, parentBackground),
+        background: style.backgroundColor,
+        color: style.color,
+        border: style.borderTopColor
+      };
+    });
+  });
+  expect(result).toHaveLength(2);
+  for (const button of result) {
+    expect(button.textContrast, button.name + " text contrast").toBeGreaterThanOrEqual(4.5);
+    expect(button.boundaryContrast, button.name + " control boundary contrast").toBeGreaterThanOrEqual(3);
+  }
+  expect(result.find((button) => button.name === "За вимовою").pressed).toBe("true");
+  expect(result.find((button) => button.name === "За романізацією").pressed).toBe("false");
+
+  await page.locator("#mode-romanization").click();
+  await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#mode-phonetic")).toHaveAttribute("aria-pressed", "false");
+  const toggled = await page.locator(".method-switch").evaluate((group) =>
+    [...group.querySelectorAll("button")].map((button) => ({
+      name: button.textContent.trim(),
+      pressed: button.getAttribute("aria-pressed"),
+      background: getComputedStyle(button).backgroundColor
+    }))
+  );
+  expect(toggled.find((button) => button.name === "За романізацією").background).toBe("rgb(23, 63, 58)");
+  expect(toggled.find((button) => button.name === "За романізацією").pressed).toBe("true");
+  expect(toggled.find((button) => button.name === "За вимовою").pressed).toBe("false");
+});
