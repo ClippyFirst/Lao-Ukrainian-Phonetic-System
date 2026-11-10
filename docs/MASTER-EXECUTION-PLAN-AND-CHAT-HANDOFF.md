@@ -49,7 +49,7 @@ The MekongPhon LREC 2026 paper reports under 2% CER on its own 13,442-sentence h
 - Branch: `benchmark/current-main-comparative-20261110`.
 - Workflow trigger update commit: `b6cec3cf5a2b5e31b035f6fdd3a538919ef3c516`.
 - Updated `.github/workflows/external-lao-g2p-benchmarks.yml` so pushes to `benchmark/**` can run the existing pinned Epitran / orthography2ipa / Transphone / Phonetisaurus suite without pushing directly to `main`.
-- The workflow dispatch/status/artifacts are not exposed by the available GitHub connector actions in this session. The rerun is therefore **PENDING / not yet verified**, not DONE_VERIFIED. The local container cannot reach GitHub to clone/run the workflow dependencies. Do not invent a new run ID or claim fresh benchmark results.
+- The workflow dispatch/status/artifacts are not exposed by the available GitHub connector actions in this session. The rerun is therefore **PENDING / not yet verified**, not DONE_VERIFIED. The branch push should match the configured event/path filters, but no check run is visible through the available status endpoint, so execution itself is not asserted. The local container cannot reach GitHub to clone/run the workflow dependencies. Do not invent a new run ID or claim fresh benchmark results.
 
 ### Verdict and acceptance
 
