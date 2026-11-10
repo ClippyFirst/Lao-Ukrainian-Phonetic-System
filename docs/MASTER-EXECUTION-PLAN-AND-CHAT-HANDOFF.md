@@ -3478,7 +3478,7 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 ### Changes
 
 - The IPA summary now prefers supported/uncertain `syllable.ipa`, then displays the available provisional grapheme IPA hint, and falls back to `?` only when neither exists. The provisional uncertainty is retained as a marker.
-- Python and browser typed fallback builders cap a contiguous unresolved run at three `?` markers; a single unresolved unit remains one `?`. This is an uncertainty indicator, not a one-to-one grapheme encoding.
+- Python and browser typed fallback builders cap unresolved positions within one fallback unit at three `?` markers; a single unresolved unit remains one `?`. This is an uncertainty indicator, not a one-to-one grapheme encoding.
 - Added regressions for the supplied `ພຣະຣາຊອານາຈັກຣ໌ລາວ` input across Python, browser engine and actual site UI. Assertions intentionally cover availability of provisional IPA and bounded uncertainty, not a fabricated gold transcription.
 - Updated the canonical fallback guide in place.
 
