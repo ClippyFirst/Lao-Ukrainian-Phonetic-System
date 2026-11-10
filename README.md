@@ -1,12 +1,14 @@
 # Lao → Ukrainian Phonetic-Graphemic Correspondence System
 
+- **[Відкрити вебрушій на GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/)** — локальний у браузері Hybrid v2 IPA-перегляд і детермінований український результат.
+
 - [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
 - [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — target orthography conventions.
 - [Попередній IPA-прев’ю за графемами](docs/lao-grapheme-ipa-preview.md) — partial segmental hints, explicitly marked provisional.
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
-**Current status (2026-11-09):** `main` contains the deterministic hybrid-deterministic engine and the written-evidence/lexical-hint work integrated by [PR #157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/157). The optional LaoNLP word-list matcher is diagnostic-only: it returns overlapping `SOFT_HINT_ONLY` spans and does not segment words, generate IPA, or affect production output. Additional G2P engines, including supervised Lao Transphone, have been compared on a dictionary-seeded reference split; results and dataset limitations are documented in the [engine and dataset inventory](docs/research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md). These scores are not independent expert accuracy. The independent adjudicated IPA gold corpus remains empty, so this is an engineering-verified research prototype, not a linguistically validated production standard. See the [current repository continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) for exact mainline, PR, and verification status.
+**Current status (2026-11-10):** the static web application is live on [GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/). It retains the deterministic `hybrid-deterministic` Ukrainian output as authoritative and adds a separate browser-local Hybrid v2 neural IPA panel using the pinned `byumatrixlab/lao-ipa-tonal` checkpoint, ONNX Runtime Web WASM and beam-five decoding. No inference API, external runtime, CDN or backend is used. Neural tone associations are attached only when alignment is unique; ambiguous multi-syllable output remains `NOT_ALIGNED`, and neural tone predictions remain `UNCERTAIN`. The latest Pages deployment [#42776069784](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069784) passed its live same-origin smoke test for the UI, ONNX weights, tokenizers, WASM runtime and license notices. The independent adjudicated IPA gold corpus remains empty, so this is a deployed engineering prototype, not a linguistically validated production standard. The [current repository continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) records the implementation, deployment evidence and remaining accuracy gate.
 
 ## What this project is
 
