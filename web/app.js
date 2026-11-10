@@ -355,7 +355,7 @@ function render() {
       preview.className = "grapheme-preview";
       preview.setAttribute("role", "note");
       const label = document.createElement("strong");
-      label.textContent = "Попередній IPA (низька впевненість; вимова не підтверджена): ";
+      label.textContent = "Попередній IPA (PROVISIONAL; низька впевненість; вимова не підтверджена): ";
       const value = document.createElement("code");
       value.textContent = syllable.graphemePreview.ipaPreview || "—";
       const unresolved = document.createElement("span");
