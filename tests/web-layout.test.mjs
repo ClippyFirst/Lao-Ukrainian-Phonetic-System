@@ -155,3 +155,13 @@ test("methodology documents the culturally grounded Woven Editorial design ratio
   assert.match(methodology, /DESIGN\.md/);
   assert.match(methodology, /id="s14"/);
 });
+
+
+test("dynamic service copy uses the same clear Ukrainian vocabulary as the static pages", () => {
+  assert.match(app, /Початкова графема/);
+  assert.match(app, /Голосний шаблон/);
+  assert.match(app, /Попередня IPA-підказка/);
+  assert.match(app, /Низька впевненість/);
+  assert.match(app, /Зіставлення з оригіналом/);
+  assert.match(app, /Тон не виводився/);
+});
