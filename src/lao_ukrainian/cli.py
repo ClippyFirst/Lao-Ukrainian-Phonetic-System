@@ -13,7 +13,7 @@ def main():
     ap.add_argument("--ipa-profile", choices=("vientiane", "mekongphon-reference", "hybrid-deterministic"), default=DEFAULT_ENGINE_PROFILE, help="deterministic source-IPA convention (default: hybrid-deterministic); vientiane selects the explicit Vientiane baseline and mekongphon-reference selects the compatibility profile")
     ap.add_argument(
         "--engine",
-        choices=("rules", "mekongphon-tonal", "mekongphon-nontonal", "hybrid-v2"),
+        choices=("rules", "mekongphon-tonal", "mekongphon-nontonal", "hybrid-v2", "meta-hybrid-v3"),
         default="rules",
         help="rules is the default; MekongPhon downloads optional neural weights on first use",
     )
@@ -38,6 +38,32 @@ def main():
                 unresolved = "".join(preview.unresolved_graphemes) or "none"
                 print(f"  IPA preview={preview.ipa_preview or '—'} [{preview.status}]; unresolved={unresolved}")
                 print("  Confidence=LOW; Ukrainian fallback is provisional, unresolved positions use ?, and tone is not inferred.")
+        return
+
+    if args.engine == "meta-hybrid-v3":
+        if args.ipa_profile != DEFAULT_ENGINE_PROFILE:
+            ap.error("--ipa-profile applies only to the deterministic meta-hybrid-v3 base")
+        if args.revision:
+            ap.error("meta-hybrid-v3 uses the two separately pinned MekongPhon model revisions")
+        from .meta_hybrid_v3 import run_meta_hybrid_v3
+        result = run_meta_hybrid_v3(
+            args.text, device=args.device, num_beams=args.num_beams,
+        )
+        if args.json:
+            print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
+            return
+        print(f"Input: {result.analysis.input}\\nEngine: meta-hybrid-v3")
+        print(f"Ukrainian (selected deterministic lane): {result.ukrainian}")
+        comparison = result.segmental_comparison
+        print(f"Segmental comparison: {comparison.status}")
+        print(f"  deterministic IPA: {comparison.deterministic_ipa or '—'}")
+        print(f"  MekongPhon non-tonal IPA: {comparison.neural_ipa or '—'}")
+        if result.tonal_result is not None:
+            print(f"  MekongPhon tonal IPA: {result.tonal_result.raw_ipa}")
+        if result.tone_alignment is not None:
+            print(f"Tone association: {result.tone_alignment.tone_alignment_status}; predictions: {len(result.tone_alignment.tone_predictions)}")
+        if result.warnings:
+            print("Warnings: " + "; ".join(result.warnings))
         return
 
     if args.engine == "hybrid-v2":
