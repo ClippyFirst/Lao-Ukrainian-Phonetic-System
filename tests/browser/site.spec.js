@@ -149,6 +149,11 @@ test("touch emulation can use quick examples and switch output methods", async (
 
 test("browser UI renders provisional Ukrainian output and labels its low confidence", async ({ page }) => {
   await page.goto("/");
+  const directEngineOutput = await page.evaluate(async () => {
+    const engine = await import("/web/engine.js?v=20261110-grapheme-confidence-1");
+    return engine.analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).output;
+  });
+  expect(directEngineOutput).toBe("кал?");
   await page.locator("#lao-input").fill("ກາລ");
   await expect(page.locator(".grapheme-preview")).toContainText("PROVISIONAL");
   await expect(page.locator(".grapheme-preview")).toContainText("kaː");
