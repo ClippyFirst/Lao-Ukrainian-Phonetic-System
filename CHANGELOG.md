@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — branch research consolidation
+
+- Integrated the opt-in Python Meta-Hybrid v3 comparator and tests; it reports cross-engine agreement without voting or changing deterministic Ukrainian output.
+- Added the pinned Laonetics 0.4.3 same-set research benchmark and explicitly documented its CC-BY-NC-4.0 restriction; it is not a production dependency.
+- Enabled external G2P research workflow runs on benchmark branches while keeping all comparator dependencies out of the public website.
+
 ## Unreleased — remove neural inference from public web service
 
 - Removed the Hybrid v2 neural tonal IPA panel and its first-run download/run controls from the public website.
