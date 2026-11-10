@@ -437,3 +437,10 @@ Tone alignment status counts: NOT_ALIGNED 920, ORDER_ALIGNED 10, PARTIAL 4. The 
 **Task ledger:** Hybrid v2 1k sentence-domain run DONE_VERIFIED (stress/coverage only); 100% Ukrainian rendering DONE_VERIFIED; complete segmental IPA PARTIAL; parseable tonal IPA PARTIAL; per-syllable tone association PARTIAL; independent IPA accuracy BLOCKED (requires independently adjudicated IPA gold); neural input acceptance TODO/evidence-limited (define safe policy for 66 explicit rejections; never truncate or strip silently). Browser integration remains DEFERRED until a supported inference backend is available.
 
 The dedicated workflow `hybrid-v2-hvulao-1k.yml` and script `benchmark_hybrid_v2_hvulao_1k.py` already implement this test. Do not duplicate it inside the older three-engine benchmark workflow.
+
+
+## Additional same-set candidate: Laonetics — 2026-11-10
+
+Laonetics 0.4.3 was run on the pinned 100-entry MekongPhon Lao held-out lexicon. It returned 47/100 exact segmental matches, 13.95% CER and 100/100 output coverage; it has no separately scored tonal lane. The final branch run [#42828308429 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42828308429) uploaded aggregate-only artifact [13768874616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42828308429/artifacts/13768874616). The result trails ClippyFirst (90/100; 6.15%), MekongPhon Neural (82/100; 6.64%), Lao2IPA (68/100; 8.97%) and Epitran (71/100; 10.96%) on this specific reference split. This is dictionary-reference concordance, not independent expert accuracy.
+
+Upstream Laonetics 0.4.3 declares CC-BY-NC-4.0 and is an old rule-based karaoke/romanization package. It is installed ephemerally only in the isolated research workflow; no source code or weights are redistributed or imported into the product. It is not suitable for commercial production use without separate rights. The benchmark report is [LAONETICS-SAME-SET-BENCHMARK-2026-11-10.md](LAONETICS-SAME-SET-BENCHMARK-2026-11-10.md).
