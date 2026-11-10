@@ -65,8 +65,8 @@ test("public research status reflects the merged 2026-10-31 implementation", asy
   assert.match(html, /\/ʃt͡ʃ\/.{0,80}→ щ/);
   assert.match(html, /режим за романізацією.{0,100}окрем.{0,12}складов.{0,8}метод/i);
   assert.match(methodology, /Станом на 10 листопада 2026 року/);
-  assert.match(methodology, /незалежн.{0,100}еталонна вибірка IPA.{0,80}0/i);
-  assert.match(methodology, /незалежну фонетичну точність ще не виміряно/i);
+  assert.match(methodology, /еталонна вибірка IPA.{0,100}незалежно перевірених фахівцями прикладів — 0/i);
+  assert.match(methodology, /незалежну фонетичну точність поки не виміряно/i);
 });
 
 test("methodology tables that scroll horizontally are keyboard-focusable and named", async () => {
