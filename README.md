@@ -14,7 +14,7 @@ Research-oriented, machine-readable system for deriving a practical Ukrainian re
 
 ## Website visual direction
 
-A complete visual redesign is in progress on [PR #163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/163). The selected direction is a restrained Lao woven-editorial system: paper and silk grounds, Mekong green, indigo, a controlled lac-red accent, Lao-script typography, and an abstract woven rule. It changes presentation only; the deterministic IPA-first engine and separate romanization method remain untouched.
+The complete visual redesign was merged in [PR #163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/163) as commit `9254bd4ecf014a6a5634ac05cebf0d227077977d` and deployed to GitHub Pages by [run #42847422106](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42847422106). The selected direction is a restrained Lao woven-editorial system: paper and silk grounds, Mekong green, indigo, a controlled lac-red accent, Lao-script typography, and an abstract woven rule. It changes presentation only; the deterministic IPA-first engine and separate romanization method remain untouched.
 
 ## What this project is
 
