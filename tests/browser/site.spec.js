@@ -353,6 +353,7 @@ test("input has no placeholder copy and retains its accessible label", async ({ 
 
 test("mode switch buttons meet WCAG AA text and control-boundary contrast in both states", async ({ page }) => {
   await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ");
   const result = await page.locator(".method-switch").evaluate((group) => {
     const luminance = (value) => {
       const channels = value.match(/[\d.]+/g).slice(0, 3).map(Number).map((channel) => {
