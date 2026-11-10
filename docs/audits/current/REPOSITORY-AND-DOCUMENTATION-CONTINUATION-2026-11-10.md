@@ -388,12 +388,12 @@ No engine, model, IPA mapping, deterministic default or browser runtime behavior
 The final input-field implementation, static/browser regression tests and updated master handoff/audit were verified together on `17d97f0de2070dabc15774289a26bdbd9b9561bc` by [Verify run #42885768390 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42885768390). Results: **350 Python tests, 161 Node tests and 23 Chromium tests passed**; repository data/evidence audit, IPA-gold schema validation, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. No failures.
 
 
-## Contrast repair: pronunciation / romanization mode switch — PARTIAL, 2026-11-10
+## Contrast repair: pronunciation / romanization mode switch — DONE_VERIFIED, 2026-11-10
 
 - The inactive method button previously used `#68716A` text on `#E8EBE1`, a **4.18:1** contrast ratio, below WCAG AA's 4.5:1 normal-text threshold.
 - Updated the inactive state to use a silk surface (`#FFFCF5`), darker text (`#505D55`) and a visible muted border (`#68716A`). The active state remains Mekong green (`#173F3A`) with silk text (`#FFFCF5`); its distinction is also preserved in `aria-pressed`.
 - Added static CSS contract assertions and a Chromium test that computes text and boundary contrast for both states, then toggles the selected method to check state behavior.
-- Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. The first Chromium run caught a test setup issue: the mode switch was still inside the hidden empty-results panel, so the click could not run. The test now enters a sample first. Acceptance awaits a fresh exact-head Verify; visual review on physical displays remains separate.
+- Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. The first Chromium run caught a test setup issue: the mode switch was still inside the hidden empty-results panel, so the click could not run. The test now enters a sample first. The contrast repair is now DONE_VERIFIED by exact-head Verify #42888772138 on `5a028ce91f5c836c42bbd71153c97a844cbe36cb`; manual visual review on physical displays remains separate.
 
 - Follow-up check also found the secondary “Очистити” action used muted text on the paper surface at 4.41:1. Its foreground is now darkened to `#505D55` and its border to `#68716A`; static tests check text and boundary contrast against both paper and silk surfaces.
 
@@ -404,3 +404,8 @@ The final input-field implementation, static/browser regression tests and update
 - Bumped the stylesheet cache key to `20261110-contrast-1` so deployed browsers/CDNs cannot keep serving the previous button palette. Chromium now also asserts the active class and that the selected button does not retain its inactive silk background.
 
 - The follow-up run showed the active class was set correctly, but the assertion sampled `background-color` during its 150 ms CSS transition, before the new color was painted. The browser regression now polls until the transition changes the computed color instead of assuming an instantaneous style update. The stylesheet cache key remains bumped for deployment cache invalidation.
+
+
+### Final contrast verification — DONE_VERIFIED
+
+[Verify run #42888772138 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42888772138) on `5a028ce91f5c836c42bbd71153c97a844cbe36cb`: **350 Python, 163 Node and 24 Chromium tests passed**. Repository data/evidence audit, IPA-gold schema, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed. The browser test computed foreground/background and control-boundary contrast for both method states, verified mode toggling and waited for the CSS transition before reading the selected color. The stylesheet cache key was bumped. The secondary “Очистити” action also has a stronger foreground and visible border. No phonetic engine, data, IPA or result behavior changed.
