@@ -386,7 +386,7 @@ main {
   background: #F0F3EC;
 }
 .mini-button:active, .button:active, .copy-button:active, .method-button:active { transform: scale(.98); }
-.button-secondary { background: transparent; color: var(--muted); }
+.button-secondary { background: transparent; border-color: var(--muted); color: #505D55; }
 .copy{min-height:44px}
 
 .output-workspace { min-width: 0; }
