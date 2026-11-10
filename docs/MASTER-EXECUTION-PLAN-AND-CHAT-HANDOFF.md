@@ -3743,3 +3743,8 @@ The public Lao input no longer displays instructional placeholder text. Its acce
 - Verified implementation and documentation head: `17d97f0de2070dabc15774289a26bdbd9b9561bc`.
 - Exact-head Verify: [#42885768390 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42885768390): 350 Python, 161 Node and 23 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
 - Input field has no placeholder attribute or in-field instruction; accessible label is “Текст для аналізу”. No phonology, IPA mapping, engine or model behavior changed.
+
+
+## Contrast improvement for method buttons — 2026-11-10
+
+The “За вимовою” / “За романізацією” switch had an inactive text contrast of 4.18:1 on its group surface, below the 4.5:1 WCAG AA normal-text threshold. The inactive state now uses a silk surface, darker foreground and a visible border; the active state keeps the dark Mekong fill and silk foreground. Static assertions and a Chromium contrast-ratio test cover both states and selection changes. Exact-head Verify is pending; do not mark this work DONE_VERIFIED until it passes.
