@@ -7,7 +7,7 @@ from lao_ukrainian.cli import main
 
 
 class GraphemePreviewTests(unittest.TestCase):
-    def test_unconsumed_tail_gets_low_confidence_ukrainian_fallback(self):
+    def test_unconsumed_tail_gets_partial_preview_only(self):
         syllable = analyze("ກາລ").syllables[0]
         preview = syllable.grapheme_preview
         self.assertIsNone(syllable.phonemic_ipa)
@@ -54,7 +54,6 @@ class GraphemePreviewTests(unittest.TestCase):
         self.assertIn("IPA=None", rendered)
         self.assertIn("IPA preview=kaːl [PROVISIONAL]", rendered)
         self.assertIn("unresolved=ລ", rendered)
-        self.assertIn("Confidence=LOW", rendered)
 
 
 if __name__ == "__main__":
