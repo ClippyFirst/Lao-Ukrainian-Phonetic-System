@@ -192,10 +192,6 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:20px max(24px
 .result-card-primary{grid-column:1/-1;border-color:var(--ink);background:#edf1f7}
 .result-card-neural{grid-column:1/-1;background:#f8f9fb}
 .result-card-neural .method-button{margin-top:5px}
-.hybrid-v2-predictions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:7px;margin-top:10px}
-.hybrid-v2-prediction{margin:0;padding:9px 11px;border:1px solid var(--line);background:#fff;font-size:.82rem;line-height:1.5}
-.hybrid-v2-warnings{margin-top:8px}
-.hybrid-v2-warnings:empty{display:none}
 .result-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:13px;font-size:.82rem}
 .method-switch{display:inline-flex;flex-wrap:wrap;gap:5px;max-width:100%;margin:0 0 12px;padding:4px;border:1px solid var(--line);background:#f7f5f0}
 .method-button{min-height:44px;padding:6px 11px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:.78rem;font-weight:750}
