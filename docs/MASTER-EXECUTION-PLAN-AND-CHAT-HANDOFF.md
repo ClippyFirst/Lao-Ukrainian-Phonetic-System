@@ -38,6 +38,8 @@
 
 **Verification note:** local shell access cannot resolve `github.com`, so repository cloning and local test execution are blocked by DNS/network access. Do not mark tests green from file inspection. Exact-branch GitHub Actions Verify and Pages checks are required before this task can be closed.
 
+**CI evidence so far:** first PR Verify run [#42881436157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42881436157) passed Python, engine and build steps but failed 4 of 22 Chromium assertions because browser tests still expected the previous all-caps statuses and the English `PROVISIONAL` token. Updated those assertions in `tests/browser/site.spec.js`. A fresh run for the subsequent head was queued as [#42882782069](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42882782069); its result is not yet known.
+
 ## Complete public website copy rewrite — 2026-11-10
 
 **PR:** [#168 — merged](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/168)  
