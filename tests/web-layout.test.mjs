@@ -230,7 +230,7 @@ test("input starts without instructional placeholder text and keeps a concise ac
 
 test("pronunciation and romanization mode buttons have explicit high-contrast states", () => {
   const method = css.match(/\.method-button\s*\{([^}]*)\}/)?.[1] || "";
-  const active = css.match(/\.method-button\.is-active\s*\{([^}]*)\}/)?.[1] || "";
+  const active = css.match(/\.method-button\[aria-pressed="true"\]\s*\{([^}]*)\}/)?.[1] || "";
   assert.match(method, /border:\s*1px solid var\(--muted\)/);
   assert.match(method, /background:\s*var\(--silk\)/);
   assert.match(method, /color:\s*#505D55/i);
