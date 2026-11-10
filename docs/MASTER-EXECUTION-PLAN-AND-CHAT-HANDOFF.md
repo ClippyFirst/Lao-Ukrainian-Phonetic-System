@@ -3614,3 +3614,17 @@ Branch refs are retained to preserve provenance; no force-push or branch deletio
 - PR #145 remains open and unmerged: it changes the Python CLI default to neural-first, whereas the current system specification explicitly retains deterministic rules as the default and neural models as opt-in research tooling. Its branch is preserved for a separate architecture decision; no unrelated branch work was imported.
 
 **Acceptance:** CLI formatting fix — DONE_VERIFIED. Linguistic readiness is unchanged: independent adjudicated IPA gold remains 0; this engineering fix makes no pronunciation-accuracy claim.
+
+
+## Standalone MekongPhon IPA stage — PARTIAL pending final-head verification, 2026-11-10
+
+- **PR:** [#165 — Expose MekongPhon stage-one typed IPA API](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/165), based on main 795aa159dce25477491f71d23c03f11fc48801db.
+- Adds MekongPhonIPAResult, MekongPhonEngine.transcribe_ipa() and package-level transcribe_ipa(). The stage stops at typed IPA, preserves raw output/provenance/tone metadata and does not call the Ukrainian adapter. Existing transcribe()/transcribe_lao() now explicitly continue through the target adapter. The deterministic default and CLI defaults remain unchanged.
+- The benchmark smoke path now calls the stage-one API, so model smoke validation does not conflate G2P with Ukrainian target adaptation. The workflow explicitly includes this feature branch to run pinned model inference.
+- Test-first RED: [#42861065170](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42861065170), 348 tests with the two expected missing-API failures.
+- API-stage actual model benchmark: [#42861658338 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42861658338), schema 8.0, both pinned MekongPhon models loaded and completed the 100-word held-out comparison; artifact [13785117940](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42861658338/artifacts/13785117940).
+- Exact implementation-head Verify [#42861658071 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42861658071): 348 Python, 152 Node and 22 Chromium tests; data/evidence audit, IPA schema, build, generated-data reproducibility and built-site checks passed. A further regression test verifies that the full transcribe() path still performs Ukrainian adaptation; its exact-head run and the documentation-complete head run are tracked before merge.
+- Current documentation includes the fresh schema-8 100-word rerun, schema-1.5 HVULao 1k stress rerun, and a separate Hybrid v2 1k stress report. None of these stress/lexicon references is independent adjudicated IPA gold.
+- PR #145 remains open and unmerged. It is 292 commits behind main and 24 commits ahead, and proposes a neural-first CLI default that conflicts with the current deterministic-default specification. The stage-one API was selectively implemented without importing that default change.
+
+**Acceptance:** API and full-chain regression implementation present; final exact-head verification pending. No production website or default engine behavior changes.
