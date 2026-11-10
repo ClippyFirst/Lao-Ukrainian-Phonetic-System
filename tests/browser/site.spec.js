@@ -83,7 +83,7 @@ test("the service exposes named landmarks, controls, and live result announcemen
   await expect(page.getByRole("banner")).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Основна навігація" })).toBeVisible();
   await expect(page.getByRole("main")).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
   await expect(page.getByRole("group", { name: "Швидкі приклади" })).toBeVisible();
   await page.locator("#lao-input").fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
@@ -240,11 +240,11 @@ test("forced-colors and reduced-motion preferences retain visible focus and supp
 test("screen-reader roles expose the service controls and output state", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Від лаоського складу — до українського читання." })).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Приклад: ຂາ" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Приклад: ເຂົ້າໜຽວ" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
-  await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
+  await page.getByRole("textbox", { name: "Текст для аналізу" }).fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.getByRole("button", { name: "За вимовою" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
@@ -338,4 +338,13 @@ test("methodology reading rail remains usable without page overflow at every tar
     expect(layout.rail.width).toBeGreaterThan(0);
     expect(layout.rail.right).toBeLessThanOrEqual(layout.viewport);
   }
+});
+
+
+test("input has no placeholder copy and retains its accessible label", async ({ page }) => {
+  await page.goto("/");
+  const input = page.locator("#lao-input");
+  await expect(input).toHaveAttribute("aria-describedby", "input-help");
+  await expect(input).not.toHaveAttribute("placeholder", /.+/);
+  await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
 });
