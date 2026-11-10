@@ -1,3 +1,45 @@
+## Ukrainian editorial and interface-quality pass — PARTIAL, 2026-11-10
+
+**Branch:** `quality/ukrainian-editorial-audit-2026-11-10`  
+**Base main:** `3dd77a4ea080ce700cb0a131114470ad43de0b94`  
+**Scope:** apply selected guidance from Vercel Web Interface Guidelines, blader/humanizer, Anthropic frontend-design and obra/superpowers to the existing Woven Editorial site. No runtime dependency or copied skill tree is added.
+
+### Changes made
+
+- Added [the Ukrainian editorial standard](../../UKRAINIAN-EDITORIAL-STYLE.md): Ukrainian-first interface language, when English identifiers remain, localized language tags, natural copy, contextual review of AI-writing patterns, evidence preservation and design restraint.
+- Replaced the English-facing `Lao → Українська` brand wording with `Лаоська → Українська` on both public pages.
+- Corrected the romanization output language from `lang="en"` to `lang="lo-Latn"`; kept IPA as `und-fonipa` and Lao input as `lo`.
+- Replaced user-facing `IPA gold corpus`, `PROVISIONAL`, unexplained craft terms and English link labels with Ukrainian explanations while retaining exact model, standard, font and source identifiers.
+- Re-read the complete public copy and rewrote staged contrasts, abstract closers, repeated explanations and marketing-like claims into direct Ukrainian. Preserved all figures, benchmark caveats, dialect scope, IPA uncertainty and source references.
+- Changed all-caps UI and methodology labels to sentence case; removed forced uppercase from analysis captions.
+- Added explicit `name` and `autocomplete="off"` to the local Lao text field, plus intentional tap feedback and `touch-action: manipulation`.
+- Added static regression assertions for Ukrainian branding, language metadata, sentence-case labels, English leakage, technical-term explanations and touch behavior.
+- Preserved all input/output element IDs, the 14 methodology anchors, all 3 tables, the Woven Editorial concept, the IPA-first product contract and the engine implementation.
+
+### Methodology applied
+
+- **Vercel Web Interface Guidelines:** checked semantics, labels, language metadata, focus, reduced motion, touch targets, typography, input behavior, responsive overflow and state feedback. Fixed the concrete language-tag, input-metadata, uppercase-label and touch-feedback issues identified in the current code.
+- **Humanizer:** applied its structural review (staged contrasts, repeated closers, forced triads, inflated language, decorative formatting and chat residue) as editorial prompts, not as a mechanical denylist. Kept real technical distinctions and all evidence-bearing claims.
+- **Anthropic frontend-design:** retained a subject-specific visual identity, one restrained woven motif, purposeful typography and motion, and rejected generic SaaS-card/gradient decoration.
+- **Superpowers:** scoped changes to existing seams, added acceptance tests before implementation, and will use exact-head CI for full verification.
+
+### Task ledger
+
+| Item | Status | Acceptance evidence |
+|---|---|---|
+| Ukrainian editorial standard and source mapping | DONE_IMPLEMENTED | `docs/UKRAINIAN-EDITORIAL-STYLE.md`; docs index and AGENTS reference |
+| Public language and terminology cleanup | DONE_IMPLEMENTED | `index.html`, `system.html`, `web/app.js` |
+| UI language metadata and input semantics | DONE_IMPLEMENTED | `lang="lo-Latn"`, named textarea, autocomplete policy |
+| Sentence-case and touch presentation | DONE_IMPLEMENTED | `web/styles.css`, static tests |
+| Regression coverage | DONE_VERIFIED | Static/editorial and browser assertions pass on exact PR head; Verify run #42883137574 |
+| Vercel guideline review | PARTIAL | Code-level findings fixed; 350 Python, 160 browser-engine and 22 Chromium tests pass. Physical-device and manual screenshot review remain pending |
+| Manual screenshot, physical-device and dedicated assistive-technology review | BLOCKED | CI covers Chromium viewports, focus, roles, touch and reduced motion; no physical-device or independent screen-reader session available |
+| Linguistic accuracy | UNCHANGED / EVIDENCE-LIMITED | No phonological code or corpus changed; independent adjudicated IPA gold remains 0 |
+
+**Verification:** local shell access cannot resolve `github.com`, so cloning and local test execution were unavailable. Latest exact-head GitHub Actions Verify run [#42883622543](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42883622543) passed on commit `836878509bbe9b2a8806b112cfa2e0e5c51460cd`: 350 Python tests, 160 browser-engine tests and 22 Chromium UI tests; data/evidence audit, independent IPA gold schema validation, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed. Earlier failures were stale copy assertions; those expectations were corrected before the green run. No Pages deployment was triggered because the PR remains unmerged. The independent expert-adjudicated IPA gold set remains empty (0), so linguistic accuracy is still evidence-limited.
+
+**CI evidence so far:** first PR Verify run [#42881436157](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42881436157) passed Python, engine and build steps but failed 4 of 22 Chromium assertions because browser tests still expected the previous all-caps statuses and the English `PROVISIONAL` token. Updated those assertions in `tests/browser/site.spec.js`. Run [#42882782069](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42882782069) then passed 159/160 browser-engine tests; the sole failure was another stale copy assertion for the previous romanization explanation. Updated that assertion to the new Ukrainian wording. Rerun [#42882961437](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42882961437) failed one remaining stale assertion for the explicit 10 November 2026 status date; restored the date in the simplified paragraph. A new exact-head run is required.
+
 ## Complete public website copy rewrite — 2026-11-10
 
 **PR:** [#168 — merged](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/168)  
@@ -330,3 +372,40 @@ The README's prior schema-6/2026-11-09 benchmark paragraph was stale. It now sum
 Exact documentation-complete Verify [#42871983082 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871983082): 350 Python, 152 Node and 22 Chromium tests passed; repository audit, IPA schema, external-G2P CLI, locked install, build, generated-data reproducibility and built-page checks passed. Mainline Verify [#42872275176](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42872275176) was triggered by the merge; its exact-main result remains pending at this audit checkpoint.
 
 No engine, model, IPA mapping, deterministic default or browser runtime behavior changed. Independent adjudicated IPA gold remains 0.
+
+
+## Remove instructional copy from the Lao input — DONE_VERIFIED, 2026-11-10
+
+- Removed the in-field Lao-script placeholder so the writing area opens clean, without a prefilled instruction or example phrase.
+- Renamed the visually hidden accessible label from “Лаоський текст” to “Текст для аналізу”; the field remains programmatically named for assistive technology.
+- Updated browser and static regression coverage, and removed the now-unused placeholder styling. Existing field ID, Lao language metadata, input behavior, examples and engine contracts are unchanged.
+- Exact-head Verify [#42885560300 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42885560300) on `777c2e5baa620132b76ddceb323b361aae9b2886`: **350 Python, 161 Node and 23 Chromium tests passed**. Repository data/evidence audit, IPA-gold schema validation, optional external-G2P syntax/CLI, static build, generated-data reproducibility and built-page/relative-asset checks also passed.
+- Acceptance: clean input field and accessible name — DONE_VERIFIED. Manual device/screen-reader review remains separate; this change makes no phonetic-accuracy claim.
+
+
+## Exact-head verification after handoff reconciliation — DONE_VERIFIED, 2026-11-10
+
+The final input-field implementation, static/browser regression tests and updated master handoff/audit were verified together on `17d97f0de2070dabc15774289a26bdbd9b9561bc` by [Verify run #42885768390 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42885768390). Results: **350 Python tests, 161 Node tests and 23 Chromium tests passed**; repository data/evidence audit, IPA-gold schema validation, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. No failures.
+
+
+## Contrast repair: pronunciation / romanization mode switch — DONE_VERIFIED, 2026-11-10
+
+- The inactive method button previously used `#68716A` text on `#E8EBE1`, a **4.18:1** contrast ratio, below WCAG AA's 4.5:1 normal-text threshold.
+- Updated the inactive state to use a silk surface (`#FFFCF5`), darker text (`#505D55`) and a visible muted border (`#68716A`). The active state remains Mekong green (`#173F3A`) with silk text (`#FFFCF5`); its distinction is also preserved in `aria-pressed`.
+- Added static CSS contract assertions and a Chromium test that computes text and boundary contrast for both states, then toggles the selected method to check state behavior.
+- Target ratios after the change: inactive text **6.75:1**, inactive border against group surface **4.18:1**, active text **11.33:1**. The first Chromium run caught a test setup issue: the mode switch was still inside the hidden empty-results panel, so the click could not run. The test now enters a sample first. The contrast repair is now DONE_VERIFIED by exact-head Verify #42888772138 on `5a028ce91f5c836c42bbd71153c97a844cbe36cb`; manual visual review on physical displays remains separate.
+
+- Follow-up check also found the secondary “Очистити” action used muted text on the paper surface at 4.41:1. Its foreground is now darkened to `#505D55` and its border to `#68716A`; static tests check text and boundary contrast against both paper and silk surfaces.
+
+- The browser test now waits for the results panel to become visible before measuring or clicking the method buttons, matching the actual asynchronous UI lifecycle.
+
+- The next Chromium run verified contrast ratios and state attributes but caught that the selected romanization button did not receive the expected computed background after interaction. CSS now keys the selected visual treatment directly to `aria-pressed="true"`, the same state exposed to assistive technology, rather than relying on a parallel class selector. A new exact-head run must verify this behavior.
+
+- Bumped the stylesheet cache key to `20261110-contrast-1` so deployed browsers/CDNs cannot keep serving the previous button palette. Chromium now also asserts the active class and that the selected button does not retain its inactive silk background.
+
+- The follow-up run showed the active class was set correctly, but the assertion sampled `background-color` during its 150 ms CSS transition, before the new color was painted. The browser regression now polls until the transition changes the computed color instead of assuming an instantaneous style update. The stylesheet cache key remains bumped for deployment cache invalidation.
+
+
+### Final contrast verification — DONE_VERIFIED
+
+[Verify run #42888772138 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42888772138) on `5a028ce91f5c836c42bbd71153c97a844cbe36cb`: **350 Python, 163 Node and 24 Chromium tests passed**. Repository data/evidence audit, IPA-gold schema, optional external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed. The browser test computed foreground/background and control-boundary contrast for both method states, verified mode toggling and waited for the CSS transition before reading the selected color. The stylesheet cache key was bumped. The secondary “Очистити” action also has a stronger foreground and visible border. No phonetic engine, data, IPA or result behavior changed.

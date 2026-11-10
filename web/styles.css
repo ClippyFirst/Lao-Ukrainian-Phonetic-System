@@ -28,9 +28,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-a { color: inherit; }
+a { color: inherit; -webkit-tap-highlight-color: transparent; }
 button, textarea { font: inherit; }
-button { cursor: pointer; }
+button { cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 [hidden], .hidden { display: none !important; }
 ::selection { background: var(--mekong); color: var(--silk); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
@@ -340,7 +340,6 @@ main {
   font: 1.45rem/1.85 var(--font-lao);
 }
 .input-shell textarea:focus { outline: 0; box-shadow: none; }
-.input-shell textarea::placeholder { color: #8A918A; opacity: 1; }
 .input-hint {
   display: flex;
   justify-content: space-between;
@@ -387,7 +386,7 @@ main {
   background: #F0F3EC;
 }
 .mini-button:active, .button:active, .copy-button:active, .method-button:active { transform: scale(.98); }
-.button-secondary { background: transparent; color: var(--muted); }
+.button-secondary { background: transparent; border-color: var(--muted); color: #505D55; }
 .copy{min-height:44px}
 
 .output-workspace { min-width: 0; }
@@ -530,20 +529,23 @@ main {
 .method-button {
   min-height: 44px;
   padding: 6px 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--muted);
+  border: 1px solid var(--muted);
+  background: var(--silk);
+  color: #505D55;
   font-size: .75rem;
   font-weight: 800;
-  transition: color 150ms ease, background-color 150ms ease, transform 140ms var(--ease-out);
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, transform 140ms var(--ease-out);
 }
-.method-button:hover:not(:disabled) { color: var(--mekong); }
-.method-button.is-active {
+.method-button:hover:not(:disabled) {
+  border-color: var(--mekong);
+  color: var(--mekong);
+}
+.method-button[aria-pressed="true"] {
   border-color: var(--mekong);
   background: var(--mekong);
   color: var(--silk);
 }
-.method-button.is-active:hover:not(:disabled) { background: #24554E; }
+.method-button[aria-pressed="true"]:hover:not(:disabled) { background: #24554E; }
 .method-note {
   margin: 8px 0 0;
   color: var(--muted);
@@ -631,10 +633,10 @@ main {
 .analysis-grid div { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
 .analysis-grid small {
   color: var(--muted);
-  font-size: .68rem;
-  font-weight: 750;
-  letter-spacing: .035em;
-  text-transform: uppercase;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
 }
 .analysis-grid strong { font-size: .87rem; overflow-wrap: anywhere; }
 .rules {

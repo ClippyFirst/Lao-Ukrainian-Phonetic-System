@@ -6,14 +6,14 @@ test("Lao input produces visible Ukrainian and IPA results", async ({ page }) =>
   await expect(page.locator("#results")).toBeVisible();
   await expect(page.locator("#output")).toHaveText("к'а");
   await expect(page.locator("#ipa")).toHaveText("kʰaː");
-  await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
+  await expect(page.locator("#analysis-status")).toContainText("Готово");
 });
 
 test("mixed-script input preserves visible text and renders supported Lao spans", async ({ page }) => {
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ — українська 08:05 🙂");
   await expect(page.locator("#results")).toBeVisible();
-  await expect(page.locator("#analysis-status")).toContainText("ЧАСТКОВИЙ АНАЛІЗ");
+  await expect(page.locator("#analysis-status")).toContainText("Частковий аналіз");
   await expect(page.locator("#output")).toHaveText("к'а — українська 08:05 🙂");
   await expect(page.locator("#warnings")).toContainText("Непідтримуваний символ");
   await page.locator("#mode-romanization").click();
@@ -83,7 +83,7 @@ test("the service exposes named landmarks, controls, and live result announcemen
   await expect(page.getByRole("banner")).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Основна навігація" })).toBeVisible();
   await expect(page.getByRole("main")).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
   await expect(page.getByRole("group", { name: "Швидкі приклади" })).toBeVisible();
   await page.locator("#lao-input").fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
@@ -167,7 +167,7 @@ test("browser UI renders provisional Ukrainian output and labels its low confide
   });
   expect(directEngineResult.output, JSON.stringify(directEngineResult)).toBe("кал?");
   await page.locator("#lao-input").fill("ກາລ");
-  await expect(page.locator(".grapheme-preview")).toContainText("PROVISIONAL");
+  await expect(page.locator(".grapheme-preview")).toContainText("Попередня IPA-підказка");
   await expect(page.locator(".grapheme-preview")).toContainText("kaː");
   await expect(page.locator("#output")).toHaveText("кал?");
   await expect(page.locator(".grapheme-preview")).toContainText("ລ");
@@ -240,15 +240,15 @@ test("forced-colors and reduced-motion preferences retain visible focus and supp
 test("screen-reader roles expose the service controls and output state", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Від лаоського складу — до українського читання." })).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "Лаоський текст" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Приклад: ຂາ" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Приклад: ເຂົ້າໜຽວ" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Очистити" })).toBeVisible();
-  await page.getByRole("textbox", { name: "Лаоський текст" }).fill("ຂາ");
+  await page.getByRole("textbox", { name: "Текст для аналізу" }).fill("ຂາ");
   await expect(page.getByRole("group", { name: "Метод українського запису" })).toBeVisible();
   await expect(page.getByRole("button", { name: "За вимовою" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "За романізацією" })).toHaveAttribute("aria-pressed", "false");
-  await expect(page.locator("#analysis-status")).toContainText("ГОТОВО");
+  await expect(page.locator("#analysis-status")).toContainText("Готово");
   await expect(page.locator("#copy")).toBeEnabled();
   await expect(page.locator("#copy")).toHaveAccessibleName("Копіювати");
   await expect(page.locator("#output")).toHaveAttribute("aria-atomic", "true");
@@ -338,4 +338,71 @@ test("methodology reading rail remains usable without page overflow at every tar
     expect(layout.rail.width).toBeGreaterThan(0);
     expect(layout.rail.right).toBeLessThanOrEqual(layout.viewport);
   }
+});
+
+
+test("input has no placeholder copy and retains its accessible label", async ({ page }) => {
+  await page.goto("/");
+  const input = page.locator("#lao-input");
+  await expect(input).toHaveAttribute("aria-describedby", "input-help");
+  await expect(input).not.toHaveAttribute("placeholder", /.+/);
+  await expect(page.getByRole("textbox", { name: "Текст для аналізу" })).toBeVisible();
+});
+
+
+
+test("mode switch buttons meet WCAG AA text and control-boundary contrast in both states", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຂາ");
+  await expect(page.locator("#results")).toBeVisible();
+  const result = await page.locator(".method-switch").evaluate((group) => {
+    const luminance = (value) => {
+      const channels = value.match(/[\d.]+/g).slice(0, 3).map(Number).map((channel) => {
+        const normalized = channel / 255;
+        return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+      });
+      return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    };
+    const contrast = (first, second) => {
+      const a = luminance(first);
+      const b = luminance(second);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    };
+    const parentBackground = getComputedStyle(group).backgroundColor;
+    return [...group.querySelectorAll("button")].map((button) => {
+      const style = getComputedStyle(button);
+      return {
+        name: button.textContent.trim(),
+        pressed: button.getAttribute("aria-pressed"),
+        textContrast: contrast(style.color, style.backgroundColor),
+        boundaryContrast: contrast(style.borderTopColor, parentBackground),
+        background: style.backgroundColor,
+        color: style.color,
+        border: style.borderTopColor
+      };
+    });
+  });
+  expect(result).toHaveLength(2);
+  for (const button of result) {
+    expect(button.textContrast, button.name + " text contrast").toBeGreaterThanOrEqual(4.5);
+    expect(button.boundaryContrast, button.name + " control boundary contrast").toBeGreaterThanOrEqual(3);
+  }
+  expect(result.find((button) => button.name === "За вимовою").pressed).toBe("true");
+  expect(result.find((button) => button.name === "За романізацією").pressed).toBe("false");
+
+  await page.locator("#mode-romanization").click();
+  await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#mode-phonetic")).toHaveAttribute("aria-pressed", "false");
+  const toggled = await page.locator(".method-switch").evaluate((group) =>
+    [...group.querySelectorAll("button")].map((button) => ({
+      name: button.textContent.trim(),
+      pressed: button.getAttribute("aria-pressed"),
+      activeClass: button.classList.contains("is-active"),
+      background: getComputedStyle(button).backgroundColor
+    }))
+  );
+  expect(toggled.find((button) => button.name === "За романізацією").activeClass).toBe(true);
+  await expect.poll(() => page.locator("#mode-romanization").evaluate((button) => getComputedStyle(button).backgroundColor)).not.toBe("rgb(255, 252, 245)");
+  expect(toggled.find((button) => button.name === "За романізацією").pressed).toBe("true");
+  expect(toggled.find((button) => button.name === "За вимовою").pressed).toBe("false");
 });

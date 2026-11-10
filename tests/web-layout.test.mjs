@@ -61,12 +61,12 @@ test("Ukrainian result offers an accessible two-method selector in one result ca
 
 test("public research status reflects the merged 2026-10-31 implementation", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /СТАН ДОСЛІДЖЕННЯ · 10\.11\.2026/);
+  assert.match(html, /Стан дослідження · 10\.11\.2026/);
   assert.match(html, /\/ʃt͡ʃ\/.{0,80}→ щ/);
-  assert.match(html, /режим за романізацією.{0,100}окрем.{0,12}складов.{0,8}метод/i);
+  assert.match(html, /Режим романізації окремо розбирає склади за профілем CLDR Lao-Latin \/ BGN-PCGN/);
   assert.match(methodology, /Станом на 10 листопада 2026 року/);
-  assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
-  assert.match(methodology, /незалежну фонетичну точність ще не виміряно/i);
+  assert.match(methodology, /еталонна вибірка IPA.{0,100}незалежно перевірених фахівцями прикладів — 0/i);
+  assert.match(methodology, /незалежну фонетичну точність поки не виміряно/i);
 });
 
 test("methodology tables that scroll horizontally are keyboard-focusable and named", async () => {
@@ -106,7 +106,7 @@ test("Lao editorial design system replaces the old national-flag palette with te
 test("service page keeps the working tool visible and exposes the new Lao editorial identity", () => {
   assert.match(html, /class="hero-service[^"]*"/);
   assert.match(html, /class="weave-band"/);
-  assert.match(html, /Lao.*Українська/);
+  assert.match(html, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
   for (const id of ["lao-input", "count", "example", "example-complex", "clear", "empty-state", "results", "output", "romanization", "ipa", "copy", "copy-romanization", "copy-ipa", "mode-phonetic", "mode-romanization", "analysis-status", "rows", "warnings"]) {
     assert.match(html, new RegExp('id="' + id + '"'));
   }
@@ -122,7 +122,7 @@ test("shared design system includes responsive, keyboard, and reduced-motion tre
   assert.match(css, /::selection/);
 });
 
-test("methodology page uses an editorial reading rail and keeps all thirteen sections", async () => {
+test("methodology page uses an editorial reading rail and keeps all fourteen sections", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(methodology, /class="reading-rail(?:\s|")/);
   assert.match(methodology, /class="weave-band"/);
@@ -131,16 +131,16 @@ test("methodology page uses an editorial reading rail and keeps all thirteen sec
   }
   const visualResearch = await readFile(new URL("../docs/research/LAO-VISUAL-CULTURE-AND-WEB-DESIGN-REFERENCES-2026-11-10.md", import.meta.url), "utf8");
   assert.match(visualResearch, /Naga|наґа/i);
-  assert.match(methodology, /незалежн.{0,80}gold corpus.{0,80}0/i);
+  assert.match(methodology, /незалежн.{0,100}еталонна вибірка IPA.{0,80}0/i);
 });
 
 
 test("all public site copy explains the product contract and honest uncertainty", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
-  assert.match(html, /Вставте слово, фразу або цілий уривок лаоською/);
+  assert.match(html, /Вставте лаоське слово, фразу або уривок/);
   assert.match(html, /невідомі позиції позначаються «\?»/);
   assert.match(html, /IPA-адаптер/);
-  assert.match(methodology, /Незалежний експертно ад'юдикований IPA gold corpus наразі містить 0 еталонів/);
+  assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
   assert.match(methodology, /романізація може втрачати тон, довготу та відмінності між голосними/i);
   assert.match(methodology, /не вибирає варіант навмання/);
 });
@@ -148,9 +148,9 @@ test("all public site copy explains the product contract and honest uncertainty"
 test("methodology documents the culturally grounded Woven Editorial design rationale", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(methodology, /Woven Editorial/);
-  assert.match(methodology, /не копія конкретного етнічного орнаменту/);
+  assert.match(methodology, /Ми не відтворюємо конкретний етнічний візерунок/);
   assert.match(methodology, /Global InCH/);
-  assert.match(methodology, /W3C Lao Script Resources/);
+  assert.match(methodology, /ресурси W3C щодо лаоського письма/);
   assert.match(methodology, /Noto Sans Lao/);
   assert.match(methodology, /DESIGN\.md/);
   assert.match(methodology, /id="s14"/);
@@ -164,4 +164,95 @@ test("dynamic service copy uses the same clear Ukrainian vocabulary as the stati
   assert.match(app, /Низька впевненість/);
   assert.match(app, /Зіставлення з оригіналом/);
   assert.match(app, /Тон не визначався/);
+});
+
+
+test("public interface keeps Ukrainian as its language and labels Lao romanization correctly", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(html, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
+  assert.match(methodology, /Лаоська\s*<span[^>]*>→<\/span>\s*Українська/);
+  assert.match(html, /id="romanization"[^>]*lang="lo-Latn"/);
+  assert.doesNotMatch(html, /id="romanization"[^>]*lang="en"/);
+  assert.doesNotMatch(html + methodology, /IPA gold corpus/i);
+  assert.doesNotMatch(html + methodology, /Lao → Українська/);
+  assert.doesNotMatch(html + methodology, /[А-ЯІЇЄҐ]{4,}/);
+  assert.match(html, /name="lao-text" autocomplete="off"/);
+  assert.match(css, /touch-action:\s*manipulation/);
+});
+
+test("visible interface labels use sentence case and explain technical terms in Ukrainian", () => {
+  assert.doesNotMatch(css, /\.analysis-grid small\s*\{[^}]*text-transform:\s*uppercase/s);
+  assert.doesNotMatch(app, /ГОТОВО|ЧАСТКОВИЙ АНАЛІЗ|НЕ ВСТАНОВЛЕНО/);
+  assert.doesNotMatch(app, /PROVISIONAL/);
+  assert.match(app, /Попередня IPA-підказка/);
+  assert.match(app, /Частковий аналіз/);
+  assert.match(app, /Не визначено/);
+});
+
+test("the Ukrainian editorial standard defines language, evidence, and contextual humanization rules", async () => {
+  const guide = await readFile(new URL("../docs/UKRAINIAN-EDITORIAL-STYLE.md", import.meta.url), "utf8");
+  assert.match(guide, /Українська — мова за замовчуванням/);
+  assert.match(guide, /lang="lo-Latn"/);
+  assert.match(guide, /Це редакторський список, а не автоматичний заборонний словник/);
+  assert.match(guide, /Не змінюємо числа, дати, одиниці/);
+});
+
+test("public prose states the pipeline and research limits directly", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(html, /запише вимову в IPA/);
+  assert.match(methodology, /Між лаоським аналізом і українським записом стоїть Міжнародний фонетичний алфавіт \(IPA\)/);
+  assert.match(methodology, /Еталонна вибірка IPA ще порожня: незалежно перевірених фахівцями прикладів — 0/);
+  assert.doesNotMatch(methodology, /Це не косметична заміна однієї традиції іншою/);
+  assert.doesNotMatch(methodology, /Це поєднання культурної обережності та сучасної вебпрактики/);
+  assert.doesNotMatch(methodology, /Pali\/Sanskrit|Language Standardisation in Laos|IPA gold corpus/);
+  assert.match(methodology, /палійські й санскритські структури/);
+  assert.match(methodology, /Мовна стандартизація в Лаосі/);
+  assert.equal((methodology.match(/<p\b/g) || []).length, (methodology.match(/<\/p>/g) || []).length);
+  assert.equal((html.match(/<p\b/g) || []).length, (html.match(/<\/p>/g) || []).length);
+});
+
+test("editorial copy keeps the named visual concept while avoiding unexplained English craft terms", async () => {
+  const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
+  assert.match(methodology, /Woven Editorial/);
+  assert.match(methodology, /додатков.{0,20}основ/i);
+  assert.match(methodology, /переривчаст.{0,30}уток/i);
+  assert.match(methodology, /Адаптація IPA українською/);
+});
+
+
+test("input starts without instructional placeholder text and keeps a concise accessible name", () => {
+  const input = html.match(/<textarea\b([^>]*)>/)?.[1] || "";
+  assert.doesNotMatch(input, /\bplaceholder=/);
+  assert.match(html, /<label class="sr-only" for="lao-input">Текст для аналізу<\/label>/);
+  assert.doesNotMatch(html, /<label class="sr-only" for="lao-input">Лаоський текст<\/label>/);
+});
+
+
+test("pronunciation and romanization mode buttons have explicit high-contrast states", () => {
+  const method = css.match(/\.method-button\s*\{([^}]*)\}/)?.[1] || "";
+  const active = css.match(/\.method-button\[aria-pressed="true"\]\s*\{([^}]*)\}/)?.[1] || "";
+  assert.match(method, /border:\s*1px solid var\(--muted\)/);
+  assert.match(method, /background:\s*var\(--silk\)/);
+  assert.match(method, /color:\s*#505D55/i);
+  assert.match(active, /background:\s*var\(--mekong\)/);
+  assert.match(active, /color:\s*var\(--silk\)/);
+});
+
+
+test("secondary action buttons use readable text and a visible boundary", () => {
+  const secondary = css.match(/\.button-secondary\s*\{([^}]*)\}/)?.[1] || "";
+  assert.match(secondary, /border-color:\s*var\(--muted\)/);
+  assert.match(secondary, /color:\s*#505D55/i);
+  const luminance = (hex) => {
+    const channels = hex.match(/[0-9a-f]{2}/gi).map((value) => parseInt(value, 16) / 255).map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+  };
+  const contrast = (first, second) => {
+    const a = luminance(first), b = luminance(second);
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  };
+  for (const surface of ["#F4EFE5", "#FFFCF5"]) {
+    assert.ok(contrast("#505D55", surface) >= 4.5, "secondary button text must meet WCAG AA");
+    assert.ok(contrast("#68716A", surface) >= 3, "secondary button boundary must be visible");
+  }
 });
