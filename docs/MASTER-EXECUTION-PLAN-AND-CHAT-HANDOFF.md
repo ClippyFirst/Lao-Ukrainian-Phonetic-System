@@ -3571,3 +3571,13 @@ Deployment is verified and live; see the final 2026-11-10 status entry below.
 | `feature/meta-hybrid-v3-multiengine-20261110` | SUPERSEDED | Older duplicate branch is behind main; r2 branch work is ported |
 
 Branch refs are retained to preserve provenance; no force-push or branch deletion was performed. The user request to consolidate work is handled by porting unique, verified changes and marking superseded/conflicting snapshots, not by merging stale histories blindly.
+## Final cleanup verification and publication — 2026-11-10
+
+- Main application cleanup commit deployed: `3b0692b86fdab188e80207a30c76cbcba80aa4e7`.
+- Pages [#42839499385 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42839499385): deterministic-only build, 148 Node tests, 21 Chromium tests, artifact checks, upload, deployment and live same-origin smoke all passed. GitHub Pages artifact `13774124879` is 48,002 bytes; previous model deployment artifact was 40,375,698 bytes.
+- Exact mainline Verify [#42840912136 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42840912136) on source head `e14aaf264343d99fa39c09ec93c454a7e9d9603d`: 344 Python tests, 148 Node tests and 21 Chromium tests passed; independent IPA-gold schema validation, repository data/evidence audit, optional external-G2P syntax/CLI, static build, generated-data reproducibility and built-page checks passed.
+- PR #160 and #162 were closed as superseded after their compatible benchmark workflow, Meta-Hybrid v3 Python module/tests/CLI/API and research documentation were ported to main. PR #145 remains open with an explicit note because it proposes a neural-first CLI default, which conflicts with the current deterministic-default architecture.
+- The Laonetics research branch was consolidated into main as an aggregate-only script, isolated workflow and report. Run #42828308429 SUCCESS; 47/100 exact, 13.95% CER, 100/100 coverage. Its CC-BY-NC-4.0 license excludes product promotion.
+- All 28 branch refs were inventoried. Already merged branches remain represented in main; unique verified work was ported; superseded snapshots were not merged wholesale. Branch refs were preserved; no force-push or branch deletion.
+
+**Readiness:** public static service cleanup is engineering-verified and deployed. The repository remains a research prototype rather than a linguistically validated release because independent adjudicated Lao IPA gold remains 0; manual assistive-technology/device QA also remains outside these automated checks.
