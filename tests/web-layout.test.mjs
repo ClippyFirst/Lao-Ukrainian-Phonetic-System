@@ -189,6 +189,14 @@ test("visible interface labels use sentence case and explain technical terms in 
   assert.match(app, /Не визначено/);
 });
 
+test("the Ukrainian editorial standard defines language, evidence, and contextual humanization rules", async () => {
+  const guide = await readFile(new URL("../docs/UKRAINIAN-EDITORIAL-STYLE.md", import.meta.url), "utf8");
+  assert.match(guide, /Українська — мова за замовчуванням/);
+  assert.match(guide, /lang="lo-Latn"/);
+  assert.match(guide, /Це редакторський список, а не автоматичний заборонний словник/);
+  assert.match(guide, /Не змінюємо числа, дати, одиниці/);
+});
+
 test("editorial copy keeps the named visual concept while avoiding unexplained English craft terms", async () => {
   const methodology = await readFile(new URL("../system.html", import.meta.url), "utf8");
   assert.match(methodology, /Woven Editorial/);
