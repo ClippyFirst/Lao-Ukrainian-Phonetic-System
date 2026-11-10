@@ -525,3 +525,15 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 | LAO-LEXICAL-HINTS-MIT-001 | DONE_VERIFIED (diagnostic only) | Filtered 34,937-entry LaoNLP MIT LaoWord derivative with full MIT notice; tests in test_lexical_boundary_hints.py; exact-head Verify #42611861847. | Optional explicit input to the diagnostic matcher; every result remains SOFT_HINT_ONLY. No automatic boundaries, production G2P or target output changes. |
 
 | LAO-KAIKKI-IPA-PROVENANCE-SAMPLE-100 | DONE_VERIFIED (deterministic sample) | 100 unique IPA-bearing forms selected by FNV-1a codepoint ordering; exact MediaWiki revisions, titles, page IDs, timestamps and source-text lengths match 100/100; all 100 Lao sections directly invoke `{{lo-pron}}`; manifest integrity test recomputes hashes; exact-head Verify #42614988384. | Sample-level source provenance only; not a census, not independent IPA gold, and not proof of exclusive sound-value provenance in the postprocessed Kaikki JSONL. |
+
+
+## Grapheme fallback Ukrainian rendering — 2026-11-10
+
+| Work item | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Emit a Ukrainian-side result when full structural/phonological parsing is unresolved | DONE_VERIFIED (engineering contract on starting main) | Typed provisional IPA runs pass through the ordinary Ukrainian adapter; unresolved units become explicit `?` markers. Python/browser implementations and regression tests are present; starting-main Verify #42776630426 passed. |
+| Preserve low confidence, provenance and tone uncertainty | DONE_VERIFIED (engineering contract on starting main) | Result and segments remain `PROVISIONAL`; fallback does not infer tone or promote hints to accepted IPA. |
+| Show an explicit low-confidence note in browser details and text CLI; render the transformed provisional output in the browser aggregate | DONE_VERIFIED | Exact branch-head Verify [#42796566811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796566811) passed on `8c7fffe99746e21769ee40e92818f5e10fa5081c`; browser and CLI regressions assert the user-visible output and confidence note. UI/CLI changes and regression assertions are in `fix/provisional-grapheme-output-docs-20261110`. |
+| Empirical accuracy of grapheme-only hints in context | BLOCKED / evidence-limited | Independent expert-adjudicated IPA gold remains 0; requires source-located contextual annotation and adjudication. |
+
+**Interpretation:** 100% visible rendering is a product-output requirement, not 100% supported IPA or phonetic accuracy. Out-of-scope Pali/Sanskrit and Khmu forms remain explicitly unknown unless separately scoped and evidenced.

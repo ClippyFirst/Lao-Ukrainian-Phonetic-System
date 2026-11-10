@@ -39,6 +39,7 @@ The primary pipeline is:
 - IPA is the inspectable adapter between Lao phonological analysis and Ukrainian adaptation. Do not generate the primary Ukrainian phonetic result independently from source graphemes.
 - The default service method remains IPA-first. The optional romanization method is separate, lower-information, source-aware, and must not be described as phonetic equivalence.
 - Preserve tone, length, syllable structure, provenance, uncertainty, warnings, and analysis status. Never silently guess unsupported pronunciations.
+- In the primary `hybrid-deterministic` profile, unresolved valid Lao input must still receive a typed `PROVISIONAL` IPA sequence where registered hints exist, passed through the same Ukrainian IPA adapter; render explicit `?` markers for unresolved positions, retain low confidence and provenance, and never infer tone or promote provisional IPA to supported. Frozen compatibility profiles keep their documented abstention behavior.
 - Distinguish project policy from established Lao phonology and from an official Ukrainian standard. Do not invent sources, IPA, lexical examples, benchmark scores, accuracy, or licensing permissions.
 - Shared regression fixtures are engineering tests, not an independently adjudicated gold corpus. Keep empirical accuracy null while independent gold is absent.
 - Canonical linguistic registries live in `data/lao/*.csv`. Regenerate `web/data.js` with the project generator; do not hand-edit generated data. Keep Python and browser behavior aligned through shared fixtures and parity tests.

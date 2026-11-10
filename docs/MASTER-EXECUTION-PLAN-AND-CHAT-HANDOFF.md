@@ -1,3 +1,54 @@
+## Grapheme fallback output and documentation reconciliation — 2026-11-10
+
+**Starting main:** `0a91bb62d48a6110d5129460fae4efee580863f2`.  
+**Implementation commit verified:** `8c7fffe99746e21769ee40e92818f5e10fa5081c`.  
+**Exact-main Verify:** [#42776630426 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776630426), on the starting SHA above. The workflow completed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI validation, locked browser dependency install, browser-engine tests, browser-local inference runtime installation, build, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+
+### Owner requirement and actual implementation
+
+The requested behavior is a rendering guarantee with honest confidence, not a claim that every Lao character has an independently established pronunciation:
+
+- The normal pipeline remains Lao orthography → structural/phonological analysis → typed IPA → Ukrainian adapter → practical Ukrainian orthography.
+- If the full parse cannot produce a complete reading, the primary `hybrid-deterministic` route constructs a typed `PROVISIONAL` sequence from registered grapheme-position hints and explicit unknown units.
+- The same IPA → Ukrainian adapter maps known provisional IPA runs; unknown units become `?`. It does not transliterate Lao graphemes directly.
+- The result remains `PROVISIONAL` / `EVIDENCE LIMITED`; no status is upgraded and no tone is inferred.
+- The frozen compatibility profiles retain their prior withholding behavior. Romanization remains separate and is not a pronunciation fallback.
+- The typed provisional fallback already existed, but the browser aggregate-output builder assembled the final string from pre-fallback syllable objects. As a result, the details contained `кал?` while the main output still showed `⟦ກາລ⟧`. The builder now aggregates the transformed word groups, preserving spaces and word boundaries.
+
+### Changes in this continuation branch
+
+- Browser detail rows explicitly say **Низька впевненість**, explain that `?` marks unresolved positions and state that tone was not inferred.
+- Fixed the browser output-assembly defect; both the browser engine and real Chromium UI now assert the final Ukrainian string `кал?` for `ກາລ`.
+- Text CLI reports the same low-confidence contract alongside Ukrainian output, provisional IPA and unresolved graphemes.
+- The grapheme fallback guide is rewritten to describe the actual typed adapter behavior, confidence levels, output contract, scope limits and acceptance metrics.
+- Documentation navigation and the master/audit handoff are reconciled; the previous statement that preview IPA is never sent to the adapter is explicitly superseded.
+- No canonical phonological registry, pronunciation label, corpus record, licence, benchmark score or accuracy claim is added.
+
+### Task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Existing Python typed provisional fallback | DONE_VERIFIED (starting-main engineering state) | `src/lao_ukrainian/grapheme_preview.py`, `phonetic_result.py`, `target.py`; regression `tests/test_grapheme_preview.py`; exact-main Verify #42776630426 |
+| Existing browser typed provisional fallback | DONE_VERIFIED (starting-main engineering state) | `web/engine.js` provisional adapter path; `web/engine.test.js`; exact-main Verify #42776630426 |
+| Explicit low-confidence wording in browser details and aggregate output | DONE_VERIFIED | `web/app.js` plus updated real-Chromium assertion in `tests/browser/site.spec.js` |
+| Explicit low-confidence wording in text CLI | DONE_VERIFIED | `src/lao_ukrainian/cli.py` plus updated `tests/test_grapheme_preview.py` |
+| Correct canonical fallback documentation and navigation | DONE_VERIFIED | `docs/lao-grapheme-ipa-preview.md`, `docs/README.md`, this handoff and audit register |
+| Linguistic accuracy of provisional hints | BLOCKED / evidence-limited | Independent expert-adjudicated IPA gold remains 0; requires qualified Lao phonetic annotation and adjudication |
+| Unsupported Pali/Sanskrit/Khmu pronunciation | DEFERRED / out of modern-Lao core scope | Recognize and preserve; do not invent modern-Lao phonemes |
+
+### Branch and PR handling
+
+- Working branch: `fix/provisional-grapheme-output-docs-20261110`, created from the exact starting `main` SHA.
+- No existing user branch was rewritten or deleted.
+- PR #145 remains open and untouched: it proposes a different neural-first production-default architecture and is outside this fallback/documentation correction.
+- Exact branch-head verification and PR review must be recorded after the branch CI completes; starting-main CI is not evidence that these new edits passed.
+
+### Acceptance boundary
+
+The target is 100% visible handling of valid input units, with a typed Ukrainian-side result and explicit uncertainty where the evidence is insufficient. This is not 100% confirmed phonetic coverage. The next genuine linguistic blocker remains independently adjudicated IPA evidence; automated tests cannot resolve it.
+
+---
+
 ## Unified Lao → IPA hybrid arbitration contract — 2026-11-08
 
 The current `main` branch already has `hybrid-deterministic` as the default engine. This entry reconciles what “combine all engines” can mean without conflating IPA transcription, orthographic romanization, and model diagnostics.

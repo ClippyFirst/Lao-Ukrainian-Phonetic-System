@@ -801,7 +801,7 @@ export function analyze(text, options = {}) {
     const analyzed = analyzeWord(word, ipaProfile);
     return analyzed.length ? analyzed : [analyzeToken(word, ipaProfile)];
   });
-  const syllables = words.flat().map((syllable) => {
+  const analyzedWords = words.map((word) => word.map((syllable) => {
     if (syllable.passthrough || (syllable.ukrainian && syllable.status === "ESTABLISHED")) return syllable;
     if (ipaProfile !== "hybrid-deterministic") {
       if (syllable.ipa) return syllable;
@@ -863,10 +863,11 @@ export function analyze(text, options = {}) {
       uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
     }, ukrainian: "?", graphemePreview, status: "EVIDENCE LIMITED" };
 
-  });
+  }));
+  const syllables = analyzedWords.flat();
   const warnings = [...new Set([...inputWarnings, ...syllables.flatMap((s) => s.warnings || [])])];
   if (words.length > 1) warnings.push("Пробіли збережено як межі введених фрагментів; у лаоському письмі пробіли не позначають кожну межу слова.");
   const complete = inputWarnings.length === 0 && syllables.every((s) => s.passthrough || (s.ukrainian && s.status === "ESTABLISHED"));
-  const output = words.map((word) => word.map((s) => s.ukrainian || ("⟦" + s.surface + "⟧")).join("")).join(" ");
+  const output = analyzedWords.map((word) => word.map((s) => s.ukrainian || ("⟦" + s.surface + "⟧")).join("")).join(" ");
   return { input, normalized, status: complete ? "OK" : "PARTIAL", output, syllables, warnings: [...new Set(warnings)] };
 }

@@ -1,4 +1,4 @@
-import { analyze } from "./engine.js";
+import { analyze } from "./engine.js?v=20261110-grapheme-confidence-2";
 import { romanizeLao } from "./romanization.js";
 import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261031-source-vowel-crosswalk";
 
@@ -65,7 +65,7 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
     .filter(Boolean);
   return parts
     .filter((part) => !/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u.test(part) && !/^[0-9\u0ED0-\u0ED9]+$/u.test(part))
-    .map((part) => analyze(part).syllables
+    .map((part) => analyze(part, { ipaProfile: "hybrid-deterministic" }).syllables
       .filter((syllable) => !syllable.passthrough)
       .map((syllable) => ({
         onset: syllable.onset || null,
@@ -76,7 +76,7 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
 }
 
 function currentUkrainianOutput() {
-  const result = analyze(input.value);
+  const result = analyze(input.value, { ipaProfile: "hybrid-deterministic" });
   if (outputMode === "phonetic") return result.output;
   if (result.status === "INVALID") return "";
   const roman = romanizeLao(input.value);
@@ -109,7 +109,7 @@ function resetHybridV2Panel() {
 
 async function runHybridV2() {
   const submittedText = input.value;
-  const deterministic = analyze(submittedText);
+  const deterministic = analyze(submittedText, { ipaProfile: "hybrid-deterministic" });
   if (!submittedText.trim() || deterministic.status === "INVALID") return;
   hybridV2Running = true;
   runHybridV2Button.disabled = true;
@@ -178,12 +178,12 @@ async function runHybridV2() {
   } finally {
     hybridV2Running = false;
     if (input.value !== submittedText) render();
-    else runHybridV2Button.disabled = analyze(input.value).status === "INVALID";
+    else runHybridV2Button.disabled = analyze(input.value, { ipaProfile: "hybrid-deterministic" }).status === "INVALID";
   }
 }
 
 function render() {
-  const result = analyze(input.value);
+  const result = analyze(input.value, { ipaProfile: "hybrid-deterministic" });
   const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
   const romanized = result.status === "INVALID"
     ? { output: "", status: "PARTIAL", warnings: [], syllables: [] }
@@ -355,13 +355,21 @@ function render() {
       preview.className = "grapheme-preview";
       preview.setAttribute("role", "note");
       const label = document.createElement("strong");
-      label.textContent = "Попередній IPA-прев’ю (PROVISIONAL; не підтверджена вимова): ";
+      label.textContent = "Попередній IPA (PROVISIONAL; низька впевненість; вимова не підтверджена): ";
       const value = document.createElement("code");
       value.textContent = syllable.graphemePreview.ipaPreview || "—";
       const unresolved = document.createElement("span");
       unresolved.textContent = " · Невизначені графеми: " + (syllable.graphemePreview.unresolvedGraphemes.join("") || "немає");
       preview.append(label, value, unresolved);
       element.append(preview);
+
+      const confidence = document.createElement("p");
+      confidence.className = "grapheme-confidence";
+      confidence.setAttribute("role", "note");
+      confidence.textContent =
+        "Низька впевненість: український результат сформовано за доступними графемними підказками; " +
+        "невирішені позиції позначено «?». Тон не виводився.";
+      element.append(confidence);
     }
     rows.append(element);
   });

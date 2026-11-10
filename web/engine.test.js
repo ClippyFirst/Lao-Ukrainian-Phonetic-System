@@ -738,6 +738,7 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   const result = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" });
   const syllable = result.syllables[0];
   assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "кал?");
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, "кал?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");

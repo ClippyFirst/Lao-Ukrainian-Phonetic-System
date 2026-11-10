@@ -147,13 +147,32 @@ test("touch emulation can use quick examples and switch output methods", async (
 });
 
 
-test("browser UI labels grapheme fallback as provisional and keeps accepted output withheld", async ({ page }) => {
+test("browser UI renders provisional Ukrainian output and labels its low confidence", async ({ page }) => {
   await page.goto("/");
+  const directEngineResult = await page.evaluate(async () => {
+    const engine = await import("/web/engine.js?v=20261110-grapheme-confidence-2");
+    const result = engine.analyze("ກາລ", { ipaProfile: "hybrid-deterministic" });
+    const syllable = result.syllables[0];
+    return {
+      output: result.output,
+      status: result.status,
+      syllableStatus: syllable.status,
+      ukrainian: syllable.ukrainian ?? null,
+      ipa: syllable.ipa ?? null,
+      phoneticStatus: syllable.phoneticResult?.status ?? null,
+      previewStatus: syllable.graphemePreview?.status ?? null,
+      previewIpa: syllable.graphemePreview?.ipaPreview ?? null,
+      segmentCount: syllable.phoneticResult?.segments?.length ?? 0,
+    };
+  });
+  expect(directEngineResult.output, JSON.stringify(directEngineResult)).toBe("кал?");
   await page.locator("#lao-input").fill("ກາລ");
   await expect(page.locator(".grapheme-preview")).toContainText("PROVISIONAL");
   await expect(page.locator(".grapheme-preview")).toContainText("kaː");
-  await expect(page.locator("#output")).not.toContainText("к'а");
+  await expect(page.locator("#output")).toHaveText("кал?");
   await expect(page.locator(".grapheme-preview")).toContainText("ລ");
+  await expect(page.locator(".grapheme-confidence")).toContainText("Низька впевненість");
+  await expect(page.locator(".grapheme-confidence")).toContainText("«?»");
 });
 
 
