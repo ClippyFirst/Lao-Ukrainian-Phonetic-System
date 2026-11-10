@@ -28,9 +28,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-a { color: inherit; }
+a { color: inherit; -webkit-tap-highlight-color: transparent; }
 button, textarea { font: inherit; }
-button { cursor: pointer; }
+button { cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 [hidden], .hidden { display: none !important; }
 ::selection { background: var(--mekong); color: var(--silk); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
