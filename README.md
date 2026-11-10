@@ -8,7 +8,7 @@
 
 Research-oriented, machine-readable system for deriving a practical Ukrainian representation from Lao through graphemic analysis, phonology and IPA.
 
-**Current status (2026-11-10):** the static web application is live on [GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/). It retains the deterministic `hybrid-deterministic` Ukrainian output as authoritative and adds a separate browser-local Hybrid v2 neural IPA panel using the pinned `byumatrixlab/lao-ipa-tonal` checkpoint, ONNX Runtime Web WASM and beam-five decoding. No inference API, external runtime, CDN or backend is used. Neural tone associations are attached only when alignment is unique; ambiguous multi-syllable output remains `NOT_ALIGNED`, and neural tone predictions remain `UNCERTAIN`. The latest Pages deployment [#42776069784](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776069784) passed its live same-origin smoke test for the UI, ONNX weights, tokenizers, WASM runtime and license notices. The independent adjudicated IPA gold corpus remains empty, so this is a deployed engineering prototype, not a linguistically validated production standard. The [current repository continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) records the implementation, deployment evidence and remaining accuracy gate.
+**Current status (2026-11-10):** the static web application is live on [GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/). The authoritative Ukrainian result is produced by the deterministic `hybrid-deterministic` IPA-first pipeline; unresolved valid input now receives a typed `PROVISIONAL` IPA sequence through the same Ukrainian adapter, with explicit `?` markers and a low-confidence note (for example, `ກາລ` → `кал?`). The fallback does not infer tone or claim a confirmed pronunciation. Hybrid v2 neural IPA remains a separate browser-local panel using the pinned `byumatrixlab/lao-ipa-tonal` checkpoint, ONNX Runtime Web WASM and beam-five decoding; no inference API, CDN or backend is used. The latest deployment [#42797184810](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42797184810) passed the build, 20 Chromium tests and live same-origin smoke-test for both pages, JS/CSS, WASM, ONNX encoder/decoder, tokenizers, manifest and notices. The independent adjudicated IPA gold corpus remains empty, so this is a deployed engineering prototype, not a linguistically validated production standard. See the [current continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md).
 
 ## What this project is
 
@@ -72,7 +72,7 @@ These are **project decisions**, not official Ukrainian orthographic rules. The 
 - data/lao/lexical-hints/ — separately attributed orthographic reference lists, not pronunciation registries;
 - data/comparative/ — Cyrillic comparison;
 - data/evidence/ — claims and source provenance;
-- docs/ — methodology, specification, implementation, limitations, decisions and evidence-backed audits;
+- docs/ — methodology, specification, implementation, limitations, decisions and evidence-backed audits; see the [repository structure and documentation contract](docs/REPOSITORY-STRUCTURE.md);
 - AGENTS.md — project-specific agent rules and pinned external methodology references;
 - schemas/ — machine-readable output schemas;
 - tests/ — regression and structural tests.
@@ -108,7 +108,7 @@ The web build regenerates the checked-in browser data mirror and copies the two 
 
 ## Documentation
 
-Start at the [documentation index](docs/README.md). The latest [repository and documentation continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md) records the current mainline, PR reconciliation, documentation authority, verification evidence and blockers. The [codebase map](docs/agents/codebase-map.md) traces implementation entry points and data ownership. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md). The [Ukrainian practical transcription guide](docs/lao-ukrainian-practical-transcription.md) documents the IPA-conditioned target conventions.
+Start at the [documentation index](docs/README.md). The latest [repository and documentation continuation audit](docs/audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md) records the current mainline, PR reconciliation, documentation authority, verification evidence and blockers. The [codebase map](docs/agents/codebase-map.md) traces implementation entry points and data ownership. The index identifies the canonical specification, evidence, audit registers, implementation map and historical records. For development and review conventions, see [CONTRIBUTING.md](CONTRIBUTING.md). The canonical execution ledger remains [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md). The [Ukrainian practical transcription guide](docs/lao-ukrainian-practical-transcription.md) documents the IPA-conditioned target conventions.
 
 ## Web service
 

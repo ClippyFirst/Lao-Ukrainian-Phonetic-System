@@ -1,6 +1,6 @@
 # Contributing
 
-This guide describes the current repository contract. It complements [AGENTS.md](AGENTS.md), the [project glossary](GLOSSARY.md), and the [documentation index](docs/README.md).
+This guide describes the current repository contract. It complements [AGENTS.md](AGENTS.md), the [project glossary](GLOSSARY.md), the [repository structure and documentation contract](docs/REPOSITORY-STRUCTURE.md), and the [documentation index](docs/README.md).
 
 ## Before changing code or data
 

@@ -4,7 +4,7 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
-- [Repository and documentation continuation — 2026-11-10](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md) — canonical continuation record. Its leading addendum records the starting `main` SHA, the verified implementation commit and exact-head CI; earlier sections are dated historical snapshots. Records the 2026-11-10 grapheme-fallback contract correction, current starting-main verification, branch acceptance and remaining research/accessibility blockers.
+- [Repository and documentation continuation — 2026-11-10](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md) — canonical post-merge continuation record. It records the merged `main` SHA, exact-head Verify, successful Pages deployment and live same-origin smoke-test, the 2026-11-10 fallback contract correction, upstream documentation-structure review and remaining research/accessibility blockers.
 
 - [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — historical integrated PR #143 branch state and earlier architecture/PR checkpoint; superseded for current main/PR status.
 - [Repository-wide audit and continuation — 2026-11-07](current/REPOSITORY-WIDE-AUDIT-2026-11-07.md) — historical `main` baseline and original PR-stack reconciliation; superseded for current branch status.

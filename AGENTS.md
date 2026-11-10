@@ -6,6 +6,7 @@ This file is the project-specific entry point for coding agents. It complements,
 
 - Read [GLOSSARY.md](GLOSSARY.md) for project vocabulary before designing interfaces or naming tests.
 - Read [docs/agents/issue-tracker.md](docs/agents/issue-tracker.md) before creating or updating issues.
+- Read [docs/REPOSITORY-STRUCTURE.md](docs/REPOSITORY-STRUCTURE.md) for file-placement and documentation-precedence rules.
 - Read [docs/agents/codebase-map.md](docs/agents/codebase-map.md) to trace the verified entry points, data flow, high-risk seams and test commands; re-check source when code changes.
 
 ## Read before changing the project

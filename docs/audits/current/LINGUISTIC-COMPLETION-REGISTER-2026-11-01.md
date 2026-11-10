@@ -1,3 +1,25 @@
+## Current status reconciliation — 2026-11-10
+
+**Current main:** `68aa563ebc13da7e49da533e46301d43c13b5810`; PR #159 merged.  
+**Exact-head Verify:** [#42796863636 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796863636).  
+**Pages deployment and live smoke-test:** [#42797184810 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42797184810).
+
+The primary hybrid guarantees visible Ukrainian-side rendering for unresolved valid input by wrapping registered positional hints in a typed `PROVISIONAL` IPA result and sending it through the normal IPA → Ukrainian adapter. Unknown positions remain `?`; browser and CLI disclose low confidence; tone is not inferred. Regression example: `ກາລ` → `кал?`. This does not increase accepted IPA coverage or empirical accuracy. Independent expert-adjudicated IPA gold remains 0.
+
+**Clarification of older entries:** historical uses of “withheld” describe withholding an unsupported/unknown *phonetic claim* or tone, not a requirement to suppress all user-visible Ukrainian output. The primary `hybrid-deterministic` route now renders the provisional adapter result; frozen compatibility profiles retain their documented behavior. Historical metrics and old CI/PR states below remain immutable snapshots.
+
+| ID | Current status | Evidence / next acceptance |
+|---|---|---|
+| LAO-GRAPHEME-PREVIEW-001 | DONE_VERIFIED (typed provisional IPA → Ukrainian adapter fallback) | Python, Node and Chromium regressions; Verify #42796863636; Pages smoke-test #42797184810. Visible rendering is not confirmed pronunciation. |
+| LAO-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; qualified annotators, adjudication, fixed dialect/profile and convention, source locators and rights-cleared examples required. |
+| LAO-PHON-001 | PARTIAL | Source-backed rule coverage and expert review of remaining tone/rhyme, segmentation and grapheme contexts remain incomplete. |
+| LAO-ROM-001 | PARTIAL | Romanization crosswalk remains a separate lower-information orthographic method; full contextual acceptance remains required. |
+| LAO-UI-001 | PARTIAL | Automated browser tests pass; manual screen-reader, keyboard-only, mobile-device and visual QA remain open. |
+| LAO-REL-001 | PARTIAL / not release-ready | Deployment is technically verified, but independent gold and manual QA gates remain unmet. |
+| PR-145-ARCH-001 | DEFERRED / owner decision | Neural-first proposal remains open and unmerged; adopted hybrid-deterministic default is unchanged. |
+
+---
+
 ## MekongPhon evidence review — 2026-11-04
 
 | ID | Status | Evidence | Acceptance boundary |
@@ -61,7 +83,7 @@ The latest recorded 100-row MekongPhon/Goruut diagnostic is 81 outputs, 19 none;
 
 ## Execution order
 
-1. Keep current fail-closed behavior; do not weaken output withholding to improve coverage.
+1. Preserve fail-closed phonetic claims: do not invent IPA or tone. In the primary hybrid, do not suppress all Ukrainian-side output for unresolved valid input; render typed PROVISIONAL IPA through the ordinary adapter and retain explicit `?` markers and low confidence.
 2. Commission an independently annotated, dialect-scoped audio/lexical sample; freeze annotation instructions before collection.
 3. Resolve tone/rhyme and segmental disagreements against source-located evidence; add only adjudicated records to the gold split.
 4. Complete the labialized-onset Ukrainian policy only if expert evidence supports a useful Ukrainian rendering.
@@ -447,7 +469,7 @@ The repository owner confirms full MekongPhon rights for the authorized project 
 
 | Task ID | Status | Evidence / acceptance |
 |---|---|---|
-| LAO-GRAPHEME-PREVIEW-001 | DONE_VERIFIED (engineering implementation and automated verification) | Python API/CLI and browser UI expose the same typed PROVISIONAL preview; 83 assigned Unicode 18 Lao-block code points are source/claim linked and classified. The preview only reuses registered positional IPA and parser-confirmed complete vowel/coda units, preserves unresolved graphemes, never infers tone, and cannot enter the Ukrainian adapter. Exact-head Verify 42416380324 passed 260 Python, 126 Node and 10 Chromium tests, npm ci, source/evidence audit, build and generated-data reproducibility. | This status verifies the engineering preview contract, not pronunciation accuracy. Keep unsupported Pali/Sanskrit/Khmu values unresolved. Independent adjudicated IPA gold remains 0; expert validation is required before promoting new phonological correspondences or claiming accuracy. |
+| LAO-GRAPHEME-PREVIEW-001 | DONE_VERIFIED (typed provisional IPA → Ukrainian adapter fallback) | Registered positional IPA hints are wrapped in a typed PROVISIONAL result and passed through the same Ukrainian adapter; unresolved positions remain explicit. Python/browser tests and UI/CLI disclosure are verified by Verify #42796863636 and Pages run #42797184810. | The fallback does not infer tone or promote hints to accepted IPA. It guarantees visible rendering, not confirmed pronunciation. Unsupported Pali/Sanskrit/Khmu values remain unknown; independent adjudicated IPA gold remains 0. |
 
 
 ## Provisional grapheme rendering extension — 2026-11-08

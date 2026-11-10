@@ -1,3 +1,49 @@
+## Post-merge and Pages deployment closeout — 2026-11-10
+
+**Current main:** `68aa563ebc13da7e49da533e46301d43c13b5810` (PR #159 squash-merged).  
+**Starting main:** `0a91bb62d48a6110d5129460fae4efee580863f2`.  
+**Implementation commit:** `8c7fffe99746e21769ee40e92818f5e10fa5081c`.  
+**Final PR branch head:** `24463a385a78a3182a23ef760fb9fe2c2e023450`.  
+**Exact-head Verify:** [#42796863636 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796863636).  
+**Mainline build + Pages deployment:** [#42797184810 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42797184810).
+
+### Verified behavior
+
+The primary `hybrid-deterministic` route assembles browser output from transformed per-word syllables. When full parsing cannot establish a complete reading, registered grapheme-position hints are wrapped in a typed `PROVISIONAL` IPA result and passed through the ordinary IPA → Ukrainian adapter. Unresolved positions remain `?`; browser details and CLI disclose low confidence; tone is not inferred. Regression input `ກາລ` renders `кал?`. This is visible-output coverage, not accepted IPA coverage or phonetic accuracy. No direct Lao-grapheme → Ukrainian shortcut was introduced.
+
+### Verification evidence
+
+- Verify #42796863636: 337 Python tests, 155 Node tests and 19 Chromium UI tests passed; corpus structure, repository data/evidence audit, external-G2P syntax/CLI, locked browser dependencies, build, generated-data reproducibility and built-page/relative-asset checks passed.
+- Pages workflow #42797184810: build job passed; 155 Node tests and 20 Chromium tests passed against the built site; artifact validation/upload passed.
+- Deployment and live same-origin smoke-test passed. It fetched both HTML pages, app/data/CSS, Hybrid v2 bundle, WASM loader/binary, ONNX encoder/decoder, both tokenizer JSON files, model manifest, model LICENSE/NOTICE and third-party notices; pinned model identity/revision and Apache notices were checked.
+- Live site: [GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/). The earlier `syncing_files` delay is historical, not the final outcome.
+
+### Current task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Typed provisional fallback through Ukrainian IPA adapter | DONE_VERIFIED | Python/browser implementation and regressions; `кал?` for `ກາລ`; Verify #42796863636 |
+| Browser aggregate output uses transformed fallback | DONE_VERIFIED | Node and Chromium regressions; Pages build passed |
+| Low-confidence disclosure in browser and CLI | DONE_VERIFIED | `?` explanation and explicit no-tone-inference note |
+| GitHub Pages deployment | DONE_VERIFIED | #42797184810; live same-origin smoke-test passed |
+| Independent adjudicated Lao IPA gold | BLOCKED / evidence-limited | Gold remains 0; qualified annotators, adjudication, fixed profile/convention, source locators and rights-cleared examples required |
+| Manual accessibility/device QA | PARTIAL | CI does not establish screen-reader, keyboard-only, mobile-device or manual visual QA |
+| Pali/Sanskrit and Khmu pronunciation outside modern-Lao core | DEFERRED | Keep unsupported units unknown; do not invent modern-Lao readings |
+| PR #145 neural-first proposal | DEFERRED / owner decision | Open and untouched; conflicts with adopted hybrid-deterministic default |
+| Branch protection / required checks | BLOCKED / owner decision | GitHub reports `main` unprotected; no settings changed |
+
+### Repository-structure reference review
+
+Inspected the visible root layouts and README navigation of [unlazy](https://github.com/Leonxlnx/unlazy), [ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), [superpowers](https://github.com/obra/superpowers), [mattpocock/skills](https://github.com/mattpocock/skills) and [ponytail](https://github.com/DietrichGebert/ponytail). Transferable patterns: concise task-oriented README; one agent-instruction entry; explicit glossary/scope; separation of docs, research, references, scripts, tests and templates; reproducible gates; and host-specific adapters only when a product is actually distributed across agent hosts. This repository is a language engine, not a generic agent-skill plugin, so plugin manifests and multi-host adapter trees were not copied. See [repository structure and documentation contract](REPOSITORY-STRUCTURE.md).
+
+### PR and governance reconciliation
+
+PR #159 merged as the current main commit. PR #145 remains open and untouched; no neural-first architecture switch was made. No user branch was force-pushed or deleted. GitHub reports `main` unprotected; configuring rulesets/required checks remains an owner-level decision.
+
+**Readiness:** deployed, engineering-verified research prototype; not linguistically release-ready. Independent adjudicated IPA gold remains 0 and manual accessibility QA remains partial.
+
+---
+
 ## Grapheme fallback output and documentation reconciliation — 2026-11-10
 
 **Starting main:** `0a91bb62d48a6110d5129460fae4efee580863f2`.  

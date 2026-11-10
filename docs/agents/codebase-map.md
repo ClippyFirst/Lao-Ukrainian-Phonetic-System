@@ -1,6 +1,6 @@
 # Codebase map — Lao → Ukrainian
 
-**Audit basis:** main at `0a91bb62d48a6110d5129460fae4efee580863f2` (2026-11-10), exact-head Verify [#42776630426](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42776630426) passed. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 is closed unmerged after a selective methodology-pin port; PR #145 remains open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
+**Audit basis:** current `main` at `68aa563ebc13da7e49da533e46301d43c13b5810` (2026-11-10); PR #159 is merged. Exact-head Verify [#42796863636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42796863636) passed, and Pages deployment/live smoke-test [#42797184810](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42797184810) passed. PR #157 is merged; PR #156 is closed unmerged after selective benchmark port; PRs #146 and #147 are closed unmerged as superseded by updated mainline implementations. PR #148 is closed unmerged after a selective methodology-pin port; PR #145 remains open and unmerged. This is a navigation map of implemented engineering boundaries, not a claim of full Lao phonological coverage or accuracy.
 
 ## User-facing entry points
 

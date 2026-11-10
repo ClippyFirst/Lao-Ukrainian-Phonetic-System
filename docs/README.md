@@ -26,7 +26,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Star
 - **I need to change code:** read [agent instructions](../AGENTS.md), [contributing guide](../CONTRIBUTING.md), and [codebase map](agents/codebase-map.md); trace the relevant callers, data, tests, generated artifacts, and workflow.
 - **I need to understand a pronunciation result:** follow [methodology](methodology.md), [typed IPA adapter](ipa-to-ukrainian-adapter.md), [grapheme fallback and low-confidence output](lao-grapheme-ipa-preview.md), [Ukrainian target policy](ukrainian-target.md), and [known limitations](limitations.md).
 - **I need to evaluate coverage or accuracy:** read [benchmark methodology](benchmarking-and-external-ipa.md), the [current engine/dataset inventory](research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md), and the [HVULao stress report](research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md). Never treat rendering coverage as IPA coverage or accuracy.
-- **I need the latest status:** read the [current continuation audit](audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-09.md), then the [master execution ledger](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+- **I need the latest status:** read the [current continuation audit](audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md), then the [master execution ledger](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
 ## Documentation by subject
 
@@ -68,6 +68,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Star
 
 ### Agent and maintainer context
 - [Agent instructions and pinned external methodology references](../AGENTS.md)
+- [Repository structure and documentation contract](REPOSITORY-STRUCTURE.md)
 - [Codebase map](agents/codebase-map.md)
 - [Issue tracker conventions](agents/issue-tracker.md)
 - [Superpowers corpus plan](superpowers/plans/2026-11-01-independent-ipa-gold-corpus.md)
@@ -88,4 +89,4 @@ When documents appear to conflict, use this order:
 
 The CSV files in `data/lao/` are the authoritative phonological registries. The separate `data/lao/lexical-hints/` list is an attributed orthographic research aid and must not be treated as a phonological registry, lexical-boundary gold, or IPA source.
 
-A passing engineering test is not evidence of expert phonetic accuracy. The independent IPA gold corpus remains a separate, rights- and human-review-gated process. At the 2026-11-09 mainline checkpoint, hybrid rendering was 100% on the 1k sentence stress set, while IPA completeness was 34.6% of sentences and 94.21% of syllables; the 100-word reference benchmark showed 91% segmental and 86% tonal IPA coverage. Consult the linked reports for denominators and limitations.
+A passing engineering test is not evidence of expert phonetic accuracy. The independent IPA gold corpus remains a separate, rights- and human-review-gated process. At the 2026-11-10 mainline checkpoint, the primary hybrid returns a visible Ukrainian-side result for unresolved valid input using typed provisional IPA and explicit `?` markers; this rendering guarantee is not supported-IPA coverage or accuracy. The 2026-11-10 Verify and Pages deployment passed their recorded engineering checks, but independent adjudicated IPA gold remains 0. Consult the current continuation audit and linked benchmark reports for denominators and limitations.
