@@ -174,3 +174,12 @@ The main Pages workflow now also smoke-tests the deployed Hybrid v2 UI, model ma
 
 The implementation and exact-head preview gates are now DONE_VERIFIED on PR head `32a8f27ac2f9229f61a98611828d8d39e12f3d52`. The PR is still a draft and the live Pages site has not yet been changed. Remaining release action: mark PR #158 ready, merge it, wait for main-branch Pages deployment, and verify the live site and all same-origin UI/model/tokenizer/WASM/license assets. Do not call this deployed until the Pages workflow and live smoke test succeed.
 
+
+
+### 2026-11-10 merge and deployment verification
+
+PR [#158](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/158) merged to main at `7fb44acdac0eeb670ef883c0296eb6e16ae420e5`. Cache-busting for `app.js` and `styles.css` plus the 30-minute deployment timeout were committed at `4cb1ff727c3bdd8365c8a95d8bde7d42e10fffec`.
+
+The exact main Verify [#42775378045](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775378045) succeeded. Pages build run [#42775377983](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983) passed all build steps, Python export, FP32/INT8 browser parity, packaging, and 20 Chromium tests. Local inference measured 1,062 ms cold / 167 ms warm with zero external requests. Artifact [13744046012](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42775377983/artifacts/13744046012) is 40,375,099 bytes.
+
+The live Pages deployment for #42775377983 is still in progress; the deployment smoke test has not yet run. Deployment is therefore **PARTIAL**, not yet DONE_VERIFIED. The 30-minute timeout replaces the 10-minute default after a previous deployment remained in `syncing_files`. Close this gate only after the live smoke test succeeds for UI, bundle, tokenizer files, ONNX graphs, WASM binary/loader and license notices.
