@@ -283,12 +283,12 @@ Exact-head Verify [#42871293571 — SUCCESS](https://github.com/ClippyFirst/Lao-
 
 ## Public MekongPhon API and current benchmark-summary reconciliation — 2026-11-10
 
-**Status: DONE_VERIFIED.** PR [#167](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/167), based on main `20a44ab4c3730434bd0176a699853b796fa8fd1d`.
+**Status: DONE_VERIFIED.** PR [#167](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/167), squash-merged as `d5b21b1476f6eb7bb0db8174f93ed027ab5fd944`; base main `20a44ab4c3730434bd0176a699853b796fa8fd1d`, documentation-complete PR head `f09b39a215f3ee04b766677e0b74f5de5c2803b2`.
 
-README now documents the public `transcribe_ipa()` source-stage API and the full `transcribe_lao()` path. The codebase map is current to mainline and describes the typed IPA stage, result types, test locations and separation from the deterministic default/browser runtime. A new offline test checks the package-root exports of `MekongPhonIPAResult` and `transcribe_ipa`.
+README now documents the public `transcribe_ipa()` source-stage API and the full `transcribe_lao()` path. The codebase map is current to mainline and describes the typed IPA stage, result types, test locations and separation from the deterministic default/browser runtime. An offline regression checks package-root exports of `MekongPhonIPAResult` and `transcribe_ipa`.
 
 The README's prior schema-6/2026-11-09 benchmark paragraph was stale. It now summarizes the 2026-11-10 schema-8 100-word common-set comparison and the latest HVULao 1k stress workflows, with explicit caveats that dictionary-seeded concordance and no-IPA-gold stress coverage do not establish independent phonetic accuracy.
 
-Implementation-head Verify [#42871293571 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871293571): 350 Python, 152 Node and 22 Chromium tests passed; repository audit, IPA schema, external-G2P CLI, locked install, build, generated-data reproducibility and built-page checks passed. A separate exact-head Verify was triggered after the final master/audit documentation update.
+Exact documentation-complete Verify [#42871983082 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42871983082): 350 Python, 152 Node and 22 Chromium tests passed; repository audit, IPA schema, external-G2P CLI, locked install, build, generated-data reproducibility and built-page checks passed. Mainline Verify [#42872275176](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42872275176) was triggered by the merge; its exact-main result remains pending at this audit checkpoint.
 
 No engine, model, IPA mapping, deterministic default or browser runtime behavior changed. Independent adjudicated IPA gold remains 0.
