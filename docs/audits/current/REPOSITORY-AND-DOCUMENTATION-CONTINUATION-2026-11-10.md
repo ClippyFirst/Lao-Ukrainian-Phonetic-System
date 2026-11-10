@@ -87,3 +87,13 @@ Adopt the transferable documentation principles, not their product-specific plug
 5. Keep PR #145 deferred unless the owner explicitly reopens the production-architecture decision.
 
 No IPA labels, phonological correspondences, source permissions, benchmark scores or accuracy values were fabricated in this continuation.
+
+
+## Laonetics same-set research probe — 2026-11-10
+
+- Added an isolated, aggregate-only benchmark for upstream Laonetics 0.4.3 on the pinned MekongPhon 100-word held-out split.
+- Result: 47/100 segmental exact, 13.95% CER, 100% output coverage; no tonal score.
+- Workflow [#42828205219 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42828205219); artifact [13770810186](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42828205219/artifacts/13770810186).
+- Candidate is an old rule-based karaoke/romanization library with CC-BY-NC-4.0 terms; no code imported into production. It is behind current Hybrid v2 (90/100 exact, 6.15% CER) and lacks tonal scoring. Independent IPA gold remains 0.
+- Detailed result and acceptance ledger: [LAONETICS-SAME-SET-BENCHMARK-2026-11-10.md](../../research/LAONETICS-SAME-SET-BENCHMARK-2026-11-10.md).
+- Isolated branch: `benchmark/laonetics-same-set-20261110`; no PR opened and no production files/defaults changed.
