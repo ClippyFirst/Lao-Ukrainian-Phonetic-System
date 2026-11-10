@@ -402,3 +402,5 @@ The final input-field implementation, static/browser regression tests and update
 - The next Chromium run verified contrast ratios and state attributes but caught that the selected romanization button did not receive the expected computed background after interaction. CSS now keys the selected visual treatment directly to `aria-pressed="true"`, the same state exposed to assistive technology, rather than relying on a parallel class selector. A new exact-head run must verify this behavior.
 
 - Bumped the stylesheet cache key to `20261110-contrast-1` so deployed browsers/CDNs cannot keep serving the previous button palette. Chromium now also asserts the active class and that the selected button does not retain its inactive silk background.
+
+- The follow-up run showed the active class was set correctly, but the assertion sampled `background-color` during its 150 ms CSS transition, before the new color was painted. The browser regression now polls until the transition changes the computed color instead of assuming an instantaneous style update. The stylesheet cache key remains bumped for deployment cache invalidation.
