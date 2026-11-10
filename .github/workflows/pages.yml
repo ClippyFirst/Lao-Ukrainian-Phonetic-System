@@ -111,9 +111,9 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
         with:
-          # Initial static model + WASM payload is ~56 MB unpacked.
-          # The Pages service can spend longer syncing this first deployment.
-          timeout: 1800000
+          # Use the maximum timeout supported by actions/deploy-pages.
+          # The first full model sync can take several minutes.
+          timeout: 600000
           reporting_interval: 10000
       - name: Smoke-test deployed site and runtime assets
         env:
