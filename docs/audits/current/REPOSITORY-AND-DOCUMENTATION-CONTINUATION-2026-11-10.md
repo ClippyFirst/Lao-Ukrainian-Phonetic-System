@@ -398,3 +398,5 @@ The final input-field implementation, static/browser regression tests and update
 - Follow-up check also found the secondary “Очистити” action used muted text on the paper surface at 4.41:1. Its foreground is now darkened to `#505D55` and its border to `#68716A`; static tests check text and boundary contrast against both paper and silk surfaces.
 
 - The browser test now waits for the results panel to become visible before measuring or clicking the method buttons, matching the actual asynchronous UI lifecycle.
+
+- The next Chromium run verified contrast ratios and state attributes but caught that the selected romanization button did not receive the expected computed background after interaction. CSS now keys the selected visual treatment directly to `aria-pressed="true"`, the same state exposed to assistive technology, rather than relying on a parallel class selector. A new exact-head run must verify this behavior.
