@@ -52,7 +52,7 @@ function mapCase(value, source) {
 // collapsed in the Ukrainian output; the original input remains available.
 const ALA_LC_REPLACEMENTS = new Map([
   ["ūa", "oua"], ["īa", "ia"], ["āi", "ai"], ["ōe", "eu"], ["oe", "eu"],
-  ["ǣ", "è"], ["æ", "è"], ["ūʼ", "ou"], ["uʼ", "u"],
+  ["ǣ", "è"], ["æ", "è"], ["ūʼ", "ou"], ["uʼ", "u"], ["e", "é"],
   ["ū", "ou"], ["ā", "a"], ["ī", "i"], ["ē", "é"], ["ō", "ô"],
 ]);
 
@@ -102,7 +102,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
   const candidates = [];
   const onsetTokens = profile === "ala-lc"
     ? [...ONSETS.keys()].filter((token) => token !== "x" && token !== "gn").sort((a, b) => b.length - a.length)
-    : SORTED_ONSETS;
+    : SORTED_ONSETS.filter((token) => token !== "ny");
   // ALA-LC finals are written with their final-position values: k, ng, t,
   // p, n, m; final ວ is represented by o after the vowel (Note 4).
   const codaTokens = profile === "ala-lc"
