@@ -7,7 +7,8 @@ This directory is the documentation home for the Lao → Ukrainian project. Star
 | Need | Canonical document |
 |---|---|
 | Current work, task status, handoff and blockers | [Master execution plan and chat handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) |
-| Latest repository and documentation continuation | [Repository and documentation audit — 2026-11-10](audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md) |
+| Latest repository and branch consolidation | [Repository structure and branch consolidation — 2026-11-15](audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md) |
+| Previous repository/documentation continuation | [Repository and documentation audit — 2026-11-10](audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md) |
 | Latest integrated engineering audit (historical checkpoint) | [Repository-wide audit — 2026-11-08](audits/current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) |
 | Terms and status vocabulary | [Project glossary](../GLOSSARY.md) |
 | Product scope and user-visible requirements | [Product requirements](PRODUCT-REQUIREMENTS.md) |
@@ -26,7 +27,7 @@ This directory is the documentation home for the Lao → Ukrainian project. Star
 - **I need to change code:** read [agent instructions](../AGENTS.md), [contributing guide](../CONTRIBUTING.md), and [codebase map](agents/codebase-map.md); trace the relevant callers, data, tests, generated artifacts, and workflow.
 - **I need to understand a pronunciation result:** follow [methodology](methodology.md), [typed IPA adapter](ipa-to-ukrainian-adapter.md), [grapheme fallback and low-confidence output](lao-grapheme-ipa-preview.md), [Ukrainian target policy](ukrainian-target.md), and [known limitations](limitations.md).
 - **I need to evaluate coverage or accuracy:** read [benchmark methodology](benchmarking-and-external-ipa.md), the [current engine/dataset inventory](research/LAO-G2P-ENGINE-AND-DATASET-INVENTORY-2026-11-08.md), and the [HVULao stress report](research/HVULAO-1K-THREE-ENGINE-STRESS-2026-11-08.md). Never treat rendering coverage as IPA coverage or accuracy.
-- **I need the latest status:** read the [current continuation audit](audits/current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md), then the [master execution ledger](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+- **I need the latest status:** read the [current branch-consolidation audit](audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md), then the [master execution ledger](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
 ## Documentation by subject
 
