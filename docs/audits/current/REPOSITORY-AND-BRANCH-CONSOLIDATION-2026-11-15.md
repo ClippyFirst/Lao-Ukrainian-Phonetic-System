@@ -452,3 +452,15 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - The [non-member agreement](https://catalog.ldc.upenn.edu/license/iarpa-babel-lao-agreement-non-member.pdf) restricts use to non-commercial linguistic education/research/technology development and prohibits further distribution. The for-profit member agreement operates under the LDC For-Profit Membership Agreement and also prohibits further distribution. Fees and applicable project eligibility have not been confirmed.
 - LDC states portions are © 2015 U.S. Government and that the U.S. Government acquired the data from Appen. No audio or transcript files were imported. The existing `SRC-LDC-BABEL-LAO-2017` registry record is expanded with these details; the playbook classifies the resource as a licensed contextual-audio lead, not citation-form or IPA gold.
 - **Disposition:** BLOCKED pending signed access terms, fees, organization eligibility and confirmation of package annotation fields. Even if access is approved, use only as contextual audio/transcript support under the agreement; independent IPA annotation and adjudication remain required.
+
+
+## PR #210 merged — LDC Babel Lao licensed audio lead — 2026-11-15
+
+- PR [#210](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/210) merged as `d2f591988e329205cb05138337657e66b73586c8`.
+- Exact-head Verify #4220 / [run 43744151301 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43744151301).
+- Post-merge main Verify #4221 / [run 43744244532 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43744244532).
+- Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency install, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- The existing `SRC-LDC-BABEL-LAO-2017` record was expanded; the LDC2017S08 lead is documented as licensed contextual audio only, not IPA gold. No dataset files were imported.
+- Current main: `d2f591988e329205cb05138337657e66b73586c8`. PR #145 remains the only open PR, 24 ahead / 336 behind / 13 files, non-mergeable pending owner architecture decision.
+- Branch inventory: 76 refs including main (75 non-main), 73 diverged and 2 behind-only. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (119 behind) and `research/written-evidence-phonology-2026-11-09` (242 behind). Full semantic review remains PARTIAL.
+- No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
