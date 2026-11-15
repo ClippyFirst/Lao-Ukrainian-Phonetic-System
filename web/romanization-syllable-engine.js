@@ -231,7 +231,7 @@ function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundar
     let count = 0;
     let path = null;
     for (const candidate of candidatesAt(word, index, profile, strictBoundaries)) {
-      if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex])) continue;
+      if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex], profile)) continue;
       const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
       if (count === 0 && next.count === 1) path = [candidate, ...next.path];
