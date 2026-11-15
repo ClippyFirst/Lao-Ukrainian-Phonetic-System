@@ -6,7 +6,7 @@
 **Post-merge main Verify #4209:** [run 43743272169 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743272169).  
 **Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PR #208 changed no runtime assets.  
 **Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal; 24 commits ahead / 334 behind / 13 files against this main, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending explicit owner architecture approval.  
-**Current branch inventory:** fresh unfiltered search returned 74 refs including main (73 non-main); a follow-up page returned no additional refs. The 71 non-main refs in the prior PR #206 graph snapshot were 69 diverged and 2 behind-only; the two later task branches are also diverged (PR #207 source branch 6 ahead / 2 behind; PR #208 source branch 3 ahead / 1 behind). Current graph classification: **71 diverged, 2 behind-only, 0 ahead-only, 0 identical**. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). Full semantic review of historical file deltas remains PARTIAL; no branch was deleted or force-updated.
+**Current branch inventory:** fresh unfiltered search returned 75 refs including main (74 non-main); the follow-up page returned no additional refs. The 71 non-main refs in the prior PR #206 graph snapshot were 69 diverged and 2 behind-only. The later PR #207 and PR #208 source branches are also diverged (6 ahead / 2 behind and 3 ahead / 1 behind respectively). The current PR #209 task branch is 3 ahead / 0 behind before merge. Thus the current pre-merge graph classification is **71 diverged, 2 behind-only, 1 ahead-only, 0 identical**. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). After PR #209 squash merge its source branch will become divergent. Full semantic review of historical file deltas remains PARTIAL; no branch was deleted or force-updated.
 
 ## PR #208 outcomes
 
@@ -28,7 +28,7 @@
 | Common Voice Lao audio | PARTIAL / research lead only | 193 validated scripted clips; dialect/citation-form suitability unproven; no Spontaneous Speech 5.0 Lao entry found |
 | Lao-specific RTGS profile | BLOCKED | Authoritative normative Lao adaptation table and source-backed examples required |
 | Full automatic profile selection | PARTIAL | Representative reviewed mixed-profile corpus required |
-| Historical branch reconciliation | PARTIAL | 73 non-main refs graph-compared; full source/test semantic review incomplete |
+| Historical branch reconciliation | PARTIAL | 74 non-main refs graph-compared; 71 diverged, 2 behind-only, 1 ahead-only (this PR branch); full source/test semantic review incomplete |
 | Physical-device and screen-reader QA | BLOCKED | Human testing on real devices and assistive technologies required |
 | PR #145 neural-first CLI/Python default | BLOCKED | Owner architecture decision and normative spec/test reconciliation required |
 
