@@ -358,7 +358,7 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ");
   await expect(page.locator("#results")).toBeVisible();
-  const result = await page.locator(".method-switch").evaluate((group) => {
+  const result = await page.locator(".output-method-switch").evaluate((group) => {
     const luminance = (value) => {
       const channels = value.match(/[\d.]+/g).slice(0, 3).map(Number).map((channel) => {
         const normalized = channel / 255;
@@ -396,7 +396,7 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
   await page.locator("#mode-romanization").click();
   await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#mode-phonetic")).toHaveAttribute("aria-pressed", "false");
-  const toggled = await page.locator(".method-switch").evaluate((group) =>
+  const toggled = await page.locator(".output-method-switch").evaluate((group) =>
     [...group.querySelectorAll("button")].map((button) => ({
       name: button.textContent.trim(),
       pressed: button.getAttribute("aria-pressed"),
