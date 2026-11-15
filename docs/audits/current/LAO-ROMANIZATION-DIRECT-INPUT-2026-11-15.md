@@ -89,3 +89,21 @@ PR [#177](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/177)
 PR #177 was documentation-only. The last runtime deployment remains Pages deployment #97 / run [43709787334](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709787334), which passed its live smoke test on the PR #176 runtime commit `05f2eb231e1bdbda7e12362383122c8f4fb50c70`. Latest repository `main` is the documentation commit `de9c2516d973f2cd721667e5505e86693cff453d`; it must not be confused with a new runtime deployment.
 
 The independent adjudicated IPA gold corpus remains empty (0 examples). This verification is engineering/CI evidence, not independent linguistic accuracy validation.
+
+
+## PR #192 — unknown profile fail-closed validation (2026-11-15)
+
+The public `analyzeRomanization` API previously mapped every unrecognized explicit `profile` value to `bgn-pcgn`. This could return a plausible result under the wrong convention when a caller misspelled or mis-cased the requested profile.
+
+The implementation now accepts only `auto`, `bgn-pcgn`, and `ala-lc`. Any other explicit value returns:
+- overall `PARTIAL`;
+- syllable status `UNSUPPORTED_PROFILE`;
+- the original input in visible `⟦…⟧` brackets;
+- a warning naming the accepted values;
+- no romanization parsing or Ukrainian adaptation.
+
+An omitted or null profile continues to use automatic detection. Regression tests cover misspelled, case-mismatched and empty-string values, plus null preserving automatic detection.
+
+**PR:** [#192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192), branch `fix/reject-unknown-romanization-profile-20261115`.  
+**Exact-head Verify #4158:** [run 43725765654 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725765654).  
+**State:** awaiting merge and post-merge main verification. This is API validation, not a new linguistic mapping or profile-conformance claim.

@@ -281,6 +281,18 @@ test("auto profile detection recognizes ALA-LC diacritics but does not rewrite o
   assert.equal(analyzeRomanization("kha").profile, "bgn-pcgn");
 });
 
+test("unknown explicit romanization profiles fail closed instead of falling back to BGN/PCGN", () => {
+  for (const profile of ["ala-lc-2012", "ALA-LC", ""]) {
+    const result = analyzeRomanization("kha", { profile });
+    assert.equal(result.profile, "unsupported", profile);
+    assert.equal(result.status, "PARTIAL", profile);
+    assert.equal(result.output, "⟦kha⟧", profile);
+    assert.equal(result.syllables[0].status, "UNSUPPORTED_PROFILE", profile);
+    assert.match(result.warnings[0], /невідомий профіль романізації/iu);
+  }
+  assert.equal(analyzeRomanization("kha", { profile: null }).profile, "bgn-pcgn");
+});
+
 test("title-case and all-caps romanization preserve initial capitalization", () => {
   assert.equal(analyzeRomanization("Viangchan", { strictBoundaries: true }).output, "Віангчан");
   assert.equal(analyzeRomanization("KHA", { strictBoundaries: true }).output, "К'А");

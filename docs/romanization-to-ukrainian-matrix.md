@@ -88,6 +88,7 @@ The syllable-level parser and source-aware checks are retained. It checks onset,
 | LAO-ROM-RTGS-001 | BLOCKED | Requires an exact Lao-specific RTGS adaptation table and reviewed sample strings; Thai RTGS alone is not sufficient |
 | LAO-ROM-COVERAGE-001 | PARTIAL | Inventory audit proves no supported grapheme class is silently dropped |
 | LAO-ROM-REVIEW-001 | BLOCKED | Independent Lao specialist review of ambiguous nuclei, conventional names and loanword namespaces |
+| LAO-ROM-API-001 | DONE_VERIFIED | Explicit unknown profile values return PARTIAL / UNSUPPORTED_PROFILE and preserve input; null/omitted selection retains auto detection; PR #192 exact-head Verify #4158 passed (merge and post-merge verification pending) |
 
 
 ## Sentence and mixed-text regression checkpoint — 2026-10-31

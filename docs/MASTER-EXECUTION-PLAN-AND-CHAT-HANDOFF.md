@@ -1,31 +1,37 @@
-# Latest continuation checkpoint — 2026-11-15 (PR #190 merged; current-main reconciliation)
+# Latest continuation checkpoint — 2026-11-15 (PR #192 fail-closed profile validation)
 
-**Starting `main`:** `66a744f43fb31dac1d7869f6e661acc1a8bb5c70`  
-**PR #190 merge / current `main` at this checkpoint:** `3f42fe0b18c7ccbd8addc316f84e9da6acf61b6a`  
-**PR #190:** [docs: record PR 189 post-merge checkpoint](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/190) — merged, documentation-only.  
-**Exact-head Verify #4152:** [run 43724875673 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724875673).  
-**Post-merge main Verify #4153:** [run 43724994459 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724994459).  
-PR #190 changed only the handoff and branch audit; no runtime, generated-data or Pages deployment change was made. The last verified runtime deployment remains Pages #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302).
+**Starting and current `main` at PR #192 creation:** `5682220f5d86ea0e9356227e2d0455acd5fe13eb`.  
+**Working branch:** `fix/reject-unknown-romanization-profile-20261115`.  
+**PR #192:** [fail closed on unknown romanization profiles](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192) — open; implementation and tests are in the PR branch.  
+**PR #192 exact-head Verify #4158:** [run 43725765654 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725765654).  
+**Post-merge verification:** not yet applicable; PR #192 is still open. No merge or release is claimed.
+
+## Change delivered
+
+The public romanization API previously treated an unrecognized explicit `profile` value as BGN/PCGN. It now accepts only `auto`, `bgn-pcgn`, or `ala-lc`; an unknown explicit value returns `PARTIAL`, status `UNSUPPORTED_PROFILE`, a warning, and the original input visibly bracketed. Omitted or null profile still selects automatic detection. This is API input validation only: no phonetic or Ukrainian mappings were added.
+
+Files changed in PR #192:
+- `web/romanization-syllable-engine.js`
+- `tests/romanization-syllable-engine.test.mjs`
+- `docs/romanization-to-ukrainian-matrix.md`
+- `docs/audits/current/LAO-ROMANIZATION-DIRECT-INPUT-2026-11-15.md`
+- `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`
 
 ## Current repository and PR state
 
-The only open implementation PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145); PR #190 was the documentation checkpoint and is now merged. Comparing current `main` with `feat/mekongphon-first-stage` reports **24 commits ahead / 316 behind / 13 changed files**, with merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on `main`; the unresolved delta is the neural-first CLI/Python default and target-adaptation opt-in. Keep #145 open and untouched pending an owner-level architecture decision.
+Open PRs are [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192). PR #191 is merged as current `main` SHA `5682220f5d86ea0e9356227e2d0455acd5fe13eb`; post-merge main Verify #4155 / [run 43725330901 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725330901).
 
-PR #188 is closed unmerged as a superseded documentation checkpoint. PRs #181, #183, #185 and #186 also remain closed unmerged as previously reconciled duplicates. PRs #187, #189 and #190 are merged. Historical branches are preserved; no branch was deleted or force-updated. After the squash merge, the preserved PR #190 branch compares as 4 commits ahead / 1 behind current main; it is a historical divergent branch, not an open PR.
+Current comparison for PR #145: **24 commits ahead / 317 behind / 13 changed files**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on `main`; neural-first CLI/Python defaults and target-adaptation opt-in still require an owner-level architecture decision. Keep #145 open and untouched.
 
-## Current task ledger
+## Task ledger
 
 | Task | Status | Acceptance / blocker |
 |---|---|---|
-| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
-| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 plus PR #182 source-aware profile crosswalk; LOC-backed regressions and Verify #4128 passed |
-| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
-| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; Verify #4128/#4131 and Pages #98 passed |
-| PR #184 documentation reconciliation | DONE_VERIFIED | Exact-head Verify #4137 and post-merge Verify #4138 passed |
-| PR #187 current-main reconciliation | DONE_VERIFIED | Exact-head Verify #4145 passed |
-| PR #189 post-PR-187 reconciliation | DONE_VERIFIED | Exact-head Verify #4148 and post-merge Verify #4149 passed |
-| PR #190 post-PR-189 checkpoint and branch inventory | DONE_VERIFIED | Exact-head Verify #4152 and post-merge Verify #4153 passed |
-| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head and main verification passed |
+| Bounded ALA-LC 2012 subset and source-aware crosswalk | DONE_VERIFIED | PR #173/#182 merged; LOC-backed tests and Verify #4128/#4131 passed |
+| Fail-closed guard for unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
+| Unknown explicit romanization profile rejected | DONE_VERIFIED | PR #192 exact-head Verify #4158 passed; awaiting merge and post-merge run |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w`, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
 | Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
 | RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
 | Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
@@ -33,9 +39,22 @@ PR #188 is closed unmerged as a superseded documentation checkpoint. PRs #181, #
 | Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
 | PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
 
-## Next safe work
+## Verification of PR #192
 
-Continue only with source-backed structural analysis and regression coverage that does not invent Ukrainian target values. Do not promote unsupported ALA-LC forms, create an RTGS profile, or claim phonetic accuracy without the missing evidence. The repository remains an engineering-verified partial research prototype, not a linguistically validated universal converter.
+Exact-head Verify #4158 / [run 43725765654 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725765654) completed:
+- IPA-gold schema and repository evidence audits;
+- Python tests and external-G2P harness syntax/CLI validation;
+- locked Node/browser-test dependency installation and browser-engine tests;
+- build and generated-data reproducibility;
+- Chromium UI tests and built-page/relative-asset checks.
+
+No local test execution is claimed. The CI run is the verification evidence.
+
+## Remaining genuine blockers
+
+Do not invent Ukrainian values for unsupported ALA-LC forms or infer IPA from romanization. Full contextual ALA-LC support requires source-attested rules and target review. RTGS needs a Lao-specific adaptation standard. Independent phonetic accuracy needs a rights-cleared expert-adjudicated gold corpus. Physical accessibility/device QA needs human review. PR #145 needs an explicit architecture decision.
+
+**Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter.
 
 ---
 
