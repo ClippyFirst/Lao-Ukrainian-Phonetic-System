@@ -464,3 +464,15 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - Current main: `d2f591988e329205cb05138337657e66b73586c8`. PR #145 remains the only open PR, 24 ahead / 336 behind / 13 files, non-mergeable pending owner architecture decision.
 - Branch inventory: 76 refs including main (75 non-main), 73 diverged and 2 behind-only. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (119 behind) and `research/written-evidence-phonology-2026-11-09` (242 behind). Full semantic review remains PARTIAL.
 - No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## PR #211 merged — LDC source and current mainline checkpoint — 2026-11-15
+
+- PR [#211](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/211) merged as `5c932055b81a76c8bf67f6c77818f9e28f59975e`.
+- Exact-head Verify #4222 / [run 43744403049 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43744403049).
+- Post-merge main Verify #4223 / [run 43744509613 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43744509613).
+- Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency install, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- PR #211 was documentation-only. It synchronizes the README/handoff/audit with PR #210 and the LDC2017S08 research lead; no runtime or data artifacts were imported.
+- Current main: `5c932055b81a76c8bf67f6c77818f9e28f59975e`. PR #145 remains the only open PR, 24 ahead / 337 behind / 13 files, non-mergeable pending owner architecture decision.
+- Branch inventory: 77 refs including main (76 non-main), 74 diverged and 2 behind-only. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (120 behind) and `research/written-evidence-phonology-2026-11-09` (243 behind). Full semantic review remains PARTIAL.
+- No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
