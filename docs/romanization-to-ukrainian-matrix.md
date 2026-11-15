@@ -33,6 +33,18 @@ The engine preserves punctuation and whitespace, reports the detected/selected p
 
 Sources: [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LDC Language Specific Peculiarities Document for Lao](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf); [PCGN Laos Toponymic Factfile (2023)](https://assets.publishing.service.gov.uk/media/64f9c99f7a4b4f0012f6d8a5/Laos_Toponymic_Factfile.pdf).
 
+
+
+## Additional documented romanization profile: DLLM collection convention (research only)
+
+A source review found a distinct, documented Lao romanisation convention used by the Digital Library of Lao Manuscripts (DLLM), hosted by CrossAsia. CrossAsia describes it as closely following the revised Royal Thai General System of Transcription for Central Thai, with three explicit Lao-specific changes: syllable-initial Lao ວ is written `v` rather than Thai-style `w`; initial ຍ is written `ny` for Lao [ɲ]; and initial ຈ is written `c` rather than `ch`. The convention is broad and phonetic in orientation and does not distinguish vowel length or tone. CrossAsia also publishes a one-page consonant/vowel table, including position-sensitive finals and additional vowel sequences.
+
+**Scope warning:** this is the DLLM catalogue's practical romanisation for Lao-language manuscript titles, designed to make catalogue records easy to find. CrossAsia explicitly says Lao has no official romanisation system and notes that spellings of common names vary. Its inventory also preserves historical Indic loanword forms in some contexts. Therefore DLLM is not a national Lao standard, not the Royal Thai RTGS applied unchanged, and not interchangeable with BGN/PCGN or ALA-LC. The source table must be reviewed as its own profile before implementation.
+
+**Implementation status: RESEARCH CANDIDATE / NOT SUPPORTED.** Do not auto-detect this profile, merge its spellings into BGN/PCGN or ALA-LC, or infer Ukrainian forms from the three headline substitutions. Before adding a distinct `dllm` profile, acceptance requires: (1) a full, independently transcribed and checked table with all vowel/final contexts and source examples; (2) a reuse/licensing determination for the published CrossAsia table (the cited page states CrossAsia copyright but exposes no explicit open-data licence); (3) explicit Ukrainian target decisions for every supported unit; (4) source-backed regression fixtures and a Lao-specialist review. Until then the current parser remains limited to its two declared profiles.
+
+Sources: [CrossAsia DLLM romanisation description](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en) (especially its “Lao Orthography and Romanisation” section); [CrossAsia DLLM consonant/vowel table (PDF)](https://digital.crossasia.org/wp-content/uploads/2021/10/DLLM_laoromanisation.pdf). The [LDC Lao Language Specific Peculiarities Document](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf) independently lists RTGS among schemes used for Lao, but does not make the DLLM adaptation a national standard.
+
 ## ALA-LC 2012 inventory boundary
 
 The LOC table is broader than the currently implemented normalizer. The implemented subset is limited to `u/ū`, `uʼ/ūʼ`, `e/ē`, `æ/ǣ`, `oe/ōe`, `ia/īa`, `ua/ūa`, `ai/āi`, `ao` and `am`, plus the onset/final subset documented above. This list must not be read as full ALA-LC vowel coverage.
@@ -85,7 +97,7 @@ The syllable-level parser and source-aware checks are retained. It checks onset,
 | LAO-ROM-STD-001 | DONE_VERIFIED (documented selection) | PCGN 1966 / CLDR profile accurately labelled provisional; no claim of official national standard |
 | LAO-ROM-MATRIX-001 | PARTIAL | Every supported Lao orthographic syllable has source → Latin → Ukrainian rows and fixtures |
 | LAO-ROM-DIRECT-001 | PARTIAL | Direct BGN/PCGN input and bounded ALA-LC 2012 normalization are implemented; PR #182 verifies LOC-specific source-aware onsets/finals and Notes 2/4 (exact-head Verify #4128, post-merge Verify #4131 and Pages #98 passed); full contextual ALA-LC rules and broader corpus coverage remain required |
-| LAO-ROM-RTGS-001 | BLOCKED | Requires an exact Lao-specific RTGS adaptation table and reviewed sample strings; Thai RTGS alone is not sufficient |
+| LAO-ROM-RTGS-001 | BLOCKED | No generic/national Lao RTGS standard established. CrossAsia DLLM is a separate documented collection convention based on revised Thai RTGS with three Lao-specific changes; keep it as a research-only candidate until full table review, reuse rights, Ukrainian decisions and specialist fixtures are complete |
 | LAO-ROM-COVERAGE-001 | PARTIAL | Inventory audit proves no supported grapheme class is silently dropped |
 | LAO-ROM-REVIEW-001 | BLOCKED | Independent Lao specialist review of ambiguous nuclei, conventional names and loanword namespaces |
 | LAO-ROM-API-001 | DONE_VERIFIED | Explicit unknown profile values return PARTIAL / UNSUPPORTED_PROFILE and preserve input; null/omitted selection retains auto detection; PR #192 merged as `6bca3d2`; exact-head Verify #4163, post-merge Verify #4164 and Pages #99 passed |
