@@ -26,7 +26,7 @@ A direct Latin-script input route has been added to the existing Lao → Ukraini
 - LDC Language Specific Peculiarities Document for Lao, section 5, lists BGN/PCGN, RTGS and ALA-LC among schemes used for Lao. It distinguishes ALA-LC from Appen Butler Hill's separate reversible ASCII encoding.
 - PCGN Laos Toponymic Factfile (2023) says there is no official romanization system currently in use in Laos and describes continued PCGN use of BGN/PCGN 1966; its Viangchan example grounds the direct-input fixture.
 - RTGS is not silently treated as the BGN/PCGN route. A complete Lao-specific RTGS adaptation table was not established in the inspected primary material, so that profile remains blocked.
-- ALA-LC support remains a bounded normalization/parser subset, not full conformance: initial `ʻ` lacks a project-approved Ukrainian target, medial `w` clusters and contextual `ວ` alternations are incomplete, and word/loanword segmentation is not exhaustive.
+- ALA-LC support remains a bounded normalization/parser subset, not full conformance: initial `ʻ` lacks a project-approved Ukrainian target, medial `w` clusters and contextual `ວ` alternations are incomplete, `ūa` strings such as `būak` can remain syllabically ambiguous, and word/loanword segmentation is not exhaustive.
 
 ## Task ledger
 
