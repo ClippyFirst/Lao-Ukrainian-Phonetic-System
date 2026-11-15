@@ -405,6 +405,10 @@ const LAO_VOWEL_TO_CLDR = new Map([
   ["O", ["ô"]], ["OO", ["ô"]],
   ["AW", ["o"]],
   ["AWW_SHORT_ALT", ["o"]], ["AWW", ["o"]],
+  // AWW_MEDIAL has the same target vowel as AWW, but CLDR can elide its
+  // letter when vowel-carrier ອ follows a consonant (e.g. ວອນ → v-n).
+  // This entry is used only when the original Lao source restores that vowel.
+  ["AWW_MEDIAL", ["o"]],
   ["OE", ["eu"]], ["OEE", ["eu"]],
   ["IA", ["ia"]], ["IA_LONG", ["ia"]],
   ["UA", ["ua"]], ["UA_LONG", ["ua"]],
