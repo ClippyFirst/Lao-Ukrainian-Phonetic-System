@@ -9,7 +9,7 @@
 
 ## Current repository and PR state
 
-The default branch at this checkpoint is `main` at `ecc997d356d206640862097d0bff6e7da3c484e3`. The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), BLOCKED pending an owner-level architecture decision on the neural-first CLI/Python default. It remains 24 commits ahead and 310 behind current main; the typed stage-one IPA API already exists on main. Leave #145 open and untouched.
+The default branch at this checkpoint is `main` at `ecc997d356d206640862097d0bff6e7da3c484e3`. The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), BLOCKED pending an owner-level architecture decision on the neural-first CLI/Python default. A fresh compare against current main reports 24 commits ahead and 313 behind, with 13 changed files; the typed stage-one IPA API already exists on main. Leave #145 open and untouched.
 
 PR #181 and #183 were closed unmerged as superseded duplicate attempts. PR #182 contains the runtime implementation; PR #184 consolidates the README, master handoff and current audit with post-merge evidence.
 
