@@ -412,3 +412,22 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - **Disposition: SUPERSEDED.** The supported direct romanization route from PR #172 is on main and was refined by subsequent fixes. No stale code was ported; any isolated future change must be supported by the source table and a regression fixture.
 - The PR #206 graph snapshot covered 72 refs including main (71 non-main); after PR #207 and the current continuation branch were created, live search returned 74 refs including main. The two task branches are not part of that earlier classification. Full semantic review of historical branches remains PARTIAL; no branch was deleted or force-updated.
 - PR #145 remains the only open PR, 24 ahead / 333 behind / 13 files against main, non-mergeable pending an explicit architecture decision.
+
+
+## PR #208 merged — current branch graph and romanization/ALA-LC dispositions — 2026-11-15
+
+- PR [#208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/208) merged as `c5a59c8aa2a75c95a620b14f9caa9154a1030fc0`; exact-head Verify #4208 / run 43743149223 and post-merge Verify #4209 / run 43743272169 both passed.
+- Fresh unfiltered branch search returned 74 refs including main (73 non-main); pagination returned no additional refs. All 73 non-main refs are graph-classified: 71 diverged, 2 behind-only, 0 ahead-only, 0 identical. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). This classification is not full semantic file review.
+- The two later task branches are now included: PR #207 source branch is 6 ahead / 2 behind; PR #208 source branch is 3 ahead / 1 behind. No branch was deleted or force-updated.
+- Reviewed `feat/romanization-input-to-ukrainian-20261115` (historical PR #172): 40 ahead / 30 behind / 13 changed files; `web/app.js` identical to main; its engine/tests are superseded by current fail-closed and ALA-LC unsupported-sequence guards. No code was ported.
+- ALA-LC lineage confirmed: PRs #173, #176, #182 and #192 merged; PR #181 is closed unmerged duplicate/superseded by #182. Do not replay its stale branch.
+- PR #145 remains the sole open PR: 24 ahead / 334 behind / 13 files, non-mergeable, pending owner architecture decision.
+- No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## PR #209 pre-merge branch inventory correction — 2026-11-15
+
+- A fresh unfiltered search after creating the PR #209 checkpoint branch returns 75 refs including main (74 non-main); the next page is empty.
+- Relative to current main, the two post-PR #206 continuation branches are diverged (PR #207 source branch 6 ahead / 2 behind; PR #208 source branch 3 ahead / 1 behind). The current PR #209 source branch is 3 ahead / 0 behind before merge.
+- The resulting pre-merge graph classification is 71 diverged, 2 behind-only, 1 ahead-only, 0 identical. The ahead-only ref is this task branch; it is expected to become diverged after squash merge. Behind-only refs are `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind).
+- Full semantic file/test review remains PARTIAL. No branch was deleted or force-updated.
