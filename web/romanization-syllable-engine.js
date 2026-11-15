@@ -84,7 +84,7 @@ function normalizeAlaLc(input) {
 function detectRomanizationProfile(input, requested = "auto") {
   if (requested === "bgn-pcgn" || requested === "ala-lc") return requested;
   if (requested !== "auto") return "bgn-pcgn";
-  return /[āīūēōæǣǫǭœưʻ]/iu.test(input) || /ny(?=[aeiouāīūēōæǣǫǭœư])/iu.test(input) ? "ala-lc" : "bgn-pcgn";
+  return /[āīūēōæǣʼʻ]/iu.test(input) || /oe/iu.test(input) || /ny(?=[aeiouāīūēōæǣʼ])/iu.test(input) ? "ala-lc" : "bgn-pcgn";
 }
 
 function matchesAt(source, index, tokens) {
