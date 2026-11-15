@@ -103,3 +103,10 @@ The newest commit discovered was `4197d4212a935ee59216b1a7f9bdd112dceabb6e`; it 
 ## Final disposition
 
 The repository has a well-formed documentation and engineering structure and a single clear default branch. The correct consolidation is **one active integration line with preserved historical refs**, not a destructive merge of every divergent branch. Engineering readiness and linguistic release readiness remain separate: historical CI proves the checks on its recorded commits, while independent phonetic accuracy remains unmeasured without adjudicated IPA gold.
+
+
+## Post-audit reconciliation — 2026-11-15
+
+The original audit's PR #171 state was a point-in-time observation. PR #171 subsequently merged as `bd16bf6eef98ac364d4bde8226187ab2c71d7fb9`. The repository's current `main` then advanced through PR #172 (direct romanization input), PR #173 (ALA-LC 2012 conformance correction) and PR #174 (documentation/deployment reconciliation), ending at `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`.
+
+The open-PR search on 2026-11-15 returns only PR #145. It remains intentionally unmerged because its neural-first CLI default conflicts with the deterministic-default contract. The exact-main Verify #4084 / run [43698131800](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43698131800) and Pages deployment #96 / run [43697882717](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43697882717) succeeded on the final mainline. The canonical current status is maintained at the top of `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`; this file remains a dated audit snapshot.
