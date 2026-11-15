@@ -1,38 +1,40 @@
-# Latest continuation checkpoint — 2026-11-15 (PR #201 merged; README/handoff reconciliation)
+# Latest continuation checkpoint — 2026-11-15 (PR #202 merged; post-merge main reconciliation)
 
-**Starting main:** `c9e0e2aab1f5c166def596ab5f500203a4d974f1` (PR #201 merge).  
-**Current Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PRs #198–#201 after that deployment were documentation-only; no new Pages deployment was required or performed.  
-**Latest exact-main Verify:** #4185 / [run 43733307259 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733307259).  
-**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal. It remains intentionally unmerged because it changes the default source G2P and target-adaptation contract. Current compare against main: 24 ahead / 327 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Do not port its behavioral changes without an explicit architecture decision and reconciliation against current main.
-**Branch inventory:** 67 refs including main (66 non-main). Count is verified; full file-level reconciliation of all historical branches remains PARTIAL. No branches deleted or force-updated.
+**Current main:** `9d82ff4e62a97f1eaf3fbb81f87e0287fd30cc18` (PR #202 squash merge).  
+**PR [#202](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/202):** documentation-only; merged as `9d82ff4e62a97f1eaf3fbb81f87e0287fd30cc18`.  
+**Exact-head Verify #4186:** [run 43733767286 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733767286).  
+**Post-merge main Verify #4187:** [run 43733871453 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733871453).  
+**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PR #198–#202 are documentation-only; no new Pages deployment was required.  
+**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal. Fresh comparison: 24 commits ahead / 328 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Leave it open and unmerged pending an explicit owner architecture decision; do not port its behavioral changes implicitly.  
+**Branch inventory before this continuation branch:** 67 refs including main (66 non-main). This is a count, not complete file-level reconciliation; historical branch reconciliation remains PARTIAL. No historical branches were deleted or force-updated.
 
-## What this continuation corrected
+## Reconciliation findings
 
-- README status now distinguishes the currently deployed deterministic browser pipeline from the unmerged neural-first CLI/Python proposal in PR #145.
-- README points to the latest exact-main Verify #4185 and current Pages deployment #99, rather than treating an older deployment as the latest verification.
-- This handoff supersedes the older checkpoint snapshots below; historical checkpoints are retained as history, not current state.
-- No runtime, mapping, generated-data, model or Pages artifact was changed in this documentation refresh.
+- The fetched `main` copies of README and this handoff still contained the pre-PR #202 checkpoint (`c9e0e2a`, Verify #4185, PRs #198–#201). This contradicted PR #202's merged metadata and post-merge Verify #4187. This continuation corrects those stale entry-point records rather than treating the prior report as proof that the files were already refreshed.
+- README now reports current main `9d82ff4`, exact-head Verify #4186 and post-merge Verify #4187, retains Pages #99 as the latest runtime deployment, and updates PR #145's behind count to 328.
+- Historical checkpoint entries below are retained as history; they are not current-state claims.
+- No runtime code, mappings, generated data, model assets or Pages artifacts are changed in this documentation-only reconciliation.
 
 ## Current task ledger
 
 | Workstream | Status | Acceptance / remaining evidence |
 |---|---|---|
-| BGN/PCGN-derived CLDR direct romanization route | DONE_VERIFIED for bounded implemented subset | Current-main tests and browser CI; unsupported forms remain visibly partial |
+| BGN/PCGN-derived CLDR direct romanization route | DONE_VERIFIED for bounded implemented subset | Current-main engineering CI; unsupported forms remain visibly partial |
 | ALA-LC 2012 direct route | PARTIAL | LOC-derived subset implemented; contextual forms and reviewed representative corpus incomplete |
 | Unknown explicit profile fail-closed handling | DONE_VERIFIED | PR #192 and regression tests |
 | DLLM catalogue convention research | DONE_VERIFIED as research-only classification | PR #198; table rights and full transcription unresolved; no profile implemented |
-| Lao national draft / UNGEGN status research | DONE_VERIFIED as documentary finding | PRs #199–#201; current authoritative Lao table and adoption status still BLOCKED |
-| Neural-first MekongPhon CLI/Python proposal | BLOCKED pending owner architecture decision | PR #145; 24 commits ahead / 327 behind, 13 files, non-mergeable |
+| Lao national draft / UNGEGN status research | DONE_VERIFIED as documentary finding | PRs #199–#201; authoritative current Lao table and adoption evidence remain BLOCKED |
+| Neural-first MekongPhon CLI/Python proposal | BLOCKED pending owner architecture decision | PR #145; 24 ahead / 328 behind / 13 files, non-mergeable |
 | Independent adjudicated IPA gold | BLOCKED | 0 examples; requires rights-cleared expert annotation and independent adjudication |
 | Lao specialist validation | BLOCKED | Requires qualified reviewer and reviewed corpus |
-| Lao-specific RTGS profile | BLOCKED | Requires a normative Lao adaptation table and source-backed examples |
+| Lao-specific RTGS profile | BLOCKED | Requires authoritative normative Lao adaptation table and source-backed examples |
 | Full automatic profile selection | PARTIAL | Requires representative, reviewed mixed-profile corpus |
-| Historical branch reconciliation | PARTIAL | 66 non-main refs; exact file-level review not complete |
+| Historical branch reconciliation | PARTIAL | 66 non-main refs before this continuation branch; exact file-level review incomplete |
 | Physical-device and screen-reader QA | BLOCKED | Requires human testing on real devices and assistive technologies |
 
-## Engineering verification
+## Verification evidence
 
-Exact-main Verify #4185 / run 43733307259 passed Python tests, corpus/data audits, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation. Independent IPA gold remains 0.
+PR #202 exact-head Verify #4186 and post-merge main Verify #4187 both passed the repository's configured checks: Python tests, corpus/data audits, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests, and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation. The independent adjudicated IPA gold corpus remains empty (0 examples).
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
 
