@@ -1,34 +1,23 @@
-# Latest continuation checkpoint — 2026-11-15 (PR #192 merged and deployed)
+# Latest continuation checkpoint — 2026-11-15 (PR #193 merged; post-merge verification complete)
 
-**Starting `main` for PR #192:** `5682220f5d86ea0e9356227e2d0455acd5fe13eb`.  
-**PR #192 merge / current `main`:** `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`.  
-**PR #192:** [fail closed on unknown romanization profiles](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192) — merged.  
-**Exact-head Verify #4163:** [run 43725967264 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725967264).  
-**Post-merge main Verify #4164:** [run 43726041995 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726041995).  
-**GitHub Pages deployment #99:** [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), including the static-site Chromium smoke test and deployment artifact checks.
-
-## Change delivered
-
-The public romanization API previously treated an unrecognized explicit `profile` value as BGN/PCGN. It now accepts only `auto`, `bgn-pcgn`, or `ala-lc`; an unknown explicit value returns `PARTIAL`, status `UNSUPPORTED_PROFILE`, a warning, and the original input visibly bracketed. Omitted or null profile still selects automatic detection. This is API input validation only: no phonetic or Ukrainian mappings were added.
-
-PR #192 changed:
-- `web/romanization-syllable-engine.js`
-- `tests/romanization-syllable-engine.test.mjs`
-- `docs/romanization-to-ukrainian-matrix.md`
-- `docs/audits/current/LAO-ROMANIZATION-DIRECT-INPUT-2026-11-15.md`
-- `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`
+**Starting `main` for PR #193:** `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`.  
+**PR #193 merge / current `main` at this checkpoint:** `3803db4ea9e17ab19aba5610b6fb485554add302`.  
+**PR #193:** [record PR #192 post-merge verification](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/193) — merged, documentation-only.  
+**Exact-head Verify #4165:** [run 43726618128 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726618128).  
+**Post-merge main Verify #4166:** [run 43726704080 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726704080).  
+**Latest runtime deployment:** Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017). PR #193 was documentation-only and did not require another Pages deployment.
 
 ## Current repository and PR state
 
-The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Current comparison against `feat/mekongphon-first-stage`: **24 commits ahead / 318 behind / 13 changed files**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on `main`; neural-first CLI/Python defaults and target-adaptation opt-in still require an owner-level architecture decision. Keep #145 open and untouched.
+The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Current comparison against `feat/mekongphon-first-stage`: **24 commits ahead / 319 behind / 13 changed files**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on `main`; neural-first CLI/Python defaults and target-adaptation opt-in still require an owner-level architecture decision. Keep #145 open and untouched.
 
-PR #192 exact-head and post-merge verification both passed; Pages #99 is the latest deployment. PR #191 is merged as `5682220f5d86ea0e9356227e2d0455acd5fe13eb`. Earlier PRs #187, #189, #190 and #191 are reconciled in the historical checkpoints below.
+PR #192 is merged as `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`; its fail-closed profile validation passed exact-head Verify #4163, post-merge Verify #4164 and Pages #99. PR #193 is merged as `3803db4ea9e17ab19aba5610b6fb485554add302`; exact-head Verify #4165 and post-merge Verify #4166 passed.
 
 ## Branch inventory and reconciliation
 
-Fresh GitHub inventory returned **59 refs including `main`**. All **58 non-main refs** were compared against current `main`: **55 divergent, 2 behind-only, 1 ahead-only, 0 identical**. The ahead-only branch is `docs/post-merge-pr192-checkpoint-20261115` (5 commits ahead, 0 behind at the time of this comparison). The two behind-only branches are `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`.
+Fresh GitHub inventory returns **60 refs including `main`** (59 non-main refs). The 58 historical non-main branches had been compared against the prior main; after the PR #193 squash merge, the former ahead-only documentation branch `docs/post-merge-pr192-checkpoint-20261115` became divergent (7 ahead / 1 behind). The current continuation branch `docs/finalize-pr193-current-main-20261115` was then compared against current main (2 ahead / 0 behind at that comparison) and is the sole ahead-only branch. The two behind-only historical branches remain `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`.
 
-This is a commit-graph comparison, not a full file-level review of every historical branch. Three romanization-related historical implementation branches and the new PR #192 branch were inspected for their relevant file deltas; unique, source-supported changes are either already on main or merged via PR #192. Other historical branch deltas remain PARTIAL pending targeted file-level review. No historical/user branch was deleted or force-updated.
+The resulting classification is **57 divergent, 2 behind-only, 1 ahead-only, 0 identical** across 60 refs including main. This reconciles the previous 58-branch comparison snapshot with the PR #193 merge and a fresh comparison of the new continuation branch. This is a commit-graph comparison, not a full file-level review of every historical branch. Three romanization-related historical implementation branches and PR #192 were inspected at file level; other historical branch deltas remain PARTIAL pending targeted review. No historical/user branch was deleted or force-updated.
 
 ## Task ledger
 
@@ -37,7 +26,7 @@ This is a commit-graph comparison, not a full file-level review of every histori
 | Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head and main verification passed |
 | Bounded ALA-LC 2012 subset and source-aware crosswalk | DONE_VERIFIED | PR #173/#182 merged; LOC-backed tests and Verify #4128/#4131 passed |
 | Fail-closed guard for unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
-| Unknown explicit romanization profile rejected | DONE_VERIFIED | PR #192 merged; exact-head Verify #4163 and post-merge Verify #4164 passed; Pages #99 passed |
+| Unknown explicit romanization profile rejected | DONE_VERIFIED | PR #192 merged; exact-head Verify #4163, post-merge Verify #4164 and Pages #99 passed |
 | Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w`, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
 | Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
 | RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
@@ -45,13 +34,13 @@ This is a commit-graph comparison, not a full file-level review of every histori
 | Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
 | Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
 | PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
-| Full historical branch file-level reconciliation | PARTIAL | All 58 refs compared by commit graph; acceptance still requires targeted review of each potentially unique code/data delta |
+| Full historical branch file-level reconciliation | PARTIAL | Commit graph inventory is current; acceptance still requires targeted review of each potentially unique code/data delta |
 
-## Verification of PR #192
+## Verification of PR #193
 
-- Exact-head Verify #4163 / [run 43725967264 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725967264): schema/data audits, Python tests, external-G2P harness syntax/CLI, locked dependencies, Node/browser-engine tests, build, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
-- Post-merge main Verify #4164 / [run 43726041995 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726041995): same workflow passed on current main.
-- Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017): build, browser smoke test, deterministic-only artifact validation and deployment passed.
+- Exact-head Verify #4165 / [run 43726618128 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726618128): schema/data audits, Python tests, external-G2P harness syntax/CLI, locked dependencies, Node/browser-engine tests, build, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Post-merge main Verify #4166 / [run 43726704080 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726704080): same workflow passed on current main.
+- Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017): runtime deployment for PR #192 passed.
 
 No local test execution is claimed. The CI runs are the verification evidence.
 
