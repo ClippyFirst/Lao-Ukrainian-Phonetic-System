@@ -4290,3 +4290,13 @@ A local clone attempt was unavailable because the execution environment could no
 - The direct mode is a romanization-to-Ukrainian transcription route, not semantic translation of Lao vocabulary.
 
 **Readiness:** engineering-verified partial prototype, not release-ready as a universal romanization converter. Independent IPA gold remains 0; RTGS, informal variants, full ALA-LC context, specialist review and manual accessibility QA remain outstanding.
+
+
+## PR #196 merge and branch reconciliation checkpoint — 2026-11-15
+
+- Current `main`: `cce42c07f8cad67881bc422270b7c5f0f566160b`; PR [#196](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/196) merged by squash. Exact-head Verify #4171 / [run 43728217898 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43728217898). Documentation-only; no new runtime deployment or post-merge main run is recorded.
+- Fresh branch inventory: 61 non-main refs. Direct romanization-related historical engine/test branches were compared with main; the older snapshots are superseded by current profile validation, ALA-LC crosswalk and unsupported-sequence guard. No unique supported runtime delta was identified for porting. Broad historical branch file-level reconciliation remains PARTIAL; preserve all refs.
+- PR #145 remains the only open PR and is non-mergeable; compare is 24 ahead / 322 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. Do not merge its neural-first CLI default without an owner-approved architecture/specification change.
+- No new linguistic mapping was added. The direct-input route remains bounded BGN/PCGN-derived CLDR plus a bounded ALA-LC 2012 subset. Full contextual ALA-LC, RTGS, informal variants, independent adjudicated IPA gold (0 examples), specialist review and manual accessibility QA remain PARTIAL/BLOCKED/DEFERRED as previously recorded.
+
+**Next genuine blockers:** independently adjudicated, rights-cleared Lao reference corpus and Lao-specialist review; explicit architecture decision for PR #145; exact Lao-specific RTGS source table; human device/screen-reader QA. Do not fabricate mappings or promote unsupported ALA-LC sequences to supported.
