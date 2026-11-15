@@ -254,6 +254,38 @@ function unresolved(surface, status = "UNRESOLVED") {
   };
 }
 
+// ALA-LC initial spellings differ from BGN/CLDR for ຊ (s) and ຍ (ny).
+// Keep this source crosswalk separate from the CLDR-derived inventory.
+const LAO_ONSET_TO_ALA_LC = new Map([
+  ["ກ", { romanization: "k", ukrainian: "к" }],
+  ["ຂ", { romanization: "kh", ukrainian: "к'" }],
+  ["ຄ", { romanization: "kh", ukrainian: "к'" }],
+  ["ງ", { romanization: "ng", ukrainian: "нг" }],
+  ["ຈ", { romanization: "ch", ukrainian: "ч" }],
+  ["ສ", { romanization: "s", ukrainian: "с" }],
+  ["ຊ", { romanization: "s", ukrainian: "с" }],
+  ["ຍ", { romanization: "ny", ukrainian: "нь" }],
+  ["ດ", { romanization: "d", ukrainian: "д" }],
+  ["ຕ", { romanization: "t", ukrainian: "т" }],
+  ["ຖ", { romanization: "th", ukrainian: "т'" }],
+  ["ທ", { romanization: "th", ukrainian: "т'" }],
+  ["ນ", { romanization: "n", ukrainian: "н" }],
+  ["ບ", { romanization: "b", ukrainian: "б" }],
+  ["ປ", { romanization: "p", ukrainian: "п" }],
+  ["ຜ", { romanization: "ph", ukrainian: "п'" }],
+  ["ຝ", { romanization: "f", ukrainian: "ф" }],
+  ["ພ", { romanization: "ph", ukrainian: "п'" }],
+  ["ຟ", { romanization: "f", ukrainian: "ф" }],
+  ["ມ", { romanization: "m", ukrainian: "м" }],
+  ["ຢ", { romanization: "y", ukrainian: "й" }],
+  ["ຣ", { romanization: "r", ukrainian: "л" }],
+  ["ລ", { romanization: "l", ukrainian: "л" }],
+  ["ວ", { romanization: "v", ukrainian: "в" }],
+  ["ຫ", { romanization: "h", ukrainian: "г" }],
+  ["ຮ", { romanization: "h", ukrainian: "г" }],
+  ["ໜ", { romanization: "n", ukrainian: "н" }],
+  ["ໝ", { romanization: "m", ukrainian: "м" }],
+]);
 const LAO_ONSET_CROSSWALK = new Map([
   ["ກ", { romanization: "k", ukrainian: "к" }],
   ["ຂ", { romanization: "kh", ukrainian: "к'" }],
@@ -335,7 +367,9 @@ function crosswalkUnit(unit, sourceSyllable, profile = "bgn-pcgn") {
     ? sourceSyllable.coda
     : undefined;
   const sourceCoda = rawSourceCoda === "—" ? "" : rawSourceCoda;
-  const correspondence = LAO_ONSET_CROSSWALK.get(sourceOnset);
+  const correspondence = profile === "ala-lc"
+    ? LAO_ONSET_TO_ALA_LC.get(sourceOnset)
+    : LAO_ONSET_CROSSWALK.get(sourceOnset);
   if (!correspondence || correspondence.romanization !== unit.onset) return null;
   const hasSourceVowel = typeof sourceSyllable === "object" && sourceSyllable !== null
     && Object.prototype.hasOwnProperty.call(sourceSyllable, "vowelId");
