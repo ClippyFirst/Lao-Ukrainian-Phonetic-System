@@ -1,16 +1,16 @@
-# Latest continuation checkpoint — 2026-11-15 (PR #203 merged; post-merge verification complete)
+# Latest continuation checkpoint — 2026-11-15 (PR #204 merged; post-merge verification complete)
 
-**Starting main for this checkpoint:** `9d82ff4e62a97f1eaf3fbb81f87e0287fd30cc18`.  
-**PR [#203](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/203):** merged by squash as `2581c07a91be8659a65b3f970fd13be8fc20625f`; documentation-only.  
-**Exact-head Verify #4188:** [run 43734584982 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734584982).  
-**Post-merge main Verify #4189:** [run 43734692843 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734692843).  
-**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PRs #198–#203 are documentation-only; no Pages redeployment was required.  
-**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal. Fresh comparison against this checkpoint: 24 commits ahead / 329 behind / 13 files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending an explicit owner architecture decision.  
-**Branch inventory:** 68 refs including main before this new checkpoint branch (67 non-main). This count does not imply complete file-level reconciliation; historical branch reconciliation remains PARTIAL. No historical branches were deleted or force-updated.
+**Starting main for this checkpoint:** `2581c07a91be8659a65b3f970fd13be8fc20625f`.  
+**PR [#204](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/204):** merged by squash as `86b0e3f48cc363d670f852f1fcdef4ffe8d9782f`; documentation-only.  
+**Exact-head Verify #4190:** [run 43734857673 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734857673).  
+**Post-merge main Verify #4191:** [run 43734956498 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734956498).  
+**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PRs #198–#204 are documentation-only; no Pages redeployment was required.  
+**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal. Fresh comparison against this checkpoint: 24 commits ahead / 330 behind / 13 files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending an explicit owner architecture decision.  
+**Historical branch inventory:** last verified count was 67 refs including main before PR #203 and #204 continuation branches were added. It has not been freshly re-enumerated after those additions; exact file-level reconciliation remains PARTIAL. No historical branches were deleted or force-updated.
 
-## What changed and why
+## What changed
 
-PR #203 corrected the README and canonical handoff after a fresh read showed that merged PR #202 had left the pre-PR #202 checkpoint in place. The PR #203 change is now merged and both its exact-head and post-merge main Verify workflows passed. This checkpoint records the resulting main SHA and verification IDs. No runtime, romanization mapping, generated data, model assets or Pages artifacts changed.
+PR #204 refreshed README, the canonical handoff and the branch audit to record PR #203's merged correction and its exact-head/post-merge verification. PR #204 is itself merged, and both Verify #4190 and Verify #4191 passed. This checkpoint records the latest verified state before this documentation-only checkpoint update. No runtime, romanization mapping, generated data, model assets or Pages artifacts changed.
 
 ## Current task ledger
 
@@ -21,17 +21,17 @@ PR #203 corrected the README and canonical handoff after a fresh read showed tha
 | Unknown explicit profile fail-closed handling | DONE_VERIFIED | PR #192 and regression tests |
 | DLLM catalogue convention research | DONE_VERIFIED as research-only classification | PR #198; table rights and full transcription unresolved; no profile implemented |
 | Lao national draft / UNGEGN status research | DONE_VERIFIED as documentary finding | PRs #199–#201; authoritative current Lao table and adoption evidence remain BLOCKED |
-| Neural-first MekongPhon CLI/Python proposal | BLOCKED pending owner architecture decision | PR #145; 24 ahead / 329 behind / 13 files, non-mergeable |
+| Neural-first MekongPhon CLI/Python proposal | BLOCKED pending owner architecture decision | PR #145; 24 ahead / 330 behind / 13 files, non-mergeable |
 | Independent adjudicated IPA gold | BLOCKED | 0 examples; requires rights-cleared expert annotation and independent adjudication |
 | Lao specialist validation | BLOCKED | Requires qualified reviewer and reviewed corpus |
 | Lao-specific RTGS profile | BLOCKED | Requires authoritative normative Lao adaptation table and source-backed examples |
 | Full automatic profile selection | PARTIAL | Requires representative, reviewed mixed-profile corpus |
-| Historical branch reconciliation | PARTIAL | 67 non-main refs; exact file-level review incomplete |
+| Historical branch reconciliation | PARTIAL | Branch inventory needs fresh enumeration and remaining branch tips need file-level reconciliation |
 | Physical-device and screen-reader QA | BLOCKED | Requires human testing on real devices and assistive technologies |
 
 ## Verification and readiness
 
-PR #203 exact-head Verify #4188 and post-merge main Verify #4189 both passed: independent IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, real Chromium UI tests, and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation. The independent adjudicated IPA gold corpus remains empty (0 examples).
+PR #204 exact-head Verify #4190 and post-merge main Verify #4191 both passed: independent IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, real Chromium UI tests, and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation. The independent adjudicated IPA gold corpus remains empty (0 examples).
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
 
