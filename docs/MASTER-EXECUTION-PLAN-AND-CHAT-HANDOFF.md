@@ -1,3 +1,62 @@
+# Latest continuation checkpoint — 2026-11-15 (ALA-LC source crosswalk PR #182)
+
+**Starting `main`:** `75d049c9bb4fbc040bbc77466ec0426c7312e95c`  
+**Working branch:** `fix/ala-lc-final-crosswalk-current-main-20261115`  
+**PR #182:** [fix: align ALA-LC final crosswalk with LOC notes 2 and 4](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/182) — open, mergeable; merge and post-merge verification pending.  
+**Exact-head Verify #4128:** [run 43722541781 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781), final head `9779b0ee05c8be3de2c3da7c18f8e0b453181d66`.  
+**Superseded PR #181:** closed unmerged; its branch was one commit behind current main. PR #182 was recreated from the then-current main head; no work was lost or merged from #181.
+
+## Current repository and PR state
+
+The default branch at task start was `main` at `75d049c9bb4fbc040bbc77466ec0426c7312e95c`. PR #182 is 9 commits ahead and 0 behind that base, with four changed files. It changes the browser romanization adapter, its Node tests, the romanization matrix and methodology. Because the browser runtime changes, a Pages deployment and live smoke check are required after merge.
+
+PR [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open and blocked: 24 commits ahead / 310 behind current main, with a neural-first CLI/Python default proposal that conflicts with the deterministic-default product contract. The typed stage-one IPA API already exists on main. Leave #145 untouched pending an explicit owner-level architecture decision.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
+| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 exact-head Verify #4128 passed; source-aware ALA-LC onset/final values are no longer checked against BGN/CLDR aliases |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+
+## PR #182 implementation and evidence
+
+The LOC ALA-LC 2012 table differs from BGN/CLDR in both initial and final positions. The browser adapter now uses profile-specific source crosswalks:
+- initial `ຊ` → `s` and `ຍ` → `ny`;
+- final values include `ດ` → `t`, `ບ` → `p`, `ຣ/ລ` → `n`, and final `ວ` → `o`;
+- final `ຍ` is checked as the closing `i` of the `ai`/`āi` diphthong (Note 2), not as a consonant coda;
+- BGN/CLDR crosswalk behavior remains unchanged.
+
+Primary evidence: [Library of Congress, ALA-LC Lao Romanization Table (2012), pp. 1–3, Notes 1, 2 and 4](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). The implementation does not claim full ALA-LC conformance or infer unsupported Ukrainian values.
+
+## Verification
+
+- Exact-head Verify #4128 / run 43722541781 passed on `9779b0ee05c8be3de2c3da7c18f8e0b453181d66`.
+- Python: 350 passed.
+- Node/browser-engine: 188 passed, including four new profile-specific regression tests.
+- Real Chromium UI: 28 passed.
+- IPA-gold schema validation and repository data/evidence audit passed.
+- External-G2P harness syntax/CLI validation passed.
+- Locked dependency install, static build, generated-data reproducibility, and built-page/relative-asset checks passed.
+- Initial Verify #4126 / run 43722473630 failed four new browser-engine assertions because the selected profile was not passed into segmentation-time source validation. The missing argument was corrected; #4128 is the successful final-head rerun.
+- Local tests were not run; no local result is claimed.
+- Pages deployment and live smoke test are pending the runtime PR merge.
+
+## Next action
+
+Merge PR #182 only after confirming its final head and green Verify #4128, then verify the post-merge `main` run and Pages deployment/live assets. Keep the repository readiness classification as an engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #179 merged)
 
 **Starting `main`:** `034a2db1f912cd3bc0d552678871c73446977e9c`  
