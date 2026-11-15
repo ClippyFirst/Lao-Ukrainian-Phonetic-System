@@ -145,3 +145,19 @@ The new profile-specific ALA-LC source crosswalk is DONE_VERIFIED for the scoped
 
 **Current main:** `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
 **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0.
+
+## Final documentation reconciliation — PR #184 (2026-11-15)
+
+The prior addendum described PR #184 as an active documentation checkpoint. It has since merged by squash as `ecc997d356d206640862097d0bff6e7da3c484e3`; this section supersedes the interim state.
+
+- PR [#184](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/184) merged. It updates README, canonical handoff and current audit only; no runtime code or generated data changed.
+- Exact-head Verify #4137 / [run 43722921838 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722921838).
+- Post-merge main Verify #4138 / [run 43723008453 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43723008453) on `ecc997d356d206640862097d0bff6e7da3c484e3`.
+- Pages deployment #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302) remains the deployed runtime from PR #182; PR #184 was docs-only and required no additional deployment.
+- PR #183 was closed unmerged after a file-by-file comparison showed that its matrix change and handoff/audit checkpoint were superseded by the more complete PR #184, which includes verified post-merge and deployment evidence. PR #181 was likewise closed unmerged as an earlier one-commit-behind attempt.
+- The only open PR is #145. It remains BLOCKED pending an explicit owner-level decision on the neural-first CLI/Python default; no rebase or merge was performed.
+
+The source-aware ALA-LC crosswalk is DONE_VERIFIED for the scoped LOC Notes 1, 2 and 4 behavior. Full contextual ALA-LC conformance remains PARTIAL. RTGS-for-Lao remains BLOCKED pending a complete Lao-specific adaptation table and reviewed examples. Independent adjudicated IPA gold remains 0 examples.
+
+**Current main at this checkpoint:** `ecc997d356d206640862097d0bff6e7da3c484e3`.  
+**Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter.
