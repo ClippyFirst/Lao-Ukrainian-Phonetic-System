@@ -344,3 +344,10 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 - PR #145 remains the only open PR. Against this checkpoint it is 24 commits ahead / 330 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and remains non-mergeable. Its neural-first CLI/Python default remains an owner-level architecture decision.
 - Historical branch inventory has not been freshly re-enumerated since the 67-ref snapshot before PR #203/#204 continuation branches. Full file-level reconciliation remains PARTIAL.
 - No runtime or linguistic-coverage claim changed; independent adjudicated IPA gold remains 0.
+
+
+## Fresh historical branch inventory — 2026-11-15
+
+- A fresh unfiltered branch search returned **71 refs including `main` (70 non-main)**; a follow-up pagination check returned no additional refs.
+- This supersedes the earlier 67-ref snapshot. It is a count only; full file-level reconciliation of all 70 non-main refs remains PARTIAL.
+- No historical branch was deleted, force-updated or merged as part of this inventory refresh.
