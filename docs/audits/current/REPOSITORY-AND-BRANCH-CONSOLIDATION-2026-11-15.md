@@ -235,3 +235,15 @@ The change is API validation only; it adds no linguistic mappings or claims of n
 - LOC ALA-LC Note 4 ວ alternations and Notes 2–10 remain only partially recoverable from romanization-only text. The direct-input matrix correctly withholds unsupported forms pending Ukrainian target review.
 
 **Readiness:** engineering-verified partial research prototype; not linguistically validated or universal.
+
+
+## PR #196 and fresh branch comparison — 2026-11-15
+
+- PR [#196](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/196) merged by squash as `cce42c07f8cad67881bc422270b7c5f0f566160b`. It updates only this audit and the canonical handoff; no runtime, generated data, model, mapping or deployment configuration changed.
+- Exact-head Verify #4171 / [run 43728217898 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43728217898). The documentation-only PR does not have a separately recorded post-merge main run or new Pages deployment.
+- Fresh branch search returns 62 refs: `main` plus 61 historical/task branches. Commit-graph comparisons were refreshed for the current branch set. No branch was an ahead-only fast-forward candidate in the inspected results; divergent and behind-only histories are not safe bulk-merge candidates. Full file-level reconciliation of every historical branch remains PARTIAL; no branch was deleted, force-updated or merged.
+- Targeted direct-romanization branch review confirms the older `feat/romanization-input-to-ukrainian-20261115`, `fix/ala-lc-2012-conformance-20261115`, `fix/ala-lc-final-crosswalk-current-main-20261115`, `fix/ala-lc-final-w-crosswalk-20261115` and `fix/ala-lc-unsupported-vowel-guard-20261115` engine/test snapshots are superseded by current main. Their unique older lines either predate fail-closed profile validation, profile-specific ALA-LC crosswalks or the current unsupported-vowel guard. No unique supported runtime change was found to port; wholesale merging would regress behavior.
+- Fresh open-PR search still returns only [PR #145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Current compare: 24 commits ahead / 322 behind / 13 files changed; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. GitHub reports the PR non-mergeable. Its neural-first CLI/Python default and target-adaptation opt-in remain an owner-level architecture decision; keep it open and unmerged.
+- PR #192 unknown-profile fail-closed behavior remains DONE_VERIFIED and already exists on main; no duplicate patch was introduced.
+
+**Current main:** `cce42c07f8cad67881bc422270b7c5f0f566160b`. **Readiness:** engineering-verified partial research prototype; not linguistically validated or release-ready as a universal converter. Independent adjudicated IPA gold remains 0 examples.
