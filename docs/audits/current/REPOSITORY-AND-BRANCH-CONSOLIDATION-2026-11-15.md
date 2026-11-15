@@ -443,3 +443,12 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - Current main: `63fd3435397af693633b5bec90aa4448aecbf9d7`. PR #145 remains the only open PR, 24 ahead / 335 behind / 13 files, non-mergeable pending owner architecture decision.
 - Branch inventory at this checkpoint: 75 refs including main (74 non-main), 72 diverged and 2 behind-only; no ahead-only or identical refs. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). Full semantic file review remains PARTIAL.
 - No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## LDC Babel Lao audio lead — primary-source and license review — 2026-11-15
+
+- The LDC catalogue for [LDC2017S08](https://catalog.ldc.upenn.edu/LDC2017S08) describes approximately 207 hours of conversational and scripted telephone speech collected in 2013, Vientiane dialect region, with orthographic transcripts and 8 kHz A-law / 48 kHz PCM audio.
+- The [Lao LSP](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf) says recordings are by native Lao speakers and describes a separate Appen Butler Hill codepoint romanization. It documents a 43-phoneme inventory and X-SAMPA tone notation, but the publicly exposed transcript sample is Lao script and the paired `.rom.txt` sample is ABH romanization. Per-utterance X-SAMPA labels in the delivered package are **not verified**.
+- The [non-member agreement](https://catalog.ldc.upenn.edu/license/iarpa-babel-lao-agreement-non-member.pdf) restricts use to non-commercial linguistic education/research/technology development and prohibits further distribution. The for-profit member agreement operates under the LDC For-Profit Membership Agreement and also prohibits further distribution. Fees and applicable project eligibility have not been confirmed.
+- LDC states portions are © 2015 U.S. Government and that the U.S. Government acquired the data from Appen. No audio or transcript files were imported. Source registry adds `SRC-LDC-BABEL-LAO-2017`; the playbook classifies it as a licensed contextual-audio lead, not citation-form or IPA gold.
+- **Disposition:** BLOCKED pending signed access terms, fees, organization eligibility and confirmation of package annotation fields. Even if access is approved, use only as contextual audio/transcript support under the agreement; independent IPA annotation and adjudication remain required.
