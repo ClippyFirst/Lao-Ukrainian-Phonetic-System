@@ -259,7 +259,7 @@ test("ALA-LC macrons and palatal nasal spelling normalize through a bounded syll
   assert.equal(result.profile, "ala-lc");
   assert.equal(result.normalizedInput, "gna");
   assert.equal(result.status, "OK");
-  assert.equal(result.output, "Ньа");
+  assert.equal(result.output, "ньа");
 });
 
 test("ALA-LC short and long back vowels use the documented Ukrainian target units", () => {
