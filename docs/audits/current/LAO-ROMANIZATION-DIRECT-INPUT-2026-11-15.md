@@ -107,3 +107,14 @@ An omitted or null profile continues to use automatic detection. Regression test
 **PR:** [#192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192), branch `fix/reject-unknown-romanization-profile-20261115`.  
 **Exact-head Verify #4158:** [run 43725765654 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725765654).  
 **Merged:** `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. Exact-head Verify #4163 / [run 43725967264 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725967264); post-merge Verify #4164 / [run 43726041995 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726041995); Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017). This is API validation, not a new linguistic mapping or profile-conformance claim.
+
+
+## CrossAsia DLLM romanisation profile discovery — 2026-11-15
+
+A source review identified a documented collection-specific Lao romanisation in the Digital Library of Lao Manuscripts (DLLM), hosted by CrossAsia. CrossAsia says it closely follows the revised Royal Thai General System of Transcription for Central Thai but changes three Lao initial consonants: ວ is `v` rather than `w`, ຍ is `ny` for [ɲ], and ຈ is `c` rather than `ch`. It is broad/phonetic and does not mark vowel length or tone. A one-page consonant/vowel table is published separately.
+
+This refines, but does not invalidate, the RTGS blocker: DLLM is a specific library-catalogue convention, not evidence of a generally accepted or national Lao RTGS standard. It must not be merged into BGN/PCGN or ALA-LC. The source page says Lao has no official romanisation and explains that DLLM prioritizes discoverability of manuscript titles; some Indic loanword spellings retain historical forms. The CrossAsia site carries a copyright notice and no explicit open-data licence was identified, so the table was not copied into repository data.
+
+**Disposition:** research candidate only, NOT SUPPORTED. A separate `dllm` profile would require a complete checked transcription of its table, reuse/licensing determination, Ukrainian target policy for all units, regression examples and Lao-specialist review. No runtime code or mappings changed.
+
+Sources: CrossAsia [DLLM romanisation description](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en), [published consonant/vowel table](https://digital.crossasia.org/wp-content/uploads/2021/10/DLLM_laoromanisation.pdf); LDC [Lao Language Specific Peculiarities Document](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf).
