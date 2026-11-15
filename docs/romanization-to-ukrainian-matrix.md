@@ -33,6 +33,16 @@ The engine preserves punctuation and whitespace, reports the detected/selected p
 
 Sources: [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LDC Language Specific Peculiarities Document for Lao](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf); [PCGN Laos Toponymic Factfile (2023)](https://assets.publishing.service.gov.uk/media/64f9c99f7a4b4f0012f6d8a5/Laos_Toponymic_Factfile.pdf).
 
+## ALA-LC 2012 inventory boundary
+
+The LOC table is broader than the currently implemented normalizer. The implemented subset is limited to `u/ū`, `uʼ/ūʼ`, `e/ē`, `æ/ǣ`, `oe/ōe`, `ia/īa`, `ua/ūa`, `ai/āi`, `ao` and `am`, plus the onset/final subset documented above. This list must not be read as full ALA-LC vowel coverage.
+
+The LOC table also specifies the following forms, which remain unsupported by the Ukrainian adapter: `ư`, `ư̄`, `œ`, `œ̄`, `ǫ`, `ǭ`, `ưa`, `ư̄a`, `iu`, `īu` and `īeo`. Note 4 additionally defines medial-`ວ` behavior: `w` in clusters before a vowel (e.g. `khwā`, `khwǣng`), `ūa` before a final consonant (e.g. `būak`, `dūai`), and `o` after a vowel in final position (e.g. `nāo`, `kǣo`); only the final-`o` pattern is partially handled. Note 5 suppresses `ຫ` before specified sonorants and permits ligature forms; Note 6 uses initial `ʻ` for vowel-initial syllables but treats medial `ອ` as a vowel. Notes 2, 3 and 7–10 cover final `ຍ`, subscript `ລ`, vowel placement, numerals, word segmentation/loanword boundaries, tone marks and double-function consonants. These rules are not all recoverable from a bare Latin string, and are not claimed as implemented.
+
+A concrete false-positive risk exists when an unsupported ALA-LC sequence such as `iu` could be split by the generic parser into two ordinary vowel nuclei. The direct-input adapter now detects the unsupported LOC sequences and withholds the entire whitespace-/hyphen-delimited fragment as PARTIAL rather than returning a fabricated syllable sequence. This is a conservative guard, not support for those vowels. The original text remains visible in `⟦…⟧` brackets.
+
+Source: [Library of Congress, ALA-LC Lao Romanization Table (2012), pp. 1–3, especially Notes 2–10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
+
 ## Canonical correspondence table
 
 The existing implementation's detailed, position-sensitive crosswalk is maintained in methodology.md under “Optional romanization-to-Ukrainian mode” and in:

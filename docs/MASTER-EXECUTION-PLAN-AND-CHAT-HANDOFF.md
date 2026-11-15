@@ -6,6 +6,19 @@
 **Previous work:** PR #171 (repository/documentation consolidation), #172 (direct romanization input), #173 (ALA-LC 2012 conformance correction), and #174 (handoff/deployment evidence) are all merged. PR #171 merged as `bd16bf6eef98ac364d4bde8226187ab2c71d7fb9`; #173 as `3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2`; #174 as `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`.
 **Open PR inventory:** #145 is the only open PR found. It proposes a neural-first CLI default and remains unmerged because it conflicts with the deterministic-default contract; leave it open pending an explicit architecture decision.
 
+## Follow-up: fail-closed guard for unimplemented LOC ALA-LC vowels — 2026-11-15
+
+**Base main:** `6a95b72d3a136c05cb1bc451b82486cf8170782e` (PR #175 merged)  
+**Working branch:** `fix/ala-lc-unsupported-vowel-guard-20261115`
+
+A complete re-read of the primary LOC 2012 table found ALA-LC forms outside the existing bounded subset: `ư`, `ư̄`, `œ`, `œ̄`, `ǫ`, `ǭ`, `ưa`, `ư̄a`, `iu`, `īu`, `īeo`. Note 4 also describes medial-`ວ` spellings `w`, `ūa`, and the `iu`/`īu`/`īeo` forms. Some adjacent-vowel sequences can be mis-segmented by the generic parser as multiple supported nuclei. The implementation now detects the unimplemented LOC forms and returns visible PARTIAL output for the entire fragment instead of a false-positive parse. This is a fail-closed guard only; it does not invent Ukrainian target values or claim these forms are supported.
+
+Regression tests cover the full list above and LOC examples `khwā`, `khwǣng`, `būak`. The romanization matrix and direct-input audit now enumerate the complete known boundary. Source: [LOC ALA-LC Lao Romanization Table (2012), pp. 1–3](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
+
+**Task ledger update:** bounded ALA-LC subset remains DONE_VERIFIED only for its enumerated supported forms; fail-closed handling of the identified unsupported forms is PARTIAL pending exact-head CI. Full contextual ALA-LC remains PARTIAL. No Ukrainian mapping has been added for the newly listed forms.
+
+**Verification:** pending exact-head GitHub Actions for this branch; do not reuse PR #175's CI as evidence for this code change. Local clone/network limitations remain as recorded below.
+
 ## Verified current state
 
 - PR #173's bounded ALA-LC normalizer corrections and PR #174's documentation/deployment reconciliation are present on `main`.

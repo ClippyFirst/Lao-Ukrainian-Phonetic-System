@@ -64,6 +64,21 @@ function replacePreservingCase(token, replacement) {
   return replacement;
 }
 
+// LOC ALA-LC 2012 Note 4 lists additional vowel forms that the shared
+// parser does not yet model (including iu/īu and īeo). Without an explicit
+// syllable boundary, the generic parser could split these sequences into
+// multiple ordinary nuclei and return a misleading OK result. Keep the entire
+// word PARTIAL until a source-reviewed target adapter exists.
+const ALA_LC_UNSUPPORTED_SEQUENCES = [
+  "ư̄a", "ưa", "īeo", "ieo", "īu", "iu", "œ̄", "œ", "ǭ", "ǫ", "ư̄", "ư",
+];
+
+function hasUnsupportedAlaLcSequence(rawPart, normalizedPart) {
+  return ALA_LC_UNSUPPORTED_SEQUENCES.some((token) =>
+    rawPart.toLowerCase().includes(token) || normalizedPart.toLowerCase().includes(token)
+  );
+}
+
 function normalizeAlaLc(input) {
   const source = input.toLowerCase();
   const tokens = [...ALA_LC_REPLACEMENTS.keys()].sort((a, b) => b.length - a.length);
@@ -361,6 +376,14 @@ export function analyzeRomanization(input, options = {}) {
     }
     const sourceGroup = sourceSyllableGroups ? (sourceSyllableGroups[sourceGroupIndex++] || []) : null;
     const strictBoundaries = settings.strictBoundaries === true;
+    if (profile === "ala-lc" && hasUnsupportedAlaLcSequence(originalPart, part)) {
+      const item = unresolved(originalPart, "UNSUPPORTED_ALA_LC_VOWEL");
+      item.warning = "ALA-LC 2012 містить голосну послідовність або голосний знак, для якого ще немає перевіреного складового й українського відповідника; фрагмент залишено без здогаду.";
+      syllables.push(item);
+      output += item.ukrainian;
+      partial = true;
+      continue;
+    }
     const parsed = parseWord(part.toLowerCase(), sourceSyllableGroups ? sourceGroup : null, profile, strictBoundaries);
     if (parsed.count === 1 && parsed.path) {
       const sourceSlice = sourceSyllableGroups ? sourceGroup : sourceOnsets

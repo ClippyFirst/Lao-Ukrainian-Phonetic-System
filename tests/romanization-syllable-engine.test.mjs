@@ -366,3 +366,25 @@ test("auto profile detection recognizes ALA-LC modifier apostrophe and oe", () =
   assert.equal(analyzeRomanization("koe").profile, "ala-lc");
   assert.equal(analyzeRomanization("ku").profile, "bgn-pcgn");
 });
+
+
+test("ALA-LC 2012 vowel forms outside the implemented subset are withheld as whole words", () => {
+  const unsupported = [
+    "kiu", "kīu", "kīeo", "kieo", "kưa", "kư̄a",
+    "kư", "kư̄", "kœ", "kœ̄", "kǫ", "kǭ",
+  ];
+  for (const input of unsupported) {
+    const result = analyzeRomanization(input, { profile: "ala-lc" });
+    assert.equal(result.status, "PARTIAL", input);
+    assert.equal(result.output, `⟦${input}⟧`, input);
+    assert.equal(result.syllables[0].status, "UNSUPPORTED_ALA_LC_VOWEL", input);
+  }
+});
+
+test("ALA-LC medial w clusters and the special ūa example remain visibly partial", () => {
+  for (const input of ["khwā", "khwǣng", "būak"]) {
+    const result = analyzeRomanization(input, { profile: "ala-lc" });
+    assert.equal(result.status, "PARTIAL", input);
+    assert.equal(result.output, `⟦${input}⟧`, input);
+  }
+});
