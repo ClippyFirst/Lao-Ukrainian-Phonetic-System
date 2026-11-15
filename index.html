@@ -53,6 +53,18 @@
           </div>
           <span class="local-note"><span class="local-dot" aria-hidden="true"></span>Обробка у вашому браузері</span>
         </div>
+        <div class="method-switch input-kind-switch" role="group" aria-label="Мова або система запису на вході">
+          <button id="input-kind-lao" class="method-button is-active" type="button" aria-pressed="true">Лаоське письмо</button>
+          <button id="input-kind-romanization" class="method-button" type="button" aria-pressed="false">Романізація латинкою</button>
+        </div>
+        <label id="romanization-profile-label" class="profile-control" for="romanization-profile" hidden>
+          Профіль латинського запису
+          <select id="romanization-profile" name="romanization-profile">
+            <option value="auto">Визначити автоматично</option>
+            <option value="bgn-pcgn">BGN/PCGN 1966 · CLDR</option>
+            <option value="ala-lc">ALA-LC 2012</option>
+          </select>
+        </label>
         <div class="input-shell">
           <textarea id="lao-input" name="lao-text" autocomplete="off" lang="lo" spellcheck="false" aria-label="Введення лаоського тексту"></textarea>
         </div>
@@ -88,7 +100,7 @@
           <div class="result-grid">
             <article class="result-card result-card-primary" data-result-panel="ukrainian">
               <div class="result-meta"><span>UA</span><strong>Практичний український запис</strong><button id="copy" class="copy-button" type="button" disabled>Копіювати</button></div>
-              <div class="method-switch" role="group" aria-label="Метод українського запису">
+              <div class="method-switch output-method-switch" role="group" aria-label="Метод українського запису">
                 <button id="mode-phonetic" class="method-button is-active" type="button" aria-pressed="true">За вимовою</button>
                 <button id="mode-romanization" class="method-button" type="button" aria-pressed="false">За романізацією</button>
               </div>
@@ -97,9 +109,9 @@
             </article>
 
             <article class="result-card" data-result-panel="romanization">
-              <div class="result-meta"><span>Лат.</span><strong>Латинський запис · CLDR Lao-Latin</strong><button id="copy-romanization" class="copy-button" type="button" disabled>Копіювати</button></div>
+              <div class="result-meta"><span>Лат.</span><strong id="romanization-heading">Латинський запис · CLDR Lao-Latin</strong><button id="copy-romanization" class="copy-button" type="button" disabled>Копіювати</button></div>
               <p id="romanization" class="result-body romanization muted" lang="lo-Latn">Тут відобразиться окремий латинський запис.</p>
-              <p class="romanization-note">Режим романізації окремо розбирає склади за профілем CLDR Lao-Latin / BGN-PCGN. Він показує допоміжний запис латинкою й не бере участі у фонетичному шляху до українського результату.</p>
+              <p class="romanization-note" id="romanization-note">Режим романізації окремо розбирає склади за профілем CLDR Lao-Latin / BGN-PCGN. Він показує допоміжний запис латинкою й не бере участі у фонетичному шляху до українського результату.</p>
             </article>
 
             <article class="result-card" data-result-panel="ipa">
