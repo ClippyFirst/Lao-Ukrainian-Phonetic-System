@@ -245,3 +245,46 @@ test("source vowel identity distinguishes A plus final m from the AM nucleus", (
     ["AM", "am", ""],
   );
 });
+
+
+test("standalone BGN/PCGN romanization can be converted without Lao-script side data", () => {
+  const result = analyzeRomanization("Viangchan");
+  assert.equal(result.profile, "bgn-pcgn");
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "Віангчан");
+});
+
+test("ALA-LC macrons and palatal nasal spelling normalize through a bounded syllable adapter", () => {
+  const result = analyzeRomanization("nyā", { profile: "ala-lc" });
+  assert.equal(result.profile, "ala-lc");
+  assert.equal(result.normalizedInput, "gna");
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "Ньа");
+});
+
+test("ALA-LC short and long back vowels use the documented Ukrainian target units", () => {
+  assert.equal(analyzeRomanization("kū", { profile: "ala-lc" }).output, "ку");
+  assert.equal(analyzeRomanization("kư", { profile: "ala-lc" }).output, "ки");
+});
+
+test("ALA-LC final s is interpreted as a Lao stop coda, not as an onset", () => {
+  const result = analyzeRomanization("kās", { profile: "ala-lc" });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "кат");
+});
+
+test("auto profile detection recognizes ALA-LC diacritics but does not rewrite ordinary BGN text", () => {
+  assert.equal(analyzeRomanization("nyā").profile, "ala-lc");
+  assert.equal(analyzeRomanization("kha").profile, "bgn-pcgn");
+});
+
+test("title-case and all-caps romanization preserve initial capitalization", () => {
+  assert.equal(analyzeRomanization("Viangchan").output, "Віангчан");
+  assert.equal(analyzeRomanization("KHA").output, "К'А");
+});
+
+test("unsupported ALA-LC glottal notation remains visible instead of being guessed", () => {
+  const result = analyzeRomanization("ʻīk", { profile: "ala-lc" });
+  assert.equal(result.status, "PARTIAL");
+  assert.match(result.output, /⟦ʻīk⟧/u);
+});
