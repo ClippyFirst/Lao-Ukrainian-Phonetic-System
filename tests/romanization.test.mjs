@@ -298,9 +298,9 @@ test("the service exposes a separate direct romanization input mode and explicit
 
 
 test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the same Lao word",()=>{
- const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ";
+ const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ";
  const latin=romanizeLao(lao);
- assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab");
+ assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab vadthanathav-n");
  const separators=/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
  const sourceSyllableGroups=lao.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
   .filter(Boolean)
@@ -313,7 +313,7 @@ test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the sa
     vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
     coda:s.coda==="—"?"":s.coda??null,
    })));
- assert.equal(sourceSyllableGroups.length,4);
+ assert.equal(sourceSyllableGroups.length,5);
  assert.ok(sourceSyllableGroups[1].length>=3);
  assert.ok(sourceSyllableGroups[3].length>=3);
  const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
