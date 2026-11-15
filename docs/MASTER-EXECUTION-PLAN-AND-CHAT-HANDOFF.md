@@ -1,3 +1,22 @@
+
+## Repository structure and branch consolidation — PARTIAL, 2026-11-15
+
+**Working branch:** `chore/repository-structure-branch-consolidation-20261115`  
+**Starting main:** `4197d4212a935ee59216b1a7f9bdd112dceabb6e`  
+**Current audit:** [Repository structure and branch consolidation](audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md)  
+**Documentation PR:** [#171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/171) (open; exact-head CI pending)
+
+- Confirmed `main` is the default branch and compared it with the newest repository commit found; both resolve to `4197d4212a935ee59216b1a7f9bdd112dceabb6e`.
+- Inventoried 37 branch refs (including `main`) and compared all 36 non-main refs with `main`. No non-main branch is an ahead-only fast-forward candidate; the refs are divergent or behind.
+- Confirmed recent PRs #163, #164, #165, #167, #168, #169 and #170 merged. PR #166 is closed unmerged as a duplicate. PR #145 is the only open PR returned by the open-PR search and conflicts with the deterministic-default contract.
+- Preserved the existing documentation architecture and added a dated consolidation audit. Refreshed README and documentation-index links.
+- No historical branch was merged, deleted or force-updated. This avoids reintroducing stale snapshots and superseded experimental defaults. Historical refs remain intact.
+- Full branch inventory and status ledger are in the current audit. File-level review of every old branch is not claimed complete; only demonstrably missing behavior should be ported after diff/test review.
+
+**Task status:** documentation architecture and branch metadata inventory are `DONE_VERIFIED`; exhaustive file-level review of every historical branch is `PARTIAL`; PR #145 is `BLOCKED` pending an explicit architecture decision; independent IPA gold and manual device/accessibility QA remain blocked as previously documented.
+
+**Verification:** GitHub metadata/search/compare operations and source-document reads completed. Local clone, Python/Node/Chromium tests, data audit, build, generated-data drift check, Pages deployment and manual QA were not run in this session. Exact-head GitHub Actions Verify remains required before merging PR #171. Do not reuse historical CI results as evidence for this branch.
+
 ## Ukrainian editorial and interface-quality pass — PARTIAL, 2026-11-10
 
 **Branch:** `quality/ukrainian-editorial-audit-2026-11-10`  
