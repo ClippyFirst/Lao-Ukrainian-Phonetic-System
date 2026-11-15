@@ -1,3 +1,45 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #177 merged)
+
+**Current `main`:** `de9c2516d973f2cd721667e5505e86693cff453d`  
+**Starting point for this continuation:** `de9c2516d973f2cd721667e5505e86693cff453d`  
+**PR #177:** [docs: record ALA-LC guard merge and deployment verification](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/177) — merged as the current commit.  
+**PR #177 exact-head Verify #4095:** [run 43709949777 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709949777).  
+**Post-merge main Verify #4096:** [run 43710037579 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43710037579).  
+**Latest Pages deployment:** #97 / [run 43709787334 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709787334), deployed code from PR #176; PR #177 and this continuation are documentation-only.
+
+PR #177 reconciled README, this handoff and the direct-input audit with the merged ALA-LC fail-closed guard and its verification. Its merge commit is the latest main head. The code-level runtime remains the PR #176 merge `05f2eb231e1bdbda7e12362383122c8f4fb50c70`; do not describe the documentation commit as a new runtime deployment.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head Verify #4092 and main Verify #4094 passed |
+| Documentation synchronization for PR #176 | DONE_VERIFIED | PR #177 merged; exact-head Verify #4095 and main Verify #4096 passed |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, loanword and word-boundary handling require source-grounded parsing and reviewed Ukrainian target decisions |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Conflicts with deterministic-default contract; requires explicit architecture decision |
+
+## Verification and execution limits
+
+- Latest main Verify #4096 / run 43710037579 passed all listed workflow steps: IPA-gold schema, repository data/evidence audit, Python tests, optional external-G2P syntax/CLI, locked browser-test dependency install, Node/browser-engine tests, build and canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks.
+- Exact test counts were not extracted from the #4096 job log; do not reuse counts from older commits.
+- PR #177 exact-head Verify #4095 / run 43709949777 also succeeded.
+- Runtime deployment #97 / run 43709787334 succeeded and included a live smoke test. No new deployment was needed for documentation-only PR #177.
+- The local environment's earlier inability to resolve `github.com` prevented a local clone/test run. No local test result is claimed.
+- Only PR #145 remains open; it is intentionally untouched pending the architecture decision. Historical branches remain preserved and are not to be merged or deleted mechanically.
+
+## Next safe work
+
+Do not invent Ukrainian values for `ʻ`, medial `w`, or unsupported ALA-LC vowels. Continue only where the source specifies a recoverable romanization structure and the target mapping has reviewed evidence. RTGS and independent IPA gold remain blocked until their evidence prerequisites are met. A new linguistic feature is not justified merely to reduce PARTIAL statuses.
+
+---
+
 
 # Historical checkpoint — 2026-11-15 (post-PR #174)
 
