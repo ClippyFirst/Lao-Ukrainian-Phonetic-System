@@ -1,6 +1,6 @@
 # Lao romanization → Ukrainian orthographic matrix
 
-**Status:** PARTIAL — the existing syllable-level engine is preserved; this document formalizes its romanization authority, scope and table contract.
+**Status:** PARTIAL — direct Latin input is now supported for the BGN/PCGN-derived CLDR profile and a bounded ALA-LC 2012 subset; ambiguity, unsupported spellings and missing distinctions remain explicit.
 **Primary variety:** contemporary Standard Lao; Vientiane-oriented phonetic mode remains separate.
 
 ## Standard selection
@@ -18,6 +18,18 @@ Sources:
 - **Romanization mode:** Lao orthographic syllable → CLDR Lao-Latin → source-aware onset/nucleus/coda crosswalk → Ukrainian practical syllable. It does not infer pronunciation, tone or length that the romanization does not encode.
 - **Phonetic mode:** Lao orthographic analysis → source phonology → IPA → Ukrainian target adaptation. It may withhold unsupported units.
 - The romanization route must not consume IPA as its source and must not fall back to the phonetic result.
+
+## Direct romanization input
+
+The browser now accepts a romanized Lao string directly; the user does not need to provide Lao script first. The input profile can be selected as **BGN/PCGN 1966 / CLDR Lao-Latin**, **ALA-LC 2012**, or **automatic**. Automatic selection uses distinctive ALA-LC diacritics and the ALA-LC palatal-nasal spelling before a vowel; otherwise it selects the BGN/PCGN-derived profile. This is a convenience heuristic, not a complete standard classifier: when the source convention is known, users should select it explicitly.
+
+The BGN/PCGN profile uses the existing onset–nucleus–coda parser. The ALA-LC profile normalizes a bounded set of documented macron, vowel and palatal-nasal spellings to the parser's internal syllable vocabulary; it additionally handles ALA-LC final `s` as the stop coda described by the Library of Congress table. This is **not** a complete ALA-LC implementation. ALA-LC glottal notation, labialized `w` onsets, some final-vowel alternations, loanword conventions and unresolved syllable boundaries remain unsupported or partial. The normalizer never claims that a normalized form is the original romanization.
+
+The engine preserves punctuation and whitespace, reports the detected/selected profile, and leaves ambiguous or unsupported spans in visible `⟦…⟧` brackets. Without the original Lao syllable structure, a Latin string such as `kam` may have more than one valid analysis; it is withheld rather than guessed. Romanization-only input does not produce IPA, and it cannot recover tone, vowel length or consonant-class distinctions that the chosen romanization omits.
+
+**RTGS note:** the LDC Lao language-specific document lists RTGS among schemes that have been used for Lao, but it does not provide a normative, complete RTGS-for-Lao mapping table in the cited section. RTGS is primarily the Royal Thai General System of Transcription. The project therefore does not label the current parser as RTGS and does not silently interpret every RTGS-like spelling as Lao. A dedicated profile requires a specific Lao adaptation table and reviewed examples. Informal French-style, karaoke and mixed spellings likewise remain evidence-limited.
+
+Sources: [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LDC Language Specific Peculiarities Document for Lao](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf); [PCGN Laos Toponymic Factfile (2023)](https://assets.publishing.service.gov.uk/media/64f9c99f7a4b4f0012f6d8a5/Laos_Toponymic_Factfile.pdf).
 
 ## Canonical correspondence table
 
@@ -52,14 +64,16 @@ A future table expansion must add source grapheme/structure, CLDR output, Ukrain
 
 ## Existing implementation preserved
 
-The syllable-level parser and source-aware checks are the correct architecture and are retained. It already checks onset, source vowel ID and supported coda, distinguishes kam ambiguities, handles supported silent-hoa forms, and refuses ambiguous/mismatched syllables. Do not replace it with character-by-character Latin-to-Cyrillic replacement.
+The syllable-level parser and source-aware checks are retained. It checks onset, source vowel ID and supported coda, distinguishes kam ambiguities when Lao source structure is available, handles supported silent-hoa forms, and refuses ambiguous/mismatched syllables. A separate direct-input path now reuses the parser without inventing source-side Lao evidence. Do not replace either route with character-by-character Latin-to-Cyrillic replacement.
 
 ## Remaining tasks
 
 | ID | Status | Acceptance |
 |---|---|---|
-| LAO-ROM-STD-001 | DONE_VERIFIED (documented selection) | PCGN 1966 / CLDR profile accurately labelled provisional |
+| LAO-ROM-STD-001 | DONE_VERIFIED (documented selection) | PCGN 1966 / CLDR profile accurately labelled provisional; no claim of official national standard |
 | LAO-ROM-MATRIX-001 | PARTIAL | Every supported Lao orthographic syllable has source → Latin → Ukrainian rows and fixtures |
+| LAO-ROM-DIRECT-001 | PARTIAL | Direct BGN/PCGN input and bounded ALA-LC 2012 normalization are implemented; exact-head CI and broader fixture coverage are required |
+| LAO-ROM-RTGS-001 | BLOCKED | Requires an exact Lao-specific RTGS adaptation table and reviewed sample strings; Thai RTGS alone is not sufficient |
 | LAO-ROM-COVERAGE-001 | PARTIAL | Inventory audit proves no supported grapheme class is silently dropped |
 | LAO-ROM-REVIEW-001 | BLOCKED | Independent Lao specialist review of ambiguous nuclei, conventional names and loanword namespaces |
 
