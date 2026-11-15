@@ -3805,13 +3805,14 @@ The latest failure was a test-timing issue: the selected class was present, but 
 
 **Base main:** 5717c2fd95c467c48b3909c86252fba5deca0695  
 **Branch:** fix/ala-lc-2012-conformance-20261115  
-**Verified branch head:** d0aa8b4714f6cce243f9afbef426d6d86bf2c8d1  
-**PR:** to be opened after this handoff update's exact-head CI completes.
+**Verified code/documentation head before this handoff update:** 2ad9c51adf12137fc7132d8a2c490645f7f88557  
+**PR:** pending creation after the handoff/audit update's exact-head CI completes.
 
 A review against the complete Library of Congress 2012 table found that the initial bounded normalizer had several inaccurate assumptions. The follow-up corrects them:
 
 - Uses the table's actual vowel spellings: u / ū, uʼ / ūʼ, e / ē, æ / ǣ, oe / ōe, ia / īa, ua / ūa, ai / āi, ao, and am.
 - Keeps ny as the ALA-LC palatal-nasal onset; it is no longer rewritten to the BGN/PCGN gn token.
+- Automatic profile detection now recognizes the ALA-LC modifier apostrophe in uʼ/ūʼ and the oe spelling, in addition to distinctive diacritics and ny before a vowel.
 - Uses profile-specific onset and coda inventories. ALA-LC no longer accepts BGN-only x or gn, nor invalid final spellings s, v, r, and l.
 - Uses the ALA-LC final values k, ng, t, p, n, and m; final ວ can be written o after a vowel. The romanized n cannot distinguish an underlying final ນ from parenthesized final ຣ/ລ.
 - Distinguishes short u from long ū; the previous u → ou normalization was wrong and has been removed.
@@ -3820,10 +3821,10 @@ A review against the complete Library of Congress 2012 table found that the init
 
 ### Verification — DONE_VERIFIED for follow-up head
 
-GitHub Actions Verify #4072, run 43697504599, on d0aa8b4714f6cce243f9afbef426d6d86bf2c8d1: **SUCCESS**.
+GitHub Actions Verify #4078, run 43697698402, on 2ad9c51adf12137fc7132d8a2c490645f7f88557: **SUCCESS**.
 
 - 350 Python tests passed.
-- 181 Node tests passed, 0 failed.
+- 182 Node tests passed, 0 failed.
 - 28 Chromium browser tests passed.
 - Independent IPA gold corpus schema validation passed (the corpus remains empty).
 - Repository data/evidence audit passed.
