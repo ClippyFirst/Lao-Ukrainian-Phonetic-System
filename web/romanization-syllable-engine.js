@@ -235,7 +235,9 @@ function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundar
     if (sourceGroup && word[index] === "-") {
       const next = solve(index + 1, sourceIndex);
       const result = next.count
-        ? { count: next.count, path: [{ kind: "separator", surface: "-", ukrainian: "-" }, ...next.path] }
+        ? { count: next.count, path: next.path
+          ? [{ kind: "separator", surface: "-", ukrainian: "-" }, ...next.path]
+          : null }
         : next;
       memo.set(key, result);
       return result;
@@ -484,7 +486,7 @@ export function analyzeRomanization(input, options = {}) {
           ? unit
           : crosswalkUnit(unit, sourceSlice[sourceOffset++], profile))
         : parsed.path;
-      const validCrosswalk = aligned && crossed.every((unit) => unit.kind === "separator" || Boolean(unit));
+      const validCrosswalk = aligned && crossed.every((unit) => Boolean(unit) && (unit.kind === "separator" || Boolean(unit)));
       if (validCrosswalk) {
         const units = crossed.map((unit, index) => ({
           ...unit,
