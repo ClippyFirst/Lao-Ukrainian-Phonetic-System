@@ -295,3 +295,31 @@ test("the service exposes a separate direct romanization input mode and explicit
  assert.match(app,/function renderRomanizationInput\(\)/u);
  assert.match(app,/inputKind === "romanization"/u);
 });
+
+
+test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the same Lao word",()=>{
+ const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ";
+ const latin=romanizeLao(lao);
+ assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab");
+ const separators=/^(\\s+|[,.!?;:()[\\]{}"“”]+|-+)$/u;
+ const sourceSyllableGroups=lao.split(/(\\s+|[,.!?;:()[\\]{}"“”]+|-+)/u)
+  .filter(Boolean)
+  .filter(part=>!separators.test(part)&&!/^[0-9\\u0ED0-\\u0ED9]+$/u.test(part))
+  .map(part=>analyze(part,{ipaProfile:"hybrid-deterministic"}).syllables
+   .filter(s=>!s.passthrough)
+   .map(s=>({
+    onset:s.onset||null,
+    onsetForm:s.onsetForm||s.onset||null,
+    vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+    coda:s.coda==="—"?"":s.coda??null,
+   })));
+ assert.equal(sourceSyllableGroups.length,4);
+ assert.ok(sourceSyllableGroups[1].length>=3);
+ assert.ok(sourceSyllableGroups[3].length>=3);
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
+ assert.equal(adapted.status,"OK",JSON.stringify({
+  latin:latin.output,sourceSyllableGroups,
+  syllables:adapted.syllables,warnings:adapted.warnings
+ }));
+ assert.ok(!adapted.output.includes("⟦"),adapted.output);
+});
