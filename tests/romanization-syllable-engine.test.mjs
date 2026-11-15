@@ -431,3 +431,19 @@ test("ALA-LC final ຍ closes the ai diphthong instead of becoming a consonant c
   assert.equal(result.syllables[0].nucleus, "ai");
   assert.equal(result.syllables[0].coda, "");
 });
+
+test("ALA-LC source-aware onset crosswalk uses s for ຊ and ny for ຍ", () => {
+  const sibilant = analyzeRomanization("sa", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ຊ", coda: "", vowelId: "AA" }]],
+  });
+  const palatalNasal = analyzeRomanization("nyā", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ຍ", coda: "", vowelId: "AA" }]],
+  });
+  assert.equal(sibilant.status, "OK");
+  assert.equal(sibilant.output, "са");
+  assert.equal(palatalNasal.status, "OK");
+  assert.equal(palatalNasal.output, "ньа");
+  assert.equal(palatalNasal.syllables[0].onset, "ny");
+});
