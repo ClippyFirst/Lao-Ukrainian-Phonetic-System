@@ -354,7 +354,7 @@ export function analyzeRomanization(input, options = {}) {
         : parsed.path;
       const validCrosswalk = aligned && crossed.every(Boolean);
       if (validCrosswalk) {
-        const units = crossed.map((unit) => ({
+        const units = crossed.map((unit, index) => ({
           ...unit,
           originalSurface: originalPart,
           ukrainian: mapCase(unit.ukrainian, part === part.toUpperCase() || index === 0 ? originalPart : ""),
@@ -389,7 +389,7 @@ export function analyzeRomanization(input, options = {}) {
         if (sourceOnsets) sourceIndex += sourceSlice.length;
       }
     } else {
-      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part) : null;
+      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part.toLowerCase(), null, profile) : null;
       const sourceMismatch = Boolean(unrestricted?.count);
       const item = unresolved(originalPart, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
       if (sourceMismatch) {
