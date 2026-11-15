@@ -139,3 +139,10 @@ The current `main` head `2ae2971c2526cba57504e294f37caf64c964c3f6` passed exact-
 ## Post-merge engineering verification — 2026-10-31
 
 PR #90 is merged as `69fa43e7d66e2c4c6468945497ff5a1b1ab7b717`; exact-main workflow [41246317109](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/41246317109) passed. This confirms the documented whole-sentence and mixed-text regression set remains green on main. It does not promote the PARTIAL source-to-CLDR-to-Ukrainian inventory to complete or establish independently adjudicated phonetic accuracy.
+
+
+## Source-aware hyphen alignment regression — 2026-11-15
+
+The Lao → CLDR Lao-Latin → Ukrainian path can emit a hyphen inside a whitespace-delimited Lao token to mark a medial onsetless syllable (BGN/PCGN note 4). The source-side crosswalk groups syllables by the original Lao token. Splitting that generated Latin token again at the hyphen incorrectly advanced the source-group cursor, so subsequent fragments were compared with the next Lao word and valid syllables were withheld as `⟦…⟧`.
+
+PR #214 changes source-aware parsing to keep the hyphen inside the current token, consume no source syllable for the boundary, and preserve the hyphen in Ukrainian output. The hyphen remains an ordinary token boundary in direct Latin-only input, where no Lao source group is available. A regression test covers a single source word containing three romanized syllables with a medial onsetless syllable. This is a parser-alignment correction; it adds no new Lao phonological or Ukrainian correspondence rule.
