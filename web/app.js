@@ -1,6 +1,6 @@
 import { analyze } from "./engine.js?v=20261110-provisional-ipa-fallback-1";
 import { romanizeLao } from "./romanization.js";
-import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261031-source-vowel-crosswalk";
+import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261115-direct-romanization-input-1";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
