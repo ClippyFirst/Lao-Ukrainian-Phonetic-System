@@ -2,7 +2,7 @@
 
 - **[Відкрити вебрушій на GitHub Pages](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/)** — детермінований IPA-first рушій і практичний український результат без завантаження нейромережевої моделі.
 
-- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk.
+- [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk. The web tool also accepts direct romanized input (BGN/PCGN and a bounded ALA-LC profile); ambiguous forms remain marked partial.
 - [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — target orthography conventions.
 - [Графемний fallback і низька впевненість](docs/lao-grapheme-ipa-preview.md) — typed provisional IPA → Ukrainian adapter behavior, unresolved `?` markers and confidence disclosure.
 - [Візуальна система сайту](DESIGN.md) — Lao Woven Editorial design tokens and interaction rules.
