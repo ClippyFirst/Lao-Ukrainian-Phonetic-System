@@ -22,7 +22,8 @@ The canonical branch is `main` at `ecc997d356d206640862097d0bff6e7da3c484e3`. Th
 | Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
 | Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
 | Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
-| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; exact-head Verify #4128 and post-merge Verify #4131 passed; Pages #98 deployed and smoke-tested |\n| README, romanization matrix, handoff and audit reconciliation | DONE_VERIFIED | PR #184 merged; exact-head Verify #4137 passed; current main is `ecc997d356d206640862097d0bff6e7da3c484e3` |
+| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; exact-head Verify #4128 and post-merge Verify #4131 passed; Pages #98 deployed and smoke-tested |
+| README, romanization matrix, handoff and audit reconciliation | DONE_VERIFIED | PR #184 merged; exact-head Verify #4137 passed; current main is `ecc997d356d206640862097d0bff6e7da3c484e3` |
 | Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
 | Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
 | RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
