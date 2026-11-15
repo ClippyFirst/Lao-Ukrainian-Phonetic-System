@@ -4532,4 +4532,4 @@ A local clone attempt was unavailable because the execution environment could no
 - PR #214, #218, #219 and #220 are merged. PR #217 was closed as superseded by #218; its branch was left intact. PR #145 remains the only open PR and remains blocked pending an owner-level decision on the neural-first CLI/Python default. No branches were deleted.
 - Graph comparison is complete; semantic review of all remaining divergent historical branch diffs is still PARTIAL. Do not mass-merge or delete them. Review any branch only when its task is reopened or a specific unique code/data delta is shown to be needed.
 
-**Current main:** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`. **Readiness:** engineering-verified partial research prototype; not release-ready as a universal, independently accuracy-validated phonetic converter.
+**Main at this reconciliation checkpoint (before PR #221):** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`. The PR #221 branch is documentation-only and is compared above. **Readiness:** engineering-verified partial research prototype; not release-ready as a universal, independently accuracy-validated phonetic converter.
