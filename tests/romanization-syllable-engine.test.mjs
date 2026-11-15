@@ -353,7 +353,9 @@ test("ALA-LC final v and r/l spellings are not accepted as final consonants", ()
 });
 
 
-test("ALA-LC official examples vat and būak follow initial-v and medial-w vowel rules", () => {
+test("ALA-LC official vat example is supported and ambiguous būak syllable division is withheld", () => {
   assert.equal(analyzeRomanization("vat", { profile: "ala-lc" }).output, "ват");
-  assert.equal(analyzeRomanization("būak", { profile: "ala-lc" }).output, "буак");
+  const medialW = analyzeRomanization("būak", { profile: "ala-lc" });
+  assert.equal(medialW.status, "PARTIAL");
+  assert.equal(medialW.output, "⟦būak⟧");
 });
