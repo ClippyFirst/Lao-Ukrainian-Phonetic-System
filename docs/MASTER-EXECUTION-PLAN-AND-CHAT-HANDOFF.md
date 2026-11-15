@@ -1,3 +1,47 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #179 merged)
+
+**Starting `main`:** `034a2db1f912cd3bc0d552678871c73446977e9c`  
+**PR #179 merge / current `main`:** `914575d57ee0ab9366b82704e80b5fd9aa605a64`  
+**PR #179:** [docs: checkpoint PR 178 and reconcile neural PR 145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/179) — merged.  
+**PR #179 exact-head Verify #4099:** [run 43719676086 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43719676086).  
+**Post-merge main Verify #4100:** [run 43719754394 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43719754394).  
+**Latest runtime Pages deployment:** #97 / [run 43709787334 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709787334), runtime from PR #176. PRs #177–#179 are documentation-only; no new runtime deployment was required.
+
+## Current repository and PR state
+
+The default branch is `main`, confirmed at `914575d57ee0ab9366b82704e80b5fd9aa605a64`. The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), “Make MekongPhon Neural the primary Lao-to-IPA stage”. A fresh compare against current main reports 24 commits ahead and **310 commits behind**, with 13 changed files. The typed stage-one IPA API already exists on main; the unresolved proposal is the neural-first CLI/Python default and target-adaptation opt-in. Maintainer comments defer this product-contract change pending an explicit architecture decision. **Disposition: BLOCKED; leave #145 open and untouched.** Do not merge or rebase its stale branch wholesale.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head Verify #4092 and main Verify #4094 passed |
+| Documentation synchronization and current-main reconciliation | DONE_VERIFIED | PRs #177–#179 merged; exact-head and post-merge Verify #4095–#4100 passed |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, loanword and word-boundary handling need source-grounded parsing and reviewed Ukrainian target decisions |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+
+## Verification and execution limits
+
+- PR #179 exact-head Verify #4099 / run 43719676086 passed.
+- Post-merge main Verify #4100 / run 43719754394 passed all workflow steps: IPA-gold schema validation, repository data/evidence audit, Python tests, optional external-G2P syntax/CLI harness, locked browser-test dependency install, Node/browser-engine tests, build and canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks.
+- Exact test counts were not extracted from these runs; do not infer them from older commits.
+- Runtime deployment #97 / run 43709787334 remains the latest successful deployed runtime and passed its live smoke test. Documentation-only PRs #177–#179 did not require a deployment.
+- Local clone/test execution remains unavailable in this environment because the earlier clone attempt could not resolve github.com. No local test result is claimed.
+- Historical branches remain preserved; no branch deletion, force update, blind merge, or PR #145 mutation was performed.
+
+## Next safe work
+
+No further ALA-LC Ukrainian mappings can be promoted without reviewed target-language evidence. RTGS and independent IPA gold remain blocked by missing normative/adjudicated sources. Continue only with source-backed structural analysis or an explicit owner decision on the neural-first CLI contract; avoid another documentation-only cycle unless new evidence or implementation changes the ledger.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #178 merged)
 
 **Starting `main`:** `de9c2516d973f2cd721667e5505e86693cff453d`  
