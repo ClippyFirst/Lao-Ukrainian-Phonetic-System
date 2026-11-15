@@ -320,3 +320,15 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 - Fresh PR #145 comparison against current main: 24 ahead / 328 behind / 13 changed files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. It remains open and non-mergeable; no review threads or submitted reviews were returned. Keep it unmerged pending the owner-level CLI/Python architecture decision.
 - Historical branch inventory remains 67 refs including main before this new continuation branch; full file-level reconciliation remains PARTIAL. No historical branch was deleted or force-updated.
 - No runtime, mappings, generated data, model assets or Pages artifacts changed. Readiness remains engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+
+## PR #203 merged — canonical entrypoint correction verified — 2026-11-15
+
+- PR [#203](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/203) merged by squash as `2581c07a91be8659a65b3f970fd13be8fc20625f`; it corrected stale README and handoff records left after PR #202.
+- Exact-head Verify #4188 / [run 43734584982 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734584982).
+- Post-merge main Verify #4189 / [run 43734692843 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734692843).
+- Both runs passed IPA-gold schema validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Latest runtime deployment remains Pages #99 / run 43726042017; PR #203 was documentation-only.
+- PR #145 remains the only open PR. Against this checkpoint it is 24 commits ahead / 329 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and remains non-mergeable. Its neural-first CLI/Python default remains an owner-level architecture decision.
+- Branch inventory before this new checkpoint branch: 68 refs including main (67 non-main). Full historical branch file-level reconciliation remains PARTIAL.
+- No runtime or linguistic-coverage claim changed; independent adjudicated IPA gold remains 0.
