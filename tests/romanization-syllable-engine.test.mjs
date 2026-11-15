@@ -186,6 +186,30 @@ test("a rejected source syllable keeps its Lao and romanized graphemes visible i
 });
 
 
+test("core Lao vowel structures without a confirmed CLDR crosswalk are explicitly withheld", () => {
+  const unsupportedVowelIds = [
+    "UO_LONG_ALT",
+    "UO_LONG_OPEN",
+    "OEY",
+    "OOY",
+    "AEW",
+    "AOY",
+    "AAJ",
+  ];
+  for (const vowelId of unsupportedVowelIds) {
+    const result = analyzeRomanization("kha", {
+      sourceSyllableGroups: [[{ onset: "ກ", coda: "", vowelId }]],
+    });
+    assert.equal(result.status, "PARTIAL", vowelId);
+    assert.equal(result.output, "⟦kha⟧", vowelId);
+    assert.equal(result.syllables[0].sourceVowelId, vowelId);
+    assert.match(result.syllables[0].warning, new RegExp(vowelId));
+  }
+  // Without Lao source structure, the Latin syllable remains a valid direct
+  // romanization; this test does not broaden or alter the direct-input route.
+  assert.equal(analyzeRomanization("kha").status, "OK");
+});
+
 test("a romanized string with competing vowel-versus-coda parses is withheld without source evidence", () => {
   const result = analyzeRomanization("kam");
   assert.equal(result.status, "PARTIAL");
