@@ -441,7 +441,7 @@ export function analyzeRomanization(input, options = {}) {
     warnings,
     source: profile === "ala-lc"
       ? "ALA-LC 2012 → normalized syllable profile → Ukrainian practical syllable adapter (partial where distinctions are not represented)"
-      : "BGN/PCGN 1966 / CLDR Lao-Latin → Ukrainian syllable adapter",
+      : "BGN/PCGN 1966 / CLDR Lao-Latin romanization → Ukrainian syllable adapter",
   };
 }
 
