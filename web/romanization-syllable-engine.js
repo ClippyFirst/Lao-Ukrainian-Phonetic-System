@@ -3,7 +3,7 @@
 // It analyzes onset + vowel nucleus + coda and deliberately withholds ambiguous parses.
 const ONSETS = new Map([
   ["kh", "к'"], ["th", "т'"], ["ph", "п'"], ["ch", "ч"],
-  ["ng", "нг"], ["gn", "нь"],
+  ["ng", "нг"], ["gn", "нь"], ["ny", "нь"],
   ["k", "к"], ["s", "с"], ["x", "с"], ["d", "д"], ["t", "т"],
   ["n", "н"], ["b", "б"], ["p", "п"], ["f", "ф"], ["m", "м"],
   ["y", "й"], ["r", "л"], ["l", "л"], ["v", "в"], ["h", "г"],
@@ -23,7 +23,7 @@ const NUCLEI = new Map([
 const CODAS = new Map([
   ["ng", "нг"], ["gn", "й"], ["k", "к"], ["d", "т"], ["t", "т"], ["s", "т"],
   ["n", "н"], ["b", "п"], ["p", "п"], ["m", "м"],
-  ["r", "л"], ["l", "л"], ["v", "о"], ["y", "й"],
+  ["r", "л"], ["l", "л"], ["v", "о"], ["y", "й"], ["o", "о"],
 ]);
 
 const PREPOSED_NUCLEI = new Set(["oua", "ia", "ua", "ao", "eu", "é", "è", "ô", "ai"]);
@@ -34,7 +34,6 @@ const SORTED_CODAS = [...CODAS.keys()].sort((a, b) => b.length - a.length);
 const SEPARATORS = /^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
 
 function codaTarget(coda, nucleus, profile = "bgn-pcgn") {
-  if (profile === "ala-lc" && (coda === "r" || coda === "l")) return "н";
   if (coda === "v") return nucleus === "i" ? "оу" : "о";
   return CODAS.get(coda);
 }
@@ -48,11 +47,13 @@ function mapCase(value, source) {
   return value;
 }
 
+// Exact ALA-LC 2012 vowel spellings, normalized only where the shared
+// syllable parser has an equivalent internal nucleus. Quantity is intentionally
+// collapsed in the Ukrainian output; the original input remains available.
 const ALA_LC_REPLACEMENTS = new Map([
-  ["ư̄a", "ua"], ["ūa", "oua"], ["īa", "ia"], ["āi", "ai"], ["āo", "ao"],
-  ["œ̄", "eu"], ["œ", "eu"], ["ǣ", "è"], ["æ", "è"], ["ǭ", "o"], ["ǫ", "o"],
-  ["ư̄", "u"], ["ư", "u"], ["ū", "ou"], ["ā", "a"], ["ī", "i"],
-  ["ē", "é"], ["e", "é"], ["ō", "ô"], ["u", "ou"], ["ny", "gn"],
+  ["ūa", "oua"], ["īa", "ia"], ["āi", "ai"], ["ōe", "eu"], ["oe", "eu"],
+  ["ǣ", "è"], ["æ", "è"], ["ūʼ", "ou"], ["uʼ", "u"],
+  ["ū", "ou"], ["ā", "a"], ["ī", "i"], ["ē", "é"], ["ō", "ô"],
 ]);
 
 function replacePreservingCase(token, replacement) {
@@ -99,12 +100,17 @@ function longestMatchesAt(source, index, tokens) {
 
 function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = false) {
   const candidates = [];
+  const onsetTokens = profile === "ala-lc"
+    ? [...ONSETS.keys()].filter((token) => token !== "x" && token !== "gn").sort((a, b) => b.length - a.length)
+    : SORTED_ONSETS;
+  // ALA-LC finals are written with their final-position values: k, ng, t,
+  // p, n, m; final ວ is represented by o after the vowel (Note 4).
   const codaTokens = profile === "ala-lc"
-    ? SORTED_CODAS
-    : SORTED_CODAS.filter((token) => token !== "s" && token !== "w");
+    ? ["ng", "k", "t", "p", "n", "m", "o"]
+    : SORTED_CODAS.filter((token) => token !== "s" && token !== "w" && token !== "o");
 
   // Ordinary Latin order: onset + nucleus + optional coda.
-  for (const onset of longestMatchesAt(source, index, SORTED_ONSETS)) {
+  for (const onset of longestMatchesAt(source, index, onsetTokens)) {
     const onsetEnd = index + onset.length;
     for (const nucleus of matchesAt(source, onsetEnd, SORTED_NUCLEI)) {
       const nucleusEnd = onsetEnd + nucleus.length;
@@ -131,7 +137,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
   for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
     if (!PREPOSED_NUCLEI.has(nucleus)) continue;
     const onsetStart = index + nucleus.length;
-    for (const onset of longestMatchesAt(source, onsetStart, SORTED_ONSETS)) {
+    for (const onset of longestMatchesAt(source, onsetStart, onsetTokens)) {
       let outputNucleus = nucleus;
       let end = onsetStart + onset.length;
       if (["é", "è", "ô"].includes(nucleus)) {
@@ -167,7 +173,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
     // A vowel-only syllable is possible where the Lao onset is omitted by
     // romanization, but not when the next consonant can be the onset following
     // this preposed vowel (that is the normal CLDR order for Lao).
-    const nextHasOnset = matchesAt(source, onsetStart, SORTED_ONSETS).length > 0;
+    const nextHasOnset = matchesAt(source, onsetStart, onsetTokens).length > 0;
     if ((!strictBoundaries || index === 0) && !nextHasOnset) {
       candidates.push({
         start: index, end: index + nucleus.length,
