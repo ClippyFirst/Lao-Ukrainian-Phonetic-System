@@ -445,8 +445,8 @@ export function analyzeRomanization(input, options = {}) {
   // delimited source token. Keep internal hyphens in that token so they do
   // not advance the source-group cursor onto the next Lao word.
   const separators = sourceSyllableGroups
-    ? /(\\s+|[,.!?;:()[\\]{}"“”]+)/u
-    : /(\\s+|[,.!?;:()[\\]{}"“”]+|-+)/u;
+    ? /(\s+|[,.!?;:()[\]{}"“”]+)/u
+    : /(\s+|[,.!?;:()[\]{}"“”]+|-+)/u;
   const parts = source.split(separators).filter(Boolean);
   const rawParts = rawSource.split(separators).filter(Boolean);
   const syllables = [];
@@ -486,7 +486,7 @@ export function analyzeRomanization(input, options = {}) {
           ? unit
           : crosswalkUnit(unit, sourceSlice[sourceOffset++], profile))
         : parsed.path;
-      const validCrosswalk = aligned && crossed.every((unit) => Boolean(unit) && (unit.kind === "separator" || Boolean(unit)));
+      const validCrosswalk = aligned && crossed.every(Boolean);
       if (validCrosswalk) {
         const units = crossed.map((unit, index) => ({
           ...unit,
