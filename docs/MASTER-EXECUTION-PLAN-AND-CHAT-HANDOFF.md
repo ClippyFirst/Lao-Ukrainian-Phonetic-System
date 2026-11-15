@@ -1,10 +1,48 @@
 
+# Current continuation — 2026-11-15 (post-PR #174)
+
+**Canonical base:** `main` at `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`  
+**Continuation branch:** `docs/refresh-romanization-handoff-20261115`  
+**Previous work:** PR #171 (repository/documentation consolidation), #172 (direct romanization input), #173 (ALA-LC 2012 conformance correction), and #174 (handoff/deployment evidence) are all merged. PR #171 merged as `bd16bf6eef98ac364d4bde8226187ab2c71d7fb9`; #173 as `3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2`; #174 as `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`.
+**Open PR inventory:** #145 is the only open PR found. It proposes a neural-first CLI default and remains unmerged because it conflicts with the deterministic-default contract; leave it open pending an explicit architecture decision.
+
+## Verified current state
+
+- PR #173's bounded ALA-LC normalizer corrections and PR #174's documentation/deployment reconciliation are present on `main`.
+- Exact-main Verify #4084 / run [43698131800](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43698131800) succeeded on `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`: 350 Python, 182 Node and 28 Chromium tests; repository/data/evidence audit, IPA-gold schema, external-G2P harness, locked install, build, generated-data reproducibility and built-page checks passed.
+- GitHub Pages deployment #96 / run [43697882717](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43697882717) succeeded, including the live smoke test.
+- The master handoff's older repository-consolidation entry below is a historical checkpoint. Its statement that PR #171 was open and awaiting CI was true at that snapshot but is superseded by the merge recorded above.
+- The README's prior 2026-11-10 verification paragraph was stale; it is refreshed in the current continuation branch to point to the 15 November exact-main evidence.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Repository structure and branch metadata consolidation | DONE_VERIFIED | PR #171 merged; preserve historical refs and single `main` integration line |
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head tests passed |
+| Bounded ALA-LC 2012 vowel, onset/coda and positional subset | DONE_VERIFIED | PR #173 merged; LOC-derived fixtures and exact-main Verify passed |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, loanword and word-boundary behavior need source-grounded parsing and reviewed Ukrainian target decisions |
+| Automatic romanization-profile detection | PARTIAL | Heuristic works on tested markers; broad real-world false-positive/negative corpus absent |
+| Ambiguous/unsupported input preservation; no invented IPA from Latin-only input | DONE_VERIFIED | Explicit partial output; direct route remains separate from IPA-first pipeline |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed Lao samples in the registered evidence |
+| Informal/French-style/karaoke variants | DEFERRED | Define scope and a source-backed sample corpus before implementation |
+| Independent phonetic accuracy validation | BLOCKED | Independent adjudicated IPA gold remains 0; requires rights-cleared source material and Lao-specialist annotation/adjudication |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Requires explicit architecture decision and coordinated spec/CLI/docs/test changes |
+
+## Next technically safe work
+
+Continue only with rules whose input romanization and output interpretation are unambiguous under the cited standard. Do not assign a Ukrainian value to initial `ʻ`, medial `w`, or contextual `ວ` by guesswork. Before expanding those rules, establish exact LOC note scope, determine whether the romanized string preserves enough positional information, and obtain reviewed target decisions. RTGS and independent IPA gold remain blocked for lack of normative/evaluated evidence. No code-level linguistic change is justified solely by a desire to reduce the PARTIAL count.
+
+**Local execution limitation:** the previous local clone attempt could not resolve `github.com`; no local test result is claimed for this continuation. Use exact-head GitHub Actions as the required verification gate for this documentation-only update.
+
+
 ## Repository structure and branch consolidation — PARTIAL, 2026-11-15
 
 **Working branch:** `chore/repository-structure-branch-consolidation-20261115`  
 **Starting main:** `4197d4212a935ee59216b1a7f9bdd112dceabb6e`  
 **Current audit:** [Repository structure and branch consolidation](audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md)  
-**Documentation PR:** [#171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/171) (open; exact-head CI pending)
+**Documentation PR:** [#171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/171) — merged as `bd16bf6eef98ac364d4bde8226187ab2c71d7fb9`.
 
 - Confirmed `main` is the default branch and compared it with the newest repository commit found; both resolve to `4197d4212a935ee59216b1a7f9bdd112dceabb6e`.
 - Inventoried 37 branch refs (including `main`) and compared all 36 non-main refs with `main`. No non-main branch is an ahead-only fast-forward candidate; the refs are divergent or behind.
@@ -15,7 +53,7 @@
 
 **Task status:** documentation architecture and branch metadata inventory are `DONE_VERIFIED`; exhaustive file-level review of every historical branch is `PARTIAL`; PR #145 is `BLOCKED` pending an explicit architecture decision; independent IPA gold and manual device/accessibility QA remain blocked as previously documented.
 
-**Verification:** GitHub metadata/search/compare operations and source-document reads completed. Local clone, Python/Node/Chromium tests, data audit, build, generated-data drift check, Pages deployment and manual QA were not run in this session. Exact-head GitHub Actions Verify remains required before merging PR #171. Do not reuse historical CI results as evidence for this branch.
+**Verification:** GitHub metadata/search/compare operations and source-document reads completed. Local clone, Python/Node/Chromium tests, data audit, build, generated-data drift check, Pages deployment and manual QA were not run in this session. PR #171 subsequently merged as `bd16bf6eef98ac364d4bde8226187ab2c71d7fb9`; see the current continuation section at the top of this handoff. Do not reuse historical CI results as evidence for this branch.
 
 ## Ukrainian editorial and interface-quality pass — PARTIAL, 2026-11-10
 
