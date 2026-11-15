@@ -254,3 +254,17 @@ The change is API validation only; it adds no linguistic mappings or claims of n
 - Fresh branch search returns **65 refs including `main`** (64 non-main refs); this supersedes the 62-ref snapshot recorded above. The current count includes the active PR #199 branch and preserved historical branches.
 - Open PR search returns [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199). PR #145 compares at 24 ahead / 324 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; its neural-first CLI/Python defaults remain an owner-level architecture decision. PR #199 is documentation-only and pending exact-head CI.
 - Full comparison of all 64 non-main refs has not been completed in this pass. Overall historical branch reconciliation remains PARTIAL; no branch was deleted or force-updated.
+
+
+## PR #199 merged — UNGEGN 2025 status and fresh branch checkpoint — 2026-11-15
+
+- PR [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199) merged by squash as `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`.
+- Exact-head Verify #4178 / [run 43731179424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43731179424).
+- Post-merge main Verify #4179 / [run 43732731628 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43732731628). Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser-engine tests, canonical browser-data build/regeneration, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- PR #199 records the 2025 UNGEGN WGRS status: Lao's National Geographic Department prepared a draft Lao Romanization System, WGRS reviewed it and made recommendations, and draft toponymy guidelines were being finalised as of July 2024. A possible 2027 submission is not evidence of adoption or UN endorsement. The current BGN/PCGN-derived CLDR profile remains provisional.
+- PR #198's DLLM finding remains research-only: collection-specific CrossAsia catalogue convention, not a national standard or generic RTGS profile; published table reuse rights remain undetermined. Neither PR changes runtime mappings, generated data, model assets or deployment behavior.
+- Fresh branch search after creating this checkpoint branch: **66 refs including main** (65 non-main). This is a count, not a full file-level reconciliation. Full historical branch review remains PARTIAL; no branch was deleted or force-updated.
+- Only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Current compare: **24 ahead / 325 behind / 13 changed files**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub reports non-mergeable. Its neural-first CLI/Python defaults remain an owner-level architecture decision; leave open and unmerged.
+- The independent IPA gold corpus remains empty (0 adjudicated examples). RTGS, full contextual ALA-LC, automatic-profile accuracy, specialist linguistic validation and manual device/accessibility QA remain incomplete or blocked.
+
+**Current main:** `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`. **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter.
