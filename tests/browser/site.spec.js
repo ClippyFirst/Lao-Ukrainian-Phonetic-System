@@ -409,3 +409,42 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
   expect(toggled.find((button) => button.name === "За романізацією").pressed).toBe("true");
   expect(toggled.find((button) => button.name === "За вимовою").pressed).toBe("false");
 });
+
+
+test("romanization can be entered directly and converted without Lao-script input", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Романізація латинкою" }).click();
+  const input = page.locator("#lao-input");
+  await expect(input).toHaveAttribute("lang", "lo-Latn");
+  await expect(input).toHaveAttribute("aria-label", "Введення лаоської романізації латинкою");
+  await input.fill("Viangchan");
+  await expect(page.locator("#output")).toHaveText("Віангчан");
+  await expect(page.locator("#status")).toContainText("Готово");
+  await expect(page.locator('[data-result-panel="ipa"]')).toBeHidden();
+  await expect(page.locator("#romanization-trace")).toBeVisible();
+  await page.locator("#copy-romanization").click();
+});
+
+test("direct romanization input exposes ALA-LC profile selection and partial diagnostics", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#input-kind-romanization").click();
+  await page.locator("#romanization-profile").selectOption("ala-lc");
+  await page.locator("#lao-input").fill("nyā");
+  await expect(page.locator("#output")).toHaveText("ньа");
+  await expect(page.locator("#romanization-analysis-status")).toContainText("Готово");
+  await page.locator("#lao-input").fill("ʻīk");
+  await expect(page.locator("#output")).toContainText("⟦ʻīk⟧");
+  await expect(page.locator("#romanization-analysis-status")).toContainText("Частковий аналіз");
+});
+
+test("switching back from romanization input restores the Lao IPA-first workflow", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#input-kind-romanization").click();
+  await page.locator("#lao-input").fill("Viangchan");
+  await expect(page.locator("#output")).toHaveText("Віангчан");
+  await page.locator("#input-kind-lao").click();
+  await expect(page.locator("#lao-input")).toHaveAttribute("lang", "lo");
+  await page.locator("#lao-input").fill("ຂາ");
+  await expect(page.locator("#output")).toHaveText("к'а");
+  await expect(page.locator('[data-result-panel="ipa"]')).toBeVisible();
+});
