@@ -506,3 +506,8 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - PR #145 remains the only open PR; current comparison is 24 ahead / 349 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, status diverged/non-mergeable. It is an owner architecture decision, not a routine conflict-resolution task.
 - ALA-LC candidate branches rechecked: `fix/ala-lc-2012-conformance-20261115` (21/46), `fix/ala-lc-final-crosswalk-current-main-20261115` (11/38), `fix/ala-lc-final-w-crosswalk-20261115` (9/39), `fix/ala-lc-unsupported-vowel-guard-20261115` (5/43). Their runtime snapshots predate or duplicate current main's source-aware crosswalk, ALA-LC final-`o` handling, unsupported-form guard and seven-vowel diagnostics. No unique implementation was ported; branches remain untouched.
 - This is a targeted semantic review, not a full review of all divergent refs. Overall historical-branch semantic reconciliation remains PARTIAL. No branch was deleted, force-updated or mass-merged.
+
+
+## PR #222 exact-head checks — 2026-11-15
+
+PR #222 exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed: 350 Python, 192 Node and 28 Chromium tests, IPA-gold schema validation, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/deterministic-only artifact assertions. No runtime files changed; no Pages deployment required.
