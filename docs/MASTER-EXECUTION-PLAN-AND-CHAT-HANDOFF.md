@@ -3,7 +3,8 @@
 
 **Working branch:** `chore/repository-structure-branch-consolidation-20261115`  
 **Starting main:** `4197d4212a935ee59216b1a7f9bdd112dceabb6e`  
-**Current audit:** [Repository structure and branch consolidation](audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md)
+**Current audit:** [Repository structure and branch consolidation](audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md)  
+**Documentation PR:** [#171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/171) (open; exact-head CI pending)
 
 - Confirmed `main` is the default branch and compared it with the newest repository commit found; both resolve to `4197d4212a935ee59216b1a7f9bdd112dceabb6e`.
 - Inventoried 37 branch refs (including `main`) and compared all 36 non-main refs with `main`. No non-main branch is an ahead-only fast-forward candidate; the refs are divergent or behind.
@@ -14,7 +15,7 @@
 
 **Task status:** documentation architecture and branch metadata inventory are `DONE_VERIFIED`; exhaustive file-level review of every historical branch is `PARTIAL`; PR #145 is `BLOCKED` pending an explicit architecture decision; independent IPA gold and manual device/accessibility QA remain blocked as previously documented.
 
-**Verification:** GitHub metadata/search/compare operations and source-document reads completed. Local clone, Python/Node/Chromium tests, data audit, build, generated-data drift check, Pages deployment and manual QA were not run in this session. Exact-head GitHub Actions Verify remains required before merging this documentation branch. Do not reuse historical CI results as evidence for this branch.
+**Verification:** GitHub metadata/search/compare operations and source-document reads completed. Local clone, Python/Node/Chromium tests, data audit, build, generated-data drift check, Pages deployment and manual QA were not run in this session. Exact-head GitHub Actions Verify remains required before merging PR #171. Do not reuse historical CI results as evidence for this branch.
 
 ## Ukrainian editorial and interface-quality pass — PARTIAL, 2026-11-10
 
