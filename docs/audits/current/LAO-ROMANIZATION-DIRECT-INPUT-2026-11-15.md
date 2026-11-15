@@ -118,3 +118,12 @@ This refines, but does not invalidate, the RTGS blocker: DLLM is a specific libr
 **Disposition:** research candidate only, NOT SUPPORTED. A separate `dllm` profile would require a complete checked transcription of its table, reuse/licensing determination, Ukrainian target policy for all units, regression examples and Lao-specialist review. No runtime code or mappings changed.
 
 Sources: CrossAsia [DLLM romanisation description](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en), [published consonant/vowel table](https://digital.crossasia.org/wp-content/uploads/2021/10/DLLM_laoromanisation.pdf); LDC [Lao Language Specific Peculiarities Document](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf).
+
+
+## UNGEGN 2025 update — Lao national romanization draft status
+
+The UNGEGN Working Group on Romanization Systems' 2025 report adds a material update beyond the 2023 PCGN Factfile. It records that WGRS had been invited to review a draft Lao Romanization System prepared by the National Geographic Department of Lao PDR, had made recommendations, and that as of July 2024 Lao PDR was finalising a draft of toponymy guidelines. WGRS hoped the system would be submitted for consideration at the 2027 UNGEGN session.
+
+This is a draft-development signal, not adoption. It does not establish the final table, a national implementation date, or UN endorsement. The operational profile remains provisional BGN/PCGN-derived CLDR until the draft or subsequent decision is published and reviewed. Do not claim that no work is underway; equally, do not claim the draft is already an official standard.
+
+Source: [UNGEGN WGRS, GEGN.2/2025/26/CRP.26](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf), Lao section under “Progress on romanization systems”.
