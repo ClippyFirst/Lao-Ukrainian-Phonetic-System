@@ -340,6 +340,26 @@ main {
   font: 1.45rem/1.85 var(--font-lao);
 }
 .input-shell textarea:focus { outline: 0; box-shadow: none; }
+.input-shell textarea[lang="lo-Latn"] { font-family: var(--font-ipa); }
+.profile-control {
+  display: grid;
+  gap: 6px;
+  max-width: 360px;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 800;
+}
+.profile-control select {
+  min-height: 44px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--silk);
+  color: var(--ink);
+  font: inherit;
+}
 .input-hint {
   display: flex;
   justify-content: space-between;
