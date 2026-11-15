@@ -161,3 +161,18 @@ The source-aware ALA-LC crosswalk is DONE_VERIFIED for the scoped LOC Notes 1, 2
 
 **Current main at this checkpoint:** `ecc997d356d206640862097d0bff6e7da3c484e3`.  
 **Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+
+## Post-PR #187 current-main reconciliation — 2026-11-15
+
+This addendum corrects the prior snapshot, which still named the PR #184 merge commit as current main even after PR #187 merged.
+
+- Current default branch: `main` at `0b48ab191a9bd6b5a85a104bc8b2aba6e4543c37`.
+- PR [#187](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/187) merged at that SHA. It changed only the master handoff and this audit; no runtime code, generated data or Pages deployment changed.
+- Exact-head Verify #4145 / [run 43723365644 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43723365644). No separate post-merge Verify run is recorded; do not imply one.
+- The last verified runtime deployment remains Pages #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302).
+- Fresh open-PR search: only PR #145 remains open. Compare `main...feat/mekongphon-first-stage`: 24 commits ahead, 314 behind, 13 changed files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on main; the neural-first CLI/Python default remains an owner-level architecture decision. Leave #145 open and untouched.
+- PR #188 is closed unmerged as a superseded documentation checkpoint. Earlier duplicate checkpoint PRs #181, #183, #185 and #186 remain closed unmerged. Historical branches were not deleted or force-updated.
+- The scoped LOC Notes 1, 2 and 4 ALA-LC crosswalk remains DONE_VERIFIED. Full contextual ALA-LC conformance and automatic profile detection remain PARTIAL; RTGS and independent IPA gold remain BLOCKED; informal variants remain DEFERRED; physical-device and assistive-technology QA remain BLOCKED.
+
+**Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0 examples.
