@@ -46,11 +46,11 @@ The tested PR head and merged `main` have identical file trees by GitHub compare
 | Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
 | Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
 | Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
-| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |\n| PR #183 documentation checkpoint | PARTIAL | Canonical handoff, matrix and audit updated; exact-head Verify on PR #183 remains pending |
 
 ## Branch and PR reconciliation
 
-PR #182 was reused rather than creating a duplicate PR. It contained the complete profile-specific onset/final implementation, source-backed notes, tests and methodology updates, and its exact-head Verify was green. It was merged only after reviewing its diff and confirming `mergeable: true`. The only remaining open PR is #145, still blocked by the previously documented architecture decision. A separate duplicate branch created during this continuation, `fix/ala-lc-final-w-crosswalk-20261115`, is left untouched; it is not the integration candidate and must not be merged.
+PR #182 was reused rather than creating a duplicate PR. It contained the complete profile-specific onset/final implementation, source-backed notes, tests and methodology updates, and its exact-head Verify was green. It was merged only after reviewing its diff and confirming `mergeable: true`. The only remaining open implementation PR is #145, still blocked by the previously documented architecture decision. Documentation-only PR #183 carries this checkpoint and is awaiting its own exact-head Verify. A separate duplicate branch created during this continuation, `fix/ala-lc-final-w-crosswalk-20261115`, is left untouched; it is not the integration candidate and must not be merged.
 
 The repository remains an engineering-verified partial research prototype, not a linguistically validated universal converter. Independent IPA gold remains empty, and full ALA-LC/RTGS coverage is incomplete.
 
