@@ -84,7 +84,7 @@ The syllable-level parser and source-aware checks are retained. It checks onset,
 |---|---|---|
 | LAO-ROM-STD-001 | DONE_VERIFIED (documented selection) | PCGN 1966 / CLDR profile accurately labelled provisional; no claim of official national standard |
 | LAO-ROM-MATRIX-001 | PARTIAL | Every supported Lao orthographic syllable has source → Latin → Ukrainian rows and fixtures |
-| LAO-ROM-DIRECT-001 | PARTIAL | Direct BGN/PCGN input and bounded ALA-LC 2012 normalization are implemented; exact-head CI, full contextual ALA-LC rules and broader fixture coverage remain required |
+| LAO-ROM-DIRECT-001 | PARTIAL | Direct BGN/PCGN input and bounded ALA-LC 2012 normalization are implemented; PR #182 verifies LOC-specific source-aware onsets/finals and Notes 2/4 (exact-head Verify #4128, post-merge Verify #4131 and Pages #98 passed); full contextual ALA-LC rules and broader corpus coverage remain required |
 | LAO-ROM-RTGS-001 | BLOCKED | Requires an exact Lao-specific RTGS adaptation table and reviewed sample strings; Thai RTGS alone is not sufficient |
 | LAO-ROM-COVERAGE-001 | PARTIAL | Inventory audit proves no supported grapheme class is silently dropped |
 | LAO-ROM-REVIEW-001 | BLOCKED | Independent Lao specialist review of ambiguous nuclei, conventional names and loanword namespaces |
