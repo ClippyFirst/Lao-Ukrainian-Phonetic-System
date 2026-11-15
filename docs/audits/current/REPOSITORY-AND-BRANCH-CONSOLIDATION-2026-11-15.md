@@ -128,3 +128,42 @@ PR [#179](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/179)
 A fresh compare of PR #145 against current `main` reports 24 commits ahead and 310 behind (13 changed files). The typed stage-one IPA API remains present on main; the unresolved delta is the neural-first CLI/Python default and target-adaptation opt-in. The PR remains the only open PR and is intentionally blocked pending an explicit architecture decision. It is not merged, rebased, closed, or otherwise modified.
 
 The canonical handoff was refreshed after this audit checkpoint. Local tests were not run because the previous execution environment could not resolve github.com; the exact-head and post-merge GitHub Actions results above are the available verification evidence.
+
+## Post-audit implementation checkpoint — ALA-LC source crosswalk (2026-11-15)
+
+The repository advanced from `75d049c9bb4fbc040bbc77466ec0426c7312e95c` on `main` through task branch `fix/ala-lc-final-crosswalk-current-main-20261115`. PR [#182](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/182) contains four changed files: the browser romanization engine, its regression tests, the canonical romanization matrix and methodology.
+
+### Evidence-backed implementation
+
+The previous source-aware crosswalk reused BGN/CLDR consonant spellings for ALA-LC input. That is incorrect for several LOC 2012 rows and notes. The implementation now selects profile-specific source mappings for ALA-LC:
+- Initial `ຊ` is checked against `s`, and initial `ຍ` against `ny`.
+- Final consonants use the LOC final-position values, including `ດ` → `t`, `ບ` → `p`, `ຣ/ລ` → `n`, and final `ວ` → `o`.
+- Final `ຍ` is checked as the closing `i` of the `ai`/`āi` diphthong, not as an independent consonant coda.
+- The BGN/CLDR mapping remains unchanged.
+
+Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012), pp. 1–3, Notes 1, 2 and 4](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). This closes only the profile-specific source-crosswalk defect; full contextual ALA-LC conformance remains PARTIAL.
+
+### Verification
+
+- Exact-head Verify #4128 / [run 43722541781 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781) on `9779b0ee05c8be3de2c3da7c18f8e0b453181d66`.
+- 350 Python tests, 188 Node/browser-engine tests and 28 real Chromium UI tests passed.
+- IPA-gold schema, repository data/evidence audit, external-G2P syntax/CLI validation, locked dependency installation, static build, generated-data reproducibility and built-page/relative-asset checks passed.
+- Initial Verify #4126 / run [43722473630](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722473630) failed the four new browser-engine tests because the selected profile was omitted from the segmentation-time source validator. The call was corrected; final exact-head Verify #4128 passed all steps.
+- No local tests are claimed.
+
+### PR and branch reconciliation
+
+PR [#181](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/181) was closed unmerged because its branch was one commit behind the then-current main. PR #182 was recreated from current `main` and compares ahead-only (9 commits ahead, 0 behind at the recorded base). No branch was force-updated or deleted.
+
+PR #182 is open and mergeable at this checkpoint; post-merge verification and Pages deployment/live smoke test are still pending because the change modifies browser runtime code. PR #145 remains open and BLOCKED pending an owner-level neural-first CLI architecture decision. No other historical branch was reused or mutated.
+
+### Updated task status
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 exact-head Verify #4128 passed; new tests cover distinct onset and final values |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowel sequences, loanword and word-boundary behavior remain incomplete |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold remains 0 |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; no merge or rebase performed |
+
+**Readiness remains:** engineering-verified partial research prototype. This change improves ALA-LC orthographic crosswalk correctness; it does not establish independent phonetic accuracy, full standard conformance, or universal release readiness. Pages deployment/live smoke remains a required post-merge acceptance item.
