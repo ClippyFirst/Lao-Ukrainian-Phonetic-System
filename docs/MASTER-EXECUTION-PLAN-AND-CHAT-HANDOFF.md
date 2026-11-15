@@ -1,3 +1,61 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #182 merged)
+
+**Starting `main`:** `914575d57ee0ab9366b82704e80b5fd9aa605a64`  
+**PR #182 base:** `75d049c9bb4fbc040bbc77466ec0426c7312e95c`; the base advanced by one unrelated commit during this work.  
+**PR #182:** [fix: align ALA-LC final crosswalk with LOC notes 2 and 4](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/182) — merged by squash as `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
+**Current `main`:** `72e9677b0dd4fc863c90d4cec773731fb451109a` (GitHub compare against the merge commit: identical).  
+**Exact-head Verify #4128:** [run 43722541781 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781) on PR head `9779b0ee05c8be3de2c3da7c18f8e0b453181d66`.
+
+## Implementation completed
+
+PR #182 corrects the source-aware ALA-LC crosswalk so it uses the actual LOC 2012 profile rather than reusing BGN/CLDR consonant values:
+- ALA-LC initial spellings: `ຊ` → `s`, `ຍ` → `ny`.
+- ALA-LC final-position values: `ດ` → `t`, `ບ` → `p`, `ຣ/ລ` → `n`, and final `ວ` after a vowel → `o`.
+- LOC Note 2: final `ຍ` is the closing `i` element in `ai/āi`, not a consonant coda.
+- The selected profile is passed through both segmentation-time and final source-crosswalk validation.
+- BGN/CLDR crosswalk behavior remains separate and unchanged.
+- Regression tests cover final values, the `ວ` Note 4 case, the `ຍ` diphthong case, and profile-specific onsets.
+
+Primary evidence: [Library of Congress, ALA-LC Lao Romanization Table (2012), pp. 1–3, Notes 1, 2 and 4](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). This is a source-aware structural crosswalk improvement; it does not add unsupported Ukrainian mappings or establish full ALA-LC conformance.
+
+## Verification and deployment boundary
+
+Verify #4128 passed all steps:
+- 350 Python tests;
+- 188 Node/browser-engine tests;
+- 28 real Chromium UI tests;
+- IPA-gold schema and repository data/evidence audits;
+- external-G2P syntax/CLI harness;
+- locked browser dependency installation;
+- static build and canonical browser-data generation;
+- generated-data reproducibility;
+- built-page and relative-asset checks.
+
+The tested PR head and merged `main` have identical file trees by GitHub compare. The connector did not expose a separate post-merge main workflow run for squash commit `72e9677...`; therefore the exact-head success is recorded, not relabelled as a post-merge run. Runtime deployment status is not asserted here until the Pages deployment is checked separately. Local tests were not run in this environment.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 plus PR #182 source-aware profile crosswalk; LOC-backed regression suite and Verify #4128 passed |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head Verify #4092 and main Verify #4094 passed |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, remaining contextual `ວ`, unsupported vowels and loanword/word-boundary handling remain incomplete |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+
+## Branch and PR reconciliation
+
+PR #182 was reused rather than creating a duplicate PR. It contained the complete profile-specific onset/final implementation, source-backed notes, tests and methodology updates, and its exact-head Verify was green. It was merged only after reviewing its diff and confirming `mergeable: true`. The only remaining open PR is #145, still blocked by the previously documented architecture decision. A separate duplicate branch created during this continuation, `fix/ala-lc-final-w-crosswalk-20261115`, is left untouched; it is not the integration candidate and must not be merged.
+
+The repository remains an engineering-verified partial research prototype, not a linguistically validated universal converter. Independent IPA gold remains empty, and full ALA-LC/RTGS coverage is incomplete.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #179 merged)
 
 **Starting `main`:** `034a2db1f912cd3bc0d552678871c73446977e9c`  
