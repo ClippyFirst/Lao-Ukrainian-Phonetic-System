@@ -21,6 +21,26 @@ The earlier 2023 PCGN Factfile statement that UNGEGN was working with Lao author
 
 Primary source: [UNGEGN Working Group on Romanization Systems, GEGN.2/2025/26/CRP.26, “Progress on romanization systems” (Lao section)](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf). The [2025 session summary](https://digitallibrary.un.org/record/4076754/files/GEGN.2_2025_26-EN.pdf) confirms that the Working Group's report covered Lao developments.
 
+
+
+### Lao draft chronology and UNGEGN status distinction
+
+The record is longer-running than the 2025 report alone suggests. Earlier WGRS records show that a draft instruction on toponymy containing romanization guidelines was awaiting Lao approval in 2016; WGRS reviewed a National Geographic Department draft in 2018 and raised concrete technical questions (including the use of y for lengthened i, syllable-final voicing after long vowels, and possible table errors); the 2019 and 2021 WGRS reports record recommendations and continuing Lao-government consideration; the 2023 session records a draft Toponymic Guidelines in two parts and a request for inter-ministerial feedback; and the 2025 WGRS report says that, as of July 2024, Lao PDR was finalising a draft of the guidelines, with hoped-for UNGEGN plenary consideration in 2027. This is a continuing draft-development process, not a newly created 2025 system and not proof of national adoption.
+
+A second distinction is essential: the current UNGEGN romanization-status page places Lao under **“Other languages/scripts”**, not among the 30 systems it identifies as recommended by the United Nations. Its linked Lao status paper is Version 4.0 (September 2013) and explicitly says that no Lao romanization system had been approved at UN conferences and that Laos had no national romanization system at that time; it describes the BGN/PCGN 1966 system. Thus the presence of a Lao entry in the UNGEGN status index must not be misreported as UN approval. The UNGEGN process page states that a proposed system becomes a UN standard only after the formal review, plenary endorsement and ECOSOC adoption stages.
+
+Sources:
+- [UNGEGN WGRS Lao status paper, Version 4.0 (September 2013)](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/wgrr4lao.pdf), especially p. 1.
+- [WGRS meeting report, 20 March 2018](https://arhiiv.eki.ee/wgrs/wgr18rep.htm), Lao section.
+- [WGRS report, 2019 session, GEGN.2/2019/11/CRP.11](https://unstats.un.org/UNSD/geoinfo/UNGEGN/docs/1st-session/GEGN.2_2019_11_CRP.11_WG_Romanization_Systems-full-report.pdf), Lao section.
+- [WGRS report, 2021 session, GEGN.2/2021/93/CRP.93](https://unstats.un.org/unsd/ungegn/sessions/2nd_session_2021/documents/GEGN.2_2021_93_CRP93_15_WGRSreport.pdf), Lao section.
+- [WGRS minutes, 3 May 2023](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/WGRS_minutes_3_May_2023.pdf), Lao section.
+- [WGRS report, 2025 session, GEGN.2/2025/26/CRP.26](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf), Lao section.
+- [UNGEGN romanization-status index](https://unstats.un.org/unsd/ungegn/romanization/) and [UNGEGN approval process](https://unstats.un.org/unsd/ungegn/meetings/Bureau_Divisions/documents/UNGEGN_WGRS_Approval_process-WG_Reviewed_28_May_26.pdf).
+
+**Project consequence:** keep BGN/PCGN-derived CLDR explicitly provisional and distinct from the draft under development. Do not implement the Lao draft until an authoritative current table and evidence of its national status are available; do not label it UN-approved merely because the UNGEGN index links a 2013 Lao status paper.
+
+
 ## Route separation
 
 - **Romanization mode:** Lao orthographic syllable → CLDR Lao-Latin → source-aware onset/nucleus/coda crosswalk → Ukrainian practical syllable. It does not infer pronunciation, tone or length that the romanization does not encode.
