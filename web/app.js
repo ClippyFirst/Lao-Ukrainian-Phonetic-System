@@ -20,7 +20,21 @@ const copyRomanization = document.querySelector("#copy-romanization");
 const copyIpa = document.querySelector("#copy-ipa");
 const modePhonetic = document.querySelector("#mode-phonetic");
 const modeRomanization = document.querySelector("#mode-romanization");
+const inputKindLao = document.querySelector("#input-kind-lao");
+const inputKindRomanization = document.querySelector("#input-kind-romanization");
+const romanizationProfile = document.querySelector("#romanization-profile");
+const romanizationProfileLabel = document.querySelector("#romanization-profile-label");
+const inputHeading = document.querySelector("#input-heading");
+const inputHelp = document.querySelector("#input-help");
+const romanizationPanel = document.querySelector('[data-result-panel="romanization"]');
+const ipaPanel = document.querySelector('[data-result-panel="ipa"]');
+const romanizationHeading = document.querySelector("#romanization-heading");
+const romanizationNote = document.querySelector("#romanization-note");
+const outputMethodSwitch = document.querySelector(".output-method-switch");
+const quickExamples = document.querySelector(".chip-row");
+const resultStatus = document.querySelector("#status");
 const outputMethodNote = document.querySelector("#output-method-note");
+let inputKind = "lao";
 let outputMode = "phonetic";
 const copyFeedback = document.querySelector("#copy-feedback");
 const status = document.querySelector("#analysis-status");
@@ -64,6 +78,9 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
 }
 
 function currentUkrainianOutput() {
+  if (inputKind === "romanization") {
+    return analyzeRomanization(input.value, { profile: romanizationProfile.value }).output;
+  }
   const result = analyze(input.value, { ipaProfile: "hybrid-deterministic" });
   if (outputMode === "phonetic") return result.output;
   if (result.status === "INVALID") return "";
@@ -73,8 +90,120 @@ function currentUkrainianOutput() {
   }).output;
 }
 
+function setInputKind(kind) {
+  if (kind !== "lao" && kind !== "romanization") return;
+  inputKind = kind;
+  inputKindLao.setAttribute("aria-pressed", String(kind === "lao"));
+  inputKindRomanization.setAttribute("aria-pressed", String(kind === "romanization"));
+  inputKindLao.classList.toggle("is-active", kind === "lao");
+  inputKindRomanization.classList.toggle("is-active", kind === "romanization");
+  inputHeading.textContent = kind === "lao" ? "Введіть лаоською" : "Введіть романізацію";
+  input.setAttribute("lang", kind === "lao" ? "lo" : "lo-Latn");
+  input.setAttribute("aria-label", kind === "lao" ? "Введення лаоського тексту" : "Введення лаоської романізації латинкою");
+  input.name = kind === "lao" ? "lao-text" : "lao-romanization";
+  input.placeholder = kind === "lao"
+    ? "ພາສາລາວ…"
+    : "Viangchan, phāsā lāo, sabaidee…";
+  inputHelp.textContent = kind === "lao"
+    ? "Результат оновлюється автоматично. У поскладовому аналізі видно вихідне написання, IPA-запис, український відповідник і рівень упевненості."
+    : "Вставте латинський запис лаоського слова або фрази. Профіль можна визначити автоматично або вибрати явно; неоднозначні склади буде позначено, а не вгадано.";
+  romanizationProfileLabel.hidden = kind !== "romanization";
+  outputMethodSwitch.hidden = kind !== "lao";
+  quickExamples.hidden = kind !== "lao";
+  modePhonetic.hidden = kind !== "lao";
+  modeRomanization.hidden = kind !== "lao";
+  romanizationHeading.textContent = kind === "lao" ? "Латинський запис · CLDR Lao-Latin" : "Вхідна романізація";
+  romanizationNote.textContent = kind === "lao"
+    ? "Режим романізації окремо розбирає склади за профілем CLDR Lao-Latin / BGN-PCGN. Він показує допоміжний запис латинкою й не бере участі у фонетичному шляху до українського результату."
+    : "Вхідний латинський запис аналізується окремо від IPA. Романізація може не передавати тон, довготу голосних і частину відмінностей приголосних; ці ознаки не відновлюються навмання.";
+  render();
+}
+
+function renderRomanizationInput() {
+  const adapted = analyzeRomanization(input.value, { profile: romanizationProfile.value });
+  if (!input.value.trim()) {
+    output.textContent = "Введіть романізований текст, щоб побачити український запис.";
+    output.className = "output muted";
+    romanization.textContent = "Тут відобразиться введена романізація.";
+    romanization.className = "output muted";
+    ipa.textContent = "";
+    emptyState.hidden = false;
+    results.hidden = true;
+    section.classList.add("hidden");
+    copy.disabled = true;
+    copyRomanization.disabled = true;
+    copyIpa.disabled = true;
+    copyFeedback.textContent = "";
+    return;
+  }
+
+  output.textContent = adapted.output;
+  output.className = adapted.output ? "result-body output" : "result-body output muted";
+  outputMethodNote.textContent = "Вхідна романізація → розбір підтримуваної складової структури → український практичний запис. Це не IPA-транскрипція; втрачені в латинському записі тон і довгота не реконструюються.";
+  romanization.textContent = input.value;
+  romanization.className = "output";
+  ipa.textContent = "";
+  romanizationPanel.hidden = false;
+  ipaPanel.hidden = true;
+  emptyState.hidden = true;
+  results.hidden = false;
+  section.classList.remove("hidden");
+  const phoneticTrace = section.querySelector(".trace-panel:not(#romanization-trace)");
+  phoneticTrace.hidden = true;
+  romanizationTrace.hidden = false;
+  copy.disabled = !adapted.output;
+  copyRomanization.disabled = false;
+  copyIpa.disabled = true;
+  resultStatus.textContent = adapted.status === "OK" ? "Готово" : "Частковий аналіз";
+  resultStatus.dataset.state = adapted.status;
+  status.textContent = adapted.status === "OK" ? "Готово" : "Частковий аналіз";
+  status.dataset.state = adapted.status;
+  romanizationStatus.textContent = adapted.status === "OK" ? "Готово" : "Частковий аналіз";
+  romanizationStatus.dataset.state = adapted.status;
+  romanizationWarnings.replaceChildren();
+  adapted.warnings.forEach((warning) => {
+    const paragraph = document.createElement("p");
+    paragraph.className = "warning";
+    paragraph.textContent = warning;
+    romanizationWarnings.append(paragraph);
+  });
+  warnings.replaceChildren();
+  romanizationRows.replaceChildren();
+  adapted.syllables.forEach((syllable) => {
+    const element = document.createElement("article");
+    element.className = "analysis-row";
+    const grid = document.createElement("div");
+    grid.className = "analysis-grid";
+    [
+      ["Вхідний фрагмент", syllable.originalSurface || syllable.surface],
+      ["Нормалізований фрагмент", syllable.surface],
+      ["Початок", syllable.onset || "∅"],
+      ["Голосний комплекс", syllable.nucleus || "—"],
+      ["Кінцівка", syllable.coda || "∅"],
+      ["Український запис", syllable.ukrainian],
+      ["Стан", syllable.status],
+    ].forEach(([label, value]) => {
+      const cell = document.createElement("div");
+      const caption = document.createElement("small");
+      const strong = document.createElement("strong");
+      caption.textContent = label;
+      strong.textContent = value;
+      cell.append(caption, strong);
+      grid.append(cell);
+    });
+    element.append(grid);
+    if (syllable.warning) {
+      const note = document.createElement("p");
+      note.className = "rules";
+      note.textContent = syllable.warning;
+      element.append(note);
+    }
+    romanizationRows.append(element);
+  });
+}
+
 function setOutputMode(mode) {
-  if (mode !== "phonetic" && mode !== "romanization") return;
+  if (inputKind !== "lao" || (mode !== "phonetic" && mode !== "romanization")) return;
   outputMode = mode;
   modePhonetic.setAttribute("aria-pressed", String(mode === "phonetic"));
   modeRomanization.setAttribute("aria-pressed", String(mode === "romanization"));
@@ -84,6 +213,14 @@ function setOutputMode(mode) {
 }
 
 function render() {
+  if (inputKind === "romanization") {
+    renderRomanizationInput();
+    return;
+  }
+  romanizationPanel.hidden = false;
+  ipaPanel.hidden = false;
+  const phoneticTrace = section.querySelector(".trace-panel:not(#romanization-trace)");
+  phoneticTrace.hidden = false;
   const result = analyze(input.value, { ipaProfile: "hybrid-deterministic" });
   const roman = result.status === "INVALID" ? { output: "", status: "PARTIAL" } : romanizeLao(input.value);
   const romanized = result.status === "INVALID"
@@ -282,6 +419,9 @@ function render() {
 }
 
 input.addEventListener("input", render);
+inputKindLao.addEventListener("click", () => setInputKind("lao"));
+inputKindRomanization.addEventListener("click", () => setInputKind("romanization"));
+romanizationProfile.addEventListener("change", render);
 modePhonetic.addEventListener("click", () => setOutputMode("phonetic"));
 modeRomanization.addEventListener("click", () => setOutputMode("romanization"));
 
@@ -309,7 +449,7 @@ copy.addEventListener("click", () => {
 });
 
 copyRomanization.addEventListener("click", () => {
-  const value = romanizeLao(input.value).output;
+  const value = inputKind === "romanization" ? input.value : romanizeLao(input.value).output;
   if (value) copyWithFeedback(copyRomanization, value);
 });
 
