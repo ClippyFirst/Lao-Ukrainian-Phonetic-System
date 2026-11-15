@@ -402,3 +402,10 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - PR #145 remains the sole open PR; against this main it is 24 commits ahead / 332 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and GitHub marks it non-mergeable. It remains blocked on the explicit owner architecture decision.
 - Audio research remains non-gold: Common Voice Scripted Speech 27.0 Lao is a contextual-audio lead (193 validated clips, 16 contributor IDs, no named accent/variant, no IPA labels); no Lao locale was found in the checked Spontaneous Speech 5.0 catalogue. MekongPhon owner authorization is scoped to authorized ClippyFirst project use, not a public upstream license or blanket redistribution permission. The independent adjudicated IPA gold corpus remains 0.
 - Full file-level semantic reconciliation of historical branches remains PARTIAL; no branch was deleted or force-updated.
+
+
+## Romanization implementation branch review — 2026-11-15
+
+- Compared `feat/romanization-input-to-ukrainian-20261115` against current main: 40 commits ahead / 30 behind / 13 changed files. Its historical PR #172 is already merged.
+- `web/app.js` is byte-identical to current main. The branch's romanization engine/tests are an older snapshot: they predate the explicit unknown-profile fail-closed behavior and the current ALA-LC unsupported-sequence guards. In particular, the old branch normalizes ambiguous ALA-LC spellings that current main deliberately withholds as PARTIAL; the current matrix also contains later route-separation, UNGEGN and DLLM research.
+- **Disposition: superseded; no code was ported.** The supported direct romanization route is already on main through PR #172 and subsequent conformance/guard corrections. Do not replay the stale branch. Any isolated future change requires source-table justification and regression fixtures.
