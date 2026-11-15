@@ -3785,3 +3785,42 @@ The latest failure was a test-timing issue: the selected class was present, but 
 - [Verify #42888772138 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42888772138): 350 Python, 163 Node and 24 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
 - Method buttons now have AA text contrast in both selected and unselected states, visible control borders, and selected styling driven by `aria-pressed`. Chromium checks computed ratios, selection changes and transition completion. “Очистити” also has improved text and border contrast.
 - The stylesheet cache key changed to `20261110-contrast-1`. No linguistic or engine behavior changed. Manual physical-display/device review remains separate.
+
+## Direct Lao romanization → Ukrainian input — 2026-11-15
+
+**Branch:** feat/romanization-input-to-ukrainian-20261115  
+**Base main:** bd16bf6eef98ac364d4bde8226187ab2c71d7fb9 (squash merge of repository/documentation PR #171)  
+**Scope:** allow visitors to paste Latin-script Lao romanization directly, rather than requiring Lao Unicode input and using “By romanization” only as a second output method.
+
+### Implemented
+
+- Added a distinct input-mode switch: Lao script or romanized Latin text. The Lao/IPA-first workflow remains the default and is restored when switching back.
+- Added profile selection: automatic, BGN/PCGN 1966 / CLDR Lao-Latin, or bounded ALA-LC 2012 normalization.
+- Reused the existing syllable parser for direct input; no character-by-character Latin-to-Cyrillic substitution was introduced.
+- Added profile-aware ALA-LC normalization for selected macron, vowel and palatal-nasal spellings, plus the ALA-LC final-s stop coda. Unsupported or ambiguous spans remain visible in ⟦…⟧.
+- Direct romanization mode does not fabricate IPA and explicitly warns that tone, vowel length and other distinctions absent from the Latin input cannot be reconstructed.
+- Added unit, static UI and browser tests; updated the romanization matrix, methodology, source registry and README.
+
+### Evidence and limits
+
+- ALA-LC 2012 consonant/vowel table is registered as SRC-ALA-LC-LAO-2012.
+- The LDC Lao document lists BGN/PCGN, RTGS and ALA-LC as schemes that have been used for Lao, but the cited section does not provide a complete normative RTGS-for-Lao table. The implementation does not mislabel its BGN/PCGN or ALA-LC routes as RTGS.
+- ALA-LC support is intentionally PARTIAL: glottal notation, labialized w onsets, some final-vowel alternations, loanword conventions and unresolved syllable boundaries still need explicit rules and fixtures.
+- Automatic profile detection is a convenience heuristic, not a standards classifier. Explicit selection is preferred when the convention is known.
+- Romanization-only input cannot restore omitted tone, vowel length or consonant-class distinctions. Ambiguous continuous strings remain PARTIAL rather than guessed.
+- Independent Lao-specialist review remains outstanding.
+
+### Task ledger
+
+| Task | Status | Acceptance |
+|---|---|---|
+| Direct Latin input UI and state separation | DONE_IMPLEMENTED | Browser tests pass on exact PR head |
+| BGN/PCGN standalone syllable conversion | DONE_IMPLEMENTED | Direct examples and no-source-context tests pass |
+| ALA-LC 2012 normalization subset | PARTIAL | Bounded token coverage tested; full table/context coverage remains outstanding |
+| Automatic profile detection | PARTIAL | Heuristic tested; false-positive/false-negative corpus still required |
+| RTGS-for-Lao profile | BLOCKED | Exact Lao-specific adaptation table and reviewed examples required |
+| Informal French-style / karaoke spellings | DEFERRED | No single stable profile; add only with a defined corpus and scope |
+| Exact-head Verify | TODO | Python, Node, browser/Chromium, data audit, build and generated-artifact checks must pass |
+| Independent linguistic validation | BLOCKED | Rights-cleared expert-adjudicated romanization→Ukrainian reference set and Lao specialist review required |
+
+No phonetic engine, IPA mapping, deterministic default, model, dependency, or deployment configuration was intentionally changed.
