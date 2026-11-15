@@ -1,3 +1,42 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #200 merged; post-merge verification complete)
+
+**Starting main for this checkpoint:** `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`.  
+**PR #200 merge / main after merge:** `b1d2af1ac0cf2cd848b0967506bc8da13b925d08`.  
+**PR [#200](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/200):** documentation-only; it records the Lao draft chronology and clarifies the UNGEGN approval-status taxonomy in the romanization matrix, canonical handoff and branch audit.  
+**Exact-head Verify #4182:** [run 43733010873 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733010873).  
+**Post-merge main Verify #4183:** [run 43733109761 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733109761).  
+No runtime, mapping, generated-data, model or deployment change was made; last recorded runtime Pages deployment remains #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017).
+
+## Research status clarified
+
+The Lao draft is a continuing process documented by WGRS from 2016 onward. The 2018 review identified technical issues in the draft; WGRS reports in 2019 and 2021 record further recommendations and Lao-government consideration; the 2023 session records draft Toponymic Guidelines and ministry feedback; the 2025 report says the draft was being finalised as of July 2024, with hoped-for UNGEGN plenary consideration in 2027. The current UNGEGN index lists Lao under “Other languages/scripts”, not among 30 UN-recommended systems. Its linked 2013 Lao status paper explicitly says no national Lao system and no UN-conference-approved system existed at that time, and describes BGN/PCGN 1966. Formal UN approval requires review, plenary endorsement and ECOSOC adoption. BGN/PCGN-derived CLDR therefore remains provisional; the Lao draft remains unimplemented pending authoritative current source material and evidence of adoption.
+
+## Verification
+
+Both exact-head and post-merge runs passed:
+- independent IPA gold corpus structure validation;
+- repository data/evidence audit;
+- Python tests;
+- external-G2P harness syntax and CLI validation;
+- locked browser dependency installation;
+- browser engine tests;
+- canonical browser-data build/regeneration and reproducibility;
+- real Chromium UI tests;
+- built-page and relative-asset checks.
+
+The independent adjudicated IPA gold corpus remains empty (0 examples). Passing schema and engineering checks is not linguistic validation.
+
+## Current repository status
+
+- Current main at this checkpoint: `b1d2af1ac0cf2cd848b0967506bc8da13b925d08`.
+- Branch inventory immediately before this handoff refresh: 66 refs including main. Historical file-level reconciliation remains PARTIAL; no branches were deleted or force-updated.
+- Only open PR: [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), GitHub non-mergeable, 24 ahead / 326 behind / 13 files against main, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. Its neural-first CLI/Python default remains an owner-level architecture decision; leave open and unmerged pending explicit specification approval.
+- Remaining blockers: independent rights-cleared adjudicated Lao IPA gold; Lao-specialist review; authoritative current Lao draft table and adoption evidence; exact Lao-specific RTGS table; full contextual ALA-LC and broad automatic-profile accuracy corpus; manual device/screen-reader QA; full historical branch file-level reconciliation.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #199 merged; post-merge verification complete)
 
 **Current `main`:** `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`. PR [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199) merged by squash as this commit. Exact-head Verify #4178 / [run 43731179424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43731179424); post-merge main Verify #4179 / [run 43732731628 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43732731628). PR #199 and PR #198 were documentation-only; no runtime, generated-data, model or Pages deployment change was made.
