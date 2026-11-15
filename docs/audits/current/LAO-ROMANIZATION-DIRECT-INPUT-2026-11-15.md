@@ -6,7 +6,7 @@ A direct Latin-script input route is present in the Lao → Ukrainian service. A
 
 **Base main:** 5717c2fd95c467c48b3909c86252fba5deca0695  
 **Working branch:** fix/ala-lc-2012-conformance-20261115  
-**Verified branch head before this audit update:** d0aa8b4714f6cce243f9afbef426d6d86bf2c8d1  
+**Verified code/documentation head before this audit update:** 2ad9c51adf12137fc7132d8a2c490645f7f88557  
 **PR:** pending creation after the final documentation commit's exact-head CI.
 
 ## Implementation
@@ -19,6 +19,7 @@ A direct Latin-script input route is present in the Lao → Ukrainian service. A
 - ALA-LC ny is retained as its own palatal-nasal onset, not rewritten to BGN/PCGN gn.
 - ALA-LC uses a separate onset/coda inventory. Supported final spellings are k, ng, t, p, n, m; final ວ may be written o after a vowel. s, v, r, and l are not accepted as final spellings.
 - Short u is no longer incorrectly normalized to long ū.
+- Automatic profile detection recognizes ALA-LC modifier-apostrophe vowels and oe in addition to distinctive diacritics and ny before a vowel.
 - Unsupported/ambiguous strings remain visible as ⟦…⟧; no IPA is invented from romanization-only input.
 - būak remains PARTIAL when the direct string admits multiple syllable divisions without source boundaries.
 - Initial ʻ has no project-approved Ukrainian target; medial w clusters, contextual ວ alternations and wider loanword/boundary conventions remain partial.
@@ -43,16 +44,16 @@ A direct Latin-script input route is present in the Lao → Ukrainian service. A
 | Prevent invented IPA from romanization | DONE_VERIFIED | IPA panel hidden in direct input mode; no phonetic engine call |
 | RTGS-for-Lao | BLOCKED | Needs a stable Lao-specific adaptation table and reviewed examples |
 | Informal/French-style/Karaoke variants | DEFERRED | Conventions vary; define scope and evidence before implementation |
-| Exact-head CI before this audit update | DONE_VERIFIED | Verify #4072 / run 43697504599 SUCCESS |
+| Exact-head CI before this audit update | DONE_VERIFIED | Verify #4078 / run 43697698402 SUCCESS |
 | Independent linguistic accuracy validation | BLOCKED | Needs rights-cleared, expert-adjudicated reference examples and Lao specialist review |
 | Manual physical-device and screen-reader QA | BLOCKED | Human review remains outstanding |
 
 ## Verification
 
-GitHub Actions Verify #4072, run 43697504599, on branch head d0aa8b4714f6cce243f9afbef426d6d86bf2c8d1: **SUCCESS**.
+GitHub Actions Verify #4078, run 43697698402, on branch head 2ad9c51adf12137fc7132d8a2c490645f7f88557: **SUCCESS**.
 
 - Python: 350 passed.
-- Node: 181 passed, 0 failed.
+- Node: 182 passed, 0 failed.
 - Chromium browser: 28 passed.
 - IPA-gold schema validation, repository data/evidence audit, external-G2P syntax/CLI, locked dependency install, build, generated-data reproducibility, built-page and relative-asset checks all passed.
 
