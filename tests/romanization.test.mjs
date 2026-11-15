@@ -298,6 +298,8 @@ test("the service exposes a separate direct romanization input mode and explicit
 
 
 test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the same Lao word",()=>{
+ // Official Lao PDR motto text appears on National Assembly and government documents:
+ // https://na.gov.la/wp-content/uploads/2021/11/40.-%E0%BA%81%E0%BA%BB%E0%BA%94%E0%BB%9D%E0%BA%B2%E0%BA%8D%E0%BA%A7%E0%BB%88%E0%BA%B2%E0%BA%94%E0%BB%89%E0%BA%A7%E0%BA%8D%E0%BA%AA%E0%BA%B0%E0%BA%96%E0%BA%B4%E0%BA%95%E0%BA%B4-2017.pdf
  const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ";
  const latin=romanizeLao(lao);
  assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab vadthanathav-n");
