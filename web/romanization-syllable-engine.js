@@ -21,7 +21,7 @@ const NUCLEI = new Map([
 // cited EKI/UNGEGN table; the provisional CLDR transform itself does not
 // implement all of these contextual distinctions.
 const CODAS = new Map([
-  ["ng", "нг"], ["gn", "й"], ["k", "к"], ["d", "т"], ["t", "т"], ["s", "т"], ["w", "о"],
+  ["ng", "нг"], ["gn", "й"], ["k", "к"], ["d", "т"], ["t", "т"], ["s", "т"],
   ["n", "н"], ["b", "п"], ["p", "п"], ["m", "м"],
   ["r", "л"], ["l", "л"], ["v", "о"], ["y", "й"],
 ]);
@@ -36,7 +36,6 @@ const SEPARATORS = /^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
 function codaTarget(coda, nucleus, profile = "bgn-pcgn") {
   if (profile === "ala-lc" && (coda === "r" || coda === "l")) return "н";
   if (coda === "v") return nucleus === "i" ? "оу" : "о";
-  if (coda === "w") return "о";
   return CODAS.get(coda);
 }
 
