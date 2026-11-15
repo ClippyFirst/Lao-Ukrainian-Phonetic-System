@@ -69,14 +69,14 @@ The PR inventory also shows historical closed-unmerged work (including earlier p
 
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
-| Identify canonical branch and exact starting head | DONE_VERIFIED | `main`; compare `main` with `4197d4212a935ee59216b1a7f9bdd112dceabb6e` returned identical |
-| Inventory branch refs | DONE_VERIFIED | GitHub branch search returned 37 refs including `main` |
-| Compare all non-main branch refs with main | DONE_VERIFIED | 36 compare operations completed in batches; all were divergent or behind, none was ahead-only |
+| Identify canonical branch and exact starting head | DONE_VERIFIED | Default branch is `main`; current checkpoint SHA is `66a744f43fb31dac1d7869f6e661acc1a8bb5c70` |
+| Inventory branch refs | DONE_VERIFIED | Fresh GitHub branch search returned 56 refs including `main` |
+| Compare all non-main branch refs with main | DONE_VERIFIED | 55 compare operations: 52 divergent, 2 behind, 1 ahead-only (`docs/record-pr189-postmerge-checkpoint-20261115`, the open PR #190 head) |
 | Reconcile recent merged PRs #163–#170 | DONE_VERIFIED | GitHub merged-PR search confirms #163, #164, #165, #167, #168, #169 and #170 merged; #166 is closed unmerged duplicate |
 | Identify open PR conflict | DONE_VERIFIED | Open-PR search identifies #145; proposal conflicts with deterministic-default contract |
 | Preserve historical branches and PRs | DONE_VERIFIED | No branch deletion, force update, PR closure or blind merge performed |
 | Preserve and clarify documentation architecture | DONE_VERIFIED | Existing structure guide retained; current audit and navigation pointers added |
-| Integrate every historical branch's unique file delta | PARTIAL | Branch metadata comparison is complete; not every old branch's full file-level diff and test behavior has been independently reviewed. Acceptance: a concrete missing requirement is identified, diff reviewed, ported to the single integration line, and exact-head checks pass |
+| Integrate every historical branch's unique file delta | PARTIAL | All 55 non-main refs were compared; three romanization-related branches were inspected at file level and found superseded. Remaining historical branch diffs and test behavior are not all independently reviewed. Acceptance: identify a concrete missing requirement, review its diff, port only the unique supported change, and pass exact-head checks |
 | Resolve PR #145 | BLOCKED | Requires explicit architecture decision; deterministic-default system specification currently contradicts proposed default |
 | Independent adjudicated Lao IPA gold | BLOCKED | Corpus remains empty (0); acceptance requires rights-cleared, independently annotated and adjudicated examples with provenance |
 | Manual physical-device and screen-reader QA | BLOCKED | Requires human review on actual devices and assistive technology |
