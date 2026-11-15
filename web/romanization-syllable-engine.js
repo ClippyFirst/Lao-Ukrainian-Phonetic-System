@@ -64,10 +64,18 @@ function replacePreservingCase(token, replacement) {
 }
 
 function normalizeAlaLc(input) {
-  let normalized = input.toLowerCase();
+  const source = input.toLowerCase();
   const tokens = [...ALA_LC_REPLACEMENTS.keys()].sort((a, b) => b.length - a.length);
-  for (const token of tokens) {
-    normalized = normalized.split(token).join(ALA_LC_REPLACEMENTS.get(token));
+  let normalized = "";
+  for (let index = 0; index < source.length;) {
+    const token = tokens.find((candidate) => source.startsWith(candidate, index));
+    if (token) {
+      normalized += ALA_LC_REPLACEMENTS.get(token);
+      index += token.length;
+    } else {
+      normalized += source[index];
+      index += 1;
+    }
   }
   return normalized;
 }
@@ -89,7 +97,7 @@ function longestMatchesAt(source, index, tokens) {
   return matches.filter((token) => token.length === longest);
 }
 
-function candidatesAt(source, index, profile = "bgn-pcgn") {
+function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = false) {
   const candidates = [];
   const codaTokens = profile === "ala-lc"
     ? SORTED_CODAS
@@ -160,7 +168,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn") {
     // romanization, but not when the next consonant can be the onset following
     // this preposed vowel (that is the normal CLDR order for Lao).
     const nextHasOnset = matchesAt(source, onsetStart, SORTED_ONSETS).length > 0;
-    if (!nextHasOnset) {
+    if ((!strictBoundaries || index === 0) && !nextHasOnset) {
       candidates.push({
         start: index, end: index + nucleus.length,
         surface: source.slice(index, index + nucleus.length),
@@ -170,23 +178,27 @@ function candidatesAt(source, index, profile = "bgn-pcgn") {
     }
   }
 
-  // Vowel + coda, for onsetless syllables.
-  for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
-    if (PREPOSED_NUCLEI.has(nucleus)) continue;
-    const nucleusEnd = index + nucleus.length;
-    for (const coda of longestMatchesAt(source, nucleusEnd, codaTokens)) {
-      const end = nucleusEnd + coda.length;
-      candidates.push({
-        start: index, end, surface: source.slice(index, end),
-        onset: "", nucleus, coda, order: "vowel-only",
-        ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
-      });
+  // Vowel + coda, for onsetless syllables. In strict direct-input mode, an
+  // unmarked onsetless syllable is allowed only at the beginning of a
+  // hyphen-delimited word; BGN/PCGN note 4 requires a hyphen for medial ອ.
+  if (!strictBoundaries || index === 0) {
+    for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
+      if (PREPOSED_NUCLEI.has(nucleus)) continue;
+      const nucleusEnd = index + nucleus.length;
+      for (const coda of longestMatchesAt(source, nucleusEnd, codaTokens)) {
+        const end = nucleusEnd + coda.length;
+        candidates.push({
+          start: index, end, surface: source.slice(index, end),
+          onset: "", nucleus, coda, order: "vowel-only",
+          ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
+        });
+      }
     }
   }
   return candidates;
 }
 
-function parseWord(word, sourceGroup = null, profile = "bgn-pcgn") {
+function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundaries = false) {
   const memo = new Map();
   function solve(index, sourceIndex) {
     if (index === word.length) {
@@ -197,7 +209,7 @@ function parseWord(word, sourceGroup = null, profile = "bgn-pcgn") {
     if (memo.has(key)) return memo.get(key);
     let count = 0;
     let path = null;
-    for (const candidate of candidatesAt(word, index, profile)) {
+    for (const candidate of candidatesAt(word, index, profile, strictBoundaries)) {
       if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex])) continue;
       const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
@@ -342,7 +354,8 @@ export function analyzeRomanization(input, options = {}) {
       continue;
     }
     const sourceGroup = sourceSyllableGroups ? (sourceSyllableGroups[sourceGroupIndex++] || []) : null;
-    const parsed = parseWord(part.toLowerCase(), sourceSyllableGroups ? sourceGroup : null, profile);
+    const strictBoundaries = settings.strictBoundaries === true;
+    const parsed = parseWord(part.toLowerCase(), sourceSyllableGroups ? sourceGroup : null, profile, strictBoundaries);
     if (parsed.count === 1 && parsed.path) {
       const sourceSlice = sourceSyllableGroups ? sourceGroup : sourceOnsets
         ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
@@ -389,7 +402,7 @@ export function analyzeRomanization(input, options = {}) {
         if (sourceOnsets) sourceIndex += sourceSlice.length;
       }
     } else {
-      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part.toLowerCase(), null, profile) : null;
+      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part.toLowerCase(), null, profile, strictBoundaries) : null;
       const sourceMismatch = Boolean(unrestricted?.count);
       const item = unresolved(originalPart, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
       if (sourceMismatch) {
