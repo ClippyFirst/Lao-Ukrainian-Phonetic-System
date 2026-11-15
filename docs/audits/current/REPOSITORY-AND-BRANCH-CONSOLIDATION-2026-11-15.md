@@ -176,3 +176,24 @@ This addendum corrects the prior snapshot, which still named the PR #184 merge c
 - The scoped LOC Notes 1, 2 and 4 ALA-LC crosswalk remains DONE_VERIFIED. Full contextual ALA-LC conformance and automatic profile detection remain PARTIAL; RTGS and independent IPA gold remain BLOCKED; informal variants remain DEFERRED; physical-device and assistive-technology QA remain BLOCKED.
 
 **Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0 examples.
+
+
+## Additional historical-branch source review — 2026-11-15
+
+Three romanization-related branch tips were compared against current `main` and their relevant files inspected:
+
+- `feat/romanization-input-to-ukrainian-20261115`: `web/app.js` and `index.html` are byte-identical to current main; its syllable engine and tests are an older pre-guard/pre-crosswalk version. No unique runtime change remains to port.
+- `fix/ala-lc-2012-conformance-20261115`: the engine predates the current LOC-specific ALA-LC source crosswalk and the fail-closed unsupported-vowel guard. Its candidate changes are superseded by current main; porting the branch wholesale would regress current behavior.
+- `fix/ala-lc-unsupported-vowel-guard-20261115`: contains an earlier unsupported-sequence guard, but is behind main and lacks the final profile-specific crosswalk. Current main already includes the guard and subsequent fixes.
+
+No branch was modified, deleted, or merged. This targeted review reduces the likely missing-work set but does not satisfy the audit's broader all-historical-branch file-level review; that item remains PARTIAL until all remaining branch deltas are reconciled or explicitly classified.
+
+## PR #189 post-merge checkpoint — 2026-11-15
+
+- PR [#189](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/189) merged by squash as `66a744f43fb31dac1d7869f6e661acc1a8bb5c70`.
+- Exact-head Verify #4148 / [run 43724372116 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724372116).
+- Post-merge main Verify #4149 / [run 43724471274 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724471274).
+- Both workflows completed IPA-gold schema validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked dependency installation, Node/browser-engine tests, build, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- PR #189 changed only the canonical handoff and current branch-consolidation audit. No runtime deployment was required.
+
+**Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0 examples.
