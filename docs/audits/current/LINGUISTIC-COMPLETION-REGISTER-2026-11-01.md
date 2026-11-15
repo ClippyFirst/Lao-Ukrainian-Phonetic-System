@@ -613,3 +613,8 @@ Exact-head PR #220 Verify #4280 / run 43755451075 passed 350 Python, 192 Node an
 | HYBRID-V2-BROWSER-001 | DEFERRED by owner decision | Browser neural panel and model packaging were explicitly retired on 2026-11-10. Deterministic hybrid shell remains deployed; do not restore neural browser inference without a new owner decision. |
 
 The upstream CLDR evidence and branch review are recorded in the canonical handoff and the direct-input audit. Project readiness remains an engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+
+## PR #222 verification — DONE_VERIFIED (engineering only)
+
+Exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed on branch `docs/post-pr221-checkpoint-and-cldr-evidence-20261115`: IPA-gold schema and repository data/evidence audits; 350 Python tests; external-G2P syntax/CLI; 192 Node tests; build/generated-data reproducibility; 28 Chromium tests; built-page/relative-asset and deterministic-only artifact assertions. Documentation-only; no Pages deployment required. Linguistic acceptance remains partial/blocked as in the table above.
