@@ -351,3 +351,31 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 - A fresh unfiltered branch search returned **71 refs including `main` (70 non-main)**; a follow-up pagination check returned no additional refs.
 - This supersedes the earlier 67-ref snapshot. It is a count only; full file-level reconciliation of all 70 non-main refs remains PARTIAL.
 - No historical branch was deleted, force-updated or merged as part of this inventory refresh.
+
+
+## Fresh branch-graph reconciliation and Lao audio-source revalidation — 2026-11-15
+
+**Base main:** `94cc9ed92f973bd7d6ad403cc21803dc54871302` (PR #205 merged).  
+**Latest baseline Verify:** #4194 / [run 43735362383 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43735362383).  
+**Branch inventory:** 71 refs including main (70 non-main). All 70 non-main refs were compared with main: **68 diverged, 2 behind-only, 0 ahead-only, 0 identical**. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (114 behind) and `research/written-evidence-phonology-2026-11-09` (237 behind). No branch was deleted or force-updated.
+
+### PR/branch disposition from current metadata and available discussions
+
+- PR #145 is the only open PR; 24 ahead / 331 behind / 13 files; non-mergeable. It proposes a neural-first CLI/Python default and target-adaptation opt-in, an owner-level contract decision. Leave open and unmerged.
+- PR #162's Meta-Hybrid v3 comparison orchestrator was explicitly described in its PR discussion as ported to main; its branch is superseded.
+- PR #156's compatible benchmark scripts/workflows and confidence-gated comparisons were selectively ported to main; its old branch is not a missing feature.
+- PRs #146/#147's deterministic reference profile and HVULao 1k benchmark were integrated in updated mainline forms; do not replay their stale branch snapshots.
+- PR #148's repository docs/audit snapshot was superseded; its only unique retained change was an upstream methodology pin selectively ported to main.
+- PRs #183/#186/#188 were closed unmerged as duplicate/superseded ALA-LC checkpoint work; no unique implementation or evidence was identified in their PR descriptions.
+- Other merged PR branches remain historical source refs. Graph comparison and changed-file lists were obtained for all refs, but full per-file semantic review of every historical code/data/test delta is not complete. Therefore branch consolidation remains PARTIAL, not DONE_VERIFIED.
+
+### Audio and rights research
+
+- Common Voice Scripted Speech 27.0 Lao remains a contextual-audio candidate only: 223 clips, 193 validated, 16 contributor IDs, 0.35 validated hours, no named accent/variant and no IPA labels. Source record: `SRC-CV-LAO-27`.
+- Mozilla Spontaneous Speech 5.0 (release 2026-09-16; 80 languages) was checked in the current catalogue on 2026-11-15; no Lao locale entry was found. This bounded catalogue result is recorded as `SRC-CV-SPS-5`; it does not establish that no other spontaneous Lao corpus exists.
+- The IPA-gold playbook's blanket MekongPhon UNKNOWN-rights statement was inconsistent with `SRC-MEKONGPHON-2026`, which records repository-owner confirmation of full rights within authorized ClippyFirst project use. The playbook now distinguishes that owner authorization from an upstream public license, independent legal opinion, or blanket redistribution right. MekongPhon remains dictionary-seeded reference material, not independent gold.
+- The independent adjudicated IPA gold corpus remains empty (0). No corpus records or IPA labels were added.
+
+### Current task disposition
+
+The canonical handoff and README now identify the verified baseline `94cc9ed`, PR #145's 24-ahead / 331-behind state, current branch graph classification, and the audio-source/rights evidence limits. The gold collection playbook and source registry include the Spontaneous Speech 5.0 catalogue check and corrected MekongPhon rights scope. The new research PR requires its own exact-head Verify before merge.
