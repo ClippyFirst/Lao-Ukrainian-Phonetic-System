@@ -248,7 +248,7 @@ test("source vowel identity distinguishes A plus final m from the AM nucleus", (
 
 
 test("standalone BGN/PCGN romanization can be converted without Lao-script side data", () => {
-  const result = analyzeRomanization("Viangchan");
+  const result = analyzeRomanization("Viangchan", { strictBoundaries: true });
   assert.equal(result.profile, "bgn-pcgn");
   assert.equal(result.status, "OK");
   assert.equal(result.output, "Віангчан");
@@ -279,12 +279,21 @@ test("auto profile detection recognizes ALA-LC diacritics but does not rewrite o
 });
 
 test("title-case and all-caps romanization preserve initial capitalization", () => {
-  assert.equal(analyzeRomanization("Viangchan").output, "Віангчан");
-  assert.equal(analyzeRomanization("KHA").output, "К'А");
+  assert.equal(analyzeRomanization("Viangchan", { strictBoundaries: true }).output, "Віангчан");
+  assert.equal(analyzeRomanization("KHA", { strictBoundaries: true }).output, "К'А");
 });
 
 test("unsupported ALA-LC glottal notation remains visible instead of being guessed", () => {
   const result = analyzeRomanization("ʻīk", { profile: "ala-lc" });
   assert.equal(result.status, "PARTIAL");
   assert.match(result.output, /⟦ʻīk⟧/u);
+});
+
+
+test("strict BGN/PCGN mode requires a hyphen before a medial onsetless syllable", () => {
+  const strict = analyzeRomanization("Viangchan", { strictBoundaries: true });
+  const permissive = analyzeRomanization("Viangchan", { strictBoundaries: false });
+  assert.equal(strict.status, "OK");
+  assert.equal(strict.output, "Віангчан");
+  assert.equal(permissive.status, "PARTIAL");
 });
