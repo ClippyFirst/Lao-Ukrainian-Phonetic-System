@@ -128,3 +128,20 @@ PR [#179](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/179)
 A fresh compare of PR #145 against current `main` reports 24 commits ahead and 310 behind (13 changed files). The typed stage-one IPA API remains present on main; the unresolved delta is the neural-first CLI/Python default and target-adaptation opt-in. The PR remains the only open PR and is intentionally blocked pending an explicit architecture decision. It is not merged, rebased, closed, or otherwise modified.
 
 The canonical handoff was refreshed after this audit checkpoint. Local tests were not run because the previous execution environment could not resolve github.com; the exact-head and post-merge GitHub Actions results above are the available verification evidence.
+
+## Post-merge reconciliation — PR #182 and Pages deployment (2026-11-15)
+
+The previous addendum recorded PR #182 as open while its merge was pending. It has since merged as `72e9677b0dd4fc863c90d4cec773731fb451109a`; this section supersedes that interim state.
+
+- PR [#182](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/182) merged; source branch was `fix/ala-lc-final-crosswalk-current-main-20261115`.
+- Exact-head Verify #4128 / [run 43722541781 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781).
+- Post-merge main Verify #4131 / [run 43722677303 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677303) on merge commit `72e9677b0dd4fc863c90d4cec773731fb451109a`.
+- Pages deployment #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302). The build job, deployment job and deployed-site smoke test all succeeded; the smoke test fetched both public pages and the required JS/CSS/data assets.
+- Verify #4131 passed 350 Python, 188 Node/browser-engine and 28 Chromium tests, plus schema/data audits, external-G2P harness validation, build, generated-data reproducibility and built-page checks.
+- PR #181 was closed unmerged as a superseded one-commit-behind attempt. No code was merged from #181.
+- A fresh open implementation-PR inventory leaves PR #145, BLOCKED pending an owner-level neural-first CLI/Python architecture decision. Documentation checkpoint PR #184 is the active reconciliation for the README, handoff, audit and romanization matrix; duplicate checkpoint PR #183 is superseded. No rebase or merge of PR #145 was performed.
+
+The new profile-specific ALA-LC source crosswalk is DONE_VERIFIED for the scoped LOC Notes 1, 2 and 4 behavior. Full contextual ALA-LC conformance remains PARTIAL; unsupported initial `ʻ`, medial `w` clusters, other vowel sequences, word/loanword boundaries and specialist review remain outstanding.
+
+**Current main:** `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
+**Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0.
