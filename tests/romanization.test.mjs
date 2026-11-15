@@ -301,10 +301,10 @@ test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the sa
  const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ";
  const latin=romanizeLao(lao);
  assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab");
- const separators=/^(\\s+|[,.!?;:()[\\]{}"“”]+|-+)$/u;
- const sourceSyllableGroups=lao.split(/(\\s+|[,.!?;:()[\\]{}"“”]+|-+)/u)
+ const separators=/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
+ const sourceSyllableGroups=lao.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
   .filter(Boolean)
-  .filter(part=>!separators.test(part)&&!/^[0-9\\u0ED0-\\u0ED9]+$/u.test(part))
+  .filter(part=>!separators.test(part)&&!/^[0-9\u0ED0-\u0ED9]+$/u.test(part))
   .map(part=>analyze(part,{ipaProfile:"hybrid-deterministic"}).syllables
    .filter(s=>!s.passthrough)
    .map(s=>({
