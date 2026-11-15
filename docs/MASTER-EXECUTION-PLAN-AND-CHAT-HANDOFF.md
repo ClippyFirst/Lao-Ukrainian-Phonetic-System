@@ -1,3 +1,44 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #190 merged; current-main reconciliation)
+
+**Starting `main`:** `66a744f43fb31dac1d7869f6e661acc1a8bb5c70`  
+**PR #190 merge / current `main` at this checkpoint:** `3f42fe0b18c7ccbd8addc316f84e9da6acf61b6a`  
+**PR #190:** [docs: record PR 189 post-merge checkpoint](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/190) — merged, documentation-only.  
+**Exact-head Verify #4152:** [run 43724875673 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724875673).  
+**Post-merge main Verify #4153:** [run 43724994459 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724994459).  
+PR #190 changed only the handoff and branch audit; no runtime, generated-data or Pages deployment change was made. The last verified runtime deployment remains Pages #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302).
+
+## Current repository and PR state
+
+The only open implementation PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145); PR #190 was the documentation checkpoint and is now merged. Comparing current `main` with `feat/mekongphon-first-stage` reports **24 commits ahead / 316 behind / 13 changed files**, with merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on `main`; the unresolved delta is the neural-first CLI/Python default and target-adaptation opt-in. Keep #145 open and untouched pending an owner-level architecture decision.
+
+PR #188 is closed unmerged as a superseded documentation checkpoint. PRs #181, #183, #185 and #186 also remain closed unmerged as previously reconciled duplicates. PRs #187, #189 and #190 are merged. Historical branches are preserved; no branch was deleted or force-updated. After the squash merge, the preserved PR #190 branch compares as 4 commits ahead / 1 behind current main; it is a historical divergent branch, not an open PR.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 plus PR #182 source-aware profile crosswalk; LOC-backed regressions and Verify #4128 passed |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
+| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; Verify #4128/#4131 and Pages #98 passed |
+| PR #184 documentation reconciliation | DONE_VERIFIED | Exact-head Verify #4137 and post-merge Verify #4138 passed |
+| PR #187 current-main reconciliation | DONE_VERIFIED | Exact-head Verify #4145 passed |
+| PR #189 post-PR-187 reconciliation | DONE_VERIFIED | Exact-head Verify #4148 and post-merge Verify #4149 passed |
+| PR #190 post-PR-189 checkpoint and branch inventory | DONE_VERIFIED | Exact-head Verify #4152 and post-merge Verify #4153 passed |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+
+## Next safe work
+
+Continue only with source-backed structural analysis and regression coverage that does not invent Ukrainian target values. Do not promote unsupported ALA-LC forms, create an RTGS profile, or claim phonetic accuracy without the missing evidence. The repository remains an engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #189 merged; post-merge verification complete)
 
 **Starting `main`:** `0b48ab191a9bd6b5a85a104bc8b2aba6e4543c37`  
