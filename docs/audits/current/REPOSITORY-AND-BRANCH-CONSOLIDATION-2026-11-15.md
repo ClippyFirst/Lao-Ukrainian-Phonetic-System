@@ -145,3 +145,14 @@ The new profile-specific ALA-LC source crosswalk is DONE_VERIFIED for the scoped
 
 **Current main:** `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
 **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0.
+
+## Final ALA-LC checkpoint reconciliation — 2026-11-15
+
+The canonical handoff and romanization matrix now reflect the merged runtime and deployment evidence:
+- PR #182 runtime crosswalk merge: `72e9677b0dd4fc863c90d4cec773731fb451109a`; exact-head Verify #4128 and post-merge Verify #4131 passed; Pages deployment #98 passed its live smoke test.
+- PR #184 documentation merge: `ecc997d356d206640862097d0bff6e7da3c484e3`; exact-head Verify #4137 and post-merge Verify #4138 passed.
+- The LOC source-aware ALA-LC onsets/finals and Notes 2/4 are DONE_VERIFIED for the implemented subset; full contextual ALA-LC remains PARTIAL.
+- The only open PR is #145, 24 commits ahead and 313 behind current main; it remains BLOCKED pending an explicit neural-first CLI/Python architecture decision.
+- Duplicate checkpoint PRs #183, #185 and #186 were closed unmerged after diff reconciliation; no branch refs were deleted.
+
+RTGS-for-Lao remains BLOCKED pending a complete Lao-specific table and reviewed examples. Independent adjudicated IPA gold remains empty (0 examples); physical-device and assistive-technology QA remains blocked on human review.
