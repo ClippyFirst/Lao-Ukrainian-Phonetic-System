@@ -219,6 +219,40 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
   return candidates;
 }
 
+
+function sourceRestoredVowelCandidate(word, index, sourceSyllable, profile) {
+  // CLDR's contextual Lao-Latin rule can emit onset-hyphen-coda when the
+  // source syllable contains a vowel-carrier ອ (e.g. ວອນ → v-n). In the
+  // source-aware route, restore only a uniquely mapped vowel from the
+  // original Lao syllable; never infer one from direct Latin-only input.
+  if (profile !== "bgn-pcgn" || !sourceSyllable || typeof sourceSyllable !== "object") return null;
+  const sourceOnset = sourceSyllable.onset;
+  const sourceCoda = sourceSyllable.coda === "—" ? "" : sourceSyllable.coda;
+  const onset = LAO_ONSET_CROSSWALK.get(sourceOnset);
+  const nucleusCandidates = LAO_VOWEL_TO_CLDR.get(sourceSyllable.vowelId);
+  const coda = LAO_CODA_TO_CLDR.get(sourceCoda);
+  if (!onset?.romanization || !coda || !Array.isArray(nucleusCandidates) || nucleusCandidates.length !== 1) {
+    return null;
+  }
+  const onsetAndBoundary = onset.romanization + "-";
+  if (!word.startsWith(onsetAndBoundary, index)) return null;
+  const codaStart = index + onsetAndBoundary.length;
+  if (!word.startsWith(coda, codaStart)) return null;
+  const end = codaStart + coda.length;
+  const nucleus = nucleusCandidates[0];
+  return {
+    start: index,
+    end,
+    surface: word.slice(index, end),
+    onset: onset.romanization,
+    nucleus,
+    coda,
+    order: "source-restored-vowel",
+    sourceRestoredVowel: true,
+    ukrainian: ONSETS.get(onset.romanization) + NUCLEI.get(nucleus) + codaTarget(coda, nucleus, profile),
+  };
+}
+
 function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundaries = false) {
   const memo = new Map();
   function solve(index, sourceIndex) {
@@ -246,8 +280,16 @@ function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundar
     let count = 0;
     let path = null;
     const explicitBoundary = index > 0 && word[index - 1] === "-";
-    for (const candidate of candidatesAt(word, index, profile, strictBoundaries, explicitBoundary)) {
-      if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex], profile)) continue;
+    const sourceSyllable = sourceGroup?.[sourceIndex] ?? null;
+    const restoredCandidate = sourceGroup
+      ? sourceRestoredVowelCandidate(word, index, sourceSyllable, profile)
+      : null;
+    const candidates = [
+      ...(restoredCandidate ? [restoredCandidate] : []),
+      ...candidatesAt(word, index, profile, strictBoundaries, explicitBoundary),
+    ];
+    for (const candidate of candidates) {
+      if (sourceGroup && !crosswalkUnit(candidate, sourceSyllable, profile)) continue;
       const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
       if (count === 0 && next.count === 1) path = [candidate, ...next.path];
@@ -363,6 +405,10 @@ const LAO_VOWEL_TO_CLDR = new Map([
   ["O", ["ô"]], ["OO", ["ô"]],
   ["AW", ["o"]],
   ["AWW_SHORT_ALT", ["o"]], ["AWW", ["o"]],
+  // AWW_MEDIAL has the same target vowel as AWW, but CLDR can elide its
+  // letter when vowel-carrier ອ follows a consonant (e.g. ວອນ → v-n).
+  // This entry is used only when the original Lao source restores that vowel.
+  ["AWW_MEDIAL", ["o"]],
   ["OE", ["eu"]], ["OEE", ["eu"]],
   ["IA", ["ia"]], ["IA_LONG", ["ia"]],
   ["UA", ["ua"]], ["UA_LONG", ["ua"]],

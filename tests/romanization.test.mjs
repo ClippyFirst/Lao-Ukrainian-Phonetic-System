@@ -295,3 +295,39 @@ test("the service exposes a separate direct romanization input mode and explicit
  assert.match(app,/function renderRomanizationInput\(\)/u);
  assert.match(app,/inputKind === "romanization"/u);
 });
+
+
+test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the same Lao word",()=>{
+ // Official Lao PDR motto text appears on National Assembly and government documents:
+ // https://na.gov.la/wp-content/uploads/2021/11/40.-%E0%BA%81%E0%BA%BB%E0%BA%94%E0%BB%9D%E0%BA%B2%E0%BA%8D%E0%BA%A7%E0%BB%88%E0%BA%B2%E0%BA%94%E0%BB%89%E0%BA%A7%E0%BA%8D%E0%BA%AA%E0%BA%B0%E0%BA%96%E0%BA%B4%E0%BA%95%E0%BA%B4-2017.pdf
+ // A second official government-hosted document carries the same national motto:
+ // https://www.lsb.gov.la/wp-content/uploads/2025/04/01_%E0%BA%82%E0%BB%8D%E0%BB%89%E0%BA%95%E0%BA%BB%E0%BA%81%E0%BA%A5%E0%BA%BB%E0%BA%87%E0%BA%A7%E0%BB%88%E0%BA%B2%E0%BA%94%E0%BB%89%E0%BA%A7%E0%BA%8D%E0%BA%81%E0%BA%B2%E0%BA%99%E0%BA%88%E0%BA%B1%E0%BA%94%E0%BA%95%E0%BA%B1%E0%BB%89%E0%BA%87-%E0%BB%81%E0%BA%A5%E0%BA%B0-%E0%BB%80%E0%BA%84%E0%BA%B7%E0%BB%88%E0%BA%AD%E0%BA%99%E0%BB%84%E0%BA%AB%E0%BA%A7-%E0%BA%AB%E0%BB%89%E0%BA%AD%E0%BA%87%E0%BA%81%E0%BA%B2%E0%BA%99-%E0%BA%AA%E0%BA%96%E0%BA%95-0761.08%E0%BA%95%E0%BA%B5%E0%BA%A5%E0%BA%B2-2022.pdf
+ const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ";
+ const latin=romanizeLao(lao);
+ assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab vadthanathav-n");
+ const separators=/^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
+ const sourceSyllableGroups=lao.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u)
+  .filter(Boolean)
+  .filter(part=>!separators.test(part)&&!/^[0-9\u0ED0-\u0ED9]+$/u.test(part))
+  .map(part=>analyze(part,{ipaProfile:"hybrid-deterministic"}).syllables
+   .filter(s=>!s.passthrough)
+   .map(s=>({
+    onset:s.onset||null,
+    onsetForm:s.onsetForm||s.onset||null,
+    vowelId:s.rules?.find(rule=>rule.startsWith("VOWEL:"))?.slice(6)??null,
+    coda:s.coda==="—"?"":s.coda??null,
+   })));
+ assert.equal(sourceSyllableGroups.length,5);
+ assert.ok(sourceSyllableGroups[1].length>=3);
+ assert.ok(sourceSyllableGroups[3].length>=3);
+ assert.ok(sourceSyllableGroups[4].some(s=>s.onset==="ວ"&&s.coda==="ນ"&&s.vowelId));
+ const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
+ assert.equal(adapted.status,"OK",JSON.stringify({
+  latin:latin.output,sourceSyllableGroups,
+  syllables:adapted.syllables,warnings:adapted.warnings
+ }));
+ assert.ok(!adapted.output.includes("⟦"),adapted.output);
+ assert.ok(adapted.syllables.some(s=>s.sourceRestoredVowel),"the CLDR-elided vowel must be restored only from the original Lao syllable");
+ const direct=analyzeRomanization("vadthanathav-n");
+ assert.equal(direct.status,"PARTIAL","Latin-only input must not invent the vowel omitted by CLDR");
+});
