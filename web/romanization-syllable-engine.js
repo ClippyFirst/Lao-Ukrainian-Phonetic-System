@@ -573,10 +573,17 @@ export function analyzeRomanization(input, options = {}) {
       const sourceMismatch = Boolean(unrestricted?.count);
       const item = unresolved(originalPart, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
       if (sourceMismatch) {
-        item.warning = "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
-        if (sourceGroup.length === 1 && unrestricted.count === 1) {
-          item.sourceOnset = sourceGroup[0]?.onset;
-          item.sourceCoda = sourceGroup[0]?.coda;
+        const singleSourceUnit = sourceGroup.length === 1 ? sourceGroup[0] : null;
+        const sourceVowelId = singleSourceUnit?.vowelId;
+        const hasUnmappedSourceVowel = typeof sourceVowelId === "string"
+          && !LAO_VOWEL_TO_CLDR.has(sourceVowelId);
+        item.warning = hasUnmappedSourceVowel
+          ? `Лаоська голосна структура ${sourceVowelId} ще не має підтвердженого відповідника в профілі CLDR Lao-Latin; український результат утримано.`
+          : "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
+        if (singleSourceUnit && unrestricted.count === 1) {
+          item.sourceOnset = singleSourceUnit.onset;
+          item.sourceCoda = singleSourceUnit.coda;
+          item.sourceVowelId = sourceVowelId;
           item.onset = unrestricted.path[0].onset;
           item.nucleus = unrestricted.path[0].nucleus;
           item.coda = unrestricted.path[0].coda;
