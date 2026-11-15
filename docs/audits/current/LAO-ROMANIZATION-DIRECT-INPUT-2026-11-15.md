@@ -6,8 +6,9 @@ A direct Latin-script input route is present in the Lao → Ukrainian service. A
 
 **Base main:** 5717c2fd95c467c48b3909c86252fba5deca0695  
 **Working branch:** fix/ala-lc-2012-conformance-20261115  
-**Verified code/documentation head before this audit update:** 2ad9c51adf12137fc7132d8a2c490645f7f88557  
-**PR:** pending creation after the final documentation commit's exact-head CI.
+**Verified PR head:** 92d90a3a5dc8cc1f174a52475df2213d29538d00
+**Merged main commit:** 3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2  
+**PR #173:** https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/173 — merged.
 
 ## Implementation
 
@@ -44,16 +45,17 @@ A direct Latin-script input route is present in the Lao → Ukrainian service. A
 | Prevent invented IPA from romanization | DONE_VERIFIED | IPA panel hidden in direct input mode; no phonetic engine call |
 | RTGS-for-Lao | BLOCKED | Needs a stable Lao-specific adaptation table and reviewed examples |
 | Informal/French-style/Karaoke variants | DEFERRED | Conventions vary; define scope and evidence before implementation |
-| Exact-head CI before this audit update | DONE_VERIFIED | Verify #4078 / run 43697698402 SUCCESS |
+| Exact PR-head and post-merge CI | DONE_VERIFIED | PR Verify #4080 / run 43697779828 and main Verify #4082 / run 43697882695 both SUCCESS |
 | Independent linguistic accuracy validation | BLOCKED | Needs rights-cleared, expert-adjudicated reference examples and Lao specialist review |
 | Manual physical-device and screen-reader QA | BLOCKED | Human review remains outstanding |
 
 ## Verification
 
-GitHub Actions Verify #4078, run 43697698402, on branch head 2ad9c51adf12137fc7132d8a2c490645f7f88557: **SUCCESS**.
+PR-head Verify #4080, run 43697779828, on 92d90a3a5dc8cc1f174a52475df2213d29538d00: **SUCCESS**. Post-merge main Verify #4082, run 43697882695, on 3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2: **SUCCESS**. Pages deployment #96, run 43697882717: **SUCCESS**, including live smoke test.
 
 - Python: 350 passed.
 - Node: 182 passed, 0 failed.
+- Post-merge main repeated the same 350 Python, 182 Node and 28 Chromium test passes.
 - Chromium browser: 28 passed.
 - IPA-gold schema validation, repository data/evidence audit, external-G2P syntax/CLI, locked dependency install, build, generated-data reproducibility, built-page and relative-asset checks all passed.
 
