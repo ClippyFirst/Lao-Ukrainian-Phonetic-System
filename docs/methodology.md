@@ -47,7 +47,7 @@ The service accepts a romanized Lao string directly, without requiring a Lao-scr
 
 Direct BGN/PCGN parsing also applies note 4 from the 1966 agreement: a word-initial onsetless vowel may be unmarked, but a medial onsetless syllable must be hyphenated. This keeps the documented Viangchan parse unambiguous without relaxing the parser's general ambiguity gate.
 
-The ALA-LC normalization currently covers macron vowels, selected front/central vowel symbols, diphthong spellings, `ny` → internal palatal-nasal token, and final `s` as a stop coda. It does not yet cover every ALA-LC contextual rule: glottal onset `ʻ`, labialized `w` onset, all semivowel/vowel alternations, loanwords and word-boundary conventions remain partial. This bounded profile must not be described as full ALA-LC conformance.
+The ALA-LC normalization currently covers macron vowels, short/long e, selected front/central vowel symbols, diphthong spellings, `ny` → internal palatal-nasal token, final `s` as a stop coda, and the table's parenthesized final `r/l` → `n` values for loanword cases. It does not yet cover every ALA-LC contextual rule: glottal onset `ʻ`, labialized `w` onset, all semivowel/vowel alternations, loanwords and word-boundary conventions remain partial. This bounded profile must not be described as full ALA-LC conformance.
 
 RTGS appears among romanization schemes used for Lao in the LDC language-specific documentation, but a complete normative Lao RTGS mapping is not established by that source. The Thai RTGS standard must not be applied to Lao without a separately evidenced Lao adaptation. Informal karaoke/French-style spellings are likewise not auto-guessed.
 
