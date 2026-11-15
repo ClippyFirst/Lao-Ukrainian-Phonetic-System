@@ -420,3 +420,14 @@ test("ALA-LC final ວ uses Note 4 o while BGN/CLDR keeps its v crosswalk", () =
   assert.equal(bgnPcgn.output, "као");
   assert.equal(bgnPcgn.syllables[0].coda, "v");
 });
+
+test("ALA-LC final ຍ closes the ai diphthong instead of becoming a consonant coda", () => {
+  const result = analyzeRomanization("kāi", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ຍ", vowelId: "AI" }]],
+  });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "кай");
+  assert.equal(result.syllables[0].nucleus, "ai");
+  assert.equal(result.syllables[0].coda, "");
+});
