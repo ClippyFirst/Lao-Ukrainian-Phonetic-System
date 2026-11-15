@@ -3805,8 +3805,9 @@ The latest failure was a test-timing issue: the selected class was present, but 
 
 **Base main:** 5717c2fd95c467c48b3909c86252fba5deca0695  
 **Branch:** fix/ala-lc-2012-conformance-20261115  
-**Verified code/documentation head before this handoff update:** 2ad9c51adf12137fc7132d8a2c490645f7f88557  
-**PR:** pending creation after the handoff/audit update's exact-head CI completes.
+**Verified PR head:** 92d90a3a5dc8cc1f174a52475df2213d29538d00
+**Merged main commit:** 3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2  
+**PR #173:** https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/173 — merged
 
 A review against the complete Library of Congress 2012 table found that the initial bounded normalizer had several inaccurate assumptions. The follow-up corrects them:
 
@@ -3821,10 +3822,11 @@ A review against the complete Library of Congress 2012 table found that the init
 
 ### Verification — DONE_VERIFIED for follow-up head
 
-GitHub Actions Verify #4078, run 43697698402, on 2ad9c51adf12137fc7132d8a2c490645f7f88557: **SUCCESS**.
+PR-head Verify #4080, run 43697779828, on 92d90a3a5dc8cc1f174a52475df2213d29538d00: **SUCCESS**. Post-merge main Verify #4082, run 43697882695, on 3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2: **SUCCESS**. GitHub Pages deployment #96, run 43697882717: **SUCCESS**, including the deployed-service smoke test.
 
 - 350 Python tests passed.
 - 182 Node tests passed, 0 failed.
+- The same 350 Python, 182 Node and 28 Chromium tests passed again on post-merge main.
 - 28 Chromium browser tests passed.
 - Independent IPA gold corpus schema validation passed (the corpus remains empty).
 - Repository data/evidence audit passed.
