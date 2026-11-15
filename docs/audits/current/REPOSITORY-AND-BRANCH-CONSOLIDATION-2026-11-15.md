@@ -297,3 +297,15 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 - Research blockers remain: empty independent IPA gold corpus, specialist review, authoritative current Lao draft and adoption evidence, RTGS-specific table, full contextual ALA-LC, manual accessibility QA and full historical branch file-level reconciliation.
 
 **Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+
+## PR #201 / current-main and README reconciliation — 2026-11-15
+
+- Starting main: `c9e0e2aab1f5c166def596ab5f500203a4d974f1`; latest exact-main Verify #4185 / [run 43733307259 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733307259).
+- Latest successful Pages deployment remains #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PRs #198–#201 were documentation-only; no deployment was triggered or required.
+- README's status paragraph previously cited old exact-head/post-merge verification and deployment #98, and did not clearly distinguish current Pages behavior from PR #145's proposed CLI/Python defaults. It is corrected to say the Pages app remains deterministic, report deployment #99 and Verify #4185, and identify PR #145 as open/unmerged.
+- Current PR #145 comparison: 24 ahead / 327 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Its neural-first default and explicit second-stage target adaptation are owner-level architecture changes. Leave it open and unmerged.
+- Branch inventory: 67 refs including main (66 non-main). This is a verified count, not full file-level reconciliation. No branches deleted or force-updated.
+- No runtime, mappings, generated artifacts, models or Pages output changed in this documentation refresh.
+
+**Current readiness:** engineering-verified partial research prototype. Independent adjudicated IPA gold remains 0; specialist review, full ALA-LC/contextual coverage, authoritative current Lao draft, Lao-specific RTGS evidence, historical branch file-level reconciliation and manual accessibility/device QA remain incomplete or blocked.
