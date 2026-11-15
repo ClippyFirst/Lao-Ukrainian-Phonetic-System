@@ -320,10 +320,14 @@ test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the sa
  assert.equal(sourceSyllableGroups.length,5);
  assert.ok(sourceSyllableGroups[1].length>=3);
  assert.ok(sourceSyllableGroups[3].length>=3);
+ assert.ok(sourceSyllableGroups[4].some(s=>s.onset==="ວ"&&s.coda==="ນ"&&s.vowelId));
  const adapted=analyzeRomanization(latin.output,{sourceSyllableGroups});
  assert.equal(adapted.status,"OK",JSON.stringify({
   latin:latin.output,sourceSyllableGroups,
   syllables:adapted.syllables,warnings:adapted.warnings
  }));
  assert.ok(!adapted.output.includes("⟦"),adapted.output);
+ assert.ok(adapted.syllables.some(s=>s.sourceRestoredVowel),"the CLDR-elided vowel must be restored only from the original Lao syllable");
+ const direct=analyzeRomanization("vadthanathav-n");
+ assert.equal(direct.status,"PARTIAL","Latin-only input must not invent the vowel omitted by CLDR");
 });
