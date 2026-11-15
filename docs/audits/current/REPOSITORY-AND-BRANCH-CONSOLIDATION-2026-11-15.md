@@ -423,3 +423,11 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - ALA-LC lineage confirmed: PRs #173, #176, #182 and #192 merged; PR #181 is closed unmerged duplicate/superseded by #182. Do not replay its stale branch.
 - PR #145 remains the sole open PR: 24 ahead / 334 behind / 13 files, non-mergeable, pending owner architecture decision.
 - No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## PR #209 pre-merge branch inventory correction — 2026-11-15
+
+- A fresh unfiltered search after creating the PR #209 checkpoint branch returns 75 refs including main (74 non-main); the next page is empty.
+- Relative to current main, the two post-PR #206 continuation branches are diverged (PR #207 source branch 6 ahead / 2 behind; PR #208 source branch 3 ahead / 1 behind). The current PR #209 source branch is 3 ahead / 0 behind before merge.
+- The resulting pre-merge graph classification is 71 diverged, 2 behind-only, 1 ahead-only, 0 identical. The ahead-only ref is this task branch; it is expected to become diverged after squash merge. Behind-only refs are `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind).
+- Full semantic file/test review remains PARTIAL. No branch was deleted or force-updated.
