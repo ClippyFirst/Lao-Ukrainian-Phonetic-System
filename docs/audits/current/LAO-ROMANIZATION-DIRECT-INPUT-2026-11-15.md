@@ -161,3 +161,10 @@ The direct Latin-only form `vadthanathav-n` remains PARTIAL: without the Lao sou
 | Manual device/screen-reader QA | BLOCKED | Requires human review on actual devices and assistive technologies |
 
 **Readiness remains:** engineering-verified partial research prototype, not a universal or linguistically validated romanization converter.
+
+
+## Explicit fail-closed diagnostics for uncovered core source vowel IDs — 2026-11-15
+
+The source registry contains seven core vowel IDs that are not yet represented by a confirmed CLDR Lao-Latin crosswalk: `UO_LONG_ALT`, `UO_LONG_OPEN`, `OEY`, `OOY`, `AEW`, `AOY` and `AAJ`. The source-aware adapter now preserves the exact ID in the analysis trace and returns a specific PARTIAL warning rather than a generic onset/nucleus/coda mismatch. Seven regression cases exercise this behavior; direct Latin-only parsing is unchanged.
+
+No romanization or Ukrainian mapping was added. The upstream CLDR transform remains provisional and includes context-sensitive rules plus a TODO for final-consonant handling. A new mapping requires exact source-attested CLDR output and specialist review. The full crosswalk remains PARTIAL.
