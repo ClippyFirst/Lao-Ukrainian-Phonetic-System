@@ -70,8 +70,8 @@ The PR inventory also shows historical closed-unmerged work (including earlier p
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
 | Identify canonical branch and exact starting head | DONE_VERIFIED | Default branch is `main`; current checkpoint SHA is `66a744f43fb31dac1d7869f6e661acc1a8bb5c70` |
-| Inventory branch refs | DONE_VERIFIED | Fresh GitHub branch search returned 60 refs including `main` |
-| Compare all non-main branch refs with main | DONE_VERIFIED | Reconciled snapshot: 60 refs including `main`; 59 non-main refs classified as 57 divergent, 2 behind-only, 1 ahead-only, 0 identical. The former ahead-only `docs/post-merge-pr192-checkpoint-20261115` is now divergent after PR #193 merged (7 ahead / 1 behind). Behind-only: `feature/meta-hybrid-v3-multiengine-20261110`, `research/written-evidence-phonology-2026-11-09`; ahead-only: `docs/finalize-pr193-current-main-20261115` (2 ahead / 0 behind at its comparison). |
+| Inventory branch refs | DONE_VERIFIED | Fresh GitHub branch search before the latest continuation branch returned 60 refs including `main` |
+| Compare all non-main branch refs with main | DONE_VERIFIED | After PR #194 merged, the 59 non-main refs in the 60-ref inventory were classified as 58 divergent, 2 behind-only, 0 ahead-only, 0 identical. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110`, `research/written-evidence-phonology-2026-11-09`. The former ahead-only `docs/finalize-pr193-current-main-20261115` is now divergent (4 ahead / 1 behind). The new continuation branch `docs/finalize-pr194-current-main-20261115` was created after that inventory and is not included in its count. |
 | Reconcile recent merged PRs #163–#170 | DONE_VERIFIED | GitHub merged-PR search confirms #163, #164, #165, #167, #168, #169 and #170 merged; #166 is closed unmerged duplicate |
 | Identify open PR conflict | DONE_VERIFIED | Open-PR search identifies #145; proposal conflicts with deterministic-default contract |
 | Preserve historical branches and PRs | DONE_VERIFIED | No branch deletion, force update, PR closure or blind merge performed |
