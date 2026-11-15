@@ -26,7 +26,7 @@ PR #192 exact-head and post-merge verification both passed; Pages #99 is the lat
 
 ## Branch inventory and reconciliation
 
-Fresh GitHub inventory returned **59 refs including `main`**. All **58 non-main refs** were compared against current `main`: **55 divergent, 2 behind-only, 1 identical, 0 ahead-only**. The only identical branch is `docs/post-merge-pr192-checkpoint-20261115` (this documentation checkpoint branch, based on current main). The two behind-only branches are `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`.
+Fresh GitHub inventory returned **59 refs including `main`**. All **58 non-main refs** were compared against current `main`: **55 divergent, 2 behind-only, 1 ahead-only, 0 identical**. The ahead-only branch is `docs/post-merge-pr192-checkpoint-20261115` (5 commits ahead, 0 behind at the time of this comparison). The two behind-only branches are `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`.
 
 This is a commit-graph comparison, not a full file-level review of every historical branch. Three romanization-related historical implementation branches and the new PR #192 branch were inspected for their relevant file deltas; unique, source-supported changes are either already on main or merged via PR #192. Other historical branch deltas remain PARTIAL pending targeted file-level review. No historical/user branch was deleted or force-updated.
 
