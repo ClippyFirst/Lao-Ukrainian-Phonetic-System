@@ -332,3 +332,15 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 - PR #145 remains the only open PR. Against this checkpoint it is 24 commits ahead / 329 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and remains non-mergeable. Its neural-first CLI/Python default remains an owner-level architecture decision.
 - Branch inventory before this new checkpoint branch: 68 refs including main (67 non-main). Full historical branch file-level reconciliation remains PARTIAL.
 - No runtime or linguistic-coverage claim changed; independent adjudicated IPA gold remains 0.
+
+
+## PR #204 merged — PR #203 checkpoint verification recorded — 2026-11-15
+
+- PR [#204](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/204) merged by squash as `86b0e3f48cc363d670f852f1fcdef4ffe8d9782f`; it updates README, canonical handoff and this audit.
+- Exact-head Verify #4190 / [run 43734857673 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734857673).
+- Post-merge main Verify #4191 / [run 43734956498 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734956498).
+- Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Latest runtime deployment remains Pages #99 / run 43726042017; PR #204 was documentation-only.
+- PR #145 remains the only open PR. Against this checkpoint it is 24 commits ahead / 330 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and remains non-mergeable. Its neural-first CLI/Python default remains an owner-level architecture decision.
+- Historical branch inventory has not been freshly re-enumerated since the 67-ref snapshot before PR #203/#204 continuation branches. Full file-level reconciliation remains PARTIAL.
+- No runtime or linguistic-coverage claim changed; independent adjudicated IPA gold remains 0.
