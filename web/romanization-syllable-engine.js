@@ -291,6 +291,12 @@ const LAO_CODA_TO_CLDR = new Map([
   ["ກ", "k"], ["ງ", "ng"], ["ດ", "d"], ["ບ", "b"], ["ນ", "n"],
   ["ມ", "m"], ["ຍ", "gn"], ["ວ", "v"],
 ]);
+// ALA-LC 2012 Note 4 writes final ວ as "o" after a vowel; BGN/CLDR
+// writes the same source coda as "v". Keep this profile distinction explicit.
+const LAO_CODA_TO_ALA_LC = new Map([
+  ["ກ", "k"], ["ງ", "ng"], ["ດ", "t"], ["ບ", "p"], ["ນ", "n"],
+  ["ມ", "m"], ["ຍ", "n"], ["ວ", "o"],
+]);
 
 // The source vowel parser retains distinctions that the romanization can
 // collapse (notably length). These aliases validate the represented nucleus;
@@ -314,7 +320,7 @@ const LAO_VOWEL_TO_CLDR = new Map([
   ["AM", ["am"]],
 ]);
 
-function crosswalkUnit(unit, sourceSyllable) {
+function crosswalkUnit(unit, sourceSyllable, profile = "bgn-pcgn") {
   const sourceOnset = typeof sourceSyllable === "string"
     ? sourceSyllable
     : sourceSyllable?.onset;
@@ -334,7 +340,9 @@ function crosswalkUnit(unit, sourceSyllable) {
     if (!expectedNuclei || !expectedNuclei.includes(unit.nucleus)) return null;
   }
   if (sourceCoda !== undefined) {
-    const expectedCoda = sourceCoda === "" ? "" : LAO_CODA_TO_CLDR.get(sourceCoda);
+    const expectedCoda = sourceCoda === "" ? "" : (profile === "ala-lc"
+      ? LAO_CODA_TO_ALA_LC.get(sourceCoda)
+      : LAO_CODA_TO_CLDR.get(sourceCoda));
     if (expectedCoda === undefined || expectedCoda !== unit.coda) return null;
   }
   return {
@@ -392,7 +400,7 @@ export function analyzeRomanization(input, options = {}) {
       const hasCrosswalk = Boolean(sourceSyllableGroups || sourceOnsets);
       const aligned = !hasCrosswalk || sourceSlice.length === parsed.path.length;
       const crossed = aligned && hasCrosswalk
-        ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index]))
+        ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index], profile))
         : parsed.path;
       const validCrosswalk = aligned && crossed.every(Boolean);
       if (validCrosswalk) {
