@@ -70,13 +70,13 @@ The PR inventory also shows historical closed-unmerged work (including earlier p
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
 | Identify canonical branch and exact starting head | DONE_VERIFIED | Default branch is `main`; current checkpoint SHA is `66a744f43fb31dac1d7869f6e661acc1a8bb5c70` |
-| Inventory branch refs | DONE_VERIFIED | Fresh GitHub branch search returned 56 refs including `main` |
-| Compare all non-main branch refs with main | DONE_VERIFIED | 55 compare operations: 52 divergent, 2 behind, 1 ahead-only (`docs/record-pr189-postmerge-checkpoint-20261115`, the open PR #190 head) |
+| Inventory branch refs | DONE_VERIFIED | Fresh GitHub branch search returned 59 refs including `main` |
+| Compare all non-main branch refs with main | DONE_VERIFIED | Fresh 58 comparisons: 55 divergent, 2 behind-only, 1 ahead-only, 0 identical. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110`, `research/written-evidence-phonology-2026-11-09`; ahead-only: `docs/post-merge-pr192-checkpoint-20261115` (5 commits ahead, 0 behind) |
 | Reconcile recent merged PRs #163–#170 | DONE_VERIFIED | GitHub merged-PR search confirms #163, #164, #165, #167, #168, #169 and #170 merged; #166 is closed unmerged duplicate |
 | Identify open PR conflict | DONE_VERIFIED | Open-PR search identifies #145; proposal conflicts with deterministic-default contract |
 | Preserve historical branches and PRs | DONE_VERIFIED | No branch deletion, force update, PR closure or blind merge performed |
 | Preserve and clarify documentation architecture | DONE_VERIFIED | Existing structure guide retained; current audit and navigation pointers added |
-| Integrate every historical branch's unique file delta | PARTIAL | All 55 non-main refs were compared; three romanization-related branches were inspected at file level and found superseded. Remaining historical branch diffs and test behavior are not all independently reviewed. Acceptance: identify a concrete missing requirement, review its diff, port only the unique supported change, and pass exact-head checks |
+| Integrate every historical branch's unique file delta | PARTIAL | All 58 non-main refs were compared by commit graph. Three romanization-related historical implementation branches and PR #192 were inspected at file level; their relevant supported changes are already on main. Other historical branch diffs and test behavior are not all independently reviewed. Acceptance: review each potentially unique code/data delta, port only supported requirements, and pass exact-head checks |
 | Resolve PR #145 | BLOCKED | Requires explicit architecture decision; deterministic-default system specification currently contradicts proposed default |
 | Independent adjudicated Lao IPA gold | BLOCKED | Corpus remains empty (0); acceptance requires rights-cleared, independently annotated and adjudicated examples with provenance |
 | Manual physical-device and screen-reader QA | BLOCKED | Requires human review on actual devices and assistive technology |
@@ -210,3 +210,14 @@ No branch was modified, deleted, or merged. This targeted review reduces the lik
 
 **Current main:** `3f42fe0b18c7ccbd8addc316f84e9da6acf61b6a`.  
 **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0 examples.
+
+
+## PR #192 merged — unknown romanization profile fail-closed validation (2026-11-15)
+
+PR [#192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192) merged as `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. The API now rejects unknown explicit profile values rather than silently falling back to BGN/PCGN. Unknown values return `PARTIAL` / `UNSUPPORTED_PROFILE` and preserve the original input visibly; null or omitted profile continues to use automatic detection.
+
+- Exact-head Verify #4163 / [run 43725967264 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43725967264).
+- Post-merge main Verify #4164 / [run 43726041995 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726041995).
+- Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017).
+
+The change is API validation only; it adds no linguistic mappings or claims of new romanization coverage.
