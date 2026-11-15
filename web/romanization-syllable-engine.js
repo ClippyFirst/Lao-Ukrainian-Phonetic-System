@@ -113,7 +113,7 @@ function longestMatchesAt(source, index, tokens) {
   return matches.filter((token) => token.length === longest);
 }
 
-function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = false) {
+function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = false, explicitBoundary = false) {
   const candidates = [];
   const onsetTokens = profile === "ala-lc"
     ? [...ONSETS.keys()].filter((token) => token !== "x" && token !== "gn").sort((a, b) => b.length - a.length)
@@ -189,7 +189,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
     // romanization, but not when the next consonant can be the onset following
     // this preposed vowel (that is the normal CLDR order for Lao).
     const nextHasOnset = matchesAt(source, onsetStart, onsetTokens).length > 0;
-    if ((!strictBoundaries || index === 0) && !nextHasOnset) {
+    if ((!strictBoundaries || index === 0 || explicitBoundary) && !nextHasOnset) {
       candidates.push({
         start: index, end: index + nucleus.length,
         surface: source.slice(index, index + nucleus.length),
@@ -202,7 +202,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
   // Vowel + coda, for onsetless syllables. In strict direct-input mode, an
   // unmarked onsetless syllable is allowed only at the beginning of a
   // hyphen-delimited word; BGN/PCGN note 4 requires a hyphen for medial ອ.
-  if (!strictBoundaries || index === 0) {
+  if (!strictBoundaries || index === 0 || explicitBoundary) {
     for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
       if (PREPOSED_NUCLEI.has(nucleus)) continue;
       const nucleusEnd = index + nucleus.length;
@@ -228,9 +228,23 @@ function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundar
     }
     const key = sourceGroup ? `${index}:${sourceIndex}` : String(index);
     if (memo.has(key)) return memo.get(key);
+
+    // In source-aware Lao → romanization crosswalking, a hyphen is an
+    // internal syllable boundary (not a new whitespace-delimited source word).
+    // Keep it in the output path without consuming a Lao syllable.
+    if (sourceGroup && word[index] === "-") {
+      const next = solve(index + 1, sourceIndex);
+      const result = next.count
+        ? { count: next.count, path: [{ kind: "separator", surface: "-", ukrainian: "-" }, ...next.path] }
+        : next;
+      memo.set(key, result);
+      return result;
+    }
+
     let count = 0;
     let path = null;
-    for (const candidate of candidatesAt(word, index, profile, strictBoundaries)) {
+    const explicitBoundary = index > 0 && word[index - 1] === "-";
+    for (const candidate of candidatesAt(word, index, profile, strictBoundaries, explicitBoundary)) {
       if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex], profile)) continue;
       const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
@@ -422,14 +436,20 @@ export function analyzeRomanization(input, options = {}) {
     };
   }
   const source = profile === "ala-lc" ? normalizeAlaLc(rawSource) : rawSource;
-  const parts = source.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
-  const rawParts = rawSource.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
-  const syllables = [];
-  let output = "";
-  let partial = false;
   const sourceSyllableGroups = Array.isArray(settings.sourceSyllableGroups) ? settings.sourceSyllableGroups : null;
   const sourceOnsets = sourceSyllableGroups ? null
     : Array.isArray(settings.sourceOnsets) ? settings.sourceOnsets : null;
+  // A source-aware crosswalk has one Lao syllable group per whitespace-
+  // delimited source token. Keep internal hyphens in that token so they do
+  // not advance the source-group cursor onto the next Lao word.
+  const separators = sourceSyllableGroups
+    ? /(\\s+|[,.!?;:()[\\]{}"“”]+)/u
+    : /(\\s+|[,.!?;:()[\\]{}"“”]+|-+)/u;
+  const parts = source.split(separators).filter(Boolean);
+  const rawParts = rawSource.split(separators).filter(Boolean);
+  const syllables = [];
+  let output = "";
+  let partial = false;
   let sourceIndex = 0;
   let sourceGroupIndex = 0;
 
@@ -452,15 +472,19 @@ export function analyzeRomanization(input, options = {}) {
     }
     const parsed = parseWord(part.toLowerCase(), sourceSyllableGroups ? sourceGroup : null, profile, strictBoundaries);
     if (parsed.count === 1 && parsed.path) {
+      const syllablePath = parsed.path.filter((unit) => unit.kind !== "separator");
       const sourceSlice = sourceSyllableGroups ? sourceGroup : sourceOnsets
-        ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
+        ? sourceOnsets.slice(sourceIndex, sourceIndex + syllablePath.length)
         : null;
       const hasCrosswalk = Boolean(sourceSyllableGroups || sourceOnsets);
-      const aligned = !hasCrosswalk || sourceSlice.length === parsed.path.length;
+      const aligned = !hasCrosswalk || sourceSlice.length === syllablePath.length;
+      let sourceOffset = 0;
       const crossed = aligned && hasCrosswalk
-        ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index], profile))
+        ? parsed.path.map((unit) => unit.kind === "separator"
+          ? unit
+          : crosswalkUnit(unit, sourceSlice[sourceOffset++], profile))
         : parsed.path;
-      const validCrosswalk = aligned && crossed.every(Boolean);
+      const validCrosswalk = aligned && crossed.every((unit) => unit.kind === "separator" || Boolean(unit));
       if (validCrosswalk) {
         const units = crossed.map((unit, index) => ({
           ...unit,
@@ -469,9 +493,9 @@ export function analyzeRomanization(input, options = {}) {
           status: "OK",
           warning: "",
         }));
-        syllables.push(...units);
+        syllables.push(...units.filter((unit) => unit.kind !== "separator"));
         output += units.map((unit) => unit.ukrainian).join("");
-        if (sourceOnsets) sourceIndex += parsed.path.length;
+        if (sourceOnsets) sourceIndex += syllablePath.length;
       } else {
         const item = unresolved(originalPart, "UNRESOLVED");
         if (aligned && sourceSlice?.length === 1 && parsed.path.length === 1) {
