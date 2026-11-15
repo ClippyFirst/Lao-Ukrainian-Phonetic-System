@@ -1,17 +1,19 @@
-# Latest continuation checkpoint — 2026-11-15 (audio-source revalidation and branch-graph reconciliation)
+# Latest continuation checkpoint — 2026-11-15 (PR #206 merged; post-merge verification complete)
 
-**Starting and current main before this research PR:** `94cc9ed92f973bd7d6ad403cc21803dc54871302` (PR #205 squash merge).  
-**Latest verified mainline run:** PR #205 post-merge Verify #4194 / [run 43735362383 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43735362383).  
-**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. Documentation-only PRs #198–#205 do not require a Pages redeployment.  
-**Open PRs:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) is the sole unresolved architecture decision (24 ahead / 331 behind / 13 files, non-mergeable); leave it open and unmerged pending owner approval. [#206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/206) is the current research/documentation continuation for audio-source and branch-graph revalidation; its exact-head CI is pending.  
-**Historical branch graph:** fresh search returned 71 refs including main (70 non-main). All 70 were compared with current main: 68 diverged, 2 are behind-only, 0 ahead-only, 0 identical. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (114 behind) and `research/written-evidence-phonology-2026-11-09` (237 behind). This is graph/file-list inventory, not complete file-content reconciliation; that work remains PARTIAL. No branch was deleted or force-updated.
+**Starting main:** `94cc9ed92f973bd7d6ad403cc21803dc54871302`.  
+**PR [#206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/206):** merged by squash as `cab1f9a47a3ac3662aec3877e4edcf03b40d11bc`; research/documentation-only.  
+**Exact-head Verify #4202:** [run 43742489784 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43742489784).  
+**Post-merge main Verify #4204:** [run 43742583553 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43742583553).  
+**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PR #206 changed no runtime assets; no Pages redeployment was required.  
+**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal; 24 commits ahead / 332 behind / 13 files against this main, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending explicit owner architecture approval.  
+**Historical branch graph:** fresh search after PR #206 returned 72 refs including main (71 non-main). All 71 non-main refs have been graph-compared: **69 diverged, 2 behind-only, 0 ahead-only, 0 identical**. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (114 behind) and `research/written-evidence-phonology-2026-11-09` (237 behind). Full semantic review of every historical file delta remains PARTIAL; no branch was deleted or force-updated.
 
-## Research and reconciliation results
+## PR #206 outcomes
 
-- **Common Voice:** the v27.0 Lao scripted set remains 223 clips / 193 validated / 16 contributor IDs / 0.35 validated hours, with no named accent or variant category and no IPA labels. The 2026-09-16 Spontaneous Speech 5.0 release covers 80 languages; the current Mozilla Data Collective catalogue search returned no Lao locale. This is a bounded availability finding, not proof no other spontaneous Lao audio corpus exists. It does not unblock the Vientiane citation-form pilot.
-- **MekongPhon rights:** the earlier playbook wording that all rights were simply UNKNOWN was too broad. `data/evidence/sources.csv` records repository-owner confirmation of full rights for all MekongPhon components within authorized ClippyFirst project use. This is not an upstream public license, independent legal opinion or blanket external redistribution grant. MekongPhon remains dictionary-seeded reference data, not independent gold; no IPA labels are promoted.
-- **Historical refs:** all 70 non-main branches were graph-compared. The only behind-only refs are the Meta-Hybrid v3 original stacked branch and the written-evidence research branch. No ahead-only branch is available for fast-forward. PR #162's Meta-Hybrid v3 comparator, PR #156's compatible benchmark work, and PRs #146/#147's deterministic-profile/HVULao benchmark work are documented by their closed-PR discussions as selectively ported to main. PR #148's stale audit/docs branch was superseded; only its methodology pin was selectively retained. Closed documentation PRs #183/#186/#188 were explicitly superseded by more complete ALA-LC checkpoints. PR #145 remains the sole open architectural decision.
-- **File-level limitation:** compare metadata exposes changed-file lists and commit graph status; not every historical branch's full source diff, callers and tests has been independently reviewed against main. Keep this task PARTIAL; do not mass-merge or delete historical refs.
+- Common Voice Scripted Speech 27.0 Lao remains a small contextual-audio lead: 223 clips, 193 validated, 16 contributor IDs, 0.35 validated hours, no named accent/variant category and no IPA labels. Mozilla Spontaneous Speech 5.0 (2026-09-16; 80 languages) adds no Lao locale entry in the catalogue checked 2026-11-15; this is a bounded catalogue finding, not proof that no other spontaneous Lao corpus exists.
+- The gold collection playbook now reconciles the rights status: the repository owner confirmed full MekongPhon component rights within authorized ClippyFirst project use. This is not an upstream public license, independent legal opinion or blanket redistribution grant. MekongPhon remains dictionary-seeded reference data, not independent gold.
+- Source registry adds `SRC-CV-SPS-5`. No corpus records or IPA labels were added; adjudicated gold remains 0.
+- All 70 non-main branches in the pre-PR #206 inventory were compared; the merged research branch adds one historical ref. Current inventory is 72 refs including main. Full file-level semantic review remains PARTIAL.
 
 ## Current task ledger
 
@@ -28,13 +30,13 @@
 | Common Voice Lao audio | PARTIAL / research lead only | 193 validated scripted clips; dialect/citation-form suitability unproven; no Spontaneous Speech 5.0 Lao entry found |
 | Lao-specific RTGS profile | BLOCKED | Authoritative normative Lao adaptation table and source-backed examples required |
 | Full automatic profile selection | PARTIAL | Representative reviewed mixed-profile corpus required |
-| Historical branch reconciliation | PARTIAL | 70 graph-compared refs; full source/test file-level reconciliation incomplete |
+| Historical branch reconciliation | PARTIAL | 71 non-main refs graph-compared; full source/test file-level reconciliation incomplete |
 | Physical-device and screen-reader QA | BLOCKED | Human testing on real devices and assistive technologies required |
 | PR #145 neural-first CLI/Python default | BLOCKED | Owner architecture decision and normative spec/test reconciliation required |
 
 ## Verification and readiness
 
-PR #205 post-merge Verify #4194 / run 43735362383 passed IPA-gold structural validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks. The present research/documentation branch still requires its own exact-head CI. No runtime, mappings, generated data, model assets or Pages artifacts are changed.
+PR #206 exact-head Verify #4202 and post-merge main Verify #4204 both passed: IPA-gold structural validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation.
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
 

@@ -379,3 +379,26 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 ### Current task disposition
 
 The canonical handoff and README now identify the verified baseline `94cc9ed`, PR #145's 24-ahead / 331-behind state, current branch graph classification, and the audio-source/rights evidence limits. The gold collection playbook and source registry include the Spontaneous Speech 5.0 catalogue check and corrected MekongPhon rights scope. The new research PR requires its own exact-head Verify before merge.
+
+
+## PR #206 merged — audio-source and historical branch graph revalidation — 2026-11-15
+
+- PR [#206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/206) merged as `cab1f9a47a3ac3662aec3877e4edcf03b40d11bc`.
+- Exact-head Verify #4202 / [run 43742489784 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43742489784); post-merge main Verify #4204 / [run 43742583553 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43742583553).
+- The exact-head and post-merge checks passed IPA-gold structural validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Current branch inventory after the PR: 72 refs including main (71 non-main). All 71 non-main refs compared with main: 69 diverged, 2 behind-only, 0 ahead-only, 0 identical. Behind-only refs remain `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`. Full semantic review of every changed file remains PARTIAL; no branches deleted or force-updated.
+- PR #145 remains the only open PR, 24 ahead / 332 behind / 13 files, non-mergeable; its neural-first CLI/Python default remains an owner-level architecture decision.
+- PR #206 revalidated Common Voice and MekongPhon rights evidence; it did not add corpus labels or IPA gold. Independent adjudicated gold remains 0.
+- Latest Pages deployment remains #99 / run 43726042017; PR #206 was research/documentation-only.
+
+
+## PR #206 merged — audio-source and branch-graph checkpoint — 2026-11-15
+
+- PR [#206](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/206) merged by squash as `cab1f9a47a3ac3662aec3877e4edcf03b40d11bc`.
+- Exact-head Verify #4202 / [run 43742489784 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43742489784).
+- Post-merge main Verify #4204 / [run 43742583553 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43742583553). The post-merge workflow passed the IPA-gold structure check, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency install, browser-engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Latest main at this checkpoint: `cab1f9a47a3ac3662aec3877e4edcf03b40d11bc`. Latest runtime deployment remains Pages #99 / run 43726042017; PR #206 changed no runtime assets.
+- The post-merge handoff snapshot records 72 refs including main (71 non-main): 69 diverged, 2 behind-only, 0 ahead-only, 0 identical. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (114 behind) and `research/written-evidence-phonology-2026-11-09` (237 behind). The later documentation checkpoint branch is not part of that base snapshot. This is graph-level classification, not complete semantic file review.
+- PR #145 remains the sole open PR; against this main it is 24 commits ahead / 332 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and GitHub marks it non-mergeable. It remains blocked on the explicit owner architecture decision.
+- Audio research remains non-gold: Common Voice Scripted Speech 27.0 Lao is a contextual-audio lead (193 validated clips, 16 contributor IDs, no named accent/variant, no IPA labels); no Lao locale was found in the checked Spontaneous Speech 5.0 catalogue. MekongPhon owner authorization is scoped to authorized ClippyFirst project use, not a public upstream license or blanket redistribution permission. The independent adjudicated IPA gold corpus remains 0.
+- Full file-level semantic reconciliation of historical branches remains PARTIAL; no branch was deleted or force-updated.
