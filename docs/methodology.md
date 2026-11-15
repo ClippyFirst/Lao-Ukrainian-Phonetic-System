@@ -37,8 +37,19 @@ The service offers a second, explicitly lower-information method alongside the p
 
 - **Phonetic (default):** Lao → structural/phonological analysis → IPA → Ukrainian practical adaptation.
 - **By romanization:** Lao → provisional CLDR Lao-Latin/BGN transform → source-grapheme/romanization crosswalk → independent romanized-syllable parser → Ukrainian syllable assembly.
+- **Direct romanization input:** user-supplied BGN/PCGN-derived CLDR or bounded ALA-LC 2012 Latin text → profile normalization (when applicable) → independent onset/nucleus/coda parser → Ukrainian syllable assembly. No Lao source evidence or IPA is fabricated.
 
 The second route is not a letter-by-letter Latin-to-Cyrillic transliterator. It parses the romanized string into a **syllable onset, vowel nucleus and coda**, then checks all three against the original Lao syllable: the onset grapheme must agree with the romanized onset, the source vowel-structure ID must permit the parsed CLDR nucleus, and a supported coda grapheme must agree with the CLDR coda output. This source evidence can resolve ambiguities that Latin spelling alone cannot, including `kam` as either `ka+m` (an A nucleus plus final ມ) or `k+am` (the single AM vowel nucleus). Without the original Lao structure, the ambiguous romanized form remains partial. A Latin digraph can encode one Lao phoneme rather than two independent consonants, and CLDR's transform is not position-sensitive for every consonant. The route does not consume the IPA string or call the phonetic target adapter; it uses the source grapheme and vowel registries plus documented orthographic correspondences to validate onset, nucleus and supported coda. The IPA-first engine remains unchanged. The user selects the method explicitly; there is no silent fallback. Input rejected by Lao validation is not passed through the romanization method. The main copy action follows the selected Ukrainian result.
+
+### Direct Latin input and profile limits
+
+The service accepts a romanized Lao string directly, without requiring a Lao-script source. The profile selector supports BGN/PCGN 1966 / CLDR Lao-Latin and a bounded ALA-LC 2012 normalization profile; automatic selection is only a heuristic based on distinctive ALA-LC diacritics and the `ny` spelling before a vowel. When the convention is known, explicit selection is preferred.
+
+The ALA-LC normalization currently covers macron vowels, selected front/central vowel symbols, diphthong spellings, `ny` → internal palatal-nasal token, and final `s` as a stop coda. It does not yet cover every ALA-LC contextual rule: glottal onset `ʻ`, labialized `w` onset, all semivowel/vowel alternations, loanwords and word-boundary conventions remain partial. This bounded profile must not be described as full ALA-LC conformance.
+
+RTGS appears among romanization schemes used for Lao in the LDC language-specific documentation, but a complete normative Lao RTGS mapping is not established by that source. The Thai RTGS standard must not be applied to Lao without a separately evidenced Lao adaptation. Informal karaoke/French-style spellings are likewise not auto-guessed.
+
+Direct romanization input is an orthographic route, not a pronunciation reconstruction. It cannot restore tones, vowel length, consonant-class distinctions or other information omitted by the input convention. If a string has multiple valid syllable parses, the parser preserves the unresolved fragment in `⟦…⟧` and marks the result PARTIAL. It does not create an IPA result from the romanized spelling.
 
 ### Syllable-level mapping policy
 
