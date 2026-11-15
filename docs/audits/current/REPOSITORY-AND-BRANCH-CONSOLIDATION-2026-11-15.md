@@ -283,3 +283,17 @@ A targeted primary-source review extends the 2025 update and prevents a category
 Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/wgrr4lao.pdf); [2018 WGRS report](https://arhiiv.eki.ee/wgrs/wgr18rep.htm); [2019 WGRS report](https://unstats.un.org/UNSD/geoinfo/UNGEGN/docs/1st-session/GEGN.2_2019_11_CRP.11_WG_Romanization_Systems-full-report.pdf); [2021 WGRS report](https://unstats.un.org/unsd/ungegn/sessions/2nd_session_2021/documents/GEGN.2_2021_93_CRP93_15_WGRSreport.pdf); [2023 WGRS minutes](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/WGRS_minutes_3_May_2023.pdf); [2025 WGRS report](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf); [UNGEGN index](https://unstats.un.org/unsd/ungegn/romanization/); [UNGEGN approval process](https://unstats.un.org/unsd/ungegn/meetings/Bureau_Divisions/documents/UNGEGN_WGRS_Approval_process-WG_Reviewed_28_May_26.pdf).
 
 **Status:** research clarification DONE_VERIFIED as documentation; the draft's current authoritative table and legal/national adoption status remain BLOCKED pending primary Lao-government evidence.
+
+
+## PR #200 post-merge verification checkpoint — 2026-11-15
+
+- PR [#200](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/200) merged by squash as `b1d2af1ac0cf2cd848b0967506bc8da13b925d08`.
+- Exact-head Verify #4182 / [run 43733010873 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733010873).
+- Post-merge main Verify #4183 / [run 43733109761 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733109761).
+- Both workflows passed corpus schema validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser engine tests, canonical data build and reproducibility, Chromium UI tests, and built-page/relative-asset checks.
+- PR #200 was documentation-only and added no runtime or mapping changes.
+- Current main at this checkpoint: `b1d2af1ac0cf2cd848b0967506bc8da13b925d08`.
+- Only open PR remains #145, non-mergeable; 24 ahead / 326 behind / 13 changed files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. Keep it open pending owner architecture decision.
+- Research blockers remain: empty independent IPA gold corpus, specialist review, authoritative current Lao draft and adoption evidence, RTGS-specific table, full contextual ALA-LC, manual accessibility QA and full historical branch file-level reconciliation.
+
+**Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter.
