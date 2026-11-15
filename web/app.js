@@ -139,7 +139,8 @@ function renderRomanizationInput() {
 
   output.textContent = adapted.output;
   output.className = adapted.output ? "result-body output" : "result-body output muted";
-  outputMethodNote.textContent = "Вхідна романізація → розбір підтримуваної складової структури → український практичний запис. Це не IPA-транскрипція; втрачені в латинському записі тон і довгота не реконструюються.";
+  const profileLabel = adapted.profile === "ala-lc" ? "ALA-LC 2012" : "BGN/PCGN 1966 / CLDR Lao-Latin";
+  outputMethodNote.textContent = "Профіль: " + profileLabel + ". Вхідна романізація → розбір підтримуваної складової структури → український практичний запис. Це не IPA-транскрипція; втрачені в латинському записі тон і довгота не реконструюються.";
   romanization.textContent = input.value;
   romanization.className = "output";
   ipa.textContent = "";
