@@ -498,3 +498,16 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - `feat/pages-hybrid-v2-browser` corresponds to merged PR #158, but the browser neural panel/model/ONNX/WASM publication was explicitly retired 2026-11-10. Commits 0846e377 and afa035d make the current Pages artifact deterministic-only. This is an intentional product boundary, not an unmerged feature to recover.
 - Current romanization work merged in PRs #214/#218/#220; documentation/deployment reconciliation merged in #219. PR #145 remains the only open PR and is blocked by an owner-level architecture decision.
 - No branch was deleted. Graph comparison is complete; semantic review of all 83 diverged branch diffs is still PARTIAL. Do not bulk-port, merge or delete historical branches; reopen only a specific evidenced task.
+
+
+## Post-PR #221 graph and semantic spot-check — 2026-11-15
+
+- Current `main`: `99d9fd3b5aa443c1a34af9ab9b30a3e51add39a7`. Branch search returns 87 refs total (main + 86 non-main). The merged PR #221 branch is retained and now compares 8 ahead / 1 behind; it is not a reason to rewrite or delete that historical ref.
+- PR #145 remains the only open PR; current comparison is 24 ahead / 349 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, status diverged/non-mergeable. It is an owner architecture decision, not a routine conflict-resolution task.
+- ALA-LC candidate branches rechecked: `fix/ala-lc-2012-conformance-20261115` (21/46), `fix/ala-lc-final-crosswalk-current-main-20261115` (11/38), `fix/ala-lc-final-w-crosswalk-20261115` (9/39), `fix/ala-lc-unsupported-vowel-guard-20261115` (5/43). Their runtime snapshots predate or duplicate current main's source-aware crosswalk, ALA-LC final-`o` handling, unsupported-form guard and seven-vowel diagnostics. No unique implementation was ported; branches remain untouched.
+- This is a targeted semantic review, not a full review of all divergent refs. Overall historical-branch semantic reconciliation remains PARTIAL. No branch was deleted, force-updated or mass-merged.
+
+
+## PR #222 exact-head checks — 2026-11-15
+
+PR #222 exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed: 350 Python, 192 Node and 28 Chromium tests, IPA-gold schema validation, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/deterministic-only artifact assertions. No runtime files changed; no Pages deployment required.
