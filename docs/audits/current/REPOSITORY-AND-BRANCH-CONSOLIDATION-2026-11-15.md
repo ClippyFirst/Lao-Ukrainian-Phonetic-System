@@ -156,3 +156,7 @@ PR [#184](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/184)
 - PR #145 is again the only open PR; it remains blocked pending an explicit neural-first CLI/Python architecture decision. No branch refs were deleted or force-updated.
 
 No runtime behavior or generated data changed in PR #184. Runtime deployment #98 remains the live deployment containing PR #182.
+
+## PR #145 compare refresh — current main after PR #184 (2026-11-15)
+
+A fresh GitHub compare of `main` at `ecc997d356d206640862097d0bff6e7da3c484e3` against `feat/mekongphon-first-stage` reports 24 commits ahead and 313 behind, with 13 changed files. This supersedes the prior 310-behind snapshot. PR #145 remains BLOCKED pending the explicit neural-first CLI/Python architecture decision; its typed stage-one API is already present on main, and the remaining proposed change is the default-selection/product contract.
