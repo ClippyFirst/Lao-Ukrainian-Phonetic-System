@@ -476,3 +476,15 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - Current main: `5c932055b81a76c8bf67f6c77818f9e28f59975e`. PR #145 remains the only open PR, 24 ahead / 337 behind / 13 files, non-mergeable pending owner architecture decision.
 - Branch inventory: 77 refs including main (76 non-main), 74 diverged and 2 behind-only. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (120 behind) and `research/written-evidence-phonology-2026-11-09` (243 behind). Full semantic review remains PARTIAL.
 - No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## PR #212 merged — current mainline checkpoint — 2026-11-15
+
+- PR [#212](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/212) merged as `2ed3b25ef8d62d511ddc46f7f087ba3c3d3133bd`.
+- Exact-head Verify #4224 / [run 43744712602 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43744712602).
+- Post-merge main Verify #4225 / [run 43744818594 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43744818594).
+- Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency install, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- PR #212 was documentation-only; it synchronizes the canonical README/handoff/audit with PR #211. No runtime, mapping, generated-data or model assets changed.
+- Current main: `2ed3b25ef8d62d511ddc46f7f087ba3c3d3133bd`. PR #145 remains the only open PR, 24 ahead / 338 behind / 13 files, non-mergeable pending owner architecture decision.
+- Branch inventory: 78 refs including main (77 non-main), 75 diverged and 2 behind-only. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (121 behind) and `research/written-evidence-phonology-2026-11-09` (244 behind). Full semantic review remains PARTIAL.
+- No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
