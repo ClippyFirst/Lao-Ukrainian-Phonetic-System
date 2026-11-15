@@ -231,7 +231,7 @@ function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundar
     let count = 0;
     let path = null;
     for (const candidate of candidatesAt(word, index, profile, strictBoundaries)) {
-      if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex])) continue;
+      if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex], profile)) continue;
       const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
       if (count === 0 && next.count === 1) path = [candidate, ...next.path];
@@ -254,6 +254,38 @@ function unresolved(surface, status = "UNRESOLVED") {
   };
 }
 
+// ALA-LC initial spellings differ from BGN/CLDR for ຊ (s) and ຍ (ny).
+// Keep this source crosswalk separate from the CLDR-derived inventory.
+const LAO_ONSET_TO_ALA_LC = new Map([
+  ["ກ", { romanization: "k", ukrainian: "к" }],
+  ["ຂ", { romanization: "kh", ukrainian: "к'" }],
+  ["ຄ", { romanization: "kh", ukrainian: "к'" }],
+  ["ງ", { romanization: "ng", ukrainian: "нг" }],
+  ["ຈ", { romanization: "ch", ukrainian: "ч" }],
+  ["ສ", { romanization: "s", ukrainian: "с" }],
+  ["ຊ", { romanization: "s", ukrainian: "с" }],
+  ["ຍ", { romanization: "ny", ukrainian: "нь" }],
+  ["ດ", { romanization: "d", ukrainian: "д" }],
+  ["ຕ", { romanization: "t", ukrainian: "т" }],
+  ["ຖ", { romanization: "th", ukrainian: "т'" }],
+  ["ທ", { romanization: "th", ukrainian: "т'" }],
+  ["ນ", { romanization: "n", ukrainian: "н" }],
+  ["ບ", { romanization: "b", ukrainian: "б" }],
+  ["ປ", { romanization: "p", ukrainian: "п" }],
+  ["ຜ", { romanization: "ph", ukrainian: "п'" }],
+  ["ຝ", { romanization: "f", ukrainian: "ф" }],
+  ["ພ", { romanization: "ph", ukrainian: "п'" }],
+  ["ຟ", { romanization: "f", ukrainian: "ф" }],
+  ["ມ", { romanization: "m", ukrainian: "м" }],
+  ["ຢ", { romanization: "y", ukrainian: "й" }],
+  ["ຣ", { romanization: "r", ukrainian: "л" }],
+  ["ລ", { romanization: "l", ukrainian: "л" }],
+  ["ວ", { romanization: "v", ukrainian: "в" }],
+  ["ຫ", { romanization: "h", ukrainian: "г" }],
+  ["ຮ", { romanization: "h", ukrainian: "г" }],
+  ["ໜ", { romanization: "n", ukrainian: "н" }],
+  ["ໝ", { romanization: "m", ukrainian: "м" }],
+]);
 const LAO_ONSET_CROSSWALK = new Map([
   ["ກ", { romanization: "k", ukrainian: "к" }],
   ["ຂ", { romanization: "kh", ukrainian: "к'" }],
@@ -291,6 +323,16 @@ const LAO_CODA_TO_CLDR = new Map([
   ["ກ", "k"], ["ງ", "ng"], ["ດ", "d"], ["ບ", "b"], ["ນ", "n"],
   ["ມ", "m"], ["ຍ", "gn"], ["ວ", "v"],
 ]);
+// ALA-LC 2012 uses final-position values that differ from BGN/CLDR.
+// LOC Notes 2 and 4 are handled separately below.
+const LAO_CODA_TO_ALA_LC = new Map([
+  ["ກ", "k"], ["ຂ", "k"], ["ຄ", "k"], ["ງ", "ng"],
+  ["ຈ", "t"], ["ສ", "t"], ["ຊ", "t"], ["ດ", "t"],
+  ["ຕ", "t"], ["ຖ", "t"], ["ທ", "t"], ["ນ", "n"],
+  ["ບ", "p"], ["ປ", "p"], ["ຜ", "p"], ["ຝ", "p"],
+  ["ພ", "p"], ["ຟ", "p"], ["ມ", "m"], ["ຣ", "n"],
+  ["ລ", "n"], ["ວ", "o"],
+]);
 
 // The source vowel parser retains distinctions that the romanization can
 // collapse (notably length). These aliases validate the represented nucleus;
@@ -314,7 +356,7 @@ const LAO_VOWEL_TO_CLDR = new Map([
   ["AM", ["am"]],
 ]);
 
-function crosswalkUnit(unit, sourceSyllable) {
+function crosswalkUnit(unit, sourceSyllable, profile = "bgn-pcgn") {
   const sourceOnset = typeof sourceSyllable === "string"
     ? sourceSyllable
     : sourceSyllable?.onset;
@@ -325,7 +367,9 @@ function crosswalkUnit(unit, sourceSyllable) {
     ? sourceSyllable.coda
     : undefined;
   const sourceCoda = rawSourceCoda === "—" ? "" : rawSourceCoda;
-  const correspondence = LAO_ONSET_CROSSWALK.get(sourceOnset);
+  const correspondence = profile === "ala-lc"
+    ? LAO_ONSET_TO_ALA_LC.get(sourceOnset)
+    : LAO_ONSET_CROSSWALK.get(sourceOnset);
   if (!correspondence || correspondence.romanization !== unit.onset) return null;
   const hasSourceVowel = typeof sourceSyllable === "object" && sourceSyllable !== null
     && Object.prototype.hasOwnProperty.call(sourceSyllable, "vowelId");
@@ -334,7 +378,14 @@ function crosswalkUnit(unit, sourceSyllable) {
     if (!expectedNuclei || !expectedNuclei.includes(unit.nucleus)) return null;
   }
   if (sourceCoda !== undefined) {
-    const expectedCoda = sourceCoda === "" ? "" : LAO_CODA_TO_CLDR.get(sourceCoda);
+    // LOC ALA-LC Note 2 treats final ຍ as the closing /i/ of the diphthong,
+    // not as a separately romanized consonant coda.
+    const finalNyInDiphthong = profile === "ala-lc"
+      && sourceCoda === "ຍ" && unit.nucleus === "ai" && unit.coda === "";
+    const expectedCoda = sourceCoda === "" || finalNyInDiphthong ? ""
+      : (profile === "ala-lc"
+        ? LAO_CODA_TO_ALA_LC.get(sourceCoda)
+        : LAO_CODA_TO_CLDR.get(sourceCoda));
     if (expectedCoda === undefined || expectedCoda !== unit.coda) return null;
   }
   return {
@@ -392,7 +443,7 @@ export function analyzeRomanization(input, options = {}) {
       const hasCrosswalk = Boolean(sourceSyllableGroups || sourceOnsets);
       const aligned = !hasCrosswalk || sourceSlice.length === parsed.path.length;
       const crossed = aligned && hasCrosswalk
-        ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index]))
+        ? parsed.path.map((unit, index) => crosswalkUnit(unit, sourceSlice[index], profile))
         : parsed.path;
       const validCrosswalk = aligned && crossed.every(Boolean);
       if (validCrosswalk) {
