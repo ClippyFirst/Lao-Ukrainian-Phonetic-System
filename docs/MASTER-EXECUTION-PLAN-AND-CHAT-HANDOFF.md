@@ -4509,3 +4509,27 @@ A local clone attempt was unavailable because the execution environment could no
 - The latest mainline Verify run [#4270 / 43753297233](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43753297233) at 827ee0f3f3a81ead1753f901f2b36025998bdc18 also completed with conclusion success.
 - Compare fe435317...827ee0f3 confirms main is three commits ahead and changes only README.md, this handoff and docs/romanization-to-ukrainian-matrix.md; there are no runtime changes after the deployed SHA. Therefore the full-motto source-aware hyphen and AWW_MEDIAL recovery code is confirmed deployed on GitHub Pages.
 - This closes the deployment-confirmation blocker for PR #218. It does not change the project-wide linguistic evidence blockers: independent adjudicated IPA gold remains 0; full contextual ALA-LC, Lao specialist review, authoritative final Lao national romanization table/RTGS adaptation and manual assistive-technology/device QA remain incomplete.
+
+
+## PR #220, latest Pages deployment, and browser-Hybrid-v2 retirement reconciliation — 2026-11-15
+
+- PR [#219](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/219) merged documentation reconciliation as `ba6bc5707edf47215c92fbbd3d907d98e96617dd`; exact-head Verify #4273 / run [43755210471](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755210471) succeeded (350 Python, 191 Node, 28 Chromium, repository/evidence audit, static build and generated-data checks).
+- PR [#220](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/220) adds specific source-vowel diagnostics for seven core source IDs without a confirmed CLDR crosswalk: UO_LONG_ALT, UO_LONG_OPEN, OEY, OOY, AEW, AOY and AAJ. These remain PARTIAL; no mapping was guessed. Direct Latin-only behavior is unchanged. Squash merge SHA: `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`.
+- Exact-head Verify #4280 / run [43755451075](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755451075) passed: 350 Python tests, 192 Node tests (192/192), 28 Chromium tests, IPA-gold structure validation, repository data/evidence audit, external-G2P harness syntax/CLI, static build, generated-data reproducibility and built-page/relative-asset checks.
+- Post-merge main Verify #4281 / run [43755557872](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755557872) succeeded on the exact main SHA above.
+- GitHub Pages deployment #102 / run [43755557855](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755557855) succeeded on the same SHA. Both build and deploy jobs passed; the deployed static-service smoke test passed. The artifact was explicitly checked to exclude `dist/models`, `dist/web/vendor`, the Hybrid v2 inference bundle and `run-hybrid-v2` controls.
+
+### Corrected website architecture record
+
+- PR [#158](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/158) did merge a browser-local neural Hybrid v2 implementation and deployed it temporarily as Pages run #42776069784.
+- On 2026-11-10 it was **retired by explicit owner decision**. Commit [0846e377](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/commit/0846e3773e328643740375947dc24067b3c664dd) simplified the Pages build to static deterministic assets; commit [afa035d](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/commit/afa035d882f2d2e4726e2da4459d467648bd9ba3) removed neural ONNX export/model upload from the Pages workflow. The archived report `docs/research/GITHUB-PAGES-HYBRID-V2-BROWSER-PORT-2026-11-09.md` explicitly records this retirement.
+- Current Pages site includes the deterministic `hybrid-deterministic` IPA-first browser engine and the separate romanization mode. It does not include the neural Hybrid v2 panel, ONNX model, WASM inference bundle or model assets. Python Hybrid v2 remains a research/CLI lane. Do not restore the browser neural lane without a new owner decision.
+
+### Branch and PR reconciliation at current main
+
+- GitHub reports 86 branch refs total: `main` plus 85 non-main refs. Compared every non-main ref against main SHA `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`: 83 are diverged and 2 are behind-only; none is ahead-only or identical. The two behind-only refs are `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`.
+- Targeted file review found the older numeric-crosswalk and empty-input branches' relevant browser tests already present on main; no port was needed. The old browser Hybrid v2 branch corresponds to merged PR #158 but its implementation was subsequently retired by the explicit owner decision above.
+- PR #214, #218, #219 and #220 are merged. PR #217 was closed as superseded by #218; its branch was left intact. PR #145 remains the only open PR and remains blocked pending an owner-level decision on the neural-first CLI/Python default. No branches were deleted.
+- Graph comparison is complete; semantic review of all remaining divergent historical branch diffs is still PARTIAL. Do not mass-merge or delete them. Review any branch only when its task is reopened or a specific unique code/data delta is shown to be needed.
+
+**Current main:** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`. **Readiness:** engineering-verified partial research prototype; not release-ready as a universal, independently accuracy-validated phonetic converter.
