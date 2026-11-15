@@ -63,13 +63,12 @@ function replacePreservingCase(token, replacement) {
 }
 
 function normalizeAlaLc(input) {
+  let normalized = input.toLowerCase();
   const tokens = [...ALA_LC_REPLACEMENTS.keys()].sort((a, b) => b.length - a.length);
-  const escaped = tokens.map((token) => token.replace(/[.*+?^${}()|[\]\\]/gu, "\\function mapCase(value, source) {
-  return source && source === source.toUpperCase() ? value.toUpperCase() : value;
-}"));
-  const pattern = new RegExp(escaped.join("|"), "giu");
-  return input.replace(pattern, (token) =>
-    replacePreservingCase(token, ALA_LC_REPLACEMENTS.get(token.toLowerCase())));
+  for (const token of tokens) {
+    normalized = normalized.split(token).join(ALA_LC_REPLACEMENTS.get(token));
+  }
+  return normalized;
 }
 
 function detectRomanizationProfile(input, requested = "auto") {
@@ -357,7 +356,7 @@ export function analyzeRomanization(input, options = {}) {
         const units = crossed.map((unit, index) => ({
           ...unit,
           originalSurface: originalPart,
-          ukrainian: mapCase(unit.ukrainian, part === part.toUpperCase() || index === 0 ? originalPart : ""),
+          ukrainian: mapCase(unit.ukrainian, originalPart === originalPart.toUpperCase() || index === 0 ? originalPart : ""),
           status: "OK",
           warning: "",
         }));
