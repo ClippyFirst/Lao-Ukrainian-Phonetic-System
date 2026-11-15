@@ -596,3 +596,20 @@ This section supersedes the older romanization/deployment status snapshots above
 | LAO-REL-001 | PARTIAL / not release-ready | Engineering checks and Pages deployment pass; linguistic gold, specialist review and manual accessibility QA remain blockers. |
 
 Exact-head PR #220 Verify #4280 / run 43755451075 passed 350 Python, 192 Node and 28 Chromium tests plus data/evidence audit, build and generated-data reproducibility. Main Verify #4281 / run 43755557872 and Pages deployment #102 / run 43755557855 passed on the merged SHA. Project remains an engineering-verified partial research prototype.
+
+
+## Post-PR #221 mainline reconciliation — 2026-11-15
+
+| ID | Current status | Evidence / remaining acceptance |
+|---|---|---|
+| MAINLINE-221 | DONE_VERIFIED (documentation checkpoint) | PR #221 merged; current `main` is `99d9fd3b5aa443c1a34af9ab9b30a3e51add39a7`. Exact-head Verify #4284 and post-merge Verify #4285 passed. No runtime files changed. |
+| LAO-ROM-MATRIX-001 | PARTIAL | Seven source IDs still lack an explicit, source-attested CLDR compound-vowel crosswalk. Current upstream CLDR XML has active single-character/context rules but no explicit validated compound rules for these IDs; fail-closed diagnostics remain correct. |
+| LAO-ROM-DIRECT-001 | PARTIAL | BGN/PCGN-derived CLDR and bounded ALA-LC routes remain separate. Full ALA-LC contextual Notes 1–10, medial-w clusters, contextual vowel alternations and broader source-located corpus coverage remain incomplete. |
+| LAO-ROM-RTGS-001 | BLOCKED | No authoritative complete Lao-specific RTGS adaptation table has been established. |
+| LAO-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; no accuracy claim can be made from dictionary-seeded benchmarks or stress coverage. |
+| LAO-ROM-REVIEW-001 | BLOCKED | Qualified Lao-specialist review remains outstanding. |
+| LAO-UI-001 | PARTIAL / deployed | Pages #102 successfully deployed runtime SHA `fe1c4a0`; PR #221 changed documentation only. Manual physical-device, keyboard-only and assistive-technology QA remains outstanding. |
+| PR-145-ARCH-001 | BLOCKED / owner decision | Current compare is 24 ahead / 349 behind / 13 files; merge base `c0d7218`; non-mergeable. Requires explicit architecture decision and fresh reconciliation, not blind merge. |
+| HYBRID-V2-BROWSER-001 | DEFERRED by owner decision | Browser neural panel and model packaging were explicitly retired on 2026-11-10. Deterministic hybrid shell remains deployed; do not restore neural browser inference without a new owner decision. |
+
+The upstream CLDR evidence and branch review are recorded in the canonical handoff and the direct-input audit. Project readiness remains an engineering-verified partial research prototype, not a linguistically validated universal converter.
