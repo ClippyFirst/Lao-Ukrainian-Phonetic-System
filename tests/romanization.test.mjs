@@ -300,6 +300,8 @@ test("the service exposes a separate direct romanization input mode and explicit
 test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the same Lao word",()=>{
  // Official Lao PDR motto text appears on National Assembly and government documents:
  // https://na.gov.la/wp-content/uploads/2021/11/40.-%E0%BA%81%E0%BA%BB%E0%BA%94%E0%BB%9D%E0%BA%B2%E0%BA%8D%E0%BA%A7%E0%BB%88%E0%BA%B2%E0%BA%94%E0%BB%89%E0%BA%A7%E0%BA%8D%E0%BA%AA%E0%BA%B0%E0%BA%96%E0%BA%B4%E0%BA%95%E0%BA%B4-2017.pdf
+ // A second official government-hosted document carries the same national motto:
+ // https://www.lsb.gov.la/wp-content/uploads/2025/04/01_%E0%BA%82%E0%BB%8D%E0%BB%89%E0%BA%95%E0%BA%BB%E0%BA%81%E0%BA%A5%E0%BA%BB%E0%BA%87%E0%BA%A7%E0%BB%88%E0%BA%B2%E0%BA%94%E0%BB%89%E0%BA%A7%E0%BA%8D%E0%BA%81%E0%BA%B2%E0%BA%99%E0%BA%88%E0%BA%B1%E0%BA%94%E0%BA%95%E0%BA%B1%E0%BB%89%E0%BA%87-%E0%BB%81%E0%BA%A5%E0%BA%B0-%E0%BB%80%E0%BA%84%E0%BA%B7%E0%BB%88%E0%BA%AD%E0%BA%99%E0%BB%84%E0%BA%AB%E0%BA%A7-%E0%BA%AB%E0%BB%89%E0%BA%AD%E0%BA%87%E0%BA%81%E0%BA%B2%E0%BA%99-%E0%BA%AA%E0%BA%96%E0%BA%95-0761.08%E0%BA%95%E0%BA%B5%E0%BA%A5%E0%BA%B2-2022.pdf
  const lao="ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ";
  const latin=romanizeLao(lao);
  assert.equal(latin.output,"santiphab é-kalad paxathipaait é-kaphab vadthanathav-n");
