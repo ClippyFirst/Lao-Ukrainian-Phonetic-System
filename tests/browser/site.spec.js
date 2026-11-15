@@ -437,6 +437,22 @@ test("direct romanization input exposes ALA-LC profile selection and partial dia
   await expect(page.locator("#romanization-analysis-status")).toContainText("Частковий аналіз");
 });
 
+test("ALA-LC direct input respects short/long u and table-specific final spelling", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#input-kind-romanization").click();
+  await page.locator("#romanization-profile").selectOption("ala-lc");
+  const input = page.locator("#lao-input");
+  await input.fill("ku");
+  await expect(page.locator("#output")).toHaveText("ки");
+  await input.fill("kū");
+  await expect(page.locator("#output")).toHaveText("ку");
+  await input.fill("kāt");
+  await expect(page.locator("#output")).toHaveText("кат");
+  await input.fill("kās");
+  await expect(page.locator("#output")).toContainText("⟦kās⟧");
+  await expect(page.locator("#romanization-analysis-status")).toContainText("Частковий аналіз");
+});
+
 test("switching back from romanization input restores the Lao IPA-first workflow", async ({ page }) => {
   await page.goto("/");
   await page.locator("#input-kind-romanization").click();

@@ -257,20 +257,23 @@ test("standalone BGN/PCGN romanization can be converted without Lao-script side 
 test("ALA-LC macrons and palatal nasal spelling normalize through a bounded syllable adapter", () => {
   const result = analyzeRomanization("nyā", { profile: "ala-lc" });
   assert.equal(result.profile, "ala-lc");
-  assert.equal(result.normalizedInput, "gna");
+  assert.equal(result.normalizedInput, "nya");
   assert.equal(result.status, "OK");
   assert.equal(result.output, "ньа");
 });
 
-test("ALA-LC short and long back vowels use the documented Ukrainian target units", () => {
+test("ALA-LC short and long back vowels preserve the table's u versus ū distinction internally", () => {
+  assert.equal(analyzeRomanization("ku", { profile: "ala-lc" }).output, "ки");
   assert.equal(analyzeRomanization("kū", { profile: "ala-lc" }).output, "ку");
-  assert.equal(analyzeRomanization("kư", { profile: "ala-lc" }).output, "ки");
+  assert.equal(analyzeRomanization("kuʼ", { profile: "ala-lc" }).output, "ки");
+  assert.equal(analyzeRomanization("kūʼ", { profile: "ala-lc" }).output, "ку");
 });
 
-test("ALA-LC final s is interpreted as a Lao stop coda, not as an onset", () => {
-  const result = analyzeRomanization("kās", { profile: "ala-lc" });
+test("ALA-LC final stops use the table's written final values", () => {
+  const result = analyzeRomanization("kāt", { profile: "ala-lc" });
   assert.equal(result.status, "OK");
   assert.equal(result.output, "кат");
+  assert.equal(analyzeRomanization("kās", { profile: "ala-lc" }).status, "PARTIAL");
 });
 
 test("auto profile detection recognizes ALA-LC diacritics but does not rewrite ordinary BGN text", () => {
@@ -304,8 +307,62 @@ test("ALA-LC short and long e spellings normalize to the same Ukrainian vowel cl
   assert.equal(analyzeRomanization("kē", { profile: "ala-lc" }).output, "ке");
 });
 
-test("ALA-LC loanword coda r and l use the table's parenthesized n value", () => {
-  assert.equal(analyzeRomanization("kar", { profile: "ala-lc" }).output, "кан");
-  assert.equal(analyzeRomanization("kal", { profile: "ala-lc" }).output, "кан");
-  assert.equal(analyzeRomanization("kar", { profile: "bgn-pcgn" }).output, "кал");
+test("ALA-LC parenthesized source finals are represented by their listed romanized value", () => {
+  // LOC lists final r/l as (n): the romanized text therefore contains n,
+  // not r/l. The romanization alone cannot recover which Lao final was used.
+  assert.equal(analyzeRomanization("kan", { profile: "ala-lc" }).output, "кан");
+  assert.equal(analyzeRomanization("kar", { profile: "ala-lc" }).status, "PARTIAL");
+  assert.equal(analyzeRomanization("kal", { profile: "ala-lc" }).status, "PARTIAL");
+});
+
+
+test("ALA-LC short u is not rewritten as long ū", () => {
+  assert.equal(analyzeRomanization("ku", { profile: "ala-lc" }).normalizedInput, "ku");
+  assert.equal(analyzeRomanization("kū", { profile: "ala-lc" }).normalizedInput, "kou");
+});
+
+test("ALA-LC oe and ōe map to the documented vowel class", () => {
+  assert.equal(analyzeRomanization("koe", { profile: "ala-lc" }).output, "ке");
+  assert.equal(analyzeRomanization("kōe", { profile: "ala-lc" }).output, "ке");
+});
+
+test("ALA-LC ny is a palatal nasal onset and is not normalized to BGN gn", () => {
+  assert.equal(analyzeRomanization("nyā", { profile: "ala-lc" }).normalizedInput, "nya");
+  assert.equal(analyzeRomanization("nyā", { profile: "ala-lc" }).output, "ньа");
+  assert.equal(analyzeRomanization("nya", { profile: "bgn-pcgn" }).status, "PARTIAL");
+});
+
+test("ALA-LC profile rejects BGN-only x and gn aliases", () => {
+  assert.equal(analyzeRomanization("xa", { profile: "bgn-pcgn" }).output, "са");
+  assert.equal(analyzeRomanization("xa", { profile: "ala-lc" }).status, "PARTIAL");
+  assert.equal(analyzeRomanization("gna", { profile: "ala-lc" }).status, "PARTIAL");
+});
+
+test("ALA-LC final w is represented as o, with ambiguous ao forms withheld", () => {
+  const ambiguous = analyzeRomanization("nāo", { profile: "ala-lc" });
+  assert.equal(ambiguous.status, "PARTIAL");
+  assert.equal(ambiguous.output, "⟦nāo⟧");
+  const finalW = analyzeRomanization("kǣo", { profile: "ala-lc" });
+  assert.equal(finalW.status, "OK");
+  assert.equal(finalW.output, "кео");
+});
+
+test("ALA-LC final v and r/l spellings are not accepted as final consonants", () => {
+  assert.equal(analyzeRomanization("kav", { profile: "ala-lc" }).status, "PARTIAL");
+  assert.equal(analyzeRomanization("kar", { profile: "ala-lc" }).status, "PARTIAL");
+});
+
+
+test("ALA-LC official vat example is supported and ambiguous būak syllable division is withheld", () => {
+  assert.equal(analyzeRomanization("vat", { profile: "ala-lc" }).output, "ват");
+  const medialW = analyzeRomanization("būak", { profile: "ala-lc" });
+  assert.equal(medialW.status, "PARTIAL");
+  assert.equal(medialW.output, "⟦būak⟧");
+});
+
+
+test("auto profile detection recognizes ALA-LC modifier apostrophe and oe", () => {
+  assert.equal(analyzeRomanization("kuʼ").profile, "ala-lc");
+  assert.equal(analyzeRomanization("koe").profile, "ala-lc");
+  assert.equal(analyzeRomanization("ku").profile, "bgn-pcgn");
 });
