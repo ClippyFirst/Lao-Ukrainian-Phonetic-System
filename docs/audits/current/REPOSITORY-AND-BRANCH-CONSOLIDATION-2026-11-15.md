@@ -402,3 +402,13 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - PR #145 remains the sole open PR; against this main it is 24 commits ahead / 332 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, and GitHub marks it non-mergeable. It remains blocked on the explicit owner architecture decision.
 - Audio research remains non-gold: Common Voice Scripted Speech 27.0 Lao is a contextual-audio lead (193 validated clips, 16 contributor IDs, no named accent/variant, no IPA labels); no Lao locale was found in the checked Spontaneous Speech 5.0 catalogue. MekongPhon owner authorization is scoped to authorized ClippyFirst project use, not a public upstream license or blanket redistribution permission. The independent adjudicated IPA gold corpus remains 0.
 - Full file-level semantic reconciliation of historical branches remains PARTIAL; no branch was deleted or force-updated.
+
+
+## PR #207 merged and stale romanization branch disposition — 2026-11-15
+
+- PR [#207](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/207) merged as `e713f62d2c37412b52dc7a6b51004797fc283ef1`; exact-head Verify #4206 / run 43742806539 and post-merge Verify #4207 / run 43742918142 both passed.
+- PR #207 was documentation-only; Pages #99 remains the latest runtime deployment.
+- Reviewed `feat/romanization-input-to-ukrainian-20261115` against main: 40 ahead / 30 behind / 13 changed files; its historical PR #172 is already merged. `web/app.js` is identical. Its romanization engine/tests are an older snapshot and predate current explicit unknown-profile fail-closed behavior and ALA-LC unsupported-sequence guards. It normalizes some ambiguous spellings that main now deliberately marks PARTIAL. The current matrix also contains later route-separation and research updates.
+- **Disposition: SUPERSEDED.** The supported direct romanization route from PR #172 is on main and was refined by subsequent fixes. No stale code was ported; any isolated future change must be supported by the source table and a regression fixture.
+- The PR #206 graph snapshot covered 72 refs including main (71 non-main); after PR #207 and the current continuation branch were created, live search returned 74 refs including main. The two task branches are not part of that earlier classification. Full semantic review of historical branches remains PARTIAL; no branch was deleted or force-updated.
+- PR #145 remains the only open PR, 24 ahead / 333 behind / 13 files against main, non-mergeable pending an explicit architecture decision.
