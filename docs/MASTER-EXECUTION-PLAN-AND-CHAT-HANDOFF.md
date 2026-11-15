@@ -1,3 +1,17 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #198 merged; UNGEGN 2025 Lao update)
+
+**Current `main`:** `694d00d8696f5830c23052a49bde4dd0ebb7da6b`. PR [#198](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/198) merged by squash; exact-head Verify #4175 / [run 43730927271 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43730927271). PR #198 was documentation-only; post-merge main Verify #4176 is still running at this checkpoint.
+
+## Research update: government-led Lao romanization draft
+
+The UNGEGN WGRS 2025 report states it was invited to review a draft Lao Romanization System prepared by the National Geographic Department of Lao PDR and made recommendations. As of July 2024, Lao PDR was finalising a draft toponymy-guidelines document; WGRS hoped the system would be submitted for consideration at the 2027 UNGEGN session. This confirms active draft development, not adoption or UN endorsement. Keep BGN/PCGN-derived CLDR labelled provisional and revisit the source when a newer submission/decision appears.
+
+Source: [UNGEGN WGRS GEGN.2/2025/26/CRP.26](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf).
+
+PR #198 also records CrossAsia DLLM as a separate research-only catalogue convention; it is not a generic RTGS profile and is not implemented. Reuse rights for its table remain undetermined.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #197 merged; DLLM profile research)
 
 **Current `main` after PR #197:** `2ba98607990f9301cae0acc8c941d00099417525`. PR [#197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/197) merged by squash. Exact-head Verify #4173 / [run 43730618795 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43730618795). Documentation-only; no runtime, data, model or deployment change.
@@ -4321,3 +4335,10 @@ A local clone attempt was unavailable because the execution environment could no
 - No new linguistic mapping was added. The direct-input route remains bounded BGN/PCGN-derived CLDR plus a bounded ALA-LC 2012 subset. Full contextual ALA-LC, RTGS, informal variants, independent adjudicated IPA gold (0 examples), specialist review and manual accessibility QA remain PARTIAL/BLOCKED/DEFERRED as previously recorded.
 
 **Next genuine blockers:** independently adjudicated, rights-cleared Lao reference corpus and Lao-specialist review; explicit architecture decision for PR #145; exact Lao-specific RTGS source table; human device/screen-reader QA. Do not fabricate mappings or promote unsupported ALA-LC sequences to supported.
+
+
+## Fresh PR and branch inventory — 2026-11-15
+
+- Fresh branch search: **65 refs including `main`** (64 non-main branches). This count includes the current documentation work branch and preserved historical branches. It replaces the 61-ref snapshot in the earlier checkpoint.
+- Open PRs: [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199). PR #145 compare against current main: **24 ahead / 324 behind / 13 files changed**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; still diverged and not safe to merge. PR #199 is this documentation update and awaits exact-head Verify.
+- The full current 64-branch commit-graph/file-level reconciliation has not been completed; status remains PARTIAL. Previously reviewed direct-romanization snapshots are superseded as recorded. No branches deleted or force-updated.
