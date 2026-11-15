@@ -580,3 +580,19 @@ This section supersedes the older romanization/deployment status snapshots above
 | PR-145-ARCH-001 | BLOCKED / owner decision | PR #145 remains the only open PR and proposes a neural-first CLI/Python default that conflicts with the adopted deterministic-default contract. | Requires explicit architecture/specification decision and full CLI/Python/docs/test reconciliation; leave unmerged until then. |
 
 **Current main at reconciliation:** 827ee0f3f3a81ead1753f901f2b36025998bdc18 before this documentation-only checkpoint. **Runtime deployed to Pages:** fe435317dcb69cd43f0409ca85e9b617b334a584. Compare confirms only README, this register, romanization matrix and handoff documentation are changed after the deployed runtime commit. **Project readiness:** engineering-verified partial research prototype, not release-ready as a linguistically validated universal converter.
+
+
+## Follow-up reconciliation — PR #220 and Pages run #102 — 2026-11-15
+
+| ID | Current status | Evidence / remaining acceptance |
+|---|---|---|
+| LAO-ROM-MATRIX-001 | PARTIAL | Official Lao motto fixture verifies source-aware internal hyphens and AWW_MEDIAL recovery. Seven additional core vowel IDs without confirmed CLDR mappings now produce explicit PARTIAL diagnostics. Each future mapping still needs source-attested CLDR output, Ukrainian target decision and Lao-specialist review. |
+| LAO-ROM-COVERAGE-001 | PARTIAL | Fail-closed coverage now explicitly tests UO_LONG_ALT, UO_LONG_OPEN, OEY, OOY, AEW, AOY and AAJ; full contextual orthographic inventory remains incomplete. |
+| LAO-ROM-DIRECT-001 | PARTIAL | Direct Latin-only behavior remains unchanged; it cannot restore missing CLDR vowel information without Lao source structure. Full ALA-LC context remains incomplete. |
+| LAO-UI-001 | PARTIAL / deployed | Pages run #102 / [43755557855](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755557855) deployed runtime SHA fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9; build and deployed static-service smoke-test passed. Manual keyboard/screen-reader/mobile QA remains outstanding. |
+| HYBRID-V2-BROWSER-001 | DEFERRED by owner decision | PR #158 temporarily deployed the browser neural lane; it was explicitly retired on 2026-11-10 by commits 0846e377 and afa035d. Current Pages intentionally excludes ONNX/WASM/model assets. Do not restore without a new owner decision. |
+| LAO-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0. |
+| LAO-ROM-REVIEW-001 | BLOCKED | No independent Lao specialist sign-off. |
+| LAO-REL-001 | PARTIAL / not release-ready | Engineering checks and Pages deployment pass; linguistic gold, specialist review and manual accessibility QA remain blockers. |
+
+Exact-head PR #220 Verify #4280 / run 43755451075 passed 350 Python, 192 Node and 28 Chromium tests plus data/evidence audit, build and generated-data reproducibility. Main Verify #4281 / run 43755557872 and Pages deployment #102 / run 43755557855 passed on the merged SHA. Project remains an engineering-verified partial research prototype.

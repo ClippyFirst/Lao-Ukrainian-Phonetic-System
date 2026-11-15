@@ -488,3 +488,13 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - Current main: `2ed3b25ef8d62d511ddc46f7f087ba3c3d3133bd`. PR #145 remains the only open PR, 24 ahead / 338 behind / 13 files, non-mergeable pending owner architecture decision.
 - Branch inventory: 78 refs including main (77 non-main), 75 diverged and 2 behind-only. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (121 behind) and `research/written-evidence-phonology-2026-11-09` (244 behind). Full semantic review remains PARTIAL.
 - No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## Fresh branch-graph reconciliation after PR #220 — 2026-11-15
+
+- Branch inventory: 87 refs total, comprising `main` plus 86 non-main branches.
+- Compared the 85 pre-existing non-main branch heads with main SHA `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`: 83 `diverged`, 2 `behind` only, 0 `ahead` only, 0 identical. The current documentation PR branch is the 86th non-main ref and compares `ahead` by 5 / `behind` by 0. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` and `research/written-evidence-phonology-2026-11-09`.
+- Targeted review of `fix/romanization-numeric-crosswalk-20261108` and `fix/empty-lao-input-window` found the relevant numeral-crosswalk and clear-to-empty browser tests already present on main; no code port required.
+- `feat/pages-hybrid-v2-browser` corresponds to merged PR #158, but the browser neural panel/model/ONNX/WASM publication was explicitly retired 2026-11-10. Commits 0846e377 and afa035d make the current Pages artifact deterministic-only. This is an intentional product boundary, not an unmerged feature to recover.
+- Current romanization work merged in PRs #214/#218/#220; documentation/deployment reconciliation merged in #219. PR #145 remains the only open PR and is blocked by an owner-level architecture decision.
+- No branch was deleted. Graph comparison is complete; semantic review of all 83 diverged branch diffs is still PARTIAL. Do not bulk-port, merge or delete historical branches; reopen only a specific evidenced task.
