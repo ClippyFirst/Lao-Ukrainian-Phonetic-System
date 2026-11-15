@@ -4479,3 +4479,10 @@ A local clone attempt was unavailable because the execution environment could no
 
 
 - Post-merge state: `main` is at `afc7dc9ed3890dbac2bbf05b253367a459e8367a`; compare main..merge commit is identical. Exact-head Verify runs #4243 and #4244 both passed (350 Python, 190 Node, build/data-drift, 28 Chromium, built-page/relative-asset checks). The Pages workflow is configured to deploy changes under `web/**`; a post-merge Pages deployment/live-site smoke result is not independently visible through the available workflow-run listing, so deployment confirmation remains pending.
+
+
+## Final repository checkpoint after documentation merge — 2026-11-15
+
+- Runtime fix remains squash commit `afc7dc9ed3890dbac2bbf05b253367a459e8367a`; post-merge documentation checkpoint PR #215 is squash commit `63452837ca7bfb1f8381d998bd6be9bf3b39d7a3`. Current `main` is at the latter commit; no runtime changes were introduced by PR #215.
+- PR #214 exact-head Verify runs #4243 and #4244 both passed (350 Python, 190 Node, build/generated-data drift, 28 Chromium, built-page/relative-asset checks). PR #215 documentation-only Verify run #4247 passed all configured checks.
+- GitHub Pages deployment after the runtime merge is still not independently confirmed from the available Actions listing; prior confirmed deployment #99 is older. The Pages workflow is configured to deploy on pushes to `main` when `web/**` changes, which PR #214 did. Do not claim the live site has been updated until a deployment run or deployed asset hash is confirmed.
