@@ -309,3 +309,14 @@ Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn
 - No runtime, mappings, generated artifacts, models or Pages output changed in this documentation refresh.
 
 **Current readiness:** engineering-verified partial research prototype. Independent adjudicated IPA gold remains 0; specialist review, full ALA-LC/contextual coverage, authoritative current Lao draft, Lao-specific RTGS evidence, historical branch file-level reconciliation and manual accessibility/device QA remain incomplete or blocked.
+
+
+## PR #202 post-merge reconciliation and stale-entrypoint correction — 2026-11-15
+
+- Current `main` is `9d82ff4e62a97f1eaf3fbb81f87e0287fd30cc18`, the squash merge of PR [#202](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/202).
+- Exact-head Verify #4186 / [run 43733767286 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733767286); post-merge main Verify #4187 / [run 43733871453 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733871453).
+- A subsequent read of the merged `main` files showed that README and the canonical handoff still contained the PR #201 checkpoint (`c9e0e2a`, Verify #4185, PRs #198–#201), despite PR #202's title/body claiming to refresh them. The stale references are corrected in this continuation branch; this discrepancy is recorded rather than silently treating PR metadata as file evidence.
+- README now distinguishes the latest source commit and Verify #4187 from the latest runtime deployment, which remains Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`.
+- Fresh PR #145 comparison against current main: 24 ahead / 328 behind / 13 changed files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. It remains open and non-mergeable; no review threads or submitted reviews were returned. Keep it unmerged pending the owner-level CLI/Python architecture decision.
+- Historical branch inventory remains 67 refs including main before this new continuation branch; full file-level reconciliation remains PARTIAL. No historical branch was deleted or force-updated.
+- No runtime, mappings, generated data, model assets or Pages artifacts changed. Readiness remains engineering-verified partial research prototype, not a linguistically validated universal converter.
