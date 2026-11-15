@@ -145,3 +145,14 @@ The new profile-specific ALA-LC source crosswalk is DONE_VERIFIED for the scoped
 
 **Current main:** `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
 **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0.
+
+## Documentation checkpoint merge — PR #184 (2026-11-15)
+
+PR [#184](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/184) merged as the current documentation checkpoint; resulting `main` is `ecc997d356d206640862097d0bff6e7da3c484e3`. The branch was based on the verified runtime merge `72e9677b0dd4fc863c90d4cec773731fb451109a`.
+
+- Exact-head Verify #4137 / [run 43722921838 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722921838) passed on PR head `70d78f595b95e6e401f6fa20b5cfac066e0e50f2`; all workflow steps completed successfully.
+- PR #184 updated README, canonical handoff, current audit and the romanization matrix with the verified PR #182 scope, Verify #4128, post-merge Verify #4131 and Pages deployment #98 evidence.
+- PR #183 was closed unmerged as a superseded duplicate; its unique matrix ledger update was ported to #184. Its branch remains preserved.
+- PR #145 is again the only open PR; it remains blocked pending an explicit neural-first CLI/Python architecture decision. No branch refs were deleted or force-updated.
+
+No runtime behavior or generated data changed in PR #184. Runtime deployment #98 remains the live deployment containing PR #182.
