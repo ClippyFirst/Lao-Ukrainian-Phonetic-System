@@ -7,6 +7,9 @@
 **Post-merge main Verify #4149:** [run 43724471274 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724471274).  
 No runtime, generated-data or Pages deployment change was made by PR #189; the last verified runtime deployment remains Pages #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302).
 
+
+**Branch inventory at this checkpoint:** GitHub search returned 56 refs including `main`. All 55 non-main refs were compared with `main`: 52 diverged, 2 were behind-only, and 1 was ahead-only (the open PR #190 documentation branch). This is a metadata comparison, not proof that every historical diff has been reviewed. Three romanization branches were inspected at file level and found to be superseded; the broader historical branch reconciliation remains PARTIAL.
+
 ## Current repository and PR state
 
 A fresh open-PR search returns only [PR #145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Comparing current `main` with `feat/mekongphon-first-stage` reports **24 commits ahead / 315 behind / 13 changed files**, with merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on `main`; the unresolved delta is the neural-first CLI/Python default and target-adaptation opt-in. Keep #145 open and untouched pending an owner-level architecture decision.
