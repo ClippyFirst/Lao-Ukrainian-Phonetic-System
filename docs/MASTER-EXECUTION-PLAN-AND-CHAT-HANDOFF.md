@@ -6,7 +6,7 @@
 **Post-merge main Verify #4191:** [run 43734956498 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43734956498).  
 **Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PRs #198–#204 are documentation-only; no Pages redeployment was required.  
 **Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal. Fresh comparison against this checkpoint: 24 commits ahead / 330 behind / 13 files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending an explicit owner architecture decision.  
-**Historical branch inventory:** last verified count was 67 refs including main before PR #203 and #204 continuation branches were added. It has not been freshly re-enumerated after those additions; exact file-level reconciliation remains PARTIAL. No historical branches were deleted or force-updated.
+**Historical branch inventory:** a fresh branch search returns **71 refs including main (70 non-main)**. This is a count, not full file-level reconciliation; the latter remains PARTIAL. No historical branches were deleted or force-updated.
 
 ## What changed
 
@@ -26,7 +26,7 @@ PR #204 refreshed README, the canonical handoff and the branch audit to record P
 | Lao specialist validation | BLOCKED | Requires qualified reviewer and reviewed corpus |
 | Lao-specific RTGS profile | BLOCKED | Requires authoritative normative Lao adaptation table and source-backed examples |
 | Full automatic profile selection | PARTIAL | Requires representative, reviewed mixed-profile corpus |
-| Historical branch reconciliation | PARTIAL | Branch inventory needs fresh enumeration and remaining branch tips need file-level reconciliation |
+| Historical branch reconciliation | PARTIAL | 70 non-main refs; remaining branch tips need file-level reconciliation |
 | Physical-device and screen-reader QA | BLOCKED | Requires human testing on real devices and assistive technologies |
 
 ## Verification and readiness
