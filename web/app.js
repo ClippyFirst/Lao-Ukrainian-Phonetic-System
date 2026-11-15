@@ -79,7 +79,7 @@ function sourceSyllableGroupsForCrosswalk(sourceText) {
 
 function currentUkrainianOutput() {
   if (inputKind === "romanization") {
-    return analyzeRomanization(input.value, { profile: romanizationProfile.value }).output;
+    return analyzeRomanization(input.value, { profile: romanizationProfile.value, strictBoundaries: true }).output;
   }
   const result = analyze(input.value, { ipaProfile: "hybrid-deterministic" });
   if (outputMode === "phonetic") return result.output;
@@ -120,7 +120,7 @@ function setInputKind(kind) {
 }
 
 function renderRomanizationInput() {
-  const adapted = analyzeRomanization(input.value, { profile: romanizationProfile.value });
+  const adapted = analyzeRomanization(input.value, { profile: romanizationProfile.value, strictBoundaries: true });
   if (!input.value.trim()) {
     output.textContent = "Введіть романізований текст, щоб побачити український запис.";
     output.className = "output muted";
