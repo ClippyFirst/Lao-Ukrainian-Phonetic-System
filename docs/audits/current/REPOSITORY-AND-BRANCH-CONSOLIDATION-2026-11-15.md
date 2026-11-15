@@ -86,7 +86,7 @@ The PR inventory also shows historical closed-unmerged work (including earlier p
 
 This audit used GitHub repository metadata, branch search, commit search, PR search, compare-commits, and direct reads of the README, documentation index, repository structure guide, master handoff, current audit, audit index and validation guide.
 
-The newest commit discovered was `4197d4212a935ee59216b1a7f9bdd112dceabb6e`; it compares identical to `main`. The PR search reports #145 as the only open PR. Merged-PR search confirms the recent merges listed above; closed-unmerged search exposes historical work that must not be mistaken for currently missing code.
+The newest commit discovered was `4197d4212a935ee59216b1a7f9bdd112dceabb6e`; it compares identical to `main`. The open-PR search performed before creating this consolidation change reported #145 as the only open PR; this audit is now tracked in [PR #171](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/171). Merged-PR search confirms the recent merges listed above; closed-unmerged search exposes historical work that must not be mistaken for currently missing code.
 
 **Not run in this audit:** local clone, Python tests, Node tests, Chromium tests, data audit, build, generated-data drift check, Pages deployment or manual accessibility review. The existing README and handoff contain earlier successful CI evidence for earlier exact commits; that evidence is historical and does not certify this new documentation commit.
 
