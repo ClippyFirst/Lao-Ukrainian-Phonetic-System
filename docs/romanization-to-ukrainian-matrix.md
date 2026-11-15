@@ -13,6 +13,14 @@ Sources:
 - https://www.gov.uk/government/publications/romanization-systems
 - https://assets.publishing.service.gov.uk/media/64f9c99f7a4b4f0012f6d8a5/Laos_Toponymic_Factfile.pdf
 
+
+
+### Current national-standard development status (UNGEGN 2025)
+
+The earlier 2023 PCGN Factfile statement that UNGEGN was working with Lao authorities is now superseded by a more specific 2025 Working Group on Romanization Systems report. The report says that, as reported at the 2023 session, WGRS had been invited to review a draft Lao Romanization System prepared by the National Geographic Department of Lao PDR and had made recommendations. It further records that, as of July 2024, Lao PDR was finalising a draft of toponymy guidelines; WGRS hoped the system would be submitted for consideration at the 2027 UNGEGN session. This is evidence of an active government-led draft process, **not evidence that a final national or UN-endorsed system had already been adopted**. The project must continue to label BGN/PCGN-derived CLDR as provisional and must not pre-empt the draft's eventual contents. Re-check the WGRS/UNGEGN record when a newer submission or decision appears.
+
+Primary source: [UNGEGN Working Group on Romanization Systems, GEGN.2/2025/26/CRP.26, “Progress on romanization systems” (Lao section)](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf). The [2025 session summary](https://digitallibrary.un.org/record/4076754/files/GEGN.2_2025_26-EN.pdf) confirms that the Working Group's report covered Lao developments.
+
 ## Route separation
 
 - **Romanization mode:** Lao orthographic syllable → CLDR Lao-Latin → source-aware onset/nucleus/coda crosswalk → Ukrainian practical syllable. It does not infer pronunciation, tone or length that the romanization does not encode.
