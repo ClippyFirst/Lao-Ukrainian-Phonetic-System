@@ -1,3 +1,46 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #199 merged; post-merge verification complete)
+
+**Current `main`:** `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`. PR [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199) merged by squash as this commit. Exact-head Verify #4178 / [run 43731179424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43731179424); post-merge main Verify #4179 / [run 43732731628 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43732731628). PR #199 and PR #198 were documentation-only; no runtime, generated-data, model or Pages deployment change was made.
+
+## Research updates now on main
+
+- **UNGEGN 2025:** the WGRS report records a draft Lao Romanization System prepared by the National Geographic Department of Lao PDR, recommendations from WGRS, and draft toponymy guidelines being finalised as of July 2024. A hoped-for 2027 submission is not adoption or UN endorsement. BGN/PCGN-derived CLDR remains provisional.
+- **CrossAsia DLLM:** documented as a separate collection-specific catalogue convention and research candidate only, not a national standard or generic RTGS profile. Reuse rights for its published table remain undetermined; no runtime profile or mappings were added.
+
+## Additional UNGEGN source-chain clarification
+
+The UNGEGN record is a continuing draft process (WGRS records in 2016, 2018, 2019, 2021, 2023 and 2025), not a system newly created in 2025. The current UNGEGN index places Lao under “Other languages/scripts”, not among its 30 UN-recommended systems. The linked Lao status paper (Version 4.0, September 2013) explicitly says no Lao system had been approved at UN conferences and no national system existed at that time; it describes BGN/PCGN 1966. The formal UN process requires review, plenary endorsement and ECOSOC adoption. The matrix now records this distinction and the historical technical issues in the draft. Sources include the [2013 Lao status paper](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/wgrr4lao.pdf), [2018 WGRS report](https://arhiiv.eki.ee/wgrs/wgr18rep.htm), [2025 WGRS report](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf), [UNGEGN index](https://unstats.un.org/unsd/ungegn/romanization/) and [approval process](https://unstats.un.org/unsd/ungegn/meetings/Bureau_Divisions/documents/UNGEGN_WGRS_Approval_process-WG_Reviewed_28_May_26.pdf).
+
+## Verification — DONE_VERIFIED for PR #199 and post-merge main
+
+Both exact-head Verify #4178 and post-merge Verify #4179 passed: independent IPA gold corpus structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI validation, locked browser dependency installation, browser engine tests, canonical browser data build/regeneration, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks. The IPA gold corpus is still empty (0 independently adjudicated examples); schema validation is not linguistic accuracy validation.
+
+## Current PR and branch state
+
+- Fresh branch search: **66 refs including `main`** (65 non-main refs), including the new continuation branch created for this checkpoint. No branch was deleted or force-updated. Full historical branch file-level reconciliation remains PARTIAL.
+- Open PR search: only [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Current compare against main: **24 ahead / 325 behind / 13 changed files**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub reports it non-mergeable. Its neural-first CLI/Python defaults and target-adaptation opt-in remain an owner-level architecture decision. Keep it open and unmerged; do not port its behavioral changes without an approved specification change.
+- Last recorded runtime Pages deployment remains #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017); the two recent merged PRs changed documentation only.
+
+## Current task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | Exact-head and post-merge CI; bounded parser and browser workflow tests |
+| Bounded ALA-LC 2012 direct-input subset | DONE_VERIFIED | LOC-derived implemented subset and profile-specific regression tests |
+| Unknown explicit profile fail-closed behavior | DONE_VERIFIED | PR #192 merged; unsupported values preserve input and return PARTIAL |
+| UNGEGN 2025 draft-status research | DONE_VERIFIED | PR #199 merged; primary WGRS report recorded |
+| DLLM convention classification | DONE_VERIFIED as research-only finding | PR #198 merged; profile remains NOT SUPPORTED pending table verification, rights and specialist review |
+| Full contextual ALA-LC and automatic-profile accuracy | PARTIAL | Contextual forms and representative reviewed corpus still incomplete |
+| Lao-specific RTGS profile | BLOCKED | Exact normative Lao adaptation table and reviewed examples required |
+| Independent adjudicated IPA gold | BLOCKED | Rights-cleared expert-annotated and adjudicated examples required; current corpus has 0 |
+| PR #145 neural-first CLI/Python default | BLOCKED | Explicit owner architecture decision and normative spec/test reconciliation required |
+| Full historical branch file-level reconciliation | PARTIAL | 65 non-main refs; all historical deltas not independently inspected |
+| Manual physical-device and screen-reader QA | BLOCKED | Requires human review on actual devices and assistive technology |
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter. CI proves engineering/build integrity for covered cases, not linguistic completeness or accuracy. Do not invent mappings, infer pronunciation from romanization, or promote unsupported profiles.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #198 merged; UNGEGN 2025 Lao update)
 
 **Current `main`:** `694d00d8696f5830c23052a49bde4dd0ebb7da6b`. PR [#198](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/198) merged by squash; exact-head Verify #4175 / [run 43730927271 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43730927271). PR #198 was documentation-only; post-merge main Verify #4176 is still running at this checkpoint.

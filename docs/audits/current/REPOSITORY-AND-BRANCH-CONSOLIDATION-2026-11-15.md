@@ -254,3 +254,32 @@ The change is API validation only; it adds no linguistic mappings or claims of n
 - Fresh branch search returns **65 refs including `main`** (64 non-main refs); this supersedes the 62-ref snapshot recorded above. The current count includes the active PR #199 branch and preserved historical branches.
 - Open PR search returns [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199). PR #145 compares at 24 ahead / 324 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; its neural-first CLI/Python defaults remain an owner-level architecture decision. PR #199 is documentation-only and pending exact-head CI.
 - Full comparison of all 64 non-main refs has not been completed in this pass. Overall historical branch reconciliation remains PARTIAL; no branch was deleted or force-updated.
+
+
+## PR #199 merged — UNGEGN 2025 status and fresh branch checkpoint — 2026-11-15
+
+- PR [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199) merged by squash as `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`.
+- Exact-head Verify #4178 / [run 43731179424 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43731179424).
+- Post-merge main Verify #4179 / [run 43732731628 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43732731628). Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser-engine tests, canonical browser-data build/regeneration, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- PR #199 records the 2025 UNGEGN WGRS status: Lao's National Geographic Department prepared a draft Lao Romanization System, WGRS reviewed it and made recommendations, and draft toponymy guidelines were being finalised as of July 2024. A possible 2027 submission is not evidence of adoption or UN endorsement. The current BGN/PCGN-derived CLDR profile remains provisional.
+- PR #198's DLLM finding remains research-only: collection-specific CrossAsia catalogue convention, not a national standard or generic RTGS profile; published table reuse rights remain undetermined. Neither PR changes runtime mappings, generated data, model assets or deployment behavior.
+- Fresh branch search after creating this checkpoint branch: **66 refs including main** (65 non-main). This is a count, not a full file-level reconciliation. Full historical branch review remains PARTIAL; no branch was deleted or force-updated.
+- Only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145). Current compare: **24 ahead / 325 behind / 13 changed files**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub reports non-mergeable. Its neural-first CLI/Python defaults remain an owner-level architecture decision; leave open and unmerged.
+- The independent IPA gold corpus remains empty (0 adjudicated examples). RTGS, full contextual ALA-LC, automatic-profile accuracy, specialist linguistic validation and manual device/accessibility QA remain incomplete or blocked.
+
+**Current main:** `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`. **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter.
+
+
+## Lao draft chronology and UNGEGN approval-status clarification — 2026-11-15
+
+A targeted primary-source review extends the 2025 update and prevents a category error:
+
+- The WGRS Lao status paper (Version 4.0, September 2013) explicitly states that no Lao romanization system had been approved at UN conferences and that Laos had no national romanization system at that time; it describes BGN/PCGN 1966.
+- The UNGEGN status index lists Lao under **Other languages/scripts**, separately from the 30 systems identified as recommended by the United Nations. The Lao entry links to the 2013 status paper; it is not evidence of UN approval.
+- WGRS records show a long-running Lao draft: draft instruction awaiting approval (2016); WGRS review and technical recommendations (2018); continuing recommendations and Lao-government consideration (2019 and 2021); draft Toponymic Guidelines in two parts and inter-ministerial feedback (2023); and finalisation of a draft as of July 2024, with hoped-for UNGEGN plenary consideration in 2027 (2025 report).
+- The formal UN process requires national development and implementation, WGRS review, UNGEGN plenary endorsement, and ECOSOC adoption. Do not infer UN standard status from an index entry.
+- Project consequence: retain BGN/PCGN-derived CLDR as provisional; do not implement the Lao draft until an authoritative current table and evidence of national status are available.
+
+Primary sources: [2013 WGRS Lao status paper](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/wgrr4lao.pdf); [2018 WGRS report](https://arhiiv.eki.ee/wgrs/wgr18rep.htm); [2019 WGRS report](https://unstats.un.org/UNSD/geoinfo/UNGEGN/docs/1st-session/GEGN.2_2019_11_CRP.11_WG_Romanization_Systems-full-report.pdf); [2021 WGRS report](https://unstats.un.org/unsd/ungegn/sessions/2nd_session_2021/documents/GEGN.2_2021_93_CRP93_15_WGRSreport.pdf); [2023 WGRS minutes](https://unstats.un.org/unsd/ungegn/working_groups/wg5/documents/WGRS_minutes_3_May_2023.pdf); [2025 WGRS report](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf); [UNGEGN index](https://unstats.un.org/unsd/ungegn/romanization/); [UNGEGN approval process](https://unstats.un.org/unsd/ungegn/meetings/Bureau_Divisions/documents/UNGEGN_WGRS_Approval_process-WG_Reviewed_28_May_26.pdf).
+
+**Status:** research clarification DONE_VERIFIED as documentation; the draft's current authoritative table and legal/national adoption status remain BLOCKED pending primary Lao-government evidence.
