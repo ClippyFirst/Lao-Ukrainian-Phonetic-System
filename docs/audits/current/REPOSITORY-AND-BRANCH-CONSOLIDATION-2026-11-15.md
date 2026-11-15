@@ -145,3 +145,19 @@ The new profile-specific ALA-LC source crosswalk is DONE_VERIFIED for the scoped
 
 **Current main:** `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
 **Readiness:** engineering-verified partial research prototype; not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0.
+
+## Final documentation reconciliation — PR #184 (2026-11-15)
+
+The prior addendum described PR #184 as an active documentation checkpoint. It has since merged by squash as `ecc997d356d206640862097d0bff6e7da3c484e3`; this section supersedes the interim state.
+
+- PR [#184](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/184) merged. It updates README, romanization matrix, canonical handoff and current audit only; no runtime code or generated data changed.
+- Exact-head Verify #4137 / [run 43722921838 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722921838).
+- Post-merge main Verify #4138 / [run 43723008453 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43723008453) on `ecc997d356d206640862097d0bff6e7da3c484e3`.
+- Pages deployment #98 / [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302) remains the deployed runtime from PR #182; PR #184 was docs-only and required no additional deployment.
+- PR #183 was closed unmerged after a file-by-file comparison showed that its matrix change and handoff/audit checkpoint were superseded by the more complete PR #184, which includes verified post-merge and deployment evidence. PRs #185 and #186 were also closed unmerged as duplicate documentation checkpoints after their unique PR #145 divergence and verification details were reconciled; PR #181 was an earlier one-commit-behind attempt. No unique implementation or evidence was lost.
+- The only open PR is #145. A fresh compare against main at `ecc997d356d206640862097d0bff6e7da3c484e3` reports 24 commits ahead and 313 behind, with 13 changed files. It remains BLOCKED pending an explicit owner-level decision on the neural-first CLI/Python default; no rebase or merge was performed.
+
+The source-aware ALA-LC crosswalk is DONE_VERIFIED for the scoped LOC Notes 1, 2 and 4 behavior. Full contextual ALA-LC conformance remains PARTIAL. RTGS-for-Lao remains BLOCKED pending a complete Lao-specific adaptation table and reviewed examples. Independent adjudicated IPA gold remains 0 examples.
+
+**Current main at this checkpoint:** `ecc997d356d206640862097d0bff6e7da3c484e3`.  
+**Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter.
