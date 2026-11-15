@@ -4,6 +4,7 @@ This directory separates the current state from historical checkpoints. A dated 
 
 ## Current audit
 
+- [Repository structure and branch consolidation — 2026-11-15](current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md) — current default-branch, branch-ref, PR and documentation-structure reconciliation; records why historical branches are preserved rather than blindly merged.
 - [Repository and documentation continuation — 2026-11-10](current/REPOSITORY-AND-DOCUMENTATION-CONTINUATION-2026-11-10.md) — canonical post-merge continuation record. It records the merged `main` SHA, exact-head Verify, successful Pages deployment and live same-origin smoke-test, the 2026-11-10 fallback contract correction, upstream documentation-structure review and remaining research/accessibility blockers.
 
 - [Repository-wide audit and continuation — 2026-11-08](current/REPOSITORY-WIDE-AUDIT-2026-11-08.md) — historical integrated PR #143 branch state and earlier architecture/PR checkpoint; superseded for current main/PR status.
