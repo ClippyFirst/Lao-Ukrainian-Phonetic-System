@@ -388,3 +388,46 @@ test("ALA-LC medial w clusters and the special ūa example remain visibly partia
     assert.equal(result.output, `⟦${input}⟧`, input);
   }
 });
+
+test("ALA-LC final consonants crosswalk with LOC final-position values", () => {
+  const finalD = analyzeRomanization("kāt", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ດ", vowelId: "AA" }]],
+  });
+  const finalB = analyzeRomanization("kāp", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ບ", vowelId: "AA" }]],
+  });
+  assert.equal(finalD.status, "OK");
+  assert.equal(finalD.output, "кат");
+  assert.equal(finalB.status, "OK");
+  assert.equal(finalB.output, "кап");
+});
+
+test("ALA-LC final ວ uses Note 4 o while BGN/CLDR keeps its v crosswalk", () => {
+  const alaLc = analyzeRomanization("nāo", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ນ", coda: "ວ", vowelId: "AA" }]],
+  });
+  const bgnPcgn = analyzeRomanization("kav", {
+    profile: "bgn-pcgn",
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ວ", vowelId: "A" }]],
+  });
+  assert.equal(alaLc.status, "OK");
+  assert.equal(alaLc.output, "нао");
+  assert.equal(alaLc.syllables[0].coda, "o");
+  assert.equal(bgnPcgn.status, "OK");
+  assert.equal(bgnPcgn.output, "као");
+  assert.equal(bgnPcgn.syllables[0].coda, "v");
+});
+
+test("ALA-LC final ຍ closes the ai diphthong instead of becoming a consonant coda", () => {
+  const result = analyzeRomanization("kāi", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ກ", coda: "ຍ", vowelId: "AI" }]],
+  });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "кай");
+  assert.equal(result.syllables[0].nucleus, "ai");
+  assert.equal(result.syllables[0].coda, "");
+});
