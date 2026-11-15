@@ -16,6 +16,12 @@
 - PR #206's audio/rights findings remain bounded and non-gold: Common Voice Lao is a contextual-audio lead only; MekongPhon owner authorization is scoped to ClippyFirst project use, not public licensing or blanket redistribution. The independent adjudicated IPA gold corpus remains 0.
 - No runtime, phonological mapping, generated data or model assets changed.
 
+## New licensed Vientiane audio candidate — LDC2017S08
+
+The LDC catalogue describes approximately 207 hours of Lao conversational and scripted telephone speech collected in 2013, identifies the Vientiane dialect region, and provides orthographic transcripts. The LDC LSP says recordings are by native Lao speakers and documents a separate Appen Butler Hill codepoint romanization. It also defines a 43-phoneme/X-SAMPA inventory and six tone labels, but the public transcript sample is Lao script and its paired romanized sample is ABH, not per-utterance X-SAMPA. Treat this as a contextual audio/transcript lead only, not IPA gold.
+
+Access is blocked pending the applicable signed LDC agreement, fee and project eligibility. The non-member agreement is non-commercial and prohibits further distribution; the for-profit member agreement requires the LDC For-Profit Membership Agreement and also prohibits further distribution. No dataset files or transcripts were imported. See the new `SRC-LDC-BABEL-LAO-2017` source-registry entry and the expanded gold collection playbook.
+
 ## Current task ledger
 
 | Workstream | Status | Acceptance / remaining evidence |
@@ -27,6 +33,7 @@
 | Independent adjudicated IPA gold | BLOCKED | 0 examples; requires rights-cleared expert annotation and independent adjudication |
 | Lao specialist review and pilot recruitment | BLOCKED | Qualified annotators/adjudicator, approved Vientiane convention sheet and blind dry-run absent |
 | Common Voice Lao audio | PARTIAL / research lead only | 193 validated scripted clips; dialect/citation-form suitability unproven; no Spontaneous Speech 5.0 Lao entry found |
+| LDC Babel Lao audio (LDC2017S08) | BLOCKED / licensed lead only | ~207h Vientiane-region audio and orthographic transcripts; signed agreement, fees, project eligibility and package-level X-SAMPA availability unverified; no redistribution |
 | Lao-specific RTGS profile | BLOCKED | Authoritative normative Lao adaptation table and source-backed examples required |
 | Full automatic profile selection | PARTIAL | Representative reviewed mixed-profile corpus required |
 | Historical branch reconciliation | PARTIAL | 74 non-main refs graph-compared; full source/test semantic review incomplete |
