@@ -359,3 +359,10 @@ test("ALA-LC official vat example is supported and ambiguous būak syllable divi
   assert.equal(medialW.status, "PARTIAL");
   assert.equal(medialW.output, "⟦būak⟧");
 });
+
+
+test("auto profile detection recognizes ALA-LC modifier apostrophe and oe", () => {
+  assert.equal(analyzeRomanization("kuʼ").profile, "ala-lc");
+  assert.equal(analyzeRomanization("koe").profile, "ala-lc");
+  assert.equal(analyzeRomanization("ku").profile, "bgn-pcgn");
+});
