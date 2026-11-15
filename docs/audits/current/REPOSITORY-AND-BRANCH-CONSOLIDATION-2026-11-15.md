@@ -221,3 +221,17 @@ PR [#192](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/192)
 - Pages #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017).
 
 The change is API validation only; it adds no linguistic mappings or claims of new romanization coverage.
+
+
+## PR #195 current-main checkpoint — 2026-11-15
+
+- PR [#195](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/195) merged by squash as 7dcc65e594768c64f900586245b9f740bf3feda7.
+- Exact-head Verify #4170 / [run 43727259454 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43727259454). Schema/data audit, Python, external-G2P harness, locked npm install, Node/browser-engine, build, generated-data reproducibility, Chromium UI and built-page/asset checks passed.
+- PR #195 was documentation-only; no new Pages deployment was required. Last recorded runtime deployment remains Pages #99 / run 43726042017.
+- Current main is 7dcc65e594768c64f900586245b9f740bf3feda7.
+- Current PR #145 compare: 24 ahead / 321 behind / 13 changed files, merge base c0d7218da907dbe0bae6cadb42824ca0cd09b83a.
+- Fresh branch inventory count is 61 refs including main. The earlier 60-ref classification is stale; full new classification remains PARTIAL because the connector call limit prevented all 60 comparisons from completing.
+- Unknown explicit romanization profile validation is already DONE_VERIFIED via PR #192; do not duplicate.
+- LOC ALA-LC Note 4 ວ alternations and Notes 2–10 remain only partially recoverable from romanization-only text. The direct-input matrix correctly withholds unsupported forms pending Ukrainian target review.
+
+**Readiness:** engineering-verified partial research prototype; not linguistically validated or universal.
