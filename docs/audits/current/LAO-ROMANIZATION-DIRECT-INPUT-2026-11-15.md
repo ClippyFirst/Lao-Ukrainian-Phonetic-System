@@ -173,3 +173,20 @@ No romanization or Ukrainian mapping was added. The upstream CLDR transform rema
 ## PR #220 and current deployment reconciliation — 2026-11-15
 
 Seven core source vowel IDs in `data/lao/vowels.csv` still lack a confirmed CLDR Lao-Latin crosswalk: `UO_LONG_ALT`, `UO_LONG_OPEN`, `OEY`, `OOY`, `AEW`, `AOY`, `AAJ`. PR [#220](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/220) now retains the exact ID in the trace and emits a specific PARTIAL warning. All seven are covered by regression tests; no mapping is added. Exact-head Verify #4280 / [run 43755451075](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755451075) passed 350 Python, 192 Node and 28 Chromium tests. PR #220 merged as `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`; main Verify #4281 / [run 43755557872](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755557872) and Pages deployment #102 / [run 43755557855](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43755557855) both passed. The Pages artifact is deliberately deterministic-only; browser neural Hybrid v2 was retired by explicit owner decision on 2026-11-10 and must not be restored without a new decision.
+
+
+## Upstream CLDR rule-level check for the seven uncovered source vowels — 2026-11-15
+
+The current upstream Unicode CLDR source was fetched directly from `unicode-org/cldr/common/transforms/Lao-Latin.xml`, blob [`abbf1914a169f334dd43b3f00fce186360950b1e`](https://github.com/unicode-org/cldr/blob/abbf1914a169f334dd43b3f00fce186360950b1e/common/transforms/Lao-Latin.xml). The transform declares `draft="provisional"`, uses the BGN alias, and retains the TODO “handle consonants at the end of words specially”. Its active rule for `ວ` is `v`; the alternative `#ວ → oua` is commented out. The transform also contains individual rules such as `ຍ → gn`, `ຽ → ia`, `ເີ → eu`, `ໂ → ô` and `ແ → è`, but no explicit compound mapping that establishes the intended nucleus-plus-glide decomposition for the seven source IDs below.
+
+| Source ID | Registered source pattern | Why literal CLDR output is not promoted |
+|---|---|---|
+| `UO_LONG_ALT` | `ວ` | Active CLDR `ວ → v` treats it as a consonant; the vowel candidate `#ວ → oua` is commented out. |
+| `UO_LONG_OPEN` | `ວາ` | No explicit `ວາ` compound vowel rule; active character rules do not establish a long /uːə/ nucleus. |
+| `OEY` | `ເ◌ີຍ` | Separate `ເີ` and `ຍ` rules do not establish the intended /ɤːj/ compound. |
+| `OOY` | `ໂ◌ຍ` | Separate `ໂ` and `ຍ` rules do not establish the intended /oːj/ compound. |
+| `AEW` | `ແ◌ວ` | Separate `ແ` and `ວ` rules do not establish the intended /ɛːw/ compound. |
+| `AOY` | `◌ອຍ` | The carrier `ອ` is context-sensitive/empty in the transform; no explicit /ɔːj/ compound rule is given. |
+| `AAJ` | `◌າຽ` | Separate `າ` and `ຽ` rules do not establish the intended /aːj/ compound. |
+
+This inspection strengthens the evidence for keeping the seven IDs fail-closed; it does not prove that no other romanization standard can represent them. No mapping was added, and no hypothetical concatenated output was treated as a CLDR test result. Acceptance still requires a source-attested exact transform output in the selected profile, source syllable/coda validation, an explicit Ukrainian target decision, positive and negative fixtures, and Lao-specialist review.
