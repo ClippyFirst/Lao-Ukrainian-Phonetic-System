@@ -128,3 +128,18 @@ PR [#179](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/179)
 A fresh compare of PR #145 against current `main` reports 24 commits ahead and 310 behind (13 changed files). The typed stage-one IPA API remains present on main; the unresolved delta is the neural-first CLI/Python default and target-adaptation opt-in. The PR remains the only open PR and is intentionally blocked pending an explicit architecture decision. It is not merged, rebased, closed, or otherwise modified.
 
 The canonical handoff was refreshed after this audit checkpoint. Local tests were not run because the previous execution environment could not resolve github.com; the exact-head and post-merge GitHub Actions results above are the available verification evidence.
+
+## Post-audit implementation reconciliation — PR #182 (2026-11-15)
+
+PR [#182](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/182) was reviewed and merged by squash as `72e9677b0dd4fc863c90d4cec773731fb451109a`. The PR fixes source-aware ALA-LC 2012 crosswalk behavior using the LOC table rather than BGN/CLDR aliases:
+- initial `ຊ` → `s` and `ຍ` → `ny`;
+- final-position values `ດ` → `t`, `ບ` → `p`, `ຣ/ລ` → `n`;
+- final `ວ` after a vowel → `o` under LOC Note 4;
+- final `ຍ` is validated as the `i` off-glide of `ai/āi` under LOC Note 2, not as a consonant coda;
+- profile selection is passed through both segmentation-time and final crosswalk validation, while BGN/CLDR remains separate.
+
+Exact-head Verify #4128 / run [43722541781](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781) succeeded on PR head `9779b0ee05c8be3de2c3da7c18f8e0b453181d66): 350 Python, 188 Node/browser-engine and 28 Chromium UI tests, plus data/evidence, external-G2P, build, generated-data reproducibility and built-page checks. The merged `main` at `72e9677b0dd4fc863c90d4cec773731fb451109a` compares identical to the merge commit; a separate post-merge workflow run was not exposed by the available connector, so only exact-head CI is claimed.
+
+PR #182 was preferred over a duplicate branch after comparing both diffs; the duplicate working branch `fix/ala-lc-final-w-crosswalk-20261115` remains untouched and is not an integration candidate. The only remaining open PR is #145, which remains blocked pending the architecture decision described in the canonical handoff. No branch refs were deleted or force-updated.
+
+This does not make full ALA-LC conformance complete: initial `ʻ`, medial `w`, remaining contextual `ວ`, unsupported vowel sequences and loanword/word-boundary behavior remain PARTIAL. RTGS-for-Lao remains BLOCKED pending a complete Lao-specific table and reviewed examples. Independent adjudicated IPA gold remains 0 examples.
