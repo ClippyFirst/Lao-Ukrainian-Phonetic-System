@@ -127,3 +127,37 @@ The UNGEGN Working Group on Romanization Systems' 2025 report adds a material up
 This is a draft-development signal, not adoption. It does not establish the final table, a national implementation date, or UN endorsement. The operational profile remains provisional BGN/PCGN-derived CLDR until the draft or subsequent decision is published and reviewed. Do not claim that no work is underway; equally, do not claim the draft is already an official standard.
 
 Source: [UNGEGN WGRS, GEGN.2/2025/26/CRP.26](https://unstats.un.org/unsd/ungegn/sessions/4th_session_2025/documents/GEGN.2_2025_26_CRP26_item5c.pdf), Lao section under “Progress on romanization systems”.
+
+
+## Source-aware Lao → CLDR → Ukrainian integration regression — 2026-11-15
+
+The direct Latin-only input contract and the source-aware Lao → CLDR → Ukrainian contract must remain distinct. The full official Lao PDR motto was added as a Lao-script regression fixture:
+
+`ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ`
+
+The exact provisional CLDR output is `santiphab é-kalad paxathipaait é-kaphab vadthanathav-n`. The fixture covers two different integration conditions:
+
+1. Internal `é-` boundaries mark medial onsetless syllables inside one whitespace-delimited Lao source token. PR #214 fixed the crosswalk cursor so these hyphens do not advance the source-word group.
+2. The final `ວອນ` source syllable is represented by CLDR as `v-n`, with the medial `AWW_MEDIAL` vowel omitted. PR #218 restores the vowel only when the original Lao syllable provides an exact onset, unique vowel-ID mapping and coda match. The restored analysis unit carries `sourceRestoredVowel` provenance.
+
+The direct Latin-only form `vadthanathav-n` remains PARTIAL: without the Lao source, the omitted vowel is not recoverable and must not be guessed. This is not a change to the declared direct-input profile and does not recover tone or quantity.
+
+- PR #214 merged as `afc7dc9ed3890dbac2bbf05b253367a459e8367a` (hyphen/source-group alignment).
+- PR #218 merged as `fe435317dcb69cd43f0409ca85e9b617b334a584` (full-motto regression and source-backed AWW_MEDIAL recovery).
+- Exact-head Verify #4265 / [run 43753154383](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43753154383) passed: 350 Python, 191 Node and 28 Chromium tests plus corpus/data audits, build and generated-data checks.
+- GitHub Pages deployment #101 / [run 43753235467](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43753235467) passed both build/Chromium and deployed-service smoke-test jobs for runtime SHA `fe435317dcb69cd43f0409ca85e9b617b334a584`.
+
+### Updated task ledger
+
+| Task | Status | Acceptance boundary |
+|---|---|---|
+| Source-aware internal-hyphen alignment | DONE_VERIFIED | Full source-word group retained across CLDR medial onsetless hyphens; regression in official motto fixture |
+| Source-aware recovery of CLDR-elided AWW_MEDIAL | DONE_VERIFIED (scoped orthographic recovery) | Restore only on exact source onset/vowel/coda match; trace provenance; no direct Latin-only guess |
+| Direct BGN/PCGN romanization-only input | DONE_VERIFIED (implemented profile subset) | Preserve conservative parser, ambiguity and unsupported diagnostics |
+| Direct ALA-LC 2012 input | PARTIAL | LOC subset and fail-closed unsupported forms verified; full contextual Notes 1–10 not implemented |
+| Automatic profile selection | PARTIAL | Heuristic only; broad real-world corpus and false-selection rate unmeasured |
+| RTGS/DLLM and informal variants | BLOCKED / DEFERRED | No authoritative complete Lao RTGS adaptation table; DLLM rights/table review and informal-convention scope unresolved |
+| Independent phonetic accuracy | BLOCKED | Gold remains 0; romanization route is not IPA evidence |
+| Manual device/screen-reader QA | BLOCKED | Requires human review on actual devices and assistive technologies |
+
+**Readiness remains:** engineering-verified partial research prototype, not a universal or linguistically validated romanization converter.

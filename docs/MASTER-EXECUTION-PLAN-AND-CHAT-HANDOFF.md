@@ -4499,3 +4499,13 @@ A local clone attempt was unavailable because the execution environment could no
 - A second identical Verify run #4266 was triggered by reopening the PR to make the workflow execute; #4265 is already a complete success. No release or deployment claim follows from this test result. GitHub Pages post-merge deployment for this runtime change remains unconfirmed.
 - PR #217 was closed as superseded by #218; its branch was left intact. No user branches were deleted. PR #145 remains untouched.
 - Scope: this recovers one source-attested, uniquely mapped vowel lost by the provisional CLDR transform. It does not improve direct Latin-only reversibility, restore tone/length, validate IPA, or close the independent gold-corpus and specialist-review blockers.
+
+
+## GitHub Pages deployment confirmation for the full-motto fix — 2026-11-15
+
+- Retrieved the repository's full Actions run list through the GitHub REST workflow-runs endpoint (the narrower commit-run connector had previously filtered to PR-triggered runs and therefore did not expose the push deployment).
+- Pages workflow run [#101 / 43753235467](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43753235467) is a push deployment on main at exact runtime SHA fe435317dcb69cd43f0409ca85e9b617b334a584.
+- Both workflow jobs completed successfully: build (locked npm install, browser/application tests, static build, Chromium against the built site, deterministic-only artifact checks, Pages artifact upload) and deploy (Deploy to GitHub Pages and Smoke-test deployed static service).
+- The latest mainline Verify run [#4270 / 43753297233](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43753297233) at 827ee0f3f3a81ead1753f901f2b36025998bdc18 also completed with conclusion success.
+- Compare fe435317...827ee0f3 confirms main is three commits ahead and changes only README.md, this handoff and docs/romanization-to-ukrainian-matrix.md; there are no runtime changes after the deployed SHA. Therefore the full-motto source-aware hyphen and AWW_MEDIAL recovery code is confirmed deployed on GitHub Pages.
+- This closes the deployment-confirmation blocker for PR #218. It does not change the project-wide linguistic evidence blockers: independent adjudicated IPA gold remains 0; full contextual ALA-LC, Lao specialist review, authoritative final Lao national romanization table/RTGS adaptation and manual assistive-technology/device QA remain incomplete.
