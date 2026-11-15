@@ -15,7 +15,7 @@ A direct Latin-script input route has been added to the existing Lao → Ukraini
 - Explicit profile selector for automatic, BGN/PCGN 1966 / CLDR Lao-Latin, and bounded ALA-LC 2012 normalization.
 - Existing onset/nucleus/coda parser reused for standalone romanization.
 - Strict BGN/PCGN direct-input mode enforces note 4: an onsetless syllable inside a word must be hyphenated. The official Viangchan example is supported.
-- ALA-LC subset normalizes macron vowels, short/long e, selected vowel symbols/diphthongs, ny palatal-nasal spelling, final s as t, and parenthesized final r/l as n for loanword cases.
+- ALA-LC normalization was corrected against the full LOC 2012 table text: it distinguishes short/long `u`, `uʼ`, `e`, `æ`, `oe`, `ia`, `ua`, `ai`; retains `ny`; uses final-position values `k/ng/t/p/n/m` and final `w` as `o` after a vowel; rejects BGN-only aliases and invalid final spellings.
 - Unsupported/ambiguous strings remain visible as ⟦…⟧; no IPA is invented from romanization-only input.
 - Direct input mode hides the IPA panel and states that tone/length distinctions lost in romanization cannot be recovered.
 - Added unit, static UI and browser tests and updated README, methodology, matrix, source registry and canonical handoff.
@@ -26,7 +26,7 @@ A direct Latin-script input route has been added to the existing Lao → Ukraini
 - LDC Language Specific Peculiarities Document for Lao, section 5, lists BGN/PCGN, RTGS and ALA-LC among schemes used for Lao. It distinguishes ALA-LC from Appen Butler Hill's separate reversible ASCII encoding.
 - PCGN Laos Toponymic Factfile (2023) says there is no official romanization system currently in use in Laos and describes continued PCGN use of BGN/PCGN 1966; its Viangchan example grounds the direct-input fixture.
 - RTGS is not silently treated as the BGN/PCGN route. A complete Lao-specific RTGS adaptation table was not established in the inspected primary material, so that profile remains blocked.
-- ALA-LC support is a bounded normalization subset, not a claim of complete ALA-LC compliance.
+- ALA-LC support remains a bounded normalization/parser subset, not full conformance: initial `ʻ` lacks a project-approved Ukrainian target, medial `w` clusters and contextual `ວ` alternations are incomplete, and word/loanword segmentation is not exhaustive.
 
 ## Task ledger
 
@@ -34,13 +34,13 @@ A direct Latin-script input route has been added to the existing Lao → Ukraini
 |---|---|---|
 | Direct romanization input control and UI state | DONE_VERIFIED | Exact-head Chromium workflow passed |
 | Standalone BGN/PCGN syllable conversion | DONE_VERIFIED | Unit and browser fixtures, including Viangchan |
-| Bounded ALA-LC 2012 normalization | PARTIAL | Tested macron, vowel, palatal nasal, s/r/l coda subset; contextual cases remain missing |
+| Bounded ALA-LC 2012 normalization | PARTIAL | Corrected table-derived vowel and position-specific coda subset; contextual `ວ`, `w` clusters and `ʻ` target remain incomplete |
 | Auto profile detection | PARTIAL | Heuristic fixture; no broad real-world corpus |
 | Preserve ambiguous and unsupported text | DONE_VERIFIED | Parser emits visible unresolved brackets and PARTIAL status |
 | Prevent invented IPA from romanization | DONE_VERIFIED | IPA panel hidden in direct input mode; no phonetic engine call |
 | RTGS-for-Lao | BLOCKED | Needs a stable Lao-specific adaptation table and reviewed examples |
 | Informal/French-style/Karaoke variants | DEFERRED | Conventions vary; define scope and evidence before implementation |
-| Exact-head CI | DONE_VERIFIED | Verify #4054 / run 43696628872 SUCCESS |
+| Exact-head CI (previous implementation) | DONE_VERIFIED | Verify #4054 / run 43696628872 SUCCESS; this follow-up requires its own exact-head run |
 | Independent linguistic accuracy validation | BLOCKED | Needs rights-cleared, expert-adjudicated reference examples and Lao specialist review |
 | Manual physical-device and screen-reader QA | BLOCKED | Human review remains outstanding |
 
@@ -57,4 +57,4 @@ A local clone attempt failed because the execution environment could not resolve
 
 ## Readiness
 
-**Engineering-verified partial prototype, not release-ready as a universal romanization converter.** Direct input works for the tested BGN/PCGN route and a bounded ALA-LC subset. Independent IPA gold remains empty; RTGS, informal variants, specialist review and manual accessibility QA remain outstanding.
+**Engineering-verified partial prototype, not release-ready as a universal romanization converter.** Direct input works for the tested BGN/PCGN route and a bounded ALA-LC subset; this audit's subsequent ALA-LC corrections are pending exact-head CI. Independent IPA gold remains empty; RTGS, informal variants, specialist review and manual accessibility QA remain outstanding.
