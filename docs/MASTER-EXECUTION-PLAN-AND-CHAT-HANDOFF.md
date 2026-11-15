@@ -10,7 +10,7 @@
 
 ## Current repository and PR state
 
-The canonical branch is `main` at `72e9677b0dd4fc863c90d4cec773731fb451109a`. The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), still BLOCKED pending an owner-level architecture decision on the neural-first CLI/Python default. It remains 24 commits ahead and 310 behind current main; the typed stage-one IPA API already exists on main. Leave #145 open and untouched.
+The canonical branch is `main` at `72e9677b0dd4fc863c90d4cec773731fb451109a`. The only open implementation PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), still BLOCKED pending an owner-level architecture decision on the neural-first CLI/Python default. This documentation checkpoint consolidates the matrix, README, handoff and audit updates; the duplicate checkpoint PR #183 is being superseded. It remains 24 commits ahead and 310 behind current main; the typed stage-one IPA API already exists on main. Leave #145 open and untouched.
 
 ## Current task ledger
 
@@ -19,7 +19,7 @@ The canonical branch is `main` at `72e9677b0dd4fc863c90d4cec773731fb451109a`. Th
 | Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
 | Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
 | Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
-| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; exact-head Verify #4128 and post-merge Verify #4131 passed; Pages #98 deployed and smoke-tested |
+| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; exact-head Verify #4128 and post-merge Verify #4131 passed; Pages #98 deployed and smoke-tested |\n| Romanization matrix and canonical handoff/audit reconciliation | DONE_VERIFIED | This PR records the supported subset, remaining PARTIAL boundary, merged SHA, CI and deployment evidence |
 | Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
 | Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
 | RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
