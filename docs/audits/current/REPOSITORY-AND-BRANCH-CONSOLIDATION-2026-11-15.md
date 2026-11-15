@@ -431,3 +431,15 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - Relative to current main, the two post-PR #206 continuation branches are diverged (PR #207 source branch 6 ahead / 2 behind; PR #208 source branch 3 ahead / 1 behind). The current PR #209 source branch is 3 ahead / 0 behind before merge.
 - The resulting pre-merge graph classification is 71 diverged, 2 behind-only, 1 ahead-only, 0 identical. The ahead-only ref is this task branch; it is expected to become diverged after squash merge. Behind-only refs are `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind).
 - Full semantic file/test review remains PARTIAL. No branch was deleted or force-updated.
+
+
+## PR #209 merged — canonical mainline checkpoint — 2026-11-15
+
+- PR [#209](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/209) merged by squash as `63fd3435397af693633b5bec90aa4448aecbf9d7`.
+- Exact-head Verify #4211 / [run 43743622227 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743622227).
+- Post-merge main Verify #4212 / [run 43743705285 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743705285).
+- Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency install, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Latest runtime deployment remains Pages #99 / run 43726042017; PR #209 changed no runtime assets.
+- Current main: `63fd3435397af693633b5bec90aa4448aecbf9d7`. PR #145 remains the only open PR, 24 ahead / 335 behind / 13 files, non-mergeable pending owner architecture decision.
+- Branch inventory at this checkpoint: 75 refs including main (74 non-main), 72 diverged and 2 behind-only; no ahead-only or identical refs. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). Full semantic file review remains PARTIAL.
+- No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
