@@ -284,3 +284,14 @@ test("full Lao mixed-script multiline text preserves separators, native numerals
  assert.equal(result.output,"kha\tABC-42\r\n໑໒໓, ខ្មែរ 😀!");
  assert.equal(result.status,"PARTIAL");
 });
+
+
+test("the service exposes a separate direct romanization input mode and explicit profile selector", () => {
+ const html=readFileSync(new URL("../index.html",import.meta.url),"utf8");
+ const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
+ assert.ok(html.includes('id="input-kind-romanization"'));
+ assert.ok(html.includes('id="romanization-profile"'));
+ assert.ok(html.includes('value="ala-lc"'));
+ assert.match(app,/function renderRomanizationInput\(\)/u);
+ assert.match(app,/inputKind === "romanization"/u);
+});
