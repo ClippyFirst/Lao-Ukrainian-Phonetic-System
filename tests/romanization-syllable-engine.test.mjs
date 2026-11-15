@@ -297,3 +297,15 @@ test("strict BGN/PCGN mode requires a hyphen before a medial onsetless syllable"
   assert.equal(strict.output, "Віангчан");
   assert.equal(permissive.status, "PARTIAL");
 });
+
+
+test("ALA-LC short and long e spellings normalize to the same Ukrainian vowel class", () => {
+  assert.equal(analyzeRomanization("ke", { profile: "ala-lc" }).output, "ке");
+  assert.equal(analyzeRomanization("kē", { profile: "ala-lc" }).output, "ке");
+});
+
+test("ALA-LC loanword coda r and l use the table's parenthesized n value", () => {
+  assert.equal(analyzeRomanization("kar", { profile: "ala-lc" }).output, "кан");
+  assert.equal(analyzeRomanization("kal", { profile: "ala-lc" }).output, "кан");
+  assert.equal(analyzeRomanization("kar", { profile: "bgn-pcgn" }).output, "кал");
+});
