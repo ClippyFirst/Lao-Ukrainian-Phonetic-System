@@ -247,3 +247,10 @@ The change is API validation only; it adds no linguistic mappings or claims of n
 - PR #192 unknown-profile fail-closed behavior remains DONE_VERIFIED and already exists on main; no duplicate patch was introduced.
 
 **Current main:** `cce42c07f8cad67881bc422270b7c5f0f566160b`. **Readiness:** engineering-verified partial research prototype; not linguistically validated or release-ready as a universal converter. Independent adjudicated IPA gold remains 0 examples.
+
+
+## Fresh inventory after PR #198 — 2026-11-15
+
+- Fresh branch search returns **65 refs including `main`** (64 non-main refs); this supersedes the 62-ref snapshot recorded above. The current count includes the active PR #199 branch and preserved historical branches.
+- Open PR search returns [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199). PR #145 compares at 24 ahead / 324 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; its neural-first CLI/Python defaults remain an owner-level architecture decision. PR #199 is documentation-only and pending exact-head CI.
+- Full comparison of all 64 non-main refs has not been completed in this pass. Overall historical branch reconciliation remains PARTIAL; no branch was deleted or force-updated.
