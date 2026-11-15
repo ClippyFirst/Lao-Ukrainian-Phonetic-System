@@ -69,14 +69,14 @@ The PR inventory also shows historical closed-unmerged work (including earlier p
 
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
-| Identify canonical branch and exact starting head | DONE_VERIFIED | `main`; compare `main` with `4197d4212a935ee59216b1a7f9bdd112dceabb6e` returned identical |
-| Inventory branch refs | DONE_VERIFIED | GitHub branch search returned 37 refs including `main` |
-| Compare all non-main branch refs with main | DONE_VERIFIED | 36 compare operations completed in batches; all were divergent or behind, none was ahead-only |
+| Identify canonical branch and exact starting head | DONE_VERIFIED | Default branch is `main`; current checkpoint SHA is `66a744f43fb31dac1d7869f6e661acc1a8bb5c70` |
+| Inventory branch refs | DONE_VERIFIED | Fresh GitHub branch search returned 56 refs including `main` |
+| Compare all non-main branch refs with main | DONE_VERIFIED | 55 compare operations: 52 divergent, 2 behind, 1 ahead-only (`docs/record-pr189-postmerge-checkpoint-20261115`, the open PR #190 head) |
 | Reconcile recent merged PRs #163–#170 | DONE_VERIFIED | GitHub merged-PR search confirms #163, #164, #165, #167, #168, #169 and #170 merged; #166 is closed unmerged duplicate |
 | Identify open PR conflict | DONE_VERIFIED | Open-PR search identifies #145; proposal conflicts with deterministic-default contract |
 | Preserve historical branches and PRs | DONE_VERIFIED | No branch deletion, force update, PR closure or blind merge performed |
 | Preserve and clarify documentation architecture | DONE_VERIFIED | Existing structure guide retained; current audit and navigation pointers added |
-| Integrate every historical branch's unique file delta | PARTIAL | Branch metadata comparison is complete; not every old branch's full file-level diff and test behavior has been independently reviewed. Acceptance: a concrete missing requirement is identified, diff reviewed, ported to the single integration line, and exact-head checks pass |
+| Integrate every historical branch's unique file delta | PARTIAL | All 55 non-main refs were compared; three romanization-related branches were inspected at file level and found superseded. Remaining historical branch diffs and test behavior are not all independently reviewed. Acceptance: identify a concrete missing requirement, review its diff, port only the unique supported change, and pass exact-head checks |
 | Resolve PR #145 | BLOCKED | Requires explicit architecture decision; deterministic-default system specification currently contradicts proposed default |
 | Independent adjudicated Lao IPA gold | BLOCKED | Corpus remains empty (0); acceptance requires rights-cleared, independently annotated and adjudicated examples with provenance |
 | Manual physical-device and screen-reader QA | BLOCKED | Requires human review on actual devices and assistive technology |
@@ -174,5 +174,26 @@ This addendum corrects the prior snapshot, which still named the PR #184 merge c
 - Fresh open-PR search: only PR #145 remains open. Compare `main...feat/mekongphon-first-stage`: 24 commits ahead, 314 behind, 13 changed files; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. The typed stage-one IPA API already exists on main; the neural-first CLI/Python default remains an owner-level architecture decision. Leave #145 open and untouched.
 - PR #188 is closed unmerged as a superseded documentation checkpoint. Earlier duplicate checkpoint PRs #181, #183, #185 and #186 remain closed unmerged. Historical branches were not deleted or force-updated.
 - The scoped LOC Notes 1, 2 and 4 ALA-LC crosswalk remains DONE_VERIFIED. Full contextual ALA-LC conformance and automatic profile detection remain PARTIAL; RTGS and independent IPA gold remain BLOCKED; informal variants remain DEFERRED; physical-device and assistive-technology QA remain BLOCKED.
+
+**Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0 examples.
+
+
+## Additional historical-branch source review — 2026-11-15
+
+Three romanization-related branch tips were compared against current `main` and their relevant files inspected:
+
+- `feat/romanization-input-to-ukrainian-20261115`: `web/app.js` and `index.html` are byte-identical to current main; its syllable engine and tests are an older pre-guard/pre-crosswalk version. No unique runtime change remains to port.
+- `fix/ala-lc-2012-conformance-20261115`: the engine predates the current LOC-specific ALA-LC source crosswalk and the fail-closed unsupported-vowel guard. Its candidate changes are superseded by current main; porting the branch wholesale would regress current behavior.
+- `fix/ala-lc-unsupported-vowel-guard-20261115`: contains an earlier unsupported-sequence guard, but is behind main and lacks the final profile-specific crosswalk. Current main already includes the guard and subsequent fixes.
+
+No branch was modified, deleted, or merged. This targeted review reduces the likely missing-work set but does not satisfy the audit's broader all-historical-branch file-level review; that item remains PARTIAL until all remaining branch deltas are reconciled or explicitly classified.
+
+## PR #189 post-merge checkpoint — 2026-11-15
+
+- PR [#189](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/189) merged by squash as `66a744f43fb31dac1d7869f6e661acc1a8bb5c70`.
+- Exact-head Verify #4148 / [run 43724372116 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724372116).
+- Post-merge main Verify #4149 / [run 43724471274 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43724471274).
+- Both workflows completed IPA-gold schema validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked dependency installation, Node/browser-engine tests, build, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- PR #189 changed only the canonical handoff and current branch-consolidation audit. No runtime deployment was required.
 
 **Readiness:** engineering-verified partial research prototype, not a linguistically validated universal converter. Independent adjudicated IPA gold remains 0 examples.
