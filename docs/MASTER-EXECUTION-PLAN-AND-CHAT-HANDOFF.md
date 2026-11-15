@@ -1,3 +1,61 @@
+# Latest continuation checkpoint — 2026-11-15 (ALA-LC crosswalk and PR #184 evidence reconciled)
+
+**Starting `main` for this continuation:** `ecc997d356d206640862097d0bff6e7da3c484e3`  
+**PR #182 runtime merge:** `72e9677b0dd4fc863c90d4cec773731fb451109a`  
+**PR #184 documentation merge:** `ecc997d356d206640862097d0bff6e7da3c484e3`  
+**PR #182 exact-head Verify #4128:** [run 43722541781 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781).  
+**PR #182 post-merge Verify #4131:** [run 43722677303 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677303).  
+**Pages deployment #98:** [run 43722677302 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677302), including the live smoke test.  
+**PR #184 exact-head Verify #4137:** [run 43722921838 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722921838).  
+**PR #184 post-merge main Verify #4138:** [run 43723008453 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43723008453).
+
+## Repository and PR disposition
+
+The latest verified runtime is on `main` at PR #182 merge `72e9677...`; PR #184's documentation merge advanced the branch to `ecc997d356d206640862097d0bff6e7da3c484e3`. The only open PR is [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), BLOCKED pending an owner-level architecture decision on the neural-first CLI/Python default. A fresh compare reports 24 commits ahead and 313 behind, with 13 changed files; the typed stage-one IPA API already exists on main. Leave #145 open and untouched.
+
+PR #182 contains the runtime crosswalk implementation; PR #184 updates README and documentation with its deployment evidence. Duplicate documentation checkpoint PRs #183, #185 and #186 were closed unmerged after comparing their contents; no unique runtime changes were lost and no branches were deleted.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 plus PR #182 source-aware profile crosswalk; LOC-backed regression suite and Verify #4128 passed |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
+| Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; Verify #4128 and #4131 passed; Pages #98 deployed and smoke-tested |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+
+## PR #182 implementation and evidence
+
+The LOC ALA-LC 2012 table differs from BGN/CLDR in both initial and final positions. The browser adapter now uses profile-specific source crosswalks:
+- initial `ຊ` → `s` and `ຍ` → `ny`;
+- final values include `ດ` → `t`, `ບ` → `p`, `ຣ/ລ` → `n`, and final `ວ` → `o`;
+- final `ຍ` is checked as the closing `i` of the `ai/āi` diphthong (Note 2), not as a consonant coda;
+- BGN/CLDR crosswalk behavior remains unchanged.
+
+Primary evidence: [Library of Congress, ALA-LC Lao Romanization Table (2012), pp. 1–3, Notes 1, 2 and 4](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). This does not claim full ALA-LC conformance or infer unsupported Ukrainian values.
+
+## Verification and limits
+
+- Verify #4128: 350 Python, 188 Node/browser-engine and 28 Chromium tests; schema/data audits, external-G2P harness, locked install, build, generated-data reproducibility and built-page checks passed.
+- Verify #4131 passed the same test counts on the merged runtime main.
+- Pages deployment #98 built and deployed the deterministic-only static site; the live smoke test fetched both public pages and required JS/CSS/data assets.
+- Verify #4137 and post-merge Verify #4138 passed for PR #184's documentation-only changes.
+- Local tests were not run in this environment; no local result is claimed.
+- No release tag was published.
+
+## Next safe work
+
+Keep full contextual ALA-LC conformance PARTIAL until initial `ʻ`, medial `w` clusters, unsupported vowels, contextual `ວ`, loanword and word-boundary behavior receive source-backed parsing and reviewed target decisions. Keep RTGS and independent IPA gold blocked by missing normative/adjudicated evidence. Leave PR #145 untouched pending the explicit architecture decision. Repository readiness remains an engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #182 merged and deployed)
 
 **Starting `main`:** `75d049c9bb4fbc040bbc77466ec0426c7312e95c`  
