@@ -294,8 +294,12 @@ const LAO_CODA_TO_CLDR = new Map([
 // ALA-LC 2012 Note 4 writes final ວ as "o" after a vowel; BGN/CLDR
 // writes the same source coda as "v". Keep this profile distinction explicit.
 const LAO_CODA_TO_ALA_LC = new Map([
-  ["ກ", "k"], ["ງ", "ng"], ["ດ", "t"], ["ບ", "p"], ["ນ", "n"],
-  ["ມ", "m"], ["ຍ", "n"], ["ວ", "o"],
+  ["ກ", "k"], ["ຂ", "k"], ["ຄ", "k"], ["ງ", "ng"],
+  ["ຈ", "t"], ["ສ", "t"], ["ຊ", "t"], ["ດ", "t"],
+  ["ຕ", "t"], ["ຖ", "t"], ["ທ", "t"], ["ນ", "n"],
+  ["ບ", "p"], ["ປ", "p"], ["ຜ", "p"], ["ຝ", "p"],
+  ["ພ", "p"], ["ຟ", "p"], ["ມ", "m"], ["ຣ", "n"],
+  ["ລ", "n"], ["ວ", "o"],
 ]);
 
 // The source vowel parser retains distinctions that the romanization can
