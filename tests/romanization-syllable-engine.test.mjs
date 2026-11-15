@@ -351,3 +351,9 @@ test("ALA-LC final v and r/l spellings are not accepted as final consonants", ()
   assert.equal(analyzeRomanization("kav", { profile: "ala-lc" }).status, "PARTIAL");
   assert.equal(analyzeRomanization("kar", { profile: "ala-lc" }).status, "PARTIAL");
 });
+
+
+test("ALA-LC official examples vat and būak follow initial-v and medial-w vowel rules", () => {
+  assert.equal(analyzeRomanization("vat", { profile: "ala-lc" }).output, "ват");
+  assert.equal(analyzeRomanization("būak", { profile: "ala-lc" }).output, "буак");
+});
