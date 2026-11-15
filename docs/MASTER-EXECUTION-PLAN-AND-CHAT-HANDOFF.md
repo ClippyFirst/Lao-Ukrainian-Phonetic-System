@@ -20,7 +20,7 @@
 
 The LDC catalogue describes approximately 207 hours of Lao conversational and scripted telephone speech collected in 2013, identifies the Vientiane dialect region, and provides orthographic transcripts. The LDC LSP says recordings are by native Lao speakers and documents a separate Appen Butler Hill codepoint romanization. It also defines a 43-phoneme/X-SAMPA inventory and six tone labels, but the public transcript sample is Lao script and its paired romanized sample is ABH, not per-utterance X-SAMPA. Treat this as a contextual audio/transcript lead only, not IPA gold.
 
-Access is blocked pending the applicable signed LDC agreement, fee and project eligibility. The non-member agreement is non-commercial and prohibits further distribution; the for-profit member agreement requires the LDC For-Profit Membership Agreement and also prohibits further distribution. No dataset files or transcripts were imported. See the new `SRC-LDC-BABEL-LAO-2017` source-registry entry and the expanded gold collection playbook.
+Access is blocked pending the applicable signed LDC agreement, fee and project eligibility. The non-member agreement is non-commercial and prohibits further distribution; the for-profit member agreement requires the LDC For-Profit Membership Agreement and also prohibits further distribution. No dataset files or transcripts were imported. See the expanded existing `SRC-LDC-BABEL-LAO-2017` source-registry entry and the gold collection playbook.
 
 ## Current task ledger
 
