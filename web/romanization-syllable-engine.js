@@ -33,7 +33,8 @@ const SORTED_NUCLEI = [...NUCLEI.keys()].sort((a, b) => b.length - a.length);
 const SORTED_CODAS = [...CODAS.keys()].sort((a, b) => b.length - a.length);
 const SEPARATORS = /^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
 
-function codaTarget(coda, nucleus) {
+function codaTarget(coda, nucleus, profile = "bgn-pcgn") {
+  if (profile === "ala-lc" && (coda === "r" || coda === "l")) return "н";
   if (coda === "v") return nucleus === "i" ? "оу" : "о";
   if (coda === "w") return "о";
   return CODAS.get(coda);
@@ -52,7 +53,7 @@ const ALA_LC_REPLACEMENTS = new Map([
   ["ư̄a", "ua"], ["ūa", "oua"], ["īa", "ia"], ["āi", "ai"], ["āo", "ao"],
   ["œ̄", "eu"], ["œ", "eu"], ["ǣ", "è"], ["æ", "è"], ["ǭ", "o"], ["ǫ", "o"],
   ["ư̄", "u"], ["ư", "u"], ["ū", "ou"], ["ā", "a"], ["ī", "i"],
-  ["ē", "é"], ["ō", "ô"], ["u", "ou"], ["ny", "gn"],
+  ["ē", "é"], ["e", "é"], ["ō", "ô"], ["u", "ou"], ["ny", "gn"],
 ]);
 
 function replacePreservingCase(token, replacement) {
@@ -118,7 +119,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
         candidates.push({
           start: index, end, surface: source.slice(index, end),
           onset, nucleus, coda, order: "onset-first",
-          ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
+          ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus) + codaTarget(coda, nucleus, profile),
         });
       }
     }
@@ -160,7 +161,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
         const codaEnd = end + coda.length;
         candidates.push({
           ...base, end: codaEnd, surface: source.slice(index, codaEnd),
-          coda, ukrainian: base.ukrainian + codaTarget(coda, outputNucleus),
+          coda, ukrainian: base.ukrainian + codaTarget(coda, outputNucleus, profile),
         });
       }
     }
