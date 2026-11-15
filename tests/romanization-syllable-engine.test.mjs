@@ -70,10 +70,10 @@ test("the parser resolves CLDR preposed markers and postposed nuclei at syllable
     { onset: "n", nucleus: "ia", coda: "v" },
   ]);
   const phraseWithSource = analyzeRomanization("ékhôa-niav", {
-    sourceSyllableGroups: [
-      [{ onset: "ຂ", coda: "", vowelId: "AW_LONG" }],
-      [{ onset: "ໜ", coda: "ວ", vowelId: "IA_LONG" }],
-    ],
+    sourceSyllableGroups: [[
+      { onset: "ຂ", coda: "", vowelId: "AW_LONG" },
+      { onset: "ໜ", coda: "ວ", vowelId: "IA_LONG" },
+    ]],
   });
   assert.equal(phraseWithSource.status, "OK");
   assert.equal(phraseWithSource.output, "к'ао-ніао");
