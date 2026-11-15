@@ -103,7 +103,7 @@ function setInputKind(kind) {
   input.name = kind === "lao" ? "lao-text" : "lao-romanization";
   input.placeholder = kind === "lao"
     ? "ພາສາລາວ…"
-    : "Viangchan, phāsā lāo, sabaidee…";
+    : "Viangchan, khā, nyā…";
   inputHelp.textContent = kind === "lao"
     ? "Результат оновлюється автоматично. У поскладовому аналізі видно вихідне написання, IPA-запис, український відповідник і рівень упевненості."
     : "Вставте латинський запис лаоського слова або фрази. Профіль можна визначити автоматично або вибрати явно; неоднозначні склади буде позначено, а не вгадано.";
