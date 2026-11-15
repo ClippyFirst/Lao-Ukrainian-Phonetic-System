@@ -191,7 +191,7 @@ function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = fa
         candidates.push({
           start: index, end, surface: source.slice(index, end),
           onset: "", nucleus, coda, order: "vowel-only",
-          ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
+          ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus, profile),
         });
       }
     }
