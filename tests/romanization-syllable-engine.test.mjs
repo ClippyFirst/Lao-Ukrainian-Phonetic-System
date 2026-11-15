@@ -313,6 +313,22 @@ test("strict BGN/PCGN mode requires a hyphen before a medial onsetless syllable"
   assert.equal(permissive.status, "PARTIAL");
 });
 
+test("source-aware crosswalk keeps internal hyphens within one Lao word and aligns all syllables", () => {
+  const result = analyzeRomanization("ka-é-kha", {
+    profile: "bgn-pcgn",
+    strictBoundaries: true,
+    sourceSyllableGroups: [[
+      { onset: "ກ", coda: "", vowelId: "A" },
+      { onset: "ອ", coda: "", vowelId: "EE" },
+      { onset: "ຂ", coda: "", vowelId: "A" },
+    ]],
+  });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "ка-е-к'а");
+  assert.equal(result.syllables.length, 3);
+  assert.deepEqual(result.syllables.map((unit) => unit.surface), ["ka", "é", "kha"]);
+});
+
 
 test("ALA-LC short and long e spellings normalize to the same Ukrainian vowel class", () => {
   assert.equal(analyzeRomanization("ke", { profile: "ala-lc" }).output, "ке");
