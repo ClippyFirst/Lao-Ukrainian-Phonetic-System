@@ -431,3 +431,24 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 - Relative to current main, the two post-PR #206 continuation branches are diverged (PR #207 source branch 6 ahead / 2 behind; PR #208 source branch 3 ahead / 1 behind). The current PR #209 source branch is 3 ahead / 0 behind before merge.
 - The resulting pre-merge graph classification is 71 diverged, 2 behind-only, 1 ahead-only, 0 identical. The ahead-only ref is this task branch; it is expected to become diverged after squash merge. Behind-only refs are `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind).
 - Full semantic file/test review remains PARTIAL. No branch was deleted or force-updated.
+
+
+## PR #209 merged — canonical mainline checkpoint — 2026-11-15
+
+- PR [#209](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/209) merged by squash as `63fd3435397af693633b5bec90aa4448aecbf9d7`.
+- Exact-head Verify #4211 / [run 43743622227 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743622227).
+- Post-merge main Verify #4212 / [run 43743705285 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743705285).
+- Both runs passed IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency install, browser-engine tests, browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks.
+- Latest runtime deployment remains Pages #99 / run 43726042017; PR #209 changed no runtime assets.
+- Current main: `63fd3435397af693633b5bec90aa4448aecbf9d7`. PR #145 remains the only open PR, 24 ahead / 335 behind / 13 files, non-mergeable pending owner architecture decision.
+- Branch inventory at this checkpoint: 75 refs including main (74 non-main), 72 diverged and 2 behind-only; no ahead-only or identical refs. Behind-only refs: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). Full semantic file review remains PARTIAL.
+- No runtime, mapping, generated-data or model assets changed; independent adjudicated IPA gold remains 0.
+
+
+## LDC Babel Lao audio lead — primary-source and license review — 2026-11-15
+
+- The LDC catalogue for [LDC2017S08](https://catalog.ldc.upenn.edu/LDC2017S08) describes approximately 207 hours of conversational and scripted telephone speech collected in 2013, Vientiane dialect region, with orthographic transcripts and 8 kHz A-law / 48 kHz PCM audio.
+- The [Lao LSP](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf) says recordings are by native Lao speakers and describes a separate Appen Butler Hill codepoint romanization. It documents a 43-phoneme inventory and X-SAMPA tone notation, but the publicly exposed transcript sample is Lao script and the paired `.rom.txt` sample is ABH romanization. Per-utterance X-SAMPA labels in the delivered package are **not verified**.
+- The [non-member agreement](https://catalog.ldc.upenn.edu/license/iarpa-babel-lao-agreement-non-member.pdf) restricts use to non-commercial linguistic education/research/technology development and prohibits further distribution. The for-profit member agreement operates under the LDC For-Profit Membership Agreement and also prohibits further distribution. Fees and applicable project eligibility have not been confirmed.
+- LDC states portions are © 2015 U.S. Government and that the U.S. Government acquired the data from Appen. No audio or transcript files were imported. The existing `SRC-LDC-BABEL-LAO-2017` registry record is expanded with these details; the playbook classifies the resource as a licensed contextual-audio lead, not citation-form or IPA gold.
+- **Disposition:** BLOCKED pending signed access terms, fees, organization eligibility and confirmation of package annotation fields. Even if access is approved, use only as contextual audio/transcript support under the agreement; independent IPA annotation and adjudication remain required.

@@ -1,19 +1,26 @@
-# Latest continuation checkpoint — 2026-11-15 (PR #208 merged; romanization branch and ALA-LC branch reconciliation)
+# Latest continuation checkpoint — 2026-11-15 (PR #209 merged; mainline and evidence handoff synchronized)
 
-**Starting main:** `e713f62d2c37412b52dc7a6b51004797fc283ef1` (PR #207 merged).  
-**PR [#208](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/208):** merged by squash as `c5a59c8aa2a75c95a620b14f9caa9154a1030fc0`; documentation-only.  
-**Exact-head Verify #4208:** [run 43743149223 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743149223).  
-**Post-merge main Verify #4209:** [run 43743272169 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743272169).  
-**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PR #208 changed no runtime assets.  
-**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal; 24 commits ahead / 334 behind / 13 files against this main, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending explicit owner architecture approval.  
-**Current branch inventory:** fresh unfiltered search returned 75 refs including main (74 non-main); the follow-up page returned no additional refs. The 71 non-main refs in the prior PR #206 graph snapshot were 69 diverged and 2 behind-only. The later PR #207 and PR #208 source branches are also diverged (6 ahead / 2 behind and 3 ahead / 1 behind respectively). The current PR #209 task branch is 3 ahead / 0 behind before merge. Thus the current pre-merge graph classification is **71 diverged, 2 behind-only, 1 ahead-only, 0 identical**. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). After PR #209 squash merge its source branch will become divergent. Full semantic review of historical file deltas remains PARTIAL; no branch was deleted or force-updated.
+**Starting main:** `c5a59c8aa2a75c95a620b14f9caa9154a1030fc0` (PR #208 merged).  
+**PR [#209](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/209):** merged by squash as `63fd3435397af693633b5bec90aa4448aecbf9d7`; documentation-only.  
+**Exact-head Verify #4211:** [run 43743622227 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743622227).  
+**Post-merge main Verify #4212:** [run 43743705285 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43743705285).  
+**Latest runtime Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PR #209 changed no runtime assets.  
+**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal; 24 commits ahead / 335 behind / 13 files against this main, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Keep it open and unmerged pending explicit owner architecture approval.  
+**Branch inventory at this checkpoint:** 75 refs including main (74 non-main); a follow-up pagination query returned no further refs. Current graph classification: **72 diverged, 2 behind-only, 0 ahead-only, 0 identical**. Behind-only: `feature/meta-hybrid-v3-multiengine-20261110` (117 behind) and `research/written-evidence-phonology-2026-11-09` (240 behind). The PR #207, #208 and #209 source branches remain as historical refs and are now diverged from main. Full semantic review of historical file deltas remains PARTIAL; no branch was deleted or force-updated. The new checkpoint branch created for this handoff is outside the 75-ref base snapshot.
 
-## PR #208 outcomes
+## PR #209 outcomes
 
-- PR #208 records a file-level review of `feat/romanization-input-to-ukrainian-20261115`, the historical PR #172 branch (40 ahead / 30 behind / 13 files at comparison). Its `web/app.js` is identical to main; its parser/tests are an older snapshot that lacks current unknown-profile fail-closed handling and ALA-LC unsupported-sequence guards. It normalizes some ambiguous forms that current main deliberately withholds as PARTIAL. The current matrix contains later route-separation and research updates. **Disposition: SUPERSEDED; no stale code was ported.**
-- ALA-LC branch lineage cross-check: PR #173 (2012 table conformance), #176 (unsupported vowel guards), #182 (LOC final crosswalk) and #192 (unknown-profile fail-closed) are merged. PR #181, with the same final-crosswalk title, is closed unmerged; its later merged counterpart is #182. Do not replay the duplicate/stale branches.
-- PR #208 changed only README, canonical handoff and the current branch audit. No runtime, mapping, generated-data or model change was made.
-- The independent adjudicated IPA gold corpus remains 0. Common Voice Lao remains an audio lead only; MekongPhon rights are scoped to authorized project use and do not make it independent gold or grant blanket redistribution.
+- README, canonical handoff and current branch audit now point to the verified PR #209 mainline.
+- PR #208's file-level review established that `feat/romanization-input-to-ukrainian-20261115` is a superseded historical PR #172 branch: its `web/app.js` is identical to main, while its parser/tests predate current unknown-profile fail-closed behavior and ALA-LC unsupported-sequence guards. No stale code was ported.
+- ALA-LC lineage is reconciled: PRs #173, #176, #182 and #192 are merged; PR #181 is closed unmerged as a duplicate/superseded final-crosswalk attempt.
+- PR #206's audio/rights findings remain bounded and non-gold: Common Voice Lao is a contextual-audio lead only; MekongPhon owner authorization is scoped to ClippyFirst project use, not public licensing or blanket redistribution. The independent adjudicated IPA gold corpus remains 0.
+- No runtime, phonological mapping, generated data or model assets changed.
+
+## New licensed Vientiane audio candidate — LDC2017S08
+
+The LDC catalogue describes approximately 207 hours of Lao conversational and scripted telephone speech collected in 2013, identifies the Vientiane dialect region, and provides orthographic transcripts. The LDC LSP says recordings are by native Lao speakers and documents a separate Appen Butler Hill codepoint romanization. It also defines a 43-phoneme/X-SAMPA inventory and six tone labels, but the public transcript sample is Lao script and its paired romanized sample is ABH, not per-utterance X-SAMPA. Treat this as a contextual audio/transcript lead only, not IPA gold.
+
+Access is blocked pending the applicable signed LDC agreement, fee and project eligibility. The non-member agreement is non-commercial and prohibits further distribution; the for-profit member agreement requires the LDC For-Profit Membership Agreement and also prohibits further distribution. No dataset files or transcripts were imported. See the expanded existing `SRC-LDC-BABEL-LAO-2017` source-registry entry and the gold collection playbook.
 
 ## Current task ledger
 
@@ -26,15 +33,16 @@
 | Independent adjudicated IPA gold | BLOCKED | 0 examples; requires rights-cleared expert annotation and independent adjudication |
 | Lao specialist review and pilot recruitment | BLOCKED | Qualified annotators/adjudicator, approved Vientiane convention sheet and blind dry-run absent |
 | Common Voice Lao audio | PARTIAL / research lead only | 193 validated scripted clips; dialect/citation-form suitability unproven; no Spontaneous Speech 5.0 Lao entry found |
+| LDC Babel Lao audio (LDC2017S08) | BLOCKED / licensed lead only | ~207h Vientiane-region audio and orthographic transcripts; signed agreement, fees, project eligibility and package-level X-SAMPA availability unverified; no redistribution |
 | Lao-specific RTGS profile | BLOCKED | Authoritative normative Lao adaptation table and source-backed examples required |
 | Full automatic profile selection | PARTIAL | Representative reviewed mixed-profile corpus required |
-| Historical branch reconciliation | PARTIAL | 74 non-main refs graph-compared; 71 diverged, 2 behind-only, 1 ahead-only (this PR branch); full source/test semantic review incomplete |
+| Historical branch reconciliation | PARTIAL | 74 non-main refs graph-compared; full source/test semantic review incomplete |
 | Physical-device and screen-reader QA | BLOCKED | Human testing on real devices and assistive technologies required |
 | PR #145 neural-first CLI/Python default | BLOCKED | Owner architecture decision and normative spec/test reconciliation required |
 
 ## Verification and readiness
 
-PR #208 exact-head Verify #4208 and post-merge main Verify #4209 both passed: IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation.
+PR #209 exact-head Verify #4211 and post-merge main Verify #4212 both passed: IPA-gold structure validation, repository data/evidence audit, Python tests, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation.
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
 

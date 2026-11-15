@@ -182,3 +182,27 @@ The earlier statements in this playbook that MekongPhon rights were simply UNKNO
 - MekongPhon is still not independent gold and must not be copied into the adjudicated gold files.
 
 **Pilot status remains BLOCKED:** no qualified annotators or adjudicator have been recruited, no Vientiane convention sheet has been approved, and no blind dry-run has been completed. This source revalidation does not create labels or change the gold count (0).
+
+
+## Licensed Vientiane audio candidate — IARPA Babel Lao / LDC2017S08 — reviewed 2026-11-15
+
+The official Linguistic Data Consortium catalogue describes the IARPA Babel Lao Language Pack (LDC2017S08; released 2017) as approximately **207 hours** of conversational and scripted telephone speech collected in 2013, with corresponding transcripts. The catalogue identifies the Vientiane dialect region, speakers aged 16–60 with approximately equal gender distribution, and both 8 kHz A-law and 48 kHz PCM WAV audio. This makes it a materially larger Vientiane-region audio candidate than Common Voice, but not a citation-form lexicon or an independent IPA benchmark.
+
+The accompanying LDC Language Specific Peculiarities document says recordings are made by native Lao speakers and that transcription is done from Lao script without using romanization. It describes the Appen Butler Hill (ABH) romanization as a distinct, fully reversible codepoint mapping based on ALA-LC, not equivalent to ALA-LC: it keeps onset/coda consonants unconditioned, spells component vowel graphemes separately, and transcribes tone-mark codepoints rather than tone as a phonological value. The LSP defines a 43-phoneme inventory and an X-SAMPA notation with six tone labels, but the publicly exposed sample transcript is Lao orthography and the paired `.rom.txt` sample is ABH romanization. **Per-utterance X-SAMPA annotation availability in the licensed package has not been verified.** Do not count this as IPA gold.
+
+**Licensing and handling gate:**
+- The LDC catalogue requires a signed agreement and lists separate for-profit member, non-profit member and non-member agreements; the catalogue displays fees after login.
+- The non-member agreement limits use to non-commercial linguistic education, research and technology development and prohibits further distribution. The for-profit member agreement operates under the LDC For-Profit Membership Agreement and also prohibits further distribution. The applicable organizational category, current fee, and project eligibility have not been confirmed.
+- The catalogue states that portions are © 2015 U.S. Government and that the U.S. Government acquired the data from Appen and received assigned copyright.
+- No dataset files, transcripts or audio may be copied into this repository. Any authorized use must remain within the signed agreement; store only metadata or derived artifacts if the agreement permits them, and keep restricted materials outside public Git history.
+
+**Evidence classification:** `PARTIAL / LICENSED AUDIO LEAD ONLY`. Potentially useful for contextual listening, orthographic transcript alignment and selecting candidate tokens after lawful access. It does not replace controlled citation-form elicitation, two independent annotators and adjudication. The project must first confirm the applicable LDC agreement, fees, use eligibility and whether the delivered package actually contains per-utterance phonemic labels. Until then, no dataset access or annotation is assumed.
+
+Primary sources:
+- LDC catalogue: https://catalog.ldc.upenn.edu/LDC2017S08
+- LDC Lao LSP: https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf
+- Public orthographic transcript sample: https://catalog.ldc.upenn.edu/desc/addenda/LDC2017S08.txt
+- Public ABH romanized transcript sample: https://catalog.ldc.upenn.edu/desc/addenda/LDC2017S08.rom.txt
+- Non-member agreement: https://catalog.ldc.upenn.edu/license/iarpa-babel-lao-agreement-non-member.pdf
+- For-profit member agreement: https://catalog.ldc.upenn.edu/license/iarpa-babel-lao-agreement-for-profit.pdf
+- Non-profit member agreement: https://catalog.ldc.upenn.edu/license/iarpa-babel-lao-agreement-not-for-profit.pdf
