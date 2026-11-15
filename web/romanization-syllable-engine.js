@@ -98,7 +98,7 @@ function normalizeAlaLc(input) {
 
 function detectRomanizationProfile(input, requested = "auto") {
   if (requested === "bgn-pcgn" || requested === "ala-lc") return requested;
-  if (requested !== "auto") return "bgn-pcgn";
+  if (requested !== "auto") return null;
   return /[āīūēōæǣʼʻ]/iu.test(input) || /oe/iu.test(input) || /ny(?=[aeiouāīūēōæǣʼ])/iu.test(input) ? "ala-lc" : "bgn-pcgn";
 }
 
@@ -405,7 +405,22 @@ function crosswalkUnit(unit, sourceSyllable, profile = "bgn-pcgn") {
 export function analyzeRomanization(input, options = {}) {
   const settings = options && typeof options === "object" ? options : {};
   const rawSource = String(input ?? "").normalize("NFC");
-  const profile = detectRomanizationProfile(rawSource, settings.profile || "auto");
+  const requestedProfile = settings.profile ?? "auto";
+  const profile = detectRomanizationProfile(rawSource, requestedProfile);
+  if (!profile) {
+    const item = unresolved(rawSource, "UNSUPPORTED_PROFILE");
+    item.warning = `Невідомий профіль романізації "${String(requestedProfile)}"; виберіть auto, bgn-pcgn або ala-lc. Вхідний текст залишено без перетворення.`;
+    return {
+      input: rawSource,
+      normalizedInput: rawSource,
+      profile: "unsupported",
+      output: rawSource ? item.ukrainian : "",
+      status: "PARTIAL",
+      syllables: rawSource ? [item] : [],
+      warnings: [item.warning],
+      source: "Unsupported romanization profile; input withheld",
+    };
+  }
   const source = profile === "ala-lc" ? normalizeAlaLc(rawSource) : rawSource;
   const parts = source.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
   const rawParts = rawSource.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
