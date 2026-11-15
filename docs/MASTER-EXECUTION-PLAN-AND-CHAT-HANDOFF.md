@@ -4466,3 +4466,13 @@ A local clone attempt was unavailable because the execution environment could no
 - Fresh branch search: **65 refs including `main`** (64 non-main branches). This count includes the current documentation work branch and preserved historical branches. It replaces the 61-ref snapshot in the earlier checkpoint.
 - Open PRs: [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199). PR #145 compare against current main: **24 ahead / 324 behind / 13 files changed**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; still diverged and not safe to merge. PR #199 is this documentation update and awaits exact-head Verify.
 - The full current 64-branch commit-graph/file-level reconciliation has not been completed; status remains PARTIAL. Previously reviewed direct-romanization snapshots are superseded as recorded. No branches deleted or force-updated.
+
+
+## Romanization hyphen-crosswalk defect — 2026-11-15
+
+- User-provided rendered example exposed a concrete integration defect in the Lao → CLDR Lao-Latin → Ukrainian secondary route: generated hyphens marking medial onsetless syllables were split as if they were whitespace-delimited source-word boundaries.
+- Root cause: `sourceSyllableGroupsForCrosswalk()` creates one syllable group per Lao whitespace/punctuation token, while `analyzeRomanization()` previously split the generated Latin token on hyphens and incremented `sourceGroupIndex` for each fragment. This shifted all later crosswalk alignments and produced false unresolved `⟦…⟧` spans.
+- PR [#214](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/214), branch `fix/romanization-hyphen-crosswalk-20261115`, preserves internal hyphens in source-aware parsing, treats them as syllable boundaries without consuming a Lao source syllable, and preserves them in Ukrainian output. Direct Latin-only input keeps its existing hyphen token-boundary behavior.
+- Added regression coverage for `ka-é-kha` with one source-word group containing three source syllables. Updated the earlier source-aware hyphen fixture to the same one-group-per-source-word contract.
+- Initial PR CI exposed a malformed regex in the first patch (fixed in the subsequent commit); the next CI run exposed the old test fixture's outdated two-groups-per-hyphen assumption (updated). Exact final-head CI remains to be checked.
+- This correction does not establish independent linguistic accuracy, add a new romanization profile, or recover tone/length omitted by the romanization. The separate IPA-gold, specialist-review, RTGS, full ALA-LC and accessibility blockers remain unchanged.

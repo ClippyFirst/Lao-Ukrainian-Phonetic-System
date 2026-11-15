@@ -70,10 +70,10 @@ test("the parser resolves CLDR preposed markers and postposed nuclei at syllable
     { onset: "n", nucleus: "ia", coda: "v" },
   ]);
   const phraseWithSource = analyzeRomanization("ékhôa-niav", {
-    sourceSyllableGroups: [
-      [{ onset: "ຂ", coda: "", vowelId: "AW_LONG" }],
-      [{ onset: "ໜ", coda: "ວ", vowelId: "IA_LONG" }],
-    ],
+    sourceSyllableGroups: [[
+      { onset: "ຂ", coda: "", vowelId: "AW_LONG" },
+      { onset: "ໜ", coda: "ວ", vowelId: "IA_LONG" },
+    ]],
   });
   assert.equal(phraseWithSource.status, "OK");
   assert.equal(phraseWithSource.output, "к'ао-ніао");
@@ -311,6 +311,22 @@ test("strict BGN/PCGN mode requires a hyphen before a medial onsetless syllable"
   assert.equal(strict.status, "OK");
   assert.equal(strict.output, "Віангчан");
   assert.equal(permissive.status, "PARTIAL");
+});
+
+test("source-aware crosswalk keeps internal hyphens within one Lao word and aligns all syllables", () => {
+  const result = analyzeRomanization("ka-é-kha", {
+    profile: "bgn-pcgn",
+    strictBoundaries: true,
+    sourceSyllableGroups: [[
+      { onset: "ກ", coda: "", vowelId: "A" },
+      { onset: "ອ", coda: "", vowelId: "EE" },
+      { onset: "ຂ", coda: "", vowelId: "A" },
+    ]],
+  });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "ка-е-к'а");
+  assert.equal(result.syllables.length, 3);
+  assert.deepEqual(result.syllables.map((unit) => unit.surface), ["ka", "é", "kha"]);
 });
 
 
