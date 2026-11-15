@@ -4335,3 +4335,10 @@ A local clone attempt was unavailable because the execution environment could no
 - No new linguistic mapping was added. The direct-input route remains bounded BGN/PCGN-derived CLDR plus a bounded ALA-LC 2012 subset. Full contextual ALA-LC, RTGS, informal variants, independent adjudicated IPA gold (0 examples), specialist review and manual accessibility QA remain PARTIAL/BLOCKED/DEFERRED as previously recorded.
 
 **Next genuine blockers:** independently adjudicated, rights-cleared Lao reference corpus and Lao-specialist review; explicit architecture decision for PR #145; exact Lao-specific RTGS source table; human device/screen-reader QA. Do not fabricate mappings or promote unsupported ALA-LC sequences to supported.
+
+
+## Fresh PR and branch inventory — 2026-11-15
+
+- Fresh branch search: **65 refs including `main`** (64 non-main branches). This count includes the current documentation work branch and preserved historical branches. It replaces the 61-ref snapshot in the earlier checkpoint.
+- Open PRs: [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) and [#199](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/199). PR #145 compare against current main: **24 ahead / 324 behind / 13 files changed**, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; still diverged and not safe to merge. PR #199 is this documentation update and awaits exact-head Verify.
+- The full current 64-branch commit-graph/file-level reconciliation has not been completed; status remains PARTIAL. Previously reviewed direct-romanization snapshots are superseded as recorded. No branches deleted or force-updated.
