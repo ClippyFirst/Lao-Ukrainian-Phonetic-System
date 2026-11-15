@@ -3785,3 +3785,64 @@ The latest failure was a test-timing issue: the selected class was present, but 
 - [Verify #42888772138 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/42888772138): 350 Python, 163 Node and 24 Chromium tests passed; repository data/evidence audit, IPA-gold schema, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
 - Method buttons now have AA text contrast in both selected and unselected states, visible control borders, and selected styling driven by `aria-pressed`. Chromium checks computed ratios, selection changes and transition completion. “Очистити” also has improved text and border contrast.
 - The stylesheet cache key changed to `20261110-contrast-1`. No linguistic or engine behavior changed. Manual physical-display/device review remains separate.
+
+## Direct Lao romanization → Ukrainian input — 2026-11-15
+
+**Base main:** bd16bf6eef98ac364d4bde8226187ab2c71d7fb9 (repository/documentation PR #171 merged)  
+**Working branch:** feat/romanization-input-to-ukrainian-20261115  
+**Tested implementation head:** 94750318c83d973b7ae1a7bcd562635a78050b8f  
+**Pull request:** #172 — https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/172
+
+### Delivered
+
+- Added a distinct input-mode switch for Lao Unicode and Latin-script romanization. Lao Unicode remains the default and retains its existing IPA-first path.
+- Added profile selection: automatic, BGN/PCGN 1966 / CLDR Lao-Latin, and a bounded ALA-LC 2012 profile.
+- Direct input reuses the onset–nucleus–coda syllable parser; it is not a character-by-character Latin-to-Cyrillic transliterator.
+- BGN/PCGN direct input applies note 4's hyphen rule for medial onsetless syllables. The official example Viangchan is parsed as v + ia + ng / ch + a + n.
+- ALA-LC normalization covers the tested macron/vowel subset, short/long e, ny palatal-nasal spelling, final s as t, and parenthesized final r/l as n for loanword cases.
+- Unsupported and ambiguous fragments remain visible in ⟦…⟧ and mark the result PARTIAL. Direct romanization input never fabricates IPA.
+- The UI displays the selected/detected profile, hides the IPA panel for romanization-only input, preserves the original input for copying, and restores the Lao/IPA-first workflow when switched back.
+- Updated README, methodology, romanization matrix, evidence registry, this handoff and the current audit.
+
+### Verification — DONE_VERIFIED for tested implementation head
+
+GitHub Actions Verify #4054, run 43696628872, on tested implementation head 94750318c83d973b7ae1a7bcd562635a78050b8f: **SUCCESS**.
+
+- 350 Python tests passed.
+- 174 Node tests passed.
+- 27 Chromium browser tests passed.
+- Independent IPA gold corpus structure validation passed (the gold corpus remains empty).
+- Repository data/evidence audit passed.
+- External-G2P harness syntax and CLI validation passed.
+- Locked browser dependency installation passed.
+- Browser build and canonical generated-data reproducibility check passed.
+- Real Chromium UI tests against the built site passed.
+- Built-page and relative-asset checks passed.
+
+A local clone was attempted but unavailable because the execution environment could not resolve github.com. Local tests were therefore not claimed; the exact-head GitHub Actions run supplied the test evidence.
+
+### Task ledger
+
+| Task | Status | Acceptance / remaining condition |
+|---|---|---|
+| Direct Latin input UI and separation from Lao/IPA-first mode | DONE_VERIFIED | Exact-head Chromium tests passed |
+| BGN/PCGN standalone conversion | DONE_VERIFIED | Unit/browser fixtures passed; PCGN note 4 boundary rule applied |
+| ALA-LC 2012 normalization subset | PARTIAL | Implemented and tested subset; not full ALA-LC contextual conformance |
+| Automatic profile detection | PARTIAL | Heuristic tested; broad real-world false-positive/false-negative corpus still needed |
+| Preserve unsupported and ambiguous spans | DONE_VERIFIED | PARTIAL status and visible unresolved fragments covered by tests |
+| Avoid invented IPA from romanization-only input | DONE_VERIFIED | IPA panel hidden; direct route does not call phonetic engine |
+| RTGS-for-Lao profile | BLOCKED | Exact Lao-specific adaptation table and reviewed examples required |
+| Informal French-style / karaoke / mixed spellings | DEFERRED | Define a stable scope and evidence corpus first |
+| Independent linguistic accuracy validation | BLOCKED | Rights-cleared expert-adjudicated examples and Lao-specialist review required |
+| Manual physical-device and assistive-technology QA | BLOCKED | Human review remains outstanding |
+
+### Evidence and limits
+
+- ALA-LC table: Library of Congress, Lao Romanization Table (2012), registered as SRC-ALA-LC-LAO-2012.
+- The LDC Lao document lists BGN/PCGN, RTGS and ALA-LC among schemes used for Lao, but the cited section does not provide a complete normative Lao-specific RTGS table. The implemented profiles are not mislabeled as RTGS.
+- ALA-LC support is bounded: glottal notation, labialized w onsets, some contextual semivowel/vowel alternations and broader loanword/boundary conventions remain partial.
+- Automatic profile detection is a convenience heuristic, not a standards classifier. Explicit profile selection is preferred when known.
+- Romanization-only input cannot restore tone, vowel length, consonant-class distinctions or other information omitted by the source convention.
+- The direct mode is a phonetic/orthographic transcription route, not semantic translation of Lao vocabulary.
+
+**Readiness:** engineering-verified partial prototype, not release-ready as a universal romanization converter. Independent IPA gold remains 0; RTGS and other variable romanization conventions remain unsupported.

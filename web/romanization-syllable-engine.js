@@ -21,7 +21,7 @@ const NUCLEI = new Map([
 // cited EKI/UNGEGN table; the provisional CLDR transform itself does not
 // implement all of these contextual distinctions.
 const CODAS = new Map([
-  ["ng", "нг"], ["gn", "й"], ["k", "к"], ["d", "т"], ["t", "т"],
+  ["ng", "нг"], ["gn", "й"], ["k", "к"], ["d", "т"], ["t", "т"], ["s", "т"],
   ["n", "н"], ["b", "п"], ["p", "п"], ["m", "м"],
   ["r", "л"], ["l", "л"], ["v", "о"], ["y", "й"],
 ]);
@@ -33,13 +33,57 @@ const SORTED_NUCLEI = [...NUCLEI.keys()].sort((a, b) => b.length - a.length);
 const SORTED_CODAS = [...CODAS.keys()].sort((a, b) => b.length - a.length);
 const SEPARATORS = /^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
 
-function codaTarget(coda, nucleus) {
+function codaTarget(coda, nucleus, profile = "bgn-pcgn") {
+  if (profile === "ala-lc" && (coda === "r" || coda === "l")) return "н";
   if (coda === "v") return nucleus === "i" ? "оу" : "о";
   return CODAS.get(coda);
 }
 
 function mapCase(value, source) {
-  return source && source === source.toUpperCase() ? value.toUpperCase() : value;
+  if (!source) return value;
+  if (source === source.toUpperCase()) return value.toUpperCase();
+  if (source[0] && source[0] === source[0].toUpperCase() && source[0] !== source[0].toLowerCase()) {
+    return value[0].toUpperCase() + value.slice(1);
+  }
+  return value;
+}
+
+const ALA_LC_REPLACEMENTS = new Map([
+  ["ư̄a", "ua"], ["ūa", "oua"], ["īa", "ia"], ["āi", "ai"], ["āo", "ao"],
+  ["œ̄", "eu"], ["œ", "eu"], ["ǣ", "è"], ["æ", "è"], ["ǭ", "o"], ["ǫ", "o"],
+  ["ư̄", "u"], ["ư", "u"], ["ū", "ou"], ["ā", "a"], ["ī", "i"],
+  ["ē", "é"], ["e", "é"], ["ō", "ô"], ["u", "ou"], ["ny", "gn"],
+]);
+
+function replacePreservingCase(token, replacement) {
+  if (token === token.toUpperCase()) return replacement.toUpperCase();
+  if (token[0] === token[0].toUpperCase() && token[0] !== token[0].toLowerCase()) {
+    return replacement[0].toUpperCase() + replacement.slice(1);
+  }
+  return replacement;
+}
+
+function normalizeAlaLc(input) {
+  const source = input.toLowerCase();
+  const tokens = [...ALA_LC_REPLACEMENTS.keys()].sort((a, b) => b.length - a.length);
+  let normalized = "";
+  for (let index = 0; index < source.length;) {
+    const token = tokens.find((candidate) => source.startsWith(candidate, index));
+    if (token) {
+      normalized += ALA_LC_REPLACEMENTS.get(token);
+      index += token.length;
+    } else {
+      normalized += source[index];
+      index += 1;
+    }
+  }
+  return normalized;
+}
+
+function detectRomanizationProfile(input, requested = "auto") {
+  if (requested === "bgn-pcgn" || requested === "ala-lc") return requested;
+  if (requested !== "auto") return "bgn-pcgn";
+  return /[āīūēōæǣǫǭœưʻ]/iu.test(input) || /ny(?=[aeiouāīūēōæǣǫǭœư])/iu.test(input) ? "ala-lc" : "bgn-pcgn";
 }
 
 function matchesAt(source, index, tokens) {
@@ -53,8 +97,11 @@ function longestMatchesAt(source, index, tokens) {
   return matches.filter((token) => token.length === longest);
 }
 
-function candidatesAt(source, index) {
+function candidatesAt(source, index, profile = "bgn-pcgn", strictBoundaries = false) {
   const candidates = [];
+  const codaTokens = profile === "ala-lc"
+    ? SORTED_CODAS
+    : SORTED_CODAS.filter((token) => token !== "s" && token !== "w");
 
   // Ordinary Latin order: onset + nucleus + optional coda.
   for (const onset of longestMatchesAt(source, index, SORTED_ONSETS)) {
@@ -66,12 +113,12 @@ function candidatesAt(source, index) {
         onset, nucleus, coda: "", order: "onset-first",
         ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus),
       });
-      for (const coda of matchesAt(source, nucleusEnd, SORTED_CODAS)) {
+      for (const coda of matchesAt(source, nucleusEnd, codaTokens)) {
         const end = nucleusEnd + coda.length;
         candidates.push({
           start: index, end, surface: source.slice(index, end),
           onset, nucleus, coda, order: "onset-first",
-          ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
+          ukrainian: ONSETS.get(onset) + NUCLEI.get(nucleus) + codaTarget(coda, nucleus, profile),
         });
       }
     }
@@ -109,11 +156,11 @@ function candidatesAt(source, index) {
         ukrainian: ONSETS.get(onset) + NUCLEI.get(outputNucleus),
       };
       candidates.push(base);
-      for (const coda of longestMatchesAt(source, end, SORTED_CODAS)) {
+      for (const coda of longestMatchesAt(source, end, codaTokens)) {
         const codaEnd = end + coda.length;
         candidates.push({
           ...base, end: codaEnd, surface: source.slice(index, codaEnd),
-          coda, ukrainian: base.ukrainian + codaTarget(coda, outputNucleus),
+          coda, ukrainian: base.ukrainian + codaTarget(coda, outputNucleus, profile),
         });
       }
     }
@@ -121,7 +168,7 @@ function candidatesAt(source, index) {
     // romanization, but not when the next consonant can be the onset following
     // this preposed vowel (that is the normal CLDR order for Lao).
     const nextHasOnset = matchesAt(source, onsetStart, SORTED_ONSETS).length > 0;
-    if (!nextHasOnset) {
+    if ((!strictBoundaries || index === 0) && !nextHasOnset) {
       candidates.push({
         start: index, end: index + nucleus.length,
         surface: source.slice(index, index + nucleus.length),
@@ -131,23 +178,27 @@ function candidatesAt(source, index) {
     }
   }
 
-  // Vowel + coda, for onsetless syllables.
-  for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
-    if (PREPOSED_NUCLEI.has(nucleus)) continue;
-    const nucleusEnd = index + nucleus.length;
-    for (const coda of longestMatchesAt(source, nucleusEnd, SORTED_CODAS)) {
-      const end = nucleusEnd + coda.length;
-      candidates.push({
-        start: index, end, surface: source.slice(index, end),
-        onset: "", nucleus, coda, order: "vowel-only",
-        ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus),
-      });
+  // Vowel + coda, for onsetless syllables. In strict direct-input mode, an
+  // unmarked onsetless syllable is allowed only at the beginning of a
+  // hyphen-delimited word; BGN/PCGN note 4 requires a hyphen for medial ອ.
+  if (!strictBoundaries || index === 0) {
+    for (const nucleus of matchesAt(source, index, SORTED_NUCLEI)) {
+      if (PREPOSED_NUCLEI.has(nucleus)) continue;
+      const nucleusEnd = index + nucleus.length;
+      for (const coda of longestMatchesAt(source, nucleusEnd, codaTokens)) {
+        const end = nucleusEnd + coda.length;
+        candidates.push({
+          start: index, end, surface: source.slice(index, end),
+          onset: "", nucleus, coda, order: "vowel-only",
+          ukrainian: NUCLEI.get(nucleus) + codaTarget(coda, nucleus, profile),
+        });
+      }
     }
   }
   return candidates;
 }
 
-function parseWord(word, sourceGroup = null) {
+function parseWord(word, sourceGroup = null, profile = "bgn-pcgn", strictBoundaries = false) {
   const memo = new Map();
   function solve(index, sourceIndex) {
     if (index === word.length) {
@@ -158,7 +209,7 @@ function parseWord(word, sourceGroup = null) {
     if (memo.has(key)) return memo.get(key);
     let count = 0;
     let path = null;
-    for (const candidate of candidatesAt(word, index)) {
+    for (const candidate of candidatesAt(word, index, profile, strictBoundaries)) {
       if (sourceGroup && !crosswalkUnit(candidate, sourceGroup[sourceIndex])) continue;
       const next = solve(candidate.end, sourceIndex + 1);
       if (!next.count) continue;
@@ -281,8 +332,11 @@ function crosswalkUnit(unit, sourceSyllable) {
 
 export function analyzeRomanization(input, options = {}) {
   const settings = options && typeof options === "object" ? options : {};
-  const source = String(input ?? "").normalize("NFC");
+  const rawSource = String(input ?? "").normalize("NFC");
+  const profile = detectRomanizationProfile(rawSource, settings.profile || "auto");
+  const source = profile === "ala-lc" ? normalizeAlaLc(rawSource) : rawSource;
   const parts = source.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
+  const rawParts = rawSource.split(/(\s+|[,.!?;:()[\]{}"“”]+|-+)/u).filter(Boolean);
   const syllables = [];
   let output = "";
   let partial = false;
@@ -292,13 +346,16 @@ export function analyzeRomanization(input, options = {}) {
   let sourceIndex = 0;
   let sourceGroupIndex = 0;
 
-  for (const part of parts) {
+  for (let partIndex = 0; partIndex < parts.length; partIndex += 1) {
+    const part = parts[partIndex];
+    const originalPart = rawParts[partIndex] ?? part;
     if (SEPARATORS.test(part) || /^[0-9\u0ED0-\u0ED9]+$/u.test(part)) {
       output += part;
       continue;
     }
     const sourceGroup = sourceSyllableGroups ? (sourceSyllableGroups[sourceGroupIndex++] || []) : null;
-    const parsed = parseWord(part, sourceSyllableGroups ? sourceGroup : null);
+    const strictBoundaries = settings.strictBoundaries === true;
+    const parsed = parseWord(part.toLowerCase(), sourceSyllableGroups ? sourceGroup : null, profile, strictBoundaries);
     if (parsed.count === 1 && parsed.path) {
       const sourceSlice = sourceSyllableGroups ? sourceGroup : sourceOnsets
         ? sourceOnsets.slice(sourceIndex, sourceIndex + parsed.path.length)
@@ -310,9 +367,10 @@ export function analyzeRomanization(input, options = {}) {
         : parsed.path;
       const validCrosswalk = aligned && crossed.every(Boolean);
       if (validCrosswalk) {
-        const units = crossed.map((unit) => ({
+        const units = crossed.map((unit, index) => ({
           ...unit,
-          ukrainian: mapCase(unit.ukrainian, unit.surface),
+          originalSurface: originalPart,
+          ukrainian: mapCase(unit.ukrainian, originalPart === originalPart.toUpperCase() || index === 0 ? originalPart : ""),
           status: "OK",
           warning: "",
         }));
@@ -320,7 +378,7 @@ export function analyzeRomanization(input, options = {}) {
         output += units.map((unit) => unit.ukrainian).join("");
         if (sourceOnsets) sourceIndex += parsed.path.length;
       } else {
-        const item = unresolved(part, "UNRESOLVED");
+        const item = unresolved(originalPart, "UNRESOLVED");
         if (aligned && sourceSlice?.length === 1 && parsed.path.length === 1) {
           const sourceUnit = sourceSlice[0];
           item.sourceOnset = typeof sourceUnit === "string" ? sourceUnit : sourceUnit?.onsetForm || sourceUnit?.onset;
@@ -344,9 +402,9 @@ export function analyzeRomanization(input, options = {}) {
         if (sourceOnsets) sourceIndex += sourceSlice.length;
       }
     } else {
-      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part) : null;
+      const unrestricted = sourceSyllableGroups && parsed.count === 0 ? parseWord(part.toLowerCase(), null, profile, strictBoundaries) : null;
       const sourceMismatch = Boolean(unrestricted?.count);
-      const item = unresolved(part, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
+      const item = unresolved(originalPart, parsed.count > 1 ? "AMBIGUOUS" : "UNRESOLVED");
       if (sourceMismatch) {
         item.warning = "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
         if (sourceGroup.length === 1 && unrestricted.count === 1) {
@@ -374,16 +432,20 @@ export function analyzeRomanization(input, options = {}) {
   }
 
   return {
-    input: source,
+    input: rawSource,
+    normalizedInput: source,
+    profile,
     output,
     status: partial ? "PARTIAL" : "OK",
     syllables,
     warnings,
-    source: "CLDR Lao-Latin (provisional; BGN/PCGN 1966 romanization basis) → Lao-grapheme crosswalk → Ukrainian syllable adapter",
+    source: profile === "ala-lc"
+      ? "ALA-LC 2012 → normalized syllable profile → Ukrainian practical syllable adapter (partial where distinctions are not represented)"
+      : "BGN/PCGN 1966 / CLDR Lao-Latin romanization → Ukrainian syllable adapter",
   };
 }
 
 export function romanizationToUkrainian(input, options = {}) {
   const result = analyzeRomanization(input, options);
-  return { output: result.output, status: result.status, syllables: result.syllables, source: result.source, warnings: result.warnings };
+  return { output: result.output, status: result.status, syllables: result.syllables, source: result.source, profile: result.profile, normalizedInput: result.normalizedInput, warnings: result.warnings };
 }

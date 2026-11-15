@@ -127,7 +127,7 @@ test("the UI passes the parsed Lao onsets into romanization analysis and copy",(
  assert.match(app,/sourceSyllableGroups:\s*sourceSyllableGroupsForCrosswalk\(input\.value\)/u);
  assert.match(app,/onsetForm:\s*syllable\.onsetForm/u);
  assert.match(app,/vowelId:\s*syllable\.rules\?\.find/u);
- assert.match(app,/romanization-syllable-engine\.js\?v=20261031-source-vowel-crosswalk/u);
+ assert.match(app,/romanization-syllable-engine\.js\?v=20261115-direct-romanization-input-1/u);
  assert.ok(app.includes("Голосний шаблон"));
  assert.equal(app.includes("sourceOnsetsForCrosswalk"),false);
  assert.equal(app.includes("sourceOnsetGroupsForCrosswalk"),false);
@@ -283,4 +283,15 @@ test("full Lao mixed-script multiline text preserves separators, native numerals
  const result=romanizeLao(input);
  assert.equal(result.output,"kha\tABC-42\r\n໑໒໓, ខ្មែរ 😀!");
  assert.equal(result.status,"PARTIAL");
+});
+
+
+test("the service exposes a separate direct romanization input mode and explicit profile selector", () => {
+ const html=readFileSync(new URL("../index.html",import.meta.url),"utf8");
+ const app=readFileSync(new URL("../web/app.js",import.meta.url),"utf8");
+ assert.ok(html.includes('id="input-kind-romanization"'));
+ assert.ok(html.includes('id="romanization-profile"'));
+ assert.ok(html.includes('value="ala-lc"'));
+ assert.match(app,/function renderRomanizationInput\(\)/u);
+ assert.match(app,/inputKind === "romanization"/u);
 });

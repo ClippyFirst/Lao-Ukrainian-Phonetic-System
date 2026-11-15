@@ -245,3 +245,67 @@ test("source vowel identity distinguishes A plus final m from the AM nucleus", (
     ["AM", "am", ""],
   );
 });
+
+
+test("standalone BGN/PCGN romanization can be converted without Lao-script side data", () => {
+  const result = analyzeRomanization("Viangchan", { strictBoundaries: true });
+  assert.equal(result.profile, "bgn-pcgn");
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "Віангчан");
+});
+
+test("ALA-LC macrons and palatal nasal spelling normalize through a bounded syllable adapter", () => {
+  const result = analyzeRomanization("nyā", { profile: "ala-lc" });
+  assert.equal(result.profile, "ala-lc");
+  assert.equal(result.normalizedInput, "gna");
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "ньа");
+});
+
+test("ALA-LC short and long back vowels use the documented Ukrainian target units", () => {
+  assert.equal(analyzeRomanization("kū", { profile: "ala-lc" }).output, "ку");
+  assert.equal(analyzeRomanization("kư", { profile: "ala-lc" }).output, "ки");
+});
+
+test("ALA-LC final s is interpreted as a Lao stop coda, not as an onset", () => {
+  const result = analyzeRomanization("kās", { profile: "ala-lc" });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "кат");
+});
+
+test("auto profile detection recognizes ALA-LC diacritics but does not rewrite ordinary BGN text", () => {
+  assert.equal(analyzeRomanization("nyā").profile, "ala-lc");
+  assert.equal(analyzeRomanization("kha").profile, "bgn-pcgn");
+});
+
+test("title-case and all-caps romanization preserve initial capitalization", () => {
+  assert.equal(analyzeRomanization("Viangchan", { strictBoundaries: true }).output, "Віангчан");
+  assert.equal(analyzeRomanization("KHA", { strictBoundaries: true }).output, "К'А");
+});
+
+test("unsupported ALA-LC glottal notation remains visible instead of being guessed", () => {
+  const result = analyzeRomanization("ʻīk", { profile: "ala-lc" });
+  assert.equal(result.status, "PARTIAL");
+  assert.match(result.output, /⟦ʻīk⟧/u);
+});
+
+
+test("strict BGN/PCGN mode requires a hyphen before a medial onsetless syllable", () => {
+  const strict = analyzeRomanization("Viangchan", { strictBoundaries: true });
+  const permissive = analyzeRomanization("Viangchan", { strictBoundaries: false });
+  assert.equal(strict.status, "OK");
+  assert.equal(strict.output, "Віангчан");
+  assert.equal(permissive.status, "PARTIAL");
+});
+
+
+test("ALA-LC short and long e spellings normalize to the same Ukrainian vowel class", () => {
+  assert.equal(analyzeRomanization("ke", { profile: "ala-lc" }).output, "ке");
+  assert.equal(analyzeRomanization("kē", { profile: "ala-lc" }).output, "ке");
+});
+
+test("ALA-LC loanword coda r and l use the table's parenthesized n value", () => {
+  assert.equal(analyzeRomanization("kar", { profile: "ala-lc" }).output, "кан");
+  assert.equal(analyzeRomanization("kal", { profile: "ala-lc" }).output, "кан");
+  assert.equal(analyzeRomanization("kar", { profile: "bgn-pcgn" }).output, "кал");
+});

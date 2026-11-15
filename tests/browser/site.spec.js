@@ -358,7 +358,7 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
   await page.goto("/");
   await page.locator("#lao-input").fill("ຂາ");
   await expect(page.locator("#results")).toBeVisible();
-  const result = await page.locator(".method-switch").evaluate((group) => {
+  const result = await page.locator(".output-method-switch").evaluate((group) => {
     const luminance = (value) => {
       const channels = value.match(/[\d.]+/g).slice(0, 3).map(Number).map((channel) => {
         const normalized = channel / 255;
@@ -396,7 +396,7 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
   await page.locator("#mode-romanization").click();
   await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#mode-phonetic")).toHaveAttribute("aria-pressed", "false");
-  const toggled = await page.locator(".method-switch").evaluate((group) =>
+  const toggled = await page.locator(".output-method-switch").evaluate((group) =>
     [...group.querySelectorAll("button")].map((button) => ({
       name: button.textContent.trim(),
       pressed: button.getAttribute("aria-pressed"),
@@ -408,4 +408,43 @@ test("mode switch buttons meet WCAG AA text and control-boundary contrast in bot
   await expect.poll(() => page.locator("#mode-romanization").evaluate((button) => getComputedStyle(button).backgroundColor)).not.toBe("rgb(255, 252, 245)");
   expect(toggled.find((button) => button.name === "За романізацією").pressed).toBe("true");
   expect(toggled.find((button) => button.name === "За вимовою").pressed).toBe("false");
+});
+
+
+test("romanization can be entered directly and converted without Lao-script input", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Романізація латинкою" }).click();
+  const input = page.locator("#lao-input");
+  await expect(input).toHaveAttribute("lang", "lo-Latn");
+  await expect(input).toHaveAttribute("aria-label", "Введення лаоської романізації латинкою");
+  await input.fill("Viangchan");
+  await expect(page.locator("#output")).toHaveText("Віангчан");
+  await expect(page.locator("#status")).toContainText("Готово");
+  await expect(page.locator('[data-result-panel="ipa"]')).toBeHidden();
+  await expect(page.locator("#romanization-trace")).toBeVisible();
+  await expect(page.locator("#copy-romanization")).toBeEnabled();
+});
+
+test("direct romanization input exposes ALA-LC profile selection and partial diagnostics", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#input-kind-romanization").click();
+  await page.locator("#romanization-profile").selectOption("ala-lc");
+  await page.locator("#lao-input").fill("nyā");
+  await expect(page.locator("#output")).toHaveText("ньа");
+  await expect(page.locator("#romanization-analysis-status")).toContainText("Готово");
+  await page.locator("#lao-input").fill("ʻīk");
+  await expect(page.locator("#output")).toContainText("⟦ʻīk⟧");
+  await expect(page.locator("#romanization-analysis-status")).toContainText("Частковий аналіз");
+});
+
+test("switching back from romanization input restores the Lao IPA-first workflow", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#input-kind-romanization").click();
+  await page.locator("#lao-input").fill("Viangchan");
+  await expect(page.locator("#output")).toHaveText("Віангчан");
+  await page.locator("#input-kind-lao").click();
+  await expect(page.locator("#lao-input")).toHaveAttribute("lang", "lo");
+  await page.locator("#lao-input").fill("ຂາ");
+  await expect(page.locator("#output")).toHaveText("к'а");
+  await expect(page.locator('[data-result-panel="ipa"]')).toBeVisible();
 });
