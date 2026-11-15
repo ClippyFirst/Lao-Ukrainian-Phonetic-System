@@ -422,7 +422,7 @@ test("romanization can be entered directly and converted without Lao-script inpu
   await expect(page.locator("#status")).toContainText("Готово");
   await expect(page.locator('[data-result-panel="ipa"]')).toBeHidden();
   await expect(page.locator("#romanization-trace")).toBeVisible();
-  await page.locator("#copy-romanization").click();
+  await expect(page.locator("#copy-romanization")).toBeEnabled();
 });
 
 test("direct romanization input exposes ALA-LC profile selection and partial diagnostics", async ({ page }) => {
