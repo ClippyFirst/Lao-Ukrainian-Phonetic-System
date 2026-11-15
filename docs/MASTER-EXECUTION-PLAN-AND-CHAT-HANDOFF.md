@@ -1,4 +1,53 @@
-# Latest continuation checkpoint — 2026-11-15 (PR #177 merged)
+# Latest continuation checkpoint — 2026-11-15 (PR #178 merged)
+
+**Starting `main`:** `de9c2516d973f2cd721667e5505e86693cff453d`  
+**PR #178 merge / resulting `main`:** `034a2db1f912cd3bc0d552678871c73446977e9c`  
+**PR #178:** [docs: reconcile current main and PR 177 verification](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/178) — merged.  
+**PR #178 exact-head Verify #4097:** [run 43712551810 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43712551810).  
+**Post-merge main Verify #4098:** [run 43719400156 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43719400156).  
+**Latest runtime Pages deployment:** #97 / [run 43709787334 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709787334), deployed runtime code from PR #176. PRs #177 and #178 are documentation-only; neither required a new runtime deployment.
+
+## PR and branch reconciliation
+
+Only PR #145 remains open. Its head is `a70769d7005e40e15b68a3df181cadbfa4cce51f`; current `main` is 309 commits ahead and the PR head is 24 commits ahead (GitHub compare `main...head`, divergent histories). The PR changes 13 files and proposes making neural inference the default CLI/Python route with target adaptation opt-in.
+
+The typed stage-one IPA boundary (`MekongPhonEngine.transcribe_ipa()`, `MekongPhonIPAResult`, and the public API) is already present on current `main` through separately merged work. The material unresolved change in PR #145 is therefore the default-selection/product contract, not the existence of the stage-one API. Its exact-head Verify runs #2588/#2589 and neural benchmark #42465378241 passed on the historical branch head, but those results do not certify its 24-commit-ahead branch against today's `main`. The current system specification explicitly keeps `hybrid-deterministic` as the default and neural inference as an explicit alternative. PR #145 also records maintainer comments that it must remain separate until the production architecture decision is revisited.
+
+**Disposition: BLOCKED / leave open and untouched.** Do not merge, rebase wholesale, close, or change the default without an explicit owner-level architecture decision. If that decision changes, port/reconcile only the relevant CLI/API/tests against current `main`, then update the system specification, README, web/runtime deployment contract and acceptance tests together. Do not imply the static Pages UI uses MekongPhon; it remains browser-native deterministic JavaScript.
+
+## Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Direct BGN/PCGN-derived CLDR romanization input | DONE_VERIFIED | PR #172 merged; exact-head verification passed |
+| Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
+| Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head Verify #4092 and main Verify #4094 passed |
+| Documentation synchronization for PR #176 | DONE_VERIFIED | PR #177 merged; exact-head Verify #4095 and main Verify #4096 passed |
+| Current-main / PR #177 evidence reconciliation | DONE_VERIFIED | PR #178 merged; Verify #4097 and post-merge Verify #4098 passed |
+| Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, loanword and word-boundary handling need source-grounded parsing and reviewed Ukrainian target decisions |
+| Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
+| RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
+| Informal/French-style/karaoke mixed romanization | DEFERRED | Define scope and source-backed sample corpus first |
+| Independent phonetic accuracy validation | BLOCKED | Rights-cleared, expert-adjudicated IPA gold corpus remains empty (0 examples) |
+| Physical-device and assistive-technology QA | BLOCKED | Requires human review on actual devices and screen readers |
+| PR #145 neural-first CLI default | BLOCKED | Explicit architecture decision required; stage-one API already exists on main |
+
+## Verification and execution limits
+
+- PR #178 exact-head Verify #4097 / run 43712551810 passed all workflow steps.
+- Post-merge main Verify #4098 / run 43719400156 passed all workflow steps: IPA-gold schema, repository data/evidence audit, Python tests, optional external-G2P syntax/CLI, locked browser-test dependency install, Node/browser-engine tests, build and canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks.
+- Exact test counts were not extracted from the #4097/#4098 job logs; do not infer them from older commits.
+- Runtime deployment #97 / run 43709787334 succeeded and included a live smoke test. No new deployment was needed for documentation-only PRs #177/#178.
+- Local clone/test execution remains unavailable in this environment because the earlier clone attempt could not resolve `github.com`. No local test result is claimed.
+- Historical branches remain preserved; no branch deletion, force update or blind merge was performed.
+
+## Next safe work
+
+No further ALA-LC Ukrainian mappings can be promoted without reviewed target-language evidence. RTGS and independent IPA gold remain blocked by missing normative/adjudicated sources. The next actionable decision is whether the owner intends to change the CLI/Python default from deterministic to neural; until then PR #145 remains open and the current contract is preserved.
+
+---
+
+# Historical checkpoint — 2026-11-15 (PR #177 merged)
 
 **Current `main`:** `de9c2516d973f2cd721667e5505e86693cff453d`  
 **Starting point for this continuation:** `de9c2516d973f2cd721667e5505e86693cff453d`  
