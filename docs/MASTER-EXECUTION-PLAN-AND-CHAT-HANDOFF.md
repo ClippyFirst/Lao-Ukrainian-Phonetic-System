@@ -5,6 +5,7 @@
 **PR #184 documentation merge / current `main`:** `ecc997d356d206640862097d0bff6e7da3c484e3`  
 **PR #184:** [docs: checkpoint merged ALA-LC crosswalk and deployment](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/184) — merged.  
 **PR #184 exact-head Verify #4137:** [run 43722921838 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722921838) on `70d78f595b95e6e401f6fa20b5cfac066e0e50f2`.  
+**Post-merge main Verify #4138:** [run 43723008453 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43723008453) on `ecc997d356d206640862097d0bff6e7da3c484e3`.  
 **PR #182:** [fix: align ALA-LC final crosswalk with LOC notes 2 and 4](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/182) — merged.  
 **Exact-head Verify #4128:** [run 43722541781 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722541781) on `9779b0ee05c8be3de2c3da7c18f8e0b453181d66`.  
 **Post-merge main Verify #4131:** [run 43722677303 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43722677303) on `72e9677b0dd4fc863c90d4cec773731fb451109a`.  
@@ -23,7 +24,7 @@ The canonical branch is `main` at `ecc997d356d206640862097d0bff6e7da3c484e3`. Th
 | Bounded ALA-LC 2012 subset | DONE_VERIFIED | PR #173 merged; LOC-derived supported forms and exact-main CI |
 | Fail-closed guard for enumerated unsupported ALA-LC forms | DONE_VERIFIED | PR #176 merged; exact-head and main verification passed |
 | Profile-specific ALA-LC source crosswalk for LOC Notes 1, 2 and 4 | DONE_VERIFIED | PR #182 merged; exact-head Verify #4128 and post-merge Verify #4131 passed; Pages #98 deployed and smoke-tested |
-| README, romanization matrix, handoff and audit reconciliation | DONE_VERIFIED | PR #184 merged; exact-head Verify #4137 passed; current main is `ecc997d356d206640862097d0bff6e7da3c484e3` |
+| README, romanization matrix, handoff and audit reconciliation | DONE_VERIFIED | PR #184 merged; exact-head Verify #4137 and post-merge main Verify #4138 passed; current main is `ecc997d356d206640862097d0bff6e7da3c484e3` |
 | Full contextual ALA-LC conformance | PARTIAL | Initial `ʻ`, medial `w` clusters, contextual `ວ`, unsupported vowels, loanword and word-boundary handling remain incomplete |
 | Automatic profile detection | PARTIAL | Heuristic fixtures exist; broad real-world false-positive/negative corpus absent |
 | RTGS-for-Lao | BLOCKED | No complete normative Lao-specific adaptation table and reviewed examples |
