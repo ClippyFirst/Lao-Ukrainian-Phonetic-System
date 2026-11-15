@@ -43,7 +43,7 @@ The second route is not a letter-by-letter Latin-to-Cyrillic transliterator. It 
 
 ### Direct Latin input and profile limits
 
-The service accepts a romanized Lao string directly, without requiring a Lao-script source. The profile selector supports BGN/PCGN 1966 / CLDR Lao-Latin and a bounded ALA-LC 2012 normalization profile; automatic selection is only a heuristic based on distinctive ALA-LC diacritics and the `ny` spelling before a vowel. When the convention is known, explicit selection is preferred.
+The service accepts a romanized Lao string directly, without requiring a Lao-script source. The profile selector supports BGN/PCGN 1966 / CLDR Lao-Latin and a bounded ALA-LC 2012 normalization profile; automatic selection is only a heuristic based on distinctive ALA-LC diacritics, modifier-apostrophe vowels, `oe`, and the `ny` spelling before a vowel. When the convention is known, explicit selection is preferred.
 
 Direct BGN/PCGN parsing also applies note 4 from the 1966 agreement: a word-initial onsetless vowel may be unmarked, but a medial onsetless syllable must be hyphenated. This keeps the documented Viangchan parse unambiguous without relaxing the parser's general ambiguity gate.
 
