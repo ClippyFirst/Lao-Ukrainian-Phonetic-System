@@ -34,7 +34,8 @@ const SORTED_CODAS = [...CODAS.keys()].sort((a, b) => b.length - a.length);
 const SEPARATORS = /^(\s+|[,.!?;:()[\]{}"“”]+|-+)$/u;
 
 function codaTarget(coda, nucleus) {
-  if (coda === "v" || coda === "w") return nucleus === "i" ? "оу" : "о";
+  if (coda === "v") return nucleus === "i" ? "оу" : "о";
+  if (coda === "w") return "о";
   return CODAS.get(coda);
 }
 
@@ -74,7 +75,7 @@ function normalizeAlaLc(input) {
 function detectRomanizationProfile(input, requested = "auto") {
   if (requested === "bgn-pcgn" || requested === "ala-lc") return requested;
   if (requested !== "auto") return "bgn-pcgn";
-  return /[āīūēōæǣǫǭœưʻ]/iu.test(input) || /ny/iu.test(input) ? "ala-lc" : "bgn-pcgn";
+  return /[āīūēōæǣǫǭœưʻ]/iu.test(input) || /ny(?=[aeiouāīūēōæǣǫǭœư])/iu.test(input) ? "ala-lc" : "bgn-pcgn";
 }
 
 function matchesAt(source, index, tokens) {
@@ -433,5 +434,5 @@ export function analyzeRomanization(input, options = {}) {
 
 export function romanizationToUkrainian(input, options = {}) {
   const result = analyzeRomanization(input, options);
-  return { output: result.output, status: result.status, syllables: result.syllables, source: result.source, warnings: result.warnings };
+  return { output: result.output, status: result.status, syllables: result.syllables, source: result.source, profile: result.profile, normalizedInput: result.normalizedInput, warnings: result.warnings };
 }
