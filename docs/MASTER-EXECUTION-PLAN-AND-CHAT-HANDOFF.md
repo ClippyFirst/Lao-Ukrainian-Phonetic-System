@@ -1,10 +1,20 @@
 
-# Current continuation — 2026-11-15 (post-PR #174)
+# Historical checkpoint — 2026-11-15 (post-PR #174)
 
-**Canonical base:** `main` at `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`  
+**Canonical base at this checkpoint:** `main` at `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`  
 **Continuation branch:** `docs/refresh-romanization-handoff-20261115`  
 **Previous work:** PR #171 (repository/documentation consolidation), #172 (direct romanization input), #173 (ALA-LC 2012 conformance correction), and #174 (handoff/deployment evidence) are all merged. PR #171 merged as `bd16bf6eef98ac364d4bde8226187ab2c71d7fb9`; #173 as `3f4e2df2193ffbfad10a68bbdde30dc4f9f8c8f2`; #174 as `ed3afe5e4f090637d0feaa49fbe2d655cea1fc9e`.
-**Open PR inventory:** #145 is the only open PR found. It proposes a neural-first CLI default and remains unmerged because it conflicts with the deterministic-default contract; leave it open pending an explicit architecture decision.
+**Open implementation PR inventory at this checkpoint:** #145 proposed a neural-first CLI default and remained unmerged because it conflicts with the deterministic-default contract; it remains open pending an explicit architecture decision.
+
+# Latest continuation checkpoint — 2026-11-15 (PR #176 merged)
+
+**Current `main`:** `05f2eb231e1bdbda7e12362383122c8f4fb50c70`  
+**PR #176:** [fix: withhold unsupported ALA-LC vowel sequences](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/176) — merged as `05f2eb231e1bdbda7e12362383122c8f4fb50c70`.  
+**Exact-head Verify #4092:** [run 43709710488 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709710488).  
+**Post-merge main Verify #4094:** [run 43709787347 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709787347).  
+**Pages deployment #97:** [run 43709787334 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43709787334), including deployed-site smoke test.
+
+The PR added an evidence-backed fail-closed guard for LOC ALA-LC 2012 forms outside the implemented subset. The unsupported forms remain PARTIAL; no new Ukrainian target values were inferred. Its regression suite and all existing exact-head and post-merge checks passed. The README now points to this current main commit and exact-main evidence.
 
 ## Follow-up: fail-closed guard for unimplemented LOC ALA-LC vowels — 2026-11-15
 
@@ -15,9 +25,9 @@ A complete re-read of the primary LOC 2012 table found ALA-LC forms outside the 
 
 Regression tests cover the full list above and LOC examples `khwā`, `khwǣng`, `būak`. The romanization matrix and direct-input audit now enumerate the complete known boundary. Source: [LOC ALA-LC Lao Romanization Table (2012), pp. 1–3](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
 
-**Task ledger update:** bounded ALA-LC subset remains DONE_VERIFIED only for its enumerated supported forms; fail-closed handling of the identified unsupported forms is PARTIAL pending exact-head CI. Full contextual ALA-LC remains PARTIAL. No Ukrainian mapping has been added for the newly listed forms.
+**Task ledger update:** bounded ALA-LC support is DONE_VERIFIED only for its enumerated supported forms. Fail-closed handling of the identified unsupported forms is also DONE_VERIFIED: PR #176 merged and exact-head Verify #4092 plus post-merge Verify #4094 passed. Full contextual ALA-LC remains PARTIAL. No Ukrainian mapping has been added for the newly listed forms.
 
-**Verification:** pending exact-head GitHub Actions for this branch; do not reuse PR #175's CI as evidence for this code change. Local clone/network limitations remain as recorded below.
+**Verification:** PR #176 exact-head Verify #4092 / run 43709710488 and post-merge main Verify #4094 / run 43709787347 succeeded; Pages deployment #97 / run 43709787334 and live smoke test succeeded. The evidence is specific to the merged commit `05f2eb231e1bdbda7e12362383122c8f4fb50c70`. Local clone/network limitations remain as recorded below.
 
 ## Verified current state
 
