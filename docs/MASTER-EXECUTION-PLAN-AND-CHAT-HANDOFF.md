@@ -1,3 +1,24 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #197 merged; DLLM profile research)
+
+**Current `main` after PR #197:** `2ba98607990f9301cae0acc8c941d00099417525`. PR [#197](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/197) merged by squash. Exact-head Verify #4173 / [run 43730618795 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43730618795). Documentation-only; no runtime, data, model or deployment change.
+
+## New research finding: DLLM collection romanisation
+
+CrossAsia's Digital Library of Lao Manuscripts documents a catalogue-specific convention closely based on revised Thai RTGS for Central Thai, with Lao-specific initial `v` for ວ, `ny` for ຍ [ɲ], and `c` for ຈ [tɕ]. It is broad/phonetic and omits vowel length and tone. This is a distinct collection convention, not a Lao national standard or generic RTGS-for-Lao. CrossAsia's published table has no explicit open-data licence identified; do not copy it into runtime data pending a reuse determination.
+
+**Status:** research candidate only / NOT SUPPORTED. A future separate `dllm` profile needs a fully checked table, rights review, explicit Ukrainian target decisions, source-backed fixtures and Lao-specialist review. Do not merge it into BGN/PCGN or ALA-LC, and do not auto-detect it. The generic RTGS task remains BLOCKED.
+
+Sources: [CrossAsia DLLM description](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en); [DLLM table PDF](https://digital.crossasia.org/wp-content/uploads/2021/10/DLLM_laoromanisation.pdf); [LDC Lao LSPD](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf).
+
+## Current state
+
+- PR #197 Verify #4173 passed; current main is `2ba98607990f9301cae0acc8c941d00099417525`.
+- Direct romanization runtime remains unchanged: BGN/PCGN-derived CLDR plus bounded ALA-LC 2012 subset. Unknown profiles fail closed.
+- PR #145 remains open pending owner-level architecture decision on neural-first CLI/Python behavior.
+- Independent adjudicated IPA gold corpus remains 0 examples. Repository remains an engineering-verified partial research prototype, not a linguistically validated universal converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #195 merged; current-main verification complete)
 
 **Starting main for PR #195:**  b2365a3ab1e5e6aaac5258cc1d976476a2836705.  
