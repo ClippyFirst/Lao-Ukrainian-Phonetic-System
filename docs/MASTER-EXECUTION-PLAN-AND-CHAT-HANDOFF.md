@@ -1,3 +1,43 @@
+# Latest continuation checkpoint — 2026-11-15 (PR #201 merged; README/handoff reconciliation)
+
+**Starting main:** `c9e0e2aab1f5c166def596ab5f500203a4d974f1` (PR #201 merge).  
+**Current Pages deployment:** #99 / [run 43726042017 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43726042017), deployed from `6bca3d2b899ebdffde02e1b4aa2454f3df1dc06e`. PRs #198–#201 after that deployment were documentation-only; no new Pages deployment was required or performed.  
+**Latest exact-main Verify:** #4185 / [run 43733307259 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43733307259).  
+**Only open PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145), neural-first CLI/Python proposal. It remains intentionally unmerged because it changes the default source G2P and target-adaptation contract. Current compare against main: 24 ahead / 327 behind / 13 files, merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`; GitHub marks it non-mergeable. Do not port its behavioral changes without an explicit architecture decision and reconciliation against current main.
+**Branch inventory:** 67 refs including main (66 non-main). Count is verified; full file-level reconciliation of all historical branches remains PARTIAL. No branches deleted or force-updated.
+
+## What this continuation corrected
+
+- README status now distinguishes the currently deployed deterministic browser pipeline from the unmerged neural-first CLI/Python proposal in PR #145.
+- README points to the latest exact-main Verify #4185 and current Pages deployment #99, rather than treating an older deployment as the latest verification.
+- This handoff supersedes the older checkpoint snapshots below; historical checkpoints are retained as history, not current state.
+- No runtime, mapping, generated-data, model or Pages artifact was changed in this documentation refresh.
+
+## Current task ledger
+
+| Workstream | Status | Acceptance / remaining evidence |
+|---|---|---|
+| BGN/PCGN-derived CLDR direct romanization route | DONE_VERIFIED for bounded implemented subset | Current-main tests and browser CI; unsupported forms remain visibly partial |
+| ALA-LC 2012 direct route | PARTIAL | LOC-derived subset implemented; contextual forms and reviewed representative corpus incomplete |
+| Unknown explicit profile fail-closed handling | DONE_VERIFIED | PR #192 and regression tests |
+| DLLM catalogue convention research | DONE_VERIFIED as research-only classification | PR #198; table rights and full transcription unresolved; no profile implemented |
+| Lao national draft / UNGEGN status research | DONE_VERIFIED as documentary finding | PRs #199–#201; current authoritative Lao table and adoption status still BLOCKED |
+| Neural-first MekongPhon CLI/Python proposal | BLOCKED pending owner architecture decision | PR #145; 24 commits ahead / 327 behind, 13 files, non-mergeable |
+| Independent adjudicated IPA gold | BLOCKED | 0 examples; requires rights-cleared expert annotation and independent adjudication |
+| Lao specialist validation | BLOCKED | Requires qualified reviewer and reviewed corpus |
+| Lao-specific RTGS profile | BLOCKED | Requires a normative Lao adaptation table and source-backed examples |
+| Full automatic profile selection | PARTIAL | Requires representative, reviewed mixed-profile corpus |
+| Historical branch reconciliation | PARTIAL | 66 non-main refs; exact file-level review not complete |
+| Physical-device and screen-reader QA | BLOCKED | Requires human testing on real devices and assistive technologies |
+
+## Engineering verification
+
+Exact-main Verify #4185 / run 43733307259 passed Python tests, corpus/data audits, external-G2P harness syntax/CLI checks, locked browser dependency installation, browser engine tests, canonical browser-data regeneration/reproducibility, Chromium UI tests and built-page/relative-asset checks. This is engineering verification, not independent linguistic validation. Independent IPA gold remains 0.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #200 merged; post-merge verification complete)
 
 **Starting main for this checkpoint:** `7ca8d4ec9e421ac3f845b035f1d1c5afd7249a92`.  
