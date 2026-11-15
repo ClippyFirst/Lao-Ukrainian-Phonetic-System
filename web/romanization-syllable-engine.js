@@ -344,9 +344,14 @@ function crosswalkUnit(unit, sourceSyllable, profile = "bgn-pcgn") {
     if (!expectedNuclei || !expectedNuclei.includes(unit.nucleus)) return null;
   }
   if (sourceCoda !== undefined) {
-    const expectedCoda = sourceCoda === "" ? "" : (profile === "ala-lc"
-      ? LAO_CODA_TO_ALA_LC.get(sourceCoda)
-      : LAO_CODA_TO_CLDR.get(sourceCoda));
+    // LOC ALA-LC Note 2 treats final ຍ as the closing /i/ of the diphthong,
+    // not as a separately romanized consonant coda.
+    const finalNyInDiphthong = profile === "ala-lc"
+      && sourceCoda === "ຍ" && unit.nucleus === "ai" && unit.coda === "";
+    const expectedCoda = sourceCoda === "" || finalNyInDiphthong ? ""
+      : (profile === "ala-lc"
+        ? LAO_CODA_TO_ALA_LC.get(sourceCoda)
+        : LAO_CODA_TO_CLDR.get(sourceCoda));
     if (expectedCoda === undefined || expectedCoda !== unit.coda) return null;
   }
   return {
