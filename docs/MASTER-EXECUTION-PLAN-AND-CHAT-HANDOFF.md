@@ -2,7 +2,7 @@
 
 **Starting main:** `8e8622b007452c20f68dfbfed1edcb709d6bdc41` (PR #245 squash merge).
 **Merged PR:** [#245 — ICU Lao word-boundary baseline](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/245); tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
-**Continuation branch:** `research/icu-lao-wordbreak-baseline-20261116` (preserved; two follow-up documentation corrections after the PR merge are being reconciled here).
+**Merged research branch:** `research/icu-lao-wordbreak-baseline-20261116` (preserved after PR #245; two post-merge correction commits remain on that branch). **Current reconciliation branch:** `docs/post-pr245-mainline-reconciliation-20261116`.
 **Exact-head verification:** Verify #4427 / [run 43932311368 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932311368) passed 355 Python, 204 Node and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed.
 **Post-merge verification:** main Verify #4428 / [run 43932522643 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522643) passed the same 355 Python, 204 Node and 30 Chromium tests and all configured gates.
 **Pages deployment:** Pages Deploy #106 / [run 43932522626 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522626) deployed current main `8e8622b007452c20f68dfbfed1edcb709d6bdc41` to [the public site](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/); deployment and post-deploy HTTP smoke tests passed. PR #245 changed tests and research tooling but no production runtime logic.
