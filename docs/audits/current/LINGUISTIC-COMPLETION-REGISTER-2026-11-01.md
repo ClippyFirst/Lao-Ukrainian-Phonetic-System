@@ -1,3 +1,23 @@
+## PR #247 — exact-head verification and status refresh (2026-11-16)
+
+| Workstream | Status | Current evidence / acceptance |
+|---|---|---|
+| PR #247 documentation/evidence reconciliation | PARTIAL pending latest-head CI | Verify #4479 / [run 43953117126 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43953117126) passed on `14f7b9adf3ae2f3840a507e12c9244d6d45feb79`: 355 Python, 204 Node, 30 Chromium and all configured schema/evidence/external-G2P/build/reproducibility/page checks. Canonical handoff and README were subsequently refreshed; their new commits require exact-head CI before they can be marked DONE_VERIFIED. |
+| ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; separate Lao digit → Arabic numeral route and post-deploy smoke tests documented in prior checkpoint. |
+| ALA-LC Note 9 | PARTIAL / BLOCKED | Three LOC branches: ordinary Lao shortest standalone written form; Pali/Sanskrit same; other loans follow original-language division. ICU/HVULao baseline is exploratory only. Need LOC-specific lexeme policy, item-level upstream rights, source-located examples and Lao-specialist adjudication. |
+| ALA-LC Note 10 | PARTIAL / fail-closed | LOC 2012 text-layer example is `ຫຼັກສາດ (khitsatān)`; existing fixtures manually inject source roles. Automatic source-script syllabification and role derivation are not demonstrated. |
+| ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
+| Independent IPA gold | BLOCKED | 0 independently adjudicated examples; qualified annotators and adjudication are absent. |
+| Lao specialist review | BLOCKED | No qualified independent sign-off. |
+| Lao-specific RTGS | BLOCKED | No authoritative complete Lao-specific adaptation table; do not substitute Thai RTGS or treat BGN/PCGN as universal phonetic transcription. |
+| Accessibility/device QA | PARTIAL | Automated Chromium coverage exists; manual screen-reader, keyboard-only and physical-device QA remain. |
+| PR #145 neural-first architecture | DEFERRED / owner decision | Open and divergent (24 ahead / 374 behind; 13 files); conflicts with deterministic-default contract. Leave untouched pending explicit owner decision. |
+| LOC Lao Word source | BLOCKED / retrieval | LOC identifies the Word source as preferred. The official `lao.doc` remains uninspected: web reader rejects `application/msword`; direct download failed. Acceptance requires obtaining and inspecting that exact official source. |
+
+**Registry integrity:** 77 unique source IDs and 90 unique claim IDs; no duplicate IDs and no missing claim-to-source references. **Repository readiness:** engineering-verified partial research prototype, not release-ready.
+
+---
+
 ## ALA-LC Note 9 — ICU word-break baseline follow-up (2026-11-16)
 
 | ID | Status | Evidence / acceptance |
