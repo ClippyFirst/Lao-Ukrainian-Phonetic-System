@@ -3,7 +3,7 @@
 - Current `main`: `390302db31b56f5842696c2d81a817689635472b`; PR #246 merged from tested head `9570180b100e06538251f96504223deaa06057fd`.
 - PR #246 exact-head Verify #4439 / [run 43933464076 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933464076); post-merge main Verify #4440 / [run 43933702934 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933702934). Both passed 355 Python, 204 Node and 30 Chromium tests and all configured schema/audit/G2P/build/reproducibility gates.
 - PR #246 is documentation/evidence-only; Pages #106 remains the current runtime deployment. No Pages deployment is expected.
-- Branch inventory is 114 refs across two API pages. Open PRs before this correction: #145 only. PR #145 remains divergent, 24 ahead / 374 behind, 13 files; leave untouched pending owner-level architecture decision.
+- Branch inventory is 114 refs across two API pages. PR #247 is the current documentation/evidence correction; PR #145 is the only other open PR. PR #145 remains divergent, 24 ahead / 374 behind, 13 files; leave untouched pending owner-level architecture decision.
 - Preserved test branches were compared against current main:
   - `test/ala-lc-note10-automatic-source-boundary-20261116`: 5 ahead / 16 behind; its only browser test still checks Lao-script rejection in Latin mode with `ຄິຼສຕຽນ`. It does not test automatic Note 10 source-role derivation and is not ported.
   - `test/ala-lc-notes6-10-source-crosswalk-20261116`: 13 ahead / 19 behind; the engine file is byte-identical to main, and its two manual double-function fixtures already exist on main in clarified synthetic form. No code port required.
