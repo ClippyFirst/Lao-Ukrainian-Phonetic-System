@@ -30,7 +30,7 @@
 ## Additional research and evidence correction — PR #245 (2026-11-16)
 
 - PR #245 merged by squash as `8e8622b007452c20f68dfbfed1edcb709d6bdc41` from `research/icu-lao-wordbreak-baseline-20261116`; it adds the offline ICU/HVULao boundary baseline, source hashes, evidence records and regression tests. No production code, corpus text or dictionary data is imported.
-- This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 1997 explicitly gives `ຄິດສະຖານ (khitsatān)`; the 2012 table's exact Lao glyph extraction needs specialist confirmation. Unit crosswalk tests now use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
+- This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 2012 Note 10 gives the romanized example `khitsatān`; its exact Lao glyph sequence remains unresolved because the available PDF text extraction returns `ຂິດສະຕານ` but the rendered glyphs were not confidently read, and LOC's preferred Word source remains unavailable. The earlier attribution of `ຄິດສະຖານ` to LOC 1997 is withdrawn; that file's example glyphs were not inspected. Unit crosswalk tests use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
 - The repository remains PARTIAL / BLOCKED for Note 9 and Note 10 automatic source roles; no linguistic rule was inferred from the exploratory baseline or the corrected fixture.
 
 ## Live repository state — PR #244 merged; ICU Note 9 research branch (2026-11-16)
