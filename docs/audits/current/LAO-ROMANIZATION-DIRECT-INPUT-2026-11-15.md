@@ -389,3 +389,9 @@ The earlier repository wording incorrectly identified `ຄິຼສຕຽນ` as
 - Acceptance remains PARTIAL until a Lao specialist confirms the source syllable/role analysis and the upstream Lao parser derives those roles without manual injection. The printed 2012 text-layer form is now identified, but this is not a substitute for linguistic adjudication.
 
 Sources: [LOC ALA-LC Lao table (2012), Notes 3 and 10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LOC ALA-LC Lao table (1997)](https://www.loc.gov/catdir/cpso/romanization/lao-1997.pdf) (image-only in the available text extraction; exact glyph form not asserted).
+
+## LOC source-version authority check — 2026-11-16
+
+The current [LOC ALA-LC Romanization Tables index](https://www.loc.gov/catdir/cpso/roman) lists Lao (2012) as the current table and 1997 only as an earlier version. LOC explicitly says earlier versions are for reference only and are not to be used in current cataloging; it also instructs users to use the source documents rather than PDF versions when copying data. This independently confirms the repository's decision to use the 2012 table as its primary standard and retain the 1997 file only as historical context. Note 9's three-way policy remains explicit in the 2012 source: ordinary Lao forms use the shortest written form that can stand alone; Pali/Sanskrit loans follow that same rule; other loans follow division in their original language. This is a rule-level requirement, not a general instruction to run a generic Lao word segmenter.
+
+Source: [LOC ALA-LC Romanization Tables index](https://www.loc.gov/catdir/cpso/roman); [LOC Lao Romanization Table (2012), Notes 9–10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
