@@ -736,3 +736,16 @@ The current LOC index lists Lao (2012) as the current table and 1997 only as an 
 | Note 10 automatic source-role derivation | PARTIAL / BLOCKED | LOC romanized example `khitsatān` and repeated-consonant rule remain known; exact Lao glyph sequence is unresolved pending preferred LOC Word source or specialist verification. Existing fixtures inject roles manually. Ueda does not solve the orthographic parser. |
 | PR #247 latest branch HEAD | PARTIAL (verification pending) | The Ueda evidence content checkpoint `71c9604040a2187910a6f0ed81c1c17286deb7bd` passed Verify #4499 / run 43966184173 — SUCCESS. The subsequent handoff synchronization HEAD `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4` passed Verify #4500 / run 43966297408 — SUCCESS, including every configured step through Chromium UI and built-page/asset checks. No local tests were run. |
 
+
+
+## Historical Lao orthographic grammar and ambiguity evidence — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Historical explicit Lao orthographic syllable grammar located | DONE_VERIFIED (source evidence only) | Berment (2004), Part III §§III.2.3–III.2.6 and Annexes A.11/A.14, documents a non-recursive grammar, positional vowel patterns, restricted codas and Sylla/FSA tooling. Source/claim registry IDs `SRC-BERMENT-THESIS-2004` and `CLM-LAO-HISTORICAL-ORTHOGRAPHIC-SYLLABLE-GRAMMAR`. This does not validate a modern parser. |
+| Current Lao orthographic grammar implementation | PARTIAL / TODO | Historical grammar has 56,670 generated strings but admits theoretical unattested forms (e.g. `ມວອ`), simplifies accent placement and OCR loses some terminals. Need exact transcription from images/Prolog appendix, Unicode/dialect reconciliation, test corpus and specialist adjudication. |
+| Ambiguity lattice and dead-branch pruning | PARTIAL / TODO | Berment describes candidate-edge graph, complete paths, dead-branch pruning and ambiguous regions. No equivalent implementation/test exists in this repository. Longest candidate was a local UI heuristic, not an accepted global resolver. |
+| Global ambiguity resolution | BLOCKED / evidence-limited | Lexical/semantic resolution is not established by the historical grammar. Preserve alternatives or explicit unresolved state; do not use longest-match as a deterministic transcription decision. |
+| LOC Note 10 automatic source-role derivation | PARTIAL / BLOCKED | Historical grammar may help generate candidate orthographic boundaries after validation, but does not verify exact LOC glyphs or automatic coda/onset double-role assignment. |
+
+The separate Del Vigna & Berment (2003) formal-language analysis describes irreducible ambiguous strings for a historical Lao dictionary. Its 11,172 / 3,060 dictionary figures and automaton counts must not be conflated with Berment's 56,670 grammar-generated strings. No historical code was copied; no license is inferred. Full notes: [Undermind](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
