@@ -283,3 +283,9 @@ The candidate was inspected at code and data-file level rather than adopted:
 - The Lao-Dictionary header says it was created for word wrapping and that compound words have mostly been reduced to their parts. It is not lexical-boundary gold or IPA evidence.
 
 Existing source-registry rows were expanded and separate per-file data/license rows and a methodology claim were added. No package code or data was imported into ClippyFirst. Note 9 remains PARTIAL/BLOCKED; Note 10 automatic source segmentation remains PARTIAL/fail-closed.
+
+### Post-merge evidence — PR #234
+
+PR [#234](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/234) merged as `271bde493c2ee11e50498c06e6c3263f0ea08308`. Exact-head Verify #4330 / [run 43867454851](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867454851) and post-merge main Verify #4331 / [run 43867656132](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867656132) both succeeded: 350 Python, 201 Node and 29 Chromium tests, with repository/evidence and IPA-gold schema checks, external-G2P harness syntax/CLI, build, reproducibility and built-page checks. Documentation/source-registry only; no Pages deployment was required.
+
+The source/license review establishes that LaoNLP is a candidate reference, not a LOC Note 9/10 implementation. No runtime dependency or corpus data was imported.
