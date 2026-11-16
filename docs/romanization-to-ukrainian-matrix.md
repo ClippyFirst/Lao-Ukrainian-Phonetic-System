@@ -79,7 +79,7 @@ Sources: [CrossAsia DLLM romanisation description](https://digital.crossasia.org
 
 The service exposes this as a distinct output panel labelled **Цифри · ALA-LC 2012, Note 8**. It is not the phonetic route, not the CLDR BGN/PCGN romanizer, and not a claim that the surrounding Lao text has been fully romanized under ALA-LC. The existing phonetic parser continues to preserve Lao numerals as passthrough; direct Latin ALA-LC input remains a separate route.
 
-**Status:** DONE_VERIFIED on PR #241 exact head; Verify #4365 / [run 43917388845 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917388845) passed 350 Python, 204 Node and 30 Chromium tests and all configured audits/build checks. Post-merge main verification remains.
+**Status:** DONE_VERIFIED on PR #241 exact head; Verify #4376 / [run 43917776932 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917776932) passed 350 Python, 204 Node and 30 Chromium tests and all configured audits/build checks. Post-merge main verification remains.
 
 Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 8](https://www.loc.gov/catdir/cpso/romanization/lao.pdf), which explicitly maps `໐–໙` to `0–9`.
 
