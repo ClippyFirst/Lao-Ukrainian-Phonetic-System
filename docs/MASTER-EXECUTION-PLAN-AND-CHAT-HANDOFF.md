@@ -1,29 +1,28 @@
+# Latest continuation checkpoint — 2026-11-16 (PR #245 merged; Note 9 baseline verified)
 
-# Latest continuation checkpoint — 2026-11-16 (ICU word-boundary research baseline)
+**Starting main:** `8e8622b007452c20f68dfbfed1edcb709d6bdc41` (PR #245 squash merge).
+**Merged PR:** [#245 — ICU Lao word-boundary baseline](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/245); tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
+**Continuation branch:** `research/icu-lao-wordbreak-baseline-20261116` (preserved; two follow-up documentation corrections after the PR merge are being reconciled here).
+**Exact-head verification:** Verify #4427 / [run 43932311368 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932311368) passed 355 Python, 204 Node and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+**Post-merge verification:** main Verify #4428 / [run 43932522643 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522643) passed the same 355 Python, 204 Node and 30 Chromium tests and all configured gates.
+**Pages deployment:** Pages Deploy #106 / [run 43932522626 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522626) deployed current main `8e8622b007452c20f68dfbfed1edcb709d6bdc41` to [the public site](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/); deployment and post-deploy HTTP smoke tests passed. PR #245 changed tests and research tooling but no production runtime logic.
+**Note 9 result:** on 839/1,000 exactly aligned HVULao_NLP pairs / 49,608 within-Lao candidate boundaries, greedy longest-prefix F1=0.8636 and naive shortest-prefix F1=0.5129. These are filtered exploratory metrics, not comparable to the paper's 0.75 model F1; neither implements LOC Note 9. The offline script and five unit tests are now merged.
+**Note 10 correction:** LOC 1997 gives `ຄິດສະຖານ (khitsatān)`; the 2012 source glyph extraction remains specialist-confirmation-limited. The `ຄິຼສຕຽນ` browser test is mode-separation only; the positive/negative `khitsatān` unit fixtures supply roles manually. Automatic source-role derivation remains PARTIAL.
+**Repository inventory:** 113 refs (112 non-main plus main) including the research and reconciliation branches; only PR #145 was open before this post-merge documentation PR. PR #145 remains divergent, 24 ahead / 373 behind, 13 files. No user branch was modified or deleted.
 
-**Starting main:** `515f95a7927b20ed9e1859660362eb3a6b1c3306` (PR #244 merge commit).
-**Branch:** `research/icu-lao-wordbreak-baseline-20261116`.
-**Runtime/deployment:** ALA-LC Note 8 is merged and deployed by Pages Deploy #105 / [run 43918258738 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918258738) from runtime commit `841826ce9981b1c09aa98179c790c63db1b2c982`; PRs #243–#244 changed documentation/evidence only.
-**Main verification:** post-PR #244 Verify #4394 / [run 43930806933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930806933) passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. PR #244 exact-head Verify #4393 / [run 43930653255 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930653255) passed the same gates.
-**Research change:** added `scripts/benchmark_lao_word_boundaries.py` and five unit tests for an offline ICU Lao word-break baseline against HVULao_NLP v2. The benchmark pins source Git blob hashes and excludes 161/1,000 sentence pairs whose raw/segmented character streams do not match exactly after NFC/whitespace normalization.
-**Exploratory results:** on 839 aligned pairs / 49,608 within-Lao candidate boundaries, greedy longest-prefix matching scored P=0.8353, R=0.8940, F1=0.8636; naive shortest-prefix matching scored P=0.3450, R=0.9985, F1=0.5129. These scores are filtered and not comparable to the paper's 0.75 model F1. Neither algorithm implements LOC Note 9.
-**Evidence boundary:** ICU's pinned dictionary is a word-wrapping resource, not lexical-boundary gold. Its mutable upstream repository currently appears compromised; only the pinned ICU copy and its embedded license notices were inspected. No corpus text, dictionary, model or runtime dependency was imported.
-**Status:** Note 9 remains `PARTIAL / BLOCKED`. The next acceptance is a LOC-specific policy, item-level rights-cleared/source-located examples, and Lao-specialist adjudication of native compounds, productive morphology, function words, Pali/Sanskrit and other loanwords.
-**Repository inventory:** 112 refs (111 non-main plus main) at branch creation; PR #145 remains open/divergent, 24 ahead / 372 behind with 13 changed files. No user branch was modified or deleted.
-
-## Continuation ledger
+## Current continuation ledger
 
 | Workstream | Status | Evidence / acceptance |
 |---|---|---|
-| ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; Verify #4383 and main Verify #4384 passed; Pages Deploy #105 passed its post-deploy HTTP smoke tests. |
-| ALA-LC Note 9 | PARTIAL / BLOCKED | Offline ICU/HVULao comparative baseline is reproducible, but not LOC gold or a LOC resolver. Specialist policy and rights-cleared examples remain. |
-| ALA-LC Note 10 | PARTIAL / fail-closed | Positive/negative crosswalk fixtures supply source roles manually using `khitsatān`; the browser test with `ຄິຼສຕຽນ` is only a Lao-script-in-Latin-mode guard, not the LOC example. Automatic LOC source-role derivation remains unresolved. |
+| ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; Verify #4383/#4384 passed; Pages #105 and #106 deployments passed post-deploy HTTP smoke tests. |
+| ALA-LC Note 9 | PARTIAL / BLOCKED | Offline ICU/HVULao baseline and tests merged in PR #245; no corpus/dictionary imported. LOC policy, source-item rights and Lao-specialist adjudication remain. |
+| ALA-LC Note 10 | PARTIAL / fail-closed | Synthetic `khitsatān` crosswalk fixtures supply roles manually; browser test is mode-separation only. Automatic LOC source-role derivation remains unresolved. |
 | ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
 | Independent IPA gold | BLOCKED | 0 independently adjudicated examples; issue #99 remains open. |
 | Lao specialist review | BLOCKED | No qualified independent sign-off. |
 | Lao-specific RTGS | BLOCKED | No authoritative complete Lao-specific adaptation table. |
 | Accessibility/device QA | PARTIAL | Automated Chromium coverage exists; human screen-reader, keyboard-only and device QA remain. |
-| PR #145 neural-first architecture | DEFERRED / owner decision | 24 ahead / 372 behind; do not merge or rebase without architecture decision. |
+| PR #145 neural-first architecture | DEFERRED / owner decision | 24 ahead / 373 behind; do not merge or rebase without architecture decision. |
 
 # Latest continuation checkpoint — 2026-11-16 (PR #243 merged; Note 9 evidence assessment reconciled)
 
