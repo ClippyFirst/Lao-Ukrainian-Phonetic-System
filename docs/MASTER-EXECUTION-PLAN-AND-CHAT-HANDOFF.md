@@ -1,3 +1,19 @@
+# Latest continuation checkpoint — 2026-11-16 (HVULao_NLP assessed as Note 9 candidate)
+
+**Starting main:** `b5820dd03776caaa2da2257ad207839839a1c6f7` (post-PR #242 Note 8 reconciliation).
+**Branch:** `docs/hvulao-note9-candidate-assessment-20261116`.
+**Research:** assessed HVULao_NLP v2 and the 2025 Informatica paper, including Appendix B segmentation guidelines, annotation quality process, dataset licence statement, and source-text reuse caveat.
+**Finding:** the published minimal-orthographic-unit, smallest-consistent-segmentation and context-sensitive rules make HVULao a stronger comparative candidate than LaoNLP maximum matching. It still does not implement LOC's specific Pali/Sanskrit and other-loanword boundary clauses. LDC and CrossAsia evidence also confirms that Indic-vs-recent-loan spelling and lexicalization can vary by lexeme/context; source-origin metadata must be curated, not inferred from ຣ/ລ. No runtime dependency, model or corpus data imported.
+**Status:** Note 9 remains `PARTIAL / BLOCKED`; the next acceptance is a LOC-specific policy and rights-cleared, source-located, specialist-adjudicated examples across native compounds, productive morphology, particles and loanword classes.
+
+## Continuation ledger
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC Note 9 | PARTIAL / BLOCKED | HVULao_NLP is now a comparative candidate; not a LOC gold set. Reconcile item-level rights and adjudicate LOC-specific loanword rules before implementation. |
+| LaoNLP | DONE_VERIFIED (rejected as drop-in) | Pinned source review already recorded in PRs #234–#235; maximum-match and mixed licensing remain disqualifying for direct adoption. |
+| Runtime implementation | DEFERRED | No safe deterministic resolver can be inferred from the available non-LOC annotation convention. |
+
 # Latest continuation checkpoint — 2026-11-16 (PR #241 merged; ALA-LC Note 8 implemented)
 
 **Starting main:** `c8ef2d8725b9e595bab2f2c4ea369517720590a8`.

@@ -1,3 +1,9 @@
+## ALA-LC Note 9 candidate assessment — 2026-11-16 (HVULao_NLP)
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC-NOTE-9 | PARTIAL / BLOCKED (candidate evidence improved) | HVULao_NLP v2 publishes a minimal-orthographic-unit, context-sensitive segmentation guideline and reports native annotator review, linguist adjudication, and 5% double annotation. This is a stronger candidate for comparative boundaries than LaoNLP maximum matching, but it does not specify LOC's Pali/Sanskrit shortest-form clause or original-language boundaries for other loans. Mendeley lists CC BY 4.0, while the article says source websites permitted research/non-commercial reuse; item-level source rights must be reconciled before importing text. No corpus/model imported. Additional orthographic evidence: LDC documents distinct Pali/Sanskrit vs recent-loan spelling conventions; CrossAsia DLLM shows historically conservative and lexicalized Indic forms in its cataloguing scope. Origin and lexicalization must be curated per lexeme, not inferred from graphemes. Acceptance: LOC-specific policy + rights-cleared and source-located adversarial examples across native compounds, productive morphology, function words, Pali/Sanskrit and other loans + Lao-specialist adjudication. |
+
 ## ALA-LC Note 8 implementation — 2026-11-16 (PR #241 exact-head verified)
 
 | ID | Status | Evidence / acceptance |

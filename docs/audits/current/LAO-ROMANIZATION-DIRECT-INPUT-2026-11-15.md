@@ -289,3 +289,40 @@ Existing source-registry rows were expanded and separate per-file data/license r
 PR [#234](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/234) merged as `271bde493c2ee11e50498c06e6c3263f0ea08308`. Exact-head Verify #4330 / [run 43867454851](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867454851) and post-merge main Verify #4331 / [run 43867656132](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867656132) both succeeded: 350 Python, 201 Node and 29 Chromium tests, with repository/evidence and IPA-gold schema checks, external-G2P harness syntax/CLI, build, reproducibility and built-page checks. Documentation/source-registry only; no Pages deployment was required.
 
 The source/license review establishes that LaoNLP is a candidate reference, not a LOC Note 9/10 implementation. No runtime dependency or corpus data was imported.
+## HVULao_NLP candidate review for ALA-LC Note 9 — 2026-11-16
+
+A second candidate was assessed after the pinned LaoNLP review: **HVULao_NLP v2** (Mendeley DOI `10.17632/5zwym7kwn8.2`, article DOI `10.31449/inf.v49i27.11195`). It is materially stronger than LaoNLP as a source of candidate word boundaries because the paper publishes an explicit annotation guideline and reports native-Lao annotator review plus a senior linguist adjudicator.
+
+### What the published guideline supports
+
+- Annotation unit: word-level minimal orthographic units carrying lexical or grammatical meaning.
+- Minimality and consistency: prefer the smallest segmentation consistent across the corpus.
+- Context sensitivity: resolve ambiguity from sentence context, not frequency alone.
+- Function words and particles are separate; productive morphemes are split when syntactic, but lexicalized forms remain fused.
+- Orthographically fused lexicalized compounds remain one token; otherwise segment components. The stated decision test asks whether a component can be modified or replaced independently.
+- The paper reports 10,000 training and 1,000 test sentences; trained native annotators reviewed the corpus, a native linguist adjudicated disagreements, and 5% (500 sentences) were double annotated (reported segmentation F1 0.80).
+
+### Why this is still not an LOC Note 9 implementation
+
+The guideline's “minimal orthographic unit” and smallest-consistent-segmentation principles are relevant to LOC's shortest written form that can stand alone as a word. They are not interchangeable: the corpus is a general NLP tokenization convention, and the published guideline does not specify LOC's Pali/Sanskrit shortest-form treatment or original-language boundaries for other loanwords. Its rules for lexicalized compounds, bound morphemes, particles, and named entities may produce decisions that need explicit reconciliation with the LOC romanization convention. Do not use the model's F1 or the corpus's “gold test” label as evidence of LOC conformance or pronunciation accuracy.
+
+### Rights and integration decision
+
+Mendeley Data version 2 lists CC BY 4.0. The paper's ethical statement separately says the source websites allowed research and non-commercial reuse. These statements do not, by themselves, prove that every underlying source sentence may be redistributed or used commercially under CC BY 4.0. Require item-level source locators and rights review before importing examples. The project therefore records the corpus as a **research candidate only**; no HVULao text, model, or dependency is imported into the runtime or gold corpus.
+
+### Disposition
+
+- LaoNLP remains rejected as a drop-in resolver (maximum-match tokenizer; mixed-license wordlist).
+- HVULao_NLP is accepted as a better **comparative segmentation candidate** and future source for an adversarial review set, subject to item-level rights and Lao-specialist review.
+- Note 9 remains `PARTIAL / BLOCKED`. Acceptance requires a versioned LOC-specific policy, rights-cleared examples covering native compounds, productive morphology, function words, Pali/Sanskrit and other loans, and adjudicated LOC boundary decisions. Preserve ambiguity where the available evidence does not decide the boundary.
+
+Primary sources: [HVULao_NLP article, Appendix B (segmentation guidelines)](https://www.informatica.si/index.php/informatica/article/download/11195/5975); [Mendeley Data v2](https://data.mendeley.com/datasets/5zwym7kwn8/2); [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
+### Additional orthographic evidence for loanword classification
+
+The LDC Language Specific Peculiarities document says that modern Lao spelling conventions distinguish Pali/Sanskrit borrowings from more recent foreign loans: it describes `ຣ` as reintroduced for recent foreign words, while Pali/Sanskrit borrowings use `ລ` in its place. It also warns that foreign-loan spelling remains variable. This supports recording a curated lexeme-origin field; it does **not** justify inferring origin from `ຣ`/`ລ` alone.
+
+The CrossAsia Digital Library of Lao Manuscripts (DLLM) describes a collection-specific cataloguing convention that preserves historical Indic consonant values in some loanword titles (e.g. `ນິພພານ` from Pali *nibbāna*, `ສູຕ` from Sanskrit *sūtra*), but uses modern Lao pronunciations for some commonly used loans (e.g. `ນະຄອນ`, `ທັມມາດ`). This is useful evidence of lexicalization and source-history variation, not a general Lao standard or LOC segmentation gold. CrossAsia carries a copyright notice and no open-data licence was identified; no table or corpus was copied.
+
+**Resolver implication:** any future Note 9 lexeme record needs separately reviewed fields for source-language origin, current Lao lexicalization status, the relevant source-language orthographic division, the LOC romanization unit(s), exact source locator, and reviewer/adjudication provenance. Do not infer Pali/Sanskrit status solely from a grapheme, and do not infer original-language token boundaries from LaoNLP/HVULao segmentation alone.
+
+Sources: [LDC Lao Language Specific Peculiarities, §§3–4](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf); [CrossAsia DLLM, Lao Orthography and Romanisation](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en).
