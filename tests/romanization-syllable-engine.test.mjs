@@ -506,8 +506,8 @@ test("ALA-LC Note 4 medial-vowel-plus-final pattern ūa is checked against Lao s
     profile: "ala-lc",
     sourceSyllableGroups: [[{ onset: "ບ", vowelId: "UO", coda: "ກ" }]],
   });
-  assert.equal(direct.status, "OK");
-  assert.equal(direct.output, "буак");
+  assert.equal(direct.status, "PARTIAL");
+  assert.equal(direct.output, "⟦būak⟧");
   assert.equal(sourceAware.status, "OK");
   assert.equal(sourceAware.output, "буак");
   assert.deepEqual(
@@ -530,7 +530,8 @@ test("ALA-LC Note 4 final-vowel-plus-o form crosswalks final Lao ວ only with s
     profile: "ala-lc",
     sourceSyllableGroups: [[{ onset: "ນ", vowelId: "AA", coda: "ວ" }]],
   });
-  assert.equal(direct.status, "OK");
+  assert.equal(direct.status, "PARTIAL");
+  assert.equal(direct.output, "⟦nāo⟧");
   assert.equal(sourceAware.status, "OK");
   assert.equal(sourceAware.output, "нао");
   assert.deepEqual(
