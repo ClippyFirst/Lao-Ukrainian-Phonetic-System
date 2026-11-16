@@ -1,10 +1,10 @@
 ## Post-merge state — PR #245 and Pages #106 (2026-11-16)
 
-- Current `main`: `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; PR #245 merged by squash from tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
+- Main at PR #246 base: `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; PR #245 merged by squash from tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
 - Exact-head Verify #4427 / [run 43932311368 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932311368) and post-merge main Verify #4428 / [run 43932522643 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522643) passed 355 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
 - Pages Deploy #106 / [run 43932522626 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522626) deployed current main and passed the post-deploy HTTP smoke tests. PR #245 changed research tooling/tests/docs, not production runtime logic.
 - Branch search returned 113 refs (112 non-main plus main), including `research/icu-lao-wordbreak-baseline-20261116` and `docs/post-pr245-mainline-reconciliation-20261116`. No user branch was deleted or force-updated. The pre-PR #245 research branch is preserved.
-- Only PR #145 was open before this post-merge reconciliation. It remains divergent, 24 ahead / 373 behind current main, 13 changed files; leave untouched pending owner-level neural-first architecture decision.
+- Only PR #145 was open before this post-merge reconciliation. It remains divergent, 24 ahead / 373 behind at the PR #246 base, 13 changed files; leave untouched pending owner-level neural-first architecture decision.
 
 ## Additional research and evidence correction — PR #245 (2026-11-16)
 
