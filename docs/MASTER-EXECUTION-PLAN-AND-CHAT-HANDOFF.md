@@ -1,3 +1,27 @@
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Note 10 automatic-source integration guard)
+
+**Starting main:** `a009b5b69838cdf35ee159e328de3db01d458bb7`.
+**Branch:** `test/ala-lc-note10-automatic-source-boundary-20261116`.
+**PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231):** browser integration regression for the LOC Note 10 source example `ຄິຼສຕຽນ`.
+**Exact-head Verify #4319:** [run 43865169001 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865169001); 350 Python, 201 Node and 29 Chromium tests passed, including the new real-browser case. IPA-gold schema validation, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+**Scope:** no runtime mapping or parser behavior changed. The browser route confirms the actual pipeline leaves this LOC example visibly PARTIAL; the current parser does not model U+0EBC `ຼ` as a structural role. The manually supplied Note 10 crosswalk fixture remains distinct from automatic source segmentation.
+
+## Current task ledger update
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC Note 10 supplied double-function roles | DONE_VERIFIED (engineering fixture only) | Existing positive/negative unit fixtures; roles are explicitly supplied |
+| Automatic Lao segmentation for LOC Note 10 example | PARTIAL / fail-closed | PR #231 browser regression passes through actual Lao input path and confirms PARTIAL; parser lacks a structural model for U+0EBC `ຼ`; acceptance requires a reviewed source parser deriving the LOC coda/onset roles and exact lexical/syllable boundaries without manual injection |
+| Full ALA-LC Note 10 conformance | PARTIAL | Automatic lexical segmentation and Note 9 word-boundary rules remain unverified |
+
+## Commands and verification
+
+- Local `git clone` was attempted but blocked because this execution environment could not resolve `github.com`; no local test result is claimed.
+- GitHub Actions Verify #4319 / run 43865169001 completed SUCCESS. Browser suite: 29 passed. Python: 350 passed. Node: 201 passed. Remaining workflow gates (IPA gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility, built-page/relative-assets) passed.
+- PR #231 remains open pending post-merge verification; no Pages deployment is needed because the change is test/documentation-only.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 6 and 10 merged and deployed)
 
 **Starting main:** a888ae3df58badcf9380894cd72d12f4910d008b.  

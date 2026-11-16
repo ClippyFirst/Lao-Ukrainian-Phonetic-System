@@ -464,3 +464,13 @@ test("switching back from romanization input restores the Lao IPA-first workflow
   await expect(page.locator("#output")).toHaveText("к'а");
   await expect(page.locator('[data-result-panel="ipa"]')).toBeVisible();
 });
+
+test("LOC ALA-LC Note 10 Lao source example does not gain invented automatic syllable roles", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#lao-input").fill("ຄິຼສຕຽນ");
+  await page.locator("#mode-romanization").click();
+  await expect(page.locator("#mode-romanization")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#romanization-trace")).toBeVisible();
+  await expect(page.locator("#romanization-analysis-status")).toContainText("Частковий аналіз");
+  await expect(page.locator("#output")).toContainText("⟦");
+});
