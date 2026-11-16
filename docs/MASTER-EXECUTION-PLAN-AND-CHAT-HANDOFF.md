@@ -1,3 +1,20 @@
+# Latest continuation checkpoint — 2026-11-16 (PR #238 merged; final verified state)
+
+**Starting main:** `0f4dd825db25801bca4d350735253c5885f63ddf`.
+**PR [#238](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/238):** merged by squash as `8a37cde56a318c2a9fa047a6c2b17561762e8226`.
+**Exact-head Verify #4339:** [run 43870127456 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870127456).
+**Post-merge main Verify #4340:** [run 43870313284 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870313284). Both passed 350 Python, 201 Node and 29 Chromium tests; repository/evidence and IPA-gold schema checks, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed.
+**PRs #236–#238:** documentation-only reconciliations; no runtime code or generated runtime artifact changed. Latest Pages deployment remains #104, runtime commit `e6b1d564a20b88945dc0277b8db38efcd5834c8e`.
+**Open PR:** only #145; 24 commits ahead / 365 behind at the latest comparison, divergent and `mergeable=false`; leave untouched for owner-level architecture decision.
+
+## Final stop-state
+
+The feasible repository-side work for this continuation is complete and verified. The remaining blockers are evidence- and specialist-dependent: independent adjudicated IPA gold (0), qualified Lao specialist review, LOC-conformant lexical/loanword segmentation with a rights-clean resource, full Note 10 automatic source-role parsing, ALA-LC Note 8 Lao-digit conversion route, approved initial-ayn target policy, authoritative Lao-specific RTGS and human accessibility/device QA. Do not fabricate linguistic outputs or merge PR #145 to bypass these gates.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao-to-Ukrainian converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (PR #237 branch inventory refresh merged)
 
 **Starting main for PR #237:** `6512aac75cfb71c2d5f6f37a040f55739f32b14f`.

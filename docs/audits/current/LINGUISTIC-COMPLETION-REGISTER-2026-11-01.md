@@ -1,3 +1,8 @@
+## Post-merge reconciliation — PR #238 final evidence checkpoint (2026-11-16)
+
+PR [#238](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/238) merged by squash as `8a37cde56a318c2a9fa047a6c2b17561762e8226`. Exact-head Verify #4339 / [run 43870127456](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870127456) and post-merge main Verify #4340 / [run 43870313284](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870313284) passed 350 Python, 201 Node and 29 Chromium tests. PR #238 reconciled README, completion register and canonical handoff with PR #237's post-merge branch-inventory evidence. Documentation-only; Pages #104 remains the runtime deployment.
+
+
 ## Post-merge reconciliation — PR #237 branch inventory refresh (2026-11-16)
 
 - PR [#236](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/236) merged as `6512aac75cfb71c2d5f6f37a040f55739f32b14f`; exact-head Verify #4335 / [run 43868841677](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43868841677) and post-merge Verify #4336 / [run 43869109467](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43869109467) passed 350 Python, 201 Node and 29 Chromium tests.
