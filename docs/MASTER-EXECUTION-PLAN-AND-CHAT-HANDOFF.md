@@ -1,3 +1,42 @@
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Note 4 regression batch)
+
+**Starting main:** `3968987815ce9948e56989816d025db0b2eb9d74` (PR #222 merged).  
+**Runtime checkpoint:** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`, deployed by Pages #102; this continuation changes tests and documentation only.  
+**Branch:** `test/ala-lc-note4-context-regressions-20261116`.  
+**Current branch head:** `8c150f702b753c2205a3e6e96a3cfd7937b9acc3` before documentation updates.  
+
+## Work in this continuation
+
+- Re-read the current default-branch README, canonical handoff, ALA-LC direct-input audit, romanization matrix, syllable parser and its tests. The mainline was confirmed at PR #222 merge SHA `3968987815ce9948e56989816d025db0b2eb9d74`.
+- Inspected the complete Library of Congress ALA-LC Lao 2012 PDF. Note 4 distinguishes initial `v`, medial `w` clusters before vowels, medial `ūa` before a final consonant, final `o` after a vowel, and additional `iú`, `īu`, `īeo` sequences.
+- Added regression tests for `būak` with source vowel ID `UO` and final ກ; `nāo` with source vowel ID `AA` and final ວ; and fail-closed handling of `khwā` / `khwāng`. The intended scope is narrow: verify existing `ūa` and final-`o` behavior and prevent unsupported medial-`w` clusters from receiving a guessed result.
+- Updated README, direct-input audit and romanization matrix to distinguish these supported contexts from the still-unsupported cluster forms. No phonological mapping, runtime code, model, generated data or Pages workflow was changed.
+
+## Verification and disposition
+
+PR #222 exact-head Verify #4288 / [run 43760252368](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760252368) passed: 350 Python, 192 Node and 28 Chromium tests; IPA-gold schema validation; repository/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; and built-page/relative-asset checks. This is the prior mainline baseline, not verification of the new branch. The new ALA-LC tests require exact-head CI before they can be marked DONE_VERIFIED.
+
+The LOC source supports the orthographic romanization conditions, not the project's Ukrainian target adaptation. No Ukrainian output for medial `w` clusters was inferred. The independent adjudicated IPA gold corpus remains 0; specialist review remains outstanding.
+
+**Current acceptance ledger:**
+
+| Workstream | Status | Acceptance / remaining evidence |
+|---|---|---|
+| Deterministic GitHub Pages IPA-first shell | DONE_VERIFIED (runtime checkpoint) | Pages #102 deployed `fe1c4a0`; no runtime change in this branch |
+| ALA-LC Note 4 `ūa` and final-`o` regression coverage | PARTIAL / CI pending | Exact-head tests must pass; this verifies current implementation only |
+| ALA-LC medial-`w` cluster adaptation | BLOCKED / evidence-limited | Explicit Ukrainian cluster target policy, representative source-aware fixtures and Lao-specialist review |
+| Remaining ALA-LC Notes 1–10 and broader corpus | PARTIAL | Contextual forms, loanword/word-boundary cases and representative reviewed corpus incomplete |
+| Seven uncovered CLDR source vowel IDs | PARTIAL | Source-attested exact crosswalk and target decision required |
+| Independent adjudicated IPA gold | BLOCKED | 0 examples; rights-cleared expert annotation and independent adjudication required |
+| Lao specialist review | BLOCKED | Qualified independent reviewer and documented decisions required |
+| Lao-specific RTGS | BLOCKED | Authoritative complete Lao adaptation table and source-backed examples required |
+| Accessibility/device QA | BLOCKED | Human screen-reader, keyboard-only and physical-device testing required |
+| PR #145 | BLOCKED / owner decision | Neural-first CLI default conflicts with deterministic-default contract; do not merge blindly |
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-15 (PR #212 merged; current repository state reconciled)
 
 **Starting main:** `5c932055b81a76c8bf67f6c77818f9e28f59975e` (PR #211 merged).  

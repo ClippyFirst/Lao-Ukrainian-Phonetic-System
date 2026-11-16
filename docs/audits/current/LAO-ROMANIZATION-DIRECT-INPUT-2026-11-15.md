@@ -190,3 +190,12 @@ The current upstream Unicode CLDR source was fetched directly from `unicode-org/
 | `AAJ` | `◌າຽ` | Separate `າ` and `ຽ` rules do not establish the intended /aːj/ compound. |
 
 This inspection strengthens the evidence for keeping the seven IDs fail-closed; it does not prove that no other romanization standard can represent them. No mapping was added, and no hypothetical concatenated output was treated as a CLDR test result. Acceptance still requires a source-attested exact transform output in the selected profile, source syllable/coda validation, an explicit Ukrainian target decision, positive and negative fixtures, and Lao-specialist review.
+
+
+## ALA-LC 2012 Note 4 contextual regression checkpoint — 2026-11-16
+
+The Library of Congress Note 4 distinguishes four contexts for Lao ວ: initial `v`; medial before a vowel as a `w` cluster with the initial consonant; medial before a final consonant as `ūa`; and final after a vowel as `o`. It additionally lists `iú`, `īu` and `īeo` forms. The continuation branch adds focused regression tests for the two contexts already supported by the bounded adapter: `būak` (source-aware `UO` nucleus plus final ກ) and `nāo` (source-aware `AA` nucleus plus final ວ). It also asserts that `khwā` and `khwāng` remain PARTIAL rather than being split or assigned an unreviewed Ukrainian cluster output. These tests protect the implementation boundary; they do not complete Note 4 or establish independent linguistic validation.
+
+**Primary source:** [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 4, page 3](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). The rendered PDF confirms the examples `khwā`, `khwāng`, `būak`, `dūai`, `nāo` and `kǣo`, and the additional `iú`, `īu`, `īeo` spellings. The exact target-side handling of medial `w` clusters remains unresolved; no Ukrainian output was invented.
+
+**Continuation branch:** `test/ala-lc-note4-context-regressions-20261116`. Tests are pending exact-head CI; do not mark this regression batch DONE_VERIFIED until that workflow passes.
