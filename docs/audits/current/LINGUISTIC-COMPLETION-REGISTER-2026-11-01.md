@@ -16,7 +16,7 @@
 | LAO-SPECIALIST-001 | BLOCKED | No qualified independent Lao specialist sign-off. |
 | LAO-RTGS-001 | BLOCKED | No authoritative complete Lao-specific RTGS adaptation table and reviewed examples. |
 | LAO-UI-001 | PARTIAL | Automated Chromium checks pass; human screen-reader, keyboard-only and physical-device QA remains outstanding. |
-| PR-145-ARCH-001 | DEFERRED / owner decision | Open neural-first proposal is 24 commits ahead and 363 behind current main, mergeable=false. Do not merge without owner decision on architecture; deterministic-default web contract remains in force. |
+| PR-145-ARCH-001 | DEFERRED / owner decision | Open neural-first proposal is 24 commits ahead and 364 behind current main, mergeable=false. Do not merge without owner decision on architecture; deterministic-default web contract remains in force. |
 
 ### Recent merged evidence
 
