@@ -1,3 +1,43 @@
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 6 and 10 source-aware regressions)
+
+**Starting main:** a888ae3df58badcf9380894cd72d12f4910d008b.  
+**PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228):** test/ala-lc-notes6-10-source-crosswalk-20261116; current branch head before this handoff update: fe9d7699d7f3fa0308d406625e9c846ffdbefbfc.  
+**Exact-head Verify #4309:** [run 43848574433 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43848574433) on code/test head 4aa6d7ff3770ae7cb28a8edc3da248a7b2adf1b8: 350 Python, 201 Node and 28 Chromium tests passed; 0 failures. Documentation updates are being rechecked on the final PR head.  
+**Runtime checkpoint before this PR:** fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9, deployed by Pages #102. PR #228 changes web/romanization-syllable-engine.js, so a new Pages deployment and smoke check are required after merge.  
+**Open architecture PR:** #145 remains untouched; its neural-first proposal still conflicts with the deterministic-default contract and needs an owner decision.
+
+## Work completed in this continuation
+
+- Re-read the complete LOC ALA-LC 2012 table, Notes 6 and 10, the current romanization matrix, direct-input audit, canonical handoff, codebase map, glossary, project requirements and the full source-aware romanization parser/caller/tests.
+- **Note 6:** added a distinct ALA-LC ʻ onset token and source crosswalk from initial Lao ອ. The parser now retains source onset/vowel/coda provenance and reports UNSUPPORTED_ALA_LC_INITIAL_AYN / PARTIAL because no Ukrainian target value is approved. Latin-only initial ayn remains withheld. The LOC medial-ອ vowel forms ǫ, ǭ, ưa, ư̄a remain unsupported; no target mapping was invented.
+- **Note 10:** added a source-aware regression for LOC khitsatīan. With source roles explicitly supplied, ສ is checked as coda t in one syllable and onset s in the next. A negative fixture proves that omitting the coda role withholds the whole romanized word. This verifies the existing position-sensitive crosswalk, not automatic lexical/syllable segmentation of the Lao example.
+- Updated the romanization matrix, direct-input audit, README and this handoff with the evidence boundary. No IPA, tone or lexical boundary was inferred.
+
+## Acceptance ledger
+
+| Workstream | Status | Evidence / remaining acceptance |
+|---|---|---|
+| ALA-LC Note 6 initial-ayn source recognition | DONE_VERIFIED (engineering trace only) | PR #228; source-aware marker retained as UNSUPPORTED_ALA_LC_INITIAL_AYN; Ukrainian target remains BLOCKED pending an explicit reviewed policy |
+| ALA-LC Note 6 medial-ອ vowel forms | PARTIAL / fail-closed | ǫ, ǭ, ưa, ư̄a still lack a supported source-vowel and Ukrainian target adapter |
+| ALA-LC Note 10 supplied double-function roles | DONE_VERIFIED (engineering crosswalk fixture only) | LOC khitsatīan fixture passes when source coda/onset roles are both supplied; negative role-omission fixture withholds |
+| Automatic Lao segmentation for LOC Note 10 example | PARTIAL | Must verify the upstream source parser derives the LOC syllable/lexical roles from ຄິຼສຕຽນ; the regression currently supplies those roles explicitly |
+| ALA-LC Note 9 lexical/loanword boundaries | PARTIAL | Lao lexical word segmentation, Pali/Sanskrit shortest-form rule and foreign-language loanword boundaries remain outside the syllable parser |
+| Full ALA-LC conformance | PARTIAL | Other unsupported vowels, medial w, contextual ວ, lexical boundaries and specialist review remain open |
+| Runtime deployment for PR #228 | TODO until merge | Deploy the merged runtime to GitHub Pages and verify the published site/asset hashes and direct romanization mode |
+| Independent adjudicated IPA gold | BLOCKED | 0 examples; rights-cleared expert annotation and independent adjudication required |
+| Lao specialist review | BLOCKED | Qualified independent reviewer and documented decisions required |
+| Lao-specific RTGS | BLOCKED | Authoritative complete Lao adaptation table and source-backed examples required |
+| Accessibility/device QA | BLOCKED | Human screen-reader, keyboard-only and physical-device testing required |
+| PR #145 | BLOCKED / owner decision | Neural-first CLI default conflicts with deterministic-default contract; do not merge blindly |
+
+## Verification notes
+
+The first test-only run #4301 intentionally exposed the Note 6 provenance gap. Subsequent intermediate runs #4302–#4308 still had one failing Note 6 diagnostic assertion while the Note 10 positive and negative fixtures passed. The diagnostic was moved to the actual source-mismatch path and localized. Exact-head Verify #4309 then passed 350 Python, 201 Node and 28 Chromium tests with 0 failures, plus IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. A fresh exact-head run is required after the documentation commits below.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a linguistically validated universal converter. The Note 6 target decision, automatic Note 10 source segmentation, Note 9 lexical boundaries, independent gold, specialist review, RTGS and manual accessibility/device QA remain open.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (ALA-LC Note 4 regression batch)
 
 **Starting main:** `3968987815ce9948e56989816d025db0b2eb9d74` (PR #222 merged).  
