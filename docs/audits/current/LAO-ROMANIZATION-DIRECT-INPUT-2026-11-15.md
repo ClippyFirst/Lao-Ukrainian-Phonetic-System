@@ -251,7 +251,7 @@ The Lao-script string `ຄິຼສຕຽນ` was entered into the Latin direct-
 - PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231), exact-head Verify #4319 / [run 43865169001](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865169001): SUCCESS.
 - Browser suite: 29 passed, including the new direct-romanization mode-separation guard.
 - Python tests, Node engine tests, IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed.
-- The exact source form contains U+0EBC LAO SEMIVOWEL SIGN LO (`ຼ`), which the current deterministic Lao syllable parser does not model as an independent structural role. The test confirms fail-closed behavior; it does not derive LOC's three syllables or the repeated coda/onset role.
+- The test input happens to contain U+0EBC LAO SEMIVOWEL SIGN LO (`ຼ`), but this is unrelated to LOC Note 10. The test confirms only that Latin direct-romanization mode withholds Lao-script input; it does not test U+0EBC parsing, LOC syllabification or the repeated coda/onset role.
 - Existing Note 10 unit tests are explicitly source-role-supplied synthetic crosswalk fixtures. Automatic LOC lexical/syllabic segmentation is still PARTIAL/BLOCKED pending a reviewed orthographic parser and Lao-specialist source-role policy.
 
 No runtime code, IPA, tone, lexical boundary or Ukrainian mapping changed.
