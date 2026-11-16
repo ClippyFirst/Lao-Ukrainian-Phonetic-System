@@ -511,3 +511,25 @@ The canonical handoff and README now identify the verified baseline `94cc9ed`, P
 ## PR #222 exact-head checks — 2026-11-15
 
 PR #222 exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed: 350 Python, 192 Node and 28 Chromium tests, IPA-gold schema validation, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/deterministic-only artifact assertions. No runtime files changed; no Pages deployment required.
+
+## Branch inventory refresh — 2026-11-16
+
+**Default branch:** `main`, head `6512aac75cfb71c2d5f6f37a040f55739f32b14f` (post-merge Verify #4336 passed).
+**Branch refs:** GitHub API inventory returned 102 refs across two pages: 101 non-main plus `main`. No branch was deleted, force-updated or mass-merged.
+**Open PR inventory:** only PR [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open. It is the neural-first MekongPhon proposal, 24 commits ahead / 364 behind current main, divergent and `mergeable=false`; leave it for explicit owner architecture decision.
+**Recently merged relevant work:** PRs #231–#236 are merged. #231 added the real-browser Note 10 fail-closed guard; #232–#236 reconciled the ALA-LC Notes 8–10 and LaoNLP evidence in the matrix, source registry, audit, README and handoff. PR #236 is docs-only and post-merge Verify #4336 passed.
+
+### Relevant divergent branch comparisons
+
+The following potentially relevant historical branches were compared directly with current main. These are not fast-forward candidates; their commit histories diverge and current main has progressed. File lists overlap with already integrated work, so do not cherry-pick or merge them wholesale.
+
+| Branch | Ahead | Behind | Relevant changed files | Disposition |
+|---|---:|---:|---|---|
+| `fix/ala-lc-2012-conformance` | 21 | 61 | ALA-LC engine, tests, matrix, audit, source registry | Historical candidate; review individual missing behavior only |
+| `feat/romanization-input-to-ukrainian-20261115` | 40 | 62 | app, engine, tests, UI, matrix, README | Main already contains direct romanization input; do not replay branch |
+| `fix/ala-lc-final-crosswalk-current-main-20261115` | 11 | 53 | crosswalk engine/tests, methodology, matrix | Superseded divergent snapshot; inspect only if a concrete regression is found |
+| `fix/ala-lc-final-w-crosswalk-20261115` | 9 | 54 | final-`w` crosswalk and tests | Superseded divergent snapshot; no wholesale merge |
+| `test/ala-lc-note4-context-regressions-20261116` | 6 | 14 | Note 4 regression/docs | Historical branch; compare individual tests if needed |
+| `feat/mekongphon-first-stage` (PR #145) | 24 | 364 | neural-first API/CLI, docs, tests, benchmark workflow | Open owner-level architecture proposal; leave untouched |
+
+The API inventory contained 102 refs; only the six directly relevant divergent candidates above were individually compared in this refresh. This is not a claim that all 101 non-main refs were individually diff-reviewed. Preserve historical refs. Any future consolidation should be an explicit, file-level, test-backed task rather than a branch cleanup operation.
