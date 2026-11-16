@@ -761,3 +761,16 @@ The separate Del Vigna & Berment (2003) formal-language analysis describes irred
 | Current general Lao syllable grammar | PARTIAL / TODO | Berment's historical grammar + current grapheme evidence are complementary but incomplete. Need reviewed spelling constraints, separate acronym/loan/Indic profiles, candidate lattice, ambiguity preservation and Lao-specialist adjudication. |
 
 New registry entries: 81 unique source IDs / 99 unique claim IDs after this checkpoint; no duplicate IDs or missing claim-to-source references. See direct-input audit and romanization matrix for scoped source links and rule details.
+
+
+## Ishida 2026: syllable/word boundary evidence — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Modern Lao syllable boundary evidence | DONE_VERIFIED (source review) | Ishida (2026-04-28) says explicit vowels and restricted codas make individual syllable segmentation comparatively straightforward; identifies onset families and pre-base vowel anchoring. |
+| Ishida orthographic regression cases | PARTIAL | Added `ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ` controls to multisyllable tests. Python step passed on test commit in Verify #4517; full workflow still pending at last poll. These are not IPA gold. |
+| Lexical word segmentation | PARTIAL / TODO | Word boundaries are not marked by spaces; multi-syllabic words may require a language-specific dictionary or explicit ZWSP. Do not equate syllable segmentation with word segmentation. |
+| Modern coda inventory reconciliation | TODO | Ishida's nine phonological coda letters differ from ICANN's broader DNS root-zone repertoire and historical loan/Indic spellings. Define separate profiles before changing parser inventories. |
+| Ambiguity lattice | TODO (fallback) | Retain candidate alternatives for genuine residual ambiguity; do not assume ordinary Lao syllable segmentation is generally irreducible. |
+
+Registry totals: 82 unique sources / 104 unique claims; no duplicate IDs or missing claim-to-source references.

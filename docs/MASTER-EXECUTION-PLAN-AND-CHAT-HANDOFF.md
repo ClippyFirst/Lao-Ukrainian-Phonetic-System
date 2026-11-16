@@ -1,12 +1,12 @@
 ## Latest verification and research status — 2026-11-17
 
 - **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
-- **Current branch HEAD:** `900f9c5d216743b4d86394dc6d6397e04f275c82`; 117 commits ahead / 0 behind `main`, eight changed files.
-- **Latest completed CI:** Verify #4506 / run 43968825128 — SUCCESS on `defa2f87a0730098aad240528641cac2527ca897`. All configured steps passed: IPA-gold schema, repository/evidence audit, Python tests, external-G2P syntax/CLI, browser engine tests, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks. Verify #4513 / run 43970708960 completed SUCCESS on its exact tested SHA `f18250734f0b3989d02bed3d8d1d4f3611eedc18`. Three subsequent commits synchronized only the branch audit, handoff and README; #4513 is not exact-head verification for the current reporting-only HEAD. A fresh exact-head run is required.
-- **Research:** Berment (2004) documents a historical Lao syllable grammar and ambiguity graph. Newer ICANN (2017/2025) and W3C (2026 draft) sources clarify grapheme placement and mark ordering, but ICANN intentionally omits many spelling constraints and W3C is an unendorsed layout draft. The runtime remains unchanged; no rules were guessed from OCR.
-- **Evidence registry:** 81 unique sources / 99 unique claims; no duplicate IDs or missing source references.
-- **PR #247:** open, mergeable, unmerged; PR #145 preserved untouched.
-- **Readiness:** engineering-verified partial research prototype, not release-ready. Exact-head CI for the current documentation head remains required.
+- **Current documentation branch test commit:** `cb7950065c310c9376f7075fe7688059475c0a19`; source/claim registry now has 82 unique sources / 104 unique claims, with no duplicate IDs or missing source references.
+- **Verify #4517 / run 43971181584:** Python tests, evidence audit, external-G2P syntax/CLI, browser engine, build and generated-data reproducibility passed on the test commit. Chromium UI and built-page/asset checks were in progress at last poll. New source-backed examples are orthographic segmentation tests, not IPA gold.
+- **New evidence:** Ishida (2026-04-28) distinguishes relatively straightforward Lao syllable segmentation (explicit vowels + restricted codas) from lexical word segmentation (dictionary/ZWSP). It documents pre-base vowels before the entire onset, separate labialized vs `ຫ` high-class onset sequences, and Unicode grapheme clusters that do not equal syllables. Berment's ambiguity lattice remains a fallback for genuine ambiguity, not a default assumption about ordinary syllables.
+- **Other sources:** Berment (2004), Del Vigna & Berment (2003), ICANN Lao proposal (2017), RZ-LGR-6 (2025), W3C Lao Layout Requirements Group Note Draft (2026; unendorsed), Unicode 18 and Ueda (1994) remain separately scoped.
+- **PR #247:** open, mergeable, unmerged; PR #145 untouched. Runtime unchanged; no deployment.
+- **Readiness:** engineering-verified partial research prototype, not release-ready. Current full exact-head CI remains required after the documentation synchronization that follows this note.
 
 
 ## Latest evidence/verification status — 2026-11-16 (Ueda review)

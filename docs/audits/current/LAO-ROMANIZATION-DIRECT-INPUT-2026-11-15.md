@@ -484,3 +484,37 @@ Berment supplies a historical generative syllable grammar and candidate segmenta
 Registry additions: `SRC-ICANN-LAO-PROPOSAL-2017`, `SRC-ICANN-RZ-LGR6-LAO-2025`; claims `CLM-LAO-ICANN-WLE-ORDERING`, `CLM-LAO-ICANN-LGR-NOT-SPELLCHECKER`, `CLM-LAO-ICANN-ROOT-ZONE-SCOPE`, `CLM-LAO-W3C-DRAFT-ORTHOGRAPHY-STRUCTURE`.
 
 Sources: [ICANN Lao proposal v3.1 (2017)](https://www.icann.org/en/system/files/files/proposal-lao-lgr-31jan17-en.pdf); [ICANN RZ-LGR-6 Lao (2025)](https://www.icann.org/sites/default/files/packages/lgr/rz-lgr-6-lao-script-23sep25-en.htm); [W3C Lao Layout Requirements, Group Note Draft (2026-03-20)](https://www.w3.org/TR/2026/DNOTE-laoo-lreq-20260320/); [Unicode 18.0 Chapter 16](https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-16/).
+
+
+## Modern Lao syllable vs word segmentation — Ishida (2026-04-28) — 2026-11-17
+
+Richard Ishida's *Lao Orthography Notes* (updated 28 April 2026) provides the most directly useful current descriptive account located so far: [https://r12a.github.io/scripts/laoo/lo.html](https://r12a.github.io/scripts/laoo/lo.html). It is linked by the W3C Lao Layout Requirements resource and describes modern printed Lao and Unicode use.
+
+### Findings that refine the earlier Berment/ICANN model
+
+- Lao is alphabetic and writes vowels explicitly. Ishida says this makes individual syllable boundaries comparatively straightforward to detect because the syllable-final consonant inventory is restricted; he lists nine coda letters: `ບ, ດ, ກ, ມ, ນ, ຣ, ງ, ວ, ຍ`. The rhyme `-am` can also be represented by U+0EB3. Coda sound can differ from the same letter's onset value.
+- This is **syllable segmentation, not lexical word segmentation**. Lao spaces mark phrases/sentences. Multi-syllabic lexical words such as `ປະເທດ` may need a dictionary to keep their syllables together for word-based selection; ZWSP U+200B may be supplied as an explicit boundary by source text/software.
+- Modern Lao has one audible onset-cluster type in the description: an onset consonant labialized by following `ວ`. Separate written high-class onsets use `ຫ` plus a following consonant, including `ຫຼ` with subjoined U+0EBC. Both classes must be kept together as syllable onsets. Ishida explicitly leaves “What about kw etc?” as an open question; do not infer a universal rule for every visually similar sequence.
+- Pre-base vowel letters are stored before the **entire onset**, not merely before the consonant that carries the phonological vowel. Tone marks and post-base vowel signs attach to the latter. The source examples `ໃຫຍ່` and `ເຫຼືອງ` make this distinction concrete.
+- Unicode grapheme clusters are not Lao syllables. Combining marks attach to a base consonant, but pre-base and post-base spacing components and other consonants in composite vowels can form parts of the same orthographic syllable. Do not use generic grapheme-cluster boundaries as syllable boundaries.
+- Ishida distinguishes modern coda phonology from the broader ICANN root-zone final-consonant repertoire. The nine-letter coda list should not be overwritten by the ICANN list of allowed domain-label characters.
+
+### Regression coverage added
+
+Added source-backed syllable-boundary cases to `tests/test_multisyllable_segmentation.py`:
+- `ໃຫຍ່` remains one syllable with pre-base vowel before the high-class onset digraph;
+- `ເຫຼືອງ` remains one syllable with pre-base vowel before HA + subjoined LO;
+- `ປະເທດ` segments as `ປະ | ເທດ`, while the test explicitly does not claim a lexical word boundary.
+
+These are orthographic segmentation controls, **not IPA/pronunciation gold**. Verify #4517 / run 43971181584 on test commit `cb7950065c310c9376f7075fe7688059475c0a19` has passed Python tests, evidence audit, external-G2P, browser engine, build and generated-data reproducibility; Chromium UI and built-page checks were still running at the last poll.
+
+### Architecture/status refinement
+
+Berment's candidate graph and irreducible-ambiguity work remain valuable for genuinely ambiguous or lexically segmented input, but should not be made the default assumption that ordinary Lao syllable boundaries are generally irreducible. Baseline should be a deterministic, source-backed orthographic syllable parser using explicit vowels, restricted codas and the two onset families; preserve an ambiguity/candidate path for cases where multiple parses remain. Word segmentation is a separate dictionary-backed layer and is not implied by syllable segmentation.
+
+- MODERN_LAO_SYLLABLE_BOUNDARY_EVIDENCE: DONE_VERIFIED (source review).
+- ISHIDA_EXAMPLE_REGRESSIONS: PARTIAL pending full exact-head CI; Python step passed on test commit.
+- GENERAL_WORD_SEGMENTATION: PARTIAL / TODO — dictionary or explicit ZWSP required for lexical word boundaries; choose dictionaries by language, not merely by script.
+- Coda inventory reconciliation: TODO — distinguish modern phonological coda inventory from ICANN DNS repertoire, Indic/loanword extensions and historical spellings.
+
+Registry: `SRC-ISHIDA-LAO-ORTHOGRAPHY-NOTES-2026`; claims `CLM-LAO-ISHIDA-EXPLICIT-VOWELS-SYLLABLE-BOUNDARIES`, `CLM-LAO-ISHIDA-ONSET-CLUSTER-PROFILE`, `CLM-LAO-ISHIDA-PREBASE-ONSET-ANCHOR`, `CLM-LAO-UNICODE-GRAPHEME-IS-NOT-SYLLABLE`, `CLM-LAO-ISHIDA-CODA-INVENTORY`.
