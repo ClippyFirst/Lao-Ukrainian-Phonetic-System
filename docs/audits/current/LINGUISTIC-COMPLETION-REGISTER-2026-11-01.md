@@ -692,3 +692,7 @@ The upstream CLDR evidence and branch review are recorded in the canonical hando
 ## PR #222 verification — DONE_VERIFIED (engineering only)
 
 Exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed on branch `docs/post-pr221-checkpoint-and-cldr-evidence-20261115`: IPA-gold schema and repository data/evidence audits; 350 Python tests; external-G2P syntax/CLI; 192 Node tests; build/generated-data reproducibility; 28 Chromium tests; built-page/relative-asset and deterministic-only artifact assertions. Documentation-only; no Pages deployment required. Linguistic acceptance remains partial/blocked as in the table above.
+
+## LOC table version authority — 2026-11-16
+
+The current LOC index lists Lao (2012) as the current table and 1997 only as an earlier reference version; LOC says earlier versions are for reference only and not for current cataloging. This confirms 2012 as the primary standard. Note 9 is a three-branch boundary policy (ordinary Lao shortest standalone form; Pali/Sanskrit same rule; other loans divided according to the original language), not a generic Lao tokenization task. See the direct-input audit and source/claim registry entries `SRC-ALA-LC-ROMANIZATION-INDEX` and `CLM-ALA-LC-LAO-2012-CURRENT-VERSION`.
