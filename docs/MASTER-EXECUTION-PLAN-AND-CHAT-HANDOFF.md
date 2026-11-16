@@ -1,3 +1,22 @@
+# Latest continuation checkpoint — 2026-11-16 (LaoNLP candidate assessed against ALA-LC Note 9/10)
+
+**Starting main:** `285a258f93d2e9db2a56f2ff258097932306b6ef`.
+**Research target:** LaoNLP pinned repository commit `a914f64e38ff24d67d32e37db40dad5c368ea602`, reviewed at source-code and data-file level.
+**Finding:** not adopted as a drop-in Note 9/10 solution. Its syllable regex is documented as orthographic syllabification for line breaking, not a phonological source-role model; the word tokenizer uses PyThaiNLP Trie maximum matching over a four-source dictionary union, not LOC's shortest-standalone-form and loanword-specific rules. The composite dictionary has mixed licensing (BSD-style, Apache-2.0, CC BY-SA 3.0 and one supplemental file without an explicit file-level license notice). The Lao-English CSV has a separate MIT notice but is not one of the four sources used by `lao_words()`.
+**Source registry and claims:** existing LaoNLP rows expanded; separate data/license rows and a methodology claim added. No external code or data imported; no runtime changes.
+**Remaining:** Note 9 stays PARTIAL/BLOCKED; automatic Note 10 segmentation stays PARTIAL/fail-closed.
+
+## Candidate assessment ledger
+
+| Candidate | Assessment | Decision |
+|---|---|---|
+| `syllable_tokenize` regex | Apache-2.0 package code; includes U+0EBC in a semivowel class; intended for orthographic syllabification/line breaking; not a phonological role or lexical word segmenter | Do not use as LOC Note 10 proof or IPA adapter |
+| `word_tokenize` | PyThaiNLP Trie maximum matching over Lao-Dictionary, Google spellcheck, supplemental Wannaphong list and Wiktionary 2021 | Not equivalent to LOC Note 9 shortest-standalone-form and loanword-specific policy |
+| Composite dictionary | BSD-style word list, Apache-2.0 spellcheck, CC BY-SA 3.0 Wiktionary list, supplemental list with no explicit file-level license notice | Do not bundle as a single corpus without per-file rights/attribution resolution |
+| Lao-English CSV | Separate MIT notice; Latin pronunciation field, not IPA; not part of the default `lao_words()` union | Not word-boundary gold; not imported |
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 8–9 scope reconciliation)
 
 **Starting main:** `c22832f61e6fd4aa9365dc048935ea90eef34d81` (PR #232 documentation reconciliation merged).
