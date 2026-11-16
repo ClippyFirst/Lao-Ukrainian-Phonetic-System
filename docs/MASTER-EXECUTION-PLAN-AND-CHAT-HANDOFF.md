@@ -1,3 +1,15 @@
+# Latest continuation checkpoint — 2026-11-16 (PR #247 evidence reconciliation verified)
+
+**Starting main:** `390302db31b56f5842696c2d81a817689635472b`.
+**Working branch:** `docs/correct-loc-note10-source-example-20261116`; latest verified head `d334ecd438052d8b43006c399fcc71f3e634e4c7`.
+**PR [#247](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/247):** open, not merged; 32 commits ahead / 0 behind main; documentation/evidence-only (8 files). No runtime, corpus, model, dictionary or generated artifact changes; no Pages deployment expected.
+**Exact-head Verify #4455:** [run 43946584276 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43946584276): 355 Python, 204 Node and 30 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+**Evidence updates:** LOC index establishes Lao (2012) as current and 1997 as earlier reference only; Note 9's three distinct segmentation branches are recorded. LOC directs copying from Word source files, but the linked Lao `lao.doc` could not be retrieved and remains uninspected. HVULao_NLP article and dataset license scopes are separated; no corpus text/model/dependency was imported.
+**Remaining acceptance:** Note 9 rights-cleared, source-located and Lao-specialist-adjudicated examples; Note 10 automatic source-role derivation; Note 6 target adaptation; independent IPA gold (0 examples); authoritative Lao-specific RTGS; qualified specialist and manual accessibility/device review. Repository remains an engineering-verified partial research prototype, not release-ready.
+**Other PR:** #145 remains open, divergent and non-mergeable; do not merge/rebase without owner-level architecture decision. No user branches deleted or force-updated.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (PR #246 merged; LOC Note 10 source form reverified)
 
 **Starting main:** `8e8622b007452c20f68dfbfed1edcb709d6bdc41`.
