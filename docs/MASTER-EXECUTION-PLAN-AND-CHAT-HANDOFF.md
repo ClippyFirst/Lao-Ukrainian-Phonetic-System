@@ -2,7 +2,7 @@
 
 **Starting main:** a888ae3df58badcf9380894cd72d12f4910d008b.  
 **PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228):** merged by squash as 44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900; tested head 03fe0bd6956376bf36c106abdfa7d3066f4ec3c6.  
-**Current main:** 44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900.  
+**Runtime commit deployed by Pages #103:** 44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900.  
 **Exact-head Verify #4313:** [run 43849117284 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849117284).  
 **Post-merge main Verify #4314:** [run 43849485259 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485259). Both passed 350 Python, 201 Node and 28 Chromium tests with 0 failures, plus schema, repository/evidence, external-G2P, build, reproducibility and built-page checks.  
 **Pages Deploy #103:** [run 43849485210 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485210) deployed the same runtime commit to https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/. The built-site Chromium suite passed 28 tests and the post-deployment smoke test fetched the public index, methodology page, app.js, data.js, engine.js and styles.css.  
