@@ -1,3 +1,21 @@
+# Latest continuation checkpoint — 2026-11-16 (PR #237 branch inventory refresh merged)
+
+**Starting main for PR #237:** `6512aac75cfb71c2d5f6f37a040f55739f32b14f`.
+**PR [#237](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/237):** merged by squash as `0f4dd825db25801bca4d350735253c5885f63ddf`.
+**Exact-head Verify #4337:** [run 43869513471 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43869513471).
+**Post-merge main Verify #4338:** [run 43869727851 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43869727851). Both passed 350 Python, 201 Node and 29 Chromium tests; generated-data reproducibility and built-page checks passed.
+**Branch inventory:** 102 refs at inspection (101 non-main plus main); six relevant divergent candidates compared. Only PR #145 open; 24 ahead / 365 behind, `mergeable=false`, left untouched for owner decision.
+**Runtime deployment:** Pages #104 still deploys `e6b1d564a20b88945dc0277b8db38efcd5834c8e`. PRs #232–#237 after the Note 10 browser guard did not change runtime code; no new Pages deployment was required.
+
+## Current stop-state
+
+- All feasible repository-side work in this continuation is complete: Note 10 fail-closed integration test, LaoNLP candidate/license assessment, Notes 8–9 scope clarification, README/matrix/audit/register/handoff reconciliation, branch/PR reconciliation and exact-head/post-merge verification.
+- No further automatic Note 9 or Note 10 lexical/phonological implementation is evidence-safe without a LOC-conformant reviewed segmentation policy and qualified Lao specialist input.
+- Remaining blockers: independent adjudicated IPA gold (0), Lao specialist sign-off, authoritative Lao-specific RTGS adaptation, rights-clean lexical resource and manual accessibility/device QA.
+- The only open PR is #145, a neural-first architecture proposal requiring owner decision; do not merge or close it unilaterally.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (branch inventory refresh)
 
 **Starting main:** `6512aac75cfb71c2d5f6f37a040f55739f32b14f`.
