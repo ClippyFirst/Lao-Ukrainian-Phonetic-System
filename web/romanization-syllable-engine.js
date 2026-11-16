@@ -569,9 +569,8 @@ export function analyzeRomanization(input, options = {}) {
           item.coda = parsed.path[0].coda;
         }
         const initialAynWithoutTarget = profile === "ala-lc"
-          && sourceSlice?.length === 1
-          && sourceSlice[0]?.onset === "ອ"
-          && parsed.path.some((unit) => unit.onset === "ʻ");
+          && item.sourceOnsetKey === "ອ"
+          && item.onset === "ʻ";
         if (initialAynWithoutTarget) item.status = "UNSUPPORTED_ALA_LC_INITIAL_AYN";
         item.warning = initialAynWithoutTarget
           ? "ALA-LC 2012 confirms initial ʻ as the romanization of Lao ອ; the project has no approved Ukrainian target correspondence for this marker, so the result is withheld."
