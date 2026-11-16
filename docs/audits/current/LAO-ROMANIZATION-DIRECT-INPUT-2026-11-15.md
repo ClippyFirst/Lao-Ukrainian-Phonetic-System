@@ -419,3 +419,16 @@ The current UNGEGN approval-process document (WG-reviewed 28 May 2026) clarifies
 The official [LOC source-document index](https://www.loc.gov/catdir/cpso/romansource.html) continues to identify the Lao Word file and explicitly says to use Word source documents rather than PDF copies when copying table data. A fresh retrieval attempt against the linked official `lao.doc` endpoint again failed: the web retrieval layer rejects its `application/msword` content type, and a direct file download did not complete. The Word document has **not** been inspected. The 2012 PDF text-layer statements and examples in this audit remain attributed to the PDF/text layer only; they must not be described as Word-source verification.
 
 **Acceptance to unblock:** obtain the exact official LOC `lao.doc` file through a compatible document-capable environment or user-supplied copy, inspect its table/notes, and reconcile any differences before changing source-derived claims or fixtures. No linguistic inference or runtime change is justified by the failed retrieval.
+
+
+## Ueda (1994) full-text phonology review — 2026-11-16
+
+A full-text review of Reiko Ueda, *The Phonology of the Vientiane Dialect of Lao* (1994), adds a material constraint for source-side analysis. Ueda explicitly reports no phonological consonant clusters in the described Vientiane spoken dialect despite consonant-letter sequences in Lao spelling. In the examples in §2.3 (printed pp. 100–101), written `w` can correspond to spoken /ua/ or have no independent spoken segment. The paper also lists positional onset and coda inventories (§§2.1, 3.2), with some consonants occurring in both positions.
+
+This is **phonological evidence**, not an orthographic segmentation specification. It does not provide a deterministic grapheme-to-syllable algorithm and does not verify LOC Note 10's exact Lao glyph sequence. It reinforces the requirement that written grapheme grouping and spoken onset/rhyme/coda analysis remain separate, typed stages. A parser must not infer a spoken onset cluster from adjacent consonant letters alone.
+
+Ueda also describes exceptional non-final light syllables and a five-tone baseline alongside a disputed six-tone analysis. These observations are scoped to the described central Vientiane variety and one informant; they must not be generalized to all Lao dialects or used to silently normalize five- and six-tone references.
+
+**Disposition:** improve the evidence basis for the Vientiane phonological layer; keep orthographic syllabification and LOC Note 10 automatic role derivation `PARTIAL/TODO`. No runtime rule, corpus item, or IPA gold example is added.
+
+Source: Ueda (1994), DOI [10.11435/GENGO1939.1994.106_95](https://doi.org/10.11435/GENGO1939.1994.106_95); full-text reading notes preserved in [the Undermind research workspace](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
