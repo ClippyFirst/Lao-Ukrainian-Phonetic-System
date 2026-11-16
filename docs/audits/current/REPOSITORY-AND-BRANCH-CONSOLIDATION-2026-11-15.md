@@ -1,3 +1,15 @@
+## Live reconciliation — PR #239 and branch inventory (2026-11-16)
+
+- Current `main`: `d1b3a7a3418aca83a6cb56a291007dcb0a36479c`; PR [#239](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/239) is merged and documentation-only.
+- Exact-head Verify #4341 / [run 43870653366 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870653366) and post-merge main Verify #4342 / [run 43870840263 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870840263): 350 Python, 201 Node and 29 Chromium tests passed, with repository/evidence audit, IPA-gold schema, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+- A fresh paginated GitHub branch search returned 105 refs (104 non-main plus `main`). This supersedes the 102-ref inventory recorded in the PR #237 checkpoint; no branch was deleted or force-updated.
+- Fresh comparison `main...feat/mekongphon-first-stage`: 24 commits ahead / 367 behind, divergent, 13 changed files. The neural-first proposal remains an owner-level architecture decision; do not merge or rebase it without approval.
+- Pages #104 remains the latest runtime deployment at `e6b1d564a20b88945dc0277b8db38efcd5834c8e`; PR #239 did not change runtime code or generated assets.
+
+**Readiness remains:** engineering-verified partial research prototype, not a linguistically validated or release-ready universal converter. The linguistic and human-QA blockers in the completion register remain open.
+
+---
+
 # Repository structure and branch-consolidation audit — 2026-11-15
 
 ## Executive result
