@@ -1,3 +1,24 @@
+# Latest continuation checkpoint — 2026-11-16 (LaoNLP candidate assessment merged)
+
+**Starting main:** `285a258f93d2e9db2a56f2ff258097932306b6ef`.
+**PR [#234](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/234):** merged by squash as `271bde493c2ee11e50498c06e6c3263f0ea08308`.
+**Exact-head Verify #4330:** [run 43867454851 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867454851).
+**Post-merge main Verify #4331:** [run 43867656132 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867656132). Both passed 350 Python, 201 Node and 29 Chromium tests; repository/evidence audit, IPA-gold schema validation, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+**Result:** LaoNLP was researched and registered, not imported. Its syllable tokenizer is for orthographic line-breaking; its word tokenizer uses maximum matching over a mixed-source dictionary, not the LOC Note 9 lexical rule. Mixed per-file licensing prevents treating the composite dictionary as one ready-to-bundle corpus.
+**Current main:** `271bde493c2ee11e50498c06e6c3263f0ea08308`. No runtime or Pages deployment change was made by PR #234.
+
+## Updated acceptance ledger
+
+| Workstream | Status | Acceptance / remaining blocker |
+|---|---|---|
+| LaoNLP candidate assessment | DONE_VERIFIED (source/license review only) | PR #234; pinned upstream code/data inspected, registry and claims updated; no integration |
+| ALA-LC Note 9 lexical segmentation | PARTIAL / BLOCKED | Need LOC-conformant shortest-standalone-form and loanword-specific rules, plus a reviewed rights-clean lexicon; LaoNLP max-match is not equivalent |
+| ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | Real browser test keeps `ຄິຼສຕຽນ` visibly PARTIAL; U+0EBC source role and consonant overlap still require specialist-validated parser behavior |
+| ALA-LC Note 8 Lao numeral conversion | PARTIAL / route not implemented | Current phonetic source path preserves Lao digits; direct ALA-LC input starts from Latin text |
+| Full ALA-LC conformance | PARTIAL | Notes 6, 8, 9, 10 and other contextual vowel/ວ cases remain incomplete |
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (LaoNLP candidate assessed against ALA-LC Note 9/10)
 
 **Starting main:** `285a258f93d2e9db2a56f2ff258097932306b6ef`.
