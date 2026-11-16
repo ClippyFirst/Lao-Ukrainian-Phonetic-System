@@ -672,4 +672,11 @@ The API inventory contained 102 refs; only the six directly relevant divergent c
 - Added Richard Ishida's *Lao Orthography Notes* (updated 2026-04-28) to the source registry and five scoped claims: explicit vowels/restricted codas make syllable boundaries relatively straightforward; word boundaries remain dictionary/ZWSP-dependent; pre-base vowels anchor before the entire onset; onset labialization and high-class `ຫ` sequences are distinct; Unicode grapheme clusters are not syllables; modern coda inventory differs from ICANN root-zone repertoire.
 - Added three source-backed orthographic regression examples (`ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ`) to `tests/test_multisyllable_segmentation.py`. They assert syllable segmentation only, not IPA gold.
 - Verify #4517 / run 43971181584 on test commit `cb7950065c310c9376f7075fe7688059475c0a19`: Python tests, evidence audit, external-G2P, browser engine, build and reproducibility passed; Chromium UI and built-page checks were still in progress at last poll.
-- Registry: 82 unique sources / 104 unique claims; no duplicate IDs or missing references. No runtime implementation, corpus, model, dictionary or generated artifacts changed.
+- Registry: 81 unique sources / 104 unique claims; no duplicate IDs or missing references. No runtime implementation, corpus, model, dictionary or generated artifacts changed.
+
+
+## Exact-head verification and source-registry deduplication — 2026-11-17
+
+- Verify #4518 / run 43971358699 completed SUCCESS on exact pre-sync HEAD `ff6b62198510fc7bb69e2b132bddcffaaa487019`. All configured steps passed, including schema/evidence, Python (including three Ishida segmentation fixtures), external-G2P, browser engine, build/reproducibility, Chromium UI and built-page/relative-asset checks.
+- Reconciled the newly expanded Ishida source details into the existing `SRC-ISHIDA-ORTHO-2026` record already used by the onset/vowel registries instead of retaining a duplicate source row. Final registry: 81 unique sources / 104 unique claims; no duplicate IDs or missing source references.
+- This final synchronization is registry/documentation-only; the test additions and all other evidence were included in the successful #4518 parent checkpoint. A fresh exact-head workflow is triggered by this synchronization.

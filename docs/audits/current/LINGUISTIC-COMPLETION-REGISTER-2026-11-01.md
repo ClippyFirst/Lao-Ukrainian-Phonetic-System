@@ -773,4 +773,4 @@ New registry entries: 81 unique source IDs / 99 unique claim IDs after this chec
 | Modern coda inventory reconciliation | TODO | Ishida's nine phonological coda letters differ from ICANN's broader DNS root-zone repertoire and historical loan/Indic spellings. Define separate profiles before changing parser inventories. |
 | Ambiguity lattice | TODO (fallback) | Retain candidate alternatives for genuine residual ambiguity; do not assume ordinary Lao syllable segmentation is generally irreducible. |
 
-Registry totals: 82 unique sources / 104 unique claims; no duplicate IDs or missing claim-to-source references.
+Registry totals: 81 unique sources / 104 unique claims; no duplicate IDs or missing claim-to-source references.

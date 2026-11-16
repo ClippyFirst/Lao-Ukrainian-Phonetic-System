@@ -517,4 +517,4 @@ Berment's candidate graph and irreducible-ambiguity work remain valuable for gen
 - GENERAL_WORD_SEGMENTATION: PARTIAL / TODO — dictionary or explicit ZWSP required for lexical word boundaries; choose dictionaries by language, not merely by script.
 - Coda inventory reconciliation: TODO — distinguish modern phonological coda inventory from ICANN DNS repertoire, Indic/loanword extensions and historical spellings.
 
-Registry: `SRC-ISHIDA-LAO-ORTHOGRAPHY-NOTES-2026`; claims `CLM-LAO-ISHIDA-EXPLICIT-VOWELS-SYLLABLE-BOUNDARIES`, `CLM-LAO-ISHIDA-ONSET-CLUSTER-PROFILE`, `CLM-LAO-ISHIDA-PREBASE-ONSET-ANCHOR`, `CLM-LAO-UNICODE-GRAPHEME-IS-NOT-SYLLABLE`, `CLM-LAO-ISHIDA-CODA-INVENTORY`.
+Registry: `SRC-ISHIDA-ORTHO-2026`; claims `CLM-LAO-ISHIDA-EXPLICIT-VOWELS-SYLLABLE-BOUNDARIES`, `CLM-LAO-ISHIDA-ONSET-CLUSTER-PROFILE`, `CLM-LAO-ISHIDA-PREBASE-ONSET-ANCHOR`, `CLM-LAO-UNICODE-GRAPHEME-IS-NOT-SYLLABLE`, `CLM-LAO-ISHIDA-CODA-INVENTORY`.

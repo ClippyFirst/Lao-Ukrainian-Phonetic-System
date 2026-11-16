@@ -1,12 +1,12 @@
 ## Latest verification and research status — 2026-11-17
 
 - **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
-- **Current documentation branch test commit:** `cb7950065c310c9376f7075fe7688059475c0a19`; source/claim registry now has 82 unique sources / 104 unique claims, with no duplicate IDs or missing source references.
-- **Verify #4517 / run 43971181584:** Python tests, evidence audit, external-G2P syntax/CLI, browser engine, build and generated-data reproducibility passed on the test commit. Chromium UI and built-page/asset checks were in progress at last poll. New source-backed examples are orthographic segmentation tests, not IPA gold.
-- **New evidence:** Ishida (2026-04-28) distinguishes relatively straightforward Lao syllable segmentation (explicit vowels + restricted codas) from lexical word segmentation (dictionary/ZWSP). It documents pre-base vowels before the entire onset, separate labialized vs `ຫ` high-class onset sequences, and Unicode grapheme clusters that do not equal syllables. Berment's ambiguity lattice remains a fallback for genuine ambiguity, not a default assumption about ordinary syllables.
-- **Other sources:** Berment (2004), Del Vigna & Berment (2003), ICANN Lao proposal (2017), RZ-LGR-6 (2025), W3C Lao Layout Requirements Group Note Draft (2026; unendorsed), Unicode 18 and Ueda (1994) remain separately scoped.
-- **PR #247:** open, mergeable, unmerged; PR #145 untouched. Runtime unchanged; no deployment.
-- **Readiness:** engineering-verified partial research prototype, not release-ready. Current full exact-head CI remains required after the documentation synchronization that follows this note.
+- **Latest fully verified checkpoint before final source-registry deduplication:** `ff6b62198510fc7bb69e2b132bddcffaaa487019`; Verify #4518 / run 43971358699 completed SUCCESS on that exact SHA. All configured checks passed: IPA-gold schema, repository/evidence audit, Python tests (including new Ishida orthographic segmentation regressions), external-G2P, browser engine, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks.
+- **Current evidence:** Richard Ishida (2026-04-28) distinguishes straightforward syllable segmentation from dictionary-backed word segmentation; Berment (2004) supplies a historical grammar and ambiguity graph; ICANN 2017/2025 and W3C 2026 draft supply scoped grapheme-placement evidence; Ueda (1994) remains dialect-scoped phonology. Grapheme clusters are not syllables; pre-base vowels precede the entire onset; word boundaries are separate from syllable boundaries.
+- **Registry cleanup:** merged expanded Ishida metadata into the pre-existing `SRC-ISHIDA-ORTHO-2026` record, avoiding a duplicate source row. Registry after cleanup: 81 unique sources / 104 unique claims; no duplicate IDs or missing references.
+- **Tests added:** `ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ` orthographic syllable-segmentation fixtures; these are not IPA gold.
+- **PR #247:** open, mergeable, unmerged; PR #145 untouched. Runtime, model, dictionary, corpus and generated artifacts unchanged; no deployment.
+- **Readiness:** engineering-verified partial research prototype, not release-ready. Current exact-head CI is triggered by this final documentation/registry synchronization.
 
 
 ## Latest evidence/verification status — 2026-11-16 (Ueda review)
