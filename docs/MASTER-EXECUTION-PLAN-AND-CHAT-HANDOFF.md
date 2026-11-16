@@ -4632,3 +4632,16 @@ A local clone attempt was unavailable because the execution environment could no
 **Verification:** exact-head CI has not yet been observed at this checkpoint. No test pass is claimed. After CI, update this checkpoint with actual run ID, exact counts and final merge disposition. Runtime deployment is not required for this test/documentation-only batch.
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
+
+## PR #225 verification and merge reconciliation — 2026-11-16
+
+The preceding checkpoint's “CI pending” statement was written before Actions completed and is superseded by this verified result.
+
+- **PR:** [#225](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/225), `test/ala-lc-notes5-7-regressions-20261116`.
+- **Merge:** squash commit `66224de02f76453555dac805cad560a35fb2b925` on `main`.
+- **Exact-head Verify #4295:** [run 43840762990 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43840762990).
+- **Post-merge main Verify #4296:** [run 43840888440 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43840888440).
+- **Both runs:** 350 Python, 198 Node and 28 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+- **Outcome:** Note 5 and Note 7 engineering regression fixtures are DONE_VERIFIED. No runtime mapping or deployment asset changed. Note 6 initial `ʻ`, Note 9 lexical/loanword boundaries and Note 10 cross-syllable double-function consonants remain PARTIAL/BLOCKED pending a reviewed source-aware implementation and evidence. Independent IPA gold remains 0; specialist and manual accessibility reviews remain open.
+
+**Current main at this reconciliation:** `66224de02f76453555dac805cad560a35fb2b925`. **Runtime checkpoint remains:** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`; no Pages deployment is required for this test/documentation-only work.
