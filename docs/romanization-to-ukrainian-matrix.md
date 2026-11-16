@@ -175,3 +175,8 @@ The current upstream [CLDR Lao-Latin transform](https://github.com/unicode-org/c
 The LOC Note 4 has distinct contextual spellings for ວ. The bounded adapter now has explicit regression fixtures for the already implemented `ūa`-before-final pattern (`būak`, source-aware) and final-`o` pattern (`nāo`, source-aware). The medial-`w` cluster examples `khwā` and `khwāng` are asserted to remain PARTIAL; this is intentional until a reviewed Ukrainian cluster adaptation is specified. Note 4's `iú`, `īu` and `īeo` forms also remain unsupported under the existing fail-closed guard. This is regression coverage of a bounded subset, not full ALA-LC conformance.
 
 Source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 4, page 3](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
+
+
+## PR #223 engineering verification — 2026-11-16
+
+PR [#223](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/223) merged as `05644cbece3395122c18fb390aceba80013104cb`. Exact-head Verify #4291 and post-merge Verify #4292 passed 350 Python, 195 Node and 28 Chromium tests, plus data/evidence audit, build and generated-data reproducibility. The Note 4 fixtures establish source-aware behavior for `būak` and `nāo`; Latin-only inputs remain PARTIAL when ambiguous. The medial-`w` cluster examples remain PARTIAL. This is bounded engineering verification, not full ALA-LC conformance or linguistic gold validation.
