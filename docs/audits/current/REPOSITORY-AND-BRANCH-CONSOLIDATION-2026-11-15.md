@@ -5,7 +5,7 @@
 - Current paginated branch search returned 107 refs (106 non-main plus main). No existing branch was deleted or force-updated.
 - Open PRs: #145 (neural-first architecture proposal; owner decision) and #241 (ALA-LC Note 8 numeral route; active implementation).
 - PR #145 remains divergent: 24 ahead / 368 behind current main, 13 changed files. Leave untouched.
-- PR #241 is based on current main in `feat/ala-lc-note8-lao-digit-route-20261116`; it adds a narrowly scoped numeral-only ALA-LC Note 8 route and service output. Exact-head Verify #4365 / [run 43917388845 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917388845) passed 350 Python, 204 Node and 30 Chromium tests plus configured audits/build/reproducibility gates. Merge and post-merge verification remain.
+- PR #241 is based on current main in `feat/ala-lc-note8-lao-digit-route-20261116`; it adds a narrowly scoped numeral-only ALA-LC Note 8 route and service output. Exact-head Verify #4376 / [run 43917776932 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917776932) passed 350 Python, 204 Node and 30 Chromium tests plus configured audits/build/reproducibility gates. Merge and post-merge verification remain.
 
 ## Live reconciliation — PR #239 and branch inventory (2026-11-16)
 
