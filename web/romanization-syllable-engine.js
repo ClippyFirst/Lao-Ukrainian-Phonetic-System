@@ -573,7 +573,7 @@ export function analyzeRomanization(input, options = {}) {
           && item.onset === "ʻ";
         if (initialAynWithoutTarget) item.status = "UNSUPPORTED_ALA_LC_INITIAL_AYN";
         item.warning = initialAynWithoutTarget
-          ? "ALA-LC 2012 confirms initial ʻ as the romanization of Lao ອ; the project has no approved Ukrainian target correspondence for this marker, so the result is withheld."
+          ? "ALA-LC 2012 підтверджує початкове ʻ як романізацію лаоського ອ; для цього маркера ще не затверджено українського відповідника, тому результат утримано."
           : aligned
           ? "Романізований початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано."
           : "Кількість розібраних романізованих складів не збігається з кількістю лаоських складових одиниць; звірку утримано.";
@@ -598,7 +598,7 @@ export function analyzeRomanization(input, options = {}) {
           && unrestricted.path.some((unit) => unit.onset === "ʻ");
         if (initialAynWithoutTarget) item.status = "UNSUPPORTED_ALA_LC_INITIAL_AYN";
         item.warning = initialAynWithoutTarget
-          ? "ALA-LC 2012 confirms initial ʻ as the romanization of Lao ອ; the project has no approved Ukrainian target correspondence for this marker, so the result is withheld."
+          ? "ALA-LC 2012 підтверджує початкове ʻ як романізацію лаоського ອ; для цього маркера ще не затверджено українського відповідника, тому результат утримано."
           : hasUnmappedSourceVowel
             ? `Лаоська голосна структура ${sourceVowelId} ще не має підтвердженого відповідника в профілі CLDR Lao-Latin; український результат утримано.`
             : "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
