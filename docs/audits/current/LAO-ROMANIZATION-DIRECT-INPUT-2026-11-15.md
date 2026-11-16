@@ -261,3 +261,12 @@ No runtime code, IPA, tone, lexical boundary or Ukrainian mapping changed.
 PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231) merged by squash as `e6b1d564a20b88945dc0277b8db38efcd5834c8e`. Exact-head Verify #4323 / [run 43865438811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865438811) and post-merge main Verify #4324 / [run 43865719407](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719407) both succeeded: 350 Python, 201 Node and 29 Chromium tests, including the new LOC Note 10 browser regression. Pages Deploy #104 / [run 43865719450](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719450) also succeeded and deployed commit `e6b1d564`; its built-site Chromium suite passed 29 tests and the deployed-service smoke test passed.
 
 The engineering acceptance is complete for the fail-closed integration guard only. Automatic LOC syllabification remains PARTIAL; no linguistic capability is promoted.
+
+## ALA-LC Notes 8–9 route and evidence boundary — 2026-11-16
+
+A closer reading of the LOC 2012 Notes 8–9 clarifies two different implementation gaps:
+
+- **Note 8:** the current browser Lao-source route preserves Lao numerals as visible passthrough because it is a phonetic output path, not a full ALA-LC source romanizer. The direct ALA-LC mode starts from Latin romanization; its handling of Arabic digits cannot be counted as support for converting Lao numerals ໐–໙ to 0–9. Mark Note 8 PARTIAL for ALA-LC conformance. No runtime change was made because there is no ALA-LC Lao-source romanizer path to extend.
+- **Note 9:** no Lao lexical word segmenter or reviewed loanword boundary resolver exists in the current browser parser. It cannot implement the shortest written form that can stand alone as a word, Pali/Sanskrit shortest-form handling, or original-language boundaries for other loanwords without a rights-cleared lexicon and specialist-reviewed policy. Keep PARTIAL/BLOCKED; do not infer boundaries from arbitrary syllable segmentation.
+
+Primary evidence: LOC ALA-LC Lao Romanization Table (2012), Notes 8–9: https://www.loc.gov/catdir/cpso/romanization/lao.pdf. No source lexical boundary or numeral mapping has been invented.
