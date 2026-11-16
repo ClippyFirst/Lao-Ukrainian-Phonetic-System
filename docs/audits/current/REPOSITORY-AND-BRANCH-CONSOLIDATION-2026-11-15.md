@@ -2,8 +2,8 @@
 
 - Current `main`: `841826ce9981b1c09aa98179c790c63db1b2c982`; PR #241 merged by squash from exact tested head `f4be105e4c7383214f22a96f5598ddb7a81a8617`.
 - Exact-head Verify #4383 / [run 43918104933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918104933) passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
-- Paginated branch search returned 107 refs (106 non-main plus main); the implementation branch is preserved. No user branches were deleted or force-updated.
-- Only PR #145 remains open. It is divergent, 24 ahead / 369 behind current main, 13 changed files; leave untouched pending owner-level neural-first architecture decision.
+- Paginated branch search returned 108 refs (107 non-main plus main); the implementation and reconciliation branches are preserved. No user branches were deleted or force-updated.
+- PR #242 is the current documentation-only post-merge reconciliation. The only other open PR is #145, divergent 24 ahead / 369 behind current main with 13 changed files; leave it untouched pending owner-level neural-first architecture decision.
 - Pages workflow is configured to deploy on main changes to `index.html`, `web/**` and `tests/browser/**`; this merge touched those paths. Pages #104 is still the latest deployment confirmed in repository evidence. A newer deployment and post-merge main Verify result are not yet independently confirmed here.
 
 ## Live reconciliation — PR #240 and Note 8 work branch (2026-11-16)
