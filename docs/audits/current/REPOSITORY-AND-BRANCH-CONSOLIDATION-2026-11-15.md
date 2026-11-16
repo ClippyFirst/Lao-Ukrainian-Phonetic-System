@@ -1,3 +1,19 @@
+## Current main and preserved branch review — PR #246 (2026-11-16)
+
+- Current `main`: `390302db31b56f5842696c2d81a817689635472b`; PR #246 merged from tested head `9570180b100e06538251f96504223deaa06057fd`.
+- PR #246 exact-head Verify #4439 / [run 43933464076 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933464076); post-merge main Verify #4440 / [run 43933702934 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933702934). Both passed 355 Python, 204 Node and 30 Chromium tests and all configured schema/audit/G2P/build/reproducibility gates.
+- PR #246 is documentation/evidence-only; Pages #106 remains the current runtime deployment. No Pages deployment is expected.
+- Branch inventory is 114 refs across two API pages. Open PRs before this correction: #145 only. PR #145 remains divergent, 24 ahead / 374 behind, 13 files; leave untouched pending owner-level architecture decision.
+- Preserved test branches were compared against current main:
+  - `test/ala-lc-note10-automatic-source-boundary-20261116`: 5 ahead / 16 behind; its only browser test still checks Lao-script rejection in Latin mode with `ຄິຼສຕຽນ`. It does not test automatic Note 10 source-role derivation and is not ported.
+  - `test/ala-lc-notes6-10-source-crosswalk-20261116`: 13 ahead / 19 behind; the engine file is byte-identical to main, and its two manual double-function fixtures already exist on main in clarified synthetic form. No code port required.
+  - `test/ala-lc-notes5-7-regressions-20261116`: 5 ahead / 22 behind; all added regression test names already exist on main. No port required.
+  - `test/ala-lc-note4-context-regressions-20261116`: 6 ahead / 24 behind; all added regression test names already exist on main. No port required.
+  - `fix/source-aware-hyphen-regression-20261115`: 8 ahead / 32 behind; contains a separate stale engine/test delta based before Note 8 and needs targeted review before any port. Preserved.
+  - `research/revalidate-lao-audio-corpus-leads-20261115`: 6 ahead / 43 behind; evidence/docs branch remains unmerged pending source/right revalidation; no import assumed.
+  - `improve/rule-engine-error-analysis-20261107`: 294 ahead / 376 behind, large divergent history; no whole-branch merge or cherry-pick without commit-level reconciliation.
+- No user branch was deleted, force-updated, or merged wholesale.
+
 ## Post-merge state — PR #245 and Pages #106 (2026-11-16)
 
 - Main at PR #246 base: `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; PR #245 merged by squash from tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
