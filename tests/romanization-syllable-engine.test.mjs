@@ -539,3 +539,53 @@ test("ALA-LC Note 4 final-vowel-plus-o form crosswalks final Lao ວ only with s
     ["AA", "a", "o"],
   );
 });
+
+test("ALA-LC Note 5 omits silent hoa before the listed sonorant initials when source structure confirms the onset", () => {
+  const cases = [
+    { input: "nya", onset: "ຍ", onsetForm: "ຫຍ", output: "ньа" },
+    { input: "na", onset: "ນ", onsetForm: "ຫນ", output: "на" },
+    { input: "ma", onset: "ມ", onsetForm: "ຫມ", output: "ма" },
+    { input: "ra", onset: "ຣ", onsetForm: "ຫຣ", output: "ла" },
+    { input: "la", onset: "ລ", onsetForm: "ຫລ", output: "ла" },
+    { input: "va", onset: "ວ", onsetForm: "ຫວ", output: "ва" },
+  ];
+  for (const fixture of cases) {
+    const result = analyzeRomanization(fixture.input, {
+      profile: "ala-lc",
+      sourceSyllableGroups: [[{
+        onset: fixture.onset,
+        onsetForm: fixture.onsetForm,
+        vowelId: "AA",
+        coda: "",
+      }]],
+    });
+    assert.equal(result.status, "OK", fixture.onsetForm);
+    assert.equal(result.output, fixture.output, fixture.onsetForm);
+    assert.equal(result.syllables[0].sourceOnset, fixture.onsetForm);
+    assert.equal(result.syllables[0].sourceOnsetKey, fixture.onset);
+  }
+});
+
+test("ALA-LC Note 7 keeps romanized vowel order after the consonant despite Lao preposed-vowel spelling", () => {
+  const result = analyzeRomanization("kē", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{
+      onset: "ກ",
+      onsetForm: "ກ",
+      vowelId: "EE",
+      coda: "",
+    }]],
+  });
+  assert.equal(result.status, "OK");
+  assert.equal(result.normalizedInput, "ké");
+  assert.equal(result.output, "ке");
+  assert.equal(result.syllables[0].sourceVowelId, "EE");
+});
+
+test("ALA-LC romanization does not reconstruct tone or expose an IPA result", () => {
+  const result = analyzeRomanization("kā", { profile: "ala-lc" });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "ка");
+  assert.equal(Object.hasOwn(result, "ipa"), false);
+  assert.equal(Object.hasOwn(result, "tone"), false);
+});
