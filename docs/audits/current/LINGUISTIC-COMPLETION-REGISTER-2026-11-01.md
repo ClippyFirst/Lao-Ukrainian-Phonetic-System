@@ -1,3 +1,9 @@
+## ALA-LC Note 9 — ICU word-break baseline follow-up (2026-11-16)
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC-NOTE-9 | PARTIAL / BLOCKED | Added an offline reproducible longest/shortest prefix baseline using the pinned ICU Lao word-break list against HVULao_NLP v2: 839/1,000 exact character-stream-aligned pairs, 49,608 within-Lao candidate boundaries; longest-prefix F1 0.8636, naive shortest-prefix F1 0.5129. This filtered exploratory result is not comparable to the paper's 0.75 model F1 and neither algorithm implements LOC's shortest-standalone-form/loanword clauses. No corpus or dictionary data imported. Acceptance remains LOC-specific policy, item-level rights review, source-located examples and Lao-specialist adjudication. See `scripts/benchmark_lao_word_boundaries.py` and the direct-input audit.
+
 ## PR #243 — post-merge evidence checkpoint (2026-11-16)
 
 | ID | Status | Evidence / acceptance |
