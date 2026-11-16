@@ -1,8 +1,8 @@
 ## Latest verification and research status — 2026-11-17
 
 - **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
-- **Latest known branch HEAD before this evidence batch:** `4ab7c816ebe1ec4ddab875fcb943daa3cbe5d923`; the branch has since received ICANN/W3C source and claim updates and this handoff is being synchronized.
-- **Latest completed CI:** Verify #4506 / run 43968825128 — SUCCESS on `defa2f87a0730098aad240528641cac2527ca897`. All configured steps passed: IPA-gold schema, repository/evidence audit, Python tests, external-G2P syntax/CLI, browser engine tests, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks. This is not exact-head CI for subsequent documentation/evidence commits.
+- **Current branch HEAD:** `f18250734f0b3989d02bed3d8d1d4f3611eedc18`; 114 commits ahead / 0 behind `main`, eight changed files.
+- **Latest completed CI:** Verify #4506 / run 43968825128 — SUCCESS on `defa2f87a0730098aad240528641cac2527ca897`. All configured steps passed: IPA-gold schema, repository/evidence audit, Python tests, external-G2P syntax/CLI, browser engine tests, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks. Verify #4513 / run 43970708960 is now running on the exact current HEAD; it has passed all non-Chromium steps and is awaiting Chromium UI and built-page checks.
 - **Research:** Berment (2004) documents a historical Lao syllable grammar and ambiguity graph. Newer ICANN (2017/2025) and W3C (2026 draft) sources clarify grapheme placement and mark ordering, but ICANN intentionally omits many spelling constraints and W3C is an unendorsed layout draft. The runtime remains unchanged; no rules were guessed from OCR.
 - **Evidence registry:** 81 unique sources / 99 unique claims; no duplicate IDs or missing source references.
 - **PR #247:** open, mergeable, unmerged; PR #145 preserved untouched.
