@@ -1,9 +1,12 @@
 # Latest continuation checkpoint — 2026-11-16 (ALA-LC Note 4 regression batch)
 
 **Starting main:** `3968987815ce9948e56989816d025db0b2eb9d74` (PR #222 merged).  
+**PR [#223](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/223):** merged by squash as `05644cbece3395122c18fb390aceba80013104cb`.  
+**Exact-head Verify #4291:** [run 43825286216 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825286216).  
+**Post-merge main Verify #4292:** [run 43825396272 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825396272).  
 **Runtime checkpoint:** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`, deployed by Pages #102; this continuation changes tests and documentation only.  
-**Branch:** `test/ala-lc-note4-context-regressions-20261116`.  
-**Current branch head:** `8c150f702b753c2205a3e6e96a3cfd7937b9acc3` before documentation updates.  
+**Branch:** `test/ala-lc-note4-context-regressions-20261116` (merged via PR #223).  
+**PR #223 tested head:** `8ac337764d7415c499af854a4a60f42ec3bc2b1a`; merged main head: `05644cbece3395122c18fb390aceba80013104cb`.  
 
 ## Work in this continuation
 
@@ -14,7 +17,7 @@
 
 ## Verification and disposition
 
-PR #222 exact-head Verify #4288 / [run 43760252368](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760252368) passed: 350 Python, 192 Node and 28 Chromium tests; IPA-gold schema validation; repository/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; and built-page/relative-asset checks. This is the prior mainline baseline, not verification of the new branch. The new ALA-LC tests require exact-head CI before they can be marked DONE_VERIFIED.
+PR #223 exact-head Verify #4291 / [run 43825286216](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825286216) and post-merge main Verify #4292 / [run 43825396272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825396272) both passed: 350 Python, 195 Node and 28 Chromium tests; IPA-gold schema validation; repository/evidence audit; external-G2P harness syntax/CLI; build; generated-data reproducibility; and built-page/relative-asset checks. PR #223 merged by squash as `05644cbece3395122c18fb390aceba80013104cb`.
 
 The LOC source supports the orthographic romanization conditions, not the project's Ukrainian target adaptation. No Ukrainian output for medial `w` clusters was inferred. The independent adjudicated IPA gold corpus remains 0; specialist review remains outstanding.
 
@@ -23,7 +26,7 @@ The LOC source supports the orthographic romanization conditions, not the projec
 | Workstream | Status | Acceptance / remaining evidence |
 |---|---|---|
 | Deterministic GitHub Pages IPA-first shell | DONE_VERIFIED (runtime checkpoint) | Pages #102 deployed `fe1c4a0`; no runtime change in this branch |
-| ALA-LC Note 4 `ūa` and final-`o` regression coverage | PARTIAL / CI pending | Exact-head tests must pass; this verifies current implementation only |
+| ALA-LC Note 4 `ūa` and final-`o` regression coverage | DONE_VERIFIED (engineering tests only) | PR #223; exact-head Verify #4291 and post-merge Verify #4292 passed; direct-only ambiguous strings remain PARTIAL |
 | ALA-LC medial-`w` cluster adaptation | BLOCKED / evidence-limited | Explicit Ukrainian cluster target policy, representative source-aware fixtures and Lao-specialist review |
 | Remaining ALA-LC Notes 1–10 and broader corpus | PARTIAL | Contextual forms, loanword/word-boundary cases and representative reviewed corpus incomplete |
 | Seven uncovered CLDR source vowel IDs | PARTIAL | Source-attested exact crosswalk and target decision required |
