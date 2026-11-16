@@ -1,6 +1,14 @@
+## Post-merge state — PR #245 and Pages #106 (2026-11-16)
+
+- Main at PR #246 base: `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; PR #245 merged by squash from tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
+- Exact-head Verify #4427 / [run 43932311368 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932311368) and post-merge main Verify #4428 / [run 43932522643 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522643) passed 355 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+- Pages Deploy #106 / [run 43932522626 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522626) deployed current main and passed the post-deploy HTTP smoke tests. PR #245 changed research tooling/tests/docs, not production runtime logic.
+- Branch search returned 113 refs (112 non-main plus main), including `research/icu-lao-wordbreak-baseline-20261116` and `docs/post-pr245-mainline-reconciliation-20261116`. No user branch was deleted or force-updated. The pre-PR #245 research branch is preserved.
+- Only PR #145 was open before this post-merge reconciliation. It remains divergent, 24 ahead / 373 behind at the PR #246 base, 13 changed files; leave untouched pending owner-level neural-first architecture decision.
+
 ## Additional research and evidence correction — PR #245 (2026-11-16)
 
-- PR #245 is open from `research/icu-lao-wordbreak-baseline-20261116`; it adds the offline ICU/HVULao boundary baseline, source hashes, evidence records and regression tests. No production code, corpus text or dictionary data is imported.
+- PR #245 merged by squash as `8e8622b007452c20f68dfbfed1edcb709d6bdc41` from `research/icu-lao-wordbreak-baseline-20261116`; it adds the offline ICU/HVULao boundary baseline, source hashes, evidence records and regression tests. No production code, corpus text or dictionary data is imported.
 - This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 1997 explicitly gives `ຄິດສະຖານ (khitsatān)`; the 2012 table's exact Lao glyph extraction needs specialist confirmation. Unit crosswalk tests now use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
 - The repository remains PARTIAL / BLOCKED for Note 9 and Note 10 automatic source roles; no linguistic rule was inferred from the exploratory baseline or the corrected fixture.
 
