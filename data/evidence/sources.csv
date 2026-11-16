@@ -1,6 +1,6 @@
 "source_id","author","year","title","type","url","scope"
 "SRC-UNICODE","Unicode Consortium","2026","The Unicode Standard 18.0 Chapter 16: Southeast Asia","standard","https://www.unicode.org/versions/latest/ch16.pdf","Lao Unicode and orthographic structure"
-"SRC-W3C-LAO-LREQ","W3C Internationalization Working Group","2026","Lao Layout Requirements","technical guidance","https://www.w3.org/TR/laoo-lreq/","syllable structure clusters codas spacing and tone architecture"
+"SRC-W3C-LAO-LREQ","W3C Internationalization Working Group","2026","Lao Layout Requirements","Group Note Draft / technical guidance","https://www.w3.org/TR/laoo-lreq/","20 March 2026 W3C Group Note Draft (not endorsed); Lao script layout, character encoding, pre-base/combining vowel placement and grapheme/word segmentation guidance; typographic/layout scope, not a normative linguistic spelling grammar."
 "SRC-MOREV","Morev L.N.; Moskalev A.A.; Plam Yu.Ya.","1972","Lao Language","grammar/reference","","phonology and Russian practical tradition"
 "SRC-MOREV-DICT","Morev L.N.; Vasilieva V.Kh.; Plam Yu.Ya.","1982","Lao-Russian Dictionary","reference","","Russian lexical practice"
 "SRC-BOIKO","Boiko K.T.","1988","Dictionary of Geographical Names of Laos","reference","","geographical-name practice"
