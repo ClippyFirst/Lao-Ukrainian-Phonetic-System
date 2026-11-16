@@ -1,3 +1,10 @@
+## Post-merge reconciliation — PR #237 branch inventory refresh (2026-11-16)
+
+- PR [#236](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/236) merged as `6512aac75cfb71c2d5f6f37a040f55739f32b14f`; exact-head Verify #4335 / [run 43868841677](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43868841677) and post-merge Verify #4336 / [run 43869109467](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43869109467) passed 350 Python, 201 Node and 29 Chromium tests.
+- PR [#237](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/237) merged as `0f4dd825db25801bca4d350735253c5885f63ddf`; exact-head Verify #4337 / [run 43869513471](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43869513471) and post-merge Verify #4338 / [run 43869727851](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43869727851) passed 350 Python, 201 Node and 29 Chromium tests. No runtime changes; Pages #104 remains the runtime deployment checkpoint.
+- The branch inventory at the time of PR #237 contained 102 refs (101 non-main plus main); only PR #145 was open. Six relevant divergent historical branches were compared explicitly; none was a safe fast-forward candidate. No branch was deleted or force-updated.
+- PR #145 compared with the latest main checkpoint `0f4dd825`: 24 commits ahead, 365 behind, divergent and `mergeable=false`. It remains an owner-level architecture decision.
+
 ## Current status reconciliation — 2026-11-16 (ALA-LC Notes 8–10 and LaoNLP)
 
 **Current main at start of this documentation reconciliation:** `943ff111033e7212cbbbc8615035eb94ed1c9974`.
