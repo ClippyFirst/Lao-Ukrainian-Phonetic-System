@@ -317,3 +317,12 @@ Mendeley Data version 2 lists CC BY 4.0. The paper's ethical statement separatel
 - Note 9 remains `PARTIAL / BLOCKED`. Acceptance requires a versioned LOC-specific policy, rights-cleared examples covering native compounds, productive morphology, function words, Pali/Sanskrit and other loans, and adjudicated LOC boundary decisions. Preserve ambiguity where the available evidence does not decide the boundary.
 
 Primary sources: [HVULao_NLP article, Appendix B (segmentation guidelines)](https://www.informatica.si/index.php/informatica/article/download/11195/5975); [Mendeley Data v2](https://data.mendeley.com/datasets/5zwym7kwn8/2); [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
+### Additional orthographic evidence for loanword classification
+
+The LDC Language Specific Peculiarities document says that modern Lao spelling conventions distinguish Pali/Sanskrit borrowings from more recent foreign loans: it describes `ຣ` as reintroduced for recent foreign words, while Pali/Sanskrit borrowings use `ລ` in its place. It also warns that foreign-loan spelling remains variable. This supports recording a curated lexeme-origin field; it does **not** justify inferring origin from `ຣ`/`ລ` alone.
+
+The CrossAsia Digital Library of Lao Manuscripts (DLLM) describes a collection-specific cataloguing convention that preserves historical Indic consonant values in some loanword titles (e.g. `ນິພພານ` from Pali *nibbāna*, `ສູຕ` from Sanskrit *sūtra*), but uses modern Lao pronunciations for some commonly used loans (e.g. `ນະຄອນ`, `ທັມມາດ`). This is useful evidence of lexicalization and source-history variation, not a general Lao standard or LOC segmentation gold. CrossAsia carries a copyright notice and no open-data licence was identified; no table or corpus was copied.
+
+**Resolver implication:** any future Note 9 lexeme record needs separately reviewed fields for source-language origin, current Lao lexicalization status, the relevant source-language orthographic division, the LOC romanization unit(s), exact source locator, and reviewer/adjudication provenance. Do not infer Pali/Sanskrit status solely from a grapheme, and do not infer original-language token boundaries from LaoNLP/HVULao segmentation alone.
+
+Sources: [LDC Lao Language Specific Peculiarities, §§3–4](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf); [CrossAsia DLLM, Lao Orthography and Romanisation](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en).
