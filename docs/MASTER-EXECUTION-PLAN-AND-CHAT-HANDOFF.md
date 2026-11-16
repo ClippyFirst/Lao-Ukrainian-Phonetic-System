@@ -6,7 +6,7 @@
 **PR exact-head Verify:** [run 43933464076 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933464076), same test counts and configured gates.
 **Deployment:** documentation-only PR; no production files changed. Pages #106 remains the current deployed runtime checkpoint from `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; no new Pages deployment expected.
 **Note 10 source correction:** LOC 2012 Note 10 text layer explicitly gives `ຫຼັກສາດ (khitsatān)`. The same example appears in Note 3. This supersedes the handoff's earlier unsupported attribution to a different 1997 glyph sequence. The crosswalk unit tests manually supply source roles; the code still does not derive those roles from the Lao word. The browser test using `ຄິຼສຕຽນ` remains only a Latin-mode separation guard, not Note 10 coverage.
-**Branch/PR inventory:** 113 branch refs across two API pages; only PR #145 remains open. PR #145 is divergent, 24 ahead / 374 behind current main, 13 changed files; retain as an owner-level architecture decision. No user branches deleted or force-updated.
+**Branch/PR inventory:** 114 branch refs across two API pages; PR #247 is this documentation correction and PR #145 is the only other open PR. PR #145 is divergent, 24 ahead / 374 behind current main, 13 changed files; retain as an owner-level architecture decision. No user branches deleted or force-updated.
 
 ## Current continuation ledger
 
@@ -4978,6 +4978,6 @@ The preceding checkpoint's “CI pending” statement was written before Actions
 
 ## Note 10 example attribution correction — 2026-11-16
 
-The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 1997 table explicitly lists `ຄິດສະຖານ (khitsatān)`; the 2012 table retains the double-function rule and romanized example, but its Lao glyph text extraction varies across indexes. The exact 2012 source glyph sequence needs specialist confirmation before it is used as a parser acceptance fixture.
+The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 2012 table's text layer explicitly lists `ຫຼັກສາດ (khitsatān)` in Note 10 (and repeats it in Note 3). The earlier attribution of `ຄິດສະຖານ` to the 1997 table is withdrawn because the available 1997 PDF text extraction is image-only. The exact syllabic/role analysis remains a specialist question.
 
 The positive/negative unit tests now use `khitsatān` but inject the source syllable roles manually; they are synthetic crosswalk tests, not proof that the browser parser derives the source roles. The PR #231 browser test with `ຄິຼສຕຽນ` is retained only as a mode-separation test (Lao script is rejected in Latin romanization mode). Note 10 automatic source-role derivation remains PARTIAL/fail-closed.
