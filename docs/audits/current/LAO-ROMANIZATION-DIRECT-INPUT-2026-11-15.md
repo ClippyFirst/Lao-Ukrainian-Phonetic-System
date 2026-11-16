@@ -445,3 +445,42 @@ The thesis models segmentation as a graph: candidate syllables are edges between
 **Disposition:** this closes the research question “does a historical explicit Lao orthographic grammar exist?” but not current parser acceptance. Keep the runtime unchanged. Candidate next engineering stage: transcribe the exact historical productions and Prolog appendix into a review artifact; reconcile Unicode 18/Lew 2014/current spelling and tone rules; build a candidate-lattice prototype with dead-branch pruning and explicit ambiguity output; validate against attested/adversarial examples and Lao-specialist review. Do not copy the historical code absent a license. Ueda's phonological evidence remains a separate downstream layer: written adjacency is not an IPA cluster. LOC Note 10's exact glyph sequence and automatic double-role derivation remain unresolved.
 
 Full research note: [Undermind workspace](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md). Primary sources: [Berment 2004 thesis PDF](https://www.tagmatica.fr/doc/these-vincent-berment.pdf); [Del Vigna & Berment 2003](https://doi.org/10.36045/bbms/1074791326).
+
+
+## Modern Lao grapheme-structure evidence — ICANN RZ-LGR-6 (2025), Lao Generation Panel (2017), and W3C Group Note Draft (2026-03-20)
+
+### Primary evidence
+
+The Lao Script Generation Panel's *Proposal for a Lao Script Root Zone LGR*, version 3.1 (31 January 2017), describes a grapheme-cluster template `C V (T) (Cf) (S+)` and makes clear that the vowel is phonologically after the onset even when its written components surround the main consonant. It specifies the main consonant cluster, optional final consonant, vowel-before/after/above/below categories, tone-mark placement, and special diphthong constructions. The proposal's normal-syllable onset description includes restricted two-consonant sequences, a special three-consonant sequence `ຫງວ`, and U+0EBC after a consonant; it separately allows arbitrary consonant sequences for acronyms. It lists a restricted coda set and at most one final consonant for the normal syllable model.
+
+The 2017 proposal explicitly says its root-zone label rules simplify spelling constraints: allowed consonant combinations are listed but not coded, and some diphthong restrictions are not implemented to avoid complexity. Therefore the formal template and WLE rules are **not a complete Lao syllable grammar or spell-checker**. They are a strong source for positional grapheme facts and scoped structural checks, not for rejecting every nonstandard string or deciding a lexical syllable boundary.
+
+The current ICANN Root Zone LGR-6 Lao page (23 September 2025) is scoped to DNS root-zone labels and Unicode 16.0; it reports 51 code points plus one sequence. This is a maintained technical repertoire/ruleset, not an exhaustive inventory for arbitrary Lao text. The 2017 proposal remains its explanatory source.
+
+The W3C Lao Layout Requirements Group Note Draft (20 March 2026) describes Lao as an alphabet with explicit vowels; says there are no conjuncts except the subjoined-consonant case with HA; distinguishes spacing pre-base vowel glyphs from combining above/below vowel marks; and notes multipart vowels can involve up to four glyphs plus a tone mark around the base consonant on up to three sides. **The W3C document is a Group Note Draft and explicitly not endorsed by W3C or its Members**, so use it as current technical layout guidance, not a normative spelling standard.
+
+### Structural facts suitable for candidate-parser invariants
+
+- U+0EBC LAO SEMIVOWEL SIGN LO follows a consonant in the ICANN ordering rules; do not treat it as an independent consonant letter.
+- A vowel-before character precedes the main consonant cluster; above/below vowel marks follow the main consonant; a vowel-after component follows the main consonant, a tone mark or an above-vowel according to the scoped WLE rules.
+- A tone mark is optional and the 2017 proposal's syllable model permits at most one; it follows the main consonant or an above/below vowel. This is a model constraint, not a dialect-independent phonological tone parser.
+- The proposal's coda inventory and maximum-one-coda rule are useful candidate constraints, but acronym, foreign-word, Pali/Sanskrit and historical spellings need separate handling.
+- U+0EC6 LAO KO LA is a repetition sign, not a phonological segment. ICANN's root-zone policy limits its position/count for domain labels; the language itself can use it elsewhere in a sequence, as the proposal explicitly notes.
+- The W3C draft and Unicode 18.0 confirm that visual/typing order, Unicode storage order and phonological order must not be conflated. Pre-base vowels are spacing characters; only above/below components are combining marks in the described model.
+
+### Reconciliation with Berment (2004) and architecture
+
+Berment supplies a historical generative syllable grammar and candidate segmentation graph, but its exact production listing is partly lost in OCR and its grammar accepts unattested forms and simplifies accent placement. The 2017 Lao Generation Panel proposal and 2025 ICANN LGR provide a much more recent, code-point-explicit description of grapheme placement and context order, but deliberately omit important spelling constraints. The 2026 W3C draft adds typographic/encoding distinctions but is not an endorsed linguistic standard. These sources are complementary, not interchangeable.
+
+**Architecture decision:** implement a low-level grapheme-structure analyzer first (code-point classes, pre-base/above/below/after placement, U+0EBC order, tone-mark placement, sign handling), then a separately versioned candidate syllable grammar/lattice. Keep candidate recognition distinct from lexical well-formedness and spoken phonology. Never let the ICANN acronym-permissive `Consonant1+` simplification become a general onset grammar; never treat W3C's draft statements as final linguistic adjudication. Ueda's dialect-scoped phonology remains downstream of orthographic candidates.
+
+### Status
+
+- MODERN_LAO_GRAPHEME_PLACEMENT_EVIDENCE: DONE_VERIFIED (scoped source review).
+- ICANN_ROOT_ZONE_RULESET_AS_GENERAL_SPELLCHECKER: DEFERRED / not applicable; explicit scope mismatch.
+- LOW_LEVEL_LAO_GRAPHEME_STRUCTURE_ANALYZER: TODO — acceptance: code-point class inventory; order/context tests for pre-base, above/below, tone, U+0EBC, U+0ECC and U+0EC6; malformed/reordered mark fixtures; exact Unicode 16/18 reconciliation.
+- CURRENT_LAO_SYLLABLE_GRAMMAR: PARTIAL / TODO — acceptance: combine source-backed grapheme constraints with lexically/linguistically reviewed spelling rules, separate acronym/loan/Indic profiles, candidate lattice, ambiguity preservation and specialist review.
+
+Registry additions: `SRC-ICANN-LAO-PROPOSAL-2017`, `SRC-ICANN-RZ-LGR6-LAO-2025`; claims `CLM-LAO-ICANN-WLE-ORDERING`, `CLM-LAO-ICANN-LGR-NOT-SPELLCHECKER`, `CLM-LAO-ICANN-ROOT-ZONE-SCOPE`, `CLM-LAO-W3C-DRAFT-ORTHOGRAPHY-STRUCTURE`.
+
+Sources: [ICANN Lao proposal v3.1 (2017)](https://www.icann.org/en/system/files/files/proposal-lao-lgr-31jan17-en.pdf); [ICANN RZ-LGR-6 Lao (2025)](https://www.icann.org/sites/default/files/packages/lgr/rz-lgr-6-lao-script-23sep25-en.htm); [W3C Lao Layout Requirements, Group Note Draft (2026-03-20)](https://www.w3.org/TR/2026/DNOTE-laoo-lreq-20260320/); [Unicode 18.0 Chapter 16](https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-16/).
