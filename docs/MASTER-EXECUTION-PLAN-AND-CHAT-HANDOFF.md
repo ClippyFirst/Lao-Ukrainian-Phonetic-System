@@ -1,3 +1,11 @@
+## Latest verification and research status — 2026-11-17
+
+- **Current branch HEAD:** `cb86f87fba32140c71f8f1a22ab5668d1d9ffd4b`; Verify #4502 / run 43966645076 completed SUCCESS on that exact SHA. Every configured step passed, including schema/evidence audits, Python, external-G2P syntax/CLI, browser engine, build/reproducibility, real Chromium UI and built-page/relative-asset checks.
+- **New research:** Berment (2004) full thesis and Del Vigna & Berment (2003) establish a historical Lao orthographic syllable grammar and formal ambiguity model. The exact OCR-obscured productions remain to be transcribed; historical grammar admits unattested forms and simplifies accents. The candidate graph/dead-branch approach is not yet implemented.
+- **Repository changes in this continuation:** evidence registry and direct-input audit, romanization matrix, completion register and this handoff updated. Documentation/evidence only; no runtime, corpus, model, dictionary or generated data changed. The resulting documentation commits require a fresh exact-head CI run.
+- **PR #247:** open, mergeable, unmerged; preserve PR #145 untouched.
+- **Readiness:** engineering-verified partial research prototype, not release-ready.
+
 ## Latest evidence/verification status — 2026-11-16 (Ueda review)
 
 The latest branch HEAD is `866748aa69409ba777ec292b6f53ce607f122caf`. Verify #4495 / run 43962638485 passed on its parent checkpoint `8fa8aefe6759059b04781c0cf1cd49f746c090eb`; **no exact-head CI run or status is available for `866748a...` yet**. The new Ueda source/claim/audit/matrix/register/handoff updates are documentation/evidence-only, but must not be labelled exact-head verified until CI runs on this SHA. The connector's commit-run lookup returned no PR-triggered run and combined status returned no checks for this final SHA; local tests were not run.
