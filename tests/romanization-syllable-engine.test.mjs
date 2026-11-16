@@ -542,12 +542,12 @@ test("ALA-LC Note 4 final-vowel-plus-o form crosswalks final Lao ວ only with s
 
 test("ALA-LC Note 5 omits silent hoa before the listed sonorant initials when source structure confirms the onset", () => {
   const cases = [
-    { input: "nya", onset: "ຍ", onsetForm: "ຫຍ", output: "ньа" },
-    { input: "na", onset: "ນ", onsetForm: "ຫນ", output: "на" },
-    { input: "ma", onset: "ມ", onsetForm: "ຫມ", output: "ма" },
-    { input: "ra", onset: "ຣ", onsetForm: "ຫຣ", output: "ла" },
-    { input: "la", onset: "ລ", onsetForm: "ຫລ", output: "ла" },
-    { input: "va", onset: "ວ", onsetForm: "ຫວ", output: "ва" },
+    { input: "nyā", onset: "ຍ", onsetForm: "ຫຍ", output: "ньа" },
+    { input: "nā", onset: "ນ", onsetForm: "ຫນ", output: "на" },
+    { input: "mā", onset: "ມ", onsetForm: "ຫມ", output: "ма" },
+    { input: "rā", onset: "ຣ", onsetForm: "ຫຣ", output: "ла" },
+    { input: "lā", onset: "ລ", onsetForm: "ຫລ", output: "ла" },
+    { input: "vā", onset: "ວ", onsetForm: "ຫວ", output: "ва" },
   ];
   for (const fixture of cases) {
     const result = analyzeRomanization(fixture.input, {
