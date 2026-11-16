@@ -255,3 +255,9 @@ The LOC example `ຄິຼສຕຽນ` was exercised through the real browser w
 - Existing Note 10 unit tests remain explicitly source-role-supplied fixtures. Automatic LOC lexical/syllabic segmentation is still PARTIAL/BLOCKED pending a reviewed orthographic parser and Lao-specialist source-role policy.
 
 No runtime code, IPA, tone, lexical boundary or Ukrainian mapping changed.
+
+### Post-merge evidence — 2026-11-16
+
+PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231) merged by squash as `e6b1d564a20b88945dc0277b8db38efcd5834c8e`. Exact-head Verify #4323 / [run 43865438811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865438811) and post-merge main Verify #4324 / [run 43865719407](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719407) both succeeded: 350 Python, 201 Node and 29 Chromium tests, including the new LOC Note 10 browser regression. Pages Deploy #104 / [run 43865719450](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719450) also succeeded and deployed commit `e6b1d564`; its built-site Chromium suite passed 29 tests and the deployed-service smoke test passed.
+
+The engineering acceptance is complete for the fail-closed integration guard only. Automatic LOC syllabification remains PARTIAL; no linguistic capability is promoted.
