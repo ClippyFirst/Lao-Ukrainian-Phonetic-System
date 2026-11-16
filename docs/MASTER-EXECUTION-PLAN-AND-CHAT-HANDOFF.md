@@ -6,7 +6,7 @@
 **Scope:** a distinct Lao-source → Arabic-numeral function for ALA-LC 2012 Note 8, plus a separate UI result panel. It maps only Lao digits U+0ED0–U+0ED9, preserves all other text and separators, and does not change the phonetic pipeline, BGN/PCGN CLDR route, or direct Latin ALA-LC parser.
 **Evidence:** LOC primary source, [ALA-LC Lao Romanization Table (2012), Note 8](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). Tests cover all ten digits, mixed-script text, ASCII digits, punctuation, tabs and CRLF.
 **Verification:** exact-head Verify #4383 / [run 43918104933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918104933) passed 350 Python tests, 204 Node tests and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed. Note 8 is DONE_VERIFIED and merged. Post-merge main verification and deployment confirmation remain.
-**Repository inventory after merge:** `main` is `841826ce9981b1c09aa98179c790c63db1b2c982`; paginated branch search returned 107 refs (106 non-main plus main); only PR #145 remains open.
+**Repository inventory after merge:** `main` is `841826ce9981b1c09aa98179c790c63db1b2c982`; paginated branch search returned 108 refs (107 non-main plus main). PR #242 is the current documentation-only post-merge reconciliation; PR #145 is the only other open PR.
 **PR #145:** remains divergent, 24 ahead / 369 behind; leave untouched pending owner-level architecture decision.
 
 ## Current continuation ledger
