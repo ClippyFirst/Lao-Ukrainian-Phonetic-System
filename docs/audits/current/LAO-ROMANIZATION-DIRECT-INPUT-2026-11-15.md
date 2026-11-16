@@ -412,3 +412,10 @@ A newer primary source refines the chronology but does not justify importing a L
 
 The registry records these scopes as `SRC-UNGEGN-APPROVAL-PROCESS-2026`, `SRC-UNGEGN-ROMANIZATION-STATUS`, `SRC-UNGEGN-LAO-DRAFT-2023`, `SRC-UNGEGN-LAO-MINUTES-2023`, `SRC-UNGEGN-LAO-STATUS-2025`, `SRC-UNGEGN-LAO-NAME-2025` and `SRC-PCGN-LAO-FACTFILE-2023`, with synthesis claim `CLM-LAO-ROMANIZATION-STATUS-2025`. **Disposition remains BLOCKED:** no complete authoritative Lao-specific RTGS table or approved Ukrainian target adaptation has been established. Do not substitute Thai RTGS or treat BGN/PCGN 1966 as a universal phonetic transcription.
 The current UNGEGN approval-process document (WG-reviewed 28 May 2026) clarifies the acceptance path for geographical-name romanization: national development, local implementation, formal submission, WG-RS review, plenary presentation and adoption. A proposal is expected to include a conversion table and evidence of national implementation. This defines future evidence needed; it does not establish that Lao has progressed beyond the 2025 status report.
+
+
+## LOC Word source retrieval recheck — 2026-11-16
+
+The official [LOC source-document index](https://www.loc.gov/catdir/cpso/romansource.html) continues to identify the Lao Word file and explicitly says to use Word source documents rather than PDF copies when copying table data. A fresh retrieval attempt against the linked official `lao.doc` endpoint again failed: the web retrieval layer rejects its `application/msword` content type, and a direct file download did not complete. The Word document has **not** been inspected. The 2012 PDF text-layer statements and examples in this audit remain attributed to the PDF/text layer only; they must not be described as Word-source verification.
+
+**Acceptance to unblock:** obtain the exact official LOC `lao.doc` file through a compatible document-capable environment or user-supplied copy, inspect its table/notes, and reconcile any differences before changing source-derived claims or fixtures. No linguistic inference or runtime change is justified by the failed retrieval.
