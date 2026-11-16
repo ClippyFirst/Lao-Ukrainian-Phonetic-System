@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { romanizeLao } from "../web/romanization.js";
+import { romanizeAlaLcNumerals, romanizeLao } from "../web/romanization.js";
 import { analyze } from "../web/engine.js";
 
 test("CLDR Lao-Latin keeps whitespace and punctuation and maps supported syllable letters",()=>{
@@ -330,4 +330,32 @@ test("source-aware CLDR crosswalk keeps medial onsetless syllables inside the sa
  assert.ok(adapted.syllables.some(s=>s.sourceRestoredVowel),"the CLDR-elided vowel must be restored only from the original Lao syllable");
  const direct=analyzeRomanization("vadthanathav-n");
  assert.equal(direct.status,"PARTIAL","Latin-only input must not invent the vowel omitted by CLDR");
+});
+
+
+test("ALA-LC 2012 Note 8 maps Lao digits to Arabic numerals in a separate source-script route", () => {
+ const input = "ຂາ ໐໑໒໓໔໕໖໗໘໙, ABC-42!\\t໒";
+ const result = romanizeAlaLcNumerals(input);
+ assert.equal(result.output, "ຂາ 0123456789, ABC-42!\\t2");
+ assert.equal(result.input, input);
+ assert.equal(result.profile, "ALA-LC 2012");
+ assert.equal(result.rule, "Note 8");
+ assert.equal(result.direction, "Lao-script→Arabic numerals");
+ assert.equal(result.mappedCount, 11);
+ assert.equal(result.status, "OK");
+});
+
+test("ALA-LC Note 8 leaves non-Lao digits and all non-digit source text unchanged", () => {
+ const input = "ຂາ 123, ໞ ໆ 😀";
+ const result = romanizeAlaLcNumerals(input);
+ assert.equal(result.output, input);
+ assert.equal(result.mappedCount, 0);
+ assert.equal(result.status, "NO_LAO_NUMERALS");
+});
+
+test("ALA-LC Note 8 preserves multiline separators and maps numerals without invoking phonetic romanization", () => {
+ const input = "ຂາ\\t໑໒\\r\\nABC 2026";
+ const result = romanizeAlaLcNumerals(input);
+ assert.equal(result.output, "ຂາ\\t12\\r\\nABC 2026");
+ assert.equal(result.output.includes("kha"), false);
 });
