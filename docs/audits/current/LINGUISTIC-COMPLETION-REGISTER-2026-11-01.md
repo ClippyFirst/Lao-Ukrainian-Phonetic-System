@@ -2,7 +2,7 @@
 
 | ID | Status | Evidence / acceptance |
 |---|---|---|
-| ALA-LC-NOTE-8 | DONE_VERIFIED (PR #241 exact-head) | `romanizeAlaLcNumerals` maps only Lao digits U+0ED0–U+0ED9 to 0–9 and preserves all other source content; the service exposes a separate Note 8 panel and copy action. Unit and browser regressions cover all digits, mixed scripts, ASCII digits and separators. Exact-head Verify #4365 / [run 43917388845 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917388845) passed 350 Python, 204 Node and 30 Chromium tests plus all configured audits/build/reproducibility gates. LOC 2012 Note 8 is the primary source. Post-merge main verification remains. |
+| ALA-LC-NOTE-8 | DONE_VERIFIED (PR #241 exact-head) | `romanizeAlaLcNumerals` maps only Lao digits U+0ED0–U+0ED9 to 0–9 and preserves all other source content; the service exposes a separate Note 8 panel and copy action. Unit and browser regressions cover all digits, mixed scripts, ASCII digits and separators. Exact-head Verify #4376 / [run 43917776932 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917776932) passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit (including the LOC Note 8 source and claim), external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. LOC 2012 Note 8 is the primary source. Post-merge main verification remains. |
 
 The existing phonetic Lao parser's native-digit passthrough and the direct Latin ALA-LC input path are intentionally unchanged. This implementation does not claim full Lao-script ALA-LC romanization.
 
