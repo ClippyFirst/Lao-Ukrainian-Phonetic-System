@@ -232,7 +232,7 @@ Engineering-verified partial research prototype. CI and Pages are operational, b
 |---|---|---|
 | ALA-LC Note 8 numeric romanization | PARTIAL / route not implemented | ALA-LC source-script romanizer must map Lao digits ໐–໙ to 0–9. Current phonetic source route intentionally preserves digits; direct Latin input is a different direction |
 | ALA-LC Note 9 lexical word and loanword boundaries | PARTIAL / BLOCKED | Requires a rights-cleared Lao lexical source, documented shortest-standalone-form segmentation, explicit Pali/Sanskrit handling and original-language loanword boundary policy, with reviewed examples |
-| ALA-LC Notes 6 and 10 automatic source segmentation | PARTIAL / fail-closed | Browser integration confirms LOC example remains unresolved; U+0EBC `ຼ` and source lexical roles are not modeled |
+| ALA-LC Notes 6 and 10 automatic source segmentation | PARTIAL / fail-closed | Note 6 initial-ayn target remains unsupported; Note 10 automatic coda/onset source-role derivation remains unverified. The `ຄິຼສຕຽນ` browser test is unrelated mode-separation coverage; do not treat U+0EBC as the Note 10 example. |
 
 ---
 
