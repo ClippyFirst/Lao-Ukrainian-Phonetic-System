@@ -1,10 +1,4 @@
 
-## Note 10 example attribution correction — 2026-11-16
-
-The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 1997 table explicitly lists `ຄິດສະຖານ (khitsatān)`; the 2012 table retains the double-function rule and romanized example, but its Lao glyph text extraction varies across indexes. The exact 2012 source glyph sequence needs specialist confirmation before it is used as a parser acceptance fixture.
-
-The positive/negative unit tests now use `khitsatān` but inject the source syllable roles manually; they are synthetic crosswalk tests, not proof that the browser parser derives the source roles. The PR #231 browser test with `ຄິຼສຕຽນ` is retained only as a mode-separation test (Lao script is rejected in Latin romanization mode). Note 10 automatic source-role derivation remains PARTIAL/fail-closed.
-
 # Latest continuation checkpoint — 2026-11-16 (ICU word-boundary research baseline)
 
 **Starting main:** `515f95a7927b20ed9e1859660362eb3a6b1c3306` (PR #244 merge commit).
@@ -4956,3 +4950,9 @@ The preceding checkpoint's “CI pending” statement was written before Actions
 - **Outcome:** Note 5 and Note 7 engineering regression fixtures are DONE_VERIFIED. No runtime mapping or deployment asset changed. Note 6 initial `ʻ`, Note 9 lexical/loanword boundaries and Note 10 cross-syllable double-function consonants remain PARTIAL/BLOCKED pending a reviewed source-aware implementation and evidence. Independent IPA gold remains 0; specialist and manual accessibility reviews remain open.
 
 **Current main at this reconciliation:** `66224de02f76453555dac805cad560a35fb2b925`. **Runtime checkpoint remains:** `fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9`; no Pages deployment is required for this test/documentation-only work.
+
+## Note 10 example attribution correction — 2026-11-16
+
+The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 1997 table explicitly lists `ຄິດສະຖານ (khitsatān)`; the 2012 table retains the double-function rule and romanized example, but its Lao glyph text extraction varies across indexes. The exact 2012 source glyph sequence needs specialist confirmation before it is used as a parser acceptance fixture.
+
+The positive/negative unit tests now use `khitsatān` but inject the source syllable roles manually; they are synthetic crosswalk tests, not proof that the browser parser derives the source roles. The PR #231 browser test with `ຄິຼສຕຽນ` is retained only as a mode-separation test (Lao script is rejected in Latin romanization mode). Note 10 automatic source-role derivation remains PARTIAL/fail-closed.
