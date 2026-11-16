@@ -1,3 +1,9 @@
+## Additional research and evidence correction — PR #245 (2026-11-16)
+
+- PR #245 is open from `research/icu-lao-wordbreak-baseline-20261116`; it adds the offline ICU/HVULao boundary baseline, source hashes, evidence records and regression tests. No production code, corpus text or dictionary data is imported.
+- This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 1997 explicitly gives `ຄິດສະຖານ (khitsatān)`; the 2012 table's exact Lao glyph extraction needs specialist confirmation. Unit crosswalk tests now use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
+- The repository remains PARTIAL / BLOCKED for Note 9 and Note 10 automatic source roles; no linguistic rule was inferred from the exploratory baseline or the corrected fixture.
+
 ## Live repository state — PR #244 merged; ICU Note 9 research branch (2026-11-16)
 
 - Current `main`: `515f95a7927b20ed9e1859660362eb3a6b1c3306`; PR [#244](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/244) merged by squash after PR #243.
