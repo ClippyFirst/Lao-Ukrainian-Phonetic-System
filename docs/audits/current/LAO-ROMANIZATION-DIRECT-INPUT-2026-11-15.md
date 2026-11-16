@@ -232,3 +232,14 @@ The Note 10 fixture verifies the existing position-specific source crosswalk; it
 Exact-head Verify #4309 / [run 43848574433](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43848574433) passed 350 Python, 201 Node and 28 Chromium tests (0 failures), plus the workflow's IPA-gold schema, repository/evidence audit, external-G2P harness, build, generated-data reproducibility and built-page/relative-asset checks. This run was on the pre-documentation head `4aa6d7ff3770ae7cb28a8edc3da248a7b2adf1b8`; documentation changes are being verified separately on the final PR head.
 
 Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Notes 6 and 10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). The LOC table establishes orthographic romanization behavior, not Ukrainian target correspondences.
+
+## PR #228 merged and deployed — final verification (2026-11-16)
+
+PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228) merged by squash as `44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900`.
+
+- Exact-head Verify #4313 / [run 43849117284](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849117284) succeeded on `03fe0bd6956376bf36c106abdfa7d3066f4ec3c6).
+- Post-merge main Verify #4314 / [run 43849485259](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485259) succeeded on `44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900`.
+- Both runs passed 350 Python, 201 Node and 28 Chromium tests, with 0 failures; schema, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed.
+- Pages Deploy #103 / [run 43849485210](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485210) succeeded and published the same runtime SHA. Its built-site Chromium suite passed 28 tests; the post-deployment smoke test successfully fetched the published index, methodology page, app.js, data.js, engine.js and styles.css.
+
+**Final disposition:** Note 6 initial-ayn source recognition/provenance is DONE_VERIFIED as an engineering trace only; its Ukrainian target remains intentionally unsupported. Note 10's source-supplied double-function crosswalk fixture is DONE_VERIFIED; automatic upstream Lao segmentation of the LOC example remains PARTIAL. Full ALA-LC conformance and Note 9 lexical/loanword boundaries remain PARTIAL. No IPA, tone, target correspondence or lexical boundary was inferred. The published site is current at Pages #103; independent IPA gold remains 0 and specialist review remains open.
