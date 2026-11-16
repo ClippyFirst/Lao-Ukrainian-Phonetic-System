@@ -716,3 +716,12 @@ Exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-U
 ## LOC table version authority — 2026-11-16
 
 The current LOC index lists Lao (2012) as the current table and 1997 only as an earlier reference version; LOC says earlier versions are for reference only and not for current cataloging. This confirms 2012 as the primary standard. Note 9 is a three-branch boundary policy (ordinary Lao shortest standalone form; Pali/Sanskrit same rule; other loans divided according to the original language), not a generic Lao tokenization task. See the direct-input audit and source/claim registry entries `SRC-ALA-LC-ROMANIZATION-INDEX` and `CLM-ALA-LC-LAO-2012-CURRENT-VERSION`.
+
+
+## Vientiane Lao phonological parsing boundary — Ueda (1994) full-text review (2026-11-16)
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| VIENTIANE-WRITTEN-SEQUENCES-VS-SPOKEN-CLUSTERS | DONE_VERIFIED (evidence claim only) | Ueda §2.3 (printed pp. 100–101) reports no phonological consonant clusters in the described Vientiane spoken dialect despite written consonant-letter sequences; written `w` can correspond to /ua/ or no independent spoken segment. Source/claim registry now records this as `SRC-UEDA` / `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS`. This verifies the cited descriptive claim, not an implementation or complete parser. |
+| ORTHOGRAPHIC-SYLLABLE-SEGMENTATION | PARTIAL / TODO | Ueda supplies spoken syllable templates, rhyme constraints, positional onset/coda inventories and exceptional light-syllable discussion, but no general deterministic orthographic boundary algorithm. Acceptance requires an authoritative orthographic grammar/rule environment, explicit treatment of grapheme clusters and vowel-sign attachment, adversarial source examples, and independent Lao-specialist adjudication. |
+| ALA-LC Note 10 automatic source-role derivation | PARTIAL / BLOCKED | LOC's romanized `khitsatān` example and repeated-consonant rule are known; exact Lao glyphs remain unresolved pending preferred Word source or specialist reading. Existing fixtures manually inject roles and are not evidence of automatic parsing. Ueda's paper does not close this gap. |
