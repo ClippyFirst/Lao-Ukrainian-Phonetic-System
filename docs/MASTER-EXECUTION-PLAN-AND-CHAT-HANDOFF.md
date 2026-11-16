@@ -5,7 +5,7 @@
 **Exact-head Verify #4330:** [run 43867454851 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867454851).
 **Post-merge main Verify #4331:** [run 43867656132 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43867656132). Both passed 350 Python, 201 Node and 29 Chromium tests; repository/evidence audit, IPA-gold schema validation, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
 **Result:** LaoNLP was researched and registered, not imported. Its syllable tokenizer is for orthographic line-breaking; its word tokenizer uses maximum matching over a mixed-source dictionary, not the LOC Note 9 lexical rule. Mixed per-file licensing prevents treating the composite dictionary as one ready-to-bundle corpus.
-**Current main:** `271bde493c2ee11e50498c06e6c3263f0ea08308`. No runtime or Pages deployment change was made by PR #234.
+**Main at PR #234 merge:** `271bde493c2ee11e50498c06e6c3263f0ea08308`. No runtime or Pages deployment change was made by PR #234.
 
 ## Updated acceptance ledger
 
