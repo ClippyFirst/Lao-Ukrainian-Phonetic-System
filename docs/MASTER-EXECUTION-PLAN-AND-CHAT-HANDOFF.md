@@ -1,3 +1,29 @@
+# Latest continuation checkpoint — 2026-11-16 (ICU word-boundary research baseline)
+
+**Starting main:** `515f95a7927b20ed9e1859660362eb3a6b1c3306` (PR #244 merge commit).
+**Branch:** `research/icu-lao-wordbreak-baseline-20261116`.
+**Runtime/deployment:** ALA-LC Note 8 is merged and deployed by Pages Deploy #105 / [run 43918258738 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918258738) from runtime commit `841826ce9981b1c09aa98179c790c63db1b2c982`; PRs #243–#244 changed documentation/evidence only.
+**Main verification:** post-PR #244 Verify #4394 / [run 43930806933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930806933) passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. PR #244 exact-head Verify #4393 / [run 43930653255 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930653255) passed the same gates.
+**Research change:** added `scripts/benchmark_lao_word_boundaries.py` and five unit tests for an offline ICU Lao word-break baseline against HVULao_NLP v2. The benchmark pins source Git blob hashes and excludes 161/1,000 sentence pairs whose raw/segmented character streams do not match exactly after NFC/whitespace normalization.
+**Exploratory results:** on 839 aligned pairs / 49,608 within-Lao candidate boundaries, greedy longest-prefix matching scored P=0.8353, R=0.8940, F1=0.8636; naive shortest-prefix matching scored P=0.3450, R=0.9985, F1=0.5129. These scores are filtered and not comparable to the paper's 0.75 model F1. Neither algorithm implements LOC Note 9.
+**Evidence boundary:** ICU's pinned dictionary is a word-wrapping resource, not lexical-boundary gold. Its mutable upstream repository currently appears compromised; only the pinned ICU copy and its embedded license notices were inspected. No corpus text, dictionary, model or runtime dependency was imported.
+**Status:** Note 9 remains `PARTIAL / BLOCKED`. The next acceptance is a LOC-specific policy, item-level rights-cleared/source-located examples, and Lao-specialist adjudication of native compounds, productive morphology, function words, Pali/Sanskrit and other loanwords.
+**Repository inventory:** 112 refs (111 non-main plus main) at branch creation; PR #145 remains open/divergent, 24 ahead / 372 behind with 13 changed files. No user branch was modified or deleted.
+
+## Continuation ledger
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; Verify #4383 and main Verify #4384 passed; Pages Deploy #105 passed its post-deploy HTTP smoke tests. |
+| ALA-LC Note 9 | PARTIAL / BLOCKED | Offline ICU/HVULao comparative baseline is reproducible, but not LOC gold or a LOC resolver. Specialist policy and rights-cleared examples remain. |
+| ALA-LC Note 10 | PARTIAL / fail-closed | Browser guard exists; automatic U+0EBC source-role derivation remains unresolved. |
+| ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
+| Independent IPA gold | BLOCKED | 0 independently adjudicated examples; issue #99 remains open. |
+| Lao specialist review | BLOCKED | No qualified independent sign-off. |
+| Lao-specific RTGS | BLOCKED | No authoritative complete Lao-specific adaptation table. |
+| Accessibility/device QA | PARTIAL | Automated Chromium coverage exists; human screen-reader, keyboard-only and device QA remain. |
+| PR #145 neural-first architecture | DEFERRED / owner decision | 24 ahead / 372 behind; do not merge or rebase without architecture decision. |
+
 # Latest continuation checkpoint — 2026-11-16 (PR #243 merged; Note 9 evidence assessment reconciled)
 
 **Starting main:** `b5820dd03776caaa2da2257ad207839839a1c6f7`.
