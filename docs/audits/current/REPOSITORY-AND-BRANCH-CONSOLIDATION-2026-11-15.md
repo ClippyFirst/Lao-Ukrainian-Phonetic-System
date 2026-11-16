@@ -12,6 +12,11 @@
   - `fix/source-aware-hyphen-regression-20261115`: 8 ahead / 32 behind; contains a separate stale engine/test delta based before Note 8 and needs targeted review before any port. Preserved.
   - `research/revalidate-lao-audio-corpus-leads-20261115`: 6 ahead / 43 behind; its LDC Babel source-row simplification is superseded by the more detailed current-main source and playbook licensing caveats, so no branch content is ported.
   - `improve/rule-engine-error-analysis-20261107`: 294 ahead / 376 behind, large divergent history; no whole-branch merge or cherry-pick without commit-level reconciliation.
+  - `fix/romanization-unsupported-vowel-diagnostics-20261115`: 4 ahead / 27 behind; added test names are already present on main, while the branch engine predates the current initial-ayn fail-closed handling. No port.
+  - `test/source-aware-lao-hyphen-regressions-20261115`: 4 ahead / 32 behind; added regression test names are already present on main. No port.
+  - `quality/ukrainian-editorial-and-design-audit-2026-11-10`: 21 ahead / 75 behind; its older UI snapshot removes current direct-romanization input and Note 8 UI paths. Preserve only as history; do not port.
+  - `quality/ukrainian-editorial-audit-2026-11-10`: 72 ahead / 75 behind; likewise removes current direct-romanization input and Note 8 paths, with no unique test value over current main. No port.
+  - `research/written-evidence-phonology-2026-11-09`: 0 ahead / 280 behind; no unmerged commits to port.
 - No user branch was deleted, force-updated, or merged wholesale.
 
 ## Post-merge state — PR #245 and Pages #106 (2026-11-16)
