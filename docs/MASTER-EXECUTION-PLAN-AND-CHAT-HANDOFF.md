@@ -1,3 +1,14 @@
+# Current repository status — 2026-11-16 (active PR #247)
+
+**Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+**Active documentation/evidence branch:** `docs/correct-loc-note10-source-example-20261116`, head `c13c000b0c7020638b9e606389ac1b7188b99143`; PR [#247](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/247) is open, mergeable, and not merged. It is 51 commits ahead / 0 behind main and changes 8 documentation/evidence files; no runtime or generated artifact is changed.
+**Exact-head CI:** Verify #4471 / [run 43952567280](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43952567280) is in progress at this checkpoint. Do not claim this branch's newest changes are verified until the run completes successfully.
+**Separate architecture PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open and non-mergeable (24 ahead / 374 behind; 13 files). It proposes a neural-first CLI/Python default that conflicts with the adopted deterministic-default contract; leave it for an explicit owner architecture decision.
+**Latest evidence refinement:** 2025 UNGEGN WGRS report states that as of July 2024 Lao PDR was finalizing draft toponymy guidelines, with possible UNGEGN consideration at the 2027 session. This is not evidence of subsequent submission, approval, or implementation. The UNGEGN index places Lao v4.0 (2013) under "Other languages/scripts", not among the 30 UN-recommended systems. Sources are separately registered, including 2023 minutes and the 2025 status report.
+**Readiness:** engineering-verified partial research prototype; not release-ready. Independent IPA gold remains 0; Note 6/9/10, specialist adjudication, Lao Word source retrieval and manual accessibility/device QA remain incomplete.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (PR #247 evidence reconciliation verified)
 
 **Starting main:** `390302db31b56f5842696c2d81a817689635472b`.
