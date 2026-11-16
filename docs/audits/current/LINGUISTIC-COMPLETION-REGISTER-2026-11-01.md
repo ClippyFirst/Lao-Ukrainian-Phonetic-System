@@ -1,3 +1,9 @@
+## PR #243 — post-merge evidence checkpoint (2026-11-16)
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC-NOTE-9 | PARTIAL / BLOCKED | PR [#243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/243) merged as `fccff4bae4a4bbc0c7a4d2d9837a874ed72059bd`. Exact-head Verify #4391 / [run 43930231174 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930231174): 350 Python, 204 Node, 30 Chromium; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. This is evidence/documentation only; no runtime change. HVULao_NLP is a comparative candidate, not LOC gold; LDC/CrossAsia add source-origin and lexicalization context. Acceptance remains LOC-specific policy, rights-cleared/source-located examples and Lao-specialist adjudication. |
+
 ## ALA-LC Note 9 candidate assessment — 2026-11-16 (HVULao_NLP)
 
 | ID | Status | Evidence / acceptance |
