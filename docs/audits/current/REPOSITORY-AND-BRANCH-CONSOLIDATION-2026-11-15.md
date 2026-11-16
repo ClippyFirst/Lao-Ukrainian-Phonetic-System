@@ -636,3 +636,11 @@ The API inventory contained 102 refs; only the six directly relevant divergent c
 - PR #247 remains open, unmerged and mergeable. Branch comparison after evidence and documentation updates: 100 commits ahead / 0 behind `main`, eight changed files.
 - Verify #4502 / run 43966645076 passed on pre-update evidence/docs HEAD `cb86f87fba32140c71f8f1a22ab5668d1d9ffd4b`. The Berment registry/audit/matrix/register/handoff/README changes are later commits and require exact-head CI; no runtime, corpus, model, dictionary or generated artifact changed.
 - No code was copied from the historical thesis; no license is inferred. PR #145 remains untouched. No merge, force-push, branch deletion or Pages deployment performed.
+
+
+## Modern Lao grapheme evidence and CI checkpoint — 2026-11-17
+
+- Added ICANN Lao Script Generation Panel proposal v3.1 (2017), current Root Zone LGR-6 Lao (2025), and clarified the W3C 2026 Lao Layout Requirements document as an unendorsed Group Note Draft. Registry totals: 81 unique sources / 99 unique claims; no duplicate IDs or missing claim-to-source references.
+- New evidence supports a separate grapheme-placement analyzer: pre-base vs above/below/after vowel components, tone-mark placement, U+0EBC after consonant, and sign handling. ICANN explicitly leaves many spelling constraints unenforced and is DNS root-zone scoped; W3C is typographic guidance and not endorsed. No runtime changes made.
+- Verify #4506 / run 43968825128 completed SUCCESS on `defa2f87a0730098aad240528641cac2527ca897`; all configured steps passed, including Chromium UI and built-page/relative-asset checks. Later evidence/docs commits require exact-head CI.
+- PR #247 remains open/unmerged; PR #145 remains untouched. No code, corpus, model, dictionary, generated data or Pages deployment changed.
