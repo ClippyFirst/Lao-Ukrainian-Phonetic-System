@@ -221,3 +221,12 @@ The Mendeley v2 record lists CC BY 4.0, while the article's ethical statement sa
 Sources: [Informatica 2025 paper, Appendix B](https://www.informatica.si/index.php/informatica/article/download/11195/5975); [Mendeley Data v2](https://data.mendeley.com/datasets/5zwym7kwn8/2); [LOC ALA-LC Lao table, Note 9](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
 
 **Loanword evidence refinement:** the LDC Lao language-specific document distinguishes Pali/Sanskrit borrowings from recent foreign loans in orthographic use of ລ/ຣ, while CrossAsia DLLM records historically conservative Indic forms and modernized spellings for common lexicalized loans. These are context-specific orthographic observations, not a deterministic origin classifier. A future resolver must carry lexeme-level origin and lexicalization provenance and keep LOC Note 9's source-language division as a separately reviewed rule. Sources: [LDC Lao LSP](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf); [CrossAsia DLLM](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en).
+
+
+## Vientiane Lao written sequences vs spoken phonological clusters — 2026-11-16
+
+Ueda (1994, §2.3, printed pp. 100–101) explicitly reports no phonological consonant clusters in the described Vientiane spoken dialect despite consonant-letter sequences in the orthography. The paper's examples show written `w` corresponding to spoken /ua/ or to no independent segment. Its onset/coda inventories are positional and overlap for some consonants. This is a direct warning that adjacent written consonant letters cannot simply be concatenated into an IPA onset cluster.
+
+**Implementation boundary:** retain orthographic parsing as a distinct stage; derive spoken onset/rhyme/coda only through documented correspondences and preserve null/multisegment realizations and provenance. Ueda does not supply a complete orthographic syllabifier, so this evidence does not close Note 10 automatic source-role derivation. Scope is the described central Vientiane variety, not all Lao dialects.
+
+Source: Ueda (1994), DOI [10.11435/GENGO1939.1994.106_95](https://doi.org/10.11435/GENGO1939.1994.106_95); claim `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS` / source `SRC-UEDA`.
