@@ -1,3 +1,12 @@
+## Live reconciliation — PR #240 and Note 8 work branch (2026-11-16)
+
+- Current `main` at the start of the Note 8 task: `c8ef2d8725b9e595bab2f2c4ea369517720590a8`, PR #240 merged.
+- PR #240 exact-head Verify #4343 passed; the tested PR head and merge commit had identical Git tree SHA. It was documentation-only; Pages #104 remains the latest runtime deployment.
+- Current paginated branch search returned 107 refs (106 non-main plus main). No existing branch was deleted or force-updated.
+- Open PRs: #145 (neural-first architecture proposal; owner decision) and #241 (ALA-LC Note 8 numeral route; active implementation).
+- PR #145 remains divergent: 24 ahead / 368 behind current main, 13 changed files. Leave untouched.
+- PR #241 is based on current main in `feat/ala-lc-note8-lao-digit-route-20261116`; it adds a narrowly scoped numeral-only ALA-LC Note 8 route and service output. Exact-head Verify #4376 / [run 43917776932 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917776932) passed 350 Python, 204 Node and 30 Chromium tests plus configured audits/build/reproducibility gates. Merge and post-merge verification remain.
+
 ## Live reconciliation — PR #239 and branch inventory (2026-11-16)
 
 - Current `main`: `d1b3a7a3418aca83a6cb56a291007dcb0a36479c`; PR [#239](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/239) is merged and documentation-only.

@@ -474,3 +474,15 @@ test("LOC ALA-LC Note 10 Lao source example does not gain invented automatic syl
   await expect(page.locator("#romanization-analysis-status")).toContainText("Частковий аналіз");
   await expect(page.locator("#output")).toContainText("⟦");
 });
+
+
+test("ALA-LC Note 8 converts Lao digits in a separate source-script output", async ({ page }) => {
+  await page.goto("/");
+  const input = "ຂາ ໐໑໒໓໔໕໖໗໘໙, ABC-42!\\t໒";
+  await page.locator("#lao-input").fill(input);
+  await expect(page.locator("#ala-lc-numeral-panel")).toBeVisible();
+  await expect(page.locator("#ala-lc-numerals")).toHaveText("ຂາ 0123456789, ABC-42!\\t2");
+  await expect(page.locator("#copy-ala-lc-numerals")).toBeEnabled();
+  await page.locator("#input-kind-romanization").click();
+  await expect(page.locator("#ala-lc-numeral-panel")).toBeHidden();
+});

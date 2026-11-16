@@ -1,11 +1,14 @@
 import { analyze } from "./engine.js?v=20261110-provisional-ipa-fallback-1";
-import { romanizeLao } from "./romanization.js";
+import { romanizeAlaLcNumerals, romanizeLao } from "./romanization.js";
 import { analyzeRomanization } from "./romanization-syllable-engine.js?v=20261115-direct-romanization-input-1";
 
 const input = document.querySelector("#lao-input");
 const output = document.querySelector("#output");
 const ipa = document.querySelector("#ipa");
 const romanization = document.querySelector("#romanization");
+const alaLcNumeralPanel = document.querySelector("#ala-lc-numeral-panel");
+const alaLcNumerals = document.querySelector("#ala-lc-numerals");
+const copyAlaLcNumerals = document.querySelector("#copy-ala-lc-numerals");
 const rows = document.querySelector("#rows");
 const romanizationTrace = document.querySelector("#romanization-trace");
 const romanizationRows = document.querySelector("#romanization-rows");
@@ -108,6 +111,7 @@ function setInputKind(kind) {
     ? "Результат оновлюється автоматично. У поскладовому аналізі видно вихідне написання, IPA-запис, український відповідник і рівень упевненості."
     : "Вставте латинський запис лаоського слова або фрази. Профіль можна визначити автоматично або вибрати явно; неоднозначні склади буде позначено, а не вгадано.";
   romanizationProfileLabel.hidden = kind !== "romanization";
+  alaLcNumeralPanel.hidden = kind !== "lao";
   outputMethodSwitch.hidden = kind !== "lao";
   quickExamples.hidden = kind !== "lao";
   modePhonetic.hidden = kind !== "lao";
@@ -126,6 +130,8 @@ function renderRomanizationInput() {
     output.className = "output muted";
     romanization.textContent = "Тут відобразиться введена романізація.";
     romanization.className = "output muted";
+    alaLcNumeralPanel.hidden = true;
+    copyAlaLcNumerals.disabled = true;
     ipa.textContent = "";
     emptyState.hidden = false;
     results.hidden = true;
@@ -143,6 +149,8 @@ function renderRomanizationInput() {
   outputMethodNote.textContent = "Профіль: " + profileLabel + ". Вхідна романізація → розбір підтримуваної складової структури → український практичний запис. Це не IPA-транскрипція; втрачені в латинському записі тон і довгота не реконструюються.";
   romanization.textContent = input.value;
   romanization.className = "output";
+  alaLcNumeralPanel.hidden = true;
+  copyAlaLcNumerals.disabled = true;
   ipa.textContent = "";
   romanizationPanel.hidden = false;
   ipaPanel.hidden = true;
@@ -236,6 +244,9 @@ function render() {
     ipa.textContent = "";
     romanization.textContent = "Тут з'явиться латинський запис лаоського тексту.";
     romanization.className = "output muted";
+    alaLcNumeralPanel.hidden = true;
+    alaLcNumerals.textContent = "";
+    copyAlaLcNumerals.disabled = true;
     emptyState.hidden = false;
     results.hidden = true;
     section.classList.add("hidden");
@@ -279,6 +290,10 @@ function render() {
         : "Український результат складається за будовою романізованого складу, а не через заміну латинських літер по одній.");
   romanization.textContent = roman.output;
   romanization.className = "output";
+  const alaLcNumeralResult = romanizeAlaLcNumerals(input.value);
+  alaLcNumeralPanel.hidden = false;
+  alaLcNumerals.textContent = alaLcNumeralResult.output;
+  copyAlaLcNumerals.disabled = alaLcNumeralResult.mappedCount === 0;
   // IPA contains only phonetic units: omit explicit passthrough (digits,
   // punctuation, foreign-script text) and show a visible unknown marker for
   // unresolved Lao units instead of a misleading dash run.
@@ -447,6 +462,11 @@ document.querySelector("#clear").addEventListener("click", () => {
 copy.addEventListener("click", () => {
   const value = currentUkrainianOutput();
   if (value) copyWithFeedback(copy, value);
+});
+
+copyAlaLcNumerals.addEventListener("click", () => {
+  const value = romanizeAlaLcNumerals(input.value);
+  if (value.mappedCount > 0) copyWithFeedback(copyAlaLcNumerals, value.output);
 });
 
 copyRomanization.addEventListener("click", () => {

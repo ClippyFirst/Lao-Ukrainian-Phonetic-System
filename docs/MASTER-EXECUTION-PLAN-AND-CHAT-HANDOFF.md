@@ -1,3 +1,28 @@
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Note 8 implementation in progress)
+
+**Starting main:** `c8ef2d8725b9e595bab2f2c4ea369517720590a8`.
+**Working branch:** `feat/ala-lc-note8-lao-digit-route-20261116`.
+**PR [#241](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/241):** open; exact-head Verify #4376 / [run 43917776932 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917776932).
+**Scope:** a distinct Lao-source → Arabic-numeral function for ALA-LC 2012 Note 8, plus a separate UI result panel. It maps only Lao digits U+0ED0–U+0ED9, preserves all other text and separators, and does not change the phonetic pipeline, BGN/PCGN CLDR route, or direct Latin ALA-LC parser.
+**Evidence:** LOC primary source, [ALA-LC Lao Romanization Table (2012), Note 8](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). Tests cover all ten digits, mixed-script text, ASCII digits, punctuation, tabs and CRLF.
+**Verification:** exact-head Verify #4376 passed 350 Python tests, 204 Node tests and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed. Note 8 is DONE_VERIFIED on this tested branch; PR merge and post-merge main verification remain.
+**Repository inventory at start:** `main` was `c8ef2d8725b9e595bab2f2c4ea369517720590a8`; branch search returned 107 refs (106 non-main plus main); open PRs #145 and #241.
+**PR #145:** remains divergent, 24 ahead / 368 behind; leave untouched pending owner-level architecture decision.
+
+## Current continuation ledger
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC Note 8 Lao digits | DONE_VERIFIED (PR #241 exact-head) | Typed Lao-source numeral-only route, separate UI output, copy action and unit/browser regressions; Verify #4365 passed. Phonetic passthrough remains unchanged. Post-merge verification remains. |
+| ALA-LC Note 9 lexical/loanword boundaries | BLOCKED / PARTIAL | LOC shortest-standalone-form and loanword policies need a reviewed, rights-cleared lexical resource and specialist policy. LaoNLP maximum matching is not equivalent. |
+| ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | Browser regression confirms unresolved LOC example; U+0EBC role derivation requires reviewed parser behavior. |
+| ALA-LC Note 6 initial ayn | PARTIAL / fail-closed | Source trace exists; Ukrainian target correspondence is not approved. |
+| Independent IPA gold | BLOCKED | 0 independently adjudicated examples; requires qualified annotators and adjudication. |
+| Lao specialist review | BLOCKED | No qualified independent sign-off. |
+| Lao-specific RTGS | BLOCKED | No authoritative complete Lao-specific adaptation table. |
+| Accessibility/device QA | PARTIAL | Automated Chromium coverage exists; human screen-reader, keyboard-only and device QA remain. |
+| PR #145 neural-first architecture | DEFERRED / owner decision | 24 ahead / 368 behind; do not merge or rebase without architecture decision. |
+
 # Latest continuation checkpoint — 2026-11-16 (PR #239 merged; live inventory reconciled)
 
 **Starting main:** `d1b3a7a3418aca83a6cb56a291007dcb0a36479c` (PR #239 merge commit).
