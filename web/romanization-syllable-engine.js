@@ -591,9 +591,17 @@ export function analyzeRomanization(input, options = {}) {
         const sourceVowelId = singleSourceUnit?.vowelId;
         const hasUnmappedSourceVowel = typeof sourceVowelId === "string"
           && !LAO_VOWEL_TO_CLDR.has(sourceVowelId);
-        item.warning = hasUnmappedSourceVowel
-          ? `Лаоська голосна структура ${sourceVowelId} ще не має підтвердженого відповідника в профілі CLDR Lao-Latin; український результат утримано.`
-          : "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
+        const initialAynWithoutTarget = profile === "ala-lc"
+          && originalPart.startsWith("ʻ")
+          && singleSourceUnit?.onset === "ອ"
+          && unrestricted?.count === 1
+          && unrestricted.path.some((unit) => unit.onset === "ʻ");
+        if (initialAynWithoutTarget) item.status = "UNSUPPORTED_ALA_LC_INITIAL_AYN";
+        item.warning = initialAynWithoutTarget
+          ? "ALA-LC 2012 confirms initial ʻ as the romanization of Lao ອ; the project has no approved Ukrainian target correspondence for this marker, so the result is withheld."
+          : hasUnmappedSourceVowel
+            ? `Лаоська голосна структура ${sourceVowelId} ще не має підтвердженого відповідника в профілі CLDR Lao-Latin; український результат утримано.`
+            : "Романізований склад можна розібрати, але його початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано.";
         if (singleSourceUnit && unrestricted.count === 1) {
           item.sourceOnset = singleSourceUnit.onset;
           item.sourceCoda = singleSourceUnit.coda;
