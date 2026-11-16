@@ -589,3 +589,59 @@ test("ALA-LC romanization does not reconstruct tone or expose an IPA result", ()
   assert.equal(Object.hasOwn(result, "ipa"), false);
   assert.equal(Object.hasOwn(result, "tone"), false);
 });
+
+test("ALA-LC Note 6 recognizes initial ayn as a source marker but withholds an unapproved Ukrainian target", () => {
+  const result = analyzeRomanization("ʻīk", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{
+      onset: "ອ",
+      onsetForm: "ອ",
+      vowelId: "II",
+      coda: "ກ",
+    }]],
+  });
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦ʻīk⟧");
+  assert.equal(result.syllables[0].status, "UNSUPPORTED_ALA_LC_INITIAL_AYN");
+  assert.equal(result.syllables[0].sourceOnset, "ອ");
+  assert.equal(result.syllables[0].sourceVowelId, "II");
+  assert.equal(result.syllables[0].onset, "ʻ");
+  assert.match(result.syllables[0].warning, /українськ.*відповідник|відповідник.*українськ/iu);
+});
+
+test("ALA-LC Note 10 validates a double-function consonant as final t and next onset s", () => {
+  // LOC's Lao example ຄິຼສຕຽນ → khitsatīan uses the single source ສ
+  // in two adjacent syllabic roles: final (t), then initial (s).
+  const result = analyzeRomanization("khitsatīan", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[
+      { onset: "ຄ", vowelId: "I", coda: "ສ" },
+      { onset: "ສ", vowelId: "A", coda: "" },
+      { onset: "ຕ", vowelId: "IA_LONG", coda: "ນ" },
+    ]],
+  });
+  assert.equal(result.status, "OK");
+  assert.equal(result.output, "к'ітсатіан");
+  assert.deepEqual(
+    result.syllables.map(({ onset, nucleus, coda, sourceOnsetKey, sourceCoda }) =>
+      ({ onset, nucleus, coda, sourceOnsetKey, sourceCoda })),
+    [
+      { onset: "kh", nucleus: "i", coda: "t", sourceOnsetKey: "ຄ", sourceCoda: "ສ" },
+      { onset: "s", nucleus: "a", coda: "", sourceOnsetKey: "ສ", sourceCoda: "" },
+      { onset: "t", nucleus: "ia", coda: "n", sourceOnsetKey: "ຕ", sourceCoda: "ນ" },
+    ],
+  );
+});
+
+test("ALA-LC Note 10 withholds a double-function spelling when the source coda role is missing", () => {
+  const result = analyzeRomanization("khitsatīan", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[
+      { onset: "ຄ", vowelId: "I", coda: "" },
+      { onset: "ສ", vowelId: "A", coda: "" },
+      { onset: "ຕ", vowelId: "IA_LONG", coda: "ນ" },
+    ]],
+  });
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.output, "⟦khitsatīan⟧");
+});
