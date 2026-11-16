@@ -230,3 +230,14 @@ Ueda (1994, §2.3, printed pp. 100–101) explicitly reports no phonological con
 **Implementation boundary:** retain orthographic parsing as a distinct stage; derive spoken onset/rhyme/coda only through documented correspondences and preserve null/multisegment realizations and provenance. Ueda does not supply a complete orthographic syllabifier, so this evidence does not close Note 10 automatic source-role derivation. Scope is the described central Vientiane variety, not all Lao dialects.
 
 Source: Ueda (1994), DOI [10.11435/GENGO1939.1994.106_95](https://doi.org/10.11435/GENGO1939.1994.106_95); claim `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS` / source `SRC-UEDA`.
+
+
+## Historical Lao orthographic syllable grammar and ambiguity — 2026-11-17
+
+Berment (2004, Part III §§III.2.3–III.2.6; Annexes A.11/A.14) documents a historical explicit Lao orthographic syllable grammar: initial consonant/consonant groups, positional vowel patterns assembled from signs around the onset, optional accent, and restricted coda. It reports 56,670 generated candidate strings and a 33-state/480-transition automaton, but also warns that the grammar accepts theoretical unattested forms (e.g. `ມວອ`) and simplifies accent placement. Exact terminals in the OCR-extracted production listing are incomplete; do not reconstruct missing Lao glyphs by guesswork. No code is copied and no license for Sylla/Prolog code is assumed.
+
+Berment models all candidate syllables as edges in a position graph, complete segmentations as paths, and prunes dead branches that cannot belong to a complete path. Ambiguous regions remain explicit. The historical longest-candidate rule was a local UI selection heuristic with user cycling, not a global linguistic resolution rule. Del Vigna & Berment (2003) separately formalize irreducible ambiguity for a historical Lao syllable dictionary; its counts are not interchangeable with the thesis's generated-grammar counts.
+
+**Project disposition:** historical grammar found = `DONE_VERIFIED` as source evidence; current Lao orthographic grammar = `PARTIAL/TODO`; ambiguity lattice/dead-branch pruning = `PARTIAL/TODO`; lexical/semantic resolution = `BLOCKED/evidence-limited`. Next acceptance requires exact production transcription from page images/Annex A.14, modern Unicode and dialect reconciliation, candidate-lattice tests including ambiguous `ແຂກະ`, unattested `ມວອ`, invalid mark sequences and dead branches, plus independent Lao-specialist adjudication. Keep orthographic candidates separate from downstream spoken IPA analysis (Ueda 1994); keep LOC Note 10 exact glyph and repeated-role derivation unresolved.
+
+Sources: [Berment (2004) full thesis](https://www.tagmatica.fr/doc/these-vincent-berment.pdf); [Del Vigna & Berment (2003), DOI 10.36045/bbms/1074791326](https://doi.org/10.36045/bbms/1074791326); registry IDs `SRC-BERMENT-THESIS-2004`, `SRC-DEL-VIGNA-BERMENT-2003`.
