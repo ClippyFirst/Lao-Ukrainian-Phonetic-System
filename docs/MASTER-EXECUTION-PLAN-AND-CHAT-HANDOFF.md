@@ -1,3 +1,32 @@
+# Latest continuation checkpoint — 2026-11-16 (Notes 8–10 and LaoNLP reconciled; README/register sync)
+
+**Starting main:** `943ff111033e7212cbbbc8615035eb94ed1c9974`.
+**Runtime commit currently deployed by Pages #104:** `e6b1d564a20b88945dc0277b8db38efcd5834c8e`; subsequent PRs #232–#235 were documentation-only.
+**Latest main Verify #4334:** [run 43868172458 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43868172458): 350 Python, 201 Node, 29 Chromium; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks all passed.
+**Merged PRs reconciled:** #231 (Note 10 browser fail-closed guard), #232 (post-merge Note 10 evidence), #233 (Notes 8–9 route boundary), #234 (LaoNLP candidate/license assessment), #235 (post-merge evidence).
+**Current branch for this docs sync:** `docs/reconcile-readme-note8-10-checkpoint-20261116`; no runtime or Pages artifact changes.
+
+## Current ledger
+
+| Workstream | Status | Acceptance / blocker |
+|---|---|---|
+| Note 8 Lao numeral romanization | PARTIAL / route not implemented | Current phonetic route preserves Lao digits; ALA-LC direct mode starts from Latin. Requires a distinct Lao-source ALA-LC numeral conversion path. |
+| Note 9 lexical segmentation/loanwords | PARTIAL / BLOCKED | LaoNLP maximum-match dictionary is not LOC shortest-standalone-word policy; mixed per-file licenses prevent composite bundling. Need reviewed policy and rights-clean lexicon. |
+| Note 10 automatic source roles | PARTIAL / fail-closed | Real browser case remains PARTIAL for `ຄິຼສຕຽນ`; U+0EBC and automatic repeated coda/onset segmentation not modeled. |
+| Note 6 initial ayn target | PARTIAL / fail-closed | Source trace exists; Ukrainian target correspondence not approved. |
+| Full ALA-LC | PARTIAL | Contextual vowel/ວ behavior and Notes 6, 8–10 remain incomplete. |
+| Independent IPA gold | BLOCKED | 0 adjudicated examples; requires qualified independent annotators and adjudication. |
+| Lao specialist review | BLOCKED | No qualified reviewer sign-off. |
+| Lao-specific RTGS | BLOCKED | No authoritative full Lao-specific adaptation table. |
+| Accessibility/device QA | PARTIAL | Automated browser coverage exists; human screen-reader/keyboard/device QA remains. |
+| PR #145 neural-first proposal | DEFERRED / owner decision | Open, mergeable=false, 24 commits ahead / 363 behind; do not merge blindly. |
+
+## Current readiness
+
+Engineering-verified partial research prototype. CI and Pages are operational, but no independent IPA gold or specialist sign-off exists; do not describe the system as linguistically validated or release-ready.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (LaoNLP candidate assessment merged)
 
 **Starting main:** `285a258f93d2e9db2a56f2ff258097932306b6ef`.
