@@ -1,3 +1,9 @@
+## ALA-LC Note 9 — ICU word-break baseline follow-up (2026-11-16)
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC-NOTE-9 | PARTIAL / BLOCKED | Added an offline reproducible longest/shortest prefix baseline using the pinned ICU Lao word-break list against HVULao_NLP v2: 839/1,000 exact character-stream-aligned pairs, 49,608 within-Lao candidate boundaries; longest-prefix F1 0.8636, naive shortest-prefix F1 0.5129. This filtered exploratory result is not comparable to the paper's 0.75 model F1 and neither algorithm implements LOC's shortest-standalone-form/loanword clauses. No corpus or dictionary data imported. Acceptance remains LOC-specific policy, item-level rights review, source-located examples and Lao-specialist adjudication. See `scripts/benchmark_lao_word_boundaries.py` and the direct-input audit.
+
 ## PR #243 — post-merge evidence checkpoint (2026-11-16)
 
 | ID | Status | Evidence / acceptance |
@@ -45,7 +51,7 @@ PR [#238](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/238)
 |---|---|---|
 | ALA-LC-NOTE-8 | PARTIAL / route not implemented | LOC maps Lao digits ໐–໙ to 0–9. Current browser phonetic route preserves Lao numerals; direct ALA-LC mode accepts Latin input and therefore does not implement this source-script conversion. Acceptance: implement and test a distinct, explicitly typed Lao-source ALA-LC numeral romanization path, without changing phonetic passthrough semantics. |
 | ALA-LC-NOTE-9 | PARTIAL / BLOCKED | LOC shortest-standalone-written-form and Pali/Sanskrit/other-loanword boundary rules require a reviewed lexical policy and appropriately rights-cleared resource. LaoNLP at pinned commit `a914f64e38ff24d67d32e37db40dad5c368ea602` was assessed in PR #234: maximum-match over a mixed-source composite is not equivalent; no data/code imported. |
-| ALA-LC-NOTE-10 | PARTIAL / fail-closed | PR #231 browser test runs `ຄິຼສຕຽນ` through the real application and verifies visibly PARTIAL output. U+0EBC `ຼ` and automatic LOC syllable/coda-onset role derivation are not modeled; the existing positive/negative crosswalk unit fixture supplies roles manually. |
+| ALA-LC-NOTE-10 | PARTIAL / fail-closed | The PR #231 browser regression using `ຄິຼສຕຽນ` is only a mode-separation check (Lao script rejected in Latin romanization mode), not the LOC example. The positive/negative unit crosswalk fixture now uses `khitsatān` with manually supplied source roles; LOC 1997 lists `ຄິດສະຖານ (khitsatān)`. Automatic source-script role derivation remains unverified; exact 2012 glyph sequence requires specialist confirmation. |
 | ALA-LC-NOTE-6 | PARTIAL / fail-closed | Initial `ʻ` is traced against source Lao `ອ`, but no approved Ukrainian target mapping exists; unsupported medial vowel values remain withheld. |
 | ALA-LC-FULL | PARTIAL | Notes 6, 8, 9 and 10 plus contextual vowel/ວ cases are incomplete; no full conformance claim. |
 | LAO-GOLD-001 | BLOCKED | Requires qualified independent annotation/adjudication, fixed dialect/convention, source locators and rights-cleared examples. |

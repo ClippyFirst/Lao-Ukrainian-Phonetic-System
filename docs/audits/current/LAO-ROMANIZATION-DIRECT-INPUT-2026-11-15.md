@@ -225,9 +225,9 @@ The six Note 5 source-aware fixtures and Note 7 order fixture are now DONE_VERIF
 
 PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228) adds:
 - A Note 6 source-aware initial-ayn trace: `ʻ` is parsed as the LOC romanization marker for initial Lao `ອ`, with source vowel/coda provenance retained, but the result remains `UNSUPPORTED_ALA_LC_INITIAL_AYN` / PARTIAL because no Ukrainian target value has been approved. Latin-only initial ayn remains withheld.
-- A Note 10 regression for the LOC example `khitsatīan`, supplying the source syllable roles explicitly: `ສ` is validated as final `t` in one syllable and onset `s` in the next. A negative case without the coda role is withheld.
+- A synthetic source-role crosswalk regression using the LOC romanized example string `khitsatān`: the fixture explicitly supplies `ສ` as final `t` in one syllable and onset `s` in the next. A negative case without the coda role is withheld. This tests the crosswalk only; it does not assert the exact source-script syllabification of the LOC example.
 
-The Note 10 fixture verifies the existing position-specific source crosswalk; it does **not** verify that the upstream Lao parser automatically derives LOC's lexical/syllable segmentation for `ຄິຼສຕຽນ`. Full Note 10 conformance therefore remains PARTIAL. No new Ukrainian phonological value, IPA result, or lexical boundary was inferred.
+The positive/negative Note 10 unit fixtures verify the position-specific source crosswalk only; they do **not** verify automatic Lao source segmentation. The browser regression that uses `ຄິຼສຕຽນ` is only a mode-separation check: Lao script is rejected when the direct romanization mode expects Latin text. That string is not the LOC Note 10 example. Full Note 10 conformance therefore remains PARTIAL. No new Ukrainian phonological value, IPA result, or lexical boundary was inferred.
 
 Exact-head Verify #4309 / [run 43848574433](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43848574433) passed 350 Python, 201 Node and 28 Chromium tests (0 failures), plus the workflow's IPA-gold schema, repository/evidence audit, external-G2P harness, build, generated-data reproducibility and built-page/relative-asset checks. This run was on the pre-documentation head `4aa6d7ff3770ae7cb28a8edc3da248a7b2adf1b8`; documentation changes are being verified separately on the final PR head.
 
@@ -242,23 +242,23 @@ PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228)
 - Both runs passed 350 Python, 201 Node and 28 Chromium tests, with 0 failures; schema, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed.
 - Pages Deploy #103 / [run 43849485210](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485210) succeeded and published the same runtime SHA. Its built-site Chromium suite passed 28 tests; the post-deployment smoke test successfully fetched the published index, methodology page, app.js, data.js, engine.js and styles.css.
 
-**Final disposition:** Note 6 initial-ayn source recognition/provenance is DONE_VERIFIED as an engineering trace only; its Ukrainian target remains intentionally unsupported. Note 10's source-supplied double-function crosswalk fixture is DONE_VERIFIED; automatic upstream Lao segmentation of the LOC example remains PARTIAL. Full ALA-LC conformance and Note 9 lexical/loanword boundaries remain PARTIAL. No IPA, tone, target correspondence or lexical boundary was inferred. The published site is current at Pages #103; independent IPA gold remains 0 and specialist review remains open.
+**Final disposition:** Note 6 initial-ayn source recognition/provenance is DONE_VERIFIED as an engineering trace only; its Ukrainian target remains intentionally unsupported. Note 10's synthetic source-role crosswalk fixture is DONE_VERIFIED; automatic upstream Lao segmentation of the LOC example remains PARTIAL. The earlier attribution of `ຄິຼສຕຽນ` as the LOC example is corrected below. Full ALA-LC conformance and Note 9 lexical/loanword boundaries remain PARTIAL. No IPA, tone, target correspondence or lexical boundary was inferred. The published site is current at Pages #103; independent IPA gold remains 0 and specialist review remains open.
 
-## Automatic-source integration check — ALA-LC Note 10 (2026-11-16)
+## Direct-romanization mode-separation guard (2026-11-16)
 
-The LOC example `ຄິຼສຕຽນ` was exercised through the real browser workflow: Lao input → current deterministic source parser → CLDR Lao-Latin helper → source-aware syllable crosswalk. The regression is in `tests/browser/site.spec.js` and asserts a visible PARTIAL result with unresolved brackets rather than an apparently complete Ukrainian output.
+The Lao-script string `ຄິຼສຕຽນ` was entered into the Latin direct-romanization mode. The browser regression in `tests/browser/site.spec.js` asserts a visible PARTIAL result with unresolved brackets rather than accepting Lao-script characters as Latin romanization. This is a mode-separation guard only; it does not exercise the Lao source parser or LOC Note 10's double-function example.
 
 - PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231), exact-head Verify #4319 / [run 43865169001](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865169001): SUCCESS.
-- Browser suite: 29 passed, including the new Note 10 end-to-end guard.
+- Browser suite: 29 passed, including the new direct-romanization mode-separation guard.
 - Python tests, Node engine tests, IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed.
 - The exact source form contains U+0EBC LAO SEMIVOWEL SIGN LO (`ຼ`), which the current deterministic Lao syllable parser does not model as an independent structural role. The test confirms fail-closed behavior; it does not derive LOC's three syllables or the repeated coda/onset role.
-- Existing Note 10 unit tests remain explicitly source-role-supplied fixtures. Automatic LOC lexical/syllabic segmentation is still PARTIAL/BLOCKED pending a reviewed orthographic parser and Lao-specialist source-role policy.
+- Existing Note 10 unit tests are explicitly source-role-supplied synthetic crosswalk fixtures. Automatic LOC lexical/syllabic segmentation is still PARTIAL/BLOCKED pending a reviewed orthographic parser and Lao-specialist source-role policy.
 
 No runtime code, IPA, tone, lexical boundary or Ukrainian mapping changed.
 
 ### Post-merge evidence — 2026-11-16
 
-PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231) merged by squash as `e6b1d564a20b88945dc0277b8db38efcd5834c8e`. Exact-head Verify #4323 / [run 43865438811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865438811) and post-merge main Verify #4324 / [run 43865719407](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719407) both succeeded: 350 Python, 201 Node and 29 Chromium tests, including the new LOC Note 10 browser regression. Pages Deploy #104 / [run 43865719450](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719450) also succeeded and deployed commit `e6b1d564`; its built-site Chromium suite passed 29 tests and the deployed-service smoke test passed.
+PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231) merged by squash as `e6b1d564a20b88945dc0277b8db38efcd5834c8e`. Exact-head Verify #4323 / [run 43865438811](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865438811) and post-merge main Verify #4324 / [run 43865719407](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719407) both succeeded: 350 Python, 201 Node and 29 Chromium tests, including the direct-romanization mode-separation browser regression. Pages Deploy #104 / [run 43865719450](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719450) also succeeded and deployed commit `e6b1d564`; its built-site Chromium suite passed 29 tests and the deployed-service smoke test passed.
 
 The engineering acceptance is complete for the fail-closed integration guard only. Automatic LOC syllabification remains PARTIAL; no linguistic capability is promoted.
 
@@ -331,3 +331,61 @@ Sources: [LDC Lao Language Specific Peculiarities, §§3–4](https://catalog.ld
 PR [#243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/243) merged by squash as `fccff4bae4a4bbc0c7a4d2d9837a874ed72059bd` from exact tested head `6c6d54077361014f8c31d1875cbb8967c5c447bd`. Exact-head Verify #4391 / [run 43930231174 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930231174) passed 350 Python, 204 Node and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. Documentation/evidence only; no runtime or deployment files changed. Pages #104 remains the runtime checkpoint.
 
 The available GitHub integration did not expose the push-triggered main workflow run after merge, so post-merge main verification is not claimed. This does not invalidate the successful exact-head run; it is a visibility limitation for the separate push-triggered event.
+
+## ICU Lao word-break baseline against HVULao_NLP v2 — 2026-11-16
+
+This follow-up adds a reproducible, offline exploratory benchmark; it does **not** promote the ICU word-break dictionary or HVULao annotations to ALA-LC Note 9 gold.
+
+### Pinned inputs and provenance
+
+- HVULao_NLP GitHub snapshot: `HaHVU/HVULao_NLP@ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568`.
+  - Raw test sentences `Datatest1k/testorgin1000.txt`: Git blob SHA-1 `947448807484bb994877ae5d32cba1cfdd5e2d9b`.
+  - Segmented test sentences `Datatest1k/testsegsent_1000.txt`: Git blob SHA-1 `46254839d798fa7140d627fdef440109be9f4285`.
+  - Mendeley V2 identifies the dataset as CC BY 4.0. The paper says source texts came from government/news/institutional websites and notes source websites permitted research/non-commercial reuse; per-item source rights must still be checked before redistribution or commercial reuse. No corpus text is copied into this repository.
+- ICU Lao word-break dictionary: `unicode-org/icu@bf835bad36a09828051dd8cc6f58bb62bac93fde`, `icu4c/source/data/brkitr/dictionaries/laodict.txt`, Git blob SHA-1 `8eb43185e9ab6d00afe0f80e17891e33af976f06`. It contains 30,550 unique entries (maximum 32 code points) and carries Unicode/IBM notices plus a BSD-style redistribution notice. Its stated purpose is word wrapping, not LOC lexical segmentation.
+- Safety/provenance note: the referenced mutable `rober42539/lao-dictionary` repository now displays takeover/defacement content, and its current `LICENSE.txt` content redirects to an unrelated site. Do not fetch from that mutable upstream. The experiment used only the pinned ICU vendor copy with its own embedded notices.
+
+### Exploratory method and result
+
+A local offline harness, `scripts/benchmark_lao_word_boundaries.py`, compares two simple left-to-right greedy prefix strategies using the same ICU word list. Unknown Lao code points fall back one code point. Raw sentences are NFC-normalized and whitespace is removed; only sentence pairs whose resulting character streams exactly match the concatenated segmented tokens are scored. Boundary positions are counted only between adjacent code points in the Lao Unicode block; punctuation and mixed-script boundaries are excluded.
+
+| Measure | Greedy longest prefix | Greedy shortest prefix |
+|---|---:|---:|
+| Aligned sentence pairs | 839 / 1,000 | 839 / 1,000 |
+| Unaligned pairs excluded | 161 | 161 |
+| Within-Lao candidate boundary positions | 49,608 | 49,608 |
+| True positives | 8,464 | 9,454 |
+| False positives | 1,669 | 17,946 |
+| False negatives | 1,004 | 14 |
+| Precision | 0.8353 | 0.3450 |
+| Recall | 0.8940 | 0.9985 |
+| Micro F1 | 0.8636 | 0.5129 |
+
+The 161 unaligned sentence pairs were excluded, not silently corrected; their differences were not classified in this experiment. The reported scores are therefore a filtered exploratory comparison, not a corpus-wide result and **not comparable** to the paper's reported 0.75 F1 model score, which uses a different evaluation protocol. The high recall/low precision of the naive shortest-prefix variant shows why LOC's phrase “shortest written form which can stand alone as a word” must not be implemented as a context-free shortest-prefix heuristic.
+
+### Reproducibility and disposition
+
+The script accepts local copies of the three pinned files and can verify their Git blob SHA-1 values. Example:
+
+```bash
+python scripts/benchmark_lao_word_boundaries.py \
+  --raw /path/to/testorgin1000.txt \
+  --segmented /path/to/testsegsent_1000.txt \
+  --dictionary /path/to/laodict.txt \
+  --raw-blob-sha1 947448807484bb994877ae5d32cba1cfdd5e2d9b \
+  --segmented-blob-sha1 46254839d798fa7140d627fdef440109be9f4285 \
+  --dictionary-blob-sha1 8eb43185e9ab6d00afe0f80e17891e33af976f06
+```
+
+Unit tests cover longest/shortest strategy divergence, exact alignment filtering, line-count rejection and fail-closed hash checks. The script is a research comparator only: no dictionary, corpus text, model or runtime dependency was imported. Note 9 remains `PARTIAL / BLOCKED`; acceptance still requires LOC-specific policy, rights-cleared/source-located examples, and Lao-specialist adjudication of native compounds, productive morphology, Pali/Sanskrit and other loans.
+
+## Correction to ALA-LC Note 10 example attribution — 2026-11-16
+
+The earlier repository wording incorrectly identified `ຄິຼສຕຽນ` as the LOC Note 10 source example and called its browser regression an automatic Note 10 test. This is corrected:
+
+- The official LOC 1997 table's extracted text explicitly gives `ຄິດສະຖານ (khitsatān)` for Note 10. The 2012 table retains the same double-function rule and romanized example; its Lao glyph extraction is inconsistent across text indexes, so the exact 2012 source spelling should not be asserted without specialist inspection of the printed glyphs.
+- The positive/negative unit crosswalk tests now use the romanized example `khitsatān`, but the source syllable roles are manually supplied. The `ສ` final-`t` / onset-`s` assignment is a synthetic crosswalk fixture, not a claim that the code has parsed the LOC source word.
+- The browser test with `ຄິຼສຕຽນ` is retained under an accurate name as a mode-separation test: Lao script entered in Latin romanization mode is withheld. It is not LOC Note 10 evidence.
+- Acceptance remains PARTIAL until a Lao specialist confirms the exact 2012 source-script example and syllable/role analysis, and the upstream Lao parser derives those roles without manual injection.
+
+Sources: [LOC ALA-LC Lao table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LOC ALA-LC Lao table (1997), Note 10](https://www.loc.gov/catdir/cpso/romanization/lao-1997.pdf).

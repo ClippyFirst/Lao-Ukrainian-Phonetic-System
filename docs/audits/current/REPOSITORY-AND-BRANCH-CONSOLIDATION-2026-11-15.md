@@ -1,3 +1,19 @@
+## Additional research and evidence correction — PR #245 (2026-11-16)
+
+- PR #245 is open from `research/icu-lao-wordbreak-baseline-20261116`; it adds the offline ICU/HVULao boundary baseline, source hashes, evidence records and regression tests. No production code, corpus text or dictionary data is imported.
+- This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 1997 explicitly gives `ຄິດສະຖານ (khitsatān)`; the 2012 table's exact Lao glyph extraction needs specialist confirmation. Unit crosswalk tests now use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
+- The repository remains PARTIAL / BLOCKED for Note 9 and Note 10 automatic source roles; no linguistic rule was inferred from the exploratory baseline or the corrected fixture.
+
+## Live repository state — PR #244 merged; ICU Note 9 research branch (2026-11-16)
+
+- Current `main`: `515f95a7927b20ed9e1859660362eb3a6b1c3306`; PR [#244](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/244) merged by squash after PR #243.
+- PR #244 exact-head Verify #4393 / [run 43930653255 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930653255) and post-merge main Verify #4394 / [run 43930806933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930806933) passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+- Pages Deploy #105 / [run 43918258738 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918258738) deployed runtime commit `841826ce9981b1c09aa98179c790c63db1b2c982` (PR #241) and passed post-deploy HTTP smoke tests. PRs #243–#244 were documentation/evidence-only; no new Pages deployment was required.
+- New research branch: `research/icu-lao-wordbreak-baseline-20261116`. It adds an offline, source-hash-pinned longest/shortest prefix baseline and unit tests; no runtime code or external corpus/dictionary data is imported.
+- Paginated branch search returned 112 refs (111 non-main plus `main`) including this research branch. No user branch was deleted or force-updated. The older `docs/reconcile-live-main-pages-20261116` branch was based on the pre-PR #243 main and is superseded; it is preserved but not proposed for merge.
+- PR #145 remains the only previously open PR: divergent, 24 ahead / 372 behind current main, 13 changed files. Leave untouched pending the owner-level neural-first architecture decision.
+- The current research PR is documentation/evidence/tooling-only and does not change deployed paths; Pages #105 remains the runtime deployment.
+
 ## Post-merge reconciliation — PR #243 (2026-11-16)
 
 - Current `main`: `fccff4bae4a4bbc0c7a4d2d9837a874ed72059bd`; PR [#243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/243) merged by squash from exact tested head `6c6d54077361014f8c31d1875cbb8967c5c447bd`.
