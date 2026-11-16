@@ -2,10 +2,10 @@
 
 **Starting main:** `c8ef2d8725b9e595bab2f2c4ea369517720590a8`.
 **Working branch:** `feat/ala-lc-note8-lao-digit-route-20261116`.
-**PR [#241](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/241):** open; exact-head Verify #4365 / [run 43917388845 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917388845).
+**PR [#241](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/241):** open; exact-head Verify #4376 / [run 43917776932 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43917776932).
 **Scope:** a distinct Lao-source → Arabic-numeral function for ALA-LC 2012 Note 8, plus a separate UI result panel. It maps only Lao digits U+0ED0–U+0ED9, preserves all other text and separators, and does not change the phonetic pipeline, BGN/PCGN CLDR route, or direct Latin ALA-LC parser.
 **Evidence:** LOC primary source, [ALA-LC Lao Romanization Table (2012), Note 8](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). Tests cover all ten digits, mixed-script text, ASCII digits, punctuation, tabs and CRLF.
-**Verification:** exact-head Verify #4365 passed 350 Python tests, 204 Node tests and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed. Note 8 is DONE_VERIFIED on this tested branch; PR merge and post-merge main verification remain.
+**Verification:** exact-head Verify #4376 passed 350 Python tests, 204 Node tests and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed. Note 8 is DONE_VERIFIED on this tested branch; PR merge and post-merge main verification remain.
 **Repository inventory at start:** `main` was `c8ef2d8725b9e595bab2f2c4ea369517720590a8`; branch search returned 107 refs (106 non-main plus main); open PRs #145 and #241.
 **PR #145:** remains divergent, 24 ahead / 368 behind; leave untouched pending owner-level architecture decision.
 
