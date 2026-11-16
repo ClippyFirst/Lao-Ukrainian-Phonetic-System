@@ -331,3 +331,50 @@ Sources: [LDC Lao Language Specific Peculiarities, §§3–4](https://catalog.ld
 PR [#243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/243) merged by squash as `fccff4bae4a4bbc0c7a4d2d9837a874ed72059bd` from exact tested head `6c6d54077361014f8c31d1875cbb8967c5c447bd`. Exact-head Verify #4391 / [run 43930231174 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930231174) passed 350 Python, 204 Node and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed. Documentation/evidence only; no runtime or deployment files changed. Pages #104 remains the runtime checkpoint.
 
 The available GitHub integration did not expose the push-triggered main workflow run after merge, so post-merge main verification is not claimed. This does not invalidate the successful exact-head run; it is a visibility limitation for the separate push-triggered event.
+
+## ICU Lao word-break baseline against HVULao_NLP v2 — 2026-11-16
+
+This follow-up adds a reproducible, offline exploratory benchmark; it does **not** promote the ICU word-break dictionary or HVULao annotations to ALA-LC Note 9 gold.
+
+### Pinned inputs and provenance
+
+- HVULao_NLP GitHub snapshot: `HaHVU/HVULao_NLP@ec8be4f1a541f3a5c76b4ebda39a9b2795d5c568`.
+  - Raw test sentences `Datatest1k/testorgin1000.txt`: Git blob SHA-1 `947448807484bb994877ae5d32cba1cfdd5e2d9b`.
+  - Segmented test sentences `Datatest1k/testsegsent_1000.txt`: Git blob SHA-1 `46254839d798fa7140d627fdef440109be9f4285`.
+  - Mendeley V2 identifies the dataset as CC BY 4.0. The paper says source texts came from government/news/institutional websites and notes source websites permitted research/non-commercial reuse; per-item source rights must still be checked before redistribution or commercial reuse. No corpus text is copied into this repository.
+- ICU Lao word-break dictionary: `unicode-org/icu@bf835bad36a09828051dd8cc6f58bb62bac93fde`, `icu4c/source/data/brkitr/dictionaries/laodict.txt`, Git blob SHA-1 `8eb43185e9ab6d00afe0f80e17891e33af976f06`. It contains 30,550 unique entries (maximum 32 code points) and carries Unicode/IBM notices plus a BSD-style redistribution notice. Its stated purpose is word wrapping, not LOC lexical segmentation.
+- Safety/provenance note: the referenced mutable `rober42539/lao-dictionary` repository now displays takeover/defacement content, and its current `LICENSE.txt` content redirects to an unrelated site. Do not fetch from that mutable upstream. The experiment used only the pinned ICU vendor copy with its own embedded notices.
+
+### Exploratory method and result
+
+A local offline harness, `scripts/benchmark_lao_word_boundaries.py`, compares two simple left-to-right greedy prefix strategies using the same ICU word list. Unknown Lao code points fall back one code point. Raw sentences are NFC-normalized and whitespace is removed; only sentence pairs whose resulting character streams exactly match the concatenated segmented tokens are scored. Boundary positions are counted only between adjacent code points in the Lao Unicode block; punctuation and mixed-script boundaries are excluded.
+
+| Measure | Greedy longest prefix | Greedy shortest prefix |
+|---|---:|---:|
+| Aligned sentence pairs | 839 / 1,000 | 839 / 1,000 |
+| Unaligned pairs excluded | 161 | 161 |
+| Within-Lao candidate boundary positions | 49,608 | 49,608 |
+| True positives | 8,464 | 9,454 |
+| False positives | 1,669 | 17,946 |
+| False negatives | 1,004 | 14 |
+| Precision | 0.8353 | 0.3450 |
+| Recall | 0.8940 | 0.9985 |
+| Micro F1 | 0.8636 | 0.5129 |
+
+The 161 unaligned sentence pairs were excluded, not silently corrected; their differences were not classified in this experiment. The reported scores are therefore a filtered exploratory comparison, not a corpus-wide result and **not comparable** to the paper's reported 0.75 F1 model score, which uses a different evaluation protocol. The high recall/low precision of the naive shortest-prefix variant shows why LOC's phrase “shortest written form which can stand alone as a word” must not be implemented as a context-free shortest-prefix heuristic.
+
+### Reproducibility and disposition
+
+The script accepts local copies of the three pinned files and can verify their Git blob SHA-1 values. Example:
+
+```bash
+python scripts/benchmark_lao_word_boundaries.py \
+  --raw /path/to/testorgin1000.txt \
+  --segmented /path/to/testsegsent_1000.txt \
+  --dictionary /path/to/laodict.txt \
+  --raw-blob-sha1 947448807484bb994877ae5d32cba1cfdd5e2d9b \
+  --segmented-blob-sha1 46254839d798fa7140d627fdef440109be9f4285 \
+  --dictionary-blob-sha1 8eb43185e9ab6d00afe0f80e17891e33af976f06
+```
+
+Unit tests cover longest/shortest strategy divergence, exact alignment filtering, line-count rejection and fail-closed hash checks. The script is a research comparator only: no dictionary, corpus text, model or runtime dependency was imported. Note 9 remains `PARTIAL / BLOCKED`; acceptance still requires LOC-specific policy, rights-cleared/source-located examples, and Lao-specialist adjudication of native compounds, productive morphology, Pali/Sanskrit and other loans.
