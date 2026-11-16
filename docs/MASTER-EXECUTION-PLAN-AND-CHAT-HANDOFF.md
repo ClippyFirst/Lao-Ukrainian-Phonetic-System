@@ -6,7 +6,7 @@
 **Latest evidence:** the 2025 UNGEGN WGRS report records draft Lao toponymy guidelines still being finalized as of July 2024; the WG-reviewed 2026 approval-process document describes national implementation, formal submission, WG-RS review and plenary stages. Neither proves Lao's draft was finalized or approved. The UNGEGN index lists Lao v4.0 (2013) under "Other languages/scripts", not among the 30 UN-recommended systems.
 **LOC Word source retrieval:** the official source-document page confirms that the Lao Word file is preferred. The exact `https://www.loc.gov/catdir/cpso/romanization/lao.doc` remains uninspected: the web reader rejects `application/msword`, and direct download failed. PDF/text-layer evidence is not represented as Word-source verification.
 **Separate architecture PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open, divergent and non-mergeable (24 ahead / 374 behind; 13 files). Its neural-first CLI/Python default conflicts with the adopted deterministic-default contract. The useful typed IPA stage-one API was selectively implemented in PR #165; no wholesale port or merge is warranted.
-**Readiness:** engineering-verified partial research prototype; not release-ready. Note 9 lexical policy/rights/adjudication, Note 10 automatic source-role derivation, Note 6 Ukrainian target adaptation, independent IPA gold (0 examples), Lao specialist review, authoritative Lao-specific RTGS and manual accessibility/device QA remain incomplete.
+**Readiness:** engineering-verified partial research prototype; not release-ready. Vientiane phonological constraints are now better evidenced by Ueda (1994), but orthographic syllabification and Note 10 automatic source-role derivation remain incomplete. Note 9 lexical policy/rights/adjudication, Note 6 Ukrainian target adaptation, independent IPA gold (0 examples), Lao specialist review, authoritative Lao-specific RTGS and manual accessibility/device QA remain incomplete.
 
 ## Latest continuation checkpoint — 2026-11-16 (PR #247 evidence reconciliation)
 
@@ -5049,3 +5049,16 @@ Sources and bounded synthesis are registered as `SRC-UNGEGN-APPROVAL-PROCESS-202
 - **Architecture PR #145:** left open and untouched pending the owner's neural-first versus deterministic-default architecture decision.
 - **Readiness:** engineering-verified partial research prototype, not release-ready as a linguistically validated universal Lao-to-Ukrainian converter.
 
+
+
+## Continuation checkpoint — Ueda (1994) Vientiane phonology evidence review — 2026-11-16
+
+- **Repository base:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Working branch:** `docs/correct-loc-note10-source-example-20261116`; PR #247 remains open/unmerged. This checkpoint adds research/evidence documentation only.
+- **Undermind research:** read the full text of Ueda (1994), *The Phonology of the Vientiane Dialect of Lao*, DOI 10.11435/GENGO1939.1994.106_95. The full-text review and limitations are stored in [the research workspace](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
+- **Verified linguistic evidence:** Ueda §2.3 reports no phonological consonant clusters in the described Vientiane spoken dialect despite written consonant-letter sequences; written `w` can correspond to /ua/ or no independent segment. Onset/coda inventories are positional and overlap for some consonants. The paper also discusses a five-tone baseline/disputed six-tone analysis and exceptional non-final light syllables.
+- **Critical limitation:** this is spoken phonological description, not a deterministic orthographic syllabification algorithm, and its dialect/informant scope is limited. It does not verify the exact Lao glyph sequence in LOC Note 10. No runtime, corpus, model, dictionary or generated artifact changed.
+- **Registry:** existing `SRC-UEDA` evidence scope expanded; new `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS` claim added. The claim is deliberately scoped to central Vientiane spoken phonology.
+- **Task ledger:** Vientiane written-sequence/phonological-cluster distinction is `DONE_VERIFIED` as an evidence claim only; orthographic syllabification remains `PARTIAL/TODO`; Note 10 automatic source-role derivation remains `PARTIAL/BLOCKED` pending exact source glyphs and specialist adjudication.
+- **Verification before this documentation batch:** Verify #4495 / run 43962638485 — SUCCESS on the then-current prior HEAD `8fa8aefe6759059b04781c0cf1cd49f746c090eb`; all configured workflow jobs passed (IPA-gold schema, evidence/data audit, Python, external-G2P, browser engine, build, reproducibility, Chromium UI and built-page/asset checks). The new commits below require their own exact-head verification; do not carry forward #4495 as exact-head evidence for this checkpoint.
+- **No local test execution** is claimed. No merge, force-push, branch deletion or Pages deployment was performed.
