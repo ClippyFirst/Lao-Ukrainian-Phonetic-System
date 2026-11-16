@@ -198,4 +198,11 @@ The Library of Congress Note 4 distinguishes four contexts for Lao ວ: initial 
 
 **Primary source:** [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 4, page 3](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). The rendered PDF confirms the examples `khwā`, `khwāng`, `būak`, `dūai`, `nāo` and `kǣo`, and the additional `iú`, `īu`, `īeo` spellings. The exact target-side handling of medial `w` clusters remains unresolved; no Ukrainian output was invented.
 
-**Continuation branch:** `test/ala-lc-note4-context-regressions-20261116`. Tests are pending exact-head CI; do not mark this regression batch DONE_VERIFIED until that workflow passes.
+**Continuation branch:** `test/ala-lc-note4-context-regressions-20261116`; PR [#223](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/223) merged as `05644cbece3395122c18fb390aceba80013104cb`. Exact-head Verify #4291 / [run 43825286216](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825286216) and post-merge main Verify #4292 / [run 43825396272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825396272) passed 350 Python, 195 Node and 28 Chromium tests plus repository/evidence audit, build and generated-data reproducibility. The regression batch is DONE_VERIFIED as engineering coverage only; it does not establish full ALA-LC conformance or independent linguistic accuracy.
+
+
+## PR #223 verification and merge — 2026-11-16
+
+PR [#223](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/223) merged as `05644cbece3395122c18fb390aceba80013104cb`. Exact-head Verify #4291 / [run 43825286216](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825286216) and post-merge main Verify #4292 / [run 43825396272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825396272) both passed 350 Python, 195 Node and 28 Chromium tests, IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. No runtime assets changed; Pages redeployment was not required.
+
+The test findings are intentionally asymmetric: source-aware `būak` and `nāo` are accepted when Lao syllable structure disambiguates them; the same Latin-only strings remain PARTIAL because competing syllable parses exist. `khwā` and `khwāng` remain PARTIAL pending a reviewed Ukrainian medial-`w` cluster adapter. ALA-LC remains a bounded subset.
