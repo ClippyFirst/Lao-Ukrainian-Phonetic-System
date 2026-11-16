@@ -749,3 +749,15 @@ The current LOC index lists Lao (2012) as the current table and 1997 only as an 
 | LOC Note 10 automatic source-role derivation | PARTIAL / BLOCKED | Historical grammar may help generate candidate orthographic boundaries after validation, but does not verify exact LOC glyphs or automatic coda/onset double-role assignment. |
 
 The separate Del Vigna & Berment (2003) formal-language analysis describes irreducible ambiguous strings for a historical Lao dictionary. Its 11,172 / 3,060 dictionary figures and automaton counts must not be conflated with Berment's 56,670 grammar-generated strings. No historical code was copied; no license is inferred. Full notes: [Undermind](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
+
+
+## Modern Lao grapheme structure — evidence checkpoint 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Modern grapheme-placement evidence | DONE_VERIFIED (scoped source review) | Lao Script Generation Panel 2017 proposal v3.1 and ICANN RZ-LGR-6 Lao (2025) specify positional vowel classes, mark ordering, U+0EBC placement, tone/sign contexts and a scoped coda model. W3C Lao Layout Requirements (2026-03-20) adds current encoding/layout distinctions but is an unendorsed Group Note Draft. |
+| ICANN LGR as general Lao spell-checker | DEFERRED / not applicable | The ruleset is DNS root-zone/Unicode 16.0 scoped and deliberately omits many language spelling constraints; arbitrary consonant strings for acronyms and over-produced diphthongs are explicitly acknowledged. |
+| Low-level grapheme-structure analyzer | TODO | Implement code-point classes and context order for pre-base, above/below/after vowel components, tone marks, U+0EBC, U+0ECC and U+0EC6. Add positive/negative ordering fixtures and Unicode 16/18 reconciliation. |
+| Current general Lao syllable grammar | PARTIAL / TODO | Berment's historical grammar + current grapheme evidence are complementary but incomplete. Need reviewed spelling constraints, separate acronym/loan/Indic profiles, candidate lattice, ambiguity preservation and Lao-specialist adjudication. |
+
+New registry entries: 81 unique source IDs / 99 unique claim IDs after this checkpoint; no duplicate IDs or missing claim-to-source references. See direct-input audit and romanization matrix for scoped source links and rule details.
