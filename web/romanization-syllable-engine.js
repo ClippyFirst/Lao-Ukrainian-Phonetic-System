@@ -6,7 +6,7 @@ const ONSETS = new Map([
   ["ng", "нг"], ["gn", "нь"], ["ny", "нь"],
   ["k", "к"], ["s", "с"], ["x", "с"], ["d", "д"], ["t", "т"],
   ["n", "н"], ["b", "б"], ["p", "п"], ["f", "ф"], ["m", "м"],
-  ["y", "й"], ["r", "л"], ["l", "л"], ["v", "в"], ["h", "г"],
+  ["y", "й"], ["r", "л"], ["l", "л"], ["v", "в"], ["h", "г"], ["ʻ", ""],
 ]);
 
 const NUCLEI = new Map([
@@ -340,6 +340,9 @@ const LAO_ONSET_TO_ALA_LC = new Map([
   ["ລ", { romanization: "l", ukrainian: "л" }],
   ["ວ", { romanization: "v", ukrainian: "в" }],
   ["ຫ", { romanization: "h", ukrainian: "г" }],
+  // LOC Note 6: initial ອ is written ʻ (ayn). Recognize its source role,
+  // but do not invent a Ukrainian target value for the romanization marker.
+  ["ອ", { romanization: "ʻ", ukrainian: null }],
   ["ຮ", { romanization: "h", ukrainian: "г" }],
   ["ໜ", { romanization: "n", ukrainian: "н" }],
   ["ໝ", { romanization: "m", ukrainian: "м" }],
@@ -433,6 +436,8 @@ function crosswalkUnit(unit, sourceSyllable, profile = "bgn-pcgn") {
     ? LAO_ONSET_TO_ALA_LC.get(sourceOnset)
     : LAO_ONSET_CROSSWALK.get(sourceOnset);
   if (!correspondence || correspondence.romanization !== unit.onset) return null;
+  // Some LOC orthographic markers have no reviewed Ukrainian target mapping.
+  if (correspondence.ukrainian == null) return null;
   const hasSourceVowel = typeof sourceSyllable === "object" && sourceSyllable !== null
     && Object.prototype.hasOwnProperty.call(sourceSyllable, "vowelId");
   if (hasSourceVowel) {
@@ -510,9 +515,12 @@ export function analyzeRomanization(input, options = {}) {
     }
     const sourceGroup = sourceSyllableGroups ? (sourceSyllableGroups[sourceGroupIndex++] || []) : null;
     const strictBoundaries = settings.strictBoundaries === true;
-    if (profile === "ala-lc" && hasUnsupportedAlaLcSequence(originalPart, part)) {
-      const item = unresolved(originalPart, "UNSUPPORTED_ALA_LC_VOWEL");
-      item.warning = "ALA-LC 2012 містить голосну послідовність або голосний знак, для якого ще немає перевіреного складового й українського відповідника; фрагмент залишено без здогаду.";
+    const hasInitialAyn = profile === "ala-lc" && originalPart.includes("ʻ");
+    if (profile === "ala-lc" && (hasUnsupportedAlaLcSequence(originalPart, part) || (hasInitialAyn && !sourceGroup))) {
+      const item = unresolved(originalPart, hasInitialAyn ? "UNSUPPORTED_ALA_LC_INITIAL_AYN" : "UNSUPPORTED_ALA_LC_VOWEL");
+      item.warning = hasInitialAyn
+        ? "ALA-LC 2012 uses initial ʻ for Lao ອ, but without source syllable structure and an approved Ukrainian target correspondence the marker is withheld."
+        : "ALA-LC 2012 містить голосну послідовність або голосний знак, для якого ще немає перевіреного складового й українського відповідника; фрагмент залишено без здогаду.";
       syllables.push(item);
       output += item.ukrainian;
       partial = true;
@@ -560,7 +568,15 @@ export function analyzeRomanization(input, options = {}) {
           item.nucleus = parsed.path[0].nucleus;
           item.coda = parsed.path[0].coda;
         }
-        item.warning = aligned
+        const initialAynWithoutTarget = profile === "ala-lc"
+          && sourceSlice?.length === 1
+          && sourceSlice[0]?.onset === "ອ"
+          && parsed.path.length === 1
+          && parsed.path[0].onset === "ʻ";
+        if (initialAynWithoutTarget) item.status = "UNSUPPORTED_ALA_LC_INITIAL_AYN";
+        item.warning = initialAynWithoutTarget
+          ? "ALA-LC 2012 confirms initial ʻ as the romanization of Lao ອ; the project has no approved Ukrainian target correspondence for this marker, so the result is withheld."
+          : aligned
           ? "Романізований початок, голосний комплекс або фіналь не відповідають лаоським графемам; український результат утримано."
           : "Кількість розібраних романізованих складів не збігається з кількістю лаоських складових одиниць; звірку утримано.";
         syllables.push(item);
