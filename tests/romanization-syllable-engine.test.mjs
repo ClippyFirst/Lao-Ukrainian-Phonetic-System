@@ -499,3 +499,42 @@ test("ALA-LC source-aware onset crosswalk uses s for ຊ and ny for ຍ", () => 
   assert.equal(palatalNasal.output, "ньа");
   assert.equal(palatalNasal.syllables[0].onset, "ny");
 });
+
+test("ALA-LC Note 4 medial-vowel-plus-final pattern ūa is checked against Lao source structure", () => {
+  const direct = analyzeRomanization("būak", { profile: "ala-lc" });
+  const sourceAware = analyzeRomanization("būak", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ບ", vowelId: "UO", coda: "ກ" }]],
+  });
+  assert.equal(direct.status, "OK");
+  assert.equal(direct.output, "буак");
+  assert.equal(sourceAware.status, "OK");
+  assert.equal(sourceAware.output, "буак");
+  assert.deepEqual(
+    [sourceAware.syllables[0].sourceVowelId, sourceAware.syllables[0].nucleus, sourceAware.syllables[0].coda],
+    ["UO", "oua", "k"],
+  );
+});
+
+test("ALA-LC Note 4 medial w-clusters remain visibly partial until a cluster target adapter is approved", () => {
+  for (const input of ["khwā", "khwāng"]) {
+    const result = analyzeRomanization(input, { profile: "ala-lc" });
+    assert.equal(result.status, "PARTIAL", input);
+    assert.match(result.output, /⟦/u, input);
+  }
+});
+
+test("ALA-LC Note 4 final-vowel-plus-o form crosswalks final Lao ວ only with source evidence", () => {
+  const direct = analyzeRomanization("nāo", { profile: "ala-lc" });
+  const sourceAware = analyzeRomanization("nāo", {
+    profile: "ala-lc",
+    sourceSyllableGroups: [[{ onset: "ນ", vowelId: "AA", coda: "ວ" }]],
+  });
+  assert.equal(direct.status, "OK");
+  assert.equal(sourceAware.status, "OK");
+  assert.equal(sourceAware.output, "нао");
+  assert.deepEqual(
+    [sourceAware.syllables[0].sourceVowelId, sourceAware.syllables[0].nucleus, sourceAware.syllables[0].coda],
+    ["AA", "a", "o"],
+  );
+});
