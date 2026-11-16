@@ -2,8 +2,9 @@
 
 **Starting main:** `a009b5b69838cdf35ee159e328de3db01d458bb7`.
 **Branch:** `test/ala-lc-note10-automatic-source-boundary-20261116`.
-**PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231):** browser integration regression for the LOC Note 10 source example `ຄິຼສຕຽນ`.
-**Exact-head Verify #4319:** [run 43865169001 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865169001); 350 Python, 201 Node and 29 Chromium tests passed, including the new real-browser case. IPA-gold schema validation, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+**PR [#231](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231):** merged by squash as `e6b1d564a20b88945dc0277b8db38efcd5834c8e`; browser integration regression for the LOC Note 10 source example `ຄິຼສຕຽນ`.
+**Exact-head Verify #4323:** [run 43865438811 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865438811); **post-merge main Verify #4324:** [run 43865719407 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719407). Both passed 350 Python, 201 Node and 29 Chromium tests, including the new real-browser case. IPA-gold schema validation, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+**Pages Deploy #104:** [run 43865719450 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43865719450) deployed commit `e6b1d564a20b88945dc0277b8db38efcd5834c8e`; built-site Chromium: 29 passed; deployed-service smoke test succeeded.
 **Scope:** no runtime mapping or parser behavior changed. The browser route confirms the actual pipeline leaves this LOC example visibly PARTIAL; the current parser does not model U+0EBC `ຼ` as a structural role. The manually supplied Note 10 crosswalk fixture remains distinct from automatic source segmentation.
 
 ## Current task ledger update
@@ -18,7 +19,7 @@
 
 - Local `git clone` was attempted but blocked because this execution environment could not resolve `github.com`; no local test result is claimed.
 - GitHub Actions Verify #4319 / run 43865169001 completed SUCCESS. Browser suite: 29 passed. Python: 350 passed. Node: 201 passed. Remaining workflow gates (IPA gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility, built-page/relative-assets) passed.
-- PR #231 remains open pending post-merge verification; no Pages deployment is needed because the change is test/documentation-only.
+- PR #231 is merged and post-merge verification is complete. Pages #104 redeployed the same runtime with updated tests/docs; no runtime code changed.
 
 ---
 
