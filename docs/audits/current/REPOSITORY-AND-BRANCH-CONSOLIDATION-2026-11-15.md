@@ -633,7 +633,7 @@ The API inventory contained 102 refs; only the six directly relevant divergent c
 
 - Full-text Berment (2004) thesis and Del Vigna & Berment (2003) paper reviewed; details are recorded in the canonical Undermind research note and repository direct-input audit/matrix/register.
 - Registry now has 79 unique source IDs and 95 unique claim IDs. No duplicate IDs were detected; cross-reference integrity is checked separately below.
-- PR #247 remains open, unmerged and mergeable. Branch comparison after evidence and documentation updates: 113 commits ahead / 0 behind `main`, eight changed files.
+- PR #247 remains open, unmerged and mergeable. Branch comparison after evidence and documentation updates: 114 commits ahead / 0 behind `main`, eight changed files.
 - Verify #4502 / run 43966645076 passed on pre-update evidence/docs HEAD `cb86f87fba32140c71f8f1a22ab5668d1d9ffd4b`. The Berment registry/audit/matrix/register/handoff/README changes are later commits and require exact-head CI; no runtime, corpus, model, dictionary or generated artifact changed.
 - No code was copied from the historical thesis; no license is inferred. PR #145 remains untouched. No merge, force-push, branch deletion or Pages deployment performed.
 
@@ -648,7 +648,14 @@ The API inventory contained 102 refs; only the six directly relevant divergent c
 
 ## Final state after ICANN/W3C evidence sync — 2026-11-17
 
-- Branch HEAD: `f8ad97b0cc64af1f519de5988c5d6c430dcec5e7`; comparison with main: 113 ahead / 0 behind; eight changed files.
+- Branch HEAD: `f18250734f0b3989d02bed3d8d1d4f3611eedc18`; comparison with main: 113 ahead / 0 behind; eight changed files.
 - Registry: 81 unique source IDs / 99 unique claim IDs; no duplicate IDs and no missing claim-to-source references.
 - Verify #4506 / run 43968825128 passed on `defa2f87a0730098aad240528641cac2527ca897`, but is not exact-head CI for the evidence/docs commits after it. Commit-run lookup currently returns no run for the final HEAD; do not mark the final HEAD verified until a matching workflow run completes.
 - PR #247 remains open, mergeable and unmerged. PR #145 untouched. No runtime/code/corpus/model/dictionary/generated artifacts changed; no deployment.
+
+
+## Exact-head Verify #4513 — 2026-11-17
+
+- Verify #4513 / run 43970708960 started on exact current branch HEAD `f18250734f0b3989d02bed3d8d1d4f3611eedc18`.
+- At the latest poll, schema/evidence audit, Python, external-G2P, browser engine, build and generated-data reproducibility had passed; Chromium UI was in progress and built-page/asset verification pending.
+- Do not mark this exact-head run successful until all remaining steps complete.
