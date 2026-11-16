@@ -168,3 +168,10 @@ Regression coverage asserts that all seven source IDs remain visible as PARTIAL 
 ## CLDR upstream rule check for uncovered source vowels — 2026-11-15
 
 The current upstream [CLDR Lao-Latin transform](https://github.com/unicode-org/cldr/blob/abbf1914a169f334dd43b3f00fce186360950b1e/common/transforms/Lao-Latin.xml) is provisional and retains a final-consonant TODO. It actively maps `ວ` as `v`; the alternative vowel mapping `#ວ → oua` is commented out. Its separate character rules do not provide an explicit, validated compound-vowel crosswalk for `UO_LONG_ALT`, `UO_LONG_OPEN`, `OEY`, `OOY`, `AEW`, `AOY` or `AAJ`. These seven IDs therefore remain PARTIAL in source-aware mode. Do not infer compound output by concatenating CLDR character rules; each promoted row needs an exact source-attested transform result, source-structure check, Ukrainian decision, regression fixtures and Lao-specialist review.
+
+
+## ALA-LC 2012 Note 4 regression boundary — 2026-11-16
+
+The LOC Note 4 has distinct contextual spellings for ວ. The bounded adapter now has explicit regression fixtures for the already implemented `ūa`-before-final pattern (`būak`, source-aware) and final-`o` pattern (`nāo`, source-aware). The medial-`w` cluster examples `khwā` and `khwāng` are asserted to remain PARTIAL; this is intentional until a reviewed Ukrainian cluster adaptation is specified. Note 4's `iú`, `īu` and `īeo` forms also remain unsupported under the existing fail-closed guard. This is regression coverage of a bounded subset, not full ALA-LC conformance.
+
+Source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 4, page 3](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
