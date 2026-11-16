@@ -294,6 +294,9 @@ test("the service exposes a separate direct romanization input mode and explicit
  assert.ok(html.includes('value="ala-lc"'));
  assert.match(app,/function renderRomanizationInput\(\)/u);
  assert.match(app,/inputKind === "romanization"/u);
+ assert.ok(html.includes('id="ala-lc-numeral-panel"'));
+ assert.ok(html.includes('id="copy-ala-lc-numerals"'));
+ assert.match(app,/romanizeAlaLcNumerals\(input\.value\)/u);
 });
 
 
