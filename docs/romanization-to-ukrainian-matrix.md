@@ -180,3 +180,20 @@ Source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 4, page
 ## PR #223 engineering verification — 2026-11-16
 
 PR [#223](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/223) merged as `05644cbece3395122c18fb390aceba80013104cb`. Exact-head Verify #4291 and post-merge Verify #4292 passed 350 Python, 195 Node and 28 Chromium tests, plus data/evidence audit, build and generated-data reproducibility. The Note 4 fixtures establish source-aware behavior for `būak` and `nāo`; Latin-only inputs remain PARTIAL when ambiguous. The medial-`w` cluster examples remain PARTIAL. This is bounded engineering verification, not full ALA-LC conformance or linguistic gold validation.
+
+## ALA-LC 2012 contextual notes 5–10 — conformance boundary (2026-11-16)
+
+The complete Library of Congress table notes are not equivalent to a complete direct-input implementation. The current implementation is still a bounded subset; the following dispositions keep each note's actual contract visible.
+
+| LOC note | Rule | Current disposition |
+|---|---|---|
+| 5 | Silent initial ຫ before ຍ/ny, ນ, ມ, ຣ, ລ and ວ; ໜ/ໝ are common ligatures | Source-aware crosswalk covers the underlying onset values and retains expanded `onsetForm` provenance in regression fixtures. Standalone romanization cannot recover the silent source letter. |
+| 6 | Initial ອ marks a vowel-initial syllable (`ʻ`); medial ອ functions as a vowel component | Initial `ʻ` remains unsupported/visible PARTIAL until a target policy and source-aware onsetless-syllable adapter are approved. The LOC `ǫ`, `ǭ`, `ưa`, `ư̄a` vowel forms remain in the existing fail-closed unsupported inventory. |
+| 7 | Romanized vowel spelling follows the romanized consonant even where Lao vowel signs are preposed in Unicode | The syllable parser consumes onset-first ALA-LC spellings and source-aware vowel IDs; regression coverage confirms `kē` with source vowel ID `EE`. This does not imply all LOC vowel classes are implemented. |
+| 8 | Lao numerals ໐–໙ correspond to 0–9 | Numeric passthrough is retained; this is orthographic numeral preservation, not a phonetic conversion. |
+| 9 | Lao word boundaries are not explicit; romanization uses shortest standalone written forms and separate rules for Pali/Sanskrit and other loanwords; tone marks are omitted | PARTIAL. The current parser preserves supplied whitespace and punctuation but is not a Lao lexical word segmenter or loanword resolver. Tone and quantity absent from romanization are not reconstructed. |
+| 10 | A consonant serving as the coda of one syllable and onset of the next is romanized twice | PARTIAL / not promoted. Correct handling depends on syllable/lexical segmentation and the context-sensitive double-value rule; the example `khitsatīan` is not used as an unreviewed target-output fixture. |
+
+The Note 5 source-aware fixtures exercise all six listed underlying sonorant onset values (`ຍ`, `ນ`, `ມ`, `ຣ`, `ລ`, `ວ`) with expanded `onsetForm` provenance. They do not claim that the Latin string can reveal the silent `ຫ`. Note 7 receives a separate source-vowel identity regression. Note 9/10 remain explicit limitations rather than being approximated by the syllable parser.
+
+Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Notes 5–10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). The table is an orthographic romanization source; it does not prescribe this project's Ukrainian target output.
