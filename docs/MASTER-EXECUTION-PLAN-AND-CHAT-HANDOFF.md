@@ -1,11 +1,26 @@
-# Current repository status — 2026-11-16 (active PR #247)
+# Current repository status — 2026-11-16 (PR #247 exact-head verified)
 
 **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
-**Active documentation/evidence branch:** `docs/correct-loc-note10-source-example-20261116`, head `b14522aeeefaaff3b94b03897148d7e6d0e3601e`; PR [#247](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/247) is open, mergeable, and not merged. It is 58 commits ahead / 0 behind main and changes 8 documentation/evidence files; no runtime or generated artifact is changed.
-**Latest completed exact-head CI before the final evidence additions:** Verify #4472 / [run 43952746882 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43952746882) on `fdf67fe581ed558d7cadd0b7565965ba227cc75c`: 355 Python, 204 Node and 30 Chromium tests passed; all configured schema, evidence audit, external-G2P syntax/CLI, build, reproducibility and built-page checks passed. The newer 2026 approval-process source and related register/audit edits are not covered by #4472; exact-head verification is pending.
-**Latest evidence refinement:** 2025 UNGEGN WGRS report says that as of July 2024 Lao PDR was finalizing draft toponymy guidelines, with possible consideration at the 2027 session. The 2026 UNGEGN approval-process document specifies local implementation, formal submission, WG-RS review, plenary consideration, a conversion table and evidence of national implementation. Neither source proves Lao's draft was subsequently finalized or approved. The UNGEGN index places Lao v4.0 (2013) under "Other languages/scripts", not among the 30 UN-recommended systems.
-**Separate architecture PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open and non-mergeable (24 ahead / 374 behind; 13 files). It proposes a neural-first CLI/Python default that conflicts with the adopted deterministic-default contract; leave it for an explicit owner architecture decision.
-**Readiness:** engineering-verified partial research prototype; not release-ready. Independent IPA gold remains 0; Note 6/9/10, specialist adjudication, Lao Word source retrieval and manual accessibility/device QA remain incomplete.
+**Active documentation/evidence branch:** `docs/correct-loc-note10-source-example-20261116`, exact HEAD `14f7b9adf3ae2f3840a507e12c9244d6d45feb79`. PR [#247](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/247) is open, mergeable, and not merged; compare is 59 commits ahead / 0 behind main, 8 files changed. Scope remains documentation/evidence only; no runtime, corpus, model, dictionary or generated artifacts changed.
+**Latest exact-head CI:** Verify #4479 / [run 43953117126 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43953117126) on `14f7b9adf3ae2f3840a507e12c9244d6d45feb79`: 355 Python, 204 Node and 30 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility, built-page and relative-asset checks all passed. This is GitHub Actions evidence; no local test run is claimed.
+**Latest evidence:** the 2025 UNGEGN WGRS report records draft Lao toponymy guidelines still being finalized as of July 2024; the WG-reviewed 2026 approval-process document describes the national implementation, formal submission, WG-RS review and plenary stages. Neither proves Lao's draft was finalized or approved. The UNGEGN index lists Lao v4.0 (2013) under "Other languages/scripts", not among the 30 UN-recommended systems.
+**LOC Word source retrieval:** the official source-document page confirms that the Lao Word file is the preferred source, but `https://www.loc.gov/catdir/cpso/romanization/lao.doc` remains uninspected. The web reader rejects its `application/msword` content type and a direct file download failed. The PDF/text-layer example is therefore not represented as inspection of the Word source.
+**Separate architecture PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open, divergent and non-mergeable (24 ahead / 374 behind; 13 files). Its neural-first CLI/Python default conflicts with the adopted deterministic-default contract; leave it for an explicit owner architecture decision. Useful stage-one typed IPA API work was already selectively implemented in PR #165; no wholesale port is warranted.
+**Readiness:** engineering-verified partial research prototype; not release-ready. Note 9 lexical policy/rights/adjudication, Note 10 automatic source-role derivation, Note 6 Ukrainian target adaptation, independent IPA gold (0 examples), Lao specialist review, authoritative Lao-specific RTGS and manual accessibility/device QA remain incomplete.
+
+## Latest continuation checkpoint — 2026-11-16 (PR #247 exact-head verification)
+
+- **Starting main:** `390302db31b56f5842696c2d81a817689635472b`.
+- **Final verified branch head:** `14f7b9adf3ae2f3840a507e12c9244d6d45feb79`.
+- **PR #247:** open, mergeable, not merged; 59 ahead / 0 behind; eight evidence/documentation files.
+- **Verification:** Verify #4479 / run 43953117126 SUCCESS; 355 Python, 204 Node, 30 Chromium; all configured schema, repository/evidence, external-G2P, build, reproducibility and built-page checks passed.
+- **Registry integrity:** 77 unique source IDs and 90 unique claim IDs; no duplicate IDs or missing claim-to-source references.
+- **LOC Note 10:** exact 2012 text-layer example is `ຫຼັກສາດ (khitsatān)`; this does not validate automatic source syllabification or role derivation. Existing unit fixtures inject roles manually.
+- **Note 9:** ordinary Lao and Pali/Sanskrit use the shortest standalone written form; other loans follow the original language's division. ICU/HVULao metrics remain exploratory, not LOC conformance.
+- **No runtime changes:** Pages deployment is not expected for this PR. No local test execution is claimed.
+- **Unresolved acceptance:** LOC Word source retrieval; LOC-specific Note 9 policy with item-level rights and specialist adjudication; automatic Note 10 source analysis; Note 6 target correspondence; independent IPA gold; authoritative Lao-specific RTGS; qualified specialist sign-off; manual accessibility/device QA.
+- **Branch/PR handling:** PR #145 is left open and untouched for owner architecture decision. No branch was deleted or force-updated.
+
 
 
 ---
