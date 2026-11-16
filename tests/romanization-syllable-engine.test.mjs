@@ -602,6 +602,7 @@ test("ALA-LC Note 6 recognizes initial ayn as a source marker but withholds an u
   });
   assert.equal(result.status, "PARTIAL");
   assert.equal(result.output, "⟦ʻīk⟧");
+  assert.equal(result.syllables[0].status, "UNSUPPORTED_ALA_LC_INITIAL_AYN");
   assert.equal(result.syllables[0].sourceOnset, "ອ");
   assert.equal(result.syllables[0].sourceVowelId, "II");
   assert.equal(result.syllables[0].onset, "ʻ");
