@@ -1,3 +1,14 @@
+# Latest continuation checkpoint — 2026-11-16 (branch inventory refresh)
+
+**Starting main:** `6512aac75cfb71c2d5f6f37a040f55739f32b14f`.
+**Current branch inventory:** 102 refs (101 non-main plus main); only open PR is #145. No branches deleted or force-updated.
+**Relevant comparisons:** six ALA-LC/romanization/MekongPhon branches individually compared; all divergent and behind current main. Direct romanization input is already present in main; older ALA-LC branches are historical snapshots, not merge candidates.
+**PR #145:** 24 commits ahead / 364 behind, divergent, `mergeable=false`; leave open for owner architecture decision.
+**Latest post-merge main Verify #4336:** SUCCESS, 350 Python, 201 Node and 29 Chromium tests; documentation-only PR #236.
+**Audit:** [repository and branch consolidation](docs/audits/current/REPOSITORY-AND-BRANCH-CONSOLIDATION-2026-11-15.md) now records this refreshed inventory and exact comparison scope.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (Notes 8–10 and LaoNLP reconciled; README/register sync)
 
 **Starting main:** `943ff111033e7212cbbbc8615035eb94ed1c9974`.
@@ -19,7 +30,7 @@
 | Lao specialist review | BLOCKED | No qualified reviewer sign-off. |
 | Lao-specific RTGS | BLOCKED | No authoritative full Lao-specific adaptation table. |
 | Accessibility/device QA | PARTIAL | Automated browser coverage exists; human screen-reader/keyboard/device QA remains. |
-| PR #145 neural-first proposal | DEFERRED / owner decision | Open, mergeable=false, 24 commits ahead / 363 behind; do not merge blindly. |
+| PR #145 neural-first proposal | DEFERRED / owner decision | Open, mergeable=false, 24 commits ahead / 364 behind; do not merge blindly. |
 
 ## Current readiness
 
