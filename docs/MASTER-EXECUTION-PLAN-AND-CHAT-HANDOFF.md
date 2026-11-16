@@ -1,3 +1,21 @@
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 8–9 scope reconciliation)
+
+**Starting main:** `c22832f61e6fd4aa9365dc048935ea90eef34d81` (PR #232 documentation reconciliation merged).
+**LOC primary source:** [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf), Notes 8–9.
+**Note 8:** clarified as PARTIAL for the current architecture. The Lao-script phonetic UI preserves Lao digits as passthrough; it is not the ALA-LC Lao-source-to-Arabic-numeral romanization rule. The direct ALA-LC input mode consumes already-romanized Latin, so its Arabic digit passthrough does not establish Note 8 conformance. No runtime change is justified without an ALA-LC Lao-source romanizer path.
+**Note 9:** remains PARTIAL / evidence-limited. The current parser is syllable/orthographic-unit oriented, not a Lao lexical segmenter. The LOC shortest standalone written-form rule, Pali/Sanskrit loanword handling, and original-language segmentation of other loanwords require a reviewed lexical source and language-specific boundary policy; none is inferred from whitespace or grapheme heuristics.
+**Docs branch:** `docs/clarify-ala-lc-notes8-9-boundaries-20261116`; no runtime or mapping changes.
+
+## Acceptance ledger update
+
+| Workstream | Status | Acceptance / remaining evidence |
+|---|---|---|
+| ALA-LC Note 8 numeric romanization | PARTIAL / route not implemented | ALA-LC source-script romanizer must map Lao digits ໐–໙ to 0–9. Current phonetic source route intentionally preserves digits; direct Latin input is a different direction |
+| ALA-LC Note 9 lexical word and loanword boundaries | PARTIAL / BLOCKED | Requires a rights-cleared Lao lexical source, documented shortest-standalone-form segmentation, explicit Pali/Sanskrit handling and original-language loanword boundary policy, with reviewed examples |
+| ALA-LC Notes 6 and 10 automatic source segmentation | PARTIAL / fail-closed | Browser integration confirms LOC example remains unresolved; U+0EBC `ຼ` and source lexical roles are not modeled |
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (ALA-LC Note 10 automatic-source integration guard)
 
 **Starting main:** `a009b5b69838cdf35ee159e328de3db01d458bb7`.
@@ -18,7 +36,7 @@
 ## Commands and verification
 
 - Local `git clone` was attempted but blocked because this execution environment could not resolve `github.com`; no local test result is claimed.
-- GitHub Actions Verify #4319 / run 43865169001 completed SUCCESS. Browser suite: 29 passed. Python: 350 passed. Node: 201 passed. Remaining workflow gates (IPA gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility, built-page/relative-assets) passed.
+- GitHub Actions exact-head Verify #4323 / run 43865438811 and post-merge main Verify #4324 / run 43865719407 completed SUCCESS. Browser suite: 29 passed. Python: 350 passed. Node: 201 passed. Remaining workflow gates (IPA gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility, built-page/relative-assets) passed.
 - PR #231 is merged and post-merge verification is complete. Pages #104 redeployed the same runtime with updated tests/docs; no runtime code changed.
 
 ---
