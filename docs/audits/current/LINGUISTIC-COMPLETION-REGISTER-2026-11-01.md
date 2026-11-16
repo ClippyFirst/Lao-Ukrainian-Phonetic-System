@@ -1,3 +1,35 @@
+## Current status reconciliation — 2026-11-16 (ALA-LC Notes 8–10 and LaoNLP)
+
+**Current main at start of this documentation reconciliation:** `943ff111033e7212cbbbc8615035eb94ed1c9974`.
+**Runtime commit deployed by GitHub Pages #104:** `e6b1d564a20b88945dc0277b8db38efcd5834c8e`.
+**Latest exact-main documentation verification:** Verify #4334 / [run 43868172458 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43868172458): 350 Python, 201 Node and 29 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page checks passed.
+**Independent IPA gold:** 0 adjudicated examples; benchmark gold remains header-only; empirical accuracy remains null.
+
+| ID | Status | Evidence / next acceptance |
+|---|---|---|
+| ALA-LC-NOTE-8 | PARTIAL / route not implemented | LOC maps Lao digits ໐–໙ to 0–9. Current browser phonetic route preserves Lao numerals; direct ALA-LC mode accepts Latin input and therefore does not implement this source-script conversion. Acceptance: implement and test a distinct, explicitly typed Lao-source ALA-LC numeral romanization path, without changing phonetic passthrough semantics. |
+| ALA-LC-NOTE-9 | PARTIAL / BLOCKED | LOC shortest-standalone-written-form and Pali/Sanskrit/other-loanword boundary rules require a reviewed lexical policy and appropriately rights-cleared resource. LaoNLP at pinned commit `a914f64e38ff24d67d32e37db40dad5c368ea602` was assessed in PR #234: maximum-match over a mixed-source composite is not equivalent; no data/code imported. |
+| ALA-LC-NOTE-10 | PARTIAL / fail-closed | PR #231 browser test runs `ຄິຼສຕຽນ` through the real application and verifies visibly PARTIAL output. U+0EBC `ຼ` and automatic LOC syllable/coda-onset role derivation are not modeled; the existing positive/negative crosswalk unit fixture supplies roles manually. |
+| ALA-LC-NOTE-6 | PARTIAL / fail-closed | Initial `ʻ` is traced against source Lao `ອ`, but no approved Ukrainian target mapping exists; unsupported medial vowel values remain withheld. |
+| ALA-LC-FULL | PARTIAL | Notes 6, 8, 9 and 10 plus contextual vowel/ວ cases are incomplete; no full conformance claim. |
+| LAO-GOLD-001 | BLOCKED | Requires qualified independent annotation/adjudication, fixed dialect/convention, source locators and rights-cleared examples. |
+| LAO-SPECIALIST-001 | BLOCKED | No qualified independent Lao specialist sign-off. |
+| LAO-RTGS-001 | BLOCKED | No authoritative complete Lao-specific RTGS adaptation table and reviewed examples. |
+| LAO-UI-001 | PARTIAL | Automated Chromium checks pass; human screen-reader, keyboard-only and physical-device QA remains outstanding. |
+| PR-145-ARCH-001 | DEFERRED / owner decision | Open neural-first proposal is 24 commits ahead and 363 behind current main, mergeable=false. Do not merge without owner decision on architecture; deterministic-default web contract remains in force. |
+
+### Recent merged evidence
+
+- PR #231 — [browser integration guard](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/231), merged `e6b1d564`; exact-head Verify #4323, post-merge Verify #4324 and Pages #104 succeeded. Browser suite 29 passed; no runtime code change.
+- PR #232 — [post-merge Note 10 evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/232), documentation reconciliation.
+- PR #233 — [Notes 8–9 route boundaries](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/233), documentation reconciliation.
+- PR #234 — [LaoNLP candidate assessment](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/234), pinned source/code/license review; no adoption.
+- PR #235 — [post-merge assessment evidence](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/235); exact-head and post-merge checks succeeded. Latest main Verify #4334 also passed.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao-to-Ukrainian converter. Remaining blockers are linguistic evidence, approved target decisions, specialist adjudication, a rights-clean lexical resource, and manual accessibility/device QA—not a failing engineering CI gate.
+
+---
+
 ## Current status reconciliation — 2026-11-10
 
 **Implementation merge commit:** `68aa563ebc13da7e49da533e46301d43c13b5810`; PR #159 merged. Documentation checkpoint `ee6ced771fd5be553443741fb6007681bd4d2f31` passed Verify #42809109496.  
