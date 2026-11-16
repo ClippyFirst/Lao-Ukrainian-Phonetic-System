@@ -617,3 +617,13 @@ The following potentially relevant historical branches were compared directly wi
 | `feat/mekongphon-first-stage` (PR #145) | 24 | 364 | neural-first API/CLI, docs, tests, benchmark workflow | Open owner-level architecture proposal; leave untouched |
 
 The API inventory contained 102 refs; only the six directly relevant divergent candidates above were individually compared in this refresh. This is not a claim that all 101 non-main refs were individually diff-reviewed. Preserve historical refs. Any future consolidation should be an explicit, file-level, test-backed task rather than a branch cleanup operation.
+
+
+## PR #247 branch and evidence checkpoint — 2026-11-16 (Ueda review)
+
+- **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Working branch:** `docs/correct-loc-note10-source-example-20261116`; at this comparison it is 89 commits ahead / 0 behind main, with eight changed files. PR #247 remains open, unmerged and mergeable; PR #145 remains open and untouched for the owner-level neural-first vs deterministic-default decision.
+- **Research update:** Ueda (1994) full text was inspected through Undermind. The described Vientiane dialect has no phonological consonant clusters despite written consonant sequences; written `w` can correspond to /ua/ or no independent segment. This is phonological evidence, not a complete orthographic syllabification algorithm.
+- **Evidence registry:** 77 unique source IDs and 91 unique claim IDs; no duplicate IDs detected. The new claim `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS` is linked to existing `SRC-UEDA`.
+- **Exact-head CI:** Verify #4500 / run 43966297408 passed on `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4`. The latest README/register/handoff synchronization commits are documentation-only; exact-head CI must be checked on the final branch SHA before claiming it.
+- **Disposition:** preserve PR #247 and all historical branches; no merge, rebase, force-push, branch deletion or Pages deployment was performed. PR #145 remains untouched.
