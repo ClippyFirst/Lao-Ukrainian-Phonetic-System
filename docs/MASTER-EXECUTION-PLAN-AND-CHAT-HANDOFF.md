@@ -4595,3 +4595,40 @@ A local clone attempt was unavailable because the execution environment could no
 - Exact-head Verify [#4286 / run 43760081269 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269): IPA-gold schema validation and repository data/evidence audit passed; **350 Python tests**, external-G2P harness syntax/CLI passed, **192 Node tests**, build and generated-data reproducibility passed, **28 Chromium tests**, and built-page/relative-asset plus deterministic-only artifact assertions passed.
 - The branch changes documentation only; no runtime source, registry, model or Pages workflow changed. Pages deployment is not required for this documentation batch.
 - Acceptance: CLDR source-rule evidence and current mainline/branch/PR reconciliation are documented and engineering checks pass. The seven actual crosswalks remain PARTIAL; this verification does not establish phonetic accuracy or close specialist, gold-corpus, RTGS, full ALA-LC or manual accessibility blockers.
+
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 5–10 audit; CI pending)
+
+**Starting main:** `f00064a2cd3564a0eba274c2a4c93b7880416540`.  
+**Working branch:** `test/ala-lc-notes5-7-regressions-20261116`.  
+**LOC primary source:** [ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf), Notes 5–10.  
+**Current branch head at documentation checkpoint:** `84a259f6b35f22dd5e23ef23185c76da1447c3cb`; test and matrix commits precede it.  
+
+## Work completed in this continuation (pending CI)
+
+- Re-read the full LOC table and its contextual Notes 5–10 against the current source-aware direct-input engine, existing test suite, direct-input audit and romanization matrix.
+- Added Note 5 regression fixtures for expanded silent-hoa forms `ຫຍ`, `ຫນ`, `ຫມ`, `ຫຣ`, `ຫລ`, `ຫວ`, retaining the underlying onset and expanded source `onsetForm` as separate trace values. The test does not claim that romanization-only text can recover silent `ຫ`.
+- Added a Note 7 source-aware fixture confirming ALA-LC's consonant-then-vowel romanized order for a Lao preposed-vowel structure (`kē`, source vowel ID `EE`).
+- Added a contract regression that romanization-only output does not synthesize IPA or tone.
+- Updated the canonical romanization matrix and direct-input audit with explicit dispositions for Notes 5–10. Notes 6/9/10 remain partial or unsupported; no Ukrainian mapping, pronunciation or tone was invented. Note 8 numeral passthrough is identified as orthographic preservation only.
+- No runtime source, target correspondence, generated data, deployment workflow or Pages asset was changed.
+
+## Task ledger
+
+| Workstream | Status | Acceptance / remaining evidence |
+|---|---|---|
+| LOC Note 4 source-aware `ūa` and final-`o` contexts | DONE_VERIFIED (prior PR #223) | Exact-head and post-merge Verify #4291/#4292; direct-only ambiguous forms remain PARTIAL |
+| LOC Note 5 expanded silent-hoa crosswalk regression | PARTIAL — tests added, CI pending | Verify all six underlying onset keys and `onsetForm` provenance on exact PR head; later Lao-specialist review still required |
+| LOC Note 7 consonant/vowel order regression | PARTIAL — test added, CI pending | Exact-head CI; broader vowel inventory remains partial |
+| LOC Note 6 initial `ʻ` and unsupported nuclei | BLOCKED / fail-closed | Reviewed Ukrainian onsetless target policy and source-aware adapter; until then visible PARTIAL |
+| LOC Note 8 numerals | DONE_VERIFIED as passthrough only | Existing numeric passthrough; not a pronunciation or Ukrainian adaptation claim |
+| LOC Note 9 word/loanword boundaries and tone omission | PARTIAL | Lexical segmentation and loanword conventions require reviewed corpus; absent tone/quantity are not reconstructed |
+| LOC Note 10 cross-syllable double-function consonant | PARTIAL | Source-segmented fixtures and a reviewed cross-syllable romanization adapter; do not infer from the example alone |
+| Independent adjudicated IPA gold | BLOCKED | 0 examples; expert annotation/adjudication and rights-cleared source locators required |
+| Lao specialist review | BLOCKED | Qualified independent reviewer and documented decisions |
+| Lao-specific RTGS | BLOCKED | Authoritative complete Lao adaptation table and reviewed examples |
+| Manual accessibility/device QA | BLOCKED | Human screen-reader, keyboard-only and physical-device testing |
+| PR #145 architecture proposal | BLOCKED / owner decision | Neural-first proposal remains separate from deterministic-default contract; do not merge blindly |
+
+**Verification:** exact-head CI has not yet been observed at this checkpoint. No test pass is claimed. After CI, update this checkpoint with actual run ID, exact counts and final merge disposition. Runtime deployment is not required for this test/documentation-only batch.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao romanization-to-Ukrainian converter.
