@@ -1,9 +1,11 @@
-# Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 6 and 10 source-aware regressions)
+# Latest continuation checkpoint — 2026-11-16 (ALA-LC Notes 6 and 10 merged and deployed)
 
 **Starting main:** a888ae3df58badcf9380894cd72d12f4910d008b.  
-**PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228):** test/ala-lc-notes6-10-source-crosswalk-20261116; current branch head before this handoff update: fe9d7699d7f3fa0308d406625e9c846ffdbefbfc.  
-**Exact-head Verify #4309:** [run 43848574433 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43848574433) on code/test head 4aa6d7ff3770ae7cb28a8edc3da248a7b2adf1b8: 350 Python, 201 Node and 28 Chromium tests passed; 0 failures. Documentation updates are being rechecked on the final PR head.  
-**Runtime checkpoint before this PR:** fe1c4a0b8966155b5f22e6cc58ebcb3a33d5bbf9, deployed by Pages #102. PR #228 changes web/romanization-syllable-engine.js, so a new Pages deployment and smoke check are required after merge.  
+**PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228):** merged by squash as 44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900; tested head 03fe0bd6956376bf36c106abdfa7d3066f4ec3c6.  
+**Current main:** 44b5fa2ebc4380bd9fa4b201e8c8eb52a7ccd900.  
+**Exact-head Verify #4313:** [run 43849117284 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849117284).  
+**Post-merge main Verify #4314:** [run 43849485259 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485259). Both passed 350 Python, 201 Node and 28 Chromium tests with 0 failures, plus schema, repository/evidence, external-G2P, build, reproducibility and built-page checks.  
+**Pages Deploy #103:** [run 43849485210 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43849485210) deployed the same runtime commit to https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/. The built-site Chromium suite passed 28 tests and the post-deployment smoke test fetched the public index, methodology page, app.js, data.js, engine.js and styles.css.  
 **Open architecture PR:** #145 remains untouched; its neural-first proposal still conflicts with the deterministic-default contract and needs an owner decision.
 
 ## Work completed in this continuation
@@ -11,7 +13,7 @@
 - Re-read the complete LOC ALA-LC 2012 table, Notes 6 and 10, the current romanization matrix, direct-input audit, canonical handoff, codebase map, glossary, project requirements and the full source-aware romanization parser/caller/tests.
 - **Note 6:** added a distinct ALA-LC ʻ onset token and source crosswalk from initial Lao ອ. The parser now retains source onset/vowel/coda provenance and reports UNSUPPORTED_ALA_LC_INITIAL_AYN / PARTIAL because no Ukrainian target value is approved. Latin-only initial ayn remains withheld. The LOC medial-ອ vowel forms ǫ, ǭ, ưa, ư̄a remain unsupported; no target mapping was invented.
 - **Note 10:** added a source-aware regression for LOC khitsatīan. With source roles explicitly supplied, ສ is checked as coda t in one syllable and onset s in the next. A negative fixture proves that omitting the coda role withholds the whole romanized word. This verifies the existing position-sensitive crosswalk, not automatic lexical/syllable segmentation of the Lao example.
-- Updated the romanization matrix, direct-input audit, README and this handoff with the evidence boundary. No IPA, tone or lexical boundary was inferred.
+- Updated the romanization matrix, direct-input audit, README and canonical handoff with the evidence boundary. No IPA, tone or lexical boundary was inferred.
 
 ## Acceptance ledger
 
@@ -23,7 +25,7 @@
 | Automatic Lao segmentation for LOC Note 10 example | PARTIAL | Must verify the upstream source parser derives the LOC syllable/lexical roles from ຄິຼສຕຽນ; the regression currently supplies those roles explicitly |
 | ALA-LC Note 9 lexical/loanword boundaries | PARTIAL | Lao lexical word segmentation, Pali/Sanskrit shortest-form rule and foreign-language loanword boundaries remain outside the syllable parser |
 | Full ALA-LC conformance | PARTIAL | Other unsupported vowels, medial w, contextual ວ, lexical boundaries and specialist review remain open |
-| Runtime deployment for PR #228 | TODO until merge | Deploy the merged runtime to GitHub Pages and verify the published site/asset hashes and direct romanization mode |
+| Runtime deployment for PR #228 | DONE_VERIFIED | Pages #103 deployed the merged runtime SHA; built-site Chromium and post-deployment smoke checks passed |
 | Independent adjudicated IPA gold | BLOCKED | 0 examples; rights-cleared expert annotation and independent adjudication required |
 | Lao specialist review | BLOCKED | Qualified independent reviewer and documented decisions required |
 | Lao-specific RTGS | BLOCKED | Authoritative complete Lao adaptation table and source-backed examples required |
@@ -32,7 +34,7 @@
 
 ## Verification notes
 
-The first test-only run #4301 intentionally exposed the Note 6 provenance gap. Subsequent intermediate runs #4302–#4308 still had one failing Note 6 diagnostic assertion while the Note 10 positive and negative fixtures passed. The diagnostic was moved to the actual source-mismatch path and localized. Exact-head Verify #4309 then passed 350 Python, 201 Node and 28 Chromium tests with 0 failures, plus IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. A fresh exact-head run is required after the documentation commits below.
+The first test-only run #4301 intentionally exposed the Note 6 provenance gap. Subsequent intermediate runs #4302–#4308 still had one failing Note 6 diagnostic assertion while the Note 10 positive and negative fixtures passed. The diagnostic was moved to the actual source-mismatch path and localized. Exact-head Verify #4313 and post-merge main Verify #4314 then passed 350 Python, 201 Node and 28 Chromium tests with 0 failures, plus IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. Pages Deploy #103 published the same runtime SHA and passed the 28-test built-site Chromium suite and its post-deployment curl smoke test.
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a linguistically validated universal converter. The Note 6 target decision, automatic Note 10 source segmentation, Note 9 lexical boundaries, independent gold, specialist review, RTGS and manual accessibility/device QA remain open.
 
