@@ -270,3 +270,16 @@ A closer reading of the LOC 2012 Notes 8–9 clarifies two different implementat
 - **Note 9:** no Lao lexical word segmenter or reviewed loanword boundary resolver exists in the current browser parser. It cannot implement the shortest written form that can stand alone as a word, Pali/Sanskrit shortest-form handling, or original-language boundaries for other loanwords without a rights-cleared lexicon and specialist-reviewed policy. Keep PARTIAL/BLOCKED; do not infer boundaries from arbitrary syllable segmentation.
 
 Primary evidence: LOC ALA-LC Lao Romanization Table (2012), Notes 8–9: https://www.loc.gov/catdir/cpso/romanization/lao.pdf. No source lexical boundary or numeral mapping has been invented.
+
+## LaoNLP candidate review for ALA-LC Notes 9–10 — 2026-11-16
+
+Pinned upstream commit: [wannaphong/LaoNLP @ a914f64e38ff24d67d32e37db40dad5c368ea602](https://github.com/wannaphong/LaoNLP/tree/a914f64e38ff24d67d32e37db40dad5c368ea602).
+
+The candidate was inspected at code and data-file level rather than adopted:
+
+- `syllable_tokenize` is a regex model based on Phissamay et al. for orthographic syllabification/line breaking. Its semivowel class includes U+0EBC, but that does not establish phonological source-role overlap or LOC Note 10's coda/onset duplication.
+- `word_tokenize` uses PyThaiNLP's Trie and maximum matching. Its `lao_words()` dictionary is the union of four separate sources: `Lao-Dictionary.txt`, `lo_spellcheck_dict.txt`, `lao-wannaphong.txt` and `wiktionary-20210720.txt`. Maximum matching is not the LOC Note 9 shortest-written-form-that-can-stand-alone rule and does not itself implement the Pali/Sanskrit and original-language loanword clauses.
+- Per-file licensing is heterogeneous: Lao-Dictionary has a BSD-style notice in its own header; the Google spellcheck list states Apache-2.0; Wiktionary list states CC BY-SA 3.0; the 379-byte Wannaphong supplemental list had no file-specific license notice in the inspected pinned blob. The separate Lao-English CSV has an explicit MIT notice but is not part of `lao_words()`.
+- The Lao-Dictionary header says it was created for word wrapping and that compound words have mostly been reduced to their parts. It is not lexical-boundary gold or IPA evidence.
+
+Existing source-registry rows were expanded and separate per-file data/license rows and a methodology claim were added. No package code or data was imported into ClippyFirst. Note 9 remains PARTIAL/BLOCKED; Note 10 automatic source segmentation remains PARTIAL/fail-closed.
