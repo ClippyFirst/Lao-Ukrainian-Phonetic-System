@@ -214,3 +214,9 @@ The official LOC 2012 table was re-read through Note 10. PR candidate `test/ala-
 Notes 6, 8, 9 and 10 are classified explicitly in `docs/romanization-to-ukrainian-matrix.md`: initial `ʻ` and the relevant LOC vowel forms remain fail-closed; numerals are passthrough; lexical word/loanword segmentation and tone omission cannot be reversed; the double-function consonant rule remains partial pending source-segmented examples and a reviewed cross-syllable adapter. No new Ukrainian mapping or IPA claim was introduced.
 
 Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf), Notes 5–10. Verification is pending exact-head CI; no test result is claimed in this audit entry until CI reports it.
+
+## Verification reconciliation — PR #225 merged (2026-11-16)
+
+PR [#225](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/225) merged by squash as `66224de02f76453555dac805cad560a35fb2b925`. Exact-head Verify #4295 / [run 43840762990](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43840762990) and post-merge main Verify #4296 / [run 43840888440](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43840888440) both succeeded. Each run passed 350 Python tests, 198 Node tests and 28 Chromium tests, plus IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+
+The six Note 5 source-aware fixtures and Note 7 order fixture are now DONE_VERIFIED as engineering regressions. This does not establish expert-reviewed Ukrainian pronunciation or full ALA-LC conformance. Notes 6, 9 and 10 remain partial/unsupported as scoped in the romanization matrix. The branch is test/documentation-only; no Pages deployment was required.
