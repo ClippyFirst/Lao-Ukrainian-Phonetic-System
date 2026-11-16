@@ -4978,6 +4978,6 @@ The preceding checkpoint's “CI pending” statement was written before Actions
 
 ## Note 10 example attribution correction — 2026-11-16
 
-The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 2012 table's text layer explicitly lists `ຫຼັກສາດ (khitsatān)` in Note 10 (and repeats it in Note 3). The earlier attribution of `ຄິດສະຖານ` to the 1997 table is withdrawn because the available 1997 PDF text extraction is image-only. The exact syllabic/role analysis remains a specialist question.
+The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 2012 table's text layer explicitly lists `ຫຼັກສາດ (khitsatān)` in Note 10 (and repeats it in Note 3). The earlier attribution of `ຄິດສະຖານ` to the 1997 table is withdrawn because the available 1997 retrieval exposes only title/version metadata and its example glyphs were not independently inspected. The exact syllabic/role analysis remains a specialist question.
 
 The positive/negative unit tests now use `khitsatān` but inject the source syllable roles manually; they are synthetic crosswalk tests, not proof that the browser parser derives the source roles. The PR #231 browser test with `ຄິຼສຕຽນ` is retained only as a mode-separation test (Lao script is rejected in Latin romanization mode). Note 10 automatic source-role derivation remains PARTIAL/fail-closed.
