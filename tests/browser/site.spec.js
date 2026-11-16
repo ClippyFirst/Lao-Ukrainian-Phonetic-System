@@ -465,7 +465,7 @@ test("switching back from romanization input restores the Lao IPA-first workflow
   await expect(page.locator('[data-result-panel="ipa"]')).toBeVisible();
 });
 
-test("LOC ALA-LC Note 10 Lao source example does not gain invented automatic syllable roles", async ({ page }) => {
+test("Lao-script input is withheld when the direct romanization mode expects Latin text", async ({ page }) => {
   await page.goto("/");
   await page.locator("#lao-input").fill("ຄິຼສຕຽນ");
   await page.locator("#mode-romanization").click();
