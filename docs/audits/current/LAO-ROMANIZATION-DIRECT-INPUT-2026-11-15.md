@@ -308,7 +308,7 @@ The guideline's “minimal orthographic unit” and smallest-consistent-segmenta
 
 ### Rights and integration decision
 
-Mendeley Data version 2 lists CC BY 4.0. The paper's ethical statement separately says the source websites allowed research and non-commercial reuse. These statements do not, by themselves, prove that every underlying source sentence may be redistributed or used commercially under CC BY 4.0. Require item-level source locators and rights review before importing examples. The project therefore records the corpus as a **research candidate only**; no HVULao text, model, or dependency is imported into the runtime or gold corpus.
+Mendeley Data version 2 lists CC BY 4.0 for the dataset. The journal article's publication page separately states CC BY 3.0 for articles; that licence applies to the article, not automatically to the dataset or its upstream texts. The paper's ethical statement says the source websites explicitly allowed text reuse for research and non-commercial purposes. Table 2 reports seven source domains and aggregate sentence counts, but does not provide item-level sentence-to-URL permission mapping. These are distinct rights scopes: neither the article's CC BY 3.0 nor the dataset's CC BY 4.0 label alone establishes commercial redistribution rights in the underlying government/news/institutional source texts. Require item-level source locators and rights review before importing examples, especially for commercial use. The project therefore records the corpus as a **research candidate only**; no HVULao text, model, or dependency is imported into the runtime or gold corpus.
 
 ### Disposition
 
