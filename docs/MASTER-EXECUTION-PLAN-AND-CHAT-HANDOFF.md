@@ -5034,3 +5034,18 @@ LOC's source-document index says the ALA-LC tables are created from Microsoft Wo
 The 2025 UNGEGN Working Group report (GEGN.2/2025/26/CRP.26, 13 January 2025) adds a more precise milestone: as of July 2024, Lao PDR was finalizing draft toponymy guidelines, and the Working Group hoped the romanization system would be submitted for consideration at the 2027 UNGEGN Session. This is an expectation, not evidence of finalization, submission, approval, or implementation. The current UNGEGN index places Lao v4.0 (2013-09-24) under "Other languages/scripts", outside the 30 UN-recommended systems. The 2023 Working Group minutes describe ministry feedback and a draft awaiting government approval. The 2025 UN country-name record still uses BGN/PCGN 1966 for the country's formal name only.
 
 Sources and bounded synthesis are registered as `SRC-UNGEGN-APPROVAL-PROCESS-2026`, `SRC-UNGEGN-ROMANIZATION-STATUS`, `SRC-UNGEGN-LAO-DRAFT-2023`, `SRC-UNGEGN-LAO-MINUTES-2023`, `SRC-UNGEGN-LAO-STATUS-2025`, `SRC-UNGEGN-LAO-NAME-2025`, `SRC-PCGN-LAO-FACTFILE-2023`, and `CLM-LAO-ROMANIZATION-STATUS-2025`. Both RTGS rows in the linguistic completion register and the direct-input audit cite this evidence. **Status remains BLOCKED:** no complete authoritative Lao-specific RTGS table or approved Ukrainian adaptation has been established. Thai RTGS must not be silently substituted, and BGN/PCGN 1966 must not be represented as universal phonetic transcription.
+
+---
+
+# Continuation checkpoint — 2026-11-16 (PR #247 exact-head CI reconciled)
+
+- **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Working branch:** `docs/correct-loc-note10-source-example-20261116`.
+- **Exact-head verification:** Verify #4485 / [run 43957672089 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43957672089) ran on `29e8e24d9642f8ed985f28077a79456244d09935`. Its single test job completed successfully, including IPA-gold schema validation, repository/data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser engine tests, build and canonical browser-data generation, generated-data reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks.
+- **Register refresh:** commit `065fde859931d1bf2630120bef10b1acbc5178a5` records the exact-head evidence in the completion register. The GitHub integration returned no workflow run for this subsequent contents-API documentation commit. Therefore #4485 verifies `29e8e24d...`, not the later register-only commit; no exact-head CI claim is made for `065fde8...`.
+- **Branch comparison:** `main...docs/correct-loc-note10-source-example-20261116` is 67 commits ahead / 0 behind, with eight changed files. PR #247 remains open and unmerged. No merge, force-push, branch deletion or Pages deployment was performed.
+- **Scope:** documentation/evidence only; no runtime, corpus, model, dictionary or generated artifact changes. No local tests were run.
+- **Remaining acceptance:** Note 9 LOC-specific lexical policy, item-level rights and Lao-specialist adjudication; Note 10 automatic source-role derivation; Note 6 Ukrainian target correspondence; independent IPA gold (0 adjudicated examples); qualified Lao-specialist sign-off; authoritative complete Lao-specific RTGS; manual accessibility/device QA; retrieval and inspection of LOC's preferred Word source `lao.doc`.
+- **Architecture PR #145:** left open and untouched pending the owner's neural-first versus deterministic-default architecture decision.
+- **Readiness:** engineering-verified partial research prototype, not release-ready as a linguistically validated universal Lao-to-Ukrainian converter.
+
