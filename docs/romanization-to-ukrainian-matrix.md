@@ -73,6 +73,16 @@ A source review found a distinct, documented Lao romanisation convention used by
 
 Sources: [CrossAsia DLLM romanisation description](https://digital.crossasia.org/digital-library-of-lao-manuscripts-about-dllm-collection/?lang=en) (especially its “Lao Orthography and Romanisation” section); [CrossAsia DLLM consonant/vowel table (PDF)](https://digital.crossasia.org/wp-content/uploads/2021/10/DLLM_laoromanisation.pdf). The [LDC Lao Language Specific Peculiarities Document](https://catalog.ldc.upenn.edu/docs/LDC2017S08/LSP_203_final.pdf) independently lists RTGS among schemes used for Lao, but does not make the DLLM adaptation a national standard.
 
+## ALA-LC 2012 Note 8 — Lao-source numeral conversion
+
+**Implementation on PR #241 branch:** a separate typed helper, `romanizeAlaLcNumerals(input)`, maps only the ten Lao digits `໐–໙` (U+0ED0–U+0ED9) to ASCII/Arabic numerals `0–9`. It preserves all other code points, punctuation, whitespace, line endings and mixed-script content verbatim. The result identifies its direction (`Lao-script→Arabic numerals`), profile, Note 8 rule and mapped-digit count.
+
+The service exposes this as a distinct output panel labelled **Цифри · ALA-LC 2012, Note 8**. It is not the phonetic route, not the CLDR BGN/PCGN romanizer, and not a claim that the surrounding Lao text has been fully romanized under ALA-LC. The existing phonetic parser continues to preserve Lao numerals as passthrough; direct Latin ALA-LC input remains a separate route.
+
+**Status:** implementation and regression cases added on PR #241; promote to `DONE_VERIFIED` only after exact-head CI passes.
+
+Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Note 8](https://www.loc.gov/catdir/cpso/romanization/lao.pdf), which explicitly maps `໐–໙` to `0–9`.
+
 ## ALA-LC 2012 inventory boundary
 
 The LOC table is broader than the currently implemented normalizer. The implemented subset is limited to `u/ū`, `uʼ/ūʼ`, `e/ē`, `æ/ǣ`, `oe/ōe`, `ia/īa`, `ua/ūa`, `ai/āi`, `ao` and `am`, plus the onset/final subset documented above. This list must not be read as full ALA-LC vowel coverage.
