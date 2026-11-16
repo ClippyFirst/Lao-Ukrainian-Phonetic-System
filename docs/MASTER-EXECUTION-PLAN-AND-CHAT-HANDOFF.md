@@ -1,3 +1,21 @@
+# Latest continuation checkpoint — 2026-11-16 (PR #239 merged; live inventory reconciled)
+
+**Starting main:** `d1b3a7a3418aca83a6cb56a291007dcb0a36479c` (PR #239 merge commit).
+**PR [#239](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/239):** merged; it records the final post-merge evidence for PR #238 and synchronizes README, completion register and handoff. The commit is documentation-only; runtime code and generated assets are unchanged.
+**PR #239 exact-head Verify #4341:** [run 43870653366 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870653366).
+**Post-merge main Verify #4342:** [run 43870840263 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43870840263). Both passed 350 Python, 201 Node and 29 Chromium tests; repository/evidence and IPA-gold schema checks, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+**Runtime deployment:** Pages #104 remains the deployed runtime checkpoint `e6b1d564a20b88945dc0277b8db38efcd5834c8e`; no new Pages deployment was required.
+**Live branch inventory:** GitHub branch search returned 105 refs (104 non-main plus main) across two pages. No historical branch was deleted or force-updated.
+**PR #145 comparison:** `main...feat/mekongphon-first-stage` is divergent, 24 commits ahead / 367 behind, with 13 changed files; leave open and untouched pending the owner-level neural-first architecture decision.
+
+## Current stop-state
+
+The feasible repository-side reconciliation remains complete. Open work is evidence- and specialist-dependent: independent adjudicated IPA gold (0), qualified Lao specialist review, LOC-conformant lexical/loanword segmentation with a rights-clean resource, automatic Note 10 source-role parsing, the Note 8 Lao-digit conversion route, approved initial-ayn target policy, authoritative Lao-specific RTGS and human accessibility/device QA. Do not invent linguistic outputs or merge PR #145 to bypass these gates.
+
+**Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao-to-Ukrainian converter.
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (PR #238 merged; final verified state)
 
 **Starting main:** `0f4dd825db25801bca4d350735253c5885f63ddf`.
