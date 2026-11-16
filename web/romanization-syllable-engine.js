@@ -569,7 +569,7 @@ export function analyzeRomanization(input, options = {}) {
           item.coda = parsed.path[0].coda;
         }
         const initialAynWithoutTarget = profile === "ala-lc"
-          && item.sourceOnsetKey === "ອ"
+          && item.sourceOnset === "ອ"
           && item.onset === "ʻ";
         if (initialAynWithoutTarget) item.status = "UNSUPPORTED_ALA_LC_INITIAL_AYN";
         item.warning = initialAynWithoutTarget
