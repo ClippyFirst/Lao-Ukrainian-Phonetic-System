@@ -15,7 +15,7 @@
 - **Later documentation-only checkpoint:** Verify #4483 / run 43957392309 was in progress on `157c73fae64f292db50e378b1599a797c3ac146a`; check the final PR head for its subsequent run.
 - **PR #247:** open, mergeable, not merged; latest pre-ledger-refresh comparison 63 ahead / 0 behind; eight changed files.
 - **Registry integrity:** 77 unique source IDs and 90 unique claim IDs; no duplicate IDs or missing claim-to-source references.
-- **LOC Note 10:** exact 2012 text-layer example is `ຫຼັກສາດ (khitsatān)`; this does not validate automatic source syllabification or role derivation. Existing unit fixtures inject roles manually.
+- **LOC Note 10:** 2012 romanized Note 10 example is `khitsatān`; exact Lao glyph sequence remains unresolved pending preferred Word-source or Lao-specialist verification; this does not validate automatic source syllabification or role derivation. Existing unit fixtures inject roles manually.
 - **Note 9:** ordinary Lao and Pali/Sanskrit use the shortest standalone written form; other loans follow original-language division. ICU/HVULao metrics remain exploratory, not LOC conformance.
 - **No runtime changes:** Pages deployment is not expected for this PR. No local test execution is claimed.
 - **Unresolved acceptance:** LOC Word source retrieval; LOC-specific Note 9 policy with item-level rights and specialist adjudication; automatic Note 10 source analysis; Note 6 target correspondence; independent IPA gold; authoritative Lao-specific RTGS; qualified specialist sign-off; manual accessibility/device QA.
@@ -44,7 +44,7 @@
 **Current main Verify:** push run [43933702934 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933702934): 355 Python, 204 Node and 30 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
 **PR exact-head Verify:** [run 43933464076 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933464076), same test counts and configured gates.
 **Deployment:** documentation-only PR; no production files changed. Pages #106 remains the current deployed runtime checkpoint from `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; no new Pages deployment expected.
-**Note 10 source correction:** LOC 2012 Note 10 text layer explicitly gives `ຫຼັກສາດ (khitsatān)`. The same example appears in Note 3. This supersedes the handoff's earlier unsupported attribution to a different 1997 glyph sequence. The crosswalk unit tests manually supply source roles; the code still does not derive those roles from the Lao word. The browser test using `ຄິຼສຕຽນ` remains only a Latin-mode separation guard, not Note 10 coverage.
+**Note 10 source correction:** LOC 2012 Note 10 gives romanized example `khitsatān` (also repeated in Note 3), but the exact Lao glyph sequence remains unresolved: current PDF text extraction and rendered display have not been reconciled, and the preferred Word source remains unavailable. The prior assertion `ຫຼັກສາດ` is withdrawn pending direct Word-source or Lao-specialist verification. The crosswalk unit tests manually supply source roles; the code still does not derive those roles from the Lao word. The browser test using `ຄິຼສຕຽນ` remains only a Latin-mode separation guard, not Note 10 coverage.
 **Branch/PR inventory:** 114 branch refs across two API pages; PR #247 is this documentation correction and PR #145 is the only other open PR. PR #145 is divergent, 24 ahead / 374 behind current main, 13 changed files; retain as an owner-level architecture decision. No user branches deleted or force-updated.
 
 ## Current continuation ledger
@@ -53,7 +53,7 @@
 |---|---|---|
 | ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; Pages #105/#106 passed post-deploy smoke tests. |
 | ALA-LC Note 9 | PARTIAL / BLOCKED | ICU/HVULao comparative baseline is merged; LOC policy, item-level rights and Lao-specialist adjudication remain. |
-| ALA-LC Note 10 | PARTIAL / fail-closed | LOC 2012 example text is identified as `ຫຼັກສາດ (khitsatān)`; tests manually supply cross-syllable roles; automatic source-role derivation remains unverified. |
+| ALA-LC Note 10 | PARTIAL / fail-closed | LOC 2012 romanized example is `khitsatān`; exact Lao glyph sequence is unresolved pending Word-source or Lao-specialist verification; tests manually supply cross-syllable roles; automatic source-role derivation remains unverified. |
 | ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
 | Independent IPA gold | BLOCKED | 0 independently adjudicated examples; issue #99 remains open. |
 | Lao specialist review | BLOCKED | No qualified independent sign-off. |
@@ -72,7 +72,7 @@
 **Post-merge verification:** main Verify #4428 / [run 43932522643 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522643) passed the same 355 Python, 204 Node and 30 Chromium tests and all configured gates.
 **Pages deployment:** Pages Deploy #106 / [run 43932522626 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522626) deployed current main `8e8622b007452c20f68dfbfed1edcb709d6bdc41` to [the public site](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/); deployment and post-deploy HTTP smoke tests passed. PR #245 changed tests and research tooling but no production runtime logic.
 **Note 9 result:** on 839/1,000 exactly aligned HVULao_NLP pairs / 49,608 within-Lao candidate boundaries, greedy longest-prefix F1=0.8636 and naive shortest-prefix F1=0.5129. These are filtered exploratory metrics, not comparable to the paper's 0.75 model F1; neither implements LOC Note 9. The offline script and five unit tests are now merged.
-**Note 10 source form:** LOC 2012 Note 10 text layer gives `ຫຼັກສາດ (khitsatān)`; this identifies the cited example but does not independently adjudicate its syllable-role analysis. The `ຄິຼສຕຽນ` browser test is mode-separation only; the positive/negative `khitsatān` unit fixtures supply roles manually. Automatic source-role derivation remains PARTIAL.
+**Note 10 source form:** LOC 2012 Note 10 gives romanized example `khitsatān`; exact Lao glyph sequence remains unresolved because available PDF extraction and display have not been reconciled. The source's syllable-role analysis is not independently adjudicated. The `ຄິຼສຕຽນ` browser test is mode-separation only; the positive/negative `khitsatān` unit fixtures supply roles manually. Automatic source-role derivation remains PARTIAL.
 **Repository inventory:** 113 refs (112 non-main plus main) including the research and reconciliation branches; only PR #145 was open before this post-merge documentation PR. PR #145 remains divergent, 24 ahead / 373 behind, 13 files. No user branch was modified or deleted.
 
 ## Current continuation ledger
@@ -257,7 +257,7 @@ Engineering-verified partial research prototype. CI and Pages are operational, b
 |---|---|---|
 | LaoNLP candidate assessment | DONE_VERIFIED (source/license review only) | PR #234; pinned upstream code/data inspected, registry and claims updated; no integration |
 | ALA-LC Note 9 lexical segmentation | PARTIAL / BLOCKED | Need LOC-conformant shortest-standalone-form and loanword-specific rules, plus a reviewed rights-clean lexicon; LaoNLP max-match is not equivalent |
-| ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | The `ຄິຼສຕຽນ` browser test is mode-separation only; LOC 2012 Note 10 text layer gives `ຫຼັກສາດ (khitsatān)`; automatic source-role derivation and linguistic analysis still require specialist confirmation. |
+| ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | The `ຄິຼສຕຽນ` browser test is mode-separation only; LOC 2012 Note 10 gives romanized example `khitsatān`; exact Lao glyph sequence remains unresolved pending Word-source or Lao-specialist verification; automatic source-role derivation and linguistic analysis still require specialist confirmation. |
 | ALA-LC Note 8 Lao numeral conversion | PARTIAL / route not implemented | Current phonetic source path preserves Lao digits; direct ALA-LC input starts from Latin text |
 | Full ALA-LC conformance | PARTIAL | Notes 6, 8, 9, 10 and other contextual vowel/ວ cases remain incomplete |
 
@@ -5017,7 +5017,7 @@ The preceding checkpoint's “CI pending” statement was written before Actions
 
 ## Note 10 example attribution correction — 2026-11-16
 
-The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 2012 table's text layer explicitly lists `ຫຼັກສາດ (khitsatān)` in Note 10 (and repeats it in Note 3). The earlier attribution of `ຄິດສະຖານ` to the 1997 table is withdrawn because the available 1997 retrieval exposes only title/version metadata and its example glyphs were not independently inspected. The exact syllabic/role analysis remains a specialist question.
+The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 2012 Note 10 romanized example is `khitsatān` (also repeated in Note 3), but the exact Lao glyph sequence is unresolved: the currently retrievable PDF text extraction and rendered display have not been reconciled, and the preferred Word source is unavailable. The prior exact-form claim `ຫຼັກສາດ` is withdrawn. The earlier attribution of `ຄິດສະຖານ` to the 1997 table is also not asserted because its example glyphs were not independently inspected. The exact syllabic/role analysis remains a specialist question.
 
 The positive/negative unit tests now use `khitsatān` but inject the source syllable roles manually; they are synthetic crosswalk tests, not proof that the browser parser derives the source roles. The PR #231 browser test with `ຄິຼສຕຽນ` is retained only as a mode-separation test (Lao script is rejected in Latin romanization mode). Note 10 automatic source-role derivation remains PARTIAL/fail-closed.
 
