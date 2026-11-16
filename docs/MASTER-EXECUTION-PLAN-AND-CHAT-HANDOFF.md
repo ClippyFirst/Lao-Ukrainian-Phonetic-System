@@ -1,19 +1,20 @@
-# Latest continuation checkpoint — 2026-11-16 (PR #241 merged; ALA-LC Note 8 implemented)
+# Latest continuation checkpoint — 2026-11-16 (PR #242 merged; Note 8 deployed and main re-verified)
 
-**Starting main:** `c8ef2d8725b9e595bab2f2c4ea369517720590a8`.
-**Implementation branch:** `feat/ala-lc-note8-lao-digit-route-20261116` (preserved after merge); **reconciliation branch:** `docs/post-merge-note8-reconciliation-20261116`.
+**Starting main:** `b5820dd03776caaa2da2257ad207839839a1c6f7` (PR #242 merge commit).
+**Implementation branch:** `feat/ala-lc-note8-lao-digit-route-20261116` (preserved after merge); **previous reconciliation branch:** `docs/post-merge-note8-reconciliation-20261116`; **current documentation branch:** `docs/reconcile-live-main-pages-20261116`.
 **PR [#241](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/241):** merged by squash as `841826ce9981b1c09aa98179c790c63db1b2c982`. Exact-head Verify #4383 / [run 43918104933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918104933).
 **Scope:** a distinct Lao-source → Arabic-numeral function for ALA-LC 2012 Note 8, plus a separate UI result panel. It maps only Lao digits U+0ED0–U+0ED9, preserves all other text and separators, and does not change the phonetic pipeline, BGN/PCGN CLDR route, or direct Latin ALA-LC parser.
 **Evidence:** LOC primary source, [ALA-LC Lao Romanization Table (2012), Note 8](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). Tests cover all ten digits, mixed-script text, ASCII digits, punctuation, tabs and CRLF.
-**Verification:** exact-head Verify #4383 / [run 43918104933 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918104933) passed 350 Python tests, 204 Node tests and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks also passed. Note 8 is DONE_VERIFIED and merged. Post-merge main verification and deployment confirmation remain.
-**Repository inventory after merge:** `main` is `841826ce9981b1c09aa98179c790c63db1b2c982`; paginated branch search returned 108 refs (107 non-main plus main). PR #242 is the current documentation-only post-merge reconciliation; PR #145 is the only other open PR.
-**PR #145:** remains divergent, 24 ahead / 369 behind; leave untouched pending owner-level architecture decision.
+**Post-merge main verification:** Verify #4384 / [run 43918258734 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918258734) on PR #241 merge commit `841826ce9981b1c09aa98179c790c63db1b2c982`; Verify #4387 / [run 43918880984 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918880984) on current main `b5820dd03776caaa2da2257ad207839839a1c6f7`. Both passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+**Pages deployment:** Pages Deploy #105 / [run 43918258738 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43918258738) deployed runtime commit `841826ce9981b1c09aa98179c790c63db1b2c982`; both build and deploy jobs passed, including Chromium tests and post-deploy HTTP smoke tests. PR #242 changed documentation only, so no second Pages deployment was expected.
+**Repository inventory:** `main` is `b5820dd03776caaa2da2257ad207839839a1c6f7`; paginated branch search returned 110 refs (109 non-main plus main) before this new reconciliation branch. PR #145 is the only previously open PR; this documentation reconciliation is being prepared separately.
+**PR #145:** remains divergent, 24 ahead / 370 behind current main, 13 changed files; leave untouched pending owner-level architecture decision.
 
 ## Current continuation ledger
 
 | Workstream | Status | Evidence / acceptance |
 |---|---|---|
-| ALA-LC Note 8 Lao digits | DONE_VERIFIED (PR #241 exact-head) | Typed Lao-source numeral-only route, separate UI output, copy action and unit/browser regressions; Verify #4383 passed. Phonetic passthrough remains unchanged. Post-merge main workflow/deployment confirmation remains. |
+| ALA-LC Note 8 Lao digits | DONE_VERIFIED + DEPLOYED | Typed Lao-source numeral-only route, separate UI output, copy action and unit/browser regressions; exact-head Verify #4383, post-merge Verify #4384 and Pages Deploy #105 passed. Runtime deployed at `841826ce9981b1c09aa98179c790c63db1b2c982`; phonetic passthrough remains unchanged. |
 | ALA-LC Note 9 lexical/loanword boundaries | BLOCKED / PARTIAL | LOC shortest-standalone-form and loanword policies need a reviewed, rights-cleared lexical resource and specialist policy. LaoNLP maximum matching is not equivalent. |
 | ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | Browser regression confirms unresolved LOC example; U+0EBC role derivation requires reviewed parser behavior. |
 | ALA-LC Note 6 initial ayn | PARTIAL / fail-closed | Source trace exists; Ukrainian target correspondence is not approved. |
@@ -35,7 +36,7 @@
 
 ## Current stop-state
 
-The feasible repository-side reconciliation remains complete. Open work is evidence- and specialist-dependent: independent adjudicated IPA gold (0), qualified Lao specialist review, LOC-conformant lexical/loanword segmentation with a rights-clean resource, automatic Note 10 source-role parsing, the Note 8 Lao-digit conversion route, approved initial-ayn target policy, authoritative Lao-specific RTGS and human accessibility/device QA. Do not invent linguistic outputs or merge PR #145 to bypass these gates.
+Note 8 is implemented, main-verified and deployed. Remaining work is evidence- and specialist-dependent: independent adjudicated IPA gold (0), qualified Lao specialist review, LOC-conformant lexical/loanword segmentation with a rights-cleared resource, automatic Note 10 source-role parsing, approved initial-ayn target policy, authoritative Lao-specific RTGS and human accessibility/device QA. Do not invent linguistic outputs or merge PR #145 to bypass these gates.
 
 **Readiness:** engineering-verified partial research prototype; not release-ready as a universal Lao-to-Ukrainian converter.
 
