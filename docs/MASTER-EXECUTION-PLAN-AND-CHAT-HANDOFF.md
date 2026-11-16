@@ -1,3 +1,22 @@
+# Latest continuation checkpoint — 2026-11-16 (PR #243 merged; Note 9 evidence assessment reconciled)
+
+**Starting main:** `b5820dd03776caaa2da2257ad207839839a1c6f7`.
+**PR [#243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/243):** merged by squash as `fccff4bae4a4bbc0c7a4d2d9837a874ed72059bd` from exact tested head `6c6d54077361014f8c31d1875cbb8967c5c447bd`.
+**Exact-head Verify #4391:** [run 43930231174 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930231174): 350 Python, 204 Node and 30 Chromium tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+**Scope:** documentation/evidence only. Added HVULao_NLP v2 as a comparative segmentation candidate; added LDC and CrossAsia evidence for loanword-origin and lexicalization distinctions; no runtime code, corpus text, model or dependency imported. Pages #104 remains the runtime deployment because no deployed paths changed.
+**Post-merge verification caveat:** the available GitHub integration exposed PR-triggered workflow runs but not the push-triggered main run for the merge commit. The exact tested PR head passed; a separate post-merge main run was not independently confirmed here.
+**Current state:** Note 9 remains `PARTIAL / BLOCKED`; see the current romanization audit and completion register. Branch `docs/post-pr243-mainline-reconciliation-20261116` carries this post-merge documentation checkpoint.
+
+## Current continuation ledger
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC Note 9 | PARTIAL / BLOCKED | HVULao_NLP is a comparative segmentation candidate, not LOC gold. LDC/CrossAsia show origin-sensitive and lexicalization-sensitive spelling variation. Still need LOC-specific policy, rights-cleared examples and Lao-specialist adjudication. |
+| LaoNLP | DONE_VERIFIED (rejected as drop-in) | Pinned source review in PRs #234–#235; maximum matching and mixed licensing do not implement LOC Note 9. |
+| Runtime implementation | DEFERRED | No deterministic resolver is justified by available non-LOC segmentation conventions. |
+| PR #145 | DEFERRED / owner decision | Neural-first proposal remains divergent (24 ahead / 371 behind main); leave untouched pending owner architecture decision. |
+| IPA gold / specialist review | BLOCKED | Issue #99 remains open; 0 independently adjudicated examples, and no annotators have been recruited. |
+
 # Latest continuation checkpoint — 2026-11-16 (HVULao_NLP assessed as Note 9 candidate)
 
 **Starting main:** `b5820dd03776caaa2da2257ad207839839a1c6f7` (post-PR #242 Note 8 reconciliation).

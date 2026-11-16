@@ -1,3 +1,13 @@
+## Post-merge reconciliation — PR #243 (2026-11-16)
+
+- Current `main`: `fccff4bae4a4bbc0c7a4d2d9837a874ed72059bd`; PR [#243](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/243) merged by squash from exact tested head `6c6d54077361014f8c31d1875cbb8967c5c447bd`.
+- Exact-head Verify #4391 / [run 43930231174 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43930231174) passed 350 Python, 204 Node and 30 Chromium tests plus IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
+- PR #243 changed documentation and evidence registries only; no runtime code or deployed assets changed. Pages #104 remains the latest runtime deployment.
+- Paginated branch search after PR #243 and creation of this reconciliation branch returned 111 refs (110 non-main plus main). All historical/user branches were preserved; no branch was deleted or force-updated.
+- Open PR #145 remains the only pre-existing open PR; it is divergent 24 commits ahead / 371 behind current main with 13 changed files. Leave untouched pending the owner-level neural-first architecture decision.
+- The post-merge push-triggered main Verify run was not independently retrievable through the available GitHub integration; exact PR-head Verify passed. Do not claim a post-merge run was confirmed.
+- Open research issues #99 (independent IPA gold pilot) and #9 (external G2P baseline) remain unresolved; no annotators have been recruited and no independent IPA gold examples exist.
+
 ## Post-merge reconciliation — PR #241 (2026-11-16)
 
 - Current `main`: `841826ce9981b1c09aa98179c790c63db1b2c982`; PR #241 merged by squash from exact tested head `f4be105e4c7383214f22a96f5598ddb7a81a8617`.
