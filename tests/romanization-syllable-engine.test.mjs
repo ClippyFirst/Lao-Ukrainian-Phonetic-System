@@ -629,7 +629,7 @@ test("an explicit source-role fixture duplicates one consonant as final t and ne
     [
       { onset: "kh", nucleus: "i", coda: "t", sourceOnsetKey: "ຄ", sourceCoda: "ສ" },
       { onset: "s", nucleus: "a", coda: "", sourceOnsetKey: "ສ", sourceCoda: "" },
-      { onset: "t", nucleus: "ia", coda: "n", sourceOnsetKey: "ຕ", sourceCoda: "ນ" },
+      { onset: "t", nucleus: "a", coda: "n", sourceOnsetKey: "ຕ", sourceCoda: "ນ" },
     ],
   );
 });
