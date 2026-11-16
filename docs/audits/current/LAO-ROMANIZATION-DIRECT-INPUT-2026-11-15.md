@@ -206,3 +206,11 @@ The Library of Congress Note 4 distinguishes four contexts for Lao ວ: initial 
 PR [#223](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/223) merged as `05644cbece3395122c18fb390aceba80013104cb`. Exact-head Verify #4291 / [run 43825286216](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825286216) and post-merge main Verify #4292 / [run 43825396272](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43825396272) both passed 350 Python, 195 Node and 28 Chromium tests, IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks. No runtime assets changed; Pages redeployment was not required.
 
 The test findings are intentionally asymmetric: source-aware `būak` and `nāo` are accepted when Lao syllable structure disambiguates them; the same Latin-only strings remain PARTIAL because competing syllable parses exist. `khwā` and `khwāng` remain PARTIAL pending a reviewed Ukrainian medial-`w` cluster adapter. ALA-LC remains a bounded subset.
+
+## ALA-LC Notes 5–10 contextual regression continuation — 2026-11-16
+
+The official LOC 2012 table was re-read through Note 10. PR candidate `test/ala-lc-notes5-7-regressions-20261116` adds focused source-aware tests for Note 5's six silent-hoa sonorant spellings (using underlying onset plus original expanded `onsetForm`) and Note 7's consonant-before-vowel romanization order. It also asserts the romanization adapter does not expose reconstructed IPA or tone fields. These are engineering fixtures, not expert-validated Ukrainian pronunciation labels.
+
+Notes 6, 8, 9 and 10 are classified explicitly in `docs/romanization-to-ukrainian-matrix.md`: initial `ʻ` and the relevant LOC vowel forms remain fail-closed; numerals are passthrough; lexical word/loanword segmentation and tone omission cannot be reversed; the double-function consonant rule remains partial pending source-segmented examples and a reviewed cross-syllable adapter. No new Ukrainian mapping or IPA claim was introduced.
+
+Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf), Notes 5–10. Verification is pending exact-head CI; no test result is claimed in this audit entry until CI reports it.
