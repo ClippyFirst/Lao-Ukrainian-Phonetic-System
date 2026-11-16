@@ -220,3 +220,15 @@ Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012)](http
 PR [#225](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/225) merged by squash as `66224de02f76453555dac805cad560a35fb2b925`. Exact-head Verify #4295 / [run 43840762990](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43840762990) and post-merge main Verify #4296 / [run 43840888440](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43840888440) both succeeded. Each run passed 350 Python tests, 198 Node tests and 28 Chromium tests, plus IPA-gold schema validation, repository/evidence audit, external-G2P harness syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks.
 
 The six Note 5 source-aware fixtures and Note 7 order fixture are now DONE_VERIFIED as engineering regressions. This does not establish expert-reviewed Ukrainian pronunciation or full ALA-LC conformance. Notes 6, 9 and 10 remain partial/unsupported as scoped in the romanization matrix. The branch is test/documentation-only; no Pages deployment was required.
+
+## ALA-LC Notes 6 and 10 source-aware regression — 2026-11-16
+
+PR [#228](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/228) adds:
+- A Note 6 source-aware initial-ayn trace: `ʻ` is parsed as the LOC romanization marker for initial Lao `ອ`, with source vowel/coda provenance retained, but the result remains `UNSUPPORTED_ALA_LC_INITIAL_AYN` / PARTIAL because no Ukrainian target value has been approved. Latin-only initial ayn remains withheld.
+- A Note 10 regression for the LOC example `khitsatīan`, supplying the source syllable roles explicitly: `ສ` is validated as final `t` in one syllable and onset `s` in the next. A negative case without the coda role is withheld.
+
+The Note 10 fixture verifies the existing position-specific source crosswalk; it does **not** verify that the upstream Lao parser automatically derives LOC's lexical/syllable segmentation for `ຄິຼສຕຽນ`. Full Note 10 conformance therefore remains PARTIAL. No new Ukrainian phonological value, IPA result, or lexical boundary was inferred.
+
+Exact-head Verify #4309 / [run 43848574433](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43848574433) passed 350 Python, 201 Node and 28 Chromium tests (0 failures), plus the workflow's IPA-gold schema, repository/evidence audit, external-G2P harness, build, generated-data reproducibility and built-page/relative-asset checks. This run was on the pre-documentation head `4aa6d7ff3770ae7cb28a8edc3da248a7b2adf1b8`; documentation changes are being verified separately on the final PR head.
+
+Primary source: [Library of Congress, ALA-LC Lao Romanization Table (2012), Notes 6 and 10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf). The LOC table establishes orthographic romanization behavior, not Ukrainian target correspondences.
