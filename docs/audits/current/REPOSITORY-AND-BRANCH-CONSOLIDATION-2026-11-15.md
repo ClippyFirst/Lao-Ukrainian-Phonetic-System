@@ -834,3 +834,11 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - Exact-main Verify [#44147127249 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44147127249) on that exact SHA: 368 Python, 205 browser-engine and 30 Chromium UI tests; schema, evidence/data audit (84 sources / 112 claims), external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed.
 - Before this documentation closeout, PR #145 was the only pre-existing open PR; this closeout is tracked separately in PR #268. A fresh compare against current main shows #145 is 24 commits ahead / 403 behind. Its stage-1 typed IPA API is already on main; the remaining neural-first CLI default is deferred because it conflicts with the deterministic-first contract. Issues #9/#99 remain blocked on rights-cleared independent comparison evidence and human IPA gold acquisition.
 - No runtime, coda inventory, IPA, tone, Ukrainian mapping, corpus, model, generated artifact or deployment changed. No branches were deleted, rebased or force-pushed. Independent IPA gold remains 0; empirical accuracy remains null.
+
+
+## PR #268 verification blocker — 2026-11-17
+
+- PR #268 proposes only README, master handoff and audit synchronization; its branch was 6 commits ahead / 0 behind main at the last comparison.
+- Verify workflow configuration includes pull requests targeting `main`, but no exact-head workflow run or combined status was returned by the available GitHub endpoints. Base-main Verify #44147127249 does not verify the PR head.
+- Local clone/test attempt failed at network setup because DNS could not resolve `github.com`; no local tests/builds were run.
+- Keep PR #268 open and unmerged until exact-head Verify passes. No branch deletion, force-push or external setting change.
