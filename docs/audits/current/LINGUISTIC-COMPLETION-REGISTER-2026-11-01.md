@@ -1014,3 +1014,17 @@ No runtime or linguistic output changed. Independent IPA gold remains 0; empiric
 | Local clean-clone verification | BLOCKED / environment | Clone failed before checkout: DNS could not resolve github.com; no local tests claimed. |
 
 No new linguistic correctness or accuracy claim follows from this refresh. Empirical accuracy remains null.
+
+
+## Post-PR #272 exact-head and main verification refresh — 2026-11-17
+
+| Workstream | Status | Updated evidence |
+|---|---|---|
+| PR #272 documentation reconciliation | DONE_VERIFIED | Exact-head Verify #4749 / run 44167297418 passed on `7c809897424f806357c84b14804bb63e3a00babc`; PR #272 squash-merged as `4488a486886a1aab7fef761cabaf53908d3828f5`. |
+| Current main hosted verification | DONE_VERIFIED | Post-merge Verify #4750 / run 44169797981 passed on exact main SHA `4488a486886a1aab7fef761cabaf53908d3828f5`, including all configured Python, evidence/schema, browser, build, reproducibility and Chromium checks. |
+| Neural-first CLI default | DEFERRED / architecture decision | PR #145 remains the only open PR; now 24 ahead / 408 behind main. Typed IPA API already exists on main; default behavior remains deterministic-first pending explicit decision. |
+| Independent external-G2P comparison | PARTIAL / BLOCKED | `lao2ipa==1.0.0` remains a 37 engineering-fixture diagnostic only; new `Lingua::LO::NLP` candidate was screened but not executed and is not accepted as independent baseline. Rights-cleared sample and expert review still required. |
+| Independent adjudicated IPA gold pilot | BLOCKED / human acquisition | Issue #99 remains open; no approved convention, recruited independent annotators/adjudicator, or pilot records. Gold=0; empirical accuracy=null. |
+| Local clean-clone verification | BLOCKED / environment | DNS resolution for `github.com` failed before checkout; no local tests claimed. |
+
+No linguistic accuracy or phonological correctness claim follows from these CI passes.

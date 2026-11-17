@@ -864,3 +864,12 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - Local clone attempt failed before checkout because the execution environment could not resolve github.com; hosted exact-main CI is the verification evidence. No local test pass is claimed.
 - No runtime, phonological mapping, IPA labels, corpus, model, dictionary, generated artifact, deployment, or external repository setting changed. No branch was deleted or force-pushed.
 - Readiness remains an engineering-verified research prototype, not linguistically validated or release-ready.
+
+
+## PR #272 closeout and current branch inventory — 2026-11-17
+
+- PR #272 was squash-merged as `4488a486886a1aab7fef761cabaf53908d3828f5` after exact-head Verify #4749 / run 44167297418 SUCCESS; post-merge Verify #4750 / run 44169797981 also SUCCESS on the new main SHA. Both workflows passed all configured steps including schema/evidence/data audits, Python tests, external-G2P harness syntax/CLI, browser-engine tests, generated-data reproducibility, Chromium UI tests and built-page asset checks.
+- Current default branch `main`: `4488a486886a1aab7fef761cabaf53908d3828f5`. Only open PR: #145 (`feat/mekongphon-first-stage`), 24 commits ahead / 408 behind; merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`. It remains intentionally open pending the neural-first CLI contract decision; the typed IPA API it introduces is already on main.
+- Issues #9 and #99 remain open and evidence-limited: external G2P diagnostics are not independent gold; human IPA gold remains 0; accuracy remains null. Lingua::LO::NLP v1.0.3 was screened but not executed (DNS blocker) and not adopted as baseline.
+- No runtime, mapping, IPA/corpus/model data, generated artifact or deployment changed in PR #272. The earlier audit branch was preserved; no force-push, deletion or rebase.
+- Readiness: engineering-verified research prototype, not linguistically validated or release-ready.
