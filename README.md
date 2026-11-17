@@ -273,3 +273,8 @@ Richard Ishida's [Lao Orthography Notes (updated 2026-04-28)](https://r12a.githu
 ### Coda evidence reconciliation (2026-11-17)
 
 The nine-item coda list in Ishida's explicit prose is consistent with the current consonants.csv final map, but the same page's consonant-class chart additionally lists ຢ. Its IPA correspondence table instead identifies ຍ as final /j/. The repository therefore does not add ຢ as a coda. An audit assertion and regression test now preserve this fail-closed boundary. codas.csv remains a phoneme-category table, not a grapheme inventory; implicit /ʔ/ after short vowels remains a separate dialect/phonetic question. No runtime mapping was changed.
+
+
+## Exact-head verification — Ishida coda reconciliation (2026-11-17)
+
+Verify #4525 / [run 44035119603 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035119603) passed on exact PR head `9b7d39b237a8dfa7e69544a1122ae1c1e2c3514e`. All configured checks passed: independent IPA-gold schema, repository/data/evidence audit, Python tests (including the new nine-coda map and fail-closed `ກາຢ` regression), external-G2P syntax/CLI, locked browser dependencies, browser engine tests, build/canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks. No runtime, corpus, model, dictionary or generated artifact changed. Registry: 81 unique sources / 105 unique claims; no duplicate IDs or missing claim-source references. Branch comparison before this reporting-only sync: 131 ahead / 0 behind `main`; PR #247 remains open/unmerged.
