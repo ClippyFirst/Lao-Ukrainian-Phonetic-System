@@ -788,3 +788,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 ## LOC 1997 glyph provenance correction — 2026-11-17
 
 The 1997 PDF text extraction exposes romanized `khitsatian`, but the Lao-script glyphs are corrupted and have not been independently verified from page images. No exact historical Lao-script spelling is asserted. The 2012 Word-source example `ຄຼິສຕຽນ (khitsatīan)` remains the current-table form. A stale historical exact-glyph statement was corrected in the completion register, master handoff and this branch audit. No runtime changes were made; current registry integrity remains 84 sources / 110 claims.
+
+## Bethke source retrieval follow-up — 2026-11-17
+
+Pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98` was successfully retrieved through the GitHub repository API. Static inspection confirms `x8` excludes ສ and `x9` admits it only with U+0E4C; the current LOC Word form has no U+0E4C. Runtime execution remains blocked because the module is not installed in the local Perl environment and direct container network access fails DNS. No source code was copied/imported. The static evidence strengthens the candidate exclusion but does not establish a general Lao syllabifier or resolve Note 10.
