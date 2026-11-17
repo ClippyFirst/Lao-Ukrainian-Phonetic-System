@@ -986,3 +986,14 @@ No runtime, IPA, tone, Ukrainian mapping, corpus, model or generated data change
 
 
 Exact-head evidence checkpoint for this coda-role cross-check: PR #266 source/evidence head 7e6efba976d1a7b91934ca2e6ebc31dce92932f7 passed Verify #44145883693 and #44145911419 (both SUCCESS): 368 Python, 205 browser-engine, 30 Chromium UI; schema/data/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed. Registry totals: 84 sources / 112 claims. The result is source-reconciliation evidence only; the broader coda profile remains PARTIAL pending specialist review.
+
+
+## PR #266 merged checkpoint — 2026-11-17
+
+| Gate | Status | Evidence |
+|---|---|---|
+| ICANN cross-source coda-role evidence | DONE_VERIFIED (source reconciliation only) | PR #266 merged as `943c395fe8115972b18245a3a62db466b69976b5`; ICANN §5.1 and Appendix C independently support excluding ຢ from final position, while preserving DNS-label scope. |
+| Exact merged-main engineering verification | DONE_VERIFIED | Verify #44146512167 SUCCESS on exact main SHA; 368 Python, 205 browser-engine, 30 Chromium UI; schema/data/evidence, external-G2P, build, reproducibility and built-page checks passed. Registry: 84 sources / 112 claims. |
+| Complete modern-vs-loan coda profile | PARTIAL / specialist evidence | Broader ICANN 14-item DNS list must not be promoted as universal modern inventory; specialist review remains needed. |
+
+No runtime or linguistic output changed. Independent IPA gold remains 0; empirical accuracy remains null.
