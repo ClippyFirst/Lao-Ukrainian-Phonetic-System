@@ -961,3 +961,15 @@ The bounded analysis API is verified, but it is not evidence of full linguistic 
 | Neural-first CLI default | DEFERRED / architecture decision | PR #145 remains open; current main preserves deterministic-first default. Its stage-1 typed IPA API already exists in main. |
 
 All benchmark outputs remain comparative engineering evidence, not independent linguistic accuracy. Gold=0; accuracy=null.
+
+
+## Exact-main closeout recheck — 2026-11-17
+
+| Gate | Status | Evidence |
+|---|---|---|
+| Final documentation closeout commit | DONE_VERIFIED / repository state | PR #264 merged as 28f06be855306e272268309361fe1a850bb8b8b6; exact-main Verify #44118815287 SUCCESS on the same SHA. |
+| Current open pull requests | DONE_VERIFIED / inventory snapshot | PR #145 only; neural-first CLI default remains DEFERRED pending architecture decision. |
+| Independent adjudicated IPA gold | BLOCKED / human acquisition | 0 gold records; issue #99 still requires two independent annotators, third adjudicator and curator. |
+| Independent external-G2P evaluation sample | PARTIAL / evidence and rights | Issue #9 remains open; existing 37 fixtures are engineering controls, not independent gold. |
+
+No linguistic inventory, phonological rule, Ukrainian correspondence, corpus record, model or generated artifact changed in this closeout recheck. Comparative benchmark evidence must not be reported as independent linguistic accuracy.

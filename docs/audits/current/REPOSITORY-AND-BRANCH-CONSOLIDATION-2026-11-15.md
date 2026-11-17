@@ -797,3 +797,13 @@ Pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98` wa
 ## Open PR #145 reconciliation — 2026-11-17
 
 PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4cce51f`) was compared with current main `2809fcca27ab66be2931db0176be54ff858f4c8f`. It is 24 commits ahead / 398 behind with merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, so wholesale merge/rebase is not appropriate. Its stage-1 typed IPA API is already present in main; the material outstanding delta is neural-first CLI default plus `--to-ukrainian` explicit stage 2. That conflicts with the current deterministic-first CLI default. PR #145 remains open and untouched; no force-push, close, or duplicate stage-1 port was performed.
+
+
+## Post-closeout live repository recheck — 2026-11-17
+
+- Default branch: main; exact head 28f06be855306e272268309361fe1a850bb8b8b6.
+- PR #264 is merged at this exact head. Exact-main Verify #44118815287 (https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44118815287) is SUCCESS.
+- Open PR inventory: only #145. Its branch feat/mekongphon-first-stage remains intentionally untouched because the residual change is a neural-first CLI default that conflicts with the deterministic-first contract. The stage-1 typed IPA API has already been reconciled into main.
+- Open research issues: #9 (rights-cleared independent comparison sample and expert mismatch review) and #99 (two annotators, adjudicator, curator, blind intake and pilot execution).
+- Historical and superseded topic branches remain preserved. No branch deletion, force-push, rebase of owner branches, or external repository setting change was performed.
+- This pass made no source-code or linguistic-data change. Repository status remains an engineering-verified research prototype, not release-ready.
