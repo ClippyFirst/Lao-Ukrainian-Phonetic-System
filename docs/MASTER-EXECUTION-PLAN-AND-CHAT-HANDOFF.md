@@ -5087,3 +5087,8 @@ Verify #4499 / run 43966184173 was observed **in progress** on exact branch HEAD
 ## Exact-head verification — 2026-11-16
 
 Verify #4500 / run 43966297408 — **SUCCESS** on exact code-bearing HEAD `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4`. Every configured job step passed, including Chromium UI and built-page/relative-asset checks. The following documentation synchronization commits update only the completion register and this handoff; their own exact-head workflow run must be checked separately. No local tests are claimed.
+
+
+## Continuation — Ishida coda discrepancy and fail-closed regression (2026-11-17)
+
+The coda follow-up uncovered a source-internal inconsistency in Ishida (2026-04-28): the prose's explicit final list contains nine letters, the consonant-class chart adds ຢ, and the IPA correspondence table assigns final /j/ to ຍ. The project retains the nine explicit spellings and does not promote ຢ. scripts/audit.py now checks the exact nine grapheme→IPA values; tests/test_grapheme_inventory.py checks the same map and that ກາຢ remains unresolved. The new evidence claim is CLM-LAO-ISHIDA-CODA-CHART-CONFLICT. The /ʔ/ final after short vowels is kept separate as a phonological realization question; codas.csv is not the parser's orthographic coda registry. No runtime or generated data changed. CI must verify this new commit before the regression is marked DONE_VERIFIED.
