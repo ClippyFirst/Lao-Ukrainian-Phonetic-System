@@ -911,3 +911,14 @@ A stale row previously asserted an exact Lao-script spelling for the 1997 Note 3
 Current registry after PR #254/#255: 84 unique sources / 110 unique claims. Automatic Note 10 source-role derivation remains PARTIAL/BLOCKED; independent IPA gold remains 0.
 
 | Bethke pinned syllabifier source retrieval | DONE_VERIFIED (static only) | Retrieved pinned source via GitHub API; exact X8/X9/X10_3 rule inspected. Runtime remains BLOCKED because package is not installed locally and direct container network access fails DNS. No code copied/imported. |
+
+## Orthographic candidate lattice prototype — 2026-11-17
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Candidate lattice over current syllable recognizer | PARTIAL / engineering prototype pending CI | New `analyze_orthographic_word()` enumerates candidate spans, prunes dead edges, and distinguishes no path / unique path / ambiguous path. Tests cover graph invariants and selected Lao inputs. It is not a complete orthographic grammar and does not change production segmentation. |
+| Modern Lao orthographic grammar | PARTIAL / TODO | Berment (2004) supplies a historical grammar candidate, but exact terminals, modern Unicode reconciliation, current orthography, adversarial examples and Lao-specialist adjudication remain outstanding. |
+| Shared coda/onset grapheme roles (LOC Note 10) | PARTIAL / BLOCKED | Candidate lattice uses non-overlapping spans and explicitly does not model one grapheme serving two syllable roles. Exact Word-source input remains fail-closed. |
+| Global ambiguity resolution | BLOCKED / evidence-limited | The lattice preserves multiple paths; it does not select a lexeme or pronunciation. No longest-match choice is promoted to a linguistic rule. |
+
+No production parser policy, IPA, tone, Ukrainian mapping, corpus, model, dictionary, or generated artifact changed. CI evidence is pending; independent IPA gold remains 0 and empirical accuracy remains null.
