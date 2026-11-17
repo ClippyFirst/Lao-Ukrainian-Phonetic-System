@@ -535,3 +535,13 @@ This also clarifies the separate data/lao/codas.csv layer: it is a phoneme-categ
 **Task ledger:** nine listed coda spellings and current mappings = DONE_VERIFIED as source-to-registry consistency (not independent IPA gold); ຢ coda = BLOCKED / source-internal conflict; implicit /ʔ/ realization = PARTIAL / needs dialect-specific phonetic adjudication; abstract codas.csv semantics = PARTIAL / not an orthographic recognizer. No runtime mappings were broadened.
 
 Registry: SRC-ISHIDA-ORTHO-2026; claims CLM-LAO-ISHIDA-CODA-INVENTORY and CLM-LAO-ISHIDA-CODA-CHART-CONFLICT.
+
+## LOC Note 10 — official Word-source verification (2026-11-17)
+
+The official Library of Congress [Source Documents for Romanization Tables](https://www.loc.gov/catdir/cpso/romansource.html) index links the Lao Word source at [lao.doc](https://www.loc.gov/catdir/cpso/romanization/lao.doc) and explicitly instructs users to use Word sources rather than PDFs when copying table data. The .doc endpoint was retrieved successfully (HTTP 200, application/msword) and its document text inspected on 2026-11-17.
+
+The Word source gives the exact Note 3 and Note 10 example as **ຄຼິສຕຽນ (khitsatīan)**. Note 3 identifies ຼ as the combining form of ລ and says it is not romanized except when subscript to ຫ; in this example it is not romanized. Note 10 repeats the same form and states that one consonant can serve as coda of one syllable and onset of the next, so it is romanized twice. Cross-referencing Note 1, ສ has initial romanization s and final loanword romanization (t), explaining the t + s sequence in khitsatīan.
+
+This resolves the exact LOC source example and corrects the former PDF-text-layer reading khitsatān / ຂິດສະຕານ. It does **not** establish automatic source-script syllabification in ClippyFirst: current positive/negative fixtures still supply the ສ coda/onset roles manually. The browser test containing ຄິຼສຕຽນ remains only a Latin-mode separation test and is not the LOC example; the exact source spelling is ຄຼິສຕຽນ.
+
+**Disposition:** exact Note 10 source example = DONE_VERIFIED; source-role crosswalk fixture = DONE_VERIFIED (manual roles only); automatic Lao source parsing and full Note 10 conformance = PARTIAL/BLOCKED pending an independently reviewed orthographic syllabifier and Lao-specialist adjudication. No runtime phonological rule or IPA gold is inferred.
