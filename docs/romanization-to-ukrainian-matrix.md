@@ -265,3 +265,20 @@ Ishida explicitly leaves “What about kw etc?” as an open question; do not ge
 Regression cases added (orthographic segmentation only, not IPA gold): `ໃຫຍ່` → one syllable; `ເຫຼືອງ` → one syllable; `ປະເທດ` → `ປະ | ເທດ`. Python tests passed on commit `cb7950065c310c9376f7075fe7688059475c0a19` in Verify #4517 / run 43971181584; remaining browser/build-page checks were still in progress at last poll.
 
 **Architecture update:** the deterministic syllable parser remains the baseline for ordinary modern Lao; candidate lattices/ambiguity preservation are a fallback for residual ambiguity, not an assumption that every ordinary syllable boundary is irreducible. Word segmentation is a separate dictionary-backed layer. Acceptance still requires full exact-head CI, broader examples, coda/loanword reconciliation, explicit ambiguous cases and Lao-specialist review. Registry IDs: `SRC-ISHIDA-ORTHO-2026` and five `CLM-LAO-ISHIDA-*` claims.
+
+
+## Ishida coda inventory reconciliation — 2026-11-17
+
+A closer line-by-line reading of [Ishida, Lao Orthography Notes (28 April 2026)](https://r12a.github.io/scripts/laoo/lo.html) found an **internal source discrepancy**:
+
+- The explicit final-position list at lines 816–821 enumerates nine graphemes: ບ ດ ກ ມ ນ ຣ ງ ວ ຍ; it then notes U+0EB3 as a special -am rhyme.
+- The consonant-class chart at lines 727–729 also places ຢ in its coda row, making ten chart entries.
+- The IPA correspondence table at lines 1038–1042 maps onset /j/ to ຢ, but identifies the final /j/ coda as ຍ. It does not provide a final value for ຢ.
+
+**Disposition:** retain the nine explicitly enumerated spellings and their existing source-aware mappings (ບ→p, ດ→t, ກ→k, ມ→m, ນ→n, ຣ→n, ງ→ŋ, ວ→w, ຍ→j). Do not add ຢ as a coda until the discrepancy is resolved by an independent source or Lao specialist. The parser already fails closed for ກາຢ; a regression now protects that boundary.
+
+This also clarifies the separate data/lao/codas.csv layer: it is a phoneme-category table (including /ʔ/ and analysis-dependent /l,r/), not an orthographic grapheme lookup. The parser's actual final-grapheme recognition uses consonants.csv and its ipa_final field. The phonological /ʔ/ may occur after short vowels, but this source note does not establish a universal orthographic grapheme mapping or whether the runtime should emit it categorically; keep that realization question evidence-limited. U+0EB3 remains a special rhyme representation containing /m/, not an ordinary final consonant grapheme.
+
+**Task ledger:** nine listed coda spellings and current mappings = DONE_VERIFIED as source-to-registry consistency (not independent IPA gold); ຢ coda = BLOCKED / source-internal conflict; implicit /ʔ/ realization = PARTIAL / needs dialect-specific phonetic adjudication; abstract codas.csv semantics = PARTIAL / not an orthographic recognizer. No runtime mappings were broadened.
+
+Registry: SRC-ISHIDA-ORTHO-2026; claims CLM-LAO-ISHIDA-CODA-INVENTORY and CLM-LAO-ISHIDA-CODA-CHART-CONFLICT.
