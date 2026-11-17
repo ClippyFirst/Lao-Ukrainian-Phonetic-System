@@ -28,7 +28,7 @@ Verify #4525 / [run 44035119603 — SUCCESS](https://github.com/ClippyFirst/Lao-
 | PR #247 documentation/evidence reconciliation | DONE_VERIFIED (exact latest-head CI) | Verify #4493 / [run 43962408396 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43962408396) passed on latest PR head `268fc506b6dcecce5e8fbfac0c6d483d95e277e3`. All configured checks succeeded: IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependencies, browser engine tests, build/canonical-data generation, generated-data reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks. This exact-head run includes the Note 10 glyph-evidence correction across the source/claim registry, direct-input audit, completion register, README, handoff, branch audit and romanization matrix. Linguistic blockers remain unchanged. |
 | ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; separate Lao digit → Arabic numeral route and post-deploy smoke tests documented in prior checkpoint. |
 | ALA-LC Note 9 | PARTIAL / BLOCKED | Three LOC branches: ordinary Lao shortest standalone written form; Pali/Sanskrit same; other loans follow original-language division. ICU/HVULao baseline is exploratory only. Need LOC-specific lexeme policy, item-level upstream rights, source-located examples and Lao-specialist adjudication. |
-| ALA-LC Note 10 | PARTIAL / fail-closed | LOC 2012 Note 10 gives romanized example `khitsatān`; exact Lao glyph sequence remains unresolved pending inspection of the preferred Word source or Lao-specialist verification. Existing fixtures manually inject source roles; automatic source-script syllabification and role derivation are not demonstrated. |
+| ALA-LC Note 10 | PARTIAL / source example verified | Official LOC Word source confirms ຄຼິສຕຽນ (khitsatīan); positive/negative crosswalk fixture uses corrected īa vowel and manually supplied ສ coda/onset roles. Automatic source-script syllabification and role derivation remain unverified. |
 | ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
 | Independent IPA gold | BLOCKED | 0 independently adjudicated examples; qualified annotators and adjudication are absent. |
 | Lao specialist review | BLOCKED | No qualified independent sign-off. |
@@ -824,3 +824,12 @@ Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-
 | Combined engineering verification | DONE_VERIFIED (engineering only) | Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. This does not establish linguistic accuracy. |
 
 The integration branch retains PR #247's reviewed head as an ancestor and applies PR #248's delta through file-level reconciliation; both original PRs remain open and untouched. No runtime or generated artifact changes are included.
+
+## LOC Note 10 source-example correction — 2026-11-17
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Exact LOC Note 3/10 source example | DONE_VERIFIED | Official Word source: ຄຼິສຕຽນ (khitsatīan); Note 1 values explain ສ as final (t) and initial s. |
+| Source-aware romanization crosswalk | DONE_VERIFIED (manual roles only) | Fixture corrected to khitsatīan and IA_LONG; roles remain explicitly supplied. |
+| Automatic Lao source-role derivation | PARTIAL / BLOCKED | Needs validated orthographic syllabifier, exact source-role derivation and independent Lao-specialist review. |
+| Full Note 10 conformance | PARTIAL | Exact source example is resolved; automatic segmentation and generalization beyond the example are not. |
