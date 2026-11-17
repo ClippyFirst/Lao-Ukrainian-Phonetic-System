@@ -768,3 +768,11 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - The candidate's X9 class includes ສ, but the regex requires X10_3/U+0E4C; X8 excludes ສ. The current LOC Word-source token has no U+0E4C. Static inspection does not demonstrate an automatic Note 10 coda role. Exact package execution remains blocked by DNS failure.
 - This branch changes only source/claim registries and research/matrix/handoff/audit documentation. It does not change runtime, generated artifacts, model, dictionary, corpus, IPA labels or deployment.
 - PR #145 remains open and untouched as a separate owner-level neural-first architecture decision; issues #9 and #99 remain open. No expert outreach or gold annotation was performed.
+
+## PR #254 merge — external Lao syllabifier evidence checkpoint — 2026-11-17
+
+- PR #254 merged by squash as `ca64158ce0b6d92ef0a01956f16ed941277bf446`.
+- Exact PR-head Verify #4668 / [run 44088848659](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44088848659) SUCCESS; exact merged-main Verify #4670 / [run 44089165636](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44089165636) SUCCESS. All configured workflow steps passed.
+- Evidence registry now contains 84 unique source IDs / 110 unique claim IDs; no duplicate IDs or malformed nonblank rows.
+- No runtime, IPA, tone, model, corpus, dictionary, generated artifacts or Pages deployment changed. The original pre-sync research branch was preserved; no force-push or branch deletion occurred. PR #145 remains open/untouched.
+- The candidate package was assessed statically only; network/DNS prevented execution. Automatic LOC Note 10 source-role derivation remains PARTIAL/BLOCKED; independent gold=0; accuracy=null.
