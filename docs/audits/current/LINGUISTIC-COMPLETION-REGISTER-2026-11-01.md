@@ -1034,8 +1034,18 @@ No linguistic accuracy or phonological correctness claim follows from these CI p
 
 | Workstream | Status | Evidence / acceptance |
 |---|---|---|
-| Independent Lao G2P diagnostic candidate | PARTIAL / screened, not executed | MetaCPAN documents `Lingua::LO::NLP` v1.0.3 (Perl 5 license; 2017 release), with regex syllabification and experimental IPA romanization. `get_syllables` may silently discard non-Lao/invalid fragments; a valid comparison must retain `get_fragments` output and capture normalization separately. |
-| Candidate runtime verification | BLOCKED / environment | Perl 5.40.1 is present, but CPAN archive retrieval failed because `cpan.metacpan.org` DNS resolution failed. No package execution or output is claimed. |
-| Issue #9 acceptance | PARTIAL | Exact v1.0.3 archive/checksum, reproducible dependencies, rights-cleared common sample, raw outputs and expert review of convention/dialect/segmentation mismatches remain required. This candidate is not gold. |
+| Independent Lao G2P diagnostic candidate | PARTIAL / screened, not executed | MetaCPAN documents v1.0.3 (CPAN metadata license `perl_5`), regex syllabification and experimental IPA; `get_syllables` may discard invalid fragments, so comparison must preserve `get_fragments`. The separately pinned GitHub tree records Artistic License 2.0; archive-level license identity is unresolved pending retrieval. |
+| Candidate runtime verification | BLOCKED / environment | Kernel.org and Dogado mirror indexes expose the 24,120-byte v1.0.3 archive; the CPAN CHECKSUMS manifest reports SHA-256 `dfaceced913af42a90b42e5eede390ac6aa183cac6f0ea7f7fa117bf3ceb79e7` (not verified against bytes; manifest signature also unverified). Binary download still fails in this environment; no package execution/output is claimed. |
+| Issue #9 acceptance | PARTIAL | Obtain archive bytes and verify the published hash; inspect embedded license/dependencies and reconcile `perl_5` vs upstream Artistic 2.0 metadata; then run a rights-cleared common sample with raw/normalized inputs and expert review. This candidate is not gold. |
 
 Primary sources: https://metacpan.org/pod/Lingua::LO::NLP ; https://metacpan.org/pod/Lingua::LO::NLP::Syllabify ; https://metacpan.org/pod/Lingua::LO::NLP::Romanize::IPA . Issue #9 records the execution blocker. No project runtime or linguistic data changed.
+
+
+### CPAN mirror artifact-provenance follow-up — 2026-11-17
+
+- Kernel.org and Dogado mirror indexes list the exact v1.0.3 archive at 24,120 bytes. Kernel.org's CPAN `CHECKSUMS` manifest reports archive SHA-256 `dfaceced913af42a90b42e5eede390ac6aa183cac6f0ea7f7fa117bf3ceb79e7` and uncompressed SHA-256 `94c5c37323a67ebc554ce5b05a858f6259c66639cd76aabfc35694472bbc9ee4`.
+- Hashes are not verified against archive bytes and the manifest's PGP signature was not verified. Binary retrieval failed in this environment; no runtime result is claimed.
+- CPAN `.meta` reports `perl_5`, whereas the pinned GitHub tree has an Artistic License 2.0 file. Treat this as an unresolved release-vs-repository metadata discrepancy until the archive's embedded license is inspected; no compatibility conclusion is drawn.
+- Issue #9 remains PARTIAL / BLOCKED pending exact archive acquisition, checksum verification, dependency/license inspection, a rights-cleared sample, raw-output capture and expert mismatch adjudication. Independent IPA gold remains 0; accuracy remains null.
+
+Sources: https://mirrors.edge.kernel.org/CPAN/modules/by-module/Lingua/MBETHKE/ ; https://mirror.dogado.de/CPAN/modules/by-module/Lingua/MBETHKE/ ; https://mirrors.edge.kernel.org/CPAN/modules/by-module/Lingua/MBETHKE/CHECKSUMS ; https://mirrors.edge.kernel.org/CPAN/modules/by-module/Lingua/MBETHKE/Lingua-LO-NLP-v1.0.3.meta .
