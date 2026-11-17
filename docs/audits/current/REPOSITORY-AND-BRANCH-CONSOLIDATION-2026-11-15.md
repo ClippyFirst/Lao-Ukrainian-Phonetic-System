@@ -873,3 +873,11 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - Issues #9 and #99 remain open and evidence-limited: external G2P diagnostics are not independent gold; human IPA gold remains 0; accuracy remains null. Lingua::LO::NLP v1.0.3 was screened but not executed (DNS blocker) and not adopted as baseline.
 - No runtime, mapping, IPA/corpus/model data, generated artifact or deployment changed in PR #272. The earlier audit branch was preserved; no force-push, deletion or rebase.
 - Readiness: engineering-verified research prototype, not linguistically validated or release-ready.
+
+
+## Independent G2P candidate screening — 2026-11-17
+
+- Re-screened `Lingua::LO::NLP` v1.0.3 using primary MetaCPAN pages. It is a 2017 Perl 5-licensed Lao segmentation/analysis/experimental-IPA implementation. Its syllable-only API may silently discard non-Lao or invalid fragments; use `get_fragments` for a comparison that preserves input coverage.
+- Attempted to obtain the exact CPAN archive for runtime screening. Local Perl 5.40.1 is installed, but DNS resolution of `cpan.metacpan.org` failed. No runtime result is claimed and no baseline is adopted.
+- Issue #9 was updated with primary-source links, API limitations and the exact blocker. The comparison remains PARTIAL pending reproducible package acquisition and execution on a rights-cleared sample; this does not create independent IPA gold.
+- No branches were overwritten or deleted. No runtime, corpus, IPA, model or generated data changed.
