@@ -1,3 +1,11 @@
+## Current continuation — LOC 2012 Word/PDF Note 10 discrepancy (2026-11-17)
+
+- Starting main for this continuation: `aae9a7f2eb688932dc8d3bede390a1f7e4185a0e` (PR #251 and documentation closeout PR #252 merged). Exact-main Verify #4611 / run 44086036717 succeeded on PR #251 merge commit `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`; subsequent main Verify #4615 / run 44086592131 succeeded on `aae9a7f2eb688932dc8d3bede390a1f7e4185a0e`.
+- The preferred official LOC 2012 Word source gives `ຄຼິສຕຽນ (khitsatīan)` in Notes 3 and 10. The published 2012 PDF gives a conflicting Note 3/10 example `ຫຼັກສາດ (khitsatān)`. LOC's source-document index explicitly says to use Word rather than PDF when copying table data; preserve the conflict in the evidence registry rather than treating the examples as equivalent.
+- The historical 1997 PDF text extraction exposes romanized `khitsatian`, but its Lao glyphs are corrupted; no exact 1997 Lao-script spelling is asserted.
+- Added claim `CLM-LAO-ALA-LC-NOTE10-PDF-WORD-DISCREPANCY`, updated both source rows and the preferred-source claims. Registry integrity after the update: 83 unique sources / 109 unique claims, no duplicate IDs or missing source references.
+- Added a negative runtime regression for exact Word-source Lao input `ຄຼິສຕຽນ`: current Vientiane parser must withhold the whole token as unresolved, without IPA/Ukrainian guessing. This is a fail-closed guard, not a successful source parser. The Latin romanization crosswalk still supplies the `ສ` coda/onset roles manually.
+- Automatic orthographic syllabification and overlapping coda/onset role derivation remain PARTIAL/BLOCKED pending reviewed source syllable spans, further positive/negative examples and Lao-specialist adjudication. No runtime phonological mapping, IPA gold, corpus, dictionary, model or generated artifact is added.
 ## Current continuation — LOC Note 10 Word source inspected (2026-11-17)
 
 - Current main at start of this continuation: 72a555df57386051321f0f7707923ae61305beed (PR #249 merged as 825d7bf91d756c7abda884e2348a8fdfd82ec31f; PR #250 docs closeout merged as 72a555df57386051321f0f7707923ae61305beed). Exact-main Verify #4562 / run 44083809194 passed on 72a555df57386051321f0f7707923ae61305beed.
