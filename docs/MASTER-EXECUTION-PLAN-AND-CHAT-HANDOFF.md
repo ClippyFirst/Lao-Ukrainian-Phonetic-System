@@ -5262,3 +5262,12 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - PR #145 is the only remaining open PR. It is 24 commits ahead / 398 behind main. Its typed IPA stage-1 API already exists in main; its remaining material change is neural-first CLI default and explicit `--to-ukrainian`, which conflicts with the current deterministic-first CLI contract. It remains untouched pending an explicit architecture decision.
 - Issues #9 and #99 remain open. The pinned `lao2ipa==1.0.0` diagnostic harness already records package version, Python/platform, source revision, fixture and harness hashes, NFC policy, raw outputs and a SHA-256 sidecar; however, its 37 engineering fixtures are not independent gold. Rights-cleared source-attributed lexical sample and expert review of tone/segmental mismatches remain outstanding. Issue #99 requires two independent Lao annotators, an adjudicator and curator; no recruitment or annotation is claimed.
 - Readiness remains an engineering-verified research prototype, not linguistically release-ready. Independent IPA gold=0; empirical accuracy=null; automatic LOC Note 10 source-role derivation PARTIAL/BLOCKED; modern Lao grammar and specialist review remain open.
+
+
+## Post-closeout live-main recheck — 2026-11-17
+
+- Rechecked the repository default branch after the prior closeout. main remains at 28f06be855306e272268309361fe1a850bb8b8b6; there were no intervening commits or newly opened PRs.
+- PR #264 is merged as 28f06be855306e272268309361fe1a850bb8b8b6. The exact-main Verify workflow #44118815287 (https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44118815287) completed SUCCESS on that exact SHA.
+- The only open PR remains #145. Its typed IPA stage-1 API is already present on main; its remaining neural-first CLI-default change is an architecture decision and remains deferred. The PR branch is preserved without rebase, force-push or merge.
+- Research issues #9 and #99 remain open: the former still needs a rights-cleared, source-attributed comparison sample and expert review; the latter still needs two independent annotators, an adjudicator and a curator. Independent adjudicated IPA gold remains 0.
+- The final engineering checkpoint is unchanged: engineering-verified research prototype, not linguistically release-ready. No new linguistic claims, corpus records, IPA gold, or runtime behavior were added during this recheck.
