@@ -30,6 +30,8 @@ class CandidateLatticeGraphTests(unittest.TestCase):
         self.assertEqual(
             [edge["surface"] for edge in result["dead_candidates"]], ["ab"]
         )
+        self.assertEqual(result["convergence_offsets"], [0, 1, 3])
+        self.assertEqual(result["ambiguity_eyes"], [])
 
     def test_multiple_complete_paths_are_preserved_as_ambiguous(self):
         result = _build_candidate_lattice(
@@ -39,6 +41,12 @@ class CandidateLatticeGraphTests(unittest.TestCase):
         self.assertEqual(result["complete_path_count_capped"], 2)
         self.assertIsNone(result["unique_path"])
         self.assertEqual(result["dead_candidate_count"], 0)
+        self.assertEqual(result["convergence_offsets"], [0, 3])
+        self.assertEqual(len(result["ambiguity_eyes"]), 1)
+        self.assertEqual(result["ambiguity_eyes"][0]["surface"], "abc")
+        self.assertEqual(
+            result["ambiguity_eyes"][0]["complete_path_count_capped"], 2
+        )
 
     def test_unsegmentable_word_has_no_complete_path(self):
         result = _build_candidate_lattice(
@@ -47,6 +55,17 @@ class CandidateLatticeGraphTests(unittest.TestCase):
         self.assertEqual(result["status"], "NO_COMPLETE_PATH")
         self.assertEqual(result["complete_path_count_capped"], 0)
         self.assertIsNone(result["unique_path"])
+
+    def test_two_ambiguity_regions_are_separated_by_a_convergence_point(self):
+        # The first and last two-character regions are ambiguous; offset 2
+        # is traversed by every complete path and separates the two eyes.
+        result = _build_candidate_lattice(
+            "abcd", self.parser_for({"a", "ab", "b", "c", "cd", "d"}), {}
+        )
+        self.assertEqual(result["convergence_offsets"], [0, 2, 4])
+        self.assertEqual(
+            [eye["surface"] for eye in result["ambiguity_eyes"]], ["ab", "cd"]
+        )
 
     def test_path_count_is_saturated_at_two(self):
         # Three possible paths exist: a+bc, ab+c, and a+b+c.
