@@ -703,3 +703,7 @@ Exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-U
 | Runtime /ʔ/ insertion | BLOCKED pending context evidence | Requires a declared speech/reading profile, validated prosodic-word boundaries, independent Lao-specialist review, and positive/negative source-located examples before code or Ukrainian output changes. |
 
 No IPA-gold examples, runtime rules, target correspondences or generated artifacts were added. The exact evidence scope and source disagreement are recorded in `PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md`.
+
+### Exact-head engineering verification — initial research/test batch
+
+Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079440345) passed on the initial research/test head `1f59909d7af03d8f4fb0c7c3a2e6ae35f8b842b1`: IPA-gold schema; repository/data/evidence audit; 357 Python tests; external-G2P syntax/CLI; 204 browser-engine tests; build/canonical data generation; generated-data reproducibility; 30 Chromium UI tests; and built-page/relative-asset checks. This confirms engineering consistency of the evidence update and regression test only; it does not resolve the linguistic analysis. A final exact-head run is required after the verification metadata sync.
