@@ -680,3 +680,8 @@ The API inventory contained 102 refs; only the six directly relevant divergent c
 - Verify #4518 / run 43971358699 completed SUCCESS on exact pre-sync HEAD `ff6b62198510fc7bb69e2b132bddcffaaa487019`. All configured steps passed, including schema/evidence, Python (including three Ishida segmentation fixtures), external-G2P, browser engine, build/reproducibility, Chromium UI and built-page/relative-asset checks.
 - Reconciled the newly expanded Ishida source details into the existing `SRC-ISHIDA-ORTHO-2026` record already used by the onset/vowel registries instead of retaining a duplicate source row. Final registry: 81 unique sources / 104 unique claims; no duplicate IDs or missing source references.
 - This final synchronization is registry/documentation-only; the test additions and all other evidence were included in the successful #4518 parent checkpoint. A fresh exact-head workflow is triggered by this synchronization.
+
+
+## Coda inventory source discrepancy — 2026-11-17
+
+Ishida's explicit final-position list (nine letters) and the consonant-class chart (which additionally lists ຢ) disagree; the IPA correspondence table maps final /j/ to ຍ. The project preserves the nine source-explicit mappings, keeps ຢ fail-closed, and now checks this with scripts/audit.py plus a Python regression. The phoneme-category data/lao/codas.csv is not the parser's orthographic final-letter lookup. Implicit /ʔ/ after short vowels remains an evidence-limited dialect question. No runtime mappings changed. Registry: 81 sources / 105 claims expected. Exact-head CI pending.
