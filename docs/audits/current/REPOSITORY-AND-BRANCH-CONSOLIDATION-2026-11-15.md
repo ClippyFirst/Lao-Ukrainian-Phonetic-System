@@ -818,3 +818,11 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 
 
 - PR #266 exact-head verification: Verify #44145883693 and #44145911419 both SUCCESS on 7e6efba976d1a7b91934ca2e6ebc31dce92932f7; 368 Python, 205 browser-engine and 30 Chromium UI tests passed; repository/data/evidence audit reports 84 sources / 112 claims. No runtime or inventory change.
+
+
+## PR #266 merged-main closeout — 2026-11-17
+
+- PR #266 merged by squash to main as `943c395fe8115972b18245a3a62db466b69976b5`.
+- Exact-main Verify #44146512167 SUCCESS on that exact SHA: 368 Python, 205 browser-engine, 30 Chromium UI; schema, repository/data/evidence audit (84 sources / 112 claims), external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks all passed.
+- New evidence is scoped: ICANN/Lao Script Generation Panel 2017 excludes ຢ from its DNS root-zone final-consonant set and distinguishes initial /j/ ຢ from final /j/ ຍ. Existing nine-item modern parser inventory is unchanged; broader modern/loanword reconciliation remains partial.
+- Only open PR remains #145. Issues #9 and #99 remain open. No runtime, corpus, model, dictionary or generated artifact changed; no branches deleted or force-pushed.
