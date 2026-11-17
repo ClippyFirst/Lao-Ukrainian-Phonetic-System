@@ -5214,3 +5214,13 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 ## Bethke pinned-source retrieval follow-up — 2026-11-17
 
 The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98` was retrieved through the GitHub repository API, despite the earlier `git clone` DNS failure. Static inspection of `Data.pm` confirms `x8` excludes ສ and `x9` admits ສ only paired with U+0E4C LAO CANCELLATION MARK; the current LOC Word form `ຄຼິສຕຽນ` has no U+0E4C. `get_syllables()` silently drops invalid fragments; `get_fragments()` preserves them. The package was not executed because `Lingua::LO::NLP::Syllabify` is not installed in the local Perl environment and direct container network access still fails DNS. No code was copied/imported and no license compatibility determination was made. Static source review = DONE_VERIFIED; runtime comparison = BLOCKED; Note 10 automatic role derivation = PARTIAL/BLOCKED.
+
+
+## Orthographic candidate lattice prototype — 2026-11-17
+
+- Starting main: `18bf4fed76fd9f7458fe2b4b28b512ccfaf4045d`; working branch: `feat/orthographic-candidate-lattice-20261117`.
+- Added `src/lao_ukrainian/orthographic_lattice.py`: enumerate current-recognizer syllable candidates as edges between NFC code-point offsets; prune edges not on any complete path; classify zero/one/multiple complete paths; cap path count at 2; expose the unique path only when unique.
+- Added `tests/test_orthographic_lattice.py` for dead-branch pruning, ambiguity preservation, no-path behavior, path-count saturation, a common Lao multisyllabic token, exact LOC Note 10 fail-closed behavior, one-token input and NFC offset contract.
+- This is a separate inspection API. It does not change `segment_syllables()`, production output, IPA, tone, romanization, or generated artifacts. It does not implement the complete historical Berment grammar or overlapping shared-coda/onset roles.
+- Added `docs/audits/current/ORTHOGRAPHIC-CANDIDATE-LATTICE-2026-11-17.md` with evidence scope and acceptance limits. Candidate graph implementation is pending exact-head CI; local test execution is not available in this environment.
+- Acceptance still requires modern source-located orthographic examples, adversarial Unicode/loanword cases, specialist adjudication, and a separate representation if shared grapheme roles overlap. LOC Note 10 automatic source-role derivation remains PARTIAL/BLOCKED; global ambiguity resolution remains BLOCKED/evidence-limited.
