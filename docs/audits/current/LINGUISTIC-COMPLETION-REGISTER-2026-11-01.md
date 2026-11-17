@@ -1,3 +1,16 @@
+## Ishida coda inventory reconciliation — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Nine explicitly enumerated modern Lao coda spellings | DONE_VERIFIED (source-to-registry consistency only) | Ishida's explicit final-position list enumerates ບ ດ ກ ມ ນ ຣ ງ ວ ຍ; all nine already have corresponding ipa_final values in consonants.csv. The audit and a focused regression now enforce the exact map. This is not independent IPA gold. |
+| ຢ as a coda | BLOCKED / source-internal conflict | Ishida's consonant-class chart includes ຢ in the coda row, but the explicit nine-item final-position list omits it and the IPA correspondence table maps final /j/ to ຍ. Runtime remains fail-closed; acceptance requires independent primary evidence or Lao-specialist adjudication. |
+| Short-vowel /ʔ/ realization | PARTIAL / evidence-limited | Ishida says /ʔ/ occurs after short vowels, but this is a phonological final, not one of the nine ordinary final graphemes. Whether to emit /ʔ/ categorically in the project's selected dialect profile needs explicit phonetic adjudication and positive/negative fixtures. |
+| data/lao/codas.csv semantics | PARTIAL | It is a phoneme-category table, not the parser's grapheme-to-final map; _find_coda reads consonants.csv. Keep /ʔ/ and analysis-dependent /l,r/ distinct from orthographic final-letter inventory. |
+
+**Registry:** 81 unique sources / 105 unique claims expected after this update; no duplicate IDs or missing source references. **Readiness:** engineering-verified partial research prototype, not release-ready.
+
+---
+
 ## PR #247 — exact-head verification and status refresh (2026-11-16)
 
 | Workstream | Status | Current evidence / acceptance |
