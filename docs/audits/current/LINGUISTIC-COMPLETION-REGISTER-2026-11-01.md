@@ -824,3 +824,17 @@ Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-
 | Combined engineering verification | DONE_VERIFIED (engineering only) | Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. This does not establish linguistic accuracy. |
 
 The integration branch retains PR #247's reviewed head as an ancestor and applies PR #248's delta through file-level reconciliation; both original PRs remain open and untouched. No runtime or generated artifact changes are included.
+
+
+## PR #249 integration and post-merge verification — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| PR #247/#248 evidence and regression integration | DONE_VERIFIED (integration/engineering only) | PR #249 merged as `825d7bf91d756c7abda884e2348a8fdfd82ec31f`; integrated exact-head Verify #4557 / run 44082038728 SUCCESS (359 Python, 204 browser-engine, 30 Chromium UI; schema/evidence, external-G2P, build, reproducibility and built-page checks). Exact-main Verify run 44083165575 SUCCESS on the merged SHA. |
+| LOC Note 10 attribution | PARTIAL | The romanized example is attributed to LOC 2012; exact Lao glyph sequence remains unresolved pending preferred Word source or Lao-specialist confirmation. Current crosswalk fixtures inject source roles manually; automatic double-role derivation is not established. |
+| Modern nine-coda orthographic profile | DONE_VERIFIED (scoped source/registry consistency) | Nine mappings are asserted by audit/tests; `ຢ` remains fail-closed due Ishida's internal chart/list discrepancy. This is not independent IPA gold. |
+| Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda (1994), Lew (2014) and Cole (2016 working paper) support distinct scoped/competing analyses; no unconditional /ʔ/ insertion is justified. |
+| Runtime /ʔ/ insertion | BLOCKED | Requires explicit dialect + speaking/reading profile, validated prosodic-word boundaries, independent Lao-specialist adjudication and source-located positive/negative examples. No runtime change made. |
+| Independent IPA gold / accuracy | BLOCKED / NOT AVAILABLE | Gold records = 0; empirical accuracy = null. |
+
+PR #247 and #248 are closed as superseded by merged PR #249; original branches are preserved. PR #145 remains open and untouched (24 ahead / 375 behind main); it requires a separate architecture decision. The merged batch changed evidence/docs/audit/tests only; no runtime, corpus, model, dictionary, generated artifact or deployment changed. Readiness: engineering-verified partial research prototype, not linguistically release-ready.
