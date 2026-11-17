@@ -844,6 +844,7 @@ PR #247 and #248 are closed as superseded by merged PR #249; original branches a
 | Work item | Status | Evidence / remaining acceptance |
 |---|---|---|
 | Exact LOC Note 3/10 source example | DONE_VERIFIED | Official Word source: ຄຼິສຕຽນ (khitsatīan); Note 1 values explain ສ as final (t) and initial s. |
+| Historical LOC 1997 Note 3/10 example | DONE_VERIFIED (historical edition only) | Official 1997 PDF pp. 117–118 gives ກິດສະຕຽນ (khitsatian), distinct from the current 2012 Word-source form. |
 | Source-aware romanization crosswalk | DONE_VERIFIED (manual roles only) | Fixture corrected to khitsatīan and IA_LONG; roles remain explicitly supplied. Verify #4584 / run 44084533002 passed on exact head 536a3c69de6b2455c172c70daa6b427b9790c4da (359 Python, 204 browser-engine, 30 Chromium UI; all configured gates passed). |
 | Automatic Lao source-role derivation | PARTIAL / BLOCKED | Needs validated orthographic syllabifier, exact source-role derivation and independent Lao-specialist review. |
 | Full Note 10 conformance | PARTIAL | Exact source example is resolved; automatic segmentation and generalization beyond the example are not. |
