@@ -571,3 +571,7 @@ The package was not executed on the LOC form: an attempted shallow clone failed 
 ## PR #254 exact-main closeout — 2026-11-17
 
 PR #254 merged as `ca64158ce0b6d92ef0a01956f16ed941277bf446`. Exact PR-head Verify #4668 / run 44088848659 and exact merged-main Verify #4670 / run 44089165636 both passed all configured checks. The new Bethke source record documents a 2017 Phissamay-derived regex syllabifier whose X9 foreign consonants require U+0E4C and whose X8 final consonants exclude ສ; it therefore does not establish an automatic double-role parse for the current LOC Word example ຄຼິສຕຽນ. The package was not executed because GitHub DNS resolution failed; no code was copied. The evidence registries contain 84 unique sources and 110 unique claims. The exact LOC source token remains fail-closed; automatic Note 10 role derivation remains PARTIAL/BLOCKED. No runtime or generated data changed.
+
+## PR #255 exact-main closeout — 2026-11-17
+
+PR #255 merged as `d8314fc527a9e246df9b22ca570a533ff9122679`. Exact-head Verify #4671 / run 44089568451 and exact-main Verify #4672 / run 44089755616 passed all configured checks. The update is documentation-only. The source-role crosswalk still uses manually supplied roles; the Bethke candidate was statically assessed but not executed; exact LOC input remains fail-closed; automatic Note 10 derivation remains PARTIAL/BLOCKED. No runtime, IPA or generated-data changes.
