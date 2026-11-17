@@ -596,3 +596,13 @@ The following potentially relevant historical branches were compared directly wi
 | `feat/mekongphon-first-stage` (PR #145) | 24 | 364 | neural-first API/CLI, docs, tests, benchmark workflow | Open owner-level architecture proposal; leave untouched |
 
 The API inventory contained 102 refs; only the six directly relevant divergent candidates above were individually compared in this refresh. This is not a claim that all 101 non-main refs were individually diff-reviewed. Preserve historical refs. Any future consolidation should be an explicit, file-level, test-backed task rather than a branch cleanup operation.
+
+
+
+## Research continuation branch — Lao short-vowel glottal evidence (2026-11-17)
+
+- Created `research/qualify-lao-glottal-stop-alternation-20261117` directly from current `main` SHA `390302db31b56f5842696c2d81a817689635472b`; it is an isolated evidence/test continuation, not a replay of PR #247.
+- PR #247 remains open, unmerged and mergeable on `docs/correct-loc-note10-source-example-20261116` at `d84afd57bd7bdc3575271cf3d9f51066bb50a044`, 133 commits ahead / 0 behind `main`. Its work is preserved and not duplicated into this branch.
+- PR #145 remains open and untouched; its neural-first architecture proposal remains incompatible with the current deterministic-default contract pending owner decision.
+- This branch's task is deliberately narrow: distinguish orthographic coda graphemes from phonological /ʔ/ and from prosodically conditioned glottal closure. No runtime, model, corpus, dictionary, generated artifact or deployment changes are authorized by the current evidence.
+- Exact-head CI and final branch/PR disposition must be added after the documentation and regression-test batch completes.
