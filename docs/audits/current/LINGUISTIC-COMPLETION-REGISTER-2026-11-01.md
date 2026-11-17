@@ -909,3 +909,5 @@ PR #255 merged as `d8314fc527a9e246df9b22ca570a533ff9122679`. Exact PR-head Veri
 A stale row previously asserted an exact Lao-script spelling for the 1997 Note 3/10 example. This exceeded the available evidence: the PDF text extraction exposes the romanized form `khitsatian`, but its Lao-script glyphs are corrupted and have not been independently verified from page images. The row is corrected to `PARTIAL / glyph evidence limited`; no exact historical Lao-script spelling is asserted. The 2012 Word-source form `ຄຼິສຕຽນ (khitsatīan)` remains the current-table example. This correction changes evidence status/documentation only, not parser behavior or the source claim.
 
 Current registry after PR #254/#255: 84 unique sources / 110 unique claims. Automatic Note 10 source-role derivation remains PARTIAL/BLOCKED; independent IPA gold remains 0.
+
+| Bethke pinned syllabifier source retrieval | DONE_VERIFIED (static only) | Retrieved pinned source via GitHub API; exact X8/X9/X10_3 rule inspected. Runtime remains BLOCKED because package is not installed locally and direct container network access fails DNS. No code copied/imported. |
