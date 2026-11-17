@@ -759,3 +759,12 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - Exact merged-main Verify [run 44086036717](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44086036717) SUCCESS on the exact merge SHA. No local tests are claimed.
 - Registry: 83 unique sources / 108 unique claims, no duplicates, malformed CSV rows or missing claim-source references.
 - Source-example attribution is DONE_VERIFIED. The source-role crosswalk remains an explicitly supplied-role engineering fixture; automatic Lao source-role derivation and full Note 10 conformance remain PARTIAL/BLOCKED. No runtime, IPA, pronunciation, tone, model, corpus, dictionary, generated artifact or Pages deployment changed. Gold=0; accuracy=null.
+
+## External syllabifier assessment — branch checkpoint 2026-11-17
+
+- Starting main for this batch: 433a8c83b181fa56b679ccd0bfcf44e96069736a (after PR #253 LOC Word/PDF discrepancy reconciliation and its verification closeout).
+- Working branch: research/bethke-syllabifier-note10-mainline-2026-11-17. The earlier branch research/bethke-syllabifier-note10-2026-11-17 is preserved and was not rebased or force-updated after main advanced.
+- Added one pinned external software source and one bounded research claim after inspecting the upstream GitHub source, CPAN release metadata and license. No code was imported.
+- The candidate's X9 class includes ສ, but the regex requires X10_3/U+0E4C; X8 excludes ສ. The current LOC Word-source token has no U+0E4C. Static inspection does not demonstrate an automatic Note 10 coda role. Exact package execution remains blocked by DNS failure.
+- This branch changes only source/claim registries and research/matrix/handoff/audit documentation. It does not change runtime, generated artifacts, model, dictionary, corpus, IPA labels or deployment.
+- PR #145 remains open and untouched as a separate owner-level neural-first architecture decision; issues #9 and #99 remain open. No expert outreach or gold annotation was performed.
