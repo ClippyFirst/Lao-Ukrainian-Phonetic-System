@@ -852,3 +852,15 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - PR #269 was documentation-only; it records PR #268's verified merge. No runtime or linguistic data changed.
 - Open PR #145 remains the sole pre-existing open PR; its stage-1 API is already on main and neural-first CLI default remains deferred. Issues #9/#99 remain blocked; independent IPA gold=0 and empirical accuracy=null.
 - No branch deletion, force-push or rebase occurred. Readiness remains an engineering-verified research prototype, not linguistically release-ready.
+
+
+## Live repository / PR reconciliation refresh — 2026-11-17
+
+- Current default branch: main, SHA e5d47c422f7105112a0240129fcd19a57a1a9b45.
+- Latest exact-main workflow: Verify #4748 / [run 44152726150](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44152726150), SUCCESS on the exact main SHA. All configured workflow steps passed, including schema/evidence/data audit, Python, browser-engine and Chromium UI tests, external-G2P harness checks, build, generated-data reproducibility and built-page/relative-asset checks.
+- Open PR inventory: only #145. Fresh comparison of main to a70769d7005e40e15b68a3df181cadbfa4cce51f: 24 commits ahead / 407 behind; merge base c0d7218da907dbe0bae6cadb42824ca0cd09b83a. The stage-one typed IPA API is already implemented on main. The remaining substantive delta changes the CLI default to neural-first and requires explicit --to-ukrainian; this is not silently reconciled because it conflicts with the deterministic-first mainline contract. PR #145 stays open and untouched pending architecture direction.
+- Open research issues: #9 (rights-cleared, source-attributed independent comparison sample and expert mismatch review) and #99 (human IPA gold pilot). Gold remains 0; empirical accuracy remains null.
+- The previously created audit/pr145-reconciliation-20261117 branch is divergent (2 commits ahead / 9 behind current main) and contains an earlier snapshot of the PR comparison. It was not rebased or overwritten; its historical work is preserved. This refresh is made on a new branch based on current main instead.
+- Local clone attempt failed before checkout because the execution environment could not resolve github.com; hosted exact-main CI is the verification evidence. No local test pass is claimed.
+- No runtime, phonological mapping, IPA labels, corpus, model, dictionary, generated artifact, deployment, or external repository setting changed. No branch was deleted or force-pushed.
+- Readiness remains an engineering-verified research prototype, not linguistically validated or release-ready.

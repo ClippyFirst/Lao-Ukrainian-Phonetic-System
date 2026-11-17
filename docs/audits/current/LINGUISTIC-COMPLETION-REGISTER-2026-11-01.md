@@ -997,3 +997,20 @@ Exact-head evidence checkpoint for this coda-role cross-check: PR #266 source/ev
 | Complete modern-vs-loan coda profile | PARTIAL / specialist evidence | Broader ICANN 14-item DNS list must not be promoted as universal modern inventory; specialist review remains needed. |
 
 No runtime or linguistic output changed. Independent IPA gold remains 0; empirical accuracy remains null.
+
+
+## Live-main status refresh — 2026-11-17
+
+| Workstream | Status | Current evidence / acceptance |
+|---|---|---|
+| Typed IPA stage-one boundary and deterministic-first runtime contract | DONE_VERIFIED (engineering) | Present on main; latest exact-main Verify #4748 / run 44152726150 passed all configured workflow steps. |
+| Orthographic candidate DAG, dead-edge pruning, convergence offsets and ambiguity eyes | DONE_VERIFIED (bounded engineering API) | Verified in prior exact-head and exact-main CI. Candidate inventory remains limited to the current single-syllable recognizer. |
+| Complete contemporary Lao orthographic grammar | PARTIAL / TODO | Berment (2004) is historical grammar evidence only; exact modern terminals, Unicode reconciliation, adversarial coverage and specialist adjudication remain outstanding. |
+| LOC Note 10 shared coda/onset role derivation | PARTIAL / BLOCKED | Current exact Word-source token remains fail-closed; candidate external syllabifier does not establish the unmarked shared role. Acceptance requires source-located role spans, positive/negative cases and Lao-specialist review. |
+| Independent external-G2P comparison | PARTIAL / BLOCKED | lao2ipa diagnostic covers 37 existing engineering fixtures only (37/37 project fixture outputs; 0/37 external matches); not an independent sample or gold. Issue #9 requires rights-cleared attributed data, reproducible environment/artifact and expert review of mismatches. |
+| Independent adjudicated IPA gold pilot | BLOCKED / human acquisition | Gold files remain empty (0 records). Issue #99 requires approved convention sheet, two independent qualified annotators, third adjudicator, curator, blind intake and a rights-cleared 30-item pilot. |
+| Neural-first CLI default | DEFERRED / architecture decision | PR #145 remains open; freshly compared at 24 ahead / 407 behind main. Typed IPA API is already on main; only the residual default/CLI contract is outstanding. |
+| Hosted engineering verification | DONE_VERIFIED | Exact-main Verify #4748 / run 44152726150 passed all configured steps on e5d47c422f7105112a0240129fcd19a57a1a9b45. |
+| Local clean-clone verification | BLOCKED / environment | Clone failed before checkout: DNS could not resolve github.com; no local tests claimed. |
+
+No new linguistic correctness or accuracy claim follows from this refresh. Empirical accuracy remains null.
