@@ -55,6 +55,20 @@ def main():
         assert row["status"] == "analysis-dependent", f"unsupported special tone status: {row['rule_id']}"
         assert row["evidence_id"] in claim_ids, f"unknown special tone claim: {row['rule_id']}"
     consonant_by_grapheme={r["grapheme"]: r for r in consonants}
+    # Ishida (2026) explicitly enumerates these nine modern Lao coda spellings.
+    # Its class chart also lists ຢ, but the explicit final-position list omits it
+    # and the IPA correspondence table assigns final /j/ to ຍ. Keep ຢ fail-closed.
+    expected_modern_coda_ipa={
+        "ບ":"p", "ດ":"t", "ກ":"k", "ມ":"m", "ນ":"n",
+        "ຣ":"n", "ງ":"ŋ", "ວ":"w", "ຍ":"j",
+    }
+    actual_modern_coda_ipa={g:r["ipa_final"] for g,r in consonant_by_grapheme.items() if r["ipa_final"]}
+    assert actual_modern_coda_ipa==expected_modern_coda_ipa, (
+        f"modern Lao orthographic coda mapping drift: {actual_modern_coda_ipa}"
+    )
+    assert not consonant_by_grapheme["ຢ"]["ipa_final"], (
+        "ຢ remains unresolved as a coda in Ishida (2026); do not promote it without new evidence"
+    )
     allowed_labialized_ipa={"tʷʰ", "tɕʷ", "kʷ", "kʷʰ", "ʔʷ", "sʷ", "ŋʷ", "lʷ"}
     for row in onset_clusters:
         base=consonant_by_grapheme.get(row["base"])
