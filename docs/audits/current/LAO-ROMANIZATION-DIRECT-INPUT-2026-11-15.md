@@ -544,7 +544,7 @@ The preferred Word source gives the exact Note 3 and Note 10 example **ຄຼິ
 
 This resolves the preferred LOC source example but does not erase the published PDF discrepancy. It does **not** establish automatic source-script syllabification in ClippyFirst: current positive/negative fixtures still supply the ສ coda/onset roles manually. The browser test containing ຄິຼສຕຽນ remains only a Latin-mode separation test and is not the LOC example; the exact source spelling is ຄຼິສຕຽນ.
 
-**Disposition:** exact Note 10 source example = DONE_VERIFIED; source-role crosswalk fixture = DONE_VERIFIED (manual roles only); automatic Lao source parsing and full Note 10 conformance = PARTIAL/BLOCKED pending an independently reviewed orthographic syllabifier and Lao-specialist adjudication. No runtime phonological rule or IPA gold is inferred.
+**Disposition:** preferred Word-source Note 10 example = DONE_VERIFIED; published PDF/Word divergence = SOURCE CONFLICT RECORDED; 1997 romanized example = PARTIAL (glyph evidence limited); source-role crosswalk fixture = DONE_VERIFIED (manual roles only). The exact Lao Word-source form is now covered by a negative runtime regression that withholds the entire token without IPA/Ukrainian guessing. Automatic Lao source parsing and full Note 10 conformance = PARTIAL/BLOCKED pending an independently reviewed orthographic syllabifier and Lao-specialist adjudication. No runtime phonological rule or IPA gold is inferred.
 
 ## Historical LOC 1997 Note 10 example — edition distinction (2026-11-17)
 
