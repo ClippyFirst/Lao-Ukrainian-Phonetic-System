@@ -797,3 +797,19 @@ New registry entries: 81 unique source IDs / 99 unique claim IDs after this chec
 | Ambiguity lattice | TODO (fallback) | Retain candidate alternatives for genuine residual ambiguity; do not assume ordinary Lao syllable segmentation is generally irreducible. |
 
 Registry totals: 81 unique sources / 104 unique claims; no duplicate IDs or missing claim-to-source references.
+
+## Lao short-vowel glottal realization — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Written coda grapheme inventory | DONE_VERIFIED (orthographic level only) | Nine explicit modern coda spellings remain mapped in `consonants.csv`; /ʔ/ is not a tenth written coda grapheme. |
+| Phonological /ʔ/ category | DONE_VERIFIED (scoped category only) | Ueda (1994) includes /ʔ/ among central-Vientiane phonological codas; retain it in `codas.csv` without conflating it with the grapheme lookup. |
+| Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda (1994) distinguishes exceptional non-final light CV syllables and spelling-based CVʔ readings; Lew (2014) treats slow/clear final closure after short vowels as redundant suprasegmental marking; Cole (2016) working paper proposes word-final epenthesis and reports no word-internal epenthesis in one context. No unconditional insertion rule is supported. |
+| Runtime /ʔ/ insertion | BLOCKED pending context evidence | Requires a declared speech/reading profile, validated prosodic-word boundaries, independent Lao-specialist review, and positive/negative source-located examples before code or Ukrainian output changes. |
+
+No IPA-gold examples, runtime rules, target correspondences or generated artifacts were added. The exact evidence scope and source disagreement are recorded in `PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md`.
+
+### Exact-head engineering verification — initial research/test batch
+
+Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079440345) passed on the initial research/test head `1f59909d7af03d8f4fb0c7c3a2e6ae35f8b842b1`: IPA-gold schema; repository/data/evidence audit; 357 Python tests; external-G2P syntax/CLI; 204 browser-engine tests; build/canonical data generation; generated-data reproducibility; 30 Chromium UI tests; and built-page/relative-asset checks. This confirms engineering consistency of the evidence update and regression test only; it does not resolve the linguistic analysis. Final pre-metadata-sync Verify #4546 / [run 44079888990 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079888990) passed on `f088fab50ffa4675419b9994d6d76adf79d717de`: 357 Python, 204 browser-engine and 30 Chromium tests plus all configured schema, evidence, external-G2P, build, reproducibility and built-page checks. A final exact-head run validates the ensuing verification-report-only update.
+
