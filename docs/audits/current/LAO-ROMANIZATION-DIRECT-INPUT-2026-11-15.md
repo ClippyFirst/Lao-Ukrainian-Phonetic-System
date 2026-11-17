@@ -308,7 +308,7 @@ The guideline's “minimal orthographic unit” and smallest-consistent-segmenta
 
 ### Rights and integration decision
 
-Mendeley Data version 2 lists CC BY 4.0. The paper's ethical statement separately says the source websites allowed research and non-commercial reuse. These statements do not, by themselves, prove that every underlying source sentence may be redistributed or used commercially under CC BY 4.0. Require item-level source locators and rights review before importing examples. The project therefore records the corpus as a **research candidate only**; no HVULao text, model, or dependency is imported into the runtime or gold corpus.
+Mendeley Data version 2 lists CC BY 4.0 for the dataset. The journal article's publication page separately states CC BY 3.0 for articles; that licence applies to the article, not automatically to the dataset or its upstream texts. The paper's ethical statement says the source websites explicitly allowed text reuse for research and non-commercial purposes. Table 2 reports seven source domains and aggregate sentence counts, but does not provide item-level sentence-to-URL permission mapping. These are distinct rights scopes: neither the article's CC BY 3.0 nor the dataset's CC BY 4.0 label alone establishes commercial redistribution rights in the underlying government/news/institutional source texts. Require item-level source locators and rights review before importing examples, especially for commercial use. The project therefore records the corpus as a **research candidate only**; no HVULao text, model, or dependency is imported into the runtime or gold corpus.
 
 ### Disposition
 
@@ -383,9 +383,155 @@ Unit tests cover longest/shortest strategy divergence, exact alignment filtering
 
 The earlier repository wording incorrectly identified `ຄິຼສຕຽນ` as the LOC Note 10 source example and called its browser regression an automatic Note 10 test. This is corrected:
 
-- The official LOC 1997 table's extracted text explicitly gives `ຄິດສະຖານ (khitsatān)` for Note 10. The 2012 table retains the same double-function rule and romanized example; its Lao glyph extraction is inconsistent across text indexes, so the exact 2012 source spelling should not be asserted without specialist inspection of the printed glyphs.
+- The LOC 2012 Note 10 gives the romanized example `khitsatān` (also repeated in Note 3). The exact Lao glyph sequence is unresolved: the currently retrievable PDF text extraction returns `ຂິດສະຕານ`, while the rendered PDF glyphs are not sufficiently clear in this inspection to certify that reading, and the repository's prior assertion `ຫຼັກສາດ` is therefore withdrawn pending the preferred Word source or Lao-specialist inspection. The available 1997 retrieval exposes only title/version metadata; its example glyphs were not independently inspected, so no exact 1997 glyph form is asserted.
 - The positive/negative unit crosswalk tests now use the romanized example `khitsatān`, but the source syllable roles are manually supplied. The `ສ` final-`t` / onset-`s` assignment is a synthetic crosswalk fixture, not a claim that the code has parsed the LOC source word.
 - The browser test with `ຄິຼສຕຽນ` is retained under an accurate name as a mode-separation test: Lao script entered in Latin romanization mode is withheld. It is not LOC Note 10 evidence.
-- Acceptance remains PARTIAL until a Lao specialist confirms the exact 2012 source-script example and syllable/role analysis, and the upstream Lao parser derives those roles without manual injection.
+- Acceptance remains PARTIAL until a Lao specialist confirms the source syllable/role analysis and the upstream Lao parser derives those roles without manual injection. The printed 2012 text-layer form is now identified, but this is not a substitute for linguistic adjudication.
 
-Sources: [LOC ALA-LC Lao table (2012)](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LOC ALA-LC Lao table (1997), Note 10](https://www.loc.gov/catdir/cpso/romanization/lao-1997.pdf).
+Sources: [LOC ALA-LC Lao table (2012), Notes 3 and 10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf); [LOC ALA-LC Lao table (1997)](https://www.loc.gov/catdir/cpso/romanization/lao-1997.pdf) (image-only in the available text extraction; exact glyph form not asserted).
+
+## LOC source-version authority check — 2026-11-16
+
+The current [LOC ALA-LC Romanization Tables index](https://www.loc.gov/catdir/cpso/roman) lists Lao (2012) as the current table and 1997 only as an earlier version. LOC explicitly says earlier versions are for reference only and are not to be used in current cataloging; it also instructs users to use the source documents rather than PDF versions when copying data. This independently confirms the repository's decision to use the 2012 table as its primary standard and retain the 1997 file only as historical context. Note 9's three-way policy remains explicit in the 2012 source: ordinary Lao forms use the shortest written form that can stand alone; Pali/Sanskrit loans follow that same rule; other loans follow division in their original language. This is a rule-level requirement, not a general instruction to run a generic Lao word segmenter.
+
+Source: [LOC ALA-LC Romanization Tables index](https://www.loc.gov/catdir/cpso/roman); [LOC Lao Romanization Table (2012), Notes 9–10](https://www.loc.gov/catdir/cpso/romanization/lao.pdf).
+
+### Source-document retrieval limitation
+
+LOC's [Source Documents for Romanization Tables](https://www.loc.gov/catdir/cpso/romansource.html) page says the tables are created from Microsoft Word source files and explicitly instructs users to copy from those source documents rather than the PDFs. Its Lao entry links to [lao.doc](https://www.loc.gov/catdir/cpso/romanization/lao.doc). The linked legacy `.doc` file was not retrievable in this audit: the web reader rejected its MS Word content type and a direct file download failed. Its contents are therefore **not inspected**. The accessible LOC 2012 PDF text layer is used for the Note 9/10 rule verification in this audit, but implementation data-copying should be checked against the source DOC once an environment can read it. This is a specific evidence limitation, not a reason to infer different rules from the PDF.
+
+## Lao national / UN romanization status evidence — updated 2026-11-16
+
+A newer primary source refines the chronology but does not justify importing a Lao-specific RTGS layer:
+
+- The current [UNGEGN Romanization Systems index](https://unstats.un.org/unsd/ungegn/romanization/) lists Lao version 4.0 dated 2013-09-24 under "Other languages/scripts", not among the 30 systems recommended by the United Nations. The index is the current UN status listing; it is not a complete national language policy.
+- The 2023 UNGEGN Working Group minutes record that the Lao National Geographic Department had drafted Toponymic Guidelines in two parts (general writing systems and romanization), sought ministry feedback, and planned to submit a final draft to the government for approval.
+- The 2025 UNGEGN Working Group report (GEGN.2/2025/26/CRP.26, dated 13 January 2025) says that, as of July 2024, Lao PDR was finalizing a draft of toponymy guidelines; the Working Group hoped the romanization system would be put forward for consideration at the 2027 UNGEGN Session. This is a reported expectation, not evidence that the draft was finalized, submitted, approved, or implemented.
+- The 2025 UNGEGN country-name document still identifies BGN/PCGN 1966 as the romanization used for the Lao PDR formal name. That is evidence for this UN country-name record only; it is not a complete Lao transcription standard.
+- The 2023 UK Government / PCGN Laos Toponymic Factfile states that no official romanization system was in use in Laos for current Lao orthography at that time and that PCGN continued using BGN/PCGN 1966 while work with Lao authorities proceeded. Keep this statement explicitly time-bounded to 2023.
+
+The registry records these scopes as `SRC-UNGEGN-APPROVAL-PROCESS-2026`, `SRC-UNGEGN-ROMANIZATION-STATUS`, `SRC-UNGEGN-LAO-DRAFT-2023`, `SRC-UNGEGN-LAO-MINUTES-2023`, `SRC-UNGEGN-LAO-STATUS-2025`, `SRC-UNGEGN-LAO-NAME-2025` and `SRC-PCGN-LAO-FACTFILE-2023`, with synthesis claim `CLM-LAO-ROMANIZATION-STATUS-2025`. **Disposition remains BLOCKED:** no complete authoritative Lao-specific RTGS table or approved Ukrainian target adaptation has been established. Do not substitute Thai RTGS or treat BGN/PCGN 1966 as a universal phonetic transcription.
+The current UNGEGN approval-process document (WG-reviewed 28 May 2026) clarifies the acceptance path for geographical-name romanization: national development, local implementation, formal submission, WG-RS review, plenary presentation and adoption. A proposal is expected to include a conversion table and evidence of national implementation. This defines future evidence needed; it does not establish that Lao has progressed beyond the 2025 status report.
+
+
+## LOC Word source retrieval recheck — 2026-11-16
+
+The official [LOC source-document index](https://www.loc.gov/catdir/cpso/romansource.html) continues to identify the Lao Word file and explicitly says to use Word source documents rather than PDF copies when copying table data. A fresh retrieval attempt against the linked official `lao.doc` endpoint again failed: the web retrieval layer rejects its `application/msword` content type, and a direct file download did not complete. The Word document has **not** been inspected. The 2012 PDF text-layer statements and examples in this audit remain attributed to the PDF/text layer only; they must not be described as Word-source verification.
+
+**Acceptance to unblock:** obtain the exact official LOC `lao.doc` file through a compatible document-capable environment or user-supplied copy, inspect its table/notes, and reconcile any differences before changing source-derived claims or fixtures. No linguistic inference or runtime change is justified by the failed retrieval.
+
+
+## Ueda (1994) full-text phonology review — 2026-11-16
+
+A full-text review of Reiko Ueda, *The Phonology of the Vientiane Dialect of Lao* (1994), adds a material constraint for source-side analysis. Ueda explicitly reports no phonological consonant clusters in the described Vientiane spoken dialect despite consonant-letter sequences in Lao spelling. In the examples in §2.3 (printed pp. 100–101), written `w` can correspond to spoken /ua/ or have no independent spoken segment. The paper also lists positional onset and coda inventories (§§2.1, 3.2), with some consonants occurring in both positions.
+
+This is **phonological evidence**, not an orthographic segmentation specification. It does not provide a deterministic grapheme-to-syllable algorithm and does not verify LOC Note 10's exact Lao glyph sequence. It reinforces the requirement that written grapheme grouping and spoken onset/rhyme/coda analysis remain separate, typed stages. A parser must not infer a spoken onset cluster from adjacent consonant letters alone.
+
+Ueda also describes exceptional non-final light syllables and a five-tone baseline alongside a disputed six-tone analysis. These observations are scoped to the described central Vientiane variety and one informant; they must not be generalized to all Lao dialects or used to silently normalize five- and six-tone references.
+
+**Disposition:** improve the evidence basis for the Vientiane phonological layer; keep orthographic syllabification and LOC Note 10 automatic role derivation `PARTIAL/TODO`. No runtime rule, corpus item, or IPA gold example is added.
+
+Source: Ueda (1994), DOI [10.11435/GENGO1939.1994.106_95](https://doi.org/10.11435/GENGO1939.1994.106_95); full-text reading notes preserved in [the Undermind research workspace](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
+
+
+## Historical Lao orthographic syllable grammar — Berment (2004) and Del Vigna & Berment (2003) — 2026-11-17
+
+A direct Lao orthographic grammar and ambiguity model have now been located in the full text of Berment's 2004 thesis, *Méthodes pour informatiser des langues et des groupes de langues « peu dotées »* (Part III §§III.2.3–III.2.6; Annexes A.11/A.14), and Del Vigna & Berment (2003), *Ambiguïtés irréductibles dans les monoïdes de mots*. Sources/claims are registered as `SRC-BERMENT-THESIS-2004`, `SRC-DEL-VIGNA-BERMENT-2003`, `CLM-LAO-HISTORICAL-ORTHOGRAPHIC-SYLLABLE-GRAMMAR`, `CLM-LAO-SYLLABLE-AMBIGUITY-LATTICE`, `CLM-LAO-HISTORICAL-GRAMMAR-VALIDATION-LIMITS`, and `CLM-LAO-IRREDUCIBLE-SYLLABLE-AMBIGUITIES`.
+
+Berment describes a historical non-recursive grammar over initial consonants/consonant groups, positional multi-grapheme vowel patterns, optional accent and restricted codas. Vowel components may occur before, after, above or below the initial consonant; they cannot safely be treated as a contiguous vowel token. The thesis reports 56,670 generated candidate syllables and a 33-state/480-transition minimal automaton (historical experiment attributed to Yeu 2003). It explicitly warns that the grammar admits theoretical unattested strings (e.g. `ມວອ`) and simplifies accent placement. OCR loses some Lao terminal glyphs in the printed grammar; exact productions must be transcribed from page images/Prolog appendix before any implementation.
+
+The thesis models segmentation as a graph: candidate syllables are edges between text offsets; complete segmentations are paths; candidates that cannot belong to a complete path are dead branches; common convergence points delimit ambiguous regions. Its longest-candidate selection is a local text-selection/UI heuristic with user cycling, not a validated global linguistic resolver. Del Vigna & Berment's separate 2003 formal-language study reports a historical Lao dictionary/automaton and a finite language of irreducible ambiguous strings. Its counts are independent of the thesis's 56,670 grammar-generated strings and are not repository benchmarks.
+
+**Disposition:** this closes the research question “does a historical explicit Lao orthographic grammar exist?” but not current parser acceptance. Keep the runtime unchanged. Candidate next engineering stage: transcribe the exact historical productions and Prolog appendix into a review artifact; reconcile Unicode 18/Lew 2014/current spelling and tone rules; build a candidate-lattice prototype with dead-branch pruning and explicit ambiguity output; validate against attested/adversarial examples and Lao-specialist review. Do not copy the historical code absent a license. Ueda's phonological evidence remains a separate downstream layer: written adjacency is not an IPA cluster. LOC Note 10's exact glyph sequence and automatic double-role derivation remain unresolved.
+
+Full research note: [Undermind workspace](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md). Primary sources: [Berment 2004 thesis PDF](https://www.tagmatica.fr/doc/these-vincent-berment.pdf); [Del Vigna & Berment 2003](https://doi.org/10.36045/bbms/1074791326).
+
+
+## Modern Lao grapheme-structure evidence — ICANN RZ-LGR-6 (2025), Lao Generation Panel (2017), and W3C Group Note Draft (2026-03-20)
+
+### Primary evidence
+
+The Lao Script Generation Panel's *Proposal for a Lao Script Root Zone LGR*, version 3.1 (31 January 2017), describes a grapheme-cluster template `C V (T) (Cf) (S+)` and makes clear that the vowel is phonologically after the onset even when its written components surround the main consonant. It specifies the main consonant cluster, optional final consonant, vowel-before/after/above/below categories, tone-mark placement, and special diphthong constructions. The proposal's normal-syllable onset description includes restricted two-consonant sequences, a special three-consonant sequence `ຫງວ`, and U+0EBC after a consonant; it separately allows arbitrary consonant sequences for acronyms. It lists a restricted coda set and at most one final consonant for the normal syllable model.
+
+The 2017 proposal explicitly says its root-zone label rules simplify spelling constraints: allowed consonant combinations are listed but not coded, and some diphthong restrictions are not implemented to avoid complexity. Therefore the formal template and WLE rules are **not a complete Lao syllable grammar or spell-checker**. They are a strong source for positional grapheme facts and scoped structural checks, not for rejecting every nonstandard string or deciding a lexical syllable boundary.
+
+The current ICANN Root Zone LGR-6 Lao page (23 September 2025) is scoped to DNS root-zone labels and Unicode 16.0; it reports 51 code points plus one sequence. This is a maintained technical repertoire/ruleset, not an exhaustive inventory for arbitrary Lao text. The 2017 proposal remains its explanatory source.
+
+The W3C Lao Layout Requirements Group Note Draft (20 March 2026) describes Lao as an alphabet with explicit vowels; says there are no conjuncts except the subjoined-consonant case with HA; distinguishes spacing pre-base vowel glyphs from combining above/below vowel marks; and notes multipart vowels can involve up to four glyphs plus a tone mark around the base consonant on up to three sides. **The W3C document is a Group Note Draft and explicitly not endorsed by W3C or its Members**, so use it as current technical layout guidance, not a normative spelling standard.
+
+### Structural facts suitable for candidate-parser invariants
+
+- U+0EBC LAO SEMIVOWEL SIGN LO follows a consonant in the ICANN ordering rules; do not treat it as an independent consonant letter.
+- A vowel-before character precedes the main consonant cluster; above/below vowel marks follow the main consonant; a vowel-after component follows the main consonant, a tone mark or an above-vowel according to the scoped WLE rules.
+- A tone mark is optional and the 2017 proposal's syllable model permits at most one; it follows the main consonant or an above/below vowel. This is a model constraint, not a dialect-independent phonological tone parser.
+- The proposal's coda inventory and maximum-one-coda rule are useful candidate constraints, but acronym, foreign-word, Pali/Sanskrit and historical spellings need separate handling.
+- U+0EC6 LAO KO LA is a repetition sign, not a phonological segment. ICANN's root-zone policy limits its position/count for domain labels; the language itself can use it elsewhere in a sequence, as the proposal explicitly notes.
+- The W3C draft and Unicode 18.0 confirm that visual/typing order, Unicode storage order and phonological order must not be conflated. Pre-base vowels are spacing characters; only above/below components are combining marks in the described model.
+
+### Reconciliation with Berment (2004) and architecture
+
+Berment supplies a historical generative syllable grammar and candidate segmentation graph, but its exact production listing is partly lost in OCR and its grammar accepts unattested forms and simplifies accent placement. The 2017 Lao Generation Panel proposal and 2025 ICANN LGR provide a much more recent, code-point-explicit description of grapheme placement and context order, but deliberately omit important spelling constraints. The 2026 W3C draft adds typographic/encoding distinctions but is not an endorsed linguistic standard. These sources are complementary, not interchangeable.
+
+**Architecture decision:** implement a low-level grapheme-structure analyzer first (code-point classes, pre-base/above/below/after placement, U+0EBC order, tone-mark placement, sign handling), then a separately versioned candidate syllable grammar/lattice. Keep candidate recognition distinct from lexical well-formedness and spoken phonology. Never let the ICANN acronym-permissive `Consonant1+` simplification become a general onset grammar; never treat W3C's draft statements as final linguistic adjudication. Ueda's dialect-scoped phonology remains downstream of orthographic candidates.
+
+### Status
+
+- MODERN_LAO_GRAPHEME_PLACEMENT_EVIDENCE: DONE_VERIFIED (scoped source review).
+- ICANN_ROOT_ZONE_RULESET_AS_GENERAL_SPELLCHECKER: DEFERRED / not applicable; explicit scope mismatch.
+- LOW_LEVEL_LAO_GRAPHEME_STRUCTURE_ANALYZER: TODO — acceptance: code-point class inventory; order/context tests for pre-base, above/below, tone, U+0EBC, U+0ECC and U+0EC6; malformed/reordered mark fixtures; exact Unicode 16/18 reconciliation.
+- CURRENT_LAO_SYLLABLE_GRAMMAR: PARTIAL / TODO — acceptance: combine source-backed grapheme constraints with lexically/linguistically reviewed spelling rules, separate acronym/loan/Indic profiles, candidate lattice, ambiguity preservation and specialist review.
+
+Registry additions: `SRC-ICANN-LAO-PROPOSAL-2017`, `SRC-ICANN-RZ-LGR6-LAO-2025`; claims `CLM-LAO-ICANN-WLE-ORDERING`, `CLM-LAO-ICANN-LGR-NOT-SPELLCHECKER`, `CLM-LAO-ICANN-ROOT-ZONE-SCOPE`, `CLM-LAO-W3C-DRAFT-ORTHOGRAPHY-STRUCTURE`.
+
+Sources: [ICANN Lao proposal v3.1 (2017)](https://www.icann.org/en/system/files/files/proposal-lao-lgr-31jan17-en.pdf); [ICANN RZ-LGR-6 Lao (2025)](https://www.icann.org/sites/default/files/packages/lgr/rz-lgr-6-lao-script-23sep25-en.htm); [W3C Lao Layout Requirements, Group Note Draft (2026-03-20)](https://www.w3.org/TR/2026/DNOTE-laoo-lreq-20260320/); [Unicode 18.0 Chapter 16](https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-16/).
+
+
+## Modern Lao syllable vs word segmentation — Ishida (2026-04-28) — 2026-11-17
+
+Richard Ishida's *Lao Orthography Notes* (updated 28 April 2026) provides the most directly useful current descriptive account located so far: [https://r12a.github.io/scripts/laoo/lo.html](https://r12a.github.io/scripts/laoo/lo.html). It is linked by the W3C Lao Layout Requirements resource and describes modern printed Lao and Unicode use.
+
+### Findings that refine the earlier Berment/ICANN model
+
+- Lao is alphabetic and writes vowels explicitly. Ishida says this makes individual syllable boundaries comparatively straightforward to detect because the syllable-final consonant inventory is restricted; he lists nine coda letters: `ບ, ດ, ກ, ມ, ນ, ຣ, ງ, ວ, ຍ`. The rhyme `-am` can also be represented by U+0EB3. Coda sound can differ from the same letter's onset value.
+- This is **syllable segmentation, not lexical word segmentation**. Lao spaces mark phrases/sentences. Multi-syllabic lexical words such as `ປະເທດ` may need a dictionary to keep their syllables together for word-based selection; ZWSP U+200B may be supplied as an explicit boundary by source text/software.
+- Modern Lao has one audible onset-cluster type in the description: an onset consonant labialized by following `ວ`. Separate written high-class onsets use `ຫ` plus a following consonant, including `ຫຼ` with subjoined U+0EBC. Both classes must be kept together as syllable onsets. Ishida explicitly leaves “What about kw etc?” as an open question; do not infer a universal rule for every visually similar sequence.
+- Pre-base vowel letters are stored before the **entire onset**, not merely before the consonant that carries the phonological vowel. Tone marks and post-base vowel signs attach to the latter. The source examples `ໃຫຍ່` and `ເຫຼືອງ` make this distinction concrete.
+- Unicode grapheme clusters are not Lao syllables. Combining marks attach to a base consonant, but pre-base and post-base spacing components and other consonants in composite vowels can form parts of the same orthographic syllable. Do not use generic grapheme-cluster boundaries as syllable boundaries.
+- Ishida distinguishes modern coda phonology from the broader ICANN root-zone final-consonant repertoire. The nine-letter coda list should not be overwritten by the ICANN list of allowed domain-label characters.
+
+### Regression coverage added
+
+Added source-backed syllable-boundary cases to `tests/test_multisyllable_segmentation.py`:
+- `ໃຫຍ່` remains one syllable with pre-base vowel before the high-class onset digraph;
+- `ເຫຼືອງ` remains one syllable with pre-base vowel before HA + subjoined LO;
+- `ປະເທດ` segments as `ປະ | ເທດ`, while the test explicitly does not claim a lexical word boundary.
+
+These are orthographic segmentation controls, **not IPA/pronunciation gold**. Verify #4517 / run 43971181584 on test commit `cb7950065c310c9376f7075fe7688059475c0a19` has passed Python tests, evidence audit, external-G2P, browser engine, build and generated-data reproducibility; Chromium UI and built-page checks were still running at the last poll.
+
+### Architecture/status refinement
+
+Berment's candidate graph and irreducible-ambiguity work remain valuable for genuinely ambiguous or lexically segmented input, but should not be made the default assumption that ordinary Lao syllable boundaries are generally irreducible. Baseline should be a deterministic, source-backed orthographic syllable parser using explicit vowels, restricted codas and the two onset families; preserve an ambiguity/candidate path for cases where multiple parses remain. Word segmentation is a separate dictionary-backed layer and is not implied by syllable segmentation.
+
+- MODERN_LAO_SYLLABLE_BOUNDARY_EVIDENCE: DONE_VERIFIED (source review).
+- ISHIDA_EXAMPLE_REGRESSIONS: PARTIAL pending full exact-head CI; Python step passed on test commit.
+- GENERAL_WORD_SEGMENTATION: PARTIAL / TODO — dictionary or explicit ZWSP required for lexical word boundaries; choose dictionaries by language, not merely by script.
+- Coda inventory reconciliation: TODO — distinguish modern phonological coda inventory from ICANN DNS repertoire, Indic/loanword extensions and historical spellings.
+
+Registry: `SRC-ISHIDA-ORTHO-2026`; claims `CLM-LAO-ISHIDA-EXPLICIT-VOWELS-SYLLABLE-BOUNDARIES`, `CLM-LAO-ISHIDA-ONSET-CLUSTER-PROFILE`, `CLM-LAO-ISHIDA-PREBASE-ONSET-ANCHOR`, `CLM-LAO-UNICODE-GRAPHEME-IS-NOT-SYLLABLE`, `CLM-LAO-ISHIDA-CODA-INVENTORY`.
+
+
+## Ishida coda inventory reconciliation — 2026-11-17
+
+A closer line-by-line reading of [Ishida, Lao Orthography Notes (28 April 2026)](https://r12a.github.io/scripts/laoo/lo.html) found an **internal source discrepancy**:
+
+- The explicit final-position list at lines 816–821 enumerates nine graphemes: ບ ດ ກ ມ ນ ຣ ງ ວ ຍ; it then notes U+0EB3 as a special -am rhyme.
+- The consonant-class chart at lines 727–729 also places ຢ in its coda row, making ten chart entries.
+- The IPA correspondence table at lines 1038–1042 maps onset /j/ to ຢ, but identifies the final /j/ coda as ຍ. It does not provide a final value for ຢ.
+
+**Disposition:** retain the nine explicitly enumerated spellings and their existing source-aware mappings (ບ→p, ດ→t, ກ→k, ມ→m, ນ→n, ຣ→n, ງ→ŋ, ວ→w, ຍ→j). Do not add ຢ as a coda until the discrepancy is resolved by an independent source or Lao specialist. The parser already fails closed for ກາຢ; a regression now protects that boundary.
+
+This also clarifies the separate data/lao/codas.csv layer: it is a phoneme-category table (including /ʔ/ and analysis-dependent /l,r/), not an orthographic grapheme lookup. The parser's actual final-grapheme recognition uses consonants.csv and its ipa_final field. The phonological /ʔ/ may occur after short vowels, but this source note does not establish a universal orthographic grapheme mapping or whether the runtime should emit it categorically; keep that realization question evidence-limited. U+0EB3 remains a special rhyme representation containing /m/, not an ordinary final consonant grapheme.
+
+**Task ledger:** nine listed coda spellings and current mappings = DONE_VERIFIED as source-to-registry consistency (not independent IPA gold); ຢ coda = BLOCKED / source-internal conflict; implicit /ʔ/ realization = PARTIAL / needs dialect-specific phonetic adjudication; abstract codas.csv semantics = PARTIAL / not an orthographic recognizer. No runtime mappings were broadened.
+
+Registry: SRC-ISHIDA-ORTHO-2026; claims CLM-LAO-ISHIDA-CODA-INVENTORY and CLM-LAO-ISHIDA-CODA-CHART-CONFLICT.

@@ -1,3 +1,46 @@
+
+
+## Exact-head verification — coda reconciliation and reporting sync (2026-11-17)
+
+Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035383672) passed on exact PR head `843b7695afd983b4dddd573eb570af80a71cbea2`. All configured steps passed: IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P syntax/CLI, locked browser dependencies, browser engine, build/canonical data generation, generated-data reproducibility, real Chromium UI, and built-page/relative-asset checks. This head contains the coda source-conflict claim, nine-item audit invariant, fail-closed ກາຢ regression, and canonical docs/README synchronization. Registry: 81 unique sources / 105 unique claims; no duplicates or missing claim-source references. Branch comparison at this checkpoint: 132 ahead / 0 behind main. PR #247 remains open and unmerged; PR #145 remains open and untouched (24 ahead / 374 behind main; neural-first default conflicts with deterministic-default contract).
+
+
+## Exact-head verification — Ishida coda reconciliation (2026-11-17)
+
+Verify #4525 / [run 44035119603 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035119603) passed on exact PR head `9b7d39b237a8dfa7e69544a1122ae1c1e2c3514e`. All configured checks passed: independent IPA-gold schema, repository/data/evidence audit, Python tests (including the new nine-coda map and fail-closed `ກາຢ` regression), external-G2P syntax/CLI, locked browser dependencies, browser engine tests, build/canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks. No runtime, corpus, model, dictionary or generated artifact changed. Registry: 81 unique sources / 105 unique claims; no duplicate IDs or missing claim-source references. Branch comparison before this reporting-only sync: 131 ahead / 0 behind `main`; PR #247 remains open/unmerged.
+## Ishida coda inventory reconciliation — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Nine explicitly enumerated modern Lao coda spellings | DONE_VERIFIED (source-to-registry consistency only) | Ishida's explicit final-position list enumerates ບ ດ ກ ມ ນ ຣ ງ ວ ຍ; all nine already have corresponding ipa_final values in consonants.csv. The audit and a focused regression now enforce the exact map. This is not independent IPA gold. |
+| ຢ as a coda | BLOCKED / source-internal conflict | Ishida's consonant-class chart includes ຢ in the coda row, but the explicit nine-item final-position list omits it and the IPA correspondence table maps final /j/ to ຍ. Runtime remains fail-closed; acceptance requires independent primary evidence or Lao-specialist adjudication. |
+| Short-vowel /ʔ/ realization | PARTIAL / evidence-limited | Ishida says /ʔ/ occurs after short vowels, but this is a phonological final, not one of the nine ordinary final graphemes. Whether to emit /ʔ/ categorically in the project's selected dialect profile needs explicit phonetic adjudication and positive/negative fixtures. |
+| data/lao/codas.csv semantics | PARTIAL | It is a phoneme-category table, not the parser's grapheme-to-final map; _find_coda reads consonants.csv. Keep /ʔ/ and analysis-dependent /l,r/ distinct from orthographic final-letter inventory. |
+
+**Registry:** 81 unique sources / 105 unique claims expected after this update; no duplicate IDs or missing source references. **Readiness:** engineering-verified partial research prototype, not release-ready.
+
+---
+
+## PR #247 — exact-head verification and status refresh (2026-11-16)
+
+| Workstream | Status | Current evidence / acceptance |
+|---|---|---|
+| PR #247 documentation/evidence reconciliation | DONE_VERIFIED (exact latest-head CI) | Verify #4493 / [run 43962408396 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43962408396) passed on latest PR head `268fc506b6dcecce5e8fbfac0c6d483d95e277e3`. All configured checks succeeded: IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependencies, browser engine tests, build/canonical-data generation, generated-data reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks. This exact-head run includes the Note 10 glyph-evidence correction across the source/claim registry, direct-input audit, completion register, README, handoff, branch audit and romanization matrix. Linguistic blockers remain unchanged. |
+| ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; separate Lao digit → Arabic numeral route and post-deploy smoke tests documented in prior checkpoint. |
+| ALA-LC Note 9 | PARTIAL / BLOCKED | Three LOC branches: ordinary Lao shortest standalone written form; Pali/Sanskrit same; other loans follow original-language division. ICU/HVULao baseline is exploratory only. Need LOC-specific lexeme policy, item-level upstream rights, source-located examples and Lao-specialist adjudication. |
+| ALA-LC Note 10 | PARTIAL / fail-closed | LOC 2012 Note 10 gives romanized example `khitsatān`; exact Lao glyph sequence remains unresolved pending inspection of the preferred Word source or Lao-specialist verification. Existing fixtures manually inject source roles; automatic source-script syllabification and role derivation are not demonstrated. |
+| ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
+| Independent IPA gold | BLOCKED | 0 independently adjudicated examples; qualified annotators and adjudication are absent. |
+| Lao specialist review | BLOCKED | No qualified independent sign-off. |
+| Lao-specific RTGS | BLOCKED | No authoritative complete Lao-specific adaptation table; do not substitute Thai RTGS or treat BGN/PCGN as universal phonetic transcription. |
+| Accessibility/device QA | PARTIAL | Automated Chromium coverage exists; manual screen-reader, keyboard-only and physical-device QA remain. |
+| PR #145 neural-first architecture | DEFERRED / owner decision | Open and divergent (24 ahead / 374 behind; 13 files); conflicts with deterministic-default contract. Leave untouched pending explicit owner decision. |
+| LOC Lao Word source | BLOCKED / retrieval | LOC identifies the Word source as preferred. The official `lao.doc` remains uninspected: web reader rejects `application/msword`; direct download failed. Acceptance requires obtaining and inspecting that exact official source. |
+
+**Registry integrity:** 77 unique source IDs and 90 unique claim IDs; no duplicate IDs and no missing claim-to-source references. **Repository readiness:** engineering-verified partial research prototype, not release-ready.
+
+---
+
 ## ALA-LC Note 9 — ICU word-break baseline follow-up (2026-11-16)
 
 | ID | Status | Evidence / acceptance |
@@ -14,7 +57,7 @@
 
 | ID | Status | Evidence / acceptance |
 |---|---|---|
-| ALA-LC-NOTE-9 | PARTIAL / BLOCKED (candidate evidence improved) | HVULao_NLP v2 publishes a minimal-orthographic-unit, context-sensitive segmentation guideline and reports native annotator review, linguist adjudication, and 5% double annotation. This is a stronger candidate for comparative boundaries than LaoNLP maximum matching, but it does not specify LOC's Pali/Sanskrit shortest-form clause or original-language boundaries for other loans. Mendeley lists CC BY 4.0, while the article says source websites permitted research/non-commercial reuse; item-level source rights must be reconciled before importing text. No corpus/model imported. Additional orthographic evidence: LDC documents distinct Pali/Sanskrit vs recent-loan spelling conventions; CrossAsia DLLM shows historically conservative and lexicalized Indic forms in its cataloguing scope. Origin and lexicalization must be curated per lexeme, not inferred from graphemes. Acceptance: LOC-specific policy + rights-cleared and source-located adversarial examples across native compounds, productive morphology, function words, Pali/Sanskrit and other loans + Lao-specialist adjudication. |
+| ALA-LC-NOTE-9 | PARTIAL / BLOCKED (candidate evidence improved) | HVULao_NLP v2 publishes a minimal-orthographic-unit, context-sensitive segmentation guideline and reports native annotator review, linguist adjudication, and 5% double annotation. This is a stronger candidate for comparative boundaries than LaoNLP maximum matching, but it does not specify LOC's Pali/Sanskrit shortest-form clause or original-language boundaries for other loans. The journal article page lists CC BY 3.0 for the article, while the separate Mendeley dataset v2 lists CC BY 4.0; the paper says source websites permitted research/non-commercial reuse, and its table gives only domain-level aggregate counts, not item-level URL permissions. These licences do not settle commercial rights in upstream source texts; item-level source rights must be reconciled before importing text. No corpus/model imported. Additional orthographic evidence: LDC documents distinct Pali/Sanskrit vs recent-loan spelling conventions; CrossAsia DLLM shows historically conservative and lexicalized Indic forms in its cataloguing scope. Origin and lexicalization must be curated per lexeme, not inferred from graphemes. Acceptance: LOC-specific policy + rights-cleared and source-located adversarial examples across native compounds, productive morphology, function words, Pali/Sanskrit and other loans + Lao-specialist adjudication. |
 
 ## ALA-LC Note 8 implementation — 2026-11-16 (PR #241 exact-head verified)
 
@@ -51,7 +94,7 @@ PR [#238](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/238)
 |---|---|---|
 | ALA-LC-NOTE-8 | PARTIAL / route not implemented | LOC maps Lao digits ໐–໙ to 0–9. Current browser phonetic route preserves Lao numerals; direct ALA-LC mode accepts Latin input and therefore does not implement this source-script conversion. Acceptance: implement and test a distinct, explicitly typed Lao-source ALA-LC numeral romanization path, without changing phonetic passthrough semantics. |
 | ALA-LC-NOTE-9 | PARTIAL / BLOCKED | LOC shortest-standalone-written-form and Pali/Sanskrit/other-loanword boundary rules require a reviewed lexical policy and appropriately rights-cleared resource. LaoNLP at pinned commit `a914f64e38ff24d67d32e37db40dad5c368ea602` was assessed in PR #234: maximum-match over a mixed-source composite is not equivalent; no data/code imported. |
-| ALA-LC-NOTE-10 | PARTIAL / fail-closed | The PR #231 browser regression using `ຄິຼສຕຽນ` is only a mode-separation check (Lao script rejected in Latin romanization mode), not the LOC example. The positive/negative unit crosswalk fixture now uses `khitsatān` with manually supplied source roles; LOC 1997 lists `ຄິດສະຖານ (khitsatān)`. Automatic source-script role derivation remains unverified; exact 2012 glyph sequence requires specialist confirmation. |
+| ALA-LC-NOTE-10 | PARTIAL / fail-closed | The PR #231 browser regression using `ຄິຼສຕຽນ` is only a mode-separation check (Lao script rejected in Latin romanization mode), not the LOC example. The positive/negative unit crosswalk fixture now uses `khitsatān` with manually supplied source roles; LOC 2012 Note 10 gives the romanized example `khitsatān`, but its exact Lao glyph sequence is unresolved: the currently retrievable PDF text extraction and rendered page have not been reconciled, and the preferred Word source remains unavailable. This withdraws the prior assertion of an exact Lao glyph form. The crosswalk tests manually supply roles; automatic source-script role derivation and linguistic adjudication remain unverified. |
 | ALA-LC-NOTE-6 | PARTIAL / fail-closed | Initial `ʻ` is traced against source Lao `ອ`, but no approved Ukrainian target mapping exists; unsupported medial vowel values remain withheld. |
 | ALA-LC-FULL | PARTIAL | Notes 6, 8, 9 and 10 plus contextual vowel/ວ cases are incomplete; no full conformance claim. |
 | LAO-GOLD-001 | BLOCKED | Requires qualified independent annotation/adjudication, fixed dialect/convention, source locators and rights-cleared examples. |
@@ -644,7 +687,7 @@ This section supersedes the older romanization/deployment status snapshots above
 | LAO-ROM-STD-001 | DONE_VERIFIED (documented selection) | BGN/PCGN 1966 as represented by CLDR Lao-Latin remains explicitly provisional; 2025 UNGEGN WGRS evidence documents a Lao government draft process but not adoption. | Recheck for an authoritative final Lao table or national adoption; do not infer it from draft status. |
 | LAO-ROM-MATRIX-001 | PARTIAL | Source-aware Lao → CLDR → Ukrainian path is covered by a full official-motto fixture. PR #214 fixed internal hyphen/source-group alignment; PR #218 adds source-backed AWW_MEDIAL recovery for the CLDR-elided vowel in v-n. Exact-head Verify #4265 passed 350 Python, 191 Node and 28 Chromium tests. | Full supported orthographic inventory, contextual variants and independent Lao specialist review are not complete. Acceptance: every promoted source unit has a source locator, CLDR form, Ukrainian target decision, positive/negative fixtures and review status. |
 | LAO-ROM-DIRECT-001 | PARTIAL | Direct BGN/PCGN and bounded ALA-LC 2012 input paths remain separate and fail closed for ambiguous/unsupported forms. The source-aware full-motto regression proves the Lao-source path only; direct Latin-only vadthanathav-n remains PARTIAL because the missing vowel is not recoverable from the string. | Full contextual ALA-LC Notes 1–10, medial-w clusters, unsupported LOC vowel sequences and broader source-located corpus coverage remain incomplete. Do not infer missing tone/length or CLDR-elided vowels. |
-| LAO-ROM-RTGS-001 | BLOCKED | No complete normative Lao-specific RTGS adaptation table is established. CrossAsia DLLM is a separate research-only collection convention, not a generic Lao RTGS standard. | Requires an authoritative complete Lao adaptation table, reuse-rights determination, Ukrainian target decisions and reviewed fixtures. |
+| LAO-ROM-RTGS-001 | BLOCKED / evidence updated | No authoritative complete Lao-specific RTGS adaptation table has been established. The current UNGEGN index places Lao v4.0 (2013) under other languages/scripts, not among UN-recommended systems. The 2025 WGRS report says that as of July 2024 Lao PDR was finalizing draft toponymy guidelines, with possible consideration at the 2027 UNGEGN Session; the 2025 UN country-name record still uses BGN/PCGN 1966 for the country's formal name. This does not establish a finalized universal Lao transcription standard or Ukrainian adaptation. See `SRC-UNGEGN-APPROVAL-PROCESS-2026`, `SRC-UNGEGN-ROMANIZATION-STATUS`, `SRC-UNGEGN-LAO-DRAFT-2023`, `SRC-UNGEGN-LAO-STATUS-2025`, `SRC-UNGEGN-LAO-NAME-2025`, `SRC-PCGN-LAO-FACTFILE-2023`, `CLM-LAO-ROMANIZATION-STATUS-2025`. | Requires an authoritative complete Lao adaptation table, reuse-rights determination, Ukrainian target decisions and reviewed fixtures. |
 | LAO-ROM-COVERAGE-001 | PARTIAL | Current parser has explicit source-aware crosswalks, unsupported-form guards and full-motto regression; automated repository audit passes. | Inventory audit must demonstrate no supported source grapheme/structure class is silently dropped; every added mapping needs evidence and tests. |
 | LAO-ROM-REVIEW-001 | BLOCKED | No independent Lao specialist sign-off on ambiguous nuclei, conventional names, loanword namespaces or the new source-restored AWW_MEDIAL case. | Qualified Lao reviewer must adjudicate scoped rule tables and fixtures; automated CI cannot satisfy this. |
 | LAO-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; gold.tsv remains header-only. | Rights-cleared, dialect/profile-scoped examples; two independent qualified annotators; blind adjudication; adjudicator resolution; frozen held-out split. |
@@ -679,7 +722,7 @@ Exact-head PR #220 Verify #4280 / run 43755451075 passed 350 Python, 192 Node an
 | MAINLINE-221 | DONE_VERIFIED (documentation checkpoint) | PR #221 merged; current `main` is `99d9fd3b5aa443c1a34af9ab9b30a3e51add39a7`. Exact-head Verify #4284 and post-merge Verify #4285 passed. No runtime files changed. |
 | LAO-ROM-MATRIX-001 | PARTIAL | Seven source IDs still lack an explicit, source-attested CLDR compound-vowel crosswalk. Current upstream CLDR XML has active single-character/context rules but no explicit validated compound rules for these IDs; fail-closed diagnostics remain correct. |
 | LAO-ROM-DIRECT-001 | PARTIAL | BGN/PCGN-derived CLDR and bounded ALA-LC routes remain separate. Full ALA-LC contextual Notes 1–10, medial-w clusters, contextual vowel alternations and broader source-located corpus coverage remain incomplete. |
-| LAO-ROM-RTGS-001 | BLOCKED | No authoritative complete Lao-specific RTGS adaptation table has been established. |
+| LAO-ROM-RTGS-001 | BLOCKED / evidence updated | No authoritative complete Lao-specific RTGS adaptation table has been established. The current UNGEGN index places Lao v4.0 (2013) under other languages/scripts, not among UN-recommended systems. The 2025 WGRS report says that as of July 2024 Lao PDR was finalizing draft toponymy guidelines, with possible consideration at the 2027 UNGEGN Session; the 2025 UN country-name record still uses BGN/PCGN 1966 for the country's formal name. This does not establish a finalized universal Lao transcription standard or Ukrainian adaptation. See `SRC-UNGEGN-APPROVAL-PROCESS-2026`, `SRC-UNGEGN-ROMANIZATION-STATUS`, `SRC-UNGEGN-LAO-DRAFT-2023`, `SRC-UNGEGN-LAO-STATUS-2025`, `SRC-UNGEGN-LAO-NAME-2025`, `SRC-PCGN-LAO-FACTFILE-2023`, `CLM-LAO-ROMANIZATION-STATUS-2025`. |
 | LAO-GOLD-001 | BLOCKED | Independent expert-adjudicated IPA gold remains 0; no accuracy claim can be made from dictionary-seeded benchmarks or stress coverage. |
 | LAO-ROM-REVIEW-001 | BLOCKED | Qualified Lao-specialist review remains outstanding. |
 | LAO-UI-001 | PARTIAL / deployed | Pages #102 successfully deployed runtime SHA `fe1c4a0`; PR #221 changed documentation only. Manual physical-device, keyboard-only and assistive-technology QA remains outstanding. |
@@ -692,3 +735,92 @@ The upstream CLDR evidence and branch review are recorded in the canonical hando
 ## PR #222 verification — DONE_VERIFIED (engineering only)
 
 Exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed on branch `docs/post-pr221-checkpoint-and-cldr-evidence-20261115`: IPA-gold schema and repository data/evidence audits; 350 Python tests; external-G2P syntax/CLI; 192 Node tests; build/generated-data reproducibility; 28 Chromium tests; built-page/relative-asset and deterministic-only artifact assertions. Documentation-only; no Pages deployment required. Linguistic acceptance remains partial/blocked as in the table above.
+
+## LOC table version authority — 2026-11-16
+
+The current LOC index lists Lao (2012) as the current table and 1997 only as an earlier reference version; LOC says earlier versions are for reference only and not for current cataloging. This confirms 2012 as the primary standard. Note 9 is a three-branch boundary policy (ordinary Lao shortest standalone form; Pali/Sanskrit same rule; other loans divided according to the original language), not a generic Lao tokenization task. See the direct-input audit and source/claim registry entries `SRC-ALA-LC-ROMANIZATION-INDEX` and `CLM-ALA-LC-LAO-2012-CURRENT-VERSION`.
+
+
+## Vientiane Lao phonological parsing boundary — Ueda (1994) full-text review (2026-11-16)
+
+| ID | Status | Evidence / acceptance |
+|---|---|---|
+| VIENTIANE-WRITTEN-SEQUENCES-VS-SPOKEN-CLUSTERS | DONE_VERIFIED (evidence claim only) | Ueda §2.3 (printed pp. 100–101) reports no phonological consonant clusters in the described Vientiane spoken dialect despite written consonant-letter sequences; written `w` can correspond to /ua/ or no independent spoken segment. Source/claim registry now records this as `SRC-UEDA` / `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS`. This verifies the cited descriptive claim, not an implementation or complete parser. |
+| ORTHOGRAPHIC-SYLLABLE-SEGMENTATION | PARTIAL / TODO | Ueda supplies spoken syllable templates, rhyme constraints, positional onset/coda inventories and exceptional light-syllable discussion, but no general deterministic orthographic boundary algorithm. Acceptance requires an authoritative orthographic grammar/rule environment, explicit treatment of grapheme clusters and vowel-sign attachment, adversarial source examples, and independent Lao-specialist adjudication. |
+| ALA-LC Note 10 automatic source-role derivation | PARTIAL / BLOCKED | LOC's romanized `khitsatān` example and repeated-consonant rule are known; exact Lao glyphs remain unresolved pending preferred Word source or specialist reading. Existing fixtures manually inject roles and are not evidence of automatic parsing. Ueda's paper does not close this gap. |
+
+
+## PR #247 — Ueda evidence checkpoint and verification caveat (2026-11-16)
+
+| Workstream | Status | Current evidence / acceptance |
+|---|---|---|
+| Vientiane written-sequence vs spoken-cluster distinction | DONE_VERIFIED (evidence claim only) | Full text of Ueda (1994), §2.3, reports no phonological consonant clusters in the described Vientiane dialect despite written consonant sequences; written `w` can correspond to /ua/ or no independent segment. Registry: `SRC-UEDA` and `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS`. This does not implement a parser. |
+| Orthographic syllable segmentation | PARTIAL / TODO | Ueda provides spoken syllable/rhyme structure and positional onset/coda constraints but no general deterministic orthographic segmentation algorithm. Need explicit grapheme attachment/boundary grammar, adversarial written examples and Lao-specialist adjudication. |
+| Note 10 automatic source-role derivation | PARTIAL / BLOCKED | LOC romanized example `khitsatān` and repeated-consonant rule remain known; exact Lao glyph sequence is unresolved pending preferred LOC Word source or specialist verification. Existing fixtures inject roles manually. Ueda does not solve the orthographic parser. |
+| PR #247 latest branch HEAD | PARTIAL (verification pending) | The Ueda evidence content checkpoint `71c9604040a2187910a6f0ed81c1c17286deb7bd` passed Verify #4499 / run 43966184173 — SUCCESS. The subsequent handoff synchronization HEAD `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4` passed Verify #4500 / run 43966297408 — SUCCESS, including every configured step through Chromium UI and built-page/asset checks. No local tests were run. |
+
+
+
+## Historical Lao orthographic grammar and ambiguity evidence — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Historical explicit Lao orthographic syllable grammar located | DONE_VERIFIED (source evidence only) | Berment (2004), Part III §§III.2.3–III.2.6 and Annexes A.11/A.14, documents a non-recursive grammar, positional vowel patterns, restricted codas and Sylla/FSA tooling. Source/claim registry IDs `SRC-BERMENT-THESIS-2004` and `CLM-LAO-HISTORICAL-ORTHOGRAPHIC-SYLLABLE-GRAMMAR`. This does not validate a modern parser. |
+| Current Lao orthographic grammar implementation | PARTIAL / TODO | Historical grammar has 56,670 generated strings but admits theoretical unattested forms (e.g. `ມວອ`), simplifies accent placement and OCR loses some terminals. Need exact transcription from images/Prolog appendix, Unicode/dialect reconciliation, test corpus and specialist adjudication. |
+| Ambiguity lattice and dead-branch pruning | PARTIAL / TODO | Berment describes candidate-edge graph, complete paths, dead-branch pruning and ambiguous regions. No equivalent implementation/test exists in this repository. Longest candidate was a local UI heuristic, not an accepted global resolver. |
+| Global ambiguity resolution | BLOCKED / evidence-limited | Lexical/semantic resolution is not established by the historical grammar. Preserve alternatives or explicit unresolved state; do not use longest-match as a deterministic transcription decision. |
+| LOC Note 10 automatic source-role derivation | PARTIAL / BLOCKED | Historical grammar may help generate candidate orthographic boundaries after validation, but does not verify exact LOC glyphs or automatic coda/onset double-role assignment. |
+
+The separate Del Vigna & Berment (2003) formal-language analysis describes irreducible ambiguous strings for a historical Lao dictionary. Its 11,172 / 3,060 dictionary figures and automaton counts must not be conflated with Berment's 56,670 grammar-generated strings. No historical code was copied; no license is inferred. Full notes: [Undermind](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
+
+
+## Modern Lao grapheme structure — evidence checkpoint 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Modern grapheme-placement evidence | DONE_VERIFIED (scoped source review) | Lao Script Generation Panel 2017 proposal v3.1 and ICANN RZ-LGR-6 Lao (2025) specify positional vowel classes, mark ordering, U+0EBC placement, tone/sign contexts and a scoped coda model. W3C Lao Layout Requirements (2026-03-20) adds current encoding/layout distinctions but is an unendorsed Group Note Draft. |
+| ICANN LGR as general Lao spell-checker | DEFERRED / not applicable | The ruleset is DNS root-zone/Unicode 16.0 scoped and deliberately omits many language spelling constraints; arbitrary consonant strings for acronyms and over-produced diphthongs are explicitly acknowledged. |
+| Low-level grapheme-structure analyzer | TODO | Implement code-point classes and context order for pre-base, above/below/after vowel components, tone marks, U+0EBC, U+0ECC and U+0EC6. Add positive/negative ordering fixtures and Unicode 16/18 reconciliation. |
+| Current general Lao syllable grammar | PARTIAL / TODO | Berment's historical grammar + current grapheme evidence are complementary but incomplete. Need reviewed spelling constraints, separate acronym/loan/Indic profiles, candidate lattice, ambiguity preservation and Lao-specialist adjudication. |
+
+New registry entries: 81 unique source IDs / 99 unique claim IDs after this checkpoint; no duplicate IDs or missing claim-to-source references. See direct-input audit and romanization matrix for scoped source links and rule details.
+
+
+## Ishida 2026: syllable/word boundary evidence — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Modern Lao syllable boundary evidence | DONE_VERIFIED (source review) | Ishida (2026-04-28) says explicit vowels and restricted codas make individual syllable segmentation comparatively straightforward; identifies onset families and pre-base vowel anchoring. |
+| Ishida orthographic regression cases | PARTIAL | Added `ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ` controls to multisyllable tests. Python step passed on test commit in Verify #4517; full workflow still pending at last poll. These are not IPA gold. |
+| Lexical word segmentation | PARTIAL / TODO | Word boundaries are not marked by spaces; multi-syllabic words may require a language-specific dictionary or explicit ZWSP. Do not equate syllable segmentation with word segmentation. |
+| Modern coda inventory reconciliation | TODO | Ishida's nine phonological coda letters differ from ICANN's broader DNS root-zone repertoire and historical loan/Indic spellings. Define separate profiles before changing parser inventories. |
+| Ambiguity lattice | TODO (fallback) | Retain candidate alternatives for genuine residual ambiguity; do not assume ordinary Lao syllable segmentation is generally irreducible. |
+
+Registry totals: 81 unique sources / 104 unique claims; no duplicate IDs or missing claim-to-source references.
+
+## Lao short-vowel glottal realization — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Written coda grapheme inventory | DONE_VERIFIED (orthographic level only) | Nine explicit modern coda spellings remain mapped in `consonants.csv`; /ʔ/ is not a tenth written coda grapheme. |
+| Phonological /ʔ/ category | DONE_VERIFIED (scoped category only) | Ueda (1994) includes /ʔ/ among central-Vientiane phonological codas; retain it in `codas.csv` without conflating it with the grapheme lookup. |
+| Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda (1994) distinguishes exceptional non-final light CV syllables and spelling-based CVʔ readings; Lew (2014) treats slow/clear final closure after short vowels as redundant suprasegmental marking; Cole (2016) working paper proposes word-final epenthesis and reports no word-internal epenthesis in one context. No unconditional insertion rule is supported. |
+| Runtime /ʔ/ insertion | BLOCKED pending context evidence | Requires a declared speech/reading profile, validated prosodic-word boundaries, independent Lao-specialist review, and positive/negative source-located examples before code or Ukrainian output changes. |
+
+No IPA-gold examples, runtime rules, target correspondences or generated artifacts were added. The exact evidence scope and source disagreement are recorded in `PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md`.
+
+### Exact-head engineering verification — initial research/test batch
+
+Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079440345) passed on the initial research/test head `1f59909d7af03d8f4fb0c7c3a2e6ae35f8b842b1`: IPA-gold schema; repository/data/evidence audit; 357 Python tests; external-G2P syntax/CLI; 204 browser-engine tests; build/canonical data generation; generated-data reproducibility; 30 Chromium UI tests; and built-page/relative-asset checks. This confirms engineering consistency of the evidence update and regression test only; it does not resolve the linguistic analysis. Final pre-metadata-sync Verify #4546 / [run 44079888990 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079888990) passed on `f088fab50ffa4675419b9994d6d76adf79d717de`: 357 Python, 204 browser-engine and 30 Chromium tests plus all configured schema, evidence, external-G2P, build, reproducibility and built-page checks. A final exact-head run validates the ensuing verification-report-only update.
+
+## Controlled PR #247/#248 integration — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| LOC Note 10 source attribution and double-role evidence boundary | PARTIAL | Corrected 2012 romanized example attribution and retained the exact Lao glyph sequence as unresolved; current fixtures still inject source roles manually. Automatic source-role derivation remains unverified. |
+| Modern Lao coda grapheme inventory | DONE_VERIFIED (orthographic profile only) | Nine explicit mappings are asserted by scripts/audit.py and regression tests; ຢ remains fail-closed because Ishida's source is internally inconsistent. |
+| Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda, Lew and Cole are registered with scope distinctions; no unconditional /ʔ/ insertion is justified. |
+| Evidence registry integrity | DONE_VERIFIED (static reconciliation) | 82 unique sources / 107 unique claims; no duplicate IDs or missing claim-source references. |
+| Combined engineering verification | DONE_VERIFIED (engineering only) | Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. This does not establish linguistic accuracy. |
+
+The integration branch retains PR #247's reviewed head as an ancestor and applies PR #248's delta through file-level reconciliation; both original PRs remain open and untouched. No runtime or generated artifact changes are included.

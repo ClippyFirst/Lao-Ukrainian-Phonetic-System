@@ -1,3 +1,24 @@
+## Current main and preserved branch review — PR #246 (2026-11-16)
+
+- Current `main`: `390302db31b56f5842696c2d81a817689635472b`; PR #246 merged from tested head `9570180b100e06538251f96504223deaa06057fd`.
+- PR #246 exact-head Verify #4439 / [run 43933464076 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933464076); post-merge main Verify #4440 / [run 43933702934 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933702934). Both passed 355 Python, 204 Node and 30 Chromium tests and all configured schema/audit/G2P/build/reproducibility gates.
+- PR #246 is documentation/evidence-only; Pages #106 remains the current runtime deployment. No Pages deployment is expected.
+- Branch inventory is 114 refs across two API pages. PR #247 is the current documentation/evidence correction; PR #145 is the only other open PR. PR #145 remains divergent, 24 ahead / 374 behind, 13 files; leave untouched pending owner-level architecture decision.
+- Preserved test branches were compared against current main:
+  - `test/ala-lc-note10-automatic-source-boundary-20261116`: 5 ahead / 16 behind; its only browser test still checks Lao-script rejection in Latin mode with `ຄິຼສຕຽນ`. It does not test automatic Note 10 source-role derivation and is not ported.
+  - `test/ala-lc-notes6-10-source-crosswalk-20261116`: 13 ahead / 19 behind; the engine file is byte-identical to main, and its two manual double-function fixtures already exist on main in clarified synthetic form. No code port required.
+  - `test/ala-lc-notes5-7-regressions-20261116`: 5 ahead / 22 behind; all added regression test names already exist on main. No port required.
+  - `test/ala-lc-note4-context-regressions-20261116`: 6 ahead / 24 behind; all added regression test names already exist on main. No port required.
+  - `fix/source-aware-hyphen-regression-20261115`: 8 ahead / 32 behind; contains a separate stale engine/test delta based before Note 8 and needs targeted review before any port. Preserved.
+  - `research/revalidate-lao-audio-corpus-leads-20261115`: 6 ahead / 43 behind; its LDC Babel source-row simplification is superseded by the more detailed current-main source and playbook licensing caveats, so no branch content is ported.
+  - `improve/rule-engine-error-analysis-20261107`: 294 ahead / 376 behind, large divergent history; no whole-branch merge or cherry-pick without commit-level reconciliation.
+  - `fix/romanization-unsupported-vowel-diagnostics-20261115`: 4 ahead / 27 behind; added test names are already present on main, while the branch engine predates the current initial-ayn fail-closed handling. No port.
+  - `test/source-aware-lao-hyphen-regressions-20261115`: 4 ahead / 32 behind; added regression test names are already present on main. No port.
+  - `quality/ukrainian-editorial-and-design-audit-2026-11-10`: 21 ahead / 75 behind; its older UI snapshot removes current direct-romanization input and Note 8 UI paths. Preserve only as history; do not port.
+  - `quality/ukrainian-editorial-audit-2026-11-10`: 72 ahead / 75 behind; likewise removes current direct-romanization input and Note 8 paths, with no unique test value over current main. No port.
+  - `research/written-evidence-phonology-2026-11-09`: 0 ahead / 280 behind; no unmerged commits to port.
+- No user branch was deleted, force-updated, or merged wholesale.
+
 ## Post-merge state — PR #245 and Pages #106 (2026-11-16)
 
 - Main at PR #246 base: `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; PR #245 merged by squash from tested head `199787c9e5a41071134188b01523cd25c26e2ada`.
@@ -9,7 +30,7 @@
 ## Additional research and evidence correction — PR #245 (2026-11-16)
 
 - PR #245 merged by squash as `8e8622b007452c20f68dfbfed1edcb709d6bdc41` from `research/icu-lao-wordbreak-baseline-20261116`; it adds the offline ICU/HVULao boundary baseline, source hashes, evidence records and regression tests. No production code, corpus text or dictionary data is imported.
-- This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 1997 explicitly gives `ຄິດສະຖານ (khitsatān)`; the 2012 table's exact Lao glyph extraction needs specialist confirmation. Unit crosswalk tests now use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
+- This PR also corrects an earlier Note 10 attribution: `ຄິຼສຕຽນ` was not the LOC example. The browser test is only a Latin-mode separation guard. LOC 2012 Note 10 gives the romanized example `khitsatān`; its exact Lao glyph sequence remains unresolved because the available PDF text extraction returns `ຂິດສະຕານ` but the rendered glyphs were not confidently read, and LOC's preferred Word source remains unavailable. The earlier attribution of `ຄິດສະຖານ` to LOC 1997 is withdrawn; that file's example glyphs were not inspected. Unit crosswalk tests use `khitsatān` with manually supplied roles and do not claim automatic source segmentation.
 - The repository remains PARTIAL / BLOCKED for Note 9 and Note 10 automatic source roles; no linguistic rule was inferred from the exploratory baseline or the corrected fixture.
 
 ## Live repository state — PR #244 merged; ICU Note 9 research branch (2026-11-16)
@@ -596,3 +617,97 @@ The following potentially relevant historical branches were compared directly wi
 | `feat/mekongphon-first-stage` (PR #145) | 24 | 364 | neural-first API/CLI, docs, tests, benchmark workflow | Open owner-level architecture proposal; leave untouched |
 
 The API inventory contained 102 refs; only the six directly relevant divergent candidates above were individually compared in this refresh. This is not a claim that all 101 non-main refs were individually diff-reviewed. Preserve historical refs. Any future consolidation should be an explicit, file-level, test-backed task rather than a branch cleanup operation.
+
+
+## PR #247 branch and evidence checkpoint — 2026-11-16 (Ueda review)
+
+- **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Working branch:** `docs/correct-loc-note10-source-example-20261116`; at this comparison it is 89 commits ahead / 0 behind main, with eight changed files. PR #247 remains open, unmerged and mergeable; PR #145 remains open and untouched for the owner-level neural-first vs deterministic-default decision.
+- **Research update:** Ueda (1994) full text was inspected through Undermind. The described Vientiane dialect has no phonological consonant clusters despite written consonant sequences; written `w` can correspond to /ua/ or no independent segment. This is phonological evidence, not a complete orthographic syllabification algorithm.
+- **Evidence registry:** 77 unique source IDs and 91 unique claim IDs; no duplicate IDs detected. The new claim `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS` is linked to existing `SRC-UEDA`.
+- **Exact-head CI:** Verify #4500 / run 43966297408 passed on `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4`. The latest README/register/handoff synchronization commits are documentation-only; exact-head CI must be checked on the final branch SHA before claiming it.
+- **Disposition:** preserve PR #247 and all historical branches; no merge, rebase, force-push, branch deletion or Pages deployment was performed. PR #145 remains untouched.
+
+
+## Berment historical Lao grammar research checkpoint — 2026-11-17
+
+- Full-text Berment (2004) thesis and Del Vigna & Berment (2003) paper reviewed; details are recorded in the canonical Undermind research note and repository direct-input audit/matrix/register.
+- Registry now has 79 unique source IDs and 95 unique claim IDs. No duplicate IDs were detected; cross-reference integrity is checked separately below.
+- PR #247 remains open, unmerged and mergeable. Branch comparison after evidence and documentation updates: 117 commits ahead / 0 behind `main`, eight changed files.
+- Verify #4502 / run 43966645076 passed on pre-update evidence/docs HEAD `cb86f87fba32140c71f8f1a22ab5668d1d9ffd4b`. The Berment registry/audit/matrix/register/handoff/README changes are later commits and require exact-head CI; no runtime, corpus, model, dictionary or generated artifact changed.
+- No code was copied from the historical thesis; no license is inferred. PR #145 remains untouched. No merge, force-push, branch deletion or Pages deployment performed.
+
+
+## Modern Lao grapheme evidence and CI checkpoint — 2026-11-17
+
+- Added ICANN Lao Script Generation Panel proposal v3.1 (2017), current Root Zone LGR-6 Lao (2025), and clarified the W3C 2026 Lao Layout Requirements document as an unendorsed Group Note Draft. Registry totals: 81 unique sources / 99 unique claims; no duplicate IDs or missing claim-to-source references.
+- New evidence supports a separate grapheme-placement analyzer: pre-base vs above/below/after vowel components, tone-mark placement, U+0EBC after consonant, and sign handling. ICANN explicitly leaves many spelling constraints unenforced and is DNS root-zone scoped; W3C is typographic guidance and not endorsed. No runtime changes made.
+- Verify #4506 / run 43968825128 completed SUCCESS on `defa2f87a0730098aad240528641cac2527ca897`; all configured steps passed, including Chromium UI and built-page/relative-asset checks. Later evidence/docs commits require exact-head CI.
+- PR #247 remains open/unmerged; PR #145 remains untouched. No code, corpus, model, dictionary, generated data or Pages deployment changed.
+
+
+## Final state after ICANN/W3C evidence sync — 2026-11-17
+
+- Branch HEAD: `900f9c5d216743b4d86394dc6d6397e04f275c82`; comparison with main: 113 ahead / 0 behind; eight changed files.
+- Registry: 81 unique source IDs / 99 unique claim IDs; no duplicate IDs and no missing claim-to-source references.
+- Verify #4506 / run 43968825128 passed on `defa2f87a0730098aad240528641cac2527ca897`, but is not exact-head CI for the evidence/docs commits after it. Commit-run lookup currently returns no run for the final HEAD; do not mark the final HEAD verified until a matching workflow run completes.
+- PR #247 remains open, mergeable and unmerged. PR #145 untouched. No runtime/code/corpus/model/dictionary/generated artifacts changed; no deployment.
+
+
+## Exact-head Verify #4513 — 2026-11-17
+
+- Verify #4513 / run 43970708960 started on exact current branch HEAD `f18250734f0b3989d02bed3d8d1d4f3611eedc18`.
+- At the latest poll, schema/evidence audit, Python, external-G2P, browser engine, build and generated-data reproducibility had passed; Chromium UI was in progress and built-page/asset verification pending.
+- Do not mark this exact-head run successful until all remaining steps complete.
+
+
+## Current reporting-only sync and exact-head CI — 2026-11-17
+
+- Latest docs synchronization before this checkpoint is `900f9c5d216743b4d86394dc6d6397e04f275c82`; branch is 117 commits ahead / 0 behind main, eight changed files.
+- Verify #4513 / run 43970708960 passed on its exact tested SHA `f18250734f0b3989d02bed3d8d1d4f3611eedc18`; three later commits only synchronized the branch audit, handoff and README. Do not claim #4513 as exact-head verification for this reporting-only synchronization. A new exact-head run is required.
+
+
+## Ishida 2026 segmentation evidence and regression tests — 2026-11-17
+
+- Added Richard Ishida's *Lao Orthography Notes* (updated 2026-04-28) to the source registry and five scoped claims: explicit vowels/restricted codas make syllable boundaries relatively straightforward; word boundaries remain dictionary/ZWSP-dependent; pre-base vowels anchor before the entire onset; onset labialization and high-class `ຫ` sequences are distinct; Unicode grapheme clusters are not syllables; modern coda inventory differs from ICANN root-zone repertoire.
+- Added three source-backed orthographic regression examples (`ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ`) to `tests/test_multisyllable_segmentation.py`. They assert syllable segmentation only, not IPA gold.
+- Verify #4517 / run 43971181584 on test commit `cb7950065c310c9376f7075fe7688059475c0a19`: Python tests, evidence audit, external-G2P, browser engine, build and reproducibility passed; Chromium UI and built-page checks were still in progress at last poll.
+- Registry: 81 unique sources / 104 unique claims; no duplicate IDs or missing references. No runtime implementation, corpus, model, dictionary or generated artifacts changed.
+
+
+## Exact-head verification and source-registry deduplication — 2026-11-17
+
+- Verify #4518 / run 43971358699 completed SUCCESS on exact pre-sync HEAD `ff6b62198510fc7bb69e2b132bddcffaaa487019`. All configured steps passed, including schema/evidence, Python (including three Ishida segmentation fixtures), external-G2P, browser engine, build/reproducibility, Chromium UI and built-page/relative-asset checks.
+- Reconciled the newly expanded Ishida source details into the existing `SRC-ISHIDA-ORTHO-2026` record already used by the onset/vowel registries instead of retaining a duplicate source row. Final registry: 81 unique sources / 104 unique claims; no duplicate IDs or missing source references.
+- This final synchronization is registry/documentation-only; the test additions and all other evidence were included in the successful #4518 parent checkpoint. A fresh exact-head workflow is triggered by this synchronization.
+
+
+## Coda inventory source discrepancy — 2026-11-17
+
+Ishida's explicit final-position list (nine letters) and the consonant-class chart (which additionally lists ຢ) disagree; the IPA correspondence table maps final /j/ to ຍ. The project preserves the nine source-explicit mappings, keeps ຢ fail-closed, and now checks this with scripts/audit.py plus a Python regression. The phoneme-category data/lao/codas.csv is not the parser's orthographic final-letter lookup. Implicit /ʔ/ after short vowels remains an evidence-limited dialect question. No runtime mappings changed. Registry: 81 sources / 105 claims expected. Exact-head CI pending.
+
+
+## Exact-head verification — Ishida coda reconciliation (2026-11-17)
+
+Verify #4525 / [run 44035119603 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035119603) passed on exact PR head `9b7d39b237a8dfa7e69544a1122ae1c1e2c3514e`. All configured checks passed: independent IPA-gold schema, repository/data/evidence audit, Python tests (including the new nine-coda map and fail-closed `ກາຢ` regression), external-G2P syntax/CLI, locked browser dependencies, browser engine tests, build/canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks. No runtime, corpus, model, dictionary or generated artifact changed. Registry: 81 unique sources / 105 unique claims; no duplicate IDs or missing claim-source references. Branch comparison before this reporting-only sync: 131 ahead / 0 behind `main`; PR #247 remains open/unmerged.
+
+
+## Exact-head verification — coda reconciliation and reporting sync (2026-11-17)
+
+Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035383672) passed on exact PR head `843b7695afd983b4dddd573eb570af80a71cbea2`. All configured steps passed: IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P syntax/CLI, locked browser dependencies, browser engine, build/canonical data generation, generated-data reproducibility, real Chromium UI, and built-page/relative-asset checks. This head contains the coda source-conflict claim, nine-item audit invariant, fail-closed ກາຢ regression, and canonical docs/README synchronization. Registry: 81 unique sources / 105 unique claims; no duplicates or missing claim-source references. Branch comparison at this checkpoint: 132 ahead / 0 behind main. PR #247 remains open and unmerged; PR #145 remains open and untouched (24 ahead / 374 behind main; neural-first default conflicts with deterministic-default contract).
+
+## Research continuation branch — Lao short-vowel glottal evidence (2026-11-17)
+
+- Created `integration/loc-note10-glottal-evidence-20261117` directly from current `main` SHA `390302db31b56f5842696c2d81a817689635472b`; it is a descendant of main fast-forwarded to PR #247's reviewed head, with PR #248's evidence delta applied and reconciled on top.
+- PR #247 remains open and unmerged on `docs/correct-loc-note10-source-example-20261116` at `d84afd57bd7bdc3575271cf3d9f51066bb50a044`, 133 commits ahead / 0 behind `main`; its file changes are ported and reconciled in this integration branch while the original branch remains untouched.
+- PR #145 remains open and untouched; its neural-first architecture proposal remains incompatible with the current deterministic-default contract pending owner decision.
+- This branch's task is deliberately narrow: distinguish orthographic coda graphemes from phonological /ʔ/ and from prosodically conditioned glottal closure. No runtime, model, corpus, dictionary, generated artifact or deployment changes are authorized by the current evidence.
+- Initial exact-head Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079440345) passed on `1f59909d7af03d8f4fb0c7c3a2e6ae35f8b842b1`: 357 Python, 204 browser-engine and 30 Chromium tests plus all configured schema, data/evidence, external-G2P, build, reproducibility and built-page checks. Verify #4546 / [run 44079888990 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079888990) passed on `f088fab50ffa4675419b9994d6d76adf79d717de`: 357 Python, 204 browser-engine and 30 Chromium tests plus all configured schema, data/evidence, external-G2P, build, reproducibility and built-page checks. The final verification-report-only sync is followed by one final exact-head run. PR #247 and PR #248 remain open pending exact-head verification and review of this consolidated integration PR.
+
+## Controlled PR #247/#248 integration branch — 2026-11-17
+
+- integration/loc-note10-glottal-evidence-20261117 is based on the current default branch and includes the file-level changes from PR #247 and PR #248. The original PR branches remain unchanged.
+- PR #247's reviewed commit history is retained as the branch ancestor; PR #248's eight-file delta was reconciled into the same branch. The six overlapping paths were handled deliberately rather than merged blindly; source/claim rows were merged by stable IDs and documentation sections were preserved.
+- Registry validation on the integrated contents: 82 unique sources, 107 unique claims, no duplicate IDs and no missing claim-to-source references.
+- Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. Review the consolidated diff before merging either source PR.
+- PR #145 remains untouched. No branch deletion, force-push, runtime change, model/corpus/dictionary change or deployment was performed.

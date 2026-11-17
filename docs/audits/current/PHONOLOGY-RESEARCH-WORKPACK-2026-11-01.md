@@ -124,3 +124,34 @@ The published model card's architecture does not establish a particular rule for
 The pinned Apache-2.0 comparator source was reviewed as a separate deterministic reference. It normalizes preposed vowels into post-onset order, merges selected consonant pairs and compound vowel tokens, uses explicit intermediate vowel states, assembles syllable objects, and applies bounded lookahead to reposition tone marks before attaching onset/tone/coda components. Its `Syllable` object separates onset, vowel, coda and tone and applies a Vientiane-oriented live/dead × class × length table. It also carries a broader set of consonant combinations for loan/extended spellings than ClippyFirst's conservative core registry.
 
 Transferable ideas already reflected in ClippyFirst are explicit vowel-token recognition, syllable-level representation, separate tone assignment, and explicit tone placement validation. Do not copy its permissive naive fallback or automatically promote every listed consonant combination into the modern Vientiane core inventory. The comparator's own README describes its grouping and tone placement as heuristics, and its source contains a mix of ordinary Lao and loan/extended clusters; every added form still needs a source/profile claim and tests. The exact upstream source inspected was `byu-matrix-lab/lao2ipa` main at source blob `7b758db2b8c2de2947c0582e7af68a49bbd9e408`; package comparator remains pinned at version 1.0.0 in the hosted benchmark.
+
+## Short-vowel glottal realization — evidence reconciliation (2026-11-17)
+
+### Evidence and competing analyses
+
+The short-vowel /ʔ/ question is not a simple extension of the nine written coda graphemes. The sources describe several related but non-identical phenomena:
+
+1. **Ueda (1994), central Vientiane, one informant.** In §1 (printed p. 96), a short vowel in an ordinary syllable “in principle” requires a coda. In §3.2 (printed pp. 103–104), /ʔ/ is included among the nine phonological codas, with lexical examples. In §5 (printed pp. 112–113), Ueda documents exceptional non-final light CV syllables in polysyllabic words: they are unstressed and tone-neutral in ordinary speech; /a/ is the main vowel, with rare /i/ and /u/ cases noted. In spelling-based reading, these specific light syllables may be read as CVʔ with tone assigned from the initial consonant. This is not a general rule that every short vowel lacking a written coda surfaces as [ʔ]. The source is based on one 46-year-old Haysok informant and must remain speaker-/dialect-scoped.
+
+2. **Lew (2014; accepted manuscript of the 2013 article).** In the consonant-inventory discussion (accepted manuscript pp. 3–4), Lew follows Rehbein & Sayaseng (2004) and Diller (1996) in treating Lao glottal closure as having a suprasegmental/redundant status. The final glottal closure is not represented by a dedicated coda grapheme; Lew reports it only after short vowels in slow, clear speech, whereas oral stop codas occur after both short and long vowels. This is a phonetic/orthographic interpretation, not a claim that every short-vowel spelling has an underlying /ʔ/.
+
+3. **Cole (2016), “Rhythm and Prosody in Lao: an OT analysis,” working paper.** Cole proposes word-final glottal-stop epenthesis as a repair for prosodically light CV words and word-final CV syllables, and analyzes it through minimal-word/iambic-foot constraints. The paper also reports no word-internal glottal epenthesis in the author's recordings of *wāt.tʰa.na.tʰam* ‘culture’, while discussing exceptional light non-final syllables. It uses Osatananda (1997) examples plus the author's own field notes/recordings and is a theoretical working paper, not a consensus descriptive standard. Its account should be treated as a competing analysis, not promoted directly to runtime.
+
+### Reconciled project decision
+
+- Keep three levels distinct: (a) orthographic coda graphemes, (b) phonological /ʔ/ as a coda in some analyses/lexemes, and (c) predictable or epenthetic glottal closure conditioned by prosodic position and speaking style.
+- Do not add a tenth coda grapheme for /ʔ/ and do not change the nine grapheme-to-final mappings.
+- Do not insert /ʔ/ after every short vowel. The current parser has no independently validated lexical/prosodic-word boundary model or speaking-style selector that could safely distinguish isolated word-final CV from non-final light syllables and orthography-oriented reading.
+- Preserve the existing phonological /ʔ/ category in `codas.csv` as a phoneme category; it is not an orthographic grapheme lookup.
+- No runtime mapping, tone rule, Ukrainian correspondence, corpus label or generated artifact is changed by this evidence update.
+
+### Task ledger and acceptance
+
+| Workstream | Status | Acceptance still required |
+|---|---|---|
+| Nine modern written coda graphemes | DONE_VERIFIED (source/registry consistency only) | Keep the nine explicit Ishida spellings; this does not settle phonetic realization |
+| Phonological /ʔ/ in the coda inventory | DONE_VERIFIED as a scoped phonological category | Preserve distinction from written coda graphemes and from predictable closure |
+| Short-vowel /ʔ/ realization | PARTIAL / ANALYSIS_DEPENDENT | Choose a declared dialect + speech-style/reading profile; obtain independent Lao-specialist adjudication and source-located positive/negative lexical examples |
+| Automatic /ʔ/ insertion in runtime | BLOCKED / deferred pending evidence | A validated prosodic-word boundary input or lexical boundary layer, context-sensitive rule, tests for word-final vs non-final CV, long-vowel and oral-coda negatives, and independent IPA/phonetic review |
+
+**No independent IPA gold examples are added.** Ueda's one-informant description, Lew's literature-based suprasegmental interpretation, and Cole's working-paper analysis are research evidence, not an adjudicated benchmark. The repository remains an engineering-verified partial research prototype.

@@ -1,3 +1,83 @@
+## Latest verification and research status — 2026-11-17
+
+- **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Latest fully verified checkpoint before final source-registry deduplication:** `ff6b62198510fc7bb69e2b132bddcffaaa487019`; Verify #4518 / run 43971358699 completed SUCCESS on that exact SHA. All configured checks passed: IPA-gold schema, repository/evidence audit, Python tests (including new Ishida orthographic segmentation regressions), external-G2P, browser engine, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks.
+- **Current evidence:** Richard Ishida (2026-04-28) distinguishes straightforward syllable segmentation from dictionary-backed word segmentation; Berment (2004) supplies a historical grammar and ambiguity graph; ICANN 2017/2025 and W3C 2026 draft supply scoped grapheme-placement evidence; Ueda (1994) remains dialect-scoped phonology. Grapheme clusters are not syllables; pre-base vowels precede the entire onset; word boundaries are separate from syllable boundaries.
+- **Registry cleanup:** merged expanded Ishida metadata into the pre-existing `SRC-ISHIDA-ORTHO-2026` record, avoiding a duplicate source row. Registry after cleanup: 81 unique sources / 104 unique claims; no duplicate IDs or missing references.
+- **Tests added:** `ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ` orthographic syllable-segmentation fixtures; these are not IPA gold.
+- **PR #247:** open, mergeable, unmerged; PR #145 untouched. Runtime, model, dictionary, corpus and generated artifacts unchanged; no deployment.
+- **Readiness:** engineering-verified partial research prototype, not release-ready. Current exact-head CI is triggered by this final documentation/registry synchronization.
+
+
+## Latest evidence/verification status — 2026-11-16 (Ueda review)
+
+The latest branch HEAD is `866748aa69409ba777ec292b6f53ce607f122caf`. Verify #4495 / run 43962638485 passed on its parent checkpoint `8fa8aefe6759059b04781c0cf1cd49f746c090eb`; **no exact-head CI run or status is available for `866748a...` yet**. The new Ueda source/claim/audit/matrix/register/handoff updates are documentation/evidence-only, but must not be labelled exact-head verified until CI runs on this SHA. The connector's commit-run lookup returned no PR-triggered run and combined status returned no checks for this final SHA; local tests were not run.
+
+# Current repository status — 2026-11-16 (PR #247 evidence checkpoint)
+
+**Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+**Active documentation/evidence branch:** `docs/correct-loc-note10-source-example-20261116`, latest code-bearing HEAD `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4`. Verify #4500 / run 43966297408 — SUCCESS on that exact SHA; all configured workflow steps passed, including IPA-gold schema, evidence/data audit, Python, external-G2P syntax/CLI, browser engine tests, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks.. PR [#247](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/247) remains open, mergeable and unmerged; the branch is 89 commits ahead / 0 behind main, with 8 changed files. Scope is documentation/evidence only; no runtime, corpus, model, dictionary or generated artifacts changed.
+**Latest exact-head verification:** Verify #4493 / [run 43962408396 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43962408396) passed on `268fc506b6dcecce5e8fbfac0c6d483d95e277e3`. All workflow steps succeeded: IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependencies, browser engine tests, build/canonical-data generation, generated-data reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks. The preceding intermediate Verify #4492 / run 43962315009 also passed on `0e5b3900599e9f246b5d3a26d1a1cbec4e00472e`; earlier exact-head Verify #4485 passed on `29e8e24d...`. No local test run is claimed.
+**Latest evidence:** the 2025 UNGEGN WGRS report records draft Lao toponymy guidelines still being finalized as of July 2024; the WG-reviewed 2026 approval-process document describes national implementation, formal submission, WG-RS review and plenary stages. Neither proves Lao's draft was finalized or approved. The UNGEGN index lists Lao v4.0 (2013) under "Other languages/scripts", not among the 30 UN-recommended systems.
+**LOC Word source retrieval:** the official source-document page confirms that the Lao Word file is preferred. The exact `https://www.loc.gov/catdir/cpso/romanization/lao.doc` remains uninspected: the web reader rejects `application/msword`, and direct download failed. PDF/text-layer evidence is not represented as Word-source verification.
+**Separate architecture PR:** [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains open, divergent and non-mergeable (24 ahead / 374 behind; 13 files). Its neural-first CLI/Python default conflicts with the adopted deterministic-default contract. The useful typed IPA stage-one API was selectively implemented in PR #165; no wholesale port or merge is warranted.
+**Readiness:** engineering-verified partial research prototype; not release-ready. Vientiane phonological constraints are now better evidenced by Ueda (1994), but orthographic syllabification and Note 10 automatic source-role derivation remain incomplete. Note 9 lexical policy/rights/adjudication, Note 6 Ukrainian target adaptation, independent IPA gold (0 examples), Lao specialist review, authoritative Lao-specific RTGS and manual accessibility/device QA remain incomplete.
+
+## Latest continuation checkpoint — 2026-11-16 (PR #247 evidence reconciliation)
+
+- **Starting main:** `390302db31b56f5842696c2d81a817689635472b`.
+- **Last completed exact-head verification:** Verify #4479 / run 43953117126 on `14f7b9adf3ae2f3840a507e12c9244d6d45feb79` — SUCCESS.
+- **Later documentation-only checkpoint:** Verify #4483 / run 43957392309 was in progress on `157c73fae64f292db50e378b1599a797c3ac146a`; check the final PR head for its subsequent run.
+- **PR #247:** open, mergeable, not merged; latest pre-ledger-refresh comparison 63 ahead / 0 behind; eight changed files.
+- **Registry integrity:** 77 unique source IDs and 90 unique claim IDs; no duplicate IDs or missing claim-to-source references.
+- **LOC Note 10:** 2012 romanized Note 10 example is `khitsatān`; exact Lao glyph sequence remains unresolved pending preferred Word-source or Lao-specialist verification; this does not validate automatic source syllabification or role derivation. Existing unit fixtures inject roles manually.
+- **Note 9:** ordinary Lao and Pali/Sanskrit use the shortest standalone written form; other loans follow original-language division. ICU/HVULao metrics remain exploratory, not LOC conformance.
+- **No runtime changes:** Pages deployment is not expected for this PR. No local test execution is claimed.
+- **Unresolved acceptance:** LOC Word source retrieval; LOC-specific Note 9 policy with item-level rights and specialist adjudication; automatic Note 10 source analysis; Note 6 target correspondence; independent IPA gold; authoritative Lao-specific RTGS; qualified specialist sign-off; manual accessibility/device QA.
+- **Branch/PR handling:** PR #145 is left open and untouched for owner architecture decision. No branch was deleted or force-updated.
+
+
+
+---
+
+# Latest continuation checkpoint — 2026-11-16 (PR #247 evidence reconciliation verified)
+
+**Starting main:** `390302db31b56f5842696c2d81a817689635472b`.
+**Working branch:** `docs/correct-loc-note10-source-example-20261116`; latest verified head `f25c846bcd1e40e9ec24df1612373338f6d7f431`.
+**PR [#247](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/247):** open, not merged; 41 commits ahead / 0 behind main; documentation/evidence-only (8 files). No runtime, corpus, model, dictionary or generated artifact changes; no Pages deployment expected.
+**Exact-head Verify #4463:** [run 43949816285 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43949816285): 355 Python, 204 Node and 30 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+**Evidence updates:** LOC index establishes Lao (2012) as current and 1997 as earlier reference only; Note 9's three distinct segmentation branches are recorded. LOC directs copying from Word source files, but the linked Lao `lao.doc` could not be retrieved and remains uninspected. HVULao_NLP article and dataset license scopes are separated; no corpus text/model/dependency was imported.
+**Remaining acceptance:** Note 9 rights-cleared, source-located and Lao-specialist-adjudicated examples; Note 10 automatic source-role derivation; Note 6 target adaptation; independent IPA gold (0 examples); authoritative Lao-specific RTGS; qualified specialist and manual accessibility/device review. Repository remains an engineering-verified partial research prototype, not release-ready.
+**Other PR:** #145 remains open, divergent and non-mergeable; do not merge/rebase without owner-level architecture decision. No user branches deleted or force-updated.
+
+---
+
+# Latest continuation checkpoint — 2026-11-16 (PR #246 merged; LOC Note 10 source form reverified)
+
+**Starting main:** `8e8622b007452c20f68dfbfed1edcb709d6bdc41`.
+**PR [#246](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/246):** merged by squash as `390302db31b56f5842696c2d81a817689635472b` from `9570180b100e06538251f96504223deaa06057fd`.
+**Current main Verify:** push run [43933702934 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933702934): 355 Python, 204 Node and 30 Chromium tests passed; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks passed.
+**PR exact-head Verify:** [run 43933464076 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43933464076), same test counts and configured gates.
+**Deployment:** documentation-only PR; no production files changed. Pages #106 remains the current deployed runtime checkpoint from `8e8622b007452c20f68dfbfed1edcb709d6bdc41`; no new Pages deployment expected.
+**Note 10 source correction:** LOC 2012 Note 10 gives romanized example `khitsatān` (also repeated in Note 3), but the exact Lao glyph sequence remains unresolved: current PDF text extraction and rendered display have not been reconciled, and the preferred Word source remains unavailable. The prior assertion `ຫຼັກສາດ` is withdrawn pending direct Word-source or Lao-specialist verification. The crosswalk unit tests manually supply source roles; the code still does not derive those roles from the Lao word. The browser test using `ຄິຼສຕຽນ` remains only a Latin-mode separation guard, not Note 10 coverage.
+**Branch/PR inventory:** 114 branch refs across two API pages; PR #247 is this documentation correction and PR #145 is the only other open PR. PR #145 is divergent, 24 ahead / 374 behind current main, 13 changed files; retain as an owner-level architecture decision. No user branches deleted or force-updated.
+
+## Current continuation ledger
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| ALA-LC Note 8 | DONE_VERIFIED + DEPLOYED | PR #241 merged; Pages #105/#106 passed post-deploy smoke tests. |
+| ALA-LC Note 9 | PARTIAL / BLOCKED | ICU/HVULao comparative baseline is merged; LOC policy, item-level rights and Lao-specialist adjudication remain. |
+| ALA-LC Note 10 | PARTIAL / fail-closed | LOC 2012 romanized example is `khitsatān`; exact Lao glyph sequence is unresolved pending Word-source or Lao-specialist verification; tests manually supply cross-syllable roles; automatic source-role derivation remains unverified. |
+| ALA-LC Note 6 | PARTIAL / fail-closed | Initial-ayn source trace exists; Ukrainian target correspondence remains unapproved. |
+| Independent IPA gold | BLOCKED | 0 independently adjudicated examples; issue #99 remains open. |
+| Lao specialist review | BLOCKED | No qualified independent sign-off. |
+| Lao-specific RTGS | BLOCKED | No authoritative complete Lao-specific adaptation table. |
+| Accessibility/device QA | PARTIAL | Automated Chromium coverage exists; human screen-reader, keyboard-only and device QA remain. |
+| PR #145 neural-first architecture | DEFERRED / owner decision | 24 ahead / 374 behind; do not merge or rebase without architecture decision. |
+
+---
+
 # Latest continuation checkpoint — 2026-11-16 (PR #245 merged; Note 9 baseline verified)
 
 **Starting main:** `8e8622b007452c20f68dfbfed1edcb709d6bdc41` (PR #245 squash merge).
@@ -7,7 +87,7 @@
 **Post-merge verification:** main Verify #4428 / [run 43932522643 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522643) passed the same 355 Python, 204 Node and 30 Chromium tests and all configured gates.
 **Pages deployment:** Pages Deploy #106 / [run 43932522626 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43932522626) deployed current main `8e8622b007452c20f68dfbfed1edcb709d6bdc41` to [the public site](https://clippyfirst.github.io/Lao-Ukrainian-Phonetic-System/); deployment and post-deploy HTTP smoke tests passed. PR #245 changed tests and research tooling but no production runtime logic.
 **Note 9 result:** on 839/1,000 exactly aligned HVULao_NLP pairs / 49,608 within-Lao candidate boundaries, greedy longest-prefix F1=0.8636 and naive shortest-prefix F1=0.5129. These are filtered exploratory metrics, not comparable to the paper's 0.75 model F1; neither implements LOC Note 9. The offline script and five unit tests are now merged.
-**Note 10 correction:** LOC 1997 gives `ຄິດສະຖານ (khitsatān)`; the 2012 source glyph extraction remains specialist-confirmation-limited. The `ຄິຼສຕຽນ` browser test is mode-separation only; the positive/negative `khitsatān` unit fixtures supply roles manually. Automatic source-role derivation remains PARTIAL.
+**Note 10 source form:** LOC 2012 Note 10 gives romanized example `khitsatān`; exact Lao glyph sequence remains unresolved because available PDF extraction and display have not been reconciled. The source's syllable-role analysis is not independently adjudicated. The `ຄິຼສຕຽນ` browser test is mode-separation only; the positive/negative `khitsatān` unit fixtures supply roles manually. Automatic source-role derivation remains PARTIAL.
 **Repository inventory:** 113 refs (112 non-main plus main) including the research and reconciliation branches; only PR #145 was open before this post-merge documentation PR. PR #145 remains divergent, 24 ahead / 373 behind, 13 files. No user branch was modified or deleted.
 
 ## Current continuation ledger
@@ -192,7 +272,7 @@ Engineering-verified partial research prototype. CI and Pages are operational, b
 |---|---|---|
 | LaoNLP candidate assessment | DONE_VERIFIED (source/license review only) | PR #234; pinned upstream code/data inspected, registry and claims updated; no integration |
 | ALA-LC Note 9 lexical segmentation | PARTIAL / BLOCKED | Need LOC-conformant shortest-standalone-form and loanword-specific rules, plus a reviewed rights-clean lexicon; LaoNLP max-match is not equivalent |
-| ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | The `ຄິຼສຕຽນ` browser test is mode-separation only; LOC's 1997 example is `ຄິດສະຖານ (khitsatān)`. The exact 2012 glyph form and automatic source-role derivation require specialist confirmation. |
+| ALA-LC Note 10 automatic source roles | PARTIAL / fail-closed | The `ຄິຼສຕຽນ` browser test is mode-separation only; LOC 2012 Note 10 gives romanized example `khitsatān`; exact Lao glyph sequence remains unresolved pending Word-source or Lao-specialist verification; automatic source-role derivation and linguistic analysis still require specialist confirmation. |
 | ALA-LC Note 8 Lao numeral conversion | PARTIAL / route not implemented | Current phonetic source path preserves Lao digits; direct ALA-LC input starts from Latin text |
 | Full ALA-LC conformance | PARTIAL | Notes 6, 8, 9, 10 and other contextual vowel/ວ cases remain incomplete |
 
@@ -4952,6 +5032,93 @@ The preceding checkpoint's “CI pending” statement was written before Actions
 
 ## Note 10 example attribution correction — 2026-11-16
 
-The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 1997 table explicitly lists `ຄິດສະຖານ (khitsatān)`; the 2012 table retains the double-function rule and romanized example, but its Lao glyph text extraction varies across indexes. The exact 2012 source glyph sequence needs specialist confirmation before it is used as a parser acceptance fixture.
+The repository previously called `ຄິຼສຕຽນ` the LOC Note 10 example. That was incorrect. The LOC 2012 Note 10 romanized example is `khitsatān` (also repeated in Note 3), but the exact Lao glyph sequence is unresolved: the currently retrievable PDF text extraction and rendered display have not been reconciled, and the preferred Word source is unavailable. The prior exact-form claim `ຫຼັກສາດ` is withdrawn. The earlier attribution of `ຄິດສະຖານ` to the 1997 table is also not asserted because its example glyphs were not independently inspected. The exact syllabic/role analysis remains a specialist question.
 
 The positive/negative unit tests now use `khitsatān` but inject the source syllable roles manually; they are synthetic crosswalk tests, not proof that the browser parser derives the source roles. The PR #231 browser test with `ຄິຼສຕຽນ` is retained only as a mode-separation test (Lao script is rejected in Latin romanization mode). Note 10 automatic source-role derivation remains PARTIAL/fail-closed.
+
+## LOC source-version and Note 9 rule clarification — 2026-11-16
+
+The official [LOC ALA-LC Romanization Tables index](https://www.loc.gov/catdir/cpso/roman) lists Lao (2012) as current and 1997 only as an earlier reference version; earlier versions are explicitly not for current cataloging. The 2012 Note 9 must be implemented as three policy branches, not a generic Lao tokenizer: (1) ordinary Lao words — shortest written form that can stand alone; (2) Pali/Sanskrit loans — the same shortest-form rule; (3) other loans — division in the original language. A lexical resolver therefore needs reviewed per-lexeme origin/lexicalization and original-language boundary evidence. No runtime change is justified until those fields and examples are rights-cleared and Lao-specialist-adjudicated. Added `SRC-ALA-LC-ROMANIZATION-INDEX` and `CLM-ALA-LC-LAO-2012-CURRENT-VERSION`; see the direct-input audit and completion register.
+
+### LOC source DOC retrieval blocker — 2026-11-16
+
+LOC's source-document index says the ALA-LC tables are created from Microsoft Word source files and directs users to copy from those files rather than PDFs. The Lao entry points to `https://www.loc.gov/catdir/cpso/romanization/lao.doc`, but this legacy Word file could not be retrieved by the available web reader (unsupported MS Word content type) or direct download in this session. Its contents remain uninspected. The 2012 PDF text layer clearly exposes Notes 9–10 and remains the inspected rule source; before any implementation copies table data, inspect the authoritative Word source file in a compatible environment. Registry additions: `SRC-ALA-LC-SOURCE-DOCS`, `CLM-ALA-LC-SOURCE-DOC-PREFERRED`.
+
+## Lao-specific romanization / RTGS evidence checkpoint — updated 2026-11-16
+
+The 2025 UNGEGN Working Group report (GEGN.2/2025/26/CRP.26, 13 January 2025) adds a more precise milestone: as of July 2024, Lao PDR was finalizing draft toponymy guidelines, and the Working Group hoped the romanization system would be submitted for consideration at the 2027 UNGEGN Session. This is an expectation, not evidence of finalization, submission, approval, or implementation. The current UNGEGN index places Lao v4.0 (2013-09-24) under "Other languages/scripts", outside the 30 UN-recommended systems. The 2023 Working Group minutes describe ministry feedback and a draft awaiting government approval. The 2025 UN country-name record still uses BGN/PCGN 1966 for the country's formal name only.
+
+Sources and bounded synthesis are registered as `SRC-UNGEGN-APPROVAL-PROCESS-2026`, `SRC-UNGEGN-ROMANIZATION-STATUS`, `SRC-UNGEGN-LAO-DRAFT-2023`, `SRC-UNGEGN-LAO-MINUTES-2023`, `SRC-UNGEGN-LAO-STATUS-2025`, `SRC-UNGEGN-LAO-NAME-2025`, `SRC-PCGN-LAO-FACTFILE-2023`, and `CLM-LAO-ROMANIZATION-STATUS-2025`. Both RTGS rows in the linguistic completion register and the direct-input audit cite this evidence. **Status remains BLOCKED:** no complete authoritative Lao-specific RTGS table or approved Ukrainian adaptation has been established. Thai RTGS must not be silently substituted, and BGN/PCGN 1966 must not be represented as universal phonetic transcription.
+
+---
+
+# Continuation checkpoint — 2026-11-16 (PR #247 exact-head CI reconciled)
+
+- **Default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Working branch:** `docs/correct-loc-note10-source-example-20261116`.
+- **Exact-head verification:** Verify #4485 / [run 43957672089 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43957672089) ran on `29e8e24d9642f8ed985f28077a79456244d09935`. Its single test job completed successfully, including IPA-gold schema validation, repository/data/evidence audit, Python tests, external-G2P harness syntax/CLI, locked browser dependency installation, browser engine tests, build and canonical browser-data generation, generated-data reproducibility, real Chromium UI tests against the built site, and built-page/relative-asset checks.
+- **Register refresh:** commit `065fde859931d1bf2630120bef10b1acbc5178a5` records the exact-head evidence in the completion register. The GitHub integration returned no workflow run for this subsequent contents-API documentation commit. Therefore #4485 verifies `29e8e24d...`, not the later register-only commit; no exact-head CI claim is made for `065fde8...`.
+- **Branch comparison:** `main...docs/correct-loc-note10-source-example-20261116` is 67 commits ahead / 0 behind, with eight changed files. PR #247 remains open and unmerged. No merge, force-push, branch deletion or Pages deployment was performed.
+- **Scope:** documentation/evidence only; no runtime, corpus, model, dictionary or generated artifact changes. No local tests were run.
+- **Remaining acceptance:** Note 9 LOC-specific lexical policy, item-level rights and Lao-specialist adjudication; Note 10 automatic source-role derivation; Note 6 Ukrainian target correspondence; independent IPA gold (0 adjudicated examples); qualified Lao-specialist sign-off; authoritative complete Lao-specific RTGS; manual accessibility/device QA; retrieval and inspection of LOC's preferred Word source `lao.doc`.
+- **Architecture PR #145:** left open and untouched pending the owner's neural-first versus deterministic-default architecture decision.
+- **Readiness:** engineering-verified partial research prototype, not release-ready as a linguistically validated universal Lao-to-Ukrainian converter.
+
+
+
+## Continuation checkpoint — Ueda (1994) Vientiane phonology evidence review — 2026-11-16
+
+- **Repository base:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Working branch:** `docs/correct-loc-note10-source-example-20261116`; PR #247 remains open/unmerged. This checkpoint adds research/evidence documentation only.
+- **Undermind research:** read the full text of Ueda (1994), *The Phonology of the Vientiane Dialect of Lao*, DOI 10.11435/GENGO1939.1994.106_95. The full-text review and limitations are stored in [the research workspace](https://app.undermind.ai/projects/5603c8d1-3260-4f39-b0d5-8fd6ffa3a081?path=/research/orthographic-parsing-boundaries-2026-11-16.md).
+- **Verified linguistic evidence:** Ueda §2.3 reports no phonological consonant clusters in the described Vientiane spoken dialect despite written consonant-letter sequences; written `w` can correspond to /ua/ or no independent segment. Onset/coda inventories are positional and overlap for some consonants. The paper also discusses a five-tone baseline/disputed six-tone analysis and exceptional non-final light syllables.
+- **Critical limitation:** this is spoken phonological description, not a deterministic orthographic syllabification algorithm, and its dialect/informant scope is limited. It does not verify the exact Lao glyph sequence in LOC Note 10. No runtime, corpus, model, dictionary or generated artifact changed.
+- **Registry:** existing `SRC-UEDA` evidence scope expanded; new `CLM-LAO-ORTHOGRAPHIC-SEQUENCES-NOT-PHONOLOGICAL-CLUSTERS` claim added. The claim is deliberately scoped to central Vientiane spoken phonology.
+- **Task ledger:** Vientiane written-sequence/phonological-cluster distinction is `DONE_VERIFIED` as an evidence claim only; orthographic syllabification remains `PARTIAL/TODO`; Note 10 automatic source-role derivation remains `PARTIAL/BLOCKED` pending exact source glyphs and specialist adjudication.
+- **Verification before this documentation batch:** Verify #4495 / run 43962638485 — SUCCESS on the then-current prior HEAD `8fa8aefe6759059b04781c0cf1cd49f746c090eb`; all configured workflow jobs passed (IPA-gold schema, evidence/data audit, Python, external-G2P, browser engine, build, reproducibility, Chromium UI and built-page/asset checks). The new commits below require their own exact-head verification; do not carry forward #4495 as exact-head evidence for this checkpoint.
+- **No local test execution** is claimed. No merge, force-push, branch deletion or Pages deployment was performed.
+
+
+## Verification polling checkpoint — 2026-11-16
+
+Verify #4499 / run 43966184173 was observed **in progress** on exact branch HEAD `71c9604040a2187910a6f0ed81c1c17286deb7bd` after the Ueda evidence updates. It supersedes the older #4495 run on `8fa8aefe...` for this branch state. The final handoff synchronization commit follows this checkpoint and requires its own exact-head CI; no local tests are claimed.
+
+
+## Exact-head verification — 2026-11-16
+
+Verify #4500 / run 43966297408 — **SUCCESS** on exact code-bearing HEAD `3a257848ddecb6d45968eae7cbdc1d2b1fd32dd4`. Every configured job step passed, including Chromium UI and built-page/relative-asset checks. The following documentation synchronization commits update only the completion register and this handoff; their own exact-head workflow run must be checked separately. No local tests are claimed.
+
+
+## Continuation — Ishida coda discrepancy and fail-closed regression (2026-11-17)
+
+The coda follow-up uncovered a source-internal inconsistency in Ishida (2026-04-28): the prose's explicit final list contains nine letters, the consonant-class chart adds ຢ, and the IPA correspondence table assigns final /j/ to ຍ. The project retains the nine explicit spellings and does not promote ຢ. scripts/audit.py now checks the exact nine grapheme→IPA values; tests/test_grapheme_inventory.py checks the same map and that ກາຢ remains unresolved. The new evidence claim is CLM-LAO-ISHIDA-CODA-CHART-CONFLICT. The /ʔ/ final after short vowels is kept separate as a phonological realization question; codas.csv is not the parser's orthographic coda registry. No runtime or generated data changed. CI must verify this new commit before the regression is marked DONE_VERIFIED.
+
+
+## Exact-head verification — Ishida coda reconciliation (2026-11-17)
+
+Verify #4525 / [run 44035119603 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035119603) passed on exact PR head `9b7d39b237a8dfa7e69544a1122ae1c1e2c3514e`. All configured checks passed: independent IPA-gold schema, repository/data/evidence audit, Python tests (including the new nine-coda map and fail-closed `ກາຢ` regression), external-G2P syntax/CLI, locked browser dependencies, browser engine tests, build/canonical browser-data generation, generated-data reproducibility, real Chromium UI tests, and built-page/relative-asset checks. No runtime, corpus, model, dictionary or generated artifact changed. Registry: 81 unique sources / 105 unique claims; no duplicate IDs or missing claim-source references. Branch comparison before this reporting-only sync: 131 ahead / 0 behind `main`; PR #247 remains open/unmerged.
+
+
+## Exact-head verification — coda reconciliation and reporting sync (2026-11-17)
+
+Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44035383672) passed on exact PR head `843b7695afd983b4dddd573eb570af80a71cbea2`. All configured steps passed: IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P syntax/CLI, locked browser dependencies, browser engine, build/canonical data generation, generated-data reproducibility, real Chromium UI, and built-page/relative-asset checks. This head contains the coda source-conflict claim, nine-item audit invariant, fail-closed ກາຢ regression, and canonical docs/README synchronization. Registry: 81 unique sources / 105 unique claims; no duplicates or missing claim-source references. Branch comparison at this checkpoint: 132 ahead / 0 behind main. PR #247 remains open and unmerged; PR #145 remains open and untouched (24 ahead / 374 behind main; neural-first default conflicts with deterministic-default contract).
+
+## Continuation checkpoint — Lao short-vowel glottal realization (2026-11-17)
+
+- **Starting default branch:** `main` at `390302db31b56f5842696c2d81a817689635472b`.
+- **Consolidated integration branch:** `integration/loc-note10-glottal-evidence-20261117`, created directly from that default-branch commit. It ports PR #247's LOC Note 10/coda evidence and PR #248's glottal evidence at file level, without replaying either branch's commit history. Both source PRs remain open pending review of this consolidated result. PR #145 remains open and untouched.
+- **Research tools:** inspected the existing Lao Undermind workspace and its Ueda (1994) full-text note; re-read Ueda's PDF; inspected the complete accessible text of Lew (2014) and Cole's 2016 working paper.
+- **Finding:** Ueda §1 (p. 96) says short vowels in principle require a coda; §3.2 (pp. 103–104) includes /ʔ/ among nine phonological codas; §5 (pp. 112–113) documents exceptional non-final light CV syllables, mainly /a/, which are unstressed/tone-neutral in ordinary speech and may be read as CVʔ in spelling-based reading. Lew (2014) instead interprets final glottal closure after short vowels in slow, clear speech as redundant suprasegmental marking, not a written coda grapheme. Cole (2016) working paper proposes word-final CVʔ epenthesis as minimal-word repair, while reporting no word-internal epenthesis in one recorded context.
+- **Decision:** do not add /ʔ/ to the written coda grapheme inventory and do not insert it after every short vowel. Keep orthographic final letters, phonological /ʔ/, and predictable/epenthetic glottal closure as distinct levels. No runtime, tone, Ukrainian mapping, corpus or generated data changed.
+- **Evidence changes:** expanded the existing Ueda and Lew source scopes; registered Cole (2016) as a working-paper source; added scoped Ueda and analysis-dependent glottal-alternation claims; updated the phonology workpack and linguistic completion register. A focused test will ensure the open-short-vowel grapheme parser does not invent a written coda.
+- **Exact-head verification:** Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079440345) passed on `1f59909d7af03d8f4fb0c7c3a2e6ae35f8b842b1`: IPA-gold schema, repository/data/evidence audit, 357 Python tests, external-G2P syntax/CLI, 204 browser-engine tests, build/canonical data generation, generated-data reproducibility, 30 Chromium UI tests and built-page/relative-asset checks. No local test execution is claimed. Verify #4546 / [run 44079888990 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079888990) passed on parent head `f088fab50ffa4675419b9994d6d76adf79d717de`: 357 Python tests, 204 browser-engine tests, 30 Chromium UI tests, plus IPA-gold schema, repository/data/evidence audit, external-G2P CLI, build, generated-data reproducibility and built-page/relative-asset checks. The next change is verification-report metadata only; a final exact-head CI run will validate it.
+- **Acceptance still blocked:** choose an explicit dialect and speech/reading profile; obtain independent Lao-specialist adjudication and source-located positive/negative examples; validate lexical/prosodic word boundaries before any automatic insertion; add independent IPA/phonetic gold. Current readiness remains partial research prototype, not release-ready.
+
+## Controlled PR #247/#248 file-level integration — 2026-11-17
+
+- Created integration/loc-note10-glottal-evidence-20261117 from main (390302db31b56f5842696c2d81a817689635472b), then fast-forwarded the new branch to PR #247's reviewed head before applying the PR #248 evidence delta. The resulting branch remains a descendant of main; no existing branch was force-pushed or deleted.
+- Retained PR #247's reviewed commit history by fast-forwarding the integration branch to its exact head; then applied PR #248's eight-file evidence/test delta. Six overlapping files were reconciled explicitly: README paragraph; Ueda/Lew/Cole source rows; two glottal claims; canonical handoff; completion register; branch audit. The phonology workpack and focused glottal test were carried over; PR #247's coda invariant, Note 10 corrections and orthographic segmentation tests remain intact.
+- Evidence registry after integration: 82 unique source IDs / 107 unique claim IDs, with no duplicate IDs or missing claim-to-source references.
+- Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; IPA-gold schema, repository/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed. This verifies engineering consistency, not linguistic accuracy.
+- Both original PRs remain open and unchanged pending review of this consolidated result. PR #145 remains open and untouched.
+- Scope remains evidence/docs/tests only. No runtime, model, dictionary, corpus, generated artifact or Pages deployment changed. Independent IPA gold remains 0; the result is still a partial research prototype.

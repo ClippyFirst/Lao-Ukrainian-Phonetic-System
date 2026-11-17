@@ -27,6 +27,18 @@ class MultisyllableSegmentationTests(unittest.TestCase):
         self.assertEqual([item.surface for item in result.syllables], expected)
         self.assertTrue(all(item.phonemic_ipa for item in result.syllables))
 
+    def test_ishida_2026_examples_preserve_prebase_and_multicharacter_onsets(self):
+        # Source: Richard Ishida, Lao Orthography Notes (updated 2026-04-28).
+        # These are orthographic syllable-boundary examples, not IPA gold.
+        cases = {
+            "ໃຫຍ່": ["ໃຫຍ່"],       # pre-base vowel before high-class onset digraph
+            "ເຫຼືອງ": ["ເຫຼືອງ"],   # pre-base vowel before HA + subjoined LO
+            "ປະເທດ": ["ປະ", "ເທດ"], # syllables, not lexical word boundaries
+        }
+        for source, expected in cases.items():
+            with self.subTest(source=source):
+                self.assertEqual(segment_syllables(source), expected)
+
     def test_every_recognized_syllable_is_analyzed_in_sequence(self):
         result = analyze("ສະບາຍດີ")
         self.assertEqual([item.surface for item in result.syllables], ["ສະ", "ບາຍ", "ດີ"])
