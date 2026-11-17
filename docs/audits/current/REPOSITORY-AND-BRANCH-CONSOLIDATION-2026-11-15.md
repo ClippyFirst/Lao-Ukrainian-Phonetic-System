@@ -1,3 +1,11 @@
+## Latest mainline audit checkpoint — PR #253 merged (2026-11-17)
+
+- PR [#253](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/253) merged by squash as `fc61f5413ad26cfd95ad774b00fb80a3853d2d2a`; starting main was `aae9a7f2eb688932dc8d3bede390a1f7e4185a0e`.
+- Exact PR-head Verify #4640 / [run 44087573689 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44087573689) on `027e850247ce52b8e76af2629fa493bab8784437`; exact post-merge main Verify #4641 / [run 44087819259 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44087819259) on the merge commit.
+- Exact-head test totals: 359 Python, 205 browser-engine, 30 Chromium UI; IPA-gold schema, repository/data/evidence audit, external-G2P syntax/CLI, build, canonical data generation, generated-data reproducibility and built-page/relative-asset checks all passed.
+- LOC evidence: preferred 2012 Word source gives `ຄຼິສຕຽນ (khitsatīan)`; published 2012 PDF conflicts with `ຫຼັກສາດ (khitsatān)`. LOC says to use Word rather than PDF when copying data. The 1997 PDF text layer yields romanized `khitsatian`, but not a reliable Lao-script form.
+- Runtime regression confirms `analyze("ຄຼິສຕຽນ")` remains one unresolved token with no IPA/Ukrainian guess. This is a fail-closed negative test, not automatic source segmentation. Manual source roles in the Latin crosswalk remain; automatic Note 10 source-role derivation is PARTIAL/BLOCKED.
+- Registry: 83 unique sources / 109 unique claims; no duplicate IDs, malformed CSV rows or missing claim-source references. No runtime phonological mapping, IPA gold, model, corpus, dictionary or generated data changed.
 ## Mainline audit correction — LOC 2012 Word/PDF Note 10 discrepancy (2026-11-17)
 
 - Starting main for this continuation: `aae9a7f2eb688932dc8d3bede390a1f7e4185a0e` (PR #251 and documentation closeout PR #252 merged). Exact-main Verify #4611 / run 44086036717 succeeded on PR #251 merge commit `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`; subsequent main Verify #4615 / run 44086592131 succeeded on `aae9a7f2eb688932dc8d3bede390a1f7e4185a0e`.
