@@ -848,3 +848,15 @@ PR #247 and #248 are closed as superseded by merged PR #249; original branches a
 | Source-aware romanization crosswalk | DONE_VERIFIED (manual roles only) | Fixture corrected to khitsatīan and IA_LONG; roles remain explicitly supplied. Verify #4584 / run 44084533002 passed on exact head 536a3c69de6b2455c172c70daa6b427b9790c4da (359 Python, 204 browser-engine, 30 Chromium UI; all configured gates passed). |
 | Automatic Lao source-role derivation | PARTIAL / BLOCKED | Needs validated orthographic syllabifier, exact source-role derivation and independent Lao-specialist review. |
 | Full Note 10 conformance | PARTIAL | Exact source example is resolved; automatic segmentation and generalization beyond the example are not. |
+
+## PR #251 — official LOC Word-source verification — 2026-11-17
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Exact current LOC 2012 Note 3/10 example | DONE_VERIFIED (source evidence) | Official Word source gives `ຄຼິສຕຽນ (khitsatīan)`; Notes 1, 3 and 10 jointly explain the combining mark and double-function `ສ` as final (t) + initial s. |
+| Historical LOC 1997 Note 3/10 example | DONE_VERIFIED (historical edition only) | Official 1997 PDF pp. 117–118 gives `ກິດສະຕຽນ (khitsatian)`, distinct from the current 2012 form. |
+| Source-aware romanization crosswalk | DONE_VERIFIED (manual roles only) | Fixture uses `khitsatīan` and `IA_LONG`, expected output `к'ітсатіан`; source roles remain manually supplied. Exact-head Verify #4611 / run 44085447163 SUCCESS; exact-main Verify run 44086036717 SUCCESS on `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. |
+| Automatic Lao source-role derivation | PARTIAL / BLOCKED | Requires a validated orthographic syllabifier and source-derived coda/onset roles; current fixture is not automatic parsing. |
+| Full Note 10 conformance | PARTIAL | Exact edition-specific examples are now verified; general source-role derivation and broader lexical boundary behavior remain unimplemented/unverified. |
+
+PR #251 merged as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. Registry: 83 unique sources / 108 unique claims, no duplicate IDs, malformed CSV rows or missing claim-source references. No runtime, IPA, pronunciation, tone, model, corpus, dictionary, generated artifact or deployment changed. Independent IPA gold=0; empirical accuracy=null.
