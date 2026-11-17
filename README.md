@@ -268,3 +268,8 @@ New evidence from the Lao Script Generation Panel's 2017 proposal and ICANN's 20
 ## Syllable segmentation vs word segmentation (Ishida, 2026-11-17)
 
 Richard Ishida's [Lao Orthography Notes (updated 2026-04-28)](https://r12a.github.io/scripts/laoo/lo.html) says individual Lao syllable boundaries are comparatively straightforward to detect because vowels are explicit and coda letters are restricted. Lexical word boundaries are a different task: spaces mark phrases/sentences, and multi-syllabic words may require a language-specific dictionary or explicit ZWSP. The notes distinguish audible labialized onsets (`C + ວ`) from written high-class `ຫ` sequences (including `ຫຼ`), explain that pre-base vowels precede the entire onset, and warn that Unicode grapheme clusters are not syllables. Three source-backed orthographic segmentation tests were added; they are not pronunciation gold. This refines the earlier Berment ambiguity research: preserve ambiguity where it actually occurs, but do not assume ordinary Lao syllable boundaries are generally irreducible.
+
+
+### Coda evidence reconciliation (2026-11-17)
+
+The nine-item coda list in Ishida's explicit prose is consistent with the current consonants.csv final map, but the same page's consonant-class chart additionally lists ຢ. Its IPA correspondence table instead identifies ຍ as final /j/. The repository therefore does not add ຢ as a coda. An audit assertion and regression test now preserve this fail-closed boundary. codas.csv remains a phoneme-category table, not a grapheme inventory; implicit /ʔ/ after short vowels remains a separate dialect/phonetic question. No runtime mapping was changed.
