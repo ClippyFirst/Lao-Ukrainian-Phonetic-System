@@ -406,6 +406,19 @@ test("postposed vowel sign before an onset remains an unresolved whole token", (
   assert.equal(r.output, "⟦" + surface + "⟧");
 });
 
+test("official LOC Note 10 Lao spelling remains one unresolved token until source-role parsing is implemented", () => {
+  // Preferred LOC 2012 Word source example. This is a guard, not a successful
+  // parse: the runtime must not invent boundaries or coda/onset roles for ສ.
+  const surface = "ຄຼິສຕຽນ";
+  const result = analyze(surface);
+  assert.equal(result.status, "PARTIAL");
+  assert.equal(result.syllables.length, 1);
+  assert.equal(result.syllables[0].surface, surface);
+  assert.equal(result.syllables[0].ipa, null);
+  assert.equal(result.syllables[0].ukrainian, null);
+  assert.equal(result.output, "⟦" + surface + "⟧");
+});
+
 test("syllable boundary avoids consuming next onset as coda before vowel sign", () => {
   const r = analyze("ພະນະຄອນ");
   assert.equal(r.syllables.map((s) => s.surface).join("|"), "ພະ|ນະ|ຄອນ");
