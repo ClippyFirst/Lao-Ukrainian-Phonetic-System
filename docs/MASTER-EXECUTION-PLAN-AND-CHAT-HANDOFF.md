@@ -5210,3 +5210,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - The current 2012 Word-source example remains `ຄຼິສຕຽນ (khitsatīan)`. Do not reconstruct the historical 1997 glyph sequence from its romanization or treat the two edition examples as exact script equivalents.
 - The direct-input audit and evidence registry already state this limitation; the matrix remains aligned. This is a documentation/evidence correction only. No runtime, IPA, corpus, model, dictionary or generated artifact changed.
 - Current evidence registry: 84 unique source IDs / 110 unique claim IDs. Automatic Note 10 source-role derivation remains PARTIAL/BLOCKED; independent IPA gold=0; empirical accuracy=null.
+
+## Bethke pinned-source retrieval follow-up — 2026-11-17
+
+The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98` was retrieved through the GitHub repository API, despite the earlier `git clone` DNS failure. Static inspection of `Data.pm` confirms `x8` excludes ສ and `x9` admits ສ only paired with U+0E4C LAO CANCELLATION MARK; the current LOC Word form `ຄຼິສຕຽນ` has no U+0E4C. `get_syllables()` silently drops invalid fragments; `get_fragments()` preserves them. The package was not executed because `Lingua::LO::NLP::Syllabify` is not installed in the local Perl environment and direct container network access still fails DNS. No code was copied/imported and no license compatibility determination was made. Static source review = DONE_VERIFIED; runtime comparison = BLOCKED; Note 10 automatic role derivation = PARTIAL/BLOCKED.
