@@ -754,7 +754,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 
 ## PR #251 merge — LOC Note 10 Word-source correction — 2026-11-17
 
-- PR #251 merged by squash as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. It verifies the official LOC 2012 Word source example `ຄຼິສຕຽນ (khitsatīan)` and separately registers the historical 1997 PDF example `ກິດສະຕຽນ (khitsatian)`.
+- PR #251 merged by squash as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. It verifies the official LOC 2012 Word-source example `ຄຼິສຕຽນ (khitsatīan)` and registers the historical 1997 PDF's extracted romanization `khitsatian`; the 1997 Lao-script glyphs are corrupted in extraction and no exact script form is asserted.
 - Exact PR-head Verify #4611 / [run 44085447163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44085447163) SUCCESS: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed.
 - Exact merged-main Verify [run 44086036717](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44086036717) SUCCESS on the exact merge SHA. No local tests are claimed.
 - Registry: 83 unique sources / 108 unique claims, no duplicates, malformed CSV rows or missing claim-source references.
@@ -784,3 +784,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - The PR reconciled README, handoff, completion register and audit with PR #254's merge and CI evidence. It changed documentation only; no runtime, source data, corpus, model, generated artifact or deployment changed.
 - The repository still has one open PR (#145) and two open research/validation issues (#9, #99). PR #145 remains untouched; no force-push or branch deletion occurred.
 - Current research blockers: no independently adjudicated IPA gold; no automatic LOC Note 10 source-role derivation; no executed Bethke package comparison because of DNS failure. Engineering readiness remains partial prototype, not linguistic release readiness.
+
+## LOC 1997 glyph provenance correction — 2026-11-17
+
+The 1997 PDF text extraction exposes romanized `khitsatian`, but the Lao-script glyphs are corrupted and have not been independently verified from page images. No exact historical Lao-script spelling is asserted. The 2012 Word-source example `ຄຼິສຕຽນ (khitsatīan)` remains the current-table form. A stale historical exact-glyph statement was corrected in the completion register, master handoff and this branch audit. No runtime changes were made; current registry integrity remains 84 sources / 110 claims.
