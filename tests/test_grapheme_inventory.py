@@ -2,6 +2,9 @@ import csv
 import unittest
 from pathlib import Path
 
+from lao_ukrainian.data import load_registry
+from lao_ukrainian.parser import parse_syllable
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -28,6 +31,25 @@ class TestGraphemeInventory(unittest.TestCase):
         self.assertEqual(self.by_grapheme["ໞ"]["engine_status"], "OUT_OF_SCOPE_KHMU")
         self.assertEqual(self.by_grapheme["່"]["engine_status"], "TONE_ONLY")
         self.assertEqual(self.by_grapheme["໐"]["engine_status"], "NONPHONOLOGICAL")
+
+
+    def test_ishida_nine_coda_spellings_match_the_source_aware_final_map(self):
+        registry = load_registry()
+        actual = {
+            grapheme: row["ipa_final"]
+            for grapheme, row in registry["consonants"].items()
+            if row["ipa_final"]
+        }
+        self.assertEqual(actual, {
+            "ບ": "p", "ດ": "t", "ກ": "k", "ມ": "m", "ນ": "n",
+            "ຣ": "n", "ງ": "ŋ", "ວ": "w", "ຍ": "j",
+        })
+        # Ishida’s chart includes ຢ, but its explicit list and IPA table do not
+        # support it as a coda. Keep the source-internal discrepancy fail-closed.
+        self.assertEqual(registry["consonants"]["ຢ"]["ipa_final"], "")
+        unresolved = parse_syllable("ກາຢ", registry)
+        self.assertIsNone(unresolved["coda"])
+        self.assertIn("UNCONSUMED_AFTER_VOWEL:ຢ", unresolved["warnings"])
 
 
 if __name__ == "__main__":
