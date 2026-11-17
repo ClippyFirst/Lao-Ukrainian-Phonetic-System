@@ -889,3 +889,13 @@ PR #251 merged as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. Registry: 83 uniqu
 | Automatic LOC Note 10 source-role derivation | PARTIAL / BLOCKED | Candidate does not demonstrate the required unmarked ສ coda role; a separate LOC-specific source grammar and specialist-reviewed positive/negative cases remain necessary. |
 
 No runtime, IPA, tone, model, corpus, dictionary or generated artifacts changed. Manual-role fixtures remain explicit; exact LOC source remains fail-closed. Independent IPA gold=0; empirical accuracy=null.
+
+## PR #254 — external syllabifier assessment closeout — 2026-11-17
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Bethke Lingua::LO::NLP static source review | DONE_VERIFIED | Pinned source and license registered; X9 requires X10_3/U+0E4C and X8 excludes ສ. See SRC-BETHKE-LINGUA-LO-NLP-2017 and CLM-LAO-BETHKE-SYLLABIFIER-NOTE10-LIMIT. |
+| Run candidate on exact LOC Word form | BLOCKED | GitHub clone failed DNS; no package execution. Acceptance: obtain pinned source in a network-enabled environment, run package tests, execute get_syllables/get_fragments on ຄຼິສຕຽນ and preserve exact output. |
+| Automatic Note 10 source-role derivation | PARTIAL / BLOCKED | Candidate does not demonstrate the unmarked ສ coda role. Need a separately evidenced LOC-specific orthographic parser, reviewed source spans/overlap roles, positive/negative cases and Lao-specialist adjudication. |
+
+PR #254 merged as `ca64158ce0b6d92ef0a01956f16ed941277bf446`. Exact-head Verify #4668 / run 44088848659 and exact-main Verify #4670 / run 44089165636 both SUCCESS. Registry integrity: 84 unique sources / 110 unique claims, no duplicate IDs or malformed nonblank rows. No runtime, IPA, tone, model, corpus, dictionary, generated artifacts or deployment changed. Gold=0; accuracy=null.
