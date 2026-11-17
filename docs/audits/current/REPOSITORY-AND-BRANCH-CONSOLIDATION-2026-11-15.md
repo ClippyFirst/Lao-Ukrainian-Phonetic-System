@@ -729,3 +729,12 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - PRs #247 and #248 closed as superseded with explanatory comments; their branches remain preserved. PR #145 remains open/untouched and is 24 ahead / 375 behind main; it is a separate neural-first architecture proposal, not silently integrated.
 - Registry: 82 unique source IDs / 107 unique claim IDs, no duplicate IDs or missing claim-source references.
 - No runtime, IPA mapping, tone rule, corpus, model, dictionary, generated artifact or Pages deployment changed. Note 10 exact Lao glyph/automatic role derivation remains unresolved; short-vowel /ʔ/ remains analysis-dependent; automatic insertion blocked; independent gold=0 and accuracy=null. Engineering status: partial research prototype, not linguistically release-ready.
+
+
+## PR #251 merge — LOC Note 10 Word-source correction — 2026-11-17
+
+- PR #251 merged by squash as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. It verifies the official LOC 2012 Word source example `ຄຼິສຕຽນ (khitsatīan)` and separately registers the historical 1997 PDF example `ກິດສະຕຽນ (khitsatian)`.
+- Exact PR-head Verify #4611 / [run 44085447163](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44085447163) SUCCESS: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed.
+- Exact merged-main Verify [run 44086036717](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44086036717) SUCCESS on the exact merge SHA. No local tests are claimed.
+- Registry: 83 unique sources / 108 unique claims, no duplicates, malformed CSV rows or missing claim-source references.
+- Source-example attribution is DONE_VERIFIED. The source-role crosswalk remains an explicitly supplied-role engineering fixture; automatic Lao source-role derivation and full Note 10 conformance remain PARTIAL/BLOCKED. No runtime, IPA, pronunciation, tone, model, corpus, dictionary, generated artifact or Pages deployment changed. Gold=0; accuracy=null.
