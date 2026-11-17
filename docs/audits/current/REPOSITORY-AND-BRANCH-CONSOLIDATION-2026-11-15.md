@@ -698,7 +698,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 
 ## Research continuation branch — Lao short-vowel glottal evidence (2026-11-17)
 
-- Created `integration/loc-note10-glottal-evidence-20261117` directly from current `main` SHA `390302db31b56f5842696c2d81a817689635472b`; it is a file-level integration of PR #247 and PR #248 changes, not a replay of either commit history.
+- Created `integration/loc-note10-glottal-evidence-20261117` directly from current `main` SHA `390302db31b56f5842696c2d81a817689635472b`; it is a descendant of main fast-forwarded to PR #247's reviewed head, with PR #248's evidence delta applied and reconciled on top.
 - PR #247 remains open and unmerged on `docs/correct-loc-note10-source-example-20261116` at `d84afd57bd7bdc3575271cf3d9f51066bb50a044`, 133 commits ahead / 0 behind `main`; its file changes are ported and reconciled in this integration branch while the original branch remains untouched.
 - PR #145 remains open and untouched; its neural-first architecture proposal remains incompatible with the current deterministic-default contract pending owner decision.
 - This branch's task is deliberately narrow: distinguish orthographic coda graphemes from phonological /ʔ/ and from prosodically conditioned glottal closure. No runtime, model, corpus, dictionary, generated artifact or deployment changes are authorized by the current evidence.
@@ -707,7 +707,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 ## Controlled PR #247/#248 integration branch — 2026-11-17
 
 - integration/loc-note10-glottal-evidence-20261117 is based on the current default branch and includes the file-level changes from PR #247 and PR #248. The original PR branches remain unchanged.
-- PR #247's eleven changed files were ported; PR #248's eight-file delta was reconciled into the same branch. The six overlapping paths were handled deliberately rather than merged blindly; source/claim rows were merged by stable IDs and documentation sections were preserved.
+- PR #247's reviewed commit history is retained as the branch ancestor; PR #248's eight-file delta was reconciled into the same branch. The six overlapping paths were handled deliberately rather than merged blindly; source/claim rows were merged by stable IDs and documentation sections were preserved.
 - Registry validation on the integrated contents: 82 unique sources, 107 unique claims, no duplicate IDs and no missing claim-to-source references.
 - Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. Review the consolidated diff before merging either source PR.
 - PR #145 remains untouched. No branch deletion, force-push, runtime change, model/corpus/dictionary change or deployment was performed.
