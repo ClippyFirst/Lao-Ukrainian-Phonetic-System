@@ -416,9 +416,9 @@ The current UNGEGN approval-process document (WG-reviewed 28 May 2026) clarifies
 
 ## LOC Word source retrieval recheck — 2026-11-16
 
-The official [LOC source-document index](https://www.loc.gov/catdir/cpso/romansource.html) continues to identify the Lao Word file and explicitly says to use Word source documents rather than PDF copies when copying table data. The linked `lao.doc` was retrieved with HTTP 200 (`application/msword`) and inspected on 2026-11-17. It gives `ຄຼິສຕຽນ (khitsatīan)` in Notes 3 and 10. The PDF differs (`ຫຼັກສາດ (khitsatān)`); preserve this source discrepancy. The 2012 PDF text-layer statements and examples in this audit remain attributed to the PDF/text layer only; they must not be described as Word-source verification.
+The official [LOC source-document index](https://www.loc.gov/catdir/cpso/romansource.html) continues to identify the Lao Word file and explicitly says to use Word source documents rather than PDF copies when copying table data. The linked `lao.doc` was retrieved with HTTP 200 (`application/msword`) and inspected on 2026-11-17. It gives `ຄຼິສຕຽນ (khitsatīan)` in Notes 3 and 10. The PDF differs (`ຫຼັກສາດ (khitsatān)`); preserve this source discrepancy. The 2012 PDF remains a separately published conflicting rendition; the Word source is the preferred source for copying table data under LOC's explicit instruction.
 
-**Acceptance to unblock:** obtain the exact official LOC `lao.doc` file through a compatible document-capable environment or user-supplied copy, inspect its table/notes, and reconcile any differences before changing source-derived claims or fixtures. No linguistic inference or runtime change is justified by the failed retrieval.
+**Remaining acceptance:** reconcile the PDF/Word discrepancy in any downstream implementation; keep the Word source as the preferred copy source per LOC. No automatic source syllabification or runtime role derivation is inferred.
 
 
 ## Ueda (1994) full-text phonology review — 2026-11-16
