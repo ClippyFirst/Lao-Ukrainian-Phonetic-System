@@ -5271,3 +5271,13 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - The only open PR remains #145. Its typed IPA stage-1 API is already present on main; its remaining neural-first CLI-default change is an architecture decision and remains deferred. The PR branch is preserved without rebase, force-push or merge.
 - Research issues #9 and #99 remain open: the former still needs a rights-cleared, source-attributed comparison sample and expert review; the latter still needs two independent annotators, an adjudicator and a curator. Independent adjudicated IPA gold remains 0.
 - The final engineering checkpoint is unchanged: engineering-verified research prototype, not linguistically release-ready. No new linguistic claims, corpus records, IPA gold, or runtime behavior were added during this recheck.
+
+
+## Continuation — ICANN/Lao Script Generation Panel cross-check of ຢ coda role (2026-11-17)
+
+- Starting main: 26107201f2db68cb8b1c0f53f99f49200f570156; dedicated documentation/evidence branch: research/icann-lao-coda-role-crosscheck-20261117.
+- Reviewed the official 2017 Lao Script Generation Panel proposal, Version 3.1, at https://www.icann.org/en/system/files/files/proposal-lao-lgr-31jan17-en.pdf. Section 5.1 (printed p. 4) explicitly lists 14 final consonant graphemes and excludes ຢ. Appendix C (printed p. 23) is credited to the Lao Text-to-Speech team at the e-Government Center of the Ministry of Posts and Telecommunications and maps initial /j/ to ຢ and final /j/ to ຍ.
+- This is independent cross-source support for withholding ຢ as a coda, consistent with Ishida's explicit final-position list and IPA correspondence table. It does not establish a universal modern coda inventory: the ICANN document is scoped to DNS root-zone labels, has a broader 14-item orthographic final set including ຊ ທ ຟ ສ ລ, and describes historical Indic-loan spelling reforms.
+- Updated existing source SRC-ICANN-LAO-PROPOSAL-2017, added scoped claim CLM-LAO-ICANN-CODA-ROLE-SCOPE, and cross-referenced CLM-LAO-ISHIDA-CODA-CHART-CONFLICT. Updated the source guide, tone–rhyme matrix and linguistic completion register in place.
+- No parser, inventory, IPA, tone, Ukrainian mapping, corpus, model, dictionary or generated artifact changed. Existing nine-item modern profile and fail-closed spelling ກາຢ remain unchanged. The broader profile reconciliation remains PARTIAL pending a modern spelling authority and Lao-specialist review.
+- Exact-head CI is required before marking this documentation/evidence update DONE_VERIFIED.

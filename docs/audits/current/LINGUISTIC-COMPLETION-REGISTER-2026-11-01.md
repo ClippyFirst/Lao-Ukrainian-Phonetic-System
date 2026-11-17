@@ -793,7 +793,7 @@ New registry entries: 81 unique source IDs / 99 unique claim IDs after this chec
 | Modern Lao syllable boundary evidence | DONE_VERIFIED (source review) | Ishida (2026-04-28) says explicit vowels and restricted codas make individual syllable segmentation comparatively straightforward; identifies onset families and pre-base vowel anchoring. |
 | Ishida orthographic regression cases | PARTIAL | Added `ໃຫຍ່`, `ເຫຼືອງ`, `ປະເທດ` controls to multisyllable tests. Python step passed on test commit in Verify #4517; full workflow still pending at last poll. These are not IPA gold. |
 | Lexical word segmentation | PARTIAL / TODO | Word boundaries are not marked by spaces; multi-syllabic words may require a language-specific dictionary or explicit ZWSP. Do not equate syllable segmentation with word segmentation. |
-| Modern coda inventory reconciliation | TODO | Ishida's nine phonological coda letters differ from ICANN's broader DNS root-zone repertoire and historical loan/Indic spellings. Define separate profiles before changing parser inventories. |
+| Modern coda inventory reconciliation | PARTIAL / evidence-scoped | The 2017 Lao Script Generation Panel proposal independently excludes ຢ from its 14 DNS root-zone final graphemes and maps initial /j/ to ຢ vs final /j/ to ຍ. Its broader 14-item list includes additional loan/extended spellings and is not a universal modern phonological inventory. Separate modern, DNS-label and historical/loanword profiles; specialist review is still required before widening production rules. Claim: CLM-LAO-ICANN-CODA-ROLE-SCOPE. |
 | Ambiguity lattice | TODO (fallback) | Retain candidate alternatives for genuine residual ambiguity; do not assume ordinary Lao syllable segmentation is generally irreducible. |
 
 Registry totals: 81 unique sources / 104 unique claims; no duplicate IDs or missing claim-to-source references.
@@ -973,3 +973,13 @@ All benchmark outputs remain comparative engineering evidence, not independent l
 | Independent external-G2P evaluation sample | PARTIAL / evidence and rights | Issue #9 remains open; existing 37 fixtures are engineering controls, not independent gold. |
 
 No linguistic inventory, phonological rule, Ukrainian correspondence, corpus record, model or generated artifact changed in this closeout recheck. Comparative benchmark evidence must not be reported as independent linguistic accuracy.
+
+
+## Cross-source coda-role review — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Whether ຢ is a final consonant in the scoped modern profile | DONE_VERIFIED (source reconciliation only) | Ishida (2026) explicit final list and IPA table, plus the 2017 Lao Script Generation Panel proposal §5.1 and Appendix C, independently exclude ຢ as a final and distinguish initial /j/ ຢ from final /j/ ຍ. Keep the existing fail-closed spelling ກາຢ behavior. |
+| Reconciliation of nine modern finals vs 14 ICANN DNS-label finals | PARTIAL / profile-limited | ICANN's 14-item set is specific to DNS root-zone label processing and includes additional spellings (ຊ ທ ຟ ສ ລ); the proposal discusses historical Indic-loan spelling reform and simplifies some spelling constraints. Do not expand the modern parser inventory from this source alone. Requires modern orthographic authority and Lao-specialist adjudication. |
+
+No runtime, IPA, tone, Ukrainian mapping, corpus, model or generated data changed. This resolves the evidential direction for withholding ຢ, not the complete modern/loanword coda inventory.

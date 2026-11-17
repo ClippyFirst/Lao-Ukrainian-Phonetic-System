@@ -807,3 +807,11 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - Open research issues: #9 (rights-cleared independent comparison sample and expert mismatch review) and #99 (two annotators, adjudicator, curator, blind intake and pilot execution).
 - Historical and superseded topic branches remain preserved. No branch deletion, force-push, rebase of owner branches, or external repository setting change was performed.
 - This pass made no source-code or linguistic-data change. Repository status remains an engineering-verified research prototype, not release-ready.
+
+
+## ICANN coda-role cross-check — 2026-11-17
+
+- Expanded the existing SRC-ICANN-LAO-PROPOSAL-2017 source record rather than creating a duplicate source. The official Lao Script Generation Panel proposal §5.1 (printed p. 4) excludes ຢ from its 14 DNS root-zone final graphemes; Appendix C (printed p. 23), developed by the Lao TTS team at the Ministry of Posts and Telecommunications, maps initial /j/ to ຢ and final /j/ to ຍ.
+- Added CLM-LAO-ICANN-CODA-ROLE-SCOPE and expanded the existing Ishida coda-conflict claim to cite the independent cross-check. This supports the existing fail-closed coda behavior for ຢ, but the ICANN list is DNS-label scoped and includes extra final spellings; it does not justify replacing the modern nine-item profile.
+- Updated the source guide, tone–rhyme matrix, completion register and canonical handoff. No production code or linguistic output changed.
+- Open boundaries: reconcile modern vs loan/Indic spelling roles with a modern orthographic authority and Lao specialist; keep LOC Note 10 and general multi-role segmentation blocked pending direct evidence.
