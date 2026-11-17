@@ -945,3 +945,19 @@ Berment primary source: https://www.tagmatica.fr/doc/these-vincent-berment.pdf, 
 | Modern Lao orthographic grammar | PARTIAL / TODO | Historical grammar is not a modern validator; current inventory, Unicode structure, adversarial examples and specialist adjudication remain open. |
 
 The bounded analysis API is verified, but it is not evidence of full linguistic coverage. No production segmentation, IPA, tone, Ukrainian adaptation, model, corpus, dictionary or generated artifact changed. Independent IPA gold=0; empirical accuracy=null.
+
+
+## Final benchmark checkpoint — 2026-11-17
+
+| Gate | Status | Evidence |
+|---|---|---|
+| Candidate lattice and ambiguity graph API | DONE_VERIFIED / bounded engineering component | PR #259 and #261 merged; exact-head and exact-main Verify passed. Main run #44116681301: 368 Python, 205 browser-engine, 30 Chromium UI; data/evidence audit and generated-data reproducibility passed. |
+| MekongPhon deterministic profile benchmark | DONE_VERIFIED / engineering comparison | Main run #44116680781 SUCCESS. |
+| MekongPhon three-engine held-out comparison | DONE_VERIFIED / engineering comparison | Main run #44116681109 SUCCESS. |
+| HVULao 1k three-engine stress benchmark | DONE_VERIFIED / engineering comparison | Main run #44116681468 SUCCESS. Earlier GitHub API 403 was transient; retry #44106272082 also SUCCESS. |
+| Hybrid v2 HVULao 1k stress benchmark | DONE_VERIFIED / engineering comparison | Main run #44116682333 SUCCESS. |
+| Independent adjudicated IPA gold | BLOCKED / human acquisition | 0 gold records. Issue #99 requires two independent qualified Lao annotators, a third adjudicator and a curator; no recruitment/annotation performed. |
+| Lao specialist validation of modern orthographic grammar and LOC Note 10 | BLOCKED / expert evidence | No qualified specialist adjudication; exact source-role overlap remains unresolved. |
+| Neural-first CLI default | DEFERRED / architecture decision | PR #145 remains open; current main preserves deterministic-first default. Its stage-1 typed IPA API already exists in main. |
+
+All benchmark outputs remain comparative engineering evidence, not independent linguistic accuracy. Gold=0; accuracy=null.
