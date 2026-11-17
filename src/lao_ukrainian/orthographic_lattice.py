@@ -73,25 +73,82 @@ def _build_candidate_lattice(
         if (edge["start"], edge["end"], edge["surface"]) not in live_ids
     ]
 
-    # Count complete paths, saturating at 2: callers need to distinguish
-    # zero, exactly one, and multiple analyses, not enumerate an exponential
-    # number of lexical alternatives.
-    path_counts = [0] * (size + 1)
-    path_counts[size] = 1
+    # Exact DAG path counts support convergence-point detection. We expose
+    # only a 0/1/many classification, never enumerate the paths themselves.
+    paths_to_end = [0] * (size + 1)
+    paths_to_end[size] = 1
     for offset in range(size - 1, -1, -1):
-        path_counts[offset] = min(
-            2,
-            sum(path_counts[edge["end"]] for edge in by_start.get(offset, [])),
+        paths_to_end[offset] = sum(
+            paths_to_end[edge["end"]] for edge in by_start.get(offset, [])
         )
 
+    paths_from_start = [0] * (size + 1)
+    paths_from_start[0] = 1
+    for offset in range(size):
+        for edge in by_start.get(offset, []):
+            paths_from_start[edge["end"]] += paths_from_start[offset]
+
+    total_paths = paths_to_end[0]
+    path_count_capped = min(2, total_paths)
+    convergence_offsets = [
+        offset for offset in range(size + 1)
+        if total_paths > 0
+        and paths_from_start[offset] * paths_to_end[offset] == total_paths
+    ]
+
+    # An ambiguity eye is the subgraph between consecutive convergence
+    # points when more than one complete local path connects them.
+    ambiguity_eyes = []
+    for left, right in zip(convergence_offsets, convergence_offsets[1:]):
+        local_paths = [0] * (right + 1)
+        local_paths[right] = 1
+        for offset in range(right - 1, left - 1, -1):
+            local_paths[offset] = sum(
+                local_paths[edge["end"]]
+                for edge in by_start.get(offset, [])
+                if edge["end"] <= right
+            )
+        if local_paths[left] <= 1:
+            continue
+
+        local_reachable = {left}
+        for offset in range(left, right):
+            if offset in local_reachable:
+                local_reachable.update(
+                    edge["end"] for edge in by_start.get(offset, [])
+                    if edge["end"] <= right
+                )
+        local_can_reach = {right}
+        for offset in range(right - 1, left - 1, -1):
+            if any(
+                edge["end"] in local_can_reach
+                for edge in by_start.get(offset, [])
+                if edge["end"] <= right
+            ):
+                local_can_reach.add(offset)
+        eye_edges = [
+            edge for edge in candidates
+            if left <= edge["start"] < edge["end"] <= right
+            and edge["start"] in local_reachable
+            and edge["end"] in local_can_reach
+        ]
+        ambiguity_eyes.append({
+            "start": left,
+            "end": right,
+            "surface": word[left:right],
+            "complete_path_count_capped": min(2, local_paths[left]),
+            "candidate_count": len(eye_edges),
+            "candidates": eye_edges,
+        })
+
     unique_path = None
-    if path_counts[0] == 1:
+    if total_paths == 1:
         unique_path = []
         offset = 0
         while offset < size:
             next_edges = [
                 edge for edge in by_start.get(offset, [])
-                if path_counts[edge["end"]] > 0
+                if paths_to_end[edge["end"]] > 0
             ]
             if len(next_edges) != 1:
                 # Defensive invariant: a unique path must have one live edge
@@ -111,7 +168,9 @@ def _build_candidate_lattice(
         "text": word,
         "offset_unit": "NFC Python Unicode code points",
         "status": status,
-        "complete_path_count_capped": path_counts[0],
+        "complete_path_count_capped": path_count_capped,
+        "convergence_offsets": convergence_offsets,
+        "ambiguity_eyes": ambiguity_eyes,
         "candidate_count": len(candidates),
         "live_candidate_count": len(live),
         "dead_candidate_count": len(dead),
@@ -123,6 +182,7 @@ def _build_candidate_lattice(
             "Does not model one grapheme serving overlapping coda and onset roles.",
             "Does not resolve lexical, loanword, dialect, or pronunciation ambiguity.",
             "A unique path is unique only within the current recognizer and candidate inventory.",
+        "Convergence points and ambiguity eyes are structural graph properties, not lexical or phonological resolutions.",
         ],
     }
 
