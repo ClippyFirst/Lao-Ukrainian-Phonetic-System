@@ -899,3 +899,7 @@ No runtime, IPA, tone, model, corpus, dictionary or generated artifacts changed.
 | Automatic Note 10 source-role derivation | PARTIAL / BLOCKED | Candidate does not demonstrate the unmarked ສ coda role. Need a separately evidenced LOC-specific orthographic parser, reviewed source spans/overlap roles, positive/negative cases and Lao-specialist adjudication. |
 
 PR #254 merged as `ca64158ce0b6d92ef0a01956f16ed941277bf446`. Exact-head Verify #4668 / run 44088848659 and exact-main Verify #4670 / run 44089165636 both SUCCESS. Registry integrity: 84 unique sources / 110 unique claims, no duplicate IDs or malformed nonblank rows. No runtime, IPA, tone, model, corpus, dictionary, generated artifacts or deployment changed. Gold=0; accuracy=null.
+
+## PR #255 closeout — 2026-11-17
+
+PR #255 merged as `d8314fc527a9e246df9b22ca570a533ff9122679`. Exact PR-head Verify #4671 / run 44089568451 and exact merged-main Verify #4672 / run 44089755616 passed all configured steps. This PR only synchronized documentation with PR #254; it did not alter code, data, runtime, corpus, IPA labels, generated artifacts or deployment. The Bethke syllabifier remains a static-only candidate assessment; its runtime execution is blocked by DNS, and LOC Note 10 source-role derivation remains PARTIAL/BLOCKED. Registry remains 84 unique sources / 110 unique claims; gold=0; accuracy=null.
