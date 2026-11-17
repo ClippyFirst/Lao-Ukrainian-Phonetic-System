@@ -126,3 +126,12 @@ Enfield (2007, §3.1, pp. 33–34) models the Lao word template as C₀V₀C₁V
 **Implementation boundary (2026-11-07):** the orthographic parser cannot yet prove that every initial short-open-/a/ shape is a minor syllable, nor does it fully encode the allowed C₀ subset. The engine therefore flags only an initial unmarked short-open-/a/ candidate followed by a major-weighted syllable in the same unspaced token. It preserves segmental IPA but marks the independent tone analysis-dependent and withholds the contour. It does **not** assign a neutral tone category or use a lexical exception list. This is a conservative candidate detector, not a complete minor-syllable parser.
 
 **Acceptance gap:** a qualified Vientiane Lao reviewer must verify the onset restrictions, lexical/morphological conditions, and candidate examples before the selector is widened or the candidate is upgraded to a confirmed neutral syllable. The held-out MekongPhon dictionary reference is not independent adjudication and must not be used as the deciding authority.
+
+
+## 10. Orthographic coda-role cross-check — 2026-11-17
+
+The 2017 Lao Script Generation Panel proposal for the ICANN Lao Root Zone LGR provides independent cross-source evidence relevant to the unresolved ຢ chart discrepancy. Section 5.1 (printed p. 4) lists the final consonant set ກ ງ ຊ ຍ ດ ທ ນ ບ ຟ ມ ຣ ລ ວ ສ (14 graphemes), excluding ຢ. Appendix C (printed p. 23), explicitly credited to the Lao Text-to-Speech team at the e-Government Center of the Ministry of Posts and Telecommunications, maps initial /j/ to ຢ and final /j/ to ຍ. The proposal's background also notes that orthographic reforms reduced Indic-loan final consonants relative to the spoken phonology.
+
+Interpretation: this is independent support for keeping ຢ out of the coda mapping. It is not a reason to replace the project's nine-item modern orthographic profile with 14 entries: the ICANN document is a DNS root-zone label specification, has a broader orthographic repertoire that includes ຊ ທ ຟ ສ ລ, and acknowledges simplified/unenforced language spelling restrictions. Preserve separate modern-orthography, DNS-label and historical/loanword profiles. No runtime or inventory changes are authorized by this source alone.
+
+Evidence registry: SRC-ICANN-LAO-PROPOSAL-2017 scope expanded; CLM-LAO-ICANN-CODA-ROLE-SCOPE added; CLM-LAO-ISHIDA-CODA-CHART-CONFLICT now records the independent cross-check.
