@@ -711,3 +711,13 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - Registry validation on the integrated contents: 82 unique sources, 107 unique claims, no duplicate IDs and no missing claim-to-source references.
 - Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. Review the consolidated diff before merging either source PR.
 - PR #145 remains untouched. No branch deletion, force-push, runtime change, model/corpus/dictionary change or deployment was performed.
+
+
+## PR #249 integration merge — 2026-11-17
+
+- PR #249 merged by squash to main as `825d7bf91d756c7abda884e2348a8fdfd82ec31f`. It consolidates the LOC Note 10/coda evidence and tests from PR #247 with the Ueda/Lew/Cole glottal evidence from PR #248. The 13-file diff was inspected; source/claim rows and overlapping docs were reconciled before merge.
+- Exact integrated PR-head Verify #4557 / [run 44082038728](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44082038728) SUCCESS: 359 Python, 204 browser-engine and 30 Chromium UI tests; IPA-gold schema, repository/data/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page/relative-asset checks all passed.
+- Exact merged-main Verify [run 44083165575](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44083165575) SUCCESS on the exact merge SHA. This is hosted CI evidence; no local test execution is claimed.
+- PRs #247 and #248 closed as superseded with explanatory comments; their branches remain preserved. PR #145 remains open/untouched and is 24 ahead / 375 behind main; it is a separate neural-first architecture proposal, not silently integrated.
+- Registry: 82 unique source IDs / 107 unique claim IDs, no duplicate IDs or missing claim-source references.
+- No runtime, IPA mapping, tone rule, corpus, model, dictionary, generated artifact or Pages deployment changed. Note 10 exact Lao glyph/automatic role derivation remains unresolved; short-vowel /ʔ/ remains analysis-dependent; automatic insertion blocked; independent gold=0 and accuracy=null. Engineering status: partial research prototype, not linguistically release-ready.
