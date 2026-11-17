@@ -5224,3 +5224,12 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - This is a separate inspection API. It does not change `segment_syllables()`, production output, IPA, tone, romanization, or generated artifacts. It does not implement the complete historical Berment grammar or overlapping shared-coda/onset roles.
 - Added `docs/audits/current/ORTHOGRAPHIC-CANDIDATE-LATTICE-2026-11-17.md` with evidence scope and acceptance limits. Candidate graph implementation is pending exact-head CI; local test execution is not available in this environment.
 - Acceptance still requires modern source-located orthographic examples, adversarial Unicode/loanword cases, specialist adjudication, and a separate representation if shared grapheme roles overlap. LOC Note 10 automatic source-role derivation remains PARTIAL/BLOCKED; global ambiguity resolution remains BLOCKED/evidence-limited.
+
+
+## Berment convergence points and ambiguity eyes — 2026-11-17
+
+- Primary source: Berment (2004), printed pp. 132–133 and 145–148, thesis PDF https://www.tagmatica.fr/doc/these-vincent-berment.pdf. The thesis defines syllable candidates as text-position edges, complete segmentations as start-to-end paths, dead edges, convergence offsets, and ambiguous “eyes” between consecutive convergence points. Its longest-candidate selection is a local UI heuristic, not a global linguistic resolver.
+- p. 145 gives the historical ambiguity example ແຂກະ with one-syllable and ແຂ + ກະ analyses. The current recognizer has not yet been shown to support the one-syllable candidate; do not claim this example is implemented.
+- Extended `orthographic_lattice.py` to return convergence offsets and ambiguity eyes using exact internal DAG path counts (only a capped 0/1/2+ count is exposed); no segmentation paths are enumerated. Added tests for one eye, two eyes separated by a convergence point, and unique-path convergence.
+- New branch: `feat/orthographic-ambiguity-eyes-20261117`, based on candidate-lattice PR #259 merge `2655a336c0a20782d863b2239bdd7a0c445151db`. Exact-head Verify pending. No local test execution claimed.
+- This remains an analysis API over the current recognizer; no production segmentation, IPA, tone, Ukrainian mapping, corpus, model, or generated artifact changed. LOC Note 10 shared-role parsing remains PARTIAL/BLOCKED; independent IPA gold=0; empirical accuracy=null.

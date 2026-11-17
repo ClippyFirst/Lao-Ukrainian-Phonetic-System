@@ -922,3 +922,15 @@ Current registry after PR #254/#255: 84 unique sources / 110 unique claims. Auto
 | Global ambiguity resolution | BLOCKED / evidence-limited | The lattice preserves multiple paths; it does not select a lexeme or pronunciation. No longest-match choice is promoted to a linguistic rule. |
 
 No production parser policy, IPA, tone, Ukrainian mapping, corpus, model, dictionary, or generated artifact changed. CI evidence is pending; independent IPA gold remains 0 and empirical accuracy remains null.
+
+
+## Berment graph refinement — 2026-11-17
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Candidate graph and dead-edge pruning | PARTIAL / engineering prototype | Implemented in `analyze_orthographic_word()`; still uses current single-syllable recognizer, not a complete Lao grammar. |
+| Convergence offsets and ambiguity eyes | PARTIAL / pending exact-head CI | Added exact DAG path-count based convergence detection and subgraph extraction for ambiguity eyes. Synthetic tests cover one eye and multiple eyes separated by a convergence point. |
+| Berment example ແຂກະ | TODO / evidence-limited | Berment (2004), printed p. 145, documents one-syllable and two-syllable readings. Current recognizer has not been proven to yield both; acceptance requires modern orthographic validation and source-located candidate rules. |
+| Longest-candidate global segmentation | DEFERRED / not a linguistic rule | Berment p. 148 presents longest selection only as a local UI selection heuristic; it must not become a global G2P tie-break. |
+
+Berment primary source: https://www.tagmatica.fr/doc/these-vincent-berment.pdf, printed pp. 132–133 and 145–148. The historical grammar accepts unattested theoretical forms and simplifies accent placement, so it is not a modern spelling validator. No production output changed.
