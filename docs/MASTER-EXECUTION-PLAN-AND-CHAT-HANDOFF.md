@@ -5302,9 +5302,11 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - No branches were deleted, force-pushed, or rebased. Readiness remains an engineering-verified partial research prototype, not linguistically release-ready.
 
 
-## PR #268 verification status — 2026-11-17
+## PR #268 verification and merge closeout — 2026-11-17
 
-- Documentation reconciliation is proposed in PR #268 from `docs/nov17-live-main-handoff-reconcile-20261117`; latest inspected head before this note: `baf3ed73ef92165b68c9305aefbce0dcc6cdd67d`. The branch is 6 commits ahead / 0 behind main and changes only README, this handoff and the current branch audit.
-- The repository's Verify workflow is configured for pull requests targeting `main`, but the available GitHub workflow-run and combined-status queries returned no PR-head run/status for this commit. Do not infer success from the successful base-main run #44147127249.
-- A local shallow clone was attempted to run the repository's test/build gates, but failed before checkout because the execution environment could not resolve `github.com` (DNS). No local tests or builds are claimed.
-- Status: documentation changes are implemented; exact-head verification is BLOCKED pending a visible successful Verify run on the PR head. PR #268 remains open and unmerged. No attempt was made to bypass the required gate.
+- PR #268 merged by squash as `e7efceaf3de92752c27e270f5a1717ca43252b3f`; merged main now points to that SHA.
+- Exact PR-head Verify [#44151626260 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44151626260) on `c1d8e5820c83ece3780cd02bf4c01b3fcf423381`. The workflow passed IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P syntax/CLI, locked npm install, browser-engine tests, build/canonical data generation, generated-data reproducibility, Chromium UI tests, and built-page/relative-asset checks.
+- The exact-head workflow resolved the earlier status-visibility gap. The local shallow clone attempt had failed because the container could not resolve `github.com`; no local test execution is claimed. Hosted exact-head CI provided the required verification.
+- PR #268 changed only README, master handoff and branch-consolidation audit. No runtime, coda inventory, IPA, tone, Ukrainian mapping, corpus, model, generated artifact or deployment changed.
+- Current pre-existing open PR remains #145 (24 ahead / 403 behind main). Its typed stage-1 IPA API is already on main; the remaining neural-first CLI default remains deferred pending an explicit architecture decision. Issues #9 and #99 remain blocked on independent rights-cleared comparison evidence and human IPA gold acquisition. Gold=0; empirical accuracy=null.
+- No branches were deleted, force-pushed or rebased. Repository readiness remains an engineering-verified research prototype, not linguistically release-ready.

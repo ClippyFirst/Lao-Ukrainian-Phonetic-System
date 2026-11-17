@@ -836,9 +836,10 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - No runtime, coda inventory, IPA, tone, Ukrainian mapping, corpus, model, generated artifact or deployment changed. No branches were deleted, rebased or force-pushed. Independent IPA gold remains 0; empirical accuracy remains null.
 
 
-## PR #268 verification blocker — 2026-11-17
+## PR #268 verification and merge closeout — 2026-11-17
 
-- PR #268 proposes only README, master handoff and audit synchronization; its branch was 6 commits ahead / 0 behind main at the last comparison.
-- Verify workflow configuration includes pull requests targeting `main`, but no exact-head workflow run or combined status was returned by the available GitHub endpoints. Base-main Verify #44147127249 does not verify the PR head.
-- Local clone/test attempt failed at network setup because DNS could not resolve `github.com`; no local tests/builds were run.
-- Keep PR #268 open and unmerged until exact-head Verify passes. No branch deletion, force-push or external setting change.
+- PR #268 merged by squash as `e7efceaf3de92752c27e270f5a1717ca43252b3f` after exact PR-head Verify [#44151626260 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44151626260) on `c1d8e5820c83ece3780cd02bf4c01b3fcf423381`.
+- Exact-head Verify passed IPA-gold schema, data/evidence audit, Python, external-G2P syntax/CLI, npm install, browser-engine tests, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks.
+- PR #268 was documentation-only (README, master handoff and this audit); no runtime or linguistic data changed. The local clone attempt failed at DNS, but hosted exact-head CI completed successfully.
+- Only pre-existing open PR remains #145, 24 commits ahead / 403 behind main; stage-1 API already exists on main and neural-first CLI default remains deferred. Issues #9/#99 remain blocked; independent IPA gold=0 and empirical accuracy=null.
+- No branch deletion, force-push or rebase occurred. Readiness remains an engineering-verified research prototype, not linguistically release-ready.
