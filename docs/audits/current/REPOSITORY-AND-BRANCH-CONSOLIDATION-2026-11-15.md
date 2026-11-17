@@ -792,3 +792,8 @@ The 1997 PDF text extraction exposes romanized `khitsatian`, but the Lao-script 
 ## Bethke source retrieval follow-up — 2026-11-17
 
 Pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98` was successfully retrieved through the GitHub repository API. Static inspection confirms `x8` excludes ສ and `x9` admits it only with U+0E4C; the current LOC Word form has no U+0E4C. Runtime execution remains blocked because the module is not installed in the local Perl environment and direct container network access fails DNS. No source code was copied/imported. The static evidence strengthens the candidate exclusion but does not establish a general Lao syllabifier or resolve Note 10.
+
+
+## Open PR #145 reconciliation — 2026-11-17
+
+PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4cce51f`) was compared with current main `2809fcca27ab66be2931db0176be54ff858f4c8f`. It is 24 commits ahead / 398 behind with merge base `c0d7218da907dbe0bae6cadb42824ca0cd09b83a`, so wholesale merge/rebase is not appropriate. Its stage-1 typed IPA API is already present in main; the material outstanding delta is neural-first CLI default plus `--to-ukrainian` explicit stage 2. That conflicts with the current deterministic-first CLI default. PR #145 remains open and untouched; no force-push, close, or duplicate stage-1 port was performed.
