@@ -5310,3 +5310,12 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - PR #268 changed only README, master handoff and branch-consolidation audit. No runtime, coda inventory, IPA, tone, Ukrainian mapping, corpus, model, generated artifact or deployment changed.
 - Current pre-existing open PR remains #145 (24 ahead / 403 behind main). Its typed stage-1 IPA API is already on main; the remaining neural-first CLI default remains deferred pending an explicit architecture decision. Issues #9 and #99 remain blocked on independent rights-cleared comparison evidence and human IPA gold acquisition. Gold=0; empirical accuracy=null.
 - No branches were deleted, force-pushed or rebased. Repository readiness remains an engineering-verified research prototype, not linguistically release-ready.
+
+
+## PR #269 verification and merge closeout — 2026-11-17
+
+- PR #269 (closeout of PR #268's exact-head verification) merged by squash as `cb73873c84d86f1f09905dbcb5e14bbfb3149e08`.
+- Exact PR-head Verify [#44151960521 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44151960521) on `687d0756f3f2f3ff77b654d0e29806e044425251`. IPA-gold schema, repository/data/evidence audit, Python tests, external-G2P syntax/CLI, locked npm install, browser-engine tests, build/canonical generation, generated-data reproducibility, Chromium UI tests and built-page/relative-asset checks all passed.
+- PR #269 changed only README, master handoff and branch audit. It records PR #268's squash merge and successful exact-head Verify; no runtime, linguistic inventory, IPA, tone, Ukrainian mapping, corpus, model, generated artifact or deployment changed.
+- Open PR inventory remains #145 only. It is 24 commits ahead / 403 behind the latest main at the time of reconciliation; the typed stage-1 IPA API is already present, while the neural-first CLI default remains deferred pending an explicit architecture decision. Issues #9/#99 remain blocked on independent rights-cleared comparison evidence and human IPA gold acquisition. Gold=0; empirical accuracy=null.
+- No branches were deleted, force-pushed or rebased. Readiness remains an engineering-verified research prototype, not linguistically release-ready.

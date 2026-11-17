@@ -843,3 +843,12 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - PR #268 was documentation-only (README, master handoff and this audit); no runtime or linguistic data changed. The local clone attempt failed at DNS, but hosted exact-head CI completed successfully.
 - Only pre-existing open PR remains #145, 24 commits ahead / 403 behind main; stage-1 API already exists on main and neural-first CLI default remains deferred. Issues #9/#99 remain blocked; independent IPA gold=0 and empirical accuracy=null.
 - No branch deletion, force-push or rebase occurred. Readiness remains an engineering-verified research prototype, not linguistically release-ready.
+
+
+## PR #269 merged-main closeout — 2026-11-17
+
+- PR #269 merged by squash as `cb73873c84d86f1f09905dbcb5e14bbfb3149e08` after exact PR-head Verify [#44151960521 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44151960521) on `687d0756f3f2f3ff77b654d0e29806e044425251`.
+- Exact-head verification passed IPA-gold schema, repository/data/evidence audit, Python, external-G2P syntax/CLI, npm install, browser-engine tests, build, generated-data reproducibility, Chromium UI and built-page/relative-asset checks.
+- PR #269 was documentation-only; it records PR #268's verified merge. No runtime or linguistic data changed.
+- Open PR #145 remains the sole pre-existing open PR; its stage-1 API is already on main and neural-first CLI default remains deferred. Issues #9/#99 remain blocked; independent IPA gold=0 and empirical accuracy=null.
+- No branch deletion, force-push or rebase occurred. Readiness remains an engineering-verified research prototype, not linguistically release-ready.
