@@ -5290,3 +5290,13 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - The evidence supports withholding `ຢ` as a coda in the scoped modern profile, but the ICANN 14-item set remains DNS-label-specific. No parser inventory, runtime behavior, IPA, tone, Ukrainian mapping, corpus, model or generated artifact changed.
 - Current open PR inventory remains #145 only; its neural-first CLI default is still deferred pending architecture decision. Issues #9 and #99 remain open for independent comparison evidence and human IPA gold acquisition.
 - Final engineering state remains an engineering-verified research prototype, not linguistically release-ready; independent IPA gold = 0 and empirical accuracy = null.
+
+
+## PR #267 merge and exact-main closeout — 2026-11-17
+
+- PR #267 (documentation closeout for the ICANN coda cross-check) merged to main. The current main HEAD is `899c911b2ab48b4be722757da38ea0032c55d1d8`.
+- Exact-main Verify [#44147127249 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44147127249) on that exact HEAD: 368 Python, 205 browser-engine and 30 Chromium UI tests passed; IPA-gold schema, repository/data/evidence audit (84 sources / 112 claims), external-G2P syntax/CLI, build, canonical data generation, generated-data reproducibility and built-page/relative-asset checks passed.
+- The PR #266 evidence and PR #267 closeout are documentation/evidence changes only. The modern nine-item coda profile, fail-closed `ຢ` behavior, runtime, IPA mappings, tone logic, Ukrainian adaptation, corpus, models and generated artifacts remain unchanged.
+- Current open PR inventory: #145 only. It is 24 commits ahead / 398 behind main; the stage-1 typed IPA API is already present on main. Its remaining neural-first CLI-default and explicit second-stage proposal conflicts with the deterministic-first contract and remains deferred. Do not wholesale merge/rebase it without an architecture decision.
+- Issues #9 and #99 remain open. Issue #9 still needs a rights-cleared, source-attributed comparison sample and expert review of the 31 tone-convention and 6 non-tone diagnostic differences. Issue #99 still needs an approved convention sheet, two independent annotators, a separate adjudicator, curator, private blind intake and a 30-item pilot. Independent gold remains 0; accuracy remains null.
+- No branches were deleted, force-pushed, or rebased. Readiness remains an engineering-verified partial research prototype, not linguistically release-ready.
