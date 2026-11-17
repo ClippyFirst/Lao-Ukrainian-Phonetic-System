@@ -815,3 +815,6 @@ PR #145 (`feat/mekongphon-first-stage`, head `a70769d7005e40e15b68a3df181cadbfa4
 - Added CLM-LAO-ICANN-CODA-ROLE-SCOPE and expanded the existing Ishida coda-conflict claim to cite the independent cross-check. This supports the existing fail-closed coda behavior for ຢ, but the ICANN list is DNS-label scoped and includes extra final spellings; it does not justify replacing the modern nine-item profile.
 - Updated the source guide, tone–rhyme matrix, completion register and canonical handoff. No production code or linguistic output changed.
 - Open boundaries: reconcile modern vs loan/Indic spelling roles with a modern orthographic authority and Lao specialist; keep LOC Note 10 and general multi-role segmentation blocked pending direct evidence.
+
+
+- PR #266 exact-head verification: Verify #44145883693 and #44145911419 both SUCCESS on 7e6efba976d1a7b91934ca2e6ebc31dce92932f7; 368 Python, 205 browser-engine and 30 Chromium UI tests passed; repository/data/evidence audit reports 84 sources / 112 claims. No runtime or inventory change.

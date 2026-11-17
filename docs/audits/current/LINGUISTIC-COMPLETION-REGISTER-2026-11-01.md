@@ -983,3 +983,6 @@ No linguistic inventory, phonological rule, Ukrainian correspondence, corpus rec
 | Reconciliation of nine modern finals vs 14 ICANN DNS-label finals | PARTIAL / profile-limited | ICANN's 14-item set is specific to DNS root-zone label processing and includes additional spellings (ຊ ທ ຟ ສ ລ); the proposal discusses historical Indic-loan spelling reform and simplifies some spelling constraints. Do not expand the modern parser inventory from this source alone. Requires modern orthographic authority and Lao-specialist adjudication. |
 
 No runtime, IPA, tone, Ukrainian mapping, corpus, model or generated data changed. This resolves the evidential direction for withholding ຢ, not the complete modern/loanword coda inventory.
+
+
+Exact-head evidence checkpoint for this coda-role cross-check: PR #266 source/evidence head 7e6efba976d1a7b91934ca2e6ebc31dce92932f7 passed Verify #44145883693 and #44145911419 (both SUCCESS): 368 Python, 205 browser-engine, 30 Chromium UI; schema/data/evidence audit, external-G2P syntax/CLI, build, generated-data reproducibility and built-page checks passed. Registry totals: 84 sources / 112 claims. The result is source-reconciliation evidence only; the broader coda profile remains PARTIAL pending specialist review.
