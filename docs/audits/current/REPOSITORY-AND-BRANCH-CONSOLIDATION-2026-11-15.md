@@ -709,5 +709,5 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - integration/loc-note10-glottal-evidence-20261117 is based on the current default branch and includes the file-level changes from PR #247 and PR #248. The original PR branches remain unchanged.
 - PR #247's eleven changed files were ported; PR #248's eight-file delta was reconciled into the same branch. The six overlapping paths were handled deliberately rather than merged blindly; source/claim rows were merged by stable IDs and documentation sections were preserved.
 - Registry validation on the integrated contents: 82 unique sources, 107 unique claims, no duplicate IDs and no missing claim-to-source references.
-- Exact-head CI is pending. Do not merge either source PR until the consolidated branch passes and the diff is reviewed.
+- Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. Review the consolidated diff before merging either source PR.
 - PR #145 remains untouched. No branch deletion, force-push, runtime change, model/corpus/dictionary change or deployment was performed.
