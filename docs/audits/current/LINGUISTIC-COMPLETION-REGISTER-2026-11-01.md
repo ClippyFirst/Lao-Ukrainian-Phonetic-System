@@ -916,7 +916,7 @@ Current registry after PR #254/#255: 84 unique sources / 110 unique claims. Auto
 
 | Task | Status | Evidence / acceptance boundary |
 |---|---|---|
-| Candidate lattice over current syllable recognizer | PARTIAL / engineering prototype pending CI | New `analyze_orthographic_word()` enumerates candidate spans, prunes dead edges, and distinguishes no path / unique path / ambiguous path. Tests cover graph invariants and selected Lao inputs. It is not a complete orthographic grammar and does not change production segmentation. |
+| Candidate lattice over current syllable recognizer | DONE_VERIFIED / bounded engineering API; linguistic coverage PARTIAL | New `analyze_orthographic_word()` enumerates candidate spans, prunes dead edges, and distinguishes no path / unique path / ambiguous path. Tests cover graph invariants and selected Lao inputs. It is not a complete orthographic grammar and does not change production segmentation. |
 | Modern Lao orthographic grammar | PARTIAL / TODO | Berment (2004) supplies a historical grammar candidate, but exact terminals, modern Unicode reconciliation, current orthography, adversarial examples and Lao-specialist adjudication remain outstanding. |
 | Shared coda/onset grapheme roles (LOC Note 10) | PARTIAL / BLOCKED | Candidate lattice uses non-overlapping spans and explicitly does not model one grapheme serving two syllable roles. Exact Word-source input remains fail-closed. |
 | Global ambiguity resolution | BLOCKED / evidence-limited | The lattice preserves multiple paths; it does not select a lexeme or pronunciation. No longest-match choice is promoted to a linguistic rule. |
@@ -929,8 +929,19 @@ No production parser policy, IPA, tone, Ukrainian mapping, corpus, model, dictio
 | Task | Status | Evidence / acceptance |
 |---|---|---|
 | Candidate graph and dead-edge pruning | PARTIAL / engineering prototype | Implemented in `analyze_orthographic_word()`; still uses current single-syllable recognizer, not a complete Lao grammar. |
-| Convergence offsets and ambiguity eyes | PARTIAL / pending exact-head CI | Added exact DAG path-count based convergence detection and subgraph extraction for ambiguity eyes. Synthetic tests cover one eye and multiple eyes separated by a convergence point. |
+| Convergence offsets and ambiguity eyes | DONE_VERIFIED / structural graph API | Added exact DAG path-count based convergence detection and subgraph extraction for ambiguity eyes. Synthetic tests cover one eye and multiple eyes separated by a convergence point. |
 | Berment example ແຂກະ | TODO / evidence-limited | Berment (2004), printed p. 145, documents one-syllable and two-syllable readings. Current recognizer has not been proven to yield both; acceptance requires modern orthographic validation and source-located candidate rules. |
 | Longest-candidate global segmentation | DEFERRED / not a linguistic rule | Berment p. 148 presents longest selection only as a local UI selection heuristic; it must not become a global G2P tie-break. |
 
 Berment primary source: https://www.tagmatica.fr/doc/these-vincent-berment.pdf, printed pp. 132–133 and 145–148. The historical grammar accepts unattested theoretical forms and simplifies accent placement, so it is not a modern spelling validator. No production output changed.
+
+
+## PR #261 exact verification — 2026-11-17
+
+| Task | Status | Evidence |
+|---|---|---|
+| Candidate lattice, dead-edge pruning, convergence offsets and ambiguity eyes | DONE_VERIFIED / bounded engineering API | PR #261 merged as `727d0bed21176a5a38ef2f69a3d18b17d2b7eba2`; exact-head Verify #4707 / run 44116446520 and exact-main Verify run 44116681301 passed. Merged-main: 368 Python, 205 browser-engine and 30 Chromium UI tests; schema/evidence audit and generated-data reproducibility passed. |
+| Historical ambiguity example ແຂກະ | TODO / evidence-limited | Berment (2004), printed p. 145, documents one-syllable and two-syllable readings. Current recognizer has not been shown to reproduce both. Acceptance requires a source-validated candidate rule and modern Lao specialist review. |
+| Modern Lao orthographic grammar | PARTIAL / TODO | Historical grammar is not a modern validator; current inventory, Unicode structure, adversarial examples and specialist adjudication remain open. |
+
+The bounded analysis API is verified, but it is not evidence of full linguistic coverage. No production segmentation, IPA, tone, Ukrainian adaptation, model, corpus, dictionary or generated artifact changed. Independent IPA gold=0; empirical accuracy=null.

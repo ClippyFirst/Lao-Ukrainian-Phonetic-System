@@ -62,4 +62,4 @@ Next acceptance:
 3. determine whether shared coda/onset roles need a distinct overlapping-role edge representation;
 4. obtain Lao-specialist adjudication before considering any production segmentation-policy change.
 
-Status: candidate graph plus convergence/eye extraction = engineering prototype pending exact-head CI; current orthographic grammar = PARTIAL / TODO; global ambiguity resolution = BLOCKED / evidence-limited; LOC Note 10 automatic source-role derivation = PARTIAL / BLOCKED.
+Status: candidate graph plus convergence/eye extraction = DONE_VERIFIED as a bounded engineering API (PR #261; exact PR-head and exact-main Verify passed); current orthographic grammar = PARTIAL / TODO; global ambiguity resolution = BLOCKED / evidence-limited; LOC Note 10 automatic source-role derivation = PARTIAL / BLOCKED.
