@@ -813,3 +813,14 @@ No IPA-gold examples, runtime rules, target correspondences or generated artifac
 
 Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079440345) passed on the initial research/test head `1f59909d7af03d8f4fb0c7c3a2e6ae35f8b842b1`: IPA-gold schema; repository/data/evidence audit; 357 Python tests; external-G2P syntax/CLI; 204 browser-engine tests; build/canonical data generation; generated-data reproducibility; 30 Chromium UI tests; and built-page/relative-asset checks. This confirms engineering consistency of the evidence update and regression test only; it does not resolve the linguistic analysis. Final pre-metadata-sync Verify #4546 / [run 44079888990 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44079888990) passed on `f088fab50ffa4675419b9994d6d76adf79d717de`: 357 Python, 204 browser-engine and 30 Chromium tests plus all configured schema, evidence, external-G2P, build, reproducibility and built-page checks. A final exact-head run validates the ensuing verification-report-only update.
 
+## Controlled PR #247/#248 integration — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| LOC Note 10 source attribution and double-role evidence boundary | PARTIAL | Corrected 2012 romanized example attribution and retained the exact Lao glyph sequence as unresolved; current fixtures still inject source roles manually. Automatic source-role derivation remains unverified. |
+| Modern Lao coda grapheme inventory | DONE_VERIFIED (orthographic profile only) | Nine explicit mappings are asserted by scripts/audit.py and regression tests; ຢ remains fail-closed because Ishida's source is internally inconsistent. |
+| Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda, Lew and Cole are registered with scope distinctions; no unconditional /ʔ/ insertion is justified. |
+| Evidence registry integrity | DONE_VERIFIED (static reconciliation) | 82 unique sources / 107 unique claims; no duplicate IDs or missing claim-source references. |
+| Combined engineering verification | TODO pending CI | Run exact-head repository audit, Python/browser/Chromium suites, G2P checks, build, generated-data reproducibility and built-page checks on the integration branch. |
+
+The integration branch ports the file-level changes from PR #247 and PR #248; both original PRs remain open and untouched. No runtime or generated artifact changes are included.
