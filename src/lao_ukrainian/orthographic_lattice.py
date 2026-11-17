@@ -160,8 +160,8 @@ def _build_candidate_lattice(
             offset = edge["end"]
 
     status = (
-        "NO_COMPLETE_PATH" if path_counts[0] == 0
-        else "UNIQUE" if path_counts[0] == 1
+        "NO_COMPLETE_PATH" if total_paths == 0
+        else "UNIQUE" if total_paths == 1
         else "AMBIGUOUS"
     )
     return {
@@ -182,7 +182,7 @@ def _build_candidate_lattice(
             "Does not model one grapheme serving overlapping coda and onset roles.",
             "Does not resolve lexical, loanword, dialect, or pronunciation ambiguity.",
             "A unique path is unique only within the current recognizer and candidate inventory.",
-        "Convergence points and ambiguity eyes are structural graph properties, not lexical or phonological resolutions.",
+            "Convergence points and ambiguity eyes are structural graph properties, not lexical or phonological resolutions.",
         ],
     }
 
