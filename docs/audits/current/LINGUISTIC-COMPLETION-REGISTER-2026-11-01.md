@@ -823,4 +823,4 @@ Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-
 | Evidence registry integrity | DONE_VERIFIED (static reconciliation) | 82 unique sources / 107 unique claims; no duplicate IDs or missing claim-source references. |
 | Combined engineering verification | DONE_VERIFIED (engineering only) | Verify #4551 / run 44081456903 passed on integrated code/test head 0f92c143adf896d0e4bc603e9296f20b6a3272f7: 359 Python, 204 browser-engine and 30 Chromium UI tests; schema/evidence, external-G2P, build, reproducibility and built-page checks passed. This does not establish linguistic accuracy. |
 
-The integration branch ports the file-level changes from PR #247 and PR #248; both original PRs remain open and untouched. No runtime or generated artifact changes are included.
+The integration branch retains PR #247's reviewed head as an ancestor and applies PR #248's delta through file-level reconciliation; both original PRs remain open and untouched. No runtime or generated artifact changes are included.
