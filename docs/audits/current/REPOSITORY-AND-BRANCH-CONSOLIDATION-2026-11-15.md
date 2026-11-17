@@ -784,3 +784,7 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - The PR reconciled README, handoff, completion register and audit with PR #254's merge and CI evidence. It changed documentation only; no runtime, source data, corpus, model, generated artifact or deployment changed.
 - The repository still has one open PR (#145) and two open research/validation issues (#9, #99). PR #145 remains untouched; no force-push or branch deletion occurred.
 - Current research blockers: no independently adjudicated IPA gold; no automatic LOC Note 10 source-role derivation; no executed Bethke package comparison because of DNS failure. Engineering readiness remains partial prototype, not linguistic release readiness.
+
+## LOC 1997 glyph provenance correction — 2026-11-17
+
+The 1997 PDF text extraction exposes romanized `khitsatian`, but the Lao-script glyphs are corrupted and have not been independently verified from page images. No exact historical Lao-script spelling is asserted. The 2012 Word-source example `ຄຼິສຕຽນ (khitsatīan)` remains the current-table form. A stale historical exact-glyph statement was corrected in the completion register, master handoff and this branch audit. No runtime changes were made; current registry integrity remains 84 sources / 110 claims.
