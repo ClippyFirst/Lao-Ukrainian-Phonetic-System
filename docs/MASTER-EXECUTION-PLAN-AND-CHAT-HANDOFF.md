@@ -1,3 +1,8 @@
+## Documentation closeout checkpoint — 2026-11-17
+
+- Latest fully verified main before this documentation-only closeout: `c39735781dc09f32a2d3256e83ac168e55e98928`; exact-main Verify #4646 / [run 44088093701 — SUCCESS](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44088093701). Test totals: 359 Python, 205 browser-engine, 30 Chromium UI; all configured schema/evidence, external-G2P, build, reproducibility and built-page checks passed.
+- PR #253 merged by squash as `fc61f5413ad26cfd95ad774b00fb80a3853d2d2a`; exact PR Verify #4640 / run 44087573689 and post-merge Verify #4641 / run 44087819259 both passed. Pages Deploy #107 / run 44087819410 succeeded on the merge commit.
+- Current LOC evidence and Note 10 parser guard are described in the preceding checkpoint. The source-role derivation remains blocked; no runtime phonological mapping or IPA gold was added.
 ## Latest mainline checkpoint — PR #253 merged (2026-11-17)
 
 - PR [#253](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/253) merged by squash as `fc61f5413ad26cfd95ad774b00fb80a3853d2d2a`; starting main was `aae9a7f2eb688932dc8d3bede390a1f7e4185a0e`.
