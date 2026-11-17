@@ -282,3 +282,11 @@ This also clarifies the separate data/lao/codas.csv layer: it is a phoneme-categ
 **Task ledger:** nine listed coda spellings and current mappings = DONE_VERIFIED as source-to-registry consistency (not independent IPA gold); ຢ coda = BLOCKED / source-internal conflict; implicit /ʔ/ realization = PARTIAL / needs dialect-specific phonetic adjudication; abstract codas.csv semantics = PARTIAL / not an orthographic recognizer. No runtime mappings were broadened.
 
 Registry: SRC-ISHIDA-ORTHO-2026; claims CLM-LAO-ISHIDA-CODA-INVENTORY and CLM-LAO-ISHIDA-CODA-CHART-CONFLICT.
+
+## LOC Note 10 — external syllabifier candidate assessment (2026-11-17)
+
+Bethke's [Lingua::LO::NLP v1.0.3](https://github.com/mbethke/Lingua-LO-NLP/tree/c2b0f8a94de1bb78a4927086e644ef87b1572c98) was inspected as a possible independent orthographic syllabifier. It is a 2017 Perl implementation based on Phissamay et al., licensed under Artistic License 2.0 (GPL Compatible); the Syllabify.pm submodule declares v1.0.1. It was not imported.
+
+The code's X9 foreign-consonant set contains ສ but the actual regex admits X9 only with X10_3 (U+0E4C LAO CANCELLATION MARK); the X8 final/alternate consonant set excludes ສ. The current LOC Word-source example ຄຼິສຕຽນ contains no U+0E4C, so the inspected rules do not demonstrate the required unmarked coda/onset double role. This is a static source review; execution on the exact LOC form was blocked by DNS failure while cloning the source. Do not claim a runtime test or general failure of the package.
+
+**Engineering disposition:** candidate static review DONE_VERIFIED; external runtime comparison BLOCKED; LOC Note 10 automatic role derivation remains PARTIAL/BLOCKED. Source IDs: SRC-BETHKE-LINGUA-LO-NLP-2017, SRC-PHISSAMAY-LAO-SYLLABIFICATION; claim: CLM-LAO-BETHKE-SYLLABIFIER-NOTE10-LIMIT. The manually supplied-role positive/negative fixtures and exact-source fail-closed regression remain unchanged.
