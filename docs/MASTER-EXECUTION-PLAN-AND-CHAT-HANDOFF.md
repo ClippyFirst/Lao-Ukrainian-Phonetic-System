@@ -5203,3 +5203,10 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - PR #254's static assessment remains bounded: Bethke's X9 requires X10_3/U+0E4C and X8 excludes ສ; exact LOC Word input has no U+0E4C. The package was not executed due DNS and no code was imported.
 - Registry integrity remains 84 unique source IDs / 110 unique claim IDs. No runtime, IPA, tone, model, corpus, dictionary, generated artifacts or deployment changed. Independent IPA gold=0; empirical accuracy=null.
 - PR #145 remains the only open PR; issues #9 and #99 remain open. No expert outreach, annotation, neural-first architecture decision, release or deployment was made.
+
+## LOC 1997 glyph provenance correction — 2026-11-17
+
+- Corrected an overclaim inherited from the earlier Note 10 follow-up: the 1997 LOC PDF text extraction exposes romanized `khitsatian`, but its Lao-script glyphs are corrupted and have not been independently verified from page images. No exact 1997 Lao-script form is asserted. The completion-register row is now `PARTIAL / glyph evidence limited`.
+- The current 2012 Word-source example remains `ຄຼິສຕຽນ (khitsatīan)`. Do not reconstruct the historical 1997 glyph sequence from its romanization or treat the two edition examples as exact script equivalents.
+- The direct-input audit and evidence registry already state this limitation; the matrix remains aligned. This is a documentation/evidence correction only. No runtime, IPA, corpus, model, dictionary or generated artifact changed.
+- Current evidence registry: 84 unique source IDs / 110 unique claim IDs. Automatic Note 10 source-role derivation remains PARTIAL/BLOCKED; independent IPA gold=0; empirical accuracy=null.
