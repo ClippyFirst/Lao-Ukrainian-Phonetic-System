@@ -553,3 +553,13 @@ Direct inspection of the official [LOC 1997 Lao Romanization Table](https://www.
 The current 2012 Word source gives **ຄຼິສຕຽນ (khitsatīan)**. The spellings and romanizations differ between editions and must not be conflated. The 2012 Word-source form remains the current-table example for the project's current ALA-LC profile; the 1997 PDF form is retained only as historical evidence. Neither example by itself demonstrates automatic source-role derivation in ClippyFirst.
 
 Registry: expanded SRC-ALA-LC-LAO-1997 with the inspected historical form and added CLM-LAO-ALA-LC-NOTE10-HISTORICAL-1997.
+
+## External syllabifier cross-check: Lingua::LO::NLP — 2026-11-17
+
+A further implementation candidate was inspected rather than imported: Matthias Bethke's [Lingua::LO::NLP](https://github.com/mbethke/Lingua-LO-NLP/tree/c2b0f8a94de1bb78a4927086e644ef87b1572c98), CPAN distribution v1.0.3 (2017-11-14). Its latest inspected source commit is 2017-12-15; the package license is Artistic License 2.0 (GPL Compatible), while Syllabify.pm itself declares v1.0.1. The package documents a regex-based syllabifier derived from Phissamay et al. and supports syllable analysis plus PCGN and experimental IPA romanization.
+
+**Why it does not resolve LOC Note 10:** in the pinned Data.pm, X9's foreign-consonant class includes ສ, but the grammar only admits it through X9 + X10_3; X10_3 is U+0E4C LAO CANCELLATION MARK. The X8 end-consonant class does not include ສ. The preferred current LOC Word form ຄຼິສຕຽນ has no U+0E4C. Static code inspection therefore finds no demonstrated route for this implementation to mark its ສ as the coda required by Note 10 in that form. This is a narrow source-code finding, not a claim that the package cannot segment ordinary Lao.
+
+The package was not executed on the LOC form: an attempted shallow clone failed because the environment could not resolve github.com. No code was copied or imported. The external Artistic License is recorded; no project-license compatibility determination is made. The candidate's experimental IPA output is not independent gold and is not a substitute for the contemporary central-Vientiane careful-citation profile.
+
+**Disposition:** external syllabifier inspection = DONE_VERIFIED as a bounded static source review; runtime comparison = BLOCKED by network/runtime acquisition; automatic LOC Note 10 source-role derivation = PARTIAL/BLOCKED. Keep the exact source token fail-closed. Registry: SRC-BETHKE-LINGUA-LO-NLP-2017; claim: CLM-LAO-BETHKE-SYLLABIFIER-NOTE10-LIMIT.
