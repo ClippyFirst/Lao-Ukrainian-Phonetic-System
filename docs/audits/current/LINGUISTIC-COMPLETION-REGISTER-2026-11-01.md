@@ -870,3 +870,12 @@ PR #251 merged as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. Registry: 83 uniqu
 | Historical LOC 1997 romanized example | PARTIAL / glyph evidence limited | PDF text extraction gives khitsatian, but Lao glyphs are corrupted; no script-form assertion. |
 | Exact Lao Note 10 runtime input | DONE_VERIFIED (fail-closed guard only) | `analyze("ຄຼິສຕຽນ")` remains one unresolved token with no IPA/Ukrainian guess. This is a negative regression, not a successful syllable parser. |
 | Automatic Note 10 source-role derivation | PARTIAL / BLOCKED | Source-aware Latin crosswalk remains manually supplied; acceptance requires reviewed source syllable spans, overlapping shared-grapheme roles, positive/negative corpus examples and Lao-specialist review. |
+
+## PR #253 mainline closeout — 2026-11-17
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| LOC 2012 Word/PDF source discrepancy | DONE_VERIFIED (conflict recorded) | PR #253 merged as `fc61f5413ad26cfd95ad774b00fb80a3853d2d2a`; preferred Word source gives ຄຼິສຕຽນ (khitsatīan), published PDF gives ຫຼັກສາດ (khitsatān); LOC instructs users to copy from Word rather than PDF. |
+| Exact Lao Note 10 parser guard | DONE_VERIFIED (negative/fail-closed only) | Exact input ຄຼິສຕຽນ remains one unresolved token without IPA/Ukrainian guess; Verify #4640 and post-merge Verify #4641 passed. This is not automatic segmentation. |
+| Automatic Note 10 syllabification/shared-grapheme role derivation | PARTIAL / BLOCKED | Source-aware romanization fixtures still inject roles manually. Acceptance requires reviewed source syllable spans, overlap derivation, broader positive/negative examples and Lao-specialist adjudication. |
+| Historical LOC 1997 Lao-script example | PARTIAL / glyph evidence limited | PDF extraction exposes romanized khitsatian, but script glyphs are corrupted; no exact Lao-script form asserted. |
