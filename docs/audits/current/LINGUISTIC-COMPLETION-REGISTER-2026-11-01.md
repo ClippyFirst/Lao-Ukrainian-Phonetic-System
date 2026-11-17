@@ -854,7 +854,7 @@ PR #247 and #248 are closed as superseded by merged PR #249; original branches a
 | Work item | Status | Evidence / remaining acceptance |
 |---|---|---|
 | Exact current LOC 2012 Note 3/10 example | DONE_VERIFIED (source evidence) | Official Word source gives `ຄຼິສຕຽນ (khitsatīan)`; Notes 1, 3 and 10 jointly explain the combining mark and double-function `ສ` as final (t) + initial s. |
-| Historical LOC 1997 Note 3/10 example | DONE_VERIFIED (historical edition only) | Official 1997 PDF pp. 117–118 gives `ກິດສະຕຽນ (khitsatian)`, distinct from the current 2012 form. |
+| Historical LOC 1997 Note 3/10 romanized example | PARTIAL / glyph evidence limited | PDF text extraction exposes `khitsatian`; Lao-script glyphs are corrupted and have not been independently verified from page images. No exact historical Lao spelling is asserted. |
 | Source-aware romanization crosswalk | DONE_VERIFIED (manual roles only) | Fixture uses `khitsatīan` and `IA_LONG`, expected output `к'ітсатіан`; source roles remain manually supplied. Exact-head Verify #4611 / run 44085447163 SUCCESS; exact-main Verify run 44086036717 SUCCESS on `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. |
 | Automatic Lao source-role derivation | PARTIAL / BLOCKED | Requires a validated orthographic syllabifier and source-derived coda/onset roles; current fixture is not automatic parsing. |
 | Full Note 10 conformance | PARTIAL | Exact edition-specific examples are now verified; general source-role derivation and broader lexical boundary behavior remain unimplemented/unverified. |
