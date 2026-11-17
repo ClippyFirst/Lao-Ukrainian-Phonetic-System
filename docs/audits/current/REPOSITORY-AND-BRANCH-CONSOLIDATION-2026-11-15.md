@@ -776,3 +776,11 @@ Verify #4526 / [run 44035383672 — SUCCESS](https://github.com/ClippyFirst/Lao-
 - Evidence registry now contains 84 unique source IDs / 110 unique claim IDs; no duplicate IDs or malformed nonblank rows.
 - No runtime, IPA, tone, model, corpus, dictionary, generated artifacts or Pages deployment changed. The original pre-sync research branch was preserved; no force-push or branch deletion occurred. PR #145 remains open/untouched.
 - The candidate package was assessed statically only; network/DNS prevented execution. Automatic LOC Note 10 source-role derivation remains PARTIAL/BLOCKED; independent gold=0; accuracy=null.
+
+## PR #255 merge — canonical documentation synchronization — 2026-11-17
+
+- PR #255 merged by squash as `d8314fc527a9e246df9b22ca570a533ff9122679`.
+- Exact PR-head Verify #4671 / [run 44089568451](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44089568451) SUCCESS; exact merged-main Verify #4672 / [run 44089755616](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/44089755616) SUCCESS.
+- The PR reconciled README, handoff, completion register and audit with PR #254's merge and CI evidence. It changed documentation only; no runtime, source data, corpus, model, generated artifact or deployment changed.
+- The repository still has one open PR (#145) and two open research/validation issues (#9, #99). PR #145 remains untouched; no force-push or branch deletion occurred.
+- Current research blockers: no independently adjudicated IPA gold; no automatic LOC Note 10 source-role derivation; no executed Bethke package comparison because of DNS failure. Engineering readiness remains partial prototype, not linguistic release readiness.
