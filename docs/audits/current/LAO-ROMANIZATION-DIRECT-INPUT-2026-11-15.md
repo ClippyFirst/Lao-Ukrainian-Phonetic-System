@@ -545,3 +545,11 @@ The Word source gives the exact Note 3 and Note 10 example as **ຄຼິສຕ�
 This resolves the exact LOC source example and corrects the former PDF-text-layer reading khitsatān / ຂິດສະຕານ. It does **not** establish automatic source-script syllabification in ClippyFirst: current positive/negative fixtures still supply the ສ coda/onset roles manually. The browser test containing ຄິຼສຕຽນ remains only a Latin-mode separation test and is not the LOC example; the exact source spelling is ຄຼິສຕຽນ.
 
 **Disposition:** exact Note 10 source example = DONE_VERIFIED; source-role crosswalk fixture = DONE_VERIFIED (manual roles only); automatic Lao source parsing and full Note 10 conformance = PARTIAL/BLOCKED pending an independently reviewed orthographic syllabifier and Lao-specialist adjudication. No runtime phonological rule or IPA gold is inferred.
+
+## Historical LOC 1997 Note 10 example — edition distinction (2026-11-17)
+
+Direct inspection of the official [LOC 1997 Lao Romanization Table](https://www.loc.gov/catdir/cpso/romanization/lao-1997.pdf), pp. 117–118, confirms that Notes 3 and 10 give **ກິດສະຕຽນ (khitsatian)**. This is a historical 1997 form, not the current 2012 source form.
+
+The current 2012 Word source gives **ຄຼິສຕຽນ (khitsatīan)**. The spellings and romanizations differ between editions and must not be conflated. The 2012 Word-source form remains the current-table example for the project's current ALA-LC profile; the 1997 PDF form is retained only as historical evidence. Neither example by itself demonstrates automatic source-role derivation in ClippyFirst.
+
+Registry: expanded SRC-ALA-LC-LAO-1997 with the inspected historical form and added CLM-LAO-ALA-LC-NOTE10-HISTORICAL-1997.
