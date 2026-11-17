@@ -817,7 +817,7 @@ Verify #4537 / [run 44079440345 — SUCCESS](https://github.com/ClippyFirst/Lao-
 
 | Workstream | Status | Evidence / acceptance |
 |---|---|---|
-| LOC Note 10 source attribution and double-role evidence boundary | PARTIAL | Corrected 2012 romanized example attribution and retained the exact Lao glyph sequence as unresolved; current fixtures still inject source roles manually. Automatic source-role derivation remains unverified. |
+| LOC Note 10 source attribution and double-role evidence boundary | PARTIAL / source example verified | Official LOC Word source confirms ຄຼິສຕຽນ (khitsatīan); positive/negative crosswalk fixture corrected to the īa nucleus and manually supplied ສ coda/onset roles. Automatic source-role derivation remains unverified. |
 | Modern Lao coda grapheme inventory | DONE_VERIFIED (orthographic profile only) | Nine explicit mappings are asserted by scripts/audit.py and regression tests; ຢ remains fail-closed because Ishida's source is internally inconsistent. |
 | Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda, Lew and Cole are registered with scope distinctions; no unconditional /ʔ/ insertion is justified. |
 | Evidence registry integrity | DONE_VERIFIED (static reconciliation) | 82 unique sources / 107 unique claims; no duplicate IDs or missing claim-source references. |
@@ -838,3 +838,13 @@ The integration branch retains PR #247's reviewed head as an ancestor and applie
 | Independent IPA gold / accuracy | BLOCKED / NOT AVAILABLE | Gold records = 0; empirical accuracy = null. |
 
 PR #247 and #248 are closed as superseded by merged PR #249; original branches are preserved. PR #145 remains open and untouched (24 ahead / 375 behind main); it requires a separate architecture decision. The merged batch changed evidence/docs/audit/tests only; no runtime, corpus, model, dictionary, generated artifact or deployment changed. Readiness: engineering-verified partial research prototype, not linguistically release-ready.
+
+## LOC Note 10 Word-source correction — 2026-11-17
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Exact LOC Note 3/10 source example | DONE_VERIFIED | Official Word source: ຄຼິສຕຽນ (khitsatīan); Note 1 values explain ສ as final (t) and initial s. |
+| Historical LOC 1997 Note 3/10 example | DONE_VERIFIED (historical edition only) | Official 1997 PDF pp. 117–118 gives ກິດສະຕຽນ (khitsatian), distinct from the current 2012 Word-source form. |
+| Source-aware romanization crosswalk | DONE_VERIFIED (manual roles only) | Fixture corrected to khitsatīan and IA_LONG; roles remain explicitly supplied. Verify #4584 / run 44084533002 passed on exact head 536a3c69de6b2455c172c70daa6b427b9790c4da (359 Python, 204 browser-engine, 30 Chromium UI; all configured gates passed). |
+| Automatic Lao source-role derivation | PARTIAL / BLOCKED | Needs validated orthographic syllabifier, exact source-role derivation and independent Lao-specialist review. |
+| Full Note 10 conformance | PARTIAL | Exact source example is resolved; automatic segmentation and generalization beyond the example are not. |

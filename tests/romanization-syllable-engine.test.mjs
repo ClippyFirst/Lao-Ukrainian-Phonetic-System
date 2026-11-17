@@ -610,39 +610,39 @@ test("ALA-LC Note 6 recognizes initial ayn as a source marker but withholds an u
 });
 
 test("an explicit source-role fixture duplicates one consonant as final t and next onset s", () => {
-  // Synthetic crosswalk fixture only: source roles explicitly assign ສ as
-  // final (t), then initial (s). This is not an automatic parse of the LOC
-  // Lao example; the exact source-script segmentation remains unverified.
-  const result = analyzeRomanization("khitsatān", {
+  // LOC 2012 Word-source example: ຄຼິສຕຽນ (khitsatīan).
+  // Explicit source roles below encode ສ as final (t), then initial (s);
+  // this fixture still does not test automatic Lao source parsing.
+  const result = analyzeRomanization("khitsatīan", {
     profile: "ala-lc",
     sourceSyllableGroups: [[
       { onset: "ຄ", vowelId: "I", coda: "ສ" },
       { onset: "ສ", vowelId: "A", coda: "" },
-      { onset: "ຕ", vowelId: "AA", coda: "ນ" },
+      { onset: "ຕ", vowelId: "IA_LONG", coda: "ນ" },
     ]],
   });
   assert.equal(result.status, "OK");
-  assert.equal(result.output, "к'ітсатан");
+  assert.equal(result.output, "к'ітсатіан");
   assert.deepEqual(
     result.syllables.map(({ onset, nucleus, coda, sourceOnsetKey, sourceCoda }) =>
       ({ onset, nucleus, coda, sourceOnsetKey, sourceCoda })),
     [
       { onset: "kh", nucleus: "i", coda: "t", sourceOnsetKey: "ຄ", sourceCoda: "ສ" },
       { onset: "s", nucleus: "a", coda: "", sourceOnsetKey: "ສ", sourceCoda: "" },
-      { onset: "t", nucleus: "a", coda: "n", sourceOnsetKey: "ຕ", sourceCoda: "ນ" },
+      { onset: "t", nucleus: "ia", coda: "n", sourceOnsetKey: "ຕ", sourceCoda: "ນ" },
     ],
   );
 });
 
 test("the explicit double-function crosswalk withholds output when the source coda role is missing", () => {
-  const result = analyzeRomanization("khitsatān", {
+  const result = analyzeRomanization("khitsatīan", {
     profile: "ala-lc",
     sourceSyllableGroups: [[
       { onset: "ຄ", vowelId: "I", coda: "" },
       { onset: "ສ", vowelId: "A", coda: "" },
-      { onset: "ຕ", vowelId: "AA", coda: "ນ" },
+      { onset: "ຕ", vowelId: "IA_LONG", coda: "ນ" },
     ]],
   });
   assert.equal(result.status, "PARTIAL");
-  assert.equal(result.output, "⟦khitsatān⟧");
+  assert.equal(result.output, "⟦khitsatīan⟧");
 });

@@ -1,3 +1,11 @@
+## Mainline audit continuation — LOC Note 10 Word source inspected (2026-11-17)
+
+- Current main at start of this continuation: 72a555df57386051321f0f7707923ae61305beed (PR #249 merged as 825d7bf91d756c7abda884e2348a8fdfd82ec31f; PR #250 docs closeout merged as 72a555df57386051321f0f7707923ae61305beed). Exact-main Verify #4562 / run 44083809194 passed on 72a555df57386051321f0f7707923ae61305beed.
+- Official source document index: https://www.loc.gov/catdir/cpso/romansource.html; Lao Word source: https://www.loc.gov/catdir/cpso/romanization/lao.doc. Retrieved successfully as HTTP 200 / application/msword and inspected through content-aware document extraction.
+- Exact Note 3 and Note 10 example: ຄຼິສຕຽນ (khitsatīan). The historical 1997 PDF gives the different form ກິດສະຕຽນ (khitsatian); do not conflate the two editions. This supersedes earlier PDF-text-layer reading khitsatān and the claim that the Lao glyph sequence was unresolved. Note 3 identifies ຼ as the combining form of ລ and says it is not romanized here. Note 10 repeats the example and double-function rule; Note 1 supplies ສ = s initially and ສ = (t) as a final loanword value, explaining the t+s sequence.
+- Corrected positive/negative romanization crosswalk fixtures from khitsatān / AA to khitsatīan / IA_LONG. Explicit ສ coda/onset roles remain manually supplied. The browser case ຄິຼສຕຽນ is still only Latin-mode separation and is not the exact LOC example ຄຼິສຕຽນ.
+- Status: exact source example DONE_VERIFIED; supplied-role crosswalk DONE_VERIFIED as engineering only; automatic Lao source-role derivation and full Note 10 conformance remain PARTIAL/BLOCKED. Verify #4584 / run 44084533002 passed on exact head 536a3c69de6b2455c172c70daa6b427b9790c4da (359 Python, 204 browser-engine, 30 Chromium UI and all configured gates). No runtime, IPA or pronunciation rule inferred.
+- New source registry entry: SRC-ALA-LC-LAO-2012-WORD. Updated CLM-LAO-ALA-LC-NOTE10-EXAMPLE and CLM-ALA-LC-SOURCE-DOC-PREFERRED. Exact-head CI is required for this follow-up branch.
 ## Current main and preserved branch review — PR #246 (2026-11-16)
 
 - Current `main`: `390302db31b56f5842696c2d81a817689635472b`; PR #246 merged from tested head `9570180b100e06538251f96504223deaa06057fd`.
