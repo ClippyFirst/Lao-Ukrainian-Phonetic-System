@@ -553,3 +553,7 @@ The official LOC 1997 PDF's text extraction exposes the historical romanized Not
 The current 2012 Word source gives **ຄຼິສຕຽນ (khitsatīan)**. The 1997 PDF text layer gives **khitsatian**, but the source-script glyphs cannot be certified from the extracted text. The 2012 Word-source example is the current-table source for the project's ALA-LC profile. Neither example by itself demonstrates automatic source-role derivation in ClippyFirst.
 
 Registry: expanded SRC-ALA-LC-LAO-1997 with the inspected historical form and added CLM-LAO-ALA-LC-NOTE10-HISTORICAL-1997.
+
+## PR #253 mainline closeout — 2026-11-17
+
+PR #253 merged by squash as `fc61f5413ad26cfd95ad774b00fb80a3853d2d2a`. Exact PR Verify #4640 / run 44087573689 and exact post-merge main Verify #4641 / run 44087819259 passed on the corresponding heads: 359 Python, 205 browser-engine and 30 Chromium UI tests, plus all configured schema/evidence, external-G2P, build, reproducibility and built-page gates. The new exact-source regression confirms that `ຄຼິສຕຽນ` remains one unresolved runtime token; this protects against unsupported guesses but does not implement Note 10 source parsing. The 2012 Word/PDF example conflict remains registered, and the historical 1997 PDF glyph sequence remains unverified.
