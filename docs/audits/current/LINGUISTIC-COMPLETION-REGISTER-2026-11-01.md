@@ -692,3 +692,14 @@ The upstream CLDR evidence and branch review are recorded in the canonical hando
 ## PR #222 verification — DONE_VERIFIED (engineering only)
 
 Exact-head Verify [#4286 / run 43760081269](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/actions/runs/43760081269) passed on branch `docs/post-pr221-checkpoint-and-cldr-evidence-20261115`: IPA-gold schema and repository data/evidence audits; 350 Python tests; external-G2P syntax/CLI; 192 Node tests; build/generated-data reproducibility; 28 Chromium tests; built-page/relative-asset and deterministic-only artifact assertions. Documentation-only; no Pages deployment required. Linguistic acceptance remains partial/blocked as in the table above.
+
+## Lao short-vowel glottal realization — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Written coda grapheme inventory | DONE_VERIFIED (orthographic level only) | Nine explicit modern coda spellings remain mapped in `consonants.csv`; /ʔ/ is not a tenth written coda grapheme. |
+| Phonological /ʔ/ category | DONE_VERIFIED (scoped category only) | Ueda (1994) includes /ʔ/ among central-Vientiane phonological codas; retain it in `codas.csv` without conflating it with the grapheme lookup. |
+| Short-vowel glottal realization | PARTIAL / ANALYSIS_DEPENDENT | Ueda (1994) distinguishes exceptional non-final light CV syllables and spelling-based CVʔ readings; Lew (2014) treats slow/clear final closure after short vowels as redundant suprasegmental marking; Cole (2016) working paper proposes word-final epenthesis and reports no word-internal epenthesis in one context. No unconditional insertion rule is supported. |
+| Runtime /ʔ/ insertion | BLOCKED pending context evidence | Requires a declared speech/reading profile, validated prosodic-word boundaries, independent Lao-specialist review, and positive/negative source-located examples before code or Ukrainian output changes. |
+
+No IPA-gold examples, runtime rules, target correspondences or generated artifacts were added. The exact evidence scope and source disagreement are recorded in `PHONOLOGY-RESEARCH-WORKPACK-2026-11-01.md`.
