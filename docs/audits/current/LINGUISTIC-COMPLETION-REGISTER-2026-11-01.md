@@ -1028,3 +1028,14 @@ No new linguistic correctness or accuracy claim follows from this refresh. Empir
 | Local clean-clone verification | BLOCKED / environment | DNS resolution for `github.com` failed before checkout; no local tests claimed. |
 
 No linguistic accuracy or phonological correctness claim follows from these CI passes.
+
+
+## Lingua::LO::NLP candidate re-screen — 2026-11-17
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Independent Lao G2P diagnostic candidate | PARTIAL / screened, not executed | MetaCPAN documents `Lingua::LO::NLP` v1.0.3 (Perl 5 license; 2017 release), with regex syllabification and experimental IPA romanization. `get_syllables` may silently discard non-Lao/invalid fragments; a valid comparison must retain `get_fragments` output and capture normalization separately. |
+| Candidate runtime verification | BLOCKED / environment | Perl 5.40.1 is present, but CPAN archive retrieval failed because `cpan.metacpan.org` DNS resolution failed. No package execution or output is claimed. |
+| Issue #9 acceptance | PARTIAL | Exact v1.0.3 archive/checksum, reproducible dependencies, rights-cleared common sample, raw outputs and expert review of convention/dialect/segmentation mismatches remain required. This candidate is not gold. |
+
+Primary sources: https://metacpan.org/pod/Lingua::LO::NLP ; https://metacpan.org/pod/Lingua::LO::NLP::Syllabify ; https://metacpan.org/pod/Lingua::LO::NLP::Romanize::IPA . Issue #9 records the execution blocker. No project runtime or linguistic data changed.
