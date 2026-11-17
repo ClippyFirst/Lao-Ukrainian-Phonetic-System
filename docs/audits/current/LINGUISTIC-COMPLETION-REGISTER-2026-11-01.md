@@ -879,3 +879,13 @@ PR #251 merged as `8945c94f3a0a6f44f6bdfb6cbad7bdcf99c9402d`. Registry: 83 uniqu
 | Exact Lao Note 10 parser guard | DONE_VERIFIED (negative/fail-closed only) | Exact input ຄຼິສຕຽນ remains one unresolved token without IPA/Ukrainian guess; Verify #4640 and post-merge Verify #4641 passed. This is not automatic segmentation. |
 | Automatic Note 10 syllabification/shared-grapheme role derivation | PARTIAL / BLOCKED | Source-aware romanization fixtures still inject roles manually. Acceptance requires reviewed source syllable spans, overlap derivation, broader positive/negative examples and Lao-specialist adjudication. |
 | Historical LOC 1997 Lao-script example | PARTIAL / glyph evidence limited | PDF extraction exposes romanized khitsatian, but script glyphs are corrupted; no exact Lao-script form asserted. |
+
+## 2026-11-17 — external orthographic syllabifier assessment
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Bethke Lingua::LO::NLP source review | DONE_VERIFIED (static review only) | Pinned commit c2b0f8a94de1bb78a4927086e644ef87b1572c98; v1.0.3 distribution; Artistic License 2.0 (GPL Compatible); X9 requires X10_3/U+0E4C, while X8 excludes ສ. See SRC-BETHKE-LINGUA-LO-NLP-2017 and CLM-LAO-BETHKE-SYLLABIFIER-NOTE10-LIMIT. |
+| Run external syllabifier on exact LOC form | BLOCKED | git clone failed because github.com DNS could not resolve; package was not run. Acceptance: acquire pinned source in a network-enabled environment, execute package tests and exact ຄຼິສຕຽນ get_syllables/get_fragments, record exact output. |
+| Automatic LOC Note 10 source-role derivation | PARTIAL / BLOCKED | Candidate does not demonstrate the required unmarked ສ coda role; a separate LOC-specific source grammar and specialist-reviewed positive/negative cases remain necessary. |
+
+No runtime, IPA, tone, model, corpus, dictionary or generated artifacts changed. Manual-role fixtures remain explicit; exact LOC source remains fail-closed. Independent IPA gold=0; empirical accuracy=null.
