@@ -696,7 +696,7 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
   const syllable = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "кал?");
+  assert.equal(syllable.ukrainian, "кал???");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.graphemePreview.ipaPreview, "kaːl");
   assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
@@ -751,7 +751,7 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   const result = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" });
   const syllable = result.syllables[0];
   assert.equal(result.status, "PARTIAL");
-  assert.equal(result.output, "кал?");
+  assert.equal(result.output, "кал???");
   assert.equal(syllable.ipa, null);
   assert.equal(syllable.ukrainian, "кал?");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
