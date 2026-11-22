@@ -5377,3 +5377,10 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 ## Cross-service output contract matrix
 
 The cross-repository comparison and exact verification/Pages evidence for Lao, Burmese, Khmer, Sinhala, Thai and Korean is maintained in [CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md](CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md). This is a status ledger, not a linguistic accuracy claim. Pending PRs are explicitly distinguished from mainline.
+
+
+## Cross-service status refresh — 2026-11-22 09:05 UTC
+
+- Canonical matrix refreshed and merged in PR [#279](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/279), merge SHA `b5b89fcd829c365c4083cf94bb5b6f7bbd3d03a5`.
+- Four services have successful Pages deployments for their current shared-output runtime changes: Lao, Burmese, Khmer and Thai. Korean's deployed artifact passed HTTP smoke but its live browser smoke still exposed a stale test expectation; Korean PR #502 fixes both the live smoke script and its source-contract assertion, pending exact-head CI. Sinhala Pages cannot be created by the repository's current GitHub Actions token (`Resource not accessible by integration`); CI itself passes.
+- Current acceptance gates are tracked in the matrix. No private-repository settings were changed, and no pronunciation rules or research data were fabricated to clear a deployment gate.
