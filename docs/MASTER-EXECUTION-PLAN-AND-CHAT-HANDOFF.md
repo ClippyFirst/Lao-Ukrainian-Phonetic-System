@@ -5372,3 +5372,8 @@ The pinned `Lingua::LO::NLP` source at `c2b0f8a94de1bb78a4927086e644ef87b1572c98
 - No Soft/Super-soft mode was added: the current Lao service has no distinct, reproducible evidence inclusion policy that would justify broader modes. Its phonetic/romanization route distinction remains separate from confidence/strictness.
 - Open PR [#145](https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/pull/145) remains untouched; it changes the primary MekongPhon stage and is independent of this display contract.
 - Research status remains beta; engineering verification does not establish expert-adjudicated pronunciation accuracy.
+
+
+## Cross-service output contract matrix
+
+The cross-repository comparison and exact verification/Pages evidence for Lao, Burmese, Khmer, Sinhala, Thai and Korean is maintained in [CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md](CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md). This is a status ledger, not a linguistic accuracy claim. Pending PRs are explicitly distinguished from mainline.
