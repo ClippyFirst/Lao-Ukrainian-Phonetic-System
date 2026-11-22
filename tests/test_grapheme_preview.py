@@ -11,7 +11,7 @@ class GraphemePreviewTests(unittest.TestCase):
         syllable = analyze("ກາລ").syllables[0]
         preview = syllable.grapheme_preview
         self.assertIsNone(syllable.phonemic_ipa)
-        self.assertEqual(syllable.practical_ukrainian, "кал?")
+        self.assertEqual(syllable.practical_ukrainian, "кал???")
         self.assertEqual(preview.ipa_preview, "kaːl")
         self.assertEqual(preview.status, "PROVISIONAL")
         self.assertEqual(preview.unresolved_graphemes, ("ລ",))
@@ -24,7 +24,7 @@ class GraphemePreviewTests(unittest.TestCase):
         syllable = analyze("ພຣະຣາຊອານາຈັກຣ໌ລາວ").syllables
         rendered = "".join(unit.practical_ukrainian or "" for unit in syllable)
         import re
-        self.assertTrue(all(len(run) <= 3 for run in re.findall(r"\?+", rendered)), rendered)
+        self.assertTrue(all(run == "???" for run in re.findall(r"\?+", rendered)), rendered)
         self.assertTrue(any(unit.grapheme_preview and unit.grapheme_preview.ipa_preview for unit in syllable))
 
     def test_multiple_tone_marks_show_segmental_preview_without_tone(self):
@@ -49,6 +49,7 @@ class GraphemePreviewTests(unittest.TestCase):
         self.assertIn("ຆ", preview.unresolved_graphemes)
         self.assertEqual(preview.graphemes[0].ipa_hint, None)
         self.assertEqual(preview.graphemes[1].ipa_hint, "aː")
+        self.assertEqual(analyze("ຆາ").syllables[0].practical_ukrainian, "???а")
 
     def test_complete_syllable_does_not_receive_fallback_preview(self):
         self.assertIsNone(analyze("ຂາ").syllables[0].grapheme_preview)
