@@ -100,3 +100,8 @@ The contract is covered by:
 - the repository Verify workflow for Python, Node, generated-data reproducibility, Chromium UI and built-site checks.
 
 Manual screen-reader, keyboard, mobile-device and physical-device QA remains a separate acceptance item. Passing automated tests does not establish linguistic accuracy or manual accessibility certification.
+
+
+## Shared target placeholder
+
+The final Ukrainian target channel uses exactly `???` for each contiguous unresolved run, including a single unresolved unit. The IPA diagnostic channel is separate and may retain its typed single-unit unknown symbol. Do not conflate those two representations or count the question marks as source graphemes.
