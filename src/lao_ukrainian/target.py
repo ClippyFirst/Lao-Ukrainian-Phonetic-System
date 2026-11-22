@@ -67,6 +67,7 @@ def adapt_phonetic_result(result: PhoneticResult, registry=None, *, allow_uncert
         unknown_run = False
 
         def flush_provisional_run() -> None:
+            nonlocal unknown_run
             if not provisional_run:
                 return
             run = tuple(provisional_run)
@@ -80,7 +81,14 @@ def adapt_phonetic_result(result: PhoneticResult, registry=None, *, allow_uncert
                 provenance=result.provenance,
                 uncertainty=result.uncertainty,
             )
-            output.append(adapt_phonetic_result(typed_run, registry) or "???")
+            mapped = adapt_phonetic_result(typed_run, registry)
+            if mapped is None:
+                if not unknown_run:
+                    output.append("???")
+                unknown_run = True
+            else:
+                output.append(mapped)
+                unknown_run = False
 
         for segment in result.segments:
             if segment.kind == "unknown":
