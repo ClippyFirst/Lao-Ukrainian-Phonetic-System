@@ -5404,3 +5404,10 @@ The cross-repository comparison and exact verification/Pages evidence for Lao, B
 - Korean final UI/live-smoke checks and Pages passed at main SHA `fdc397417979d8c2458e8ffd11d065901ae3f93c`; handoff/test-register PR #500 was subsequently merged as `5e84cf75cdcc684af4d3f69a566620976e5ff6d6`. Duplicate PR #501 was closed as superseded by #502.
 - Five public Pages deployments verified by successful main-branch deploy jobs; Sinhala is the single explicit deployment blocker.
 - The canonical status ledger is [CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md](CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md).
+
+
+## Sinhala API fixture extension — 2026-11-22
+
+- PR #29 merged as `32c8e01bf735e5c3ca5ff56aa66048e115f3c5ce`; it runs the shared `tests/fixtures/output-contract.json` cases through both public API wrappers (`to_ipa`, `phoneticize_sinhala`) in addition to `analyze` and the Chromium browser test.
+- Exact-head CI [45007497591](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007497591) SUCCESS. Post-merge main CI [45007599602](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599602) is pending at the time of this note; merge commit is the final code state.
+- Pages remains blocked by the private repository's Pages site-creation permission; latest failure is [45007599599](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599599).
