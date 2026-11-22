@@ -40,3 +40,9 @@ This is the canonical cross-repository status snapshot for the six language serv
 ## Sinhala browser security note
 
 The new Playwright smoke verifies the transcription preview while keeping the existing strict Content Security Policy unchanged. The optional vendored ITRANS WebAssembly romanizer is blocked by the current `script-src 'self'` policy; the UI's unavailable state is explicitly tested. Allowing `wasm-unsafe-eval` would be a separate security-policy change and was not made in this batch.
+
+
+### Post-merge closure — 2026-11-22
+
+- Sinhala PR #29 post-merge main CI [45007599602](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599602) completed SUCCESS on `32c8e01bf735e5c3ca5ff56aa66048e115f3c5ce`. Python core, public API wrappers, compile checks and Chromium shared-fixture smoke are all green.
+- The only remaining Sinhala engineering/deployment blocker is GitHub Pages site creation for the private repository; [45007599599](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599599) fails at `actions/configure-pages@v5` with `Resource not accessible by integration`.
