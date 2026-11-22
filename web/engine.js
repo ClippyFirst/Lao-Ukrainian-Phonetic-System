@@ -156,9 +156,10 @@ function adaptPhoneticResult(result, { allowUncertain = false } = {}) {
     throw new TypeError("Ukrainian adaptation requires a typed PhoneticResult");
   }
   if (result.status === "PROVISIONAL") {
-    if (!result.segments.length) return "?";
+    if (!result.segments.length) return "???";
     let output = "";
     let provisionalRun = [];
+    let unknownRun = false;
     const flushRun = () => {
       if (!provisionalRun.length) return;
       const run = provisionalRun;
@@ -169,22 +170,24 @@ function adaptPhoneticResult(result, { allowUncertain = false } = {}) {
         syllableBoundaries: [0, run.length],
         status: "SUPPORTED",
       });
-      output += mapped ?? "?";
+      output += mapped ?? "???";
     };
     for (const segment of result.segments) {
       if (segment?.kind === "unknown") {
         flushRun();
         if (segment.ipa !== "?" || segment.certainty !== "PROVISIONAL") return null;
-        output += "?";
+        if (!unknownRun) output += "???";
+        unknownRun = true;
       } else if (["vowel", "consonant"].includes(segment?.kind) &&
           segment.certainty === "PROVISIONAL") {
+        unknownRun = false;
         provisionalRun.push({ ...segment, certainty: "SUPPORTED" });
       } else {
         return null;
       }
     }
     flushRun();
-    return output || "?";
+    return output || "???";
   }
   if (!(result.status === "SUPPORTED" || (allowUncertain && result.status === "UNCERTAIN")) || result.segments.length === 0 ||
       result.segments.some((segment) => segment?.certainty !== "SUPPORTED")) return null;
@@ -861,7 +864,7 @@ export function analyze(text, options = {}) {
       syllableBoundaries: [0, 1], status: "PROVISIONAL",
       provenance: ["FALLBACK:UNKNOWN-SOURCE-UNIT"],
       uncertainty: [...(syllable.warnings || []), "PHONETIC-READING-UNKNOWN"],
-    }, ukrainian: "?", graphemePreview, status: "EVIDENCE LIMITED" };
+    }, ukrainian: "???", graphemePreview, status: "EVIDENCE LIMITED" };
 
   }));
   const syllables = analyzedWords.flat();
