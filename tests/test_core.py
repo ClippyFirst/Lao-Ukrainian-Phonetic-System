@@ -246,7 +246,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(syllable.phonemic_ipa, "kəː")
         self.assertEqual(syllable.phonetic_result.phonemic_ipa, "kəː")
         self.assertEqual(syllable.phonetic_result.status, "SUPPORTED")
-        self.assertEqual(syllable.practical_ukrainian, "?")
+        self.assertEqual(syllable.practical_ukrainian, "???")
         self.assertEqual(syllable.status, "EVIDENCE LIMITED")
         self.assertIn("FALLBACK:TARGET-UNMAPPED", syllable.rules)
         self.assertIn("UKRAINIAN-TARGET-UNMAPPED", syllable.warnings)
