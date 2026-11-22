@@ -237,7 +237,7 @@ class TestCore(unittest.TestCase):
             syllable = core_module.analyze("ຂາ").syllables[0]
         self.assertEqual(syllable.phonetic_result.phonemic_ipa, "kʰaː")
         self.assertEqual(syllable.phonetic_result.status, "SUPPORTED")
-        self.assertEqual(syllable.practical_ukrainian, "?")
+        self.assertEqual(syllable.practical_ukrainian, "???")
         self.assertEqual(syllable.status, "EVIDENCE LIMITED")
         self.assertIn("UKRAINIAN-TARGET-UNMAPPED", syllable.warnings)
 
@@ -275,7 +275,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(result.status, "PARTIAL")
         self.assertIsNone(syllable.phonemic_ipa)
         self.assertEqual(syllable.phonetic_result.vowel_length, "long")
-        self.assertEqual(syllable.practical_ukrainian, "кал?")
+        self.assertEqual(syllable.practical_ukrainian, "кал???")
         self.assertEqual(syllable.phonetic_result.status, "PROVISIONAL")
         self.assertEqual(len(syllable.phonetic_result.segments), 4)
         self.assertEqual(syllable.phonetic_result.segments[-1].kind, "unknown")
