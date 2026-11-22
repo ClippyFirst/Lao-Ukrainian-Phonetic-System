@@ -219,7 +219,7 @@ def analyze(text: str, *, ipa_profile: str = DEFAULT_ENGINE_PROFILE) -> Analysis
                     else "UKRAINIAN-TARGET-PROVISIONAL-UNMAPPED"
                 )
                 local_warnings = [*local_warnings, warning]
-                practical = "?"
+                practical = "???"
             syllable_type = classify_syllable_type(parsed.get("vowel"), parsed.get("coda"), registry)
             consonant_class = parsed.get("onset_class")
             if consonant_class is None and parsed.get("onset"):
