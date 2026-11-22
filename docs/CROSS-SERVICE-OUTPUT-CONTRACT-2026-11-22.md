@@ -23,9 +23,9 @@ This is the canonical cross-repository status snapshot for the six language serv
 
 ## Branches and pull requests
 
-- Merged: Lao PR #276 (runtime marker), #277 (handoff), #278/#279 (matrix), #280 (handoff refresh); Burmese PR #202 (shared levels/marker) and #203 (handoff); Khmer PR #509 (level labels) and #510 (handoff); Sinhala PR #24 (candidate separation), #25 (Pages auto-enable attempt), #26 (owner blocker) and #27 (Python/API + browser gates); Thai PR #236 (UI marker) and #237 (handoff); Korean PR #497 (visible modes/marker), #498/#499 (live smoke fixes) and #502 (final `???` assertion).
+- Merged: Lao PR #276 (runtime marker), #277 (handoff), #278/#279 (matrix), #280 (handoff refresh), #281 (final matrix), #282 (final handoff); Burmese PR #202 (shared levels/marker) and #203 (handoff); Khmer PR #509 (level labels) and #510 (handoff); Sinhala PR #24 (candidate separation), #25 (Pages auto-enable attempt), #26 (owner blocker) and #27 (Python/API + browser gates); Thai PR #236 (UI marker) and #237 (handoff); Korean PR #497 (visible modes/marker), #498/#499 (live smoke fixes) and #502 (final `???` assertion).
 - Merged: Korean PR #497 as `fc733006b9ccdb9e12e50474c0564233043243e7`, PR #498 as `d5ed101a1349608238c4619eeb2762032994e51f`, and PR #499 as `138f63f3a96ee73a5e17b04dc8705145df170257`.
-- Open at this snapshot: independent research PRs Burmese #129 and Thai #235; Sinhala #20–#22; Lao #145; and this matrix refresh PR. Korean PR #502 and Sinhala PR #27 are merged. The independent research PRs remain untouched.
+- Open at this snapshot: independent research PRs Burmese #129 and Thai #235; Sinhala #20–#22; Lao #145. Korean PR #502 and Sinhala PR #27 are merged; Lao matrix/handoff PRs #281/#282 are merged. The independent research PRs remain untouched.
 - Earlier Sinhala PRs #20–#22 remain untouched; they are not silently included. PR #27 adds the Python/API typed-null and real-browser output contract gates.
 
 ## Acceptance gates still open
