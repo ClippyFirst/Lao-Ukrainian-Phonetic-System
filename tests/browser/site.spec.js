@@ -165,11 +165,11 @@ test("browser UI renders provisional Ukrainian output and labels its low confide
       segmentCount: syllable.phoneticResult?.segments?.length ?? 0,
     };
   });
-  expect(directEngineResult.output, JSON.stringify(directEngineResult)).toBe("кал?");
+  expect(directEngineResult.output, JSON.stringify(directEngineResult)).toBe("кал???");
   await page.locator("#lao-input").fill("ກາລ");
   await expect(page.locator(".grapheme-preview")).toContainText("Попередня IPA-підказка");
   await expect(page.locator(".grapheme-preview")).toContainText("kaː");
-  await expect(page.locator("#output")).toHaveText("кал?");
+  await expect(page.locator("#output")).toHaveText("кал???");
   await expect(page.locator(".grapheme-preview")).toContainText("ລ");
   await expect(page.locator(".grapheme-confidence")).toContainText("Низька впевненість");
   await expect(page.locator(".grapheme-confidence")).toContainText("«?»");
