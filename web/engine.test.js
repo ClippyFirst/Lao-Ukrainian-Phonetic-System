@@ -717,7 +717,7 @@ test("browser grapheme preview never infers tone and withholds non-core Pali val
   assert.equal(pali.status, "PROVISIONAL");
   assert.equal(pali.graphemes[0].ipaHint, null);
   assert.equal(pali.graphemes[1].ipaHint, "aː");
-  assert.ok(analyze("ຆາ").syllables[0].ukrainian.includes("???"));
+  assert.ok(analyze("ຆາ", { ipaProfile: "hybrid-deterministic" }).syllables[0].ukrainian.includes("???"));
 });
 
 
