@@ -5395,3 +5395,12 @@ The cross-repository comparison and exact verification/Pages evidence for Lao, B
 - **Sinhala optional romanizer:** strict `script-src 'self'` CSP blocks the vendored ITRANS WebAssembly module. The browser test verifies that the UI discloses the unavailable fallback while leaving the CSP unchanged. Adding `wasm-unsafe-eval` is a separate security decision, not silently included.
 - Remaining research blockers: full same-fixture Python/browser parity across IPA, source spans, uncertainty and provenance; expert/adjudicated Sinhala and other language pronunciation evidence; open independent research PRs are listed in the matrix and remain untouched.
 - Engineering CI success is not a linguistic accuracy claim. All six remain research/beta systems at differing maturity; Sinhala is still a partial prototype and is not hosted on Pages.
+
+
+## Final cross-service parity checkpoint — 2026-11-22
+
+- Sinhala PR #28 merged as `5f8ac3b6d970ae91f1d986d9cbea9692c0a1d6e7`. Shared fixture file `tests/fixtures/output-contract.json` now drives Python and real Chromium tests for /a i u/ exact matches, unsupported /æ/, unresolved consonants and mixed output. Exact-head CI [45007228412](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007228412) and PR CI [45007232797](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007232797) both SUCCESS.
+- Sinhala still does not claim full phonological parity or linguistic accuracy. Pages remains blocked: latest deploy [45007319688](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007319688) failed because `configure-pages` cannot create the site using the available integration token. Repository is private; owner action is required.
+- Korean final UI/live-smoke checks and Pages passed at main SHA `fdc397417979d8c2458e8ffd11d065901ae3f93c`; handoff/test-register PR #500 was subsequently merged as `5e84cf75cdcc684af4d3f69a566620976e5ff6d6`. Duplicate PR #501 was closed as superseded by #502.
+- Five public Pages deployments verified by successful main-branch deploy jobs; Sinhala is the single explicit deployment blocker.
+- The canonical status ledger is [CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md](CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md).
