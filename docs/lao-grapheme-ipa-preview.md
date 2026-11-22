@@ -8,7 +8,7 @@ The primary processing path remains:
 
 The deterministic hybrid must still produce a visible Ukrainian-side result when the full structural/phonological path cannot establish a complete reading. This is a **rendering-coverage contract**, not a promise that every grapheme has an independently established pronunciation.
 
-The fallback is not a second direct Lao-to-Ukrainian transliterator. It builds a typed `PROVISIONAL` IPA sequence from registered grapheme-position hints and explicit unknown segments, then sends that sequence through the **same typed IPA → Ukrainian adapter** used by the normal path. The adapter does not inspect Lao source graphemes. Known provisional IPA runs use the canonical Ukrainian correspondence registry; unresolved units produce visible `?` markers.
+The fallback is not a second direct Lao-to-Ukrainian transliterator. It builds a typed `PROVISIONAL` IPA sequence from registered grapheme-position hints and explicit unknown segments, then sends that sequence through the **same typed IPA → Ukrainian adapter** used by the normal path. The adapter does not inspect Lao source graphemes. Known provisional IPA runs use the canonical Ukrainian correspondence registry; unresolved units produce a visible `???` marker in the Ukrainian final-output channel.
 
 ## Output and confidence levels
 
@@ -16,8 +16,8 @@ The fallback is not a second direct Lao-to-Ukrainian transliterator. It builds a
 |---|---|---|
 | `SUPPORTED` | Complete segmental IPA established by the structural and phonological path | Normal target adaptation |
 | `UNCERTAIN` | Complete segmental IPA exists, but one or more phonological features remain uncertain | Target adaptation is allowed in the primary hybrid; uncertainty is retained |
-| `PROVISIONAL` | Last-resort typed segmental hints; grapheme position, syllable structure, vowel interpretation or other context is not fully established | Known IPA portions are adapted through the same target adapter; unresolved source positions are shown as `?` |
-| `UNRESOLVED` | No defensible IPA hint can be supplied for a source unit | The source unit remains visible and receives an explicit `?` in the Ukrainian-side output |
+| `PROVISIONAL` | Last-resort typed segmental hints; grapheme position, syllable structure, vowel interpretation or other context is not fully established | Known IPA portions are adapted through the same target adapter; unresolved source positions are shown as `???` |
+| `UNRESOLVED` | No defensible IPA hint can be supplied for a source unit | The source unit remains visible and receives an explicit `???` in the Ukrainian-side output |
 
 A result marked `PROVISIONAL` or `EVIDENCE LIMITED` is **low confidence**. The UI and text CLI must say so explicitly. A visible Ukrainian rendering must never be mistaken for a confirmed pronunciation.
 
@@ -46,7 +46,7 @@ The Python path uses `preview_from_graphemes()`, a typed provisional `PhoneticRe
 
 ## Examples
 
-- `ກາລ`: the available provisional hints can produce a low-confidence Ukrainian rendering such as `кал?`; the final unresolved marker remains visible rather than silently dropping the tail.
+- `ກາລ`: the available provisional hints can produce a low-confidence Ukrainian rendering such as `кал???`; the final unresolved marker remains visible rather than silently dropping the tail.
 - `ຂ່້າ`: the segmental hint can produce `к'а`, but malformed multiple tone marks remain unresolved; the fallback does not infer a tone.
 - `ຂເ`: the known onset and available vowel hint can be rendered provisionally while the incomplete vowel structure remains marked as uncertain.
 - `ຆາ`: the known vowel may be represented provisionally, but the non-core Pali consonant is not assigned a fabricated modern-Lao sound and remains unknown.
@@ -57,7 +57,7 @@ Exact outputs are regression contracts only where they are pinned in the corresp
 
 For a provisional result, the detailed result panel must show:
 1. the available IPA hint, labelled as provisional / low confidence;
-2. the Ukrainian practical rendering, including any `?` markers;
+2. the Ukrainian practical rendering, including any `???` markers;
 3. the unresolved source graphemes or positions;
 4. an explicit note that the reading is low confidence and tone was not inferred.
 
@@ -70,11 +70,11 @@ The main IPA field must not discard a typed provisional preview merely because t
 
 1. accepted `syllable.ipa` when present;
 2. otherwise `graphemePreview.ipaPreview`, explicitly labelled provisional in the detailed analysis;
-3. otherwise a single `?`.
+3. otherwise an explicit unknown IPA marker in the diagnostic channel.
 
-When a provisional preview also contains unresolved source positions, the IPA summary appends a visible uncertainty marker. The Ukrainian adapter likewise retains the provisional IPA-derived material and adds an uncertainty marker. The unresolved positions within one fallback unit are summarized by one `?` for a single unresolved grapheme, or at most `???` for multiple unresolved positions. The marker count is deliberately not a grapheme count: it communicates confidence, not source length. This prevents long unsupported names from producing visually meaningless tails of dozens of question marks while preserving a clear distinction between provisional IPA and confirmed IPA.
+When a provisional preview also contains unresolved source positions, the IPA summary appends a visible uncertainty marker. The Ukrainian adapter likewise retains the provisional IPA-derived material and renders each contiguous unresolved run as `???`. The marker is deliberately not a grapheme count: it communicates that the final target form is not established, not how many source characters are unresolved. The internal typed IPA diagnostic continues to use its own single-unit unknown symbol and retains source positions. This prevents long unsupported names from producing visually meaningless tails of dozens of question marks while preserving a clear distinction between provisional IPA and confirmed IPA.
 
-Regression target: `ພຣະຣາຊອານາຈັກຣ໌ລາວ`. The test contract is that available registered hints remain visible in the IPA field, the Ukrainian result does not contain a run longer than three question marks, and the result remains low-confidence with no inferred tone. This is a rendering/uncertainty contract, not an adjudicated pronunciation of the phrase.
+Regression target: `ພຣະຣາຊອານາຈັກຣ໌ລາວ`. The test contract is that available registered hints remain visible in the IPA field, each unresolved run in the Ukrainian result is exactly three question marks, and the result remains low-confidence with no inferred tone. This is a rendering/uncertainty contract, not an adjudicated pronunciation of the phrase.
 
 ## Inventory scope
 
@@ -85,7 +85,7 @@ The canonical Unicode inventory is `data/lao/grapheme_inventory.csv`. It catalog
 Report these measures separately:
 
 - **Unicode recognition:** whether an assigned codepoint is recognized.
-- **Visible rendering:** whether each valid source unit contributes to a visible Ukrainian-side output, including explicit `?` markers and passthrough.
+- **Visible rendering:** whether each valid source unit contributes to a visible Ukrainian-side output, including explicit `???` markers and passthrough.
 - **Typed IPA coverage:** whether a unit has accepted `SUPPORTED` or `UNCERTAIN` typed IPA under the benchmark contract.
 - **Phonetic accuracy:** agreement with an independently annotated and adjudicated reference.
 

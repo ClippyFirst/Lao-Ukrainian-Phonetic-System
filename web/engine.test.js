@@ -696,7 +696,7 @@ test("browser IPA adapter preserves medial yod and does not collapse a diphthong
 test("hybrid browser grapheme preview stays diagnostic beside typed placeholder output", () => {
   const syllable = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" }).syllables[0];
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "кал?");
+  assert.equal(syllable.ukrainian, "кал???");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.graphemePreview.ipaPreview, "kaːl");
   assert.equal(syllable.graphemePreview.status, "PROVISIONAL");
@@ -717,6 +717,7 @@ test("browser grapheme preview never infers tone and withholds non-core Pali val
   assert.equal(pali.status, "PROVISIONAL");
   assert.equal(pali.graphemes[0].ipaHint, null);
   assert.equal(pali.graphemes[1].ipaHint, "aː");
+  assert.ok(analyze("ຆາ", { ipaProfile: "hybrid-deterministic" }).syllables[0].ukrainian.includes("???"));
 });
 
 
@@ -751,9 +752,9 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
   const result = analyze("ກາລ", { ipaProfile: "hybrid-deterministic" });
   const syllable = result.syllables[0];
   assert.equal(result.status, "PARTIAL");
-  assert.equal(result.output, "кал?");
+  assert.equal(result.output, "кал???");
   assert.equal(syllable.ipa, null);
-  assert.equal(syllable.ukrainian, "кал?");
+  assert.equal(syllable.ukrainian, "кал???");
   assert.equal(syllable.phoneticResult.status, "PROVISIONAL");
   assert.equal(syllable.phoneticResult.vowelLength, "long");
   assert.equal(syllable.phoneticResult.toneCategory, null);
@@ -765,7 +766,7 @@ test("hybrid browser renders unresolved Lao units through a typed provisional pl
 test("hybrid fallback bounds unresolved marker runs for long unsupported units", () => {
   const result = analyze("ພຣະຣາຊອານາຈັກຣ໌ລາວ", { ipaProfile: "hybrid-deterministic" });
   const markerRuns = result.output.match(/\?+/g) || [];
-  assert.ok(markerRuns.every((run) => run.length <= 3), JSON.stringify({ output: result.output, markerRuns }));
+  assert.ok(markerRuns.every((run) => run === "???"), JSON.stringify({ output: result.output, markerRuns }));
   assert.ok(result.syllables.some((unit) => unit.graphemePreview?.ipaPreview),
     "the fallback should retain any registered provisional IPA hints");
 });

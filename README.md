@@ -4,7 +4,7 @@
 
 - [Romanization → Ukrainian matrix](docs/romanization-to-ukrainian-matrix.md) — BGN/PCGN 1966 / CLDR Lao-Latin profile and syllable-level crosswalk. The web tool also accepts direct romanized input (BGN/PCGN and a bounded ALA-LC profile); ambiguous forms remain marked partial.
 - [Лаосько-українська практична транскрипція](docs/lao-ukrainian-practical-transcription.md) — target orthography conventions.
-- [Графемний fallback і низька впевненість](docs/lao-grapheme-ipa-preview.md) — typed provisional IPA → Ukrainian adapter behavior, unresolved `?` markers and confidence disclosure.
+- [Графемний fallback і низька впевненість](docs/lao-grapheme-ipa-preview.md) — typed provisional IPA → Ukrainian adapter behavior, unresolved `???` markers and confidence disclosure.
 - [Візуальна система сайту](DESIGN.md) — Lao Woven Editorial design tokens and interaction rules.
 - [Дослідження лаоської візуальної культури](docs/research/LAO-VISUAL-CULTURE-AND-WEB-DESIGN-REFERENCES-2026-11-10.md) — sourced textile and visual-identity references.
 
@@ -38,7 +38,7 @@ It is deliberately **not**:
 
 **Lao Unicode → graphemic structure → syllable analysis → consonant class → vowel/quantity → live/dead → tone → phonology → IPA → Ukrainian target → practical Ukrainian orthography**
 
-The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation. The primary hybrid aims for 100% rendering coverage on valid input: supported IPA is rendered normally, complete but uncertain IPA is rendered with its uncertainty preserved, and unresolved graphemes receive provisional IPA hints plus explicit ? markers through the same typed adapter. A missing Ukrainian correspondence is a target-adapter limitation, not a reason to erase an otherwise accepted source IPA result; the target side receives an explicit ? marker while source IPA provenance is preserved. A placeholder is not a pronunciation prediction or an accuracy claim.
+The IPA layer is the main audit boundary between source-language analysis and Ukrainian adaptation. The primary hybrid aims for 100% rendering coverage on valid input: supported IPA is rendered normally, complete but uncertain IPA is rendered with its uncertainty preserved, and unresolved graphemes receive provisional IPA hints plus explicit `???` markers through the same typed adapter. A missing Ukrainian correspondence is a target-adapter limitation, not a reason to erase an otherwise accepted source IPA result; the target side receives an explicit `???` marker while source IPA provenance is preserved. A placeholder is not a pronunciation prediction or an accuracy claim.
 
 **Unicode coverage:** the canonical Unicode 18 Lao-block inventory contains 83 assigned codepoints; Python and browser tests require typed recognition for all 83 (a grapheme role or explicit orthographic/numeric passthrough). This is 100% codepoint handling, not 100% independent IPA: Pali/Sanskrit and Khmu extensions, obsolete marks, and context-dependent signs remain explicitly scoped rather than assigned invented modern-Lao sounds. Six additional source-attested glide-bearing vowel spellings are handled in both runtimes; see [grapheme preview and coverage policy](docs/lao-grapheme-ipa-preview.md) and [vowel-template matrix](docs/vowel-template-coverage.md).
 
