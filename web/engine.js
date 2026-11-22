@@ -170,7 +170,13 @@ function adaptPhoneticResult(result, { allowUncertain = false } = {}) {
         syllableBoundaries: [0, run.length],
         status: "SUPPORTED",
       });
-      output += mapped ?? "???";
+      if (mapped == null) {
+        if (!unknownRun) output += "???";
+        unknownRun = true;
+      } else {
+        output += mapped;
+        unknownRun = false;
+      }
     };
     for (const segment of result.segments) {
       if (segment?.kind === "unknown") {
