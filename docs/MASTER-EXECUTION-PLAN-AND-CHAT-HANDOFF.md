@@ -5411,3 +5411,10 @@ The cross-repository comparison and exact verification/Pages evidence for Lao, B
 - PR #29 merged as `32c8e01bf735e5c3ca5ff56aa66048e115f3c5ce`; it runs the shared `tests/fixtures/output-contract.json` cases through both public API wrappers (`to_ipa`, `phoneticize_sinhala`) in addition to `analyze` and the Chromium browser test.
 - Exact-head CI [45007497591](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007497591) SUCCESS. Post-merge main CI [45007599602](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599602) is pending at the time of this note; merge commit is the final code state.
 - Pages remains blocked by the private repository's Pages site-creation permission; latest failure is [45007599599](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599599).
+
+
+## Final API/browser/Python gate closure — 2026-11-22
+
+- Sinhala PR #29 post-merge CI [45007599602](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599602) completed SUCCESS. Shared fixtures now cover Python core, public API wrappers and Chromium browser rendering on the same expected input set.
+- Sinhala Pages remains the only deployment blocker: [45007599599](https://github.com/ClippyFirst/Sinhala-Ukrainian-Phonetic-System-/actions/runs/45007599599) fails while creating the Pages site for the private repository; owner-level repository/plan authorization is required.
+- The latest six-service matrix is `CROSS-SERVICE-OUTPUT-CONTRACT-2026-11-22.md`.
